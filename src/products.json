@@ -1,0 +1,29 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Kit Kat 41g",
+            "exp_date": "2020-07-30",
+            "lote": "a5s1d56as",
+            "amount": 326
+        },{
+            "id": 2,
+            "name": "Kit Kat 41g",
+            "exp_date": "2020-07-30",
+            "lote": "a5s1d56as",
+            "amount": 326
+        },{
+            "id": 3,
+            "name": "Kit Kat 41g",
+            "exp_date": "2020-07-30",
+            "lote": "a5s1d56as",
+            "amount": 326
+        },{
+            "id": 4,
+            "name": "Kit Kat 41g",
+            "exp_date": "2020-07-30",
+            "lote": "a5s1d56as",
+            "amount": 326
+        }
+    ]
+}
