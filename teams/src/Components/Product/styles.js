@@ -1,12 +1,10 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
-    margin-bottom: 10px;
-`;
+export const Container = styled.View``;
 
-export const Card = styled.View`
+export const Card = styled.TouchableOpacity`
     background-color: #fff;
-    margin: 10px;
+    margin: 3px 6px;
     border-radius: 12px;
 
     padding: 10px;
@@ -51,14 +49,4 @@ export const Amount = styled.Text`
     font-size: 22px;
     font-weight: bold;
     margin-top: 5px;
-`;
-
-export const ButtonDetails = styled.TouchableOpacity`
-    align-items: flex-end;
-    margin-right: 25px;
-`;
-
-export const ButtonDetailsText = styled.Text`
-    font-size: 14px;
-    color: #81d0fd;
 `;

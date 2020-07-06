@@ -26,6 +26,24 @@
             "exp_date": "2020-07-30",
             "lote": "5484",
             "amount": 49
+        },{
+            "id": 5,
+            "name": "Diamante Negro",
+            "exp_date": "2021-01-30",
+            "lote": "LTA 5846",
+            "amount": 245
+        },{
+            "id": 6,
+            "name": "Caixa de bombom",
+            "exp_date": "2022-09-30",
+            "lote": "48648",
+            "amount": 576
+        },{
+            "id": 7,
+            "name": "Caixa de bombom",
+            "exp_date": "2022-09-30",
+            "lote": "48648",
+            "amount": 576
         }
     ]
 }
