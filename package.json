@@ -10,7 +10,9 @@
     "lint": "eslint ."
   },
   "rnpm": {
-    "assets": ["./assets/fonts/"]
+    "assets": [
+      "./assets/fonts/"
+    ]
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
@@ -19,6 +21,7 @@
     "@react-navigation/stack": "^5.6.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-date-picker": "^2.7.12",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.7",

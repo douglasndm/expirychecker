@@ -1,28 +1,33 @@
 import styled from 'styled-components';
 
-export const Container = styled.View``;
+export const Container = styled.View`
+    flex: 1;
+`;
 
 export const HeaderContainer = styled.View`
     width: 100%;
-    height: 75px;
+    padding: 25px;
 
     justify-content: center;
     align-items: center;
 
-    background-color: #eaeaea;
+    background-color: #14d48f;
+
+    margin-bottom: 15px;
 `;
 
 export const TextLogo = styled.Text`
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
+    color: white;
 `;
 
 export const CategoryDetails = styled.View`
     flex-direction: row;
     justify-content: space-between;
 
-    margin-left: 7px;
-    margin-right: 7px;
+    margin-left: 15px;
+    margin-right: 15px;
 `;
 
 export const CategoryDetailsText = styled.Text`

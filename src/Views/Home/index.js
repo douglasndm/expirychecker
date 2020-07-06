@@ -1,13 +1,33 @@
 import React from 'react';
-import { View, ScrollView, FlatList, Alert } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 
-import { Container, HeaderContainer, TextLogo, CategoryDetails, CategoryDetailsText } from './styles';
+import {
+    Container,
+    HeaderContainer,
+    TextLogo,
+    CategoryDetails,
+    CategoryDetailsText,
+} from './styles';
 import ProductItem from '../../Components/Product';
 
 import { products } from '../../products.json';
 
-const Home = ({ navigation }) => {
-    //console.log(navigation);
+const ListHeader = () => {
+    return (
+        <CategoryDetails>
+            <CategoryDetailsText>
+                Produtos mais próximos ao vencimento
+            </CategoryDetailsText>
+        </CategoryDetails>
+    );
+};
+
+const EmptyList = () => {
+    return <Text>Não há nenhum produto cadastrado ainda...</Text>;
+};
+
+export default ({ navigation }) => {
+    // console.log(navigation);
 
     // navigation.toggleDrawer();
     return (
@@ -16,20 +36,13 @@ const Home = ({ navigation }) => {
                 <TextLogo>Controle de validade</TextLogo>
             </HeaderContainer>
 
-            <View>
-                <CategoryDetails>
-                    <CategoryDetailsText>Produtos mais próximos ao vencimento</CategoryDetailsText>
-                    <CategoryDetailsText>-></CategoryDetailsText>
-                </CategoryDetails>
-
-                <FlatList
-                    data={products}
-                    keyExtractor={(item) => String(item.id)}
-                    renderItem={({ item }) => <ProductItem product={item} />}
-                />
-            </View>
+            <FlatList
+                data={products}
+                keyExtractor={(item) => String(item.id)}
+                ListHeaderComponent={ListHeader}
+                renderItem={({ item }) => <ProductItem product={item} />}
+                ListEmptyComponent={EmptyList}
+            />
         </Container>
     );
 };
-
-export default Home;
