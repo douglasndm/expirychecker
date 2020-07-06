@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, FlatList, Alert } from 'react-native';
+import { View, ScrollView, FlatList, Alert } from 'react-native';
 
-import { Container, HeaderContainer, TextLogo } from './styles';
+import { Container, HeaderContainer, TextLogo, CategoryDetails, CategoryDetailsText } from './styles';
+import ProductItem from '../../Components/Product';
 
 import { products } from '../../products.json';
 
 const Home = ({ navigation }) => {
-    console.log(navigation);
+    //console.log(navigation);
 
     // navigation.toggleDrawer();
     return (
@@ -16,12 +17,15 @@ const Home = ({ navigation }) => {
             </HeaderContainer>
 
             <View>
-                <Text>Produtos mais próximos ao vencimento</Text>
+                <CategoryDetails>
+                    <CategoryDetailsText>Produtos mais próximos ao vencimento</CategoryDetailsText>
+                    <CategoryDetailsText>-></CategoryDetailsText>
+                </CategoryDetails>
 
                 <FlatList
                     data={products}
                     keyExtractor={(item) => String(item.id)}
-                    renderItem={({ item }) => <Text>{item.name}</Text>}
+                    renderItem={({ item }) => <ProductItem product={item} />}
                 />
             </View>
         </Container>

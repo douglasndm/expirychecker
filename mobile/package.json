@@ -9,6 +9,9 @@
     "test": "jest",
     "lint": "eslint ."
   },
+  "rnpm": {
+    "assets": ["./assets/fonts/"]
+  },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.8.4",
