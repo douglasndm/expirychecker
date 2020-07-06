@@ -16,3 +16,16 @@ export const TextLogo = styled.Text`
     font-size: 32px;
     font-weight: bold;
 `;
+
+export const CategoryDetails = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin-left: 7px;
+    margin-right: 7px;
+`;
+
+export const CategoryDetailsText = styled.Text`
+    color: #81d0fd;
+    font-size: 16px;
+`;
