@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import DatePicker from 'react-native-date-picker';
 
 export const Container = styled.View`
     margin: 10px 10px;
@@ -20,6 +21,8 @@ export const InputText = styled.TextInput`
     margin-bottom: 10px;
     border-radius: 12px;
     padding: 15px;
+    background-color: #fff;
+    font-size: 18px;
 `;
 
 export const InputGroup = styled.View`
@@ -35,6 +38,10 @@ export const ExpDateLabel = styled.Text`
     color: #999;
     margin-top: 10px;
     margin-bottom: 10px;
+`;
+
+export const CustomDatePicker = styled(DatePicker)`
+    background: white;
 `;
 
 export const Button = styled.TouchableOpacity`

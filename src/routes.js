@@ -9,8 +9,16 @@ const Drawer = createDrawerNavigator();
 export default () => {
     return (
         <Drawer.Navigator>
-            <Drawer.Screen name="AddProduct" component={AddProduct} />
-            <Drawer.Screen name="Home" component={Home} />
+            <Drawer.Screen
+                name="AddProduct"
+                component={AddProduct}
+                options={{ title: 'Adicionar produto' }}
+            />
+            <Drawer.Screen
+                name="Home"
+                component={Home}
+                options={{ title: 'Início' }}
+            />
         </Drawer.Navigator>
     );
 };
