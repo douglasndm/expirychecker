@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import {
     Container,
@@ -11,8 +11,6 @@ import {
     AmountContainer,
     AmountContainerText,
     Amount,
-    ButtonDetails,
-    ButtonDetailsText,
 } from './styles';
 
 export default ({ product }) => {
@@ -30,10 +28,6 @@ export default ({ product }) => {
                     <Amount>{product.amount}</Amount>
                 </AmountContainer>
             </Card>
-
-            <ButtonDetails>
-                <ButtonDetailsText>Detalhes</ButtonDetailsText>
-            </ButtonDetails>
         </Container>
     );
 };
