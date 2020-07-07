@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import {
     Container,
@@ -8,17 +9,27 @@ import {
     CategoryDetails,
     CategoryDetailsText,
 } from './styles';
+
+import ProductDetails from '../ProductDetails';
 import ProductItem from '../../Components/Product';
 
 import { products } from '../../products.json';
 
+const StackNavigator = createStackNavigator();
+
 const ListHeader = () => {
     return (
-        <CategoryDetails>
-            <CategoryDetailsText>
-                Produtos mais próximos ao vencimento
-            </CategoryDetailsText>
-        </CategoryDetails>
+        <View>
+            <HeaderContainer>
+                <TextLogo>Controle de validade</TextLogo>
+            </HeaderContainer>
+
+            <CategoryDetails>
+                <CategoryDetailsText>
+                    Produtos mais próximos ao vencimento
+                </CategoryDetailsText>
+            </CategoryDetails>
+        </View>
     );
 };
 
@@ -26,16 +37,9 @@ const EmptyList = () => {
     return <Text>Não há nenhum produto cadastrado ainda...</Text>;
 };
 
-export default ({ navigation }) => {
-    // console.log(navigation);
-
-    // navigation.toggleDrawer();
+const ProductList = () => {
     return (
         <Container>
-            <HeaderContainer>
-                <TextLogo>Controle de validade</TextLogo>
-            </HeaderContainer>
-
             <FlatList
                 data={products}
                 keyExtractor={(item) => String(item.id)}
@@ -46,3 +50,13 @@ export default ({ navigation }) => {
         </Container>
     );
 };
+
+export default () => (
+    <StackNavigator.Navigator headerMode="none">
+        <StackNavigator.Screen name="Default" component={ProductList} />
+        <StackNavigator.Screen
+            name="ProductDetails"
+            component={ProductDetails}
+        />
+    </StackNavigator.Navigator>
+);

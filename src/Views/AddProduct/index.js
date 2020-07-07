@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
-import { getDay, getMonth, getYear, format } from 'date-fns';
+import { format } from 'date-fns';
 
 import {
     Container,
@@ -23,17 +23,14 @@ const AddProduct = () => {
 
     const [expDate, setExpDate] = useState(new Date());
 
-    function updateDate(date) {
-        setExpDate();
-    }
-
     return (
         <Container>
             <ScrollView>
                 <PageTitle>Adicionar um novo produto</PageTitle>
 
                 <Text>
-                    {name} - {code} - {lote} - {amount} - {String(expDate)}
+                    {name} - {code} - {lote} - {amount} -{' '}
+                    {format(expDate, 'dd-MM-yyyy')}
                 </Text>
                 <InputContainer>
                     <InputText
