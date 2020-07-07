@@ -1,5 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { format, parseISO } from 'date-fns';
+import br from 'date-fns/locale/pt-BR';
 
 import {
     Container,
@@ -14,14 +17,29 @@ import {
 } from './styles';
 
 export default ({ product }) => {
+    const navigation = useNavigation();
+
     return (
         <Container>
-            <Card>
+            <Card
+                onPress={() => {
+                    navigation.navigate('ProductDetails');
+                }}
+            >
                 <View>
                     <ProductName>{product.name}</ProductName>
                     <ProductCode>Código: {product.barcode}</ProductCode>
                     <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductExpDate>Vence em {product.exp_date}</ProductExpDate>
+                    <ProductExpDate>
+                        Vence em
+                        {format(
+                            parseISO(product.exp_date),
+                            'EEEE, dd/MM/yyyy',
+                            {
+                                locale: br,
+                            }
+                        )}
+                    </ProductExpDate>
                 </View>
                 <AmountContainer>
                     <AmountContainerText>Quantidade</AmountContainerText>
