@@ -23,12 +23,12 @@ export default ({ product }) => {
         <Container>
             <Card
                 onPress={() => {
-                    navigation.navigate('ProductDetails');
+                    navigation.navigate('ProductDetails', { product });
                 }}
             >
                 <View>
                     <ProductName>{product.name}</ProductName>
-                    <ProductCode>Código: {product.barcode}</ProductCode>
+                    <ProductCode>Código: {product.code}</ProductCode>
                     <ProductLote>Lote: {product.lote}</ProductLote>
                     <ProductExpDate>
                         Vence em
