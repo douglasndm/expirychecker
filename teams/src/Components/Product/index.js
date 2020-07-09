@@ -24,7 +24,7 @@ export default ({ product }) => {
         <Container>
             <Card
                 onPress={() => {
-                    navigation.navigate('ProductDetails', { product });
+                    navigation.navigate('ProductDetails', { id: product.id });
                 }}
             >
                 <ProductDetails>
