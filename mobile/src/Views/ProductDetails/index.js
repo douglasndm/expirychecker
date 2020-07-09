@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { format } from 'date-fns';
+import br from 'date-fns/locale/pt-BR';
+import Realm from '../../Services/Realm';
 
 import {
     Container,
@@ -15,14 +18,40 @@ import {
 } from './styles';
 
 export default (props) => {
-    const { product } = props.route.params;
+    const productId = props.route.params.product.id;
+
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
+
+    const [lotes, setLotes] = useState([]);
+
+    useEffect(() => {
+        async function getProduct() {
+            const realm = await Realm();
+
+            try {
+                const result = realm
+                    .objects('Product')
+                    .filtered(`id == ${productId}`)[0];
+
+                setName(result.name);
+                setCode(result.code);
+
+                setLotes(result.lotes);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getProduct();
+    }, []);
 
     return (
         <ScrollView>
             <Container>
                 <PageTitle>Detalhes</PageTitle>
-                <ProductName>{product.name}</ProductName>
-                <ProductCode>{product.code}</ProductCode>
+                <ProductName>{name}</ProductName>
+                <ProductCode>{code}</ProductCode>
 
                 <CategoryDetails>
                     <CategoryDetailsText>
@@ -30,61 +59,22 @@ export default (props) => {
                     </CategoryDetailsText>
                 </CategoryDetails>
 
-                <ProductLoteContainer
-                    style={aditionalStylesForProductContainer.container}
-                >
-                    <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductAmount>Quantidade: {product.amount}</ProductAmount>
+                {lotes.map((lote) => (
+                    <ProductLoteContainer
+                        key={lote.id}
+                        style={aditionalStylesForProductContainer.container}
+                    >
+                        <ProductLote>Lote: {lote.lote}</ProductLote>
+                        <ProductAmount>Quantidade: {lote.amount}</ProductAmount>
 
-                    <ProductExpDate>
-                        Vence em 24 de abril de 2019
-                    </ProductExpDate>
-                </ProductLoteContainer>
-
-                <ProductLoteContainer>
-                    <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductAmount>Quantidade: {product.amount}</ProductAmount>
-
-                    <ProductExpDate>
-                        Vence em 24 de abril de 2019
-                    </ProductExpDate>
-                </ProductLoteContainer>
-
-                <ProductLoteContainer>
-                    <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductAmount>Quantidade: {product.amount}</ProductAmount>
-
-                    <ProductExpDate>
-                        Vence em 24 de abril de 2019
-                    </ProductExpDate>
-                </ProductLoteContainer>
-
-                <ProductLoteContainer>
-                    <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductAmount>Quantidade: {product.amount}</ProductAmount>
-
-                    <ProductExpDate>
-                        Vence em 24 de abril de 2019
-                    </ProductExpDate>
-                </ProductLoteContainer>
-
-                <ProductLoteContainer>
-                    <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductAmount>Quantidade: {product.amount}</ProductAmount>
-
-                    <ProductExpDate>
-                        Vence em 24 de abril de 2019
-                    </ProductExpDate>
-                </ProductLoteContainer>
-
-                <ProductLoteContainer>
-                    <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductAmount>Quantidade: {product.amount}</ProductAmount>
-
-                    <ProductExpDate>
-                        Vence em 24 de abril de 2019
-                    </ProductExpDate>
-                </ProductLoteContainer>
+                        <ProductExpDate>
+                            Vence em
+                            {format(lote.exp_date, ' EEEE, dd/MM/yyyy', {
+                                locale: br,
+                            })}
+                        </ProductExpDate>
+                    </ProductLoteContainer>
+                ))}
             </Container>
         </ScrollView>
     );
@@ -92,6 +82,6 @@ export default (props) => {
 
 const aditionalStylesForProductContainer = StyleSheet.create({
     container: {
-        elevation: 4,
+        elevation: 2,
     },
 });

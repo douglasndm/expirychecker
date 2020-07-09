@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
 
 import {
