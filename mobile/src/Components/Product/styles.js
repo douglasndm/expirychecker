@@ -9,7 +9,7 @@ export const Card = styled.TouchableOpacity`
 
     padding: 10px;
 
-    elevation: 3;
+    elevation: 2;
 `;
 
 export const ProductDetails = styled.View`

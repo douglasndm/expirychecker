@@ -44,7 +44,7 @@ export const ButtonLoadMore = styled.TouchableOpacity`
     background-color: #14d48f;
     border-radius: 12px;
     margin: 15px 0;
-    elevation: 3;
+    elevation: 2;
 `;
 
 export const ButtonLoadMoreText = styled.Text`
