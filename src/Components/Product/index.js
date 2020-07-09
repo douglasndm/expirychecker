@@ -31,20 +31,20 @@ export default ({ product }) => {
                     <View>
                         <ProductName>{product.name}</ProductName>
                         <ProductCode>Código: {product.code}</ProductCode>
-                        <ProductLote>Lote: {product.lote}</ProductLote>
+                        <ProductLote>Lote: {product.lotes[0].lote}</ProductLote>
                     </View>
 
                     <AmountContainer>
                         <AmountContainerText>Quantidade</AmountContainerText>
-                        <Amount>{product.amount}</Amount>
+                        <Amount>{product.lotes[0].amount}</Amount>
                     </AmountContainer>
                 </ProductDetails>
 
                 <ProductExpDate>
                     Vence em
-                    {/* {format(parseISO(product.exp_date), 'EEEE, dd/MM/yyyy', {
+                    {format(product.lotes[0].exp_date, ' EEEE, dd/MM/yyyy', {
                         locale: br,
-                    })} */}
+                    })}
                 </ProductExpDate>
             </Card>
         </Container>

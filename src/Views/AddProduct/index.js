@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ScrollView, Text } from 'react-native';
-import { format } from 'date-fns';
+import { ScrollView, Alert } from 'react-native';
+import Realm from '../../Services/Realm';
 
 import {
     Container,
@@ -15,7 +15,7 @@ import {
     ButtonText,
 } from './styles';
 
-const AddProduct = () => {
+const AddProduct = ({ navigation }) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
@@ -23,15 +23,45 @@ const AddProduct = () => {
 
     const [expDate, setExpDate] = useState(new Date());
 
+    async function handleSave() {
+        const realm = await Realm();
+
+        try {
+            // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
+            // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
+            const lastProduct = realm.objects('Product').sorted('id', true)[0];
+            const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
+
+            const lastLote = realm.objects('Lote').sorted('id', true)[0];
+            const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
+
+            realm.write(() => {
+                const productResult = realm.create('Product', {
+                    id: nextProductId,
+                    name,
+                    code,
+                });
+
+                const resultLote = productResult.lotes.push({
+                    id: nextLoteId,
+                    lote,
+                    exp_date: expDate,
+                    amount: parseInt(amount),
+                });
+
+                Alert.alert('Produto cadastrado.');
+                navigation.navigate('Home');
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <Container>
             <ScrollView>
                 <PageTitle>Adicionar um novo produto</PageTitle>
 
-                <Text>
-                    {name} - {code} - {lote} - {amount} -{' '}
-                    {format(expDate, 'dd-MM-yyyy')}
-                </Text>
                 <InputContainer>
                     <InputText
                         placeholder="Nome do produto"
@@ -75,7 +105,7 @@ const AddProduct = () => {
                         />
                     </ExpDateGroup>
                 </InputContainer>
-                <Button>
+                <Button onPress={() => handleSave()}>
                     <ButtonText>Salvar</ButtonText>
                 </Button>
             </ScrollView>
