@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { FAB } from 'react-native-paper';
 import { format } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import Realm from '../../Services/Realm';
 
 import {
@@ -17,13 +20,15 @@ import {
     ProductExpDate,
 } from './styles';
 
-export default (props) => {
-    const productId = props.route.params.product.id;
+export default ({ route }) => {
+    const productId = route.params.id;
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
 
     const [lotes, setLotes] = useState([]);
+
+    const [fabOpen, setFabOpen] = useState(false);
 
     useEffect(() => {
         async function getProduct() {
@@ -47,36 +52,60 @@ export default (props) => {
     }, []);
 
     return (
-        <ScrollView>
-            <Container>
-                <PageTitle>Detalhes</PageTitle>
-                <ProductName>{name}</ProductName>
-                <ProductCode>{code}</ProductCode>
+        <>
+            <ScrollView>
+                <Container>
+                    <PageTitle>Detalhes</PageTitle>
+                    <ProductName>{name}</ProductName>
+                    <ProductCode>{code}</ProductCode>
 
-                <CategoryDetails>
-                    <CategoryDetailsText>
-                        Todos os lotes cadastrados
-                    </CategoryDetailsText>
-                </CategoryDetails>
+                    <CategoryDetails>
+                        <CategoryDetailsText>
+                            Todos os lotes cadastrados
+                        </CategoryDetailsText>
+                    </CategoryDetails>
 
-                {lotes.map((lote) => (
-                    <ProductLoteContainer
-                        key={lote.id}
-                        style={aditionalStylesForProductContainer.container}
-                    >
-                        <ProductLote>Lote: {lote.lote}</ProductLote>
-                        <ProductAmount>Quantidade: {lote.amount}</ProductAmount>
+                    {lotes.map((lote) => (
+                        <ProductLoteContainer
+                            key={lote.id}
+                            style={aditionalStylesForProductContainer.container}
+                        >
+                            <ProductLote>Lote: {lote.lote}</ProductLote>
+                            <ProductAmount>
+                                Quantidade: {lote.amount}
+                            </ProductAmount>
 
-                        <ProductExpDate>
-                            Vence em
-                            {format(lote.exp_date, ' EEEE, dd/MM/yyyy', {
-                                locale: br,
-                            })}
-                        </ProductExpDate>
-                    </ProductLoteContainer>
-                ))}
-            </Container>
-        </ScrollView>
+                            <ProductExpDate>
+                                Vence em
+                                {format(lote.exp_date, ' EEEE, dd/MM/yyyy', {
+                                    locale: br,
+                                })}
+                            </ProductExpDate>
+                        </ProductLoteContainer>
+                    ))}
+                </Container>
+            </ScrollView>
+
+            <FAB.Group
+                actions={[
+                    {
+                        icon: () => (
+                            <Ionicons name="add" size={24} color="#14d48f" />
+                        ),
+                        label: 'Adicionar novo lote',
+                        onPress: () => {
+                            navigation.navigate('AddProduct');
+                        },
+                    },
+                ]}
+                icon={() => <Ionicons name="reader" size={24} color="#FFF" />}
+                open={fabOpen}
+                onStateChange={() => setFabOpen(!fabOpen)}
+                visible
+                onPress={() => setFabOpen(!fabOpen)}
+                fabStyle={{ backgroundColor: '#14d48f' }}
+            />
+        </>
     );
 };
 
