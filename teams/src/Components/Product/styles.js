@@ -9,6 +9,10 @@ export const Card = styled.TouchableOpacity`
 
     padding: 10px;
 
+    elevation: 3;
+`;
+
+export const ProductDetails = styled.View`
     flex-direction: row;
     justify-content: space-between;
 `;
@@ -42,7 +46,7 @@ export const AmountContainer = styled.View`
 `;
 
 export const AmountContainerText = styled.Text`
-    font-size: 18px;
+    font-size: 16px;
 `;
 
 export const Amount = styled.Text`
