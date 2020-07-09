@@ -7,6 +7,5 @@ export const LoteSchema = {
         exp_date: 'date',
         amount: 'int?',
         status: 'string?',
-        product: { type: 'Product' },
     },
 };
