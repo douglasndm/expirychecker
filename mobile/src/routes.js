@@ -10,7 +10,7 @@ const Drawer = createDrawerNavigator();
 
 export default () => {
     return (
-        <Drawer.Navigator drawerContent={() => <DrawerHeader />}>
+        <Drawer.Navigator>
             <Drawer.Screen
                 name="Home"
                 component={Home}
@@ -26,7 +26,3 @@ export default () => {
         </Drawer.Navigator>
     );
 };
-
-function DrawerHeader() {
-    return <Text>This is the header</Text>;
-}

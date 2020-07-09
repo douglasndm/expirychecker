@@ -42,9 +42,9 @@ export default ({ product }) => {
 
                 <ProductExpDate>
                     Vence em
-                    {format(parseISO(product.exp_date), 'EEEE, dd/MM/yyyy', {
+                    {/* {format(parseISO(product.exp_date), 'EEEE, dd/MM/yyyy', {
                         locale: br,
-                    })}
+                    })} */}
                 </ProductExpDate>
             </Card>
         </Container>
