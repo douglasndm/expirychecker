@@ -16,8 +16,6 @@ const TestDB = () => {
                         .objects('Product')
                         .sorted('id', true)[0];
 
-                    console.log(lastProduct);
-
                     const nextId = lastProduct == null ? 1 : lastProduct.id + 1;
 
                     realm.create('Product', {

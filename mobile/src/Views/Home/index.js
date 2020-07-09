@@ -24,21 +24,27 @@ const StackNavigator = createStackNavigator();
 
 export default function Home() {
     const [products, setProducts] = useState([]);
+    const navigation = useNavigation();
+
+    async function getProduts(realm) {
+        try {
+            const results = realm.objects('Product');
+
+            setProducts(results);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
-        async function getProduts() {
+        async function startRealm() {
             const realm = await Realm();
+            realm.addListener('change', () => getProduts(realm));
 
-            try {
-                const results = realm.objects('Product');
-
-                setProducts(results);
-            } catch (error) {
-                console.log(error);
-            }
+            getProduts(realm);
         }
 
-        getProduts();
+        startRealm();
     }, []);
 
     const ListHeader = () => {
@@ -80,7 +86,11 @@ export default function Home() {
         }
 
         return (
-            <ButtonLoadMore onPress={() => {}}>
+            <ButtonLoadMore
+                onPress={() => {
+                    navigation.navigate('AddProduct');
+                }}
+            >
                 <ButtonLoadMoreText>Cadastrar um produto</ButtonLoadMoreText>
             </ButtonLoadMore>
         );
@@ -88,7 +98,6 @@ export default function Home() {
 
     const ProductList = () => {
         const [fabOpen, setFabOpen] = React.useState(false);
-        const navigation = useNavigation();
 
         return (
             <>
