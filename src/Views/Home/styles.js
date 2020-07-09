@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 export const Container = styled.View`
     flex: 1;
@@ -28,9 +28,25 @@ export const CategoryDetails = styled.View`
 
     margin-left: 15px;
     margin-right: 15px;
+    margin-bottom: 5px;
 `;
 
 export const CategoryDetailsText = styled.Text`
     color: #81d0fd;
     font-size: 16px;
+`;
+
+export const ButtonLoadMore = styled.TouchableOpacity`
+    align-items: center;
+    align-self: center;
+    padding: 22px;
+
+    background-color: #14d48f;
+    border-radius: 12px;
+    margin: 15px 0;
+    elevation: 3;
+`;
+
+export const ButtonLoadMoreText = styled.Text`
+    color: #fff;
 `;

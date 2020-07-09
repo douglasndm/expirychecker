@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import LottieView from 'lottie-react-native';
+
+import CalendarAnimation from '../../Assets/Animations/Calendar_date.json';
 
 import {
     Container,
@@ -8,6 +11,8 @@ import {
     TextLogo,
     CategoryDetails,
     CategoryDetailsText,
+    ButtonLoadMore,
+    ButtonLoadMoreText,
 } from './styles';
 
 import ProductDetails from '../ProductDetails';
@@ -21,6 +26,7 @@ const ListHeader = () => {
     return (
         <View>
             <HeaderContainer>
+                <LottieView source={CalendarAnimation} autoPlay loop />
                 <TextLogo>Controle de validade</TextLogo>
             </HeaderContainer>
 
@@ -37,6 +43,14 @@ const EmptyList = () => {
     return <Text>Não há nenhum produto cadastrado ainda...</Text>;
 };
 
+const FooterButton = () => {
+    return (
+        <ButtonLoadMore onPress={() => {}}>
+            <ButtonLoadMoreText>Mostrar todos os produtos</ButtonLoadMoreText>
+        </ButtonLoadMore>
+    );
+};
+
 const ProductList = () => {
     return (
         <Container>
@@ -45,6 +59,7 @@ const ProductList = () => {
                 keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={({ item }) => <ProductItem product={item} />}
+                ListFooterComponent={FooterButton}
                 ListEmptyComponent={EmptyList}
             />
         </Container>

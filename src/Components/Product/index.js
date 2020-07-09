@@ -7,6 +7,7 @@ import br from 'date-fns/locale/pt-BR';
 import {
     Container,
     Card,
+    ProductDetails,
     ProductName,
     ProductCode,
     ProductLote,
@@ -26,25 +27,25 @@ export default ({ product }) => {
                     navigation.navigate('ProductDetails', { product });
                 }}
             >
-                <View>
-                    <ProductName>{product.name}</ProductName>
-                    <ProductCode>Código: {product.code}</ProductCode>
-                    <ProductLote>Lote: {product.lote}</ProductLote>
-                    <ProductExpDate>
-                        Vence em
-                        {format(
-                            parseISO(product.exp_date),
-                            'EEEE, dd/MM/yyyy',
-                            {
-                                locale: br,
-                            }
-                        )}
-                    </ProductExpDate>
-                </View>
-                <AmountContainer>
-                    <AmountContainerText>Quantidade</AmountContainerText>
-                    <Amount>{product.amount}</Amount>
-                </AmountContainer>
+                <ProductDetails>
+                    <View>
+                        <ProductName>{product.name}</ProductName>
+                        <ProductCode>Código: {product.code}</ProductCode>
+                        <ProductLote>Lote: {product.lote}</ProductLote>
+                    </View>
+
+                    <AmountContainer>
+                        <AmountContainerText>Quantidade</AmountContainerText>
+                        <Amount>{product.amount}</Amount>
+                    </AmountContainer>
+                </ProductDetails>
+
+                <ProductExpDate>
+                    Vence em
+                    {format(parseISO(product.exp_date), 'EEEE, dd/MM/yyyy', {
+                        locale: br,
+                    })}
+                </ProductExpDate>
             </Card>
         </Container>
     );
