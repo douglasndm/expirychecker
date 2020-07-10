@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { FAB } from 'react-native-paper';
 import { format } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
@@ -22,6 +23,8 @@ import {
 
 export default ({ route }) => {
     const productId = route.params.id;
+
+    const navigation = useNavigation();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -94,7 +97,7 @@ export default ({ route }) => {
                         ),
                         label: 'Adicionar novo lote',
                         onPress: () => {
-                            navigation.navigate('AddProduct');
+                            navigation.navigate('AddLote', { productId });
                         },
                     },
                 ]}
