@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -7,15 +6,10 @@ import FABProducts from '../../Components/FABProducts';
 
 import Realm from '../../Services/Realm';
 
-import {
-    HeaderContainer,
-    TextLogo,
-    ButtonLoadMore,
-    ButtonLoadMoreText,
-} from './styles';
-
 import ListProducts from '../../Components/ListProducts';
+
 import ProductDetails from '../ProductDetails';
+import AddLote from '../AddLote';
 
 const StackNavigator = createStackNavigator();
 
@@ -79,50 +73,10 @@ export default function Home() {
         startRealm();
     }, []);
 
-    const Header = () => {
-        return (
-            <View>
-                <HeaderContainer>
-                    <TextLogo>Controle de validade</TextLogo>
-                </HeaderContainer>
-            </View>
-        );
-    };
-
-    function FooterButton() {
-        if (products.length > 5) {
-            return (
-                <ButtonLoadMore
-                    onPress={() => {
-                        navigation.navigate('AllProducts');
-                    }}
-                >
-                    <ButtonLoadMoreText>
-                        Mostrar todos os produtos
-                    </ButtonLoadMoreText>
-                </ButtonLoadMore>
-            );
-        }
-
-        return (
-            <ButtonLoadMore
-                onPress={() => {
-                    navigation.navigate('AddProduct');
-                }}
-            >
-                <ButtonLoadMoreText>Cadastrar um produto</ButtonLoadMoreText>
-            </ButtonLoadMore>
-        );
-    }
-
     const ProductList = () => {
         return (
             <>
-                <ScrollView>
-                    <Header />
-                    <ListProducts products={products} isHome />
-                    <FooterButton />
-                </ScrollView>
+                <ListProducts products={products} isHome />
 
                 <FABProducts />
             </>
@@ -136,6 +90,7 @@ export default function Home() {
                 name="ProductDetails"
                 component={ProductDetails}
             />
+            <StackNavigator.Screen name="AddLote" component={AddLote} />
         </StackNavigator.Navigator>
     );
 }
