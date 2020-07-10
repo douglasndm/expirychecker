@@ -5,8 +5,12 @@ import ProductItem from '../Product';
 
 import {
     Container,
+    HeaderContainer,
+    TextLogo,
     CategoryDetails,
     CategoryDetailsText,
+    ButtonLoadMore,
+    ButtonLoadMoreText,
     HackComponent,
 } from './styles';
 
@@ -14,6 +18,12 @@ const ListProducts = ({ products, isHome }) => {
     const ListHeader = () => {
         return (
             <View>
+                {isHome ? (
+                    <HeaderContainer>
+                        <TextLogo>Controle de validade</TextLogo>
+                    </HeaderContainer>
+                ) : null}
+
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 ? (
                     <CategoryDetails>
@@ -39,6 +49,36 @@ const ListProducts = ({ products, isHome }) => {
         return <HackComponent isHome={isHome} />;
     };
 
+    function FooterButton() {
+        if (products.length > 5 && isHome) {
+            return (
+                <ButtonLoadMore
+                    onPress={() => {
+                        navigation.navigate('AllProducts');
+                    }}
+                >
+                    <ButtonLoadMoreText>
+                        Mostrar todos os produtos
+                    </ButtonLoadMoreText>
+                </ButtonLoadMore>
+            );
+        }
+
+        return (
+            <>
+                <ButtonLoadMore
+                    onPress={() => {
+                        navigation.navigate('AddProduct');
+                    }}
+                >
+                    <ButtonLoadMoreText>
+                        Cadastrar um produto
+                    </ButtonLoadMoreText>
+                </ButtonLoadMore>
+            </>
+        );
+    }
+
     return (
         <Container>
             <FlatList
@@ -47,7 +87,7 @@ const ListProducts = ({ products, isHome }) => {
                 ListHeaderComponent={ListHeader}
                 renderItem={({ item }) => <ProductItem product={item} />}
                 ListEmptyComponent={EmptyList}
-                ListFooterComponent={ButtonHack}
+                ListFooterComponent={FooterButton}
             />
         </Container>
     );
