@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-
-import FABProducts from '../../Components/FABProducts';
 
 import Realm from '../../Services/Realm';
 
+import FABProducts from '../../Components/FABProducts';
 import ListProducts from '../../Components/ListProducts';
-
-const StackNavigator = createStackNavigator();
 
 export default function Home() {
     const [products, setProducts] = useState([]);
@@ -68,19 +64,11 @@ export default function Home() {
         startRealm();
     }, []);
 
-    const ProductList = () => {
-        return (
-            <>
-                <ListProducts products={products} isHome />
-
-                <FABProducts />
-            </>
-        );
-    };
-
     return (
-        <StackNavigator.Navigator headerMode="none">
-            <StackNavigator.Screen name="Default" component={ProductList} />
-        </StackNavigator.Navigator>
+        <>
+            <ListProducts products={products} isHome />
+
+            <FABProducts />
+        </>
     );
 }

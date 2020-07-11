@@ -53,5 +53,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+    <key>NSCameraUsageDescription</key>
+    <string>Precisamos da sua permissão para acessar a câmera para scanear códigos de barras</string>
 </dict>
 </plist>

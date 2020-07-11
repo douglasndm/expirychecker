@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { MenuHeader } from './styles';
+import { MenuHeader, MenuHeaderTitle } from './styles';
 
 export function DrawerMenu(props) {
     const { navigation } = props;
@@ -17,7 +16,7 @@ export function DrawerMenu(props) {
             <DrawerContentScrollView {...props}>
                 <View>
                     <MenuHeader>
-                        <Text>Olá</Text>
+                        <MenuHeaderTitle>Olá :)</MenuHeaderTitle>
                     </MenuHeader>
 
                     <Drawer.Section>

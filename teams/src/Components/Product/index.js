@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { format, isPast, formatDistanceToNow } from 'date-fns';
+import { format, isPast, formatDistanceToNow, addDays } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
 
 import {
@@ -19,7 +19,22 @@ import {
 
 export default ({ product }) => {
     const navigation = useNavigation();
+
     const vencido = isPast(product.lotes[0].exp_date, new Date());
+    const proximo = addDays(new Date(), 30) > product.lotes[0].exp_date;
+
+    const [bgColor, setBgColor] = useState('#FFF');
+    const [textColor, setTextColor] = useState('black');
+
+    useEffect(() => {
+        if (vencido) {
+            setBgColor('#CC4B4B');
+            setTextColor('white');
+        } else if (proximo) {
+            setBgColor('#DDE053');
+            setTextColor('white');
+        }
+    }, [vencido]);
 
     return (
         <Container>
@@ -27,22 +42,32 @@ export default ({ product }) => {
                 onPress={() => {
                     navigation.navigate('ProductDetails', { id: product.id });
                 }}
-                vencido={vencido}
+                bgColor={bgColor}
             >
                 <ProductDetails>
                     <View>
-                        <ProductName>{product.name}</ProductName>
-                        <ProductCode>Código: {product.code}</ProductCode>
-                        <ProductLote>Lote: {product.lotes[0].lote}</ProductLote>
+                        <ProductName textColor={textColor}>
+                            {product.name}
+                        </ProductName>
+                        <ProductCode textColor={textColor}>
+                            Código: {product.code}
+                        </ProductCode>
+                        <ProductLote textColor={textColor}>
+                            Lote: {product.lotes[0].lote}
+                        </ProductLote>
                     </View>
 
                     <AmountContainer>
-                        <AmountContainerText>Quantidade</AmountContainerText>
-                        <Amount>{product.lotes[0].amount}</Amount>
+                        <AmountContainerText textColor={textColor}>
+                            Quantidade
+                        </AmountContainerText>
+                        <Amount textColor={textColor}>
+                            {product.lotes[0].amount}
+                        </Amount>
                     </AmountContainer>
                 </ProductDetails>
 
-                <ProductExpDate vencido={vencido}>
+                <ProductExpDate textColor={textColor}>
                     {vencido ? 'Venceu ' : 'Vence '}
                     {formatDistanceToNow(product.lotes[0].exp_date, {
                         addSuffix: true,
