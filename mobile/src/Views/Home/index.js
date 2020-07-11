@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import FABProducts from '../../Components/FABProducts';
@@ -8,14 +7,10 @@ import Realm from '../../Services/Realm';
 
 import ListProducts from '../../Components/ListProducts';
 
-import ProductDetails from '../ProductDetails';
-import AddLote from '../AddLote';
-
 const StackNavigator = createStackNavigator();
 
 export default function Home() {
     const [products, setProducts] = useState([]);
-    const navigation = useNavigation();
 
     async function getProduts(realm) {
         try {
@@ -86,11 +81,6 @@ export default function Home() {
     return (
         <StackNavigator.Navigator headerMode="none">
             <StackNavigator.Screen name="Default" component={ProductList} />
-            <StackNavigator.Screen
-                name="ProductDetails"
-                component={ProductDetails}
-            />
-            <StackNavigator.Screen name="AddLote" component={AddLote} />
         </StackNavigator.Navigator>
     );
 }
