@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Realm from '../../Services/Realm';
 
 import {
@@ -18,8 +19,7 @@ import { ProductHeader, ProductName, ProductCode } from './styles';
 
 const AddLote = ({ route }) => {
     const { productId } = route.params;
-
-    const [product, setProduct] = useState({});
+    const navigation = useNavigation();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -39,7 +39,7 @@ const AddLote = ({ route }) => {
             const lastLote = realm.objects('Lote').sorted('id', true)[0];
             const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
-            const response = realm.write(() => {
+            await realm.write(() => {
                 result.lotes.push({
                     id: nextLoteId,
                     lote,
@@ -47,6 +47,9 @@ const AddLote = ({ route }) => {
                     exp_date: expDate,
                 });
             });
+
+            Alert.alert('Lote cadastrado com sucesso');
+            navigation.goBack();
         } catch (err) {
             console.log(err);
         }
@@ -59,8 +62,6 @@ const AddLote = ({ route }) => {
             const result = realm
                 .objects('Product')
                 .filtered(`id == ${productId}`)[0];
-
-            setProduct(result);
 
             setName(result.name);
             setCode(result.code);

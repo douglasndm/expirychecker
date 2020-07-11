@@ -3,11 +3,11 @@ import styled from 'styled-components/native';
 export const Container = styled.View``;
 
 export const Card = styled.TouchableOpacity`
-    background-color: #fff;
+    background-color: ${(props) => (props.vencido ? '#CC4B4B' : '#fff')};
     margin: 3px 6px;
     border-radius: 12px;
 
-    padding: 10px;
+    padding: 15px;
 
     elevation: 2;
 `;
@@ -37,6 +37,12 @@ export const ProductExpDate = styled.Text`
     font-size: 16px;
     margin-left: 2px;
     margin-top: 5px;
+
+    background-color: ${(props) => (props.vencido ? '#EE2222' : 'white')};
+    color: ${(props) => (props.vencido ? 'white' : 'black')};
+    border-radius: 12px;
+    padding-left: ${(props) => (props.vencido ? '10px' : '0')};
+    padding-right: ${(props) => (props.vencido ? '10px' : '0')};
 `;
 
 export const AmountContainer = styled.View`

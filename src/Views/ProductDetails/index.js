@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { FAB } from 'react-native-paper';
+import { FAB, Button } from 'react-native-paper';
 import { format } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
@@ -33,26 +34,41 @@ export default ({ route }) => {
 
     const [fabOpen, setFabOpen] = useState(false);
 
+    async function getProduct(realm) {
+        try {
+            const result = realm
+                .objects('Product')
+                .filtered(`id == ${productId}`)[0];
+
+            setName(result.name);
+            setCode(result.code);
+
+            setLotes(result.lotes);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
-        async function getProduct() {
+        async function startRealm() {
             const realm = await Realm();
 
-            try {
-                const result = realm
-                    .objects('Product')
-                    .filtered(`id == ${productId}`)[0];
+            realm.addListener('change', () => {
+                getProduct(realm);
+            });
 
-                setName(result.name);
-                setCode(result.code);
-
-                setLotes(result.lotes);
-            } catch (error) {
-                console.log(error);
-            }
+            getProduct(realm);
         }
 
-        getProduct();
+        startRealm();
     }, []);
+
+    function ButtonEditIcon() {
+        return <Ionicons name="create-outline" color="black" size={14} />;
+    }
+    function ButtonDeleteIcon() {
+        return <Ionicons name="trash-outline" color="black" size={14} />;
+    }
 
     return (
         <>
@@ -61,6 +77,11 @@ export default ({ route }) => {
                     <PageTitle>Detalhes</PageTitle>
                     <ProductName>{name}</ProductName>
                     <ProductCode>{code}</ProductCode>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <Button icon={ButtonEditIcon}>Editar</Button>
+                        <Button icon={ButtonDeleteIcon}>Apagar</Button>
+                    </View>
 
                     <CategoryDetails>
                         <CategoryDetailsText>
