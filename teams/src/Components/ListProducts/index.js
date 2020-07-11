@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import ProductItem from '../Product';
 
@@ -14,7 +15,8 @@ import {
     HackComponent,
 } from './styles';
 
-const ListProducts = ({ products, isHome }) => {
+export default function ListProducts({ products, isHome }) {
+    const navigation = useNavigation();
     const ListHeader = () => {
         return (
             <View>
@@ -91,6 +93,4 @@ const ListProducts = ({ products, isHome }) => {
             />
         </Container>
     );
-};
-
-export default ListProducts;
+}
