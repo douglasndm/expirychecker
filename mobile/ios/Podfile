@@ -77,6 +77,12 @@ target 'controledevalidade' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+
+  # React Native Camera
+  pod 'react-native-camera', path: '../node_modules/react-native-camera', subspecs: [
+    'BarcodeDetectorMLKit'
+    ]
+
   target 'controledevalidadeTests' do
     inherit! :complete
     # Pods for testing

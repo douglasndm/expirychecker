@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, Text } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Button as ButtonPaper, Modal } from 'react-native-paper';
+
 import Realm from '../../Services/Realm';
 
 import {
@@ -11,6 +14,7 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
+    Camera,
     Button,
     ButtonText,
 } from './styles';
@@ -22,6 +26,8 @@ const AddProduct = ({ navigation }) => {
     const [amount, setAmount] = useState('');
 
     const [expDate, setExpDate] = useState(new Date());
+
+    const [cameraEnabled, setCameraEnebled] = useState(false);
 
     async function handleSave() {
         const realm = await Realm();
@@ -70,11 +76,32 @@ const AddProduct = ({ navigation }) => {
                             setName(value);
                         }}
                     />
-                    <InputText
-                        placeholder="Código"
-                        value={code}
-                        onChangeText={(value) => setCode(value)}
-                    />
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <InputText
+                            placeholder="Código"
+                            value={code}
+                            onChangeText={(value) => setCode(value)}
+                            style={{ flex: 1 }}
+                        />
+                        <ButtonPaper
+                            icon={() => (
+                                <Ionicons
+                                    name="camera-outline"
+                                    size={42}
+                                    color="black"
+                                />
+                            )}
+                            onPress={() => {
+                                setCameraEnebled(!cameraEnabled);
+                            }}
+                        />
+                    </View>
 
                     <InputGroup>
                         <InputText
@@ -105,10 +132,39 @@ const AddProduct = ({ navigation }) => {
                         />
                     </ExpDateGroup>
                 </InputContainer>
+
                 <Button onPress={() => handleSave()}>
                     <ButtonText>Salvar</ButtonText>
                 </Button>
             </ScrollView>
+
+            <Modal
+                visible={cameraEnabled}
+                onDismiss={() => {
+                    setCameraEnebled(false);
+                }}
+            >
+                <Camera
+                    captureAudio={false}
+                    type="back"
+                    barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
+                    onBarCodeRead={(code) => {
+                        setCode(code.data);
+                    }}
+                >
+                    {(props) => {
+                        console.log(props);
+
+                        return (
+                            <View>
+                                <Button onPress={() => setCameraEnebled(false)}>
+                                    <ButtonText>Voltar</ButtonText>
+                                </Button>
+                            </View>
+                        );
+                    }}
+                </Camera>
+            </Modal>
         </Container>
     );
 };

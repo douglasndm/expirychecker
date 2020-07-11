@@ -1,10 +1,12 @@
 import styled from 'styled-components/native';
+import { RNCamera } from 'react-native-camera';
 import DatePicker from 'react-native-date-picker';
 
 export const Container = styled.View`
     margin: 10px 10px;
 
-    align-items: stretch;
+    flex: 1;
+    flex-direction: column;
 `;
 
 export const PageTitle = styled.Text`
@@ -42,6 +44,10 @@ export const ExpDateLabel = styled.Text`
 
 export const CustomDatePicker = styled(DatePicker)`
     background: white;
+`;
+
+export const Camera = styled(RNCamera)`
+    align-self: center;
 `;
 
 export const Button = styled.TouchableOpacity`

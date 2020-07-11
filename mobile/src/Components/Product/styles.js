@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View``;
 
 export const Card = styled.TouchableOpacity`
-    background-color: ${(props) => (props.vencido ? '#CC4B4B' : '#fff')};
+    background-color: ${(props) => (props.bgColor ? props.bgColor : 'white')};
     margin: 3px 6px;
     border-radius: 12px;
 
@@ -20,17 +20,24 @@ export const ProductDetails = styled.View`
 export const ProductName = styled.Text`
     font-size: 22px;
     font-weight: bold;
+
+    color: ${(props) => (props.textColor ? props.textColor : 'black')};
 `;
 
 export const ProductCode = styled.Text`
     color: rgba(0, 0, 0, 0.3);
     font-size: 12px;
     margin-left: 2px;
+
+    color: ${(props) =>
+        props.textColor ? props.textColor : 'rgba(0, 0, 0, 0.3)'};
 `;
 
 export const ProductLote = styled.Text`
     font-size: 12px;
     margin-left: 2px;
+
+    color: ${(props) => (props.textColor ? props.textColor : 'black')};
 `;
 
 export const ProductExpDate = styled.Text`
@@ -38,11 +45,7 @@ export const ProductExpDate = styled.Text`
     margin-left: 2px;
     margin-top: 5px;
 
-    background-color: ${(props) => (props.vencido ? '#EE2222' : 'white')};
-    color: ${(props) => (props.vencido ? 'white' : 'black')};
-    border-radius: 12px;
-    padding-left: ${(props) => (props.vencido ? '10px' : '0')};
-    padding-right: ${(props) => (props.vencido ? '10px' : '0')};
+    color: ${(props) => (props.textColor ? props.textColor : 'black')};
 `;
 
 export const AmountContainer = styled.View`
@@ -53,10 +56,14 @@ export const AmountContainer = styled.View`
 
 export const AmountContainerText = styled.Text`
     font-size: 16px;
+
+    color: ${(props) => (props.textColor ? props.textColor : 'black')};
 `;
 
 export const Amount = styled.Text`
     font-size: 22px;
     font-weight: bold;
     margin-top: 5px;
+
+    color: ${(props) => (props.textColor ? props.textColor : 'black')};
 `;
