@@ -34,7 +34,7 @@ export default ({ product }) => {
             setBgColor('#DDE053');
             setTextColor('white');
         }
-    }, [vencido]);
+    }, [vencido, proximo]);
 
     return (
         <Container>
