@@ -3,7 +3,7 @@ import { RNCamera } from 'react-native-camera';
 import DatePicker from 'react-native-date-picker';
 
 export const Container = styled.View`
-    margin: 10px 10px;
+    padding: 16px;
 
     flex: 1;
     flex-direction: column;
@@ -16,15 +16,6 @@ export const PageTitle = styled.Text`
 
 export const InputContainer = styled.View`
     margin-top: 25px;
-`;
-
-export const InputText = styled.TextInput`
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    border-radius: 12px;
-    padding: 15px;
-    background-color: #fff;
-    font-size: 18px;
 `;
 
 export const InputGroup = styled.View`

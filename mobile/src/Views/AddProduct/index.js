@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Alert, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Button as ButtonPaper, Modal } from 'react-native-paper';
+import { Button as ButtonPaper } from 'react-native-paper';
 
 import Realm from '../../Services/Realm';
 
@@ -119,6 +119,18 @@ const AddProduct = ({ navigation }) => {
                         />
                     </InputGroup>
 
+                    <Camera
+                        captureAudio={false}
+                        type="back"
+                        autoFocus="on"
+                        flashMode="torch"
+                        style={{ flex: 1 }}
+                        barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
+                        onBarCodeRead={(code) => {
+                            setCode(code.data);
+                        }}
+                    />
+
                     <ExpDateGroup>
                         <ExpDateLabel>Data de vencimento</ExpDateLabel>
                         <CustomDatePicker
@@ -137,34 +149,6 @@ const AddProduct = ({ navigation }) => {
                     <ButtonText>Salvar</ButtonText>
                 </Button>
             </ScrollView>
-
-            <Modal
-                visible={cameraEnabled}
-                onDismiss={() => {
-                    setCameraEnebled(false);
-                }}
-            >
-                <Camera
-                    captureAudio={false}
-                    type="back"
-                    barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                    onBarCodeRead={(code) => {
-                        setCode(code.data);
-                    }}
-                >
-                    {(props) => {
-                        console.log(props);
-
-                        return (
-                            <View>
-                                <Button onPress={() => setCameraEnebled(false)}>
-                                    <ButtonText>Voltar</ButtonText>
-                                </Button>
-                            </View>
-                        );
-                    }}
-                </Camera>
-            </Modal>
         </Container>
     );
 };

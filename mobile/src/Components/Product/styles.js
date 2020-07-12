@@ -33,6 +33,15 @@ export const ProductCode = styled.Text`
         props.textColor ? props.textColor : 'rgba(0, 0, 0, 0.3)'};
 `;
 
+export const InputText = styled.TextInput`
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    border-radius: 12px;
+    padding: 15px;
+    background-color: #fff;
+    font-size: 18px;
+`;
+
 export const ProductLote = styled.Text`
     font-size: 12px;
     margin-left: 2px;
