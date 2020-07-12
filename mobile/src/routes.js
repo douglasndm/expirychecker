@@ -14,7 +14,11 @@ const Drawer = createDrawerNavigator();
 
 export default () => {
     return (
-        <Drawer.Navigator drawerContent={(props) => <DrawerMenu {...props} />}>
+        <Drawer.Navigator
+            openByDefault={false}
+            keyboardDismissMode="on-drag"
+            drawerContent={(props) => <DrawerMenu {...props} />}
+        >
             <Drawer.Screen
                 name="Home"
                 component={Home}
