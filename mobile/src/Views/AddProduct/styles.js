@@ -48,6 +48,12 @@ export const CustomDatePicker = styled(DatePicker)`
 
 export const Camera = styled(RNCamera)`
     align-self: center;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    width: 100%;
+    height: 25%;
 `;
 
 export const Button = styled.TouchableOpacity`
