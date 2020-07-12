@@ -79,13 +79,9 @@ export default ({ route }) => {
     }, []);
 
     async function updateProduct() {
-        const realm = await Realm();
-
-        const prod = await realm
-            .objects('Product')
-            .filtered(`id == ${productId}`);
-
         try {
+            const realm = await Realm();
+
             realm.write(() => {
                 realm.create(
                     'Product',
@@ -287,6 +283,7 @@ export default ({ route }) => {
                 </Dialog.Content>
                 <Dialog.Actions>
                     <Button
+                        color="red"
                         onPress={() => {
                             deleteProduct();
                         }}
@@ -294,6 +291,7 @@ export default ({ route }) => {
                         APAGAR
                     </Button>
                     <Button
+                        color="#14d48f"
                         onPress={() => {
                             setDeleteComponentVisible(false);
                         }}

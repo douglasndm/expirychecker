@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Alert, Text } from 'react-native';
+import { View, ScrollView, Alert, StyleSheet, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button as ButtonPaper } from 'react-native-paper';
 
@@ -18,6 +18,19 @@ import {
     Button,
     ButtonText,
 } from './styles';
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: 'black',
+    },
+    preview: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+});
 
 const AddProduct = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -55,8 +68,9 @@ const AddProduct = ({ navigation }) => {
                     amount: parseInt(amount),
                 });
 
-                Alert.alert('Produto cadastrado.');
-                navigation.navigate('Home');
+                navigation.navigate('Home', {
+                    notificationToUser: 'Produto cadastrado.',
+                });
             });
         } catch (error) {
             console.log(error);
@@ -119,17 +133,21 @@ const AddProduct = ({ navigation }) => {
                         />
                     </InputGroup>
 
-                    <Camera
-                        captureAudio={false}
-                        type="back"
-                        autoFocus="on"
-                        flashMode="torch"
-                        style={{ flex: 1 }}
-                        barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                        onBarCodeRead={(code) => {
-                            setCode(code.data);
-                        }}
-                    />
+                    <View style={styles.container}>
+                        <Camera
+                            captureAudio={false}
+                            style={styles.preview}
+                            type="back"
+                            autoFocus="on"
+                            flashMode="auto"
+                            barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
+                            onBarCodeRead={({ data }) => {
+                                setCode(data);
+                            }}
+                        >
+                            <Text>AA</Text>
+                        </Camera>
+                    </View>
 
                     <ExpDateGroup>
                         <ExpDateLabel>Data de vencimento</ExpDateLabel>
