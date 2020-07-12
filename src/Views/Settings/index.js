@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-// import { Container } from './styles';
+import { Container, PageTitle } from './styles';
 
 const Settings = () => {
     return (
-        <View>
-            <Text>In development</Text>
-        </View>
+        <Container>
+            <PageTitle>Configurações</PageTitle>
+        </Container>
     );
 };
 

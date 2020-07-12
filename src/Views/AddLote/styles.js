@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const ProductHeader = styled.View`
-    margin: 6px 6px;
+    margin: -5px 6px 10px 6px;
 `;
 
 export const ProductName = styled.Text`
