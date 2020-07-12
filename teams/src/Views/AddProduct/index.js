@@ -19,19 +19,6 @@ import {
     ButtonText,
 } from './styles';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: 'black',
-    },
-    preview: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-});
-
 const AddProduct = ({ navigation }) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -79,6 +66,21 @@ const AddProduct = ({ navigation }) => {
 
     return (
         <Container>
+            {cameraEnabled ? (
+                <Camera
+                    captureAudio={false}
+                    type="back"
+                    ratio="9:21"
+                    autoFocus="on"
+                    flashMode="auto"
+                    barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
+                    onBarCodeRead={({ data }) => {
+                        setCode(data);
+                        setCameraEnebled(false);
+                    }}
+                />
+            ) : null}
+
             <ScrollView>
                 <PageTitle>Adicionar um novo produto</PageTitle>
 
@@ -104,6 +106,10 @@ const AddProduct = ({ navigation }) => {
                             style={{ flex: 1 }}
                         />
                         <ButtonPaper
+                            style={{
+                                alignSelf: 'center',
+                                marginBottom: 8,
+                            }}
                             icon={() => (
                                 <Ionicons
                                     name="camera-outline"
@@ -132,22 +138,6 @@ const AddProduct = ({ navigation }) => {
                             onChangeText={(value) => setAmount(value)}
                         />
                     </InputGroup>
-
-                    <View style={styles.container}>
-                        <Camera
-                            captureAudio={false}
-                            style={styles.preview}
-                            type="back"
-                            autoFocus="on"
-                            flashMode="auto"
-                            barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                            onBarCodeRead={({ data }) => {
-                                setCode(data);
-                            }}
-                        >
-                            <Text>AA</Text>
-                        </Camera>
-                    </View>
 
                     <ExpDateGroup>
                         <ExpDateLabel>Data de vencimento</ExpDateLabel>
