@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { Snackbar } from 'react-native-paper';
 
 import Realm from '../../Services/Realm';
 
 import FABProducts from '../../Components/FABProducts';
 import ListProducts from '../../Components/ListProducts';
 
-export default function Home() {
+export default function Home({ notificationToUser }) {
+    const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        if (notificationToUser && notificationToUser !== '')
+            setSnackBarVisible(true);
+    }, [notificationToUser]);
 
     async function getProduts(realm) {
         try {
@@ -67,6 +74,31 @@ export default function Home() {
     return (
         <>
             <ListProducts products={products} isHome />
+
+            {snackBarVisible ? (
+                <Snackbar
+                    visible={snackBarVisible}
+                    duration={5000}
+                    style={{
+                        backgroundColor: '#14d48f',
+                        borderRadius: 12,
+                        marginBottom: 90,
+                        padding: 7,
+                        opacity: 0.95,
+                    }}
+                    theme={{ colors: { accent: 'white' } }}
+                    onDismiss={() => setSnackBarVisible(false)}
+                    action={{
+                        label: 'fechar',
+                        accessibilityLabel: 'Fechar notificação',
+                        onPress: () => {
+                            setSnackBarVisible(false);
+                        },
+                    }}
+                >
+                    {notificationToUser}
+                </Snackbar>
+            ) : null}
 
             <FABProducts />
         </>
