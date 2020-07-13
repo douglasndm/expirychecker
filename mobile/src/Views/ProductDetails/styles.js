@@ -11,6 +11,10 @@ export const PageHeader = styled.View`
     align-items: center;
 `;
 
+export const ProductDetailsContainer = styled.View`
+    max-width: 75%;
+`;
+
 export const PageTitle = styled.Text`
     font-size: 28px;
     font-weight: bold;

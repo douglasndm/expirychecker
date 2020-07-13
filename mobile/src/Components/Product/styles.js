@@ -17,6 +17,10 @@ export const ProductDetails = styled.View`
     justify-content: space-between;
 `;
 
+export const ProductDetailsContainer = styled.View`
+    max-width: 80%;
+`;
+
 export const ProductName = styled.Text`
     font-size: 22px;
     font-weight: bold;
