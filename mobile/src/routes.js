@@ -9,6 +9,7 @@ import AddLote from './Views/AddLote';
 import ProductDetails from './Views/ProductDetails';
 import AllProducts from './Views/AllProducts';
 import Settings from './Views/Settings';
+import About from './Views/About';
 
 const Drawer = createDrawerNavigator();
 
@@ -38,6 +39,11 @@ export default () => {
                 name="Settings"
                 component={Settings}
                 options={{ title: 'Configurações' }}
+            />
+            <Drawer.Screen
+                name="About"
+                component={About}
+                options={{ title: 'Sobre' }}
             />
 
             <Drawer.Screen

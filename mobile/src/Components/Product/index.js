@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { format, isPast, formatDistanceToNow, addDays } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
@@ -17,14 +17,21 @@ import {
     Amount,
 } from './styles';
 
-export default ({ product }) => {
+export default ({ product, daysToBeNext }) => {
     const navigation = useNavigation();
 
+    const [daysToConsiderNext, setDaysToConsiderNext] = useState(0);
+
     const vencido = isPast(product.lotes[0].exp_date, new Date());
-    const proximo = addDays(new Date(), 30) > product.lotes[0].exp_date;
+    const proximo =
+        addDays(new Date(), daysToConsiderNext) > product.lotes[0].exp_date;
 
     const [bgColor, setBgColor] = useState('#FFF');
     const [textColor, setTextColor] = useState('black');
+
+    useEffect(() => {
+        setDaysToConsiderNext(daysToBeNext);
+    }, [daysToBeNext]);
 
     useEffect(() => {
         if (vencido) {
