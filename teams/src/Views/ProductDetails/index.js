@@ -12,6 +12,7 @@ import Realm from '../../Services/Realm';
 import {
     Container,
     PageHeader,
+    ProductDetailsContainer,
     PageTitle,
     ProductName,
     ProductCode,
@@ -118,7 +119,7 @@ export default ({ route }) => {
             <ScrollView>
                 <Container>
                     <PageHeader>
-                        <View>
+                        <ProductDetailsContainer>
                             <PageTitle>Detalhes</PageTitle>
 
                             {edit ? (
@@ -140,7 +141,7 @@ export default ({ route }) => {
                                     <ProductCode>Código: {code}</ProductCode>
                                 </View>
                             )}
-                        </View>
+                        </ProductDetailsContainer>
 
                         {edit ? (
                             <View>
