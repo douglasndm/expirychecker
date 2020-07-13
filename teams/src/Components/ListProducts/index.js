@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorange from '@react-native-community/async-storage';
 
 import ProductItem from '../Product';
 
@@ -15,8 +16,32 @@ import {
     HackComponent,
 } from './styles';
 
+async function getDaysToBeNext() {
+    try {
+        const days = await AsyncStorange.getItem('settings/daysToBeNext');
+
+        if (days != null) return days;
+    } catch (err) {
+        console.log(err);
+    }
+
+    return 30;
+}
+
 export default function ListProducts({ products, isHome }) {
     const navigation = useNavigation();
+
+    const [daysToBeNext, setDaysToBeNext] = useState();
+
+    useEffect(() => {
+        async function getAppData() {
+            const days = await getDaysToBeNext();
+            setDaysToBeNext(days);
+        }
+
+        getAppData();
+    }, []);
+
     const ListHeader = () => {
         return (
             <View>
@@ -87,7 +112,9 @@ export default function ListProducts({ products, isHome }) {
                 data={products}
                 keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
-                renderItem={({ item }) => <ProductItem product={item} />}
+                renderItem={({ item }) => (
+                    <ProductItem product={item} daysToBeNext={daysToBeNext} />
+                )}
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
             />
