@@ -8,6 +8,7 @@ import {
     Container,
     Card,
     ProductDetails,
+    ProductDetailsContainer,
     ProductName,
     ProductCode,
     ProductLote,
@@ -52,7 +53,7 @@ export default ({ product, daysToBeNext }) => {
                 bgColor={bgColor}
             >
                 <ProductDetails>
-                    <View>
+                    <ProductDetailsContainer>
                         <ProductName textColor={textColor}>
                             {product.name}
                         </ProductName>
@@ -62,7 +63,7 @@ export default ({ product, daysToBeNext }) => {
                         <ProductLote textColor={textColor}>
                             Lote: {product.lotes[0].lote}
                         </ProductLote>
-                    </View>
+                    </ProductDetailsContainer>
 
                     <AmountContainer>
                         <AmountContainerText textColor={textColor}>
