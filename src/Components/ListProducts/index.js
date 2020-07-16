@@ -3,6 +3,8 @@ import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorange from '@react-native-community/async-storage';
 
+import { removeProductsWithoutLotes } from '../../functions/products';
+
 import ProductItem from '../Product';
 
 import {
@@ -32,11 +34,6 @@ export default function ListProducts({ products, isHome }) {
 
     const [daysToBeNext, setDaysToBeNext] = useState();
 
-    const productsWithoutNullLotes = products.filter((p) => {
-        if (p.lotes.length > 0) return p;
-        return null;
-    });
-
     useEffect(() => {
         async function getAppData() {
             const days = await getDaysToBeNext();
@@ -56,7 +53,7 @@ export default function ListProducts({ products, isHome }) {
                 ) : null}
 
                 {/* Verificar se há items antes de criar o titulo */}
-                {productsWithoutNullLotes.length > 0 ? (
+                {products.length > 0 ? (
                     <CategoryDetails>
                         <CategoryDetailsText>
                             Produtos mais próximos ao vencimento
@@ -76,7 +73,7 @@ export default function ListProducts({ products, isHome }) {
     };
 
     function FooterButton() {
-        if (productsWithoutNullLotes.length > 5 && isHome) {
+        if (products.length > 5 && isHome) {
             return (
                 <ButtonLoadMore
                     onPress={() => {
@@ -108,7 +105,7 @@ export default function ListProducts({ products, isHome }) {
     return (
         <Container>
             <FlatList
-                data={productsWithoutNullLotes}
+                data={products}
                 keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={({ item }) => (

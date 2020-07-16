@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button as ButtonPaper } from 'react-native-paper';
+import { setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
 
 import Realm from '../../Services/Realm';
 
@@ -149,7 +150,20 @@ const AddProduct = ({ navigation }) => {
                             accessibilityLabel="Campo de seleção da data de vencimento do produto"
                             date={expDate}
                             onDateChange={(value) => {
-                                setExpDate(value);
+                                // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
+                                // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
+                                setExpDate(
+                                    setHours(
+                                        setMinutes(
+                                            setSeconds(
+                                                setMilliseconds(value, 0),
+                                                0
+                                            ),
+                                            0
+                                        ),
+                                        0
+                                    )
+                                );
                             }}
                             fadeToColor="none"
                             mode="date"
