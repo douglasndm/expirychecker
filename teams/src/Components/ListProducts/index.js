@@ -13,7 +13,6 @@ import {
     CategoryDetailsText,
     ButtonLoadMore,
     ButtonLoadMoreText,
-    HackComponent,
 } from './styles';
 
 async function getDaysToBeNext() {
@@ -69,11 +68,6 @@ export default function ListProducts({ products, isHome }) {
                 Não há nenhum produto cadastrado ainda...
             </Text>
         );
-    };
-
-    // Esse hackzinho evita que o FAB Menu fique em cima do ultimo item na pagina de todos os produtos
-    const ButtonHack = () => {
-        return <HackComponent isHome={isHome} />;
     };
 
     function FooterButton() {
