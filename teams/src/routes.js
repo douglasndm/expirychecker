@@ -6,6 +6,7 @@ import { DrawerMenu } from './Components/DrawerMenu';
 import Home from './Views/Home';
 import AddProduct from './Views/AddProduct';
 import AddLote from './Views/AddLote';
+import EditLote from './Views/EditLote';
 import ProductDetails from './Views/ProductDetails';
 import AllProducts from './Views/AllProducts';
 import Settings from './Views/Settings';
@@ -56,6 +57,12 @@ export default () => {
                 name="AddLote"
                 component={AddLote}
                 options={{ title: 'Adicionar Lote' }}
+            />
+
+            <Drawer.Screen
+                name="EditLote"
+                component={EditLote}
+                options={{ title: 'Editar Lote' }}
             />
         </Drawer.Navigator>
     );
