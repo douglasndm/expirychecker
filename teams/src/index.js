@@ -9,7 +9,7 @@ import { Provider as PaperProvider, Portal } from 'react-native-paper';
 
 import './Services/ReactotronConfig';
 
-import Routes from './routes';
+import Routes from './Routes/DrawerContainer';
 
 enableScreens();
 
