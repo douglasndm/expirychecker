@@ -143,11 +143,13 @@ export default ({ route, navigation }) => {
                                     <InputText
                                         value={name}
                                         placeholder="Nome do produto"
+                                        accessibilityLabel="Campo de texto para nome do produto"
                                         onChangeText={(value) => setName(value)}
                                     />
                                     <InputText
                                         value={code}
                                         placeholder="Código do produto"
+                                        accessibilityLabel="Campo de texto para o código de barras do produto"
                                         onChangeText={(value) => setCode(value)}
                                     />
                                 </View>
@@ -323,7 +325,7 @@ export default ({ route, navigation }) => {
                         ),
                         label: 'Adicionar novo lote',
                         onPress: () => {
-                            navigation.navigate('AddLote', { productId });
+                            navigation.push('AddLote', { productId });
                         },
                     },
                 ]}

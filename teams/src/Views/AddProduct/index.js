@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Alert, StyleSheet, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button as ButtonPaper } from 'react-native-paper';
 
@@ -55,7 +55,7 @@ const AddProduct = ({ navigation }) => {
                     amount: parseInt(amount),
                 });
 
-                navigation.navigate('Home', {
+                navigation.push('Home', {
                     notificationToUser: 'Produto cadastrado.',
                 });
             });
@@ -87,6 +87,7 @@ const AddProduct = ({ navigation }) => {
                 <InputContainer>
                     <InputText
                         placeholder="Nome do produto"
+                        accessibilityLabel="Campo de texto para nome do produto"
                         value={name}
                         onChangeText={(value) => {
                             setName(value);
@@ -101,6 +102,7 @@ const AddProduct = ({ navigation }) => {
                     >
                         <InputText
                             placeholder="Código"
+                            accessibilityLabel="Campo de texto para código de barras do produto"
                             value={code}
                             onChangeText={(value) => setCode(value)}
                             style={{ flex: 1 }}
@@ -126,6 +128,7 @@ const AddProduct = ({ navigation }) => {
                     <InputGroup>
                         <InputText
                             placeholder="Lote"
+                            accessibilityLabel="Campo de texto para lote do produto"
                             value={lote}
                             onChangeText={(value) => setLote(value)}
                             style={{ flex: 3, marginRight: 5 }}
@@ -133,6 +136,7 @@ const AddProduct = ({ navigation }) => {
                         <InputText
                             style={{ flex: 2 }}
                             placeholder="Quantidade"
+                            accessibilityLabel="Campo de texto para quantidade do produto"
                             keyboardType="numeric"
                             value={String(amount)}
                             onChangeText={(value) => setAmount(value)}
@@ -142,6 +146,7 @@ const AddProduct = ({ navigation }) => {
                     <ExpDateGroup>
                         <ExpDateLabel>Data de vencimento</ExpDateLabel>
                         <CustomDatePicker
+                            accessibilityLabel="Campo de seleção da data de vencimento do produto"
                             date={expDate}
                             onDateChange={(value) => {
                                 setExpDate(value);
@@ -153,7 +158,10 @@ const AddProduct = ({ navigation }) => {
                     </ExpDateGroup>
                 </InputContainer>
 
-                <Button onPress={() => handleSave()}>
+                <Button
+                    accessibilityLabel="Botão para salvar o novo produto"
+                    onPress={() => handleSave()}
+                >
                     <ButtonText>Salvar</ButtonText>
                 </Button>
             </ScrollView>
