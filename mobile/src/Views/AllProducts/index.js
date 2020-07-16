@@ -6,6 +6,12 @@ import Realm from '../../Services/Realm';
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
 
+import {
+    getLotesWithoutTratados,
+    sortProductsLotesByLotesExpDate,
+    sortProductsByFisrtLoteExpDate,
+} from '../../functions/products';
+
 import { Container } from './styles';
 
 const AllProducts = () => {
@@ -15,32 +21,24 @@ const AllProducts = () => {
         try {
             const resultsDB = realm.objects('Product').slice();
 
+            // FUNÇÃO QUE REMOVE TODOS OS PRODUTOS QUE JÁ FORAM TRATADOS ANTES DE CHAMAR AS PROXIMAS
+            // FUNÇÕES DE ORDENAÇÃO
+            const resultsWithoutLotesTratados = getLotesWithoutTratados(
+                resultsDB
+            );
+
+            // PRIMEIRO PRECISEI PERCORRER TODOS OS RESULTADOS E ORDERNAR CADA LOTE INDIVIDUALMENTE
+            // E COM ISSO RETORNA UM NOVO ARRAY DE OBJETO, PQ NAO ERA POSSIVEL RETORNA O
+            // ANTIGO MODIFICADO
+            const resultsTemp = sortProductsLotesByLotesExpDate(
+                resultsWithoutLotesTratados
+            );
+
             // classifica os produtos em geral pelo o mais proximo de vencer
-            const results = resultsDB.sort((item1, item2) => {
-                let lote1;
-                let lote2;
-
-                // Dentro de determinado produto, classica os lotes mais proximos
-                if (item1.lotes.length > 1 && item2.lotes.length > 1) {
-                    lote1 = item1.lotes.sort((lote1, lote2) => {
-                        if (lote1.exp_date > lote2.exp_date) return 1;
-                        if (lote1.exp_date < lote2.exp_date) return -1;
-                        return 0;
-                    });
-                    lote2 = item2.lotes.sort((lote1, lote2) => {
-                        if (lote1.exp_date > lote2.exp_date) return 1;
-                        if (lote1.exp_date < lote2.exp_date) return -1;
-                        return 0;
-                    });
-                } else {
-                    lote1 = item1.lotes[0];
-                    lote2 = item2.lotes[0];
-                }
-
-                if (lote1.exp_date > lote2.exp_date) return 1;
-                if (lote1.exp_date < lote2.exp_date) return -1;
-                return 0;
-            });
+            // DEPOIS DE TER TODOS OS PRODUTOS COM OS SEUS LOTES ORDENADOS POR VENCIMENTO, SIMPLISMENTE PEGO O
+            // PRIMEIRO LOTE DE CADA PRODUTO(JÁ QUE SEMPRE SERÁ O MAIS PROXIMO A VENCER) E FAÇO A ORDENAÇÃO
+            // DE TODOS OS PRODUTOS BASEADO NESTE PRIMEIRO LOTE
+            const results = sortProductsByFisrtLoteExpDate(resultsTemp);
 
             setProducts(results);
         } catch (error) {
