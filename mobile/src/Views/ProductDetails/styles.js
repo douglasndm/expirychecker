@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { DataTable } from 'react-native-paper';
 
 export const Container = styled.View`
     padding: 16px;
@@ -49,52 +50,21 @@ export const CategoryDetails = styled.View`
 `;
 
 export const CategoryDetailsText = styled.Text`
-    color: #81d0fd;
-    font-size: 16px;
+    color: #14d48f;
+    font-size: 18px;
 `;
 
-export const ProductLoteContainer = styled.View`
+export const Table = styled(DataTable)`
     background-color: #fff;
-    margin-bottom: 15px;
-    padding: 12px 14px;
     border-radius: 12px;
-
-    flex-direction: column;
 `;
 
-export const LoteContainer = styled.View``;
-export const LoteTitle = styled.Text`
-    font-weight: bold;
-    font-size: 22px;
+export const TableHeader = styled(DataTable.Header)``;
+
+export const TableTitle = styled(DataTable.Title)``;
+
+export const TableRow = styled(DataTable.Row)`
+    background-color: ${(props) => (props.bgcolor ? props.bgcolor : 'white')};
 `;
 
-export const Lote = styled.Text`
-    font-size: 20px;
-`;
-
-export const StatusContainer = styled.View``;
-
-export const StatusTitle = styled.Text`
-    font-weight: bold;
-    font-size: 22px;
-`;
-export const Status = styled.Text`
-    font-size: 20px;
-`;
-
-export const AmountContainer = styled.View`
-    align-items: center;
-`;
-export const AmountTitleText = styled.Text`
-    font-weight: bold;
-    font-size: 22px;
-`;
-
-export const ProductAmount = styled.Text`
-    font-size: 20px;
-`;
-
-export const ProductExpDate = styled.Text`
-    margin-top: 10px;
-    font-size: 14px;
-`;
+export const TableCell = styled(DataTable.Cell)``;
