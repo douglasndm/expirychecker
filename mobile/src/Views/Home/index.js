@@ -3,8 +3,6 @@ import { Snackbar } from 'react-native-paper';
 
 import Realm from '../../Services/Realm';
 import {
-    getLotesWithoutTratados,
-    removeProductsWithoutLotes,
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
 } from '../../functions/products';
@@ -23,25 +21,15 @@ export default function Home({ notificationToUser }) {
 
     async function getProduts(realm) {
         try {
-            const resultsDB = realm.objects('Product').slice();
-
-            const resultsWithoutEmptyLotes = removeProductsWithoutLotes(
-                resultsDB
-            );
-
-            // FUNÇÃO QUE REMOVE TODOS OS PRODUTOS QUE JÁ FORAM TRATADOS ANTES DE CHAMAR AS PROXIMAS
-            // FUNÇÕES DE ORDENAÇÃO
-            const resultsWithoutLotesTratados = getLotesWithoutTratados(
-                resultsWithoutEmptyLotes
-            );
+            const resultsDB = realm
+                .objects('Product')
+                .filtered("lotes.@count > 0 AND lotes.status != 'Tratado'")
+                .slice();
 
             // PRIMEIRO PRECISEI PERCORRER TODOS OS RESULTADOS E ORDERNAR CADA LOTE INDIVIDUALMENTE
             // E COM ISSO RETORNA UM NOVO ARRAY DE OBJETO, PQ NAO ERA POSSIVEL RETORNA O
             // ANTIGO MODIFICADO
-            const resultsTemp = sortProductsLotesByLotesExpDate(
-                resultsWithoutLotesTratados
-            );
-
+            const resultsTemp = sortProductsLotesByLotesExpDate(resultsDB);
             // classifica os produtos em geral pelo o mais proximo de vencer
             // DEPOIS DE TER TODOS OS PRODUTOS COM OS SEUS LOTES ORDENADOS POR VENCIMENTO, SIMPLISMENTE PEGO O
             // PRIMEIRO LOTE DE CADA PRODUTO(JÁ QUE SEMPRE SERÁ O MAIS PROXIMO A VENCER) E FAÇO A ORDENAÇÃO

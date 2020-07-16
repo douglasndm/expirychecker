@@ -2,6 +2,8 @@ google-services.json
 appcenter-config.json
 .env
 
+.hprof
+
 # OSX
 #
 .DS_Store

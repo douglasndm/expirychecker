@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
 
@@ -10,7 +10,6 @@ import { MenuHeader, MenuHeaderTitle } from './styles';
 export function DrawerMenu(props) {
     const { navigation } = props;
 
-    console.log();
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
