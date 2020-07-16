@@ -1,4 +1,4 @@
-import { sortLoteByExpDate } from './lotes';
+import { sortLoteByExpDate, removeLotesTratados } from './lotes';
 
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
 // POR DATA DE VENCIMENTO, OU SEJA CADA PRODUTO DA LISTA VAI TER UM ARRAY DE LOTE JÁ ORDERNADO POR DATA DE VENCIMENTO
@@ -34,6 +34,19 @@ export function sortProductsByFisrtLoteExpDate(listProducts) {
         }
 
         return -1;
+    });
+
+    return results;
+}
+
+export function removeAllLotesTratadosFromAllProduts(listProducts) {
+    const results = listProducts.map((prod) => {
+        return {
+            id: prod.id,
+            name: prod.name,
+            code: prod.code,
+            lotes: removeLotesTratados(prod.lotes),
+        };
     });
 
     return results;
