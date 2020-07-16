@@ -13,7 +13,7 @@ export const PageHeader = styled.View`
 `;
 
 export const ProductDetailsContainer = styled.View`
-    max-width: 75%;
+    max-width: 60%;
 `;
 
 export const PageTitle = styled.Text`
