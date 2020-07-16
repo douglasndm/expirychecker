@@ -5,7 +5,9 @@ import { Drawer } from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { MenuHeader, MenuHeaderTitle } from './styles';
+import Logo from '../../Assets/Logo.png';
+
+import { MenuHeader, LogoImage } from './styles';
 
 export function DrawerMenu(props) {
     const { navigation } = props;
@@ -15,7 +17,7 @@ export function DrawerMenu(props) {
             <DrawerContentScrollView {...props}>
                 <View>
                     <MenuHeader>
-                        <MenuHeaderTitle>Olá :)</MenuHeaderTitle>
+                        <LogoImage resizeMode="center" source={Logo} />
                     </MenuHeader>
 
                     <Drawer.Section>
