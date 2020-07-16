@@ -23,8 +23,10 @@ export default ({ product, daysToBeNext }) => {
 
     const [daysToConsiderNext, setDaysToConsiderNext] = useState(0);
 
-    const vencido = isPast(product.lotes[0].exp_date, new Date());
+    const vencido =
+        product.lotes[0] && isPast(product.lotes[0].exp_date, new Date());
     const proximo =
+        product.lotes[0] &&
         addDays(new Date(), daysToConsiderNext) > product.lotes[0].exp_date;
 
     const [bgColor, setBgColor] = useState('#FFF');

@@ -32,6 +32,11 @@ export default function ListProducts({ products, isHome }) {
 
     const [daysToBeNext, setDaysToBeNext] = useState();
 
+    const productsWithoutNullLotes = products.filter((p) => {
+        if (p.lotes.length > 0) return p;
+        return null;
+    });
+
     useEffect(() => {
         async function getAppData() {
             const days = await getDaysToBeNext();
@@ -51,7 +56,7 @@ export default function ListProducts({ products, isHome }) {
                 ) : null}
 
                 {/* Verificar se há items antes de criar o titulo */}
-                {products.length > 0 ? (
+                {productsWithoutNullLotes.length > 0 ? (
                     <CategoryDetails>
                         <CategoryDetailsText>
                             Produtos mais próximos ao vencimento
@@ -71,7 +76,7 @@ export default function ListProducts({ products, isHome }) {
     };
 
     function FooterButton() {
-        if (products.length > 5 && isHome) {
+        if (productsWithoutNullLotes.length > 5 && isHome) {
             return (
                 <ButtonLoadMore
                     onPress={() => {
@@ -89,7 +94,7 @@ export default function ListProducts({ products, isHome }) {
             <>
                 <ButtonLoadMore
                     onPress={() => {
-                        navigation.navigate('AddProduct');
+                        navigation.push('AddProduct');
                     }}
                 >
                     <ButtonLoadMoreText>
@@ -103,7 +108,7 @@ export default function ListProducts({ products, isHome }) {
     return (
         <Container>
             <FlatList
-                data={products}
+                data={productsWithoutNullLotes}
                 keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={({ item }) => (
