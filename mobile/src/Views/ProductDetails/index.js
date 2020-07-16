@@ -257,7 +257,7 @@ export default ({ route, navigation }) => {
                                     key={lote.id}
                                     bgcolor={bgColor}
                                     onPress={() => {
-                                        navigation.jumpTo('EditLote', {
+                                        navigation.push('EditLote', {
                                             productId,
                                             loteId: lote.id,
                                         });
@@ -269,8 +269,12 @@ export default ({ route, navigation }) => {
                                             locale: br,
                                         })}
                                     </TableCell>
-                                    <TableCell numeric>{lote.amount}</TableCell>
-                                    <TableCell>{lote.status}</TableCell>
+                                    <TableCell>{lote.amount}</TableCell>
+                                    <TableCell>
+                                        {lote.status
+                                            ? lote.status
+                                            : 'Não tratado'}
+                                    </TableCell>
                                 </TableRow>
                             );
                         })}
