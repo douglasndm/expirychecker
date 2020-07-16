@@ -18,7 +18,7 @@ export const ProductDetails = styled.View`
 `;
 
 export const ProductDetailsContainer = styled.View`
-    max-width: 80%;
+    max-width: 75%;
 `;
 
 export const ProductName = styled.Text`

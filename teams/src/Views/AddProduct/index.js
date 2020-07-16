@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button as ButtonPaper } from 'react-native-paper';
 import { setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
+import EnvConfig from 'react-native-config';
+import {
+    InterstitialAd,
+    AdEventType,
+    TestIds,
+} from '@react-native-firebase/admob';
 
 import Realm from '../../Services/Realm';
 
@@ -29,6 +35,15 @@ const AddProduct = ({ navigation }) => {
     const [expDate, setExpDate] = useState(new Date());
 
     const [cameraEnabled, setCameraEnebled] = useState(false);
+    const [adReady, setAdReady] = useState(false);
+
+    const adUnitID = __DEV__
+        ? TestIds.INTERSTITIAL
+        : EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
+
+    const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
+
+    interstitialAd.load();
 
     async function handleSave() {
         const realm = await Realm();
@@ -49,12 +64,14 @@ const AddProduct = ({ navigation }) => {
                     code,
                 });
 
-                const resultLote = productResult.lotes.push({
+                productResult.lotes.push({
                     id: nextLoteId,
                     lote,
                     exp_date: expDate,
                     amount: parseInt(amount),
                 });
+
+                if (adReady) interstitialAd.show();
 
                 navigation.push('Home', {
                     notificationToUser: 'Produto cadastrado.',
@@ -64,6 +81,28 @@ const AddProduct = ({ navigation }) => {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        const eventListener = interstitialAd.onAdEvent((type) => {
+            if (type === AdEventType.LOADED) {
+                setAdReady(true);
+            }
+            if (type === AdEventType.CLOSED) {
+                setAdReady(false);
+
+                // reload ad
+                interstitialAd.load();
+            }
+        });
+
+        // Start loading the interstitial straight away
+        interstitialAd.load();
+
+        // Unsubscribe from events on unmount
+        return () => {
+            eventListener();
+        };
+    }, [adReady]);
 
     return (
         <Container>
