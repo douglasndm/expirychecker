@@ -2,6 +2,9 @@ google-services.json
 appcenter-config.json
 .env
 
+firebase.json
+
+java_pid24724.hprof
 .hprof
 
 # OSX
