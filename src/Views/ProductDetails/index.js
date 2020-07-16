@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Alert } from 'react-native';
+import AsyncStorange from '@react-native-community/async-storage';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { FAB, Button, Dialog } from 'react-native-paper';
 import { format, isPast, addDays, formatDistanceToNow } from 'date-fns';
@@ -8,6 +9,7 @@ import br from 'date-fns/locale/pt-BR';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
+import { sortLoteByExpDate } from '../../functions/lotes';
 
 import {
     Container,
@@ -19,18 +21,24 @@ import {
     InputText,
     CategoryDetails,
     CategoryDetailsText,
-    ProductLoteContainer,
-    LoteContainer,
-    LoteTitle,
-    Lote,
-    StatusContainer,
-    StatusTitle,
-    Status,
-    AmountContainer,
-    AmountTitleText,
-    ProductAmount,
-    ProductExpDate,
+    Table,
+    TableHeader,
+    TableTitle,
+    TableRow,
+    TableCell,
 } from './styles';
+
+async function getDaysToBeNext() {
+    try {
+        const days = await AsyncStorange.getItem('settings/daysToBeNext');
+
+        if (days != null) return days;
+    } catch (err) {
+        console.log(err);
+    }
+
+    return 30;
+}
 
 export default ({ route }) => {
     const productId = route.params.id;
@@ -47,8 +55,16 @@ export default ({ route }) => {
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
     const [edit, setEdit] = useState(false);
 
-    const [bgColor, setBgColor] = useState('#FFF');
-    const [textColor, setTextColor] = useState('black');
+    const [daysToBeNext, setDaysToBeNext] = useState();
+
+    useEffect(() => {
+        async function getAppData() {
+            const days = await getDaysToBeNext();
+            setDaysToBeNext(days);
+        }
+
+        getAppData();
+    }, []);
 
     async function getProduct(realm) {
         try {
@@ -59,7 +75,9 @@ export default ({ route }) => {
             setName(result.name);
             setCode(result.code);
 
-            setLotes(result.lotes);
+            const lotesSorted = sortLoteByExpDate(result.lotes);
+
+            setLotes(lotesSorted);
         } catch (error) {
             console.log(error);
         }
@@ -150,7 +168,7 @@ export default ({ route }) => {
                                         <Ionicons
                                             name="save-outline"
                                             color="black"
-                                            size={14}
+                                            size={22}
                                         />
                                     )}
                                     color="#14d48f"
@@ -166,7 +184,7 @@ export default ({ route }) => {
                                         <Ionicons
                                             name="exit-outline"
                                             color="black"
-                                            size={14}
+                                            size={22}
                                         />
                                     )}
                                     color="#14d48f"
@@ -184,7 +202,7 @@ export default ({ route }) => {
                                         <Ionicons
                                             name="create-outline"
                                             color="black"
-                                            size={14}
+                                            size={22}
                                         />
                                     )}
                                     color="#14d48f"
@@ -197,7 +215,7 @@ export default ({ route }) => {
                                         <Ionicons
                                             name="trash-outline"
                                             color="black"
-                                            size={14}
+                                            size={22}
                                         />
                                     )}
                                     color="#14d48f"
@@ -217,55 +235,39 @@ export default ({ route }) => {
                         </CategoryDetailsText>
                     </CategoryDetails>
 
-                    {lotes.map((lote) => {
-                        const vencido = isPast(lote.exp_date, new Date());
-                        const proximo = addDays(new Date(), 30) > lote.exp_date;
+                    <Table style={{ backgroundColor: '#fff' }}>
+                        <TableHeader>
+                            <TableTitle>LOTE</TableTitle>
+                            <TableTitle>VENCIMENTO</TableTitle>
+                            <TableTitle numeric>QUANTIDADE</TableTitle>
+                            <TableTitle>STATUS</TableTitle>
+                        </TableHeader>
 
-                        return (
-                            <ProductLoteContainer key={lote.id}>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <LoteContainer>
-                                        <LoteTitle>LOTE</LoteTitle>
-                                        <Lote>{lote.lote}</Lote>
-                                    </LoteContainer>
+                        {lotes.map((lote) => {
+                            const vencido = isPast(lote.exp_date, new Date());
+                            const proximo =
+                                addDays(new Date(), daysToBeNext) >
+                                lote.exp_date;
 
-                                    <StatusContainer>
-                                        <StatusTitle>STATUS</StatusTitle>
-                                        <Status>Tratado</Status>
-                                    </StatusContainer>
+                            let bgColor = null;
 
-                                    <AmountContainer>
-                                        <AmountTitleText>
-                                            QUANTIDADE
-                                        </AmountTitleText>
-                                        <ProductAmount>
-                                            {lote.amount}
-                                        </ProductAmount>
-                                    </AmountContainer>
-                                </View>
+                            if (vencido) bgColor = '#CC4B4B';
+                            else if (proximo) bgColor = '#DDE053';
 
-                                <ProductExpDate textColor={textColor}>
-                                    {vencido ? 'Venceu ' : 'Vence '}
-                                    {formatDistanceToNow(lote.exp_date, {
-                                        addSuffix: true,
-                                        locale: br,
-                                    })}
-                                    {format(
-                                        lote.exp_date,
-                                        ', EEEE, dd/MM/yyyy',
-                                        {
+                            return (
+                                <TableRow key={lote.id} bgcolor={bgColor}>
+                                    <TableCell>{lote.lote}</TableCell>
+                                    <TableCell>
+                                        {format(lote.exp_date, 'dd/MM/yyyy', {
                                             locale: br,
-                                        }
-                                    )}
-                                </ProductExpDate>
-                            </ProductLoteContainer>
-                        );
-                    })}
+                                        })}
+                                    </TableCell>
+                                    <TableCell>{lote.amount}</TableCell>
+                                    <TableCell>{lote.status}</TableCell>
+                                </TableRow>
+                            );
+                        })}
+                    </Table>
                 </Container>
             </ScrollView>
 
