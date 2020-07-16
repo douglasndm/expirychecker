@@ -4,6 +4,7 @@ import { Snackbar } from 'react-native-paper';
 import Realm from '../../Services/Realm';
 import {
     getLotesWithoutTratados,
+    removeProductsWithoutLotes,
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
 } from '../../functions/products';
@@ -24,10 +25,14 @@ export default function Home({ notificationToUser }) {
         try {
             const resultsDB = realm.objects('Product').slice();
 
+            const resultsWithoutEmptyLotes = removeProductsWithoutLotes(
+                resultsDB
+            );
+
             // FUNÇÃO QUE REMOVE TODOS OS PRODUTOS QUE JÁ FORAM TRATADOS ANTES DE CHAMAR AS PROXIMAS
             // FUNÇÕES DE ORDENAÇÃO
             const resultsWithoutLotesTratados = getLotesWithoutTratados(
-                resultsDB
+                resultsWithoutEmptyLotes
             );
 
             // PRIMEIRO PRECISEI PERCORRER TODOS OS RESULTADOS E ORDERNAR CADA LOTE INDIVIDUALMENTE
@@ -46,7 +51,7 @@ export default function Home({ notificationToUser }) {
             if (results.length > 10) {
                 const resultsMin = [];
 
-                for (let i = 0; i < 10; i++) resultsMin.push(results[i]);
+                for (let i = 0; i < 20; i++) resultsMin.push(results[i]);
 
                 setProducts(resultsMin);
             } else {
