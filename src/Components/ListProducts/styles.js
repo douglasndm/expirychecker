@@ -30,8 +30,8 @@ export const CategoryDetails = styled.View`
 `;
 
 export const CategoryDetailsText = styled.Text`
-    color: #81d0fd;
-    font-size: 16px;
+    color: #14d48f;
+    font-size: 18px;
 `;
 
 export const ButtonLoadMore = styled.TouchableOpacity`
