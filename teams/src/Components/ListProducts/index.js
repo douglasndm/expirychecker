@@ -3,8 +3,6 @@ import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorange from '@react-native-community/async-storage';
 
-import { removeProductsWithoutLotes } from '../../functions/products';
-
 import ProductItem from '../Product';
 
 import {
