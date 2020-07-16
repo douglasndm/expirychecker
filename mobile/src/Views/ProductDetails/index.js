@@ -40,10 +40,8 @@ async function getDaysToBeNext() {
     return 30;
 }
 
-export default ({ route }) => {
+export default ({ route, navigation }) => {
     const productId = route.params.id;
-
-    const navigation = useNavigation();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -239,7 +237,7 @@ export default ({ route }) => {
                         <TableHeader>
                             <TableTitle>LOTE</TableTitle>
                             <TableTitle>VENCIMENTO</TableTitle>
-                            <TableTitle numeric>QUANTIDADE</TableTitle>
+                            <TableTitle>QUANTIDADE</TableTitle>
                             <TableTitle>STATUS</TableTitle>
                         </TableHeader>
 
@@ -255,14 +253,23 @@ export default ({ route }) => {
                             else if (proximo) bgColor = '#DDE053';
 
                             return (
-                                <TableRow key={lote.id} bgcolor={bgColor}>
+                                <TableRow
+                                    key={lote.id}
+                                    bgcolor={bgColor}
+                                    onPress={() => {
+                                        navigation.jumpTo('EditLote', {
+                                            productId,
+                                            loteId: lote.id,
+                                        });
+                                    }}
+                                >
                                     <TableCell>{lote.lote}</TableCell>
                                     <TableCell>
                                         {format(lote.exp_date, 'dd/MM/yyyy', {
                                             locale: br,
                                         })}
                                     </TableCell>
-                                    <TableCell>{lote.amount}</TableCell>
+                                    <TableCell numeric>{lote.amount}</TableCell>
                                     <TableCell>{lote.status}</TableCell>
                                 </TableRow>
                             );
