@@ -10,6 +10,8 @@ import AllProducts from '../Views/AllProducts';
 import Settings from '../Views/Settings';
 import About from '../Views/About';
 
+import Test from '../Views/Test';
+
 const Stack = createStackNavigator();
 
 export default () => {
@@ -23,6 +25,7 @@ export default () => {
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
             <Stack.Screen name="AddLote" component={AddLote} />
             <Stack.Screen name="EditLote" component={EditLote} />
+            <Stack.Screen name="Test" component={Test} />
         </Stack.Navigator>
     );
 };
