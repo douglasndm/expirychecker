@@ -2,10 +2,12 @@ import { sortLoteByExpDate } from './lotes';
 
 // FUNÇÃO QUE REMOVE TODOS OS PRODUTOS QUE JÁ FORAM TRATADOS ANTES DE CHAMAR AS PROXIMAS
 export function getLotesWithoutTratados(listProducts) {
-    const resultsWithoutLotesProcessed = listProducts.filter((prod) => {
+    const resultsWithoutLotesProcessed = listProducts.map((prod) => {
         const lotesProcessed = prod.lotes.filter((l) => {
-            if (l.status === 'Tratado') return false;
-            return l;
+            if (l.status === 'Tratado') {
+                return false;
+            }
+            return true;
         });
 
         if (lotesProcessed.length > 0) {
@@ -16,7 +18,12 @@ export function getLotesWithoutTratados(listProducts) {
                 lotes: lotesProcessed,
             };
         }
-        return false;
+        return {
+            id: prod.id,
+            name: prod.name,
+            code: prod.code,
+            lotes: null,
+        };
     });
 
     return resultsWithoutLotesProcessed;
