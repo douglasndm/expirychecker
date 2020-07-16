@@ -1,47 +1,9 @@
 import { sortLoteByExpDate } from './lotes';
 
-// FUNÇÃO QUE REMOVE TODOS OS PRODUTOS QUE JÁ FORAM TRATADOS ANTES DE CHAMAR AS PROXIMAS
-export function getLotesWithoutTratados(listProducts) {
-    const resultsWithoutLotesProcessed = listProducts.map((prod) => {
-        const lotesProcessed = prod.lotes.filter((l) => {
-            if (l.status === 'Tratado') {
-                return false;
-            }
-            return true;
-        });
-
-        if (lotesProcessed.length > 0) {
-            return {
-                id: prod.id,
-                name: prod.name,
-                code: prod.code,
-                lotes: lotesProcessed,
-            };
-        }
-        return {
-            id: prod.id,
-            name: prod.name,
-            code: prod.code,
-            lotes: null,
-        };
-    });
-
-    return resultsWithoutLotesProcessed;
-}
-
-export function removeProductsWithoutLotes(listProducts) {
-    const results = listProducts.filter((p) => {
-        if (p.lotes.length > 0) return p;
-        return null;
-    });
-
-    return results;
-}
-
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
 // POR DATA DE VENCIMENTO, OU SEJA CADA PRODUTO DA LISTA VAI TER UM ARRAY DE LOTE JÁ ORDERNADO POR DATA DE VENCIMENTO
 export function sortProductsLotesByLotesExpDate(listProducts) {
-    const productsSorted = listProducts.map((prod) => {
+    const productsLotesSorted = listProducts.map((prod) => {
         const prodLotesSorted = sortLoteByExpDate(prod.lotes);
 
         return {
@@ -52,7 +14,7 @@ export function sortProductsLotesByLotesExpDate(listProducts) {
         };
     });
 
-    return productsSorted;
+    return productsLotesSorted;
 }
 
 // classifica os produtos em geral pelo o mais proximo de vencer
@@ -60,8 +22,8 @@ export function sortProductsLotesByLotesExpDate(listProducts) {
 // É ESPERADO QUE O ARRAY DE LOTES JÁ TENHA SIDO ORDERNADO ANTES
 export function sortProductsByFisrtLoteExpDate(listProducts) {
     const results = listProducts.sort((item1, item2) => {
-        if (item1.lotes.length > 0) {
-            if (item2.lotes.length > 0) {
+        if (item1.lotes !== null && item1.lotes.length > 0) {
+            if (item2.lotes !== null && item2.lotes.length > 0) {
                 if (item1.lotes[0].exp_date > item2.lotes[0].exp_date) return 1;
                 if (item1.lotes[0].exp_date < item2.lotes[0].exp_date)
                     return -1;
