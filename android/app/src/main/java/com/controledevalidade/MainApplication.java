@@ -3,6 +3,7 @@ package com.controledevalidade;
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
+import com.jamesisaac.rnbackgroundtask.BackgroundTaskPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -46,6 +47,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    BackgroundTaskPackage.useContext(this);
   }
 
   /**
