@@ -6,7 +6,7 @@ import {
     removeAllLotesTratadosFromAllProduts,
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
-} from '../../functions/products';
+} from '../../Functions/products';
 
 import FABProducts from '../../Components/FABProducts';
 import ListProducts from '../../Components/ListProducts';

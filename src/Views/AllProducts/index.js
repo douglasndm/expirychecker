@@ -9,7 +9,7 @@ import {
     removeAllLotesTratadosFromAllProduts,
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
-} from '../../functions/products';
+} from '../../Functions/products';
 
 import { Container } from './styles';
 
