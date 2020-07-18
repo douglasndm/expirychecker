@@ -9,7 +9,7 @@ import br from 'date-fns/locale/pt-BR';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
-import { sortLoteByExpDate } from '../../functions/lotes';
+import { sortLoteByExpDate } from '../../Functions/lotes';
 
 import {
     Container,

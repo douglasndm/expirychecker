@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
-import { Notifications } from 'react-native-notifications';
+import React from 'react';
+import { View, Button } from 'react-native';
 import { addDays } from 'date-fns';
 import Realm from '../../Services/Realm';
 
+import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
 
 const Test = () => {
     function note() {
-        Notifications.postLocalNotification({
-            title: 'Esta é uma notificação local',
-            body: 'O que será que vamos colocar aqui?',
-            extra: 'O que vem em extra?',
-        });
+        getAllProductsNextToExp();
     }
 
     async function sampleData() {
@@ -55,14 +51,16 @@ const Test = () => {
 
     return (
         <View>
-            <Category />
-            <Button title="Disparar notificação" onPress={() => note()} />
-            <Category />
+            <Category>
+                <Button title="Disparar notificação" onPress={() => note()} />
+            </Category>
 
-            <Button
-                title="Load with sample data"
-                onPress={() => sampleData()}
-            />
+            <Category>
+                <Button
+                    title="Load with sample data"
+                    onPress={() => sampleData()}
+                />
+            </Category>
         </View>
     );
 };
