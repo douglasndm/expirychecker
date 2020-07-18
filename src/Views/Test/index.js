@@ -49,6 +49,20 @@ const Test = () => {
         }
     }
 
+    async function deleteProducts() {
+        try {
+            const realm = await Realm();
+
+            realm.write(() => {
+                const results = realm.objects('Product');
+
+                realm.delete(results);
+            });
+        } catch (err) {
+            console.tron(err);
+        }
+    }
+
     return (
         <View>
             <Category>
@@ -59,6 +73,15 @@ const Test = () => {
                 <Button
                     title="Load with sample data"
                     onPress={() => sampleData()}
+                />
+            </Category>
+
+            <Category>
+                <Button
+                    title="Delete all products"
+                    onPress={() => {
+                        deleteProducts();
+                    }}
                 />
             </Category>
         </View>
