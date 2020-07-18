@@ -17,7 +17,7 @@ const FABProducts = () => {
                     ),
                     label: 'Adicionar produto',
                     onPress: () => {
-                        navigation.navigate('AddProduct');
+                        navigation.push('AddProduct');
                     },
                 },
             ]}
