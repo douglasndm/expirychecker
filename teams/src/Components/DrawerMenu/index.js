@@ -65,6 +65,31 @@ export function DrawerMenu(props) {
                     label="Configurações"
                     onPress={() => navigation.navigate('Settings')}
                 />
+                <DrawerItem
+                    icon={() => (
+                        <Ionicons
+                            name="help-circle-outline"
+                            color="black"
+                            size={22}
+                        />
+                    )}
+                    label="Sobre"
+                    onPress={() => navigation.navigate('About')}
+                />
+
+                {__DEV__ ? (
+                    <DrawerItem
+                        icon={() => (
+                            <Ionicons
+                                name="bug-outline"
+                                color="black"
+                                size={22}
+                            />
+                        )}
+                        label="Test"
+                        onPress={() => navigation.navigate('Test')}
+                    />
+                ) : null}
             </Drawer.Section>
         </View>
     );
