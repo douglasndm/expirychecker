@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Alert } from 'react-native';
 import AsyncStorange from '@react-native-community/async-storage';
-import { useNavigation, StackActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 import { FAB, Button, Dialog } from 'react-native-paper';
-import { format, isPast, addDays, formatDistanceToNow } from 'date-fns';
+import { format, isPast, addDays } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
+
+import { getProductById } from '../../Functions/Product';
 import { sortLoteByExpDate } from '../../Functions/lotes';
 
 import {
@@ -18,7 +20,6 @@ import {
     PageTitle,
     ProductName,
     ProductCode,
-    InputText,
     CategoryDetails,
     CategoryDetailsText,
     Table,
@@ -51,7 +52,6 @@ export default ({ route, navigation }) => {
     const [fabOpen, setFabOpen] = useState(false);
 
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
-    const [edit, setEdit] = useState(false);
 
     const [daysToBeNext, setDaysToBeNext] = useState();
 
@@ -95,20 +95,10 @@ export default ({ route, navigation }) => {
         startRealm();
     }, []);
 
-    async function updateProduct() {
-        try {
-            const realm = await Realm();
+    async function handleEdit() {
+        const prod = await getProductById(productId);
 
-            realm.write(() => {
-                realm.create(
-                    'Product',
-                    { id: productId, name, code },
-                    'modified'
-                );
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        navigation.push('EditProduct', { product: prod });
     }
 
     async function deleteProduct() {
@@ -138,95 +128,42 @@ export default ({ route, navigation }) => {
                         <ProductDetailsContainer>
                             <PageTitle>Detalhes</PageTitle>
 
-                            {edit ? (
-                                <View>
-                                    <InputText
-                                        value={name}
-                                        placeholder="Nome do produto"
-                                        accessibilityLabel="Campo de texto para nome do produto"
-                                        onChangeText={(value) => setName(value)}
-                                    />
-                                    <InputText
-                                        value={code}
-                                        placeholder="Código do produto"
-                                        accessibilityLabel="Campo de texto para o código de barras do produto"
-                                        onChangeText={(value) => setCode(value)}
-                                    />
-                                </View>
-                            ) : (
-                                <View>
-                                    <ProductName>{name}</ProductName>
-                                    <ProductCode>Código: {code}</ProductCode>
-                                </View>
-                            )}
+                            <View>
+                                <ProductName>{name}</ProductName>
+                                <ProductCode>Código: {code}</ProductCode>
+                            </View>
                         </ProductDetailsContainer>
 
-                        {edit ? (
-                            <View>
-                                <Button
-                                    icon={() => (
-                                        <Ionicons
-                                            name="save-outline"
-                                            color="black"
-                                            size={22}
-                                        />
-                                    )}
-                                    color="#14d48f"
-                                    onPress={() => {
-                                        updateProduct();
-                                        setEdit(false);
-                                    }}
-                                >
-                                    Salvar
-                                </Button>
-                                <Button
-                                    icon={() => (
-                                        <Ionicons
-                                            name="exit-outline"
-                                            color="black"
-                                            size={22}
-                                        />
-                                    )}
-                                    color="#14d48f"
-                                    onPress={() => {
-                                        setEdit(false);
-                                    }}
-                                >
-                                    Cancelar
-                                </Button>
-                            </View>
-                        ) : (
-                            <View>
-                                <Button
-                                    icon={() => (
-                                        <Ionicons
-                                            name="create-outline"
-                                            color="black"
-                                            size={22}
-                                        />
-                                    )}
-                                    color="#14d48f"
-                                    onPress={() => setEdit(true)}
-                                >
-                                    Editar
-                                </Button>
-                                <Button
-                                    icon={() => (
-                                        <Ionicons
-                                            name="trash-outline"
-                                            color="black"
-                                            size={22}
-                                        />
-                                    )}
-                                    color="#14d48f"
-                                    onPress={() => {
-                                        setDeleteComponentVisible(true);
-                                    }}
-                                >
-                                    Apagar
-                                </Button>
-                            </View>
-                        )}
+                        <View>
+                            <Button
+                                icon={() => (
+                                    <Ionicons
+                                        name="create-outline"
+                                        color="black"
+                                        size={22}
+                                    />
+                                )}
+                                color="#14d48f"
+                                onPress={() => handleEdit()}
+                            >
+                                Editar
+                            </Button>
+                            <Button
+                                icon={() => (
+                                    <Ionicons
+                                        name="trash-outline"
+                                        color="black"
+                                        size={22}
+                                    />
+                                )}
+                                color="#14d48f"
+                                onPress={() => {
+                                    setDeleteComponentVisible(true);
+                                }}
+                            >
+                                Apagar
+                            </Button>
+                        </View>
                     </PageHeader>
 
                     <CategoryDetails>
