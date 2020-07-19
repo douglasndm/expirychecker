@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorange from '@react-native-community/async-storage';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import EnvConfig from 'react-native-config';
 
 import ProductItem from '../Product';
 
@@ -31,6 +33,10 @@ export default function ListProducts({ products, isHome }) {
     const navigation = useNavigation();
 
     const [daysToBeNext, setDaysToBeNext] = useState();
+
+    const adUnitId = __DEV__
+        ? TestIds.BANNER
+        : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
 
     useEffect(() => {
         async function getAppData() {
@@ -106,9 +112,23 @@ export default function ListProducts({ products, isHome }) {
                 data={products}
                 keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
-                renderItem={({ item }) => (
-                    <ProductItem product={item} daysToBeNext={daysToBeNext} />
-                )}
+                renderItem={({ item }) => {
+                    return (
+                        <>
+                            {item.id % 5 === 0 ? (
+                                <BannerAd
+                                    unitId={adUnitId}
+                                    size={BannerAdSize.FULL_BANNER}
+                                />
+                            ) : null}
+
+                            <ProductItem
+                                product={item}
+                                daysToBeNext={daysToBeNext}
+                            />
+                        </>
+                    );
+                }}
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
             />

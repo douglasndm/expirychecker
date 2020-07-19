@@ -16,7 +16,7 @@ const About = () => {
 
             <AboutSection>
                 <ApplicationName>Controle de Validade</ApplicationName>
-                <ApplicationVersion>Versão 0.2.0.0</ApplicationVersion>
+                <ApplicationVersion>Versão 0.2.1.0</ApplicationVersion>
             </AboutSection>
 
             <AboutSection>
@@ -24,7 +24,7 @@ const About = () => {
             </AboutSection>
 
             <AboutSection>
-                <Text>Só possível por</Text>
+                <Text>Logo só possível por</Text>
 
                 <View>
                     <Text>https://www.flaticon.com/authors/srip</Text>
