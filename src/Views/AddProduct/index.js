@@ -64,21 +64,33 @@ const AddProduct = ({ navigation }) => {
                     code,
                 });
 
+                // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
+                // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
+                const formatedDate = setHours(
+                    setMinutes(setSeconds(setMilliseconds(expDate, 0), 0), 0),
+                    0
+                );
+
                 productResult.lotes.push({
                     id: nextLoteId,
                     lote,
-                    exp_date: expDate,
+                    exp_date: formatedDate,
                     amount: parseInt(amount),
                 });
 
-                if (adReady) interstitialAd.show();
+                // Vefica o id gerado no banco de dados e divide por 2 e se o resto da divisao for zero mostra um ad
+                // Fazendo isso apenas para reduzir a quantidade de ads e não irritar o usuário
+                // principalmente os que acabaram de baixar o app e terão que cadastrar multiplos produtos
+                if (adReady && productResult.id % 2 === 0) {
+                    interstitialAd.show();
+                }
 
                 navigation.push('Home', {
                     notificationToUser: 'Produto cadastrado.',
                 });
             });
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
     }
 
@@ -189,20 +201,7 @@ const AddProduct = ({ navigation }) => {
                             accessibilityLabel="Campo de seleção da data de vencimento do produto"
                             date={expDate}
                             onDateChange={(value) => {
-                                // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
-                                // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
-                                setExpDate(
-                                    setHours(
-                                        setMinutes(
-                                            setSeconds(
-                                                setMilliseconds(value, 0),
-                                                0
-                                            ),
-                                            0
-                                        ),
-                                        0
-                                    )
-                                );
+                                setExpDate(value);
                             }}
                             fadeToColor="none"
                             mode="date"

@@ -38,14 +38,14 @@ const Test = () => {
                                 lote: `ABC${i}xyz`,
                                 exp_date: addDays(new Date(), 1 * i),
                                 amount: i,
-                                status: 'Tratado',
+                                status: 'Não tratado',
                             },
                         ],
                     });
                 }
             });
         } catch (err) {
-            console.tron(err);
+            console.log(err);
         }
     }
 
