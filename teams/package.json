@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "clean": "react-native-clean-project"
   },
   "rnpm": {
     "assets": [
@@ -39,15 +40,15 @@
     "react-native-screens": "^2.9.0",
     "react-native-text-input-mask": "^2.0.0",
     "react-native-vector-icons": "^7.0.0",
-    "realm": "^6.0.2",
+    "realm": "^6.0.3",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
-    "@react-native-community/eslint-config": "^0.0.5",
+    "@babel/core": "^7.8.4",
+    "@babel/runtime": "^7.8.4",
+    "@react-native-community/eslint-config": "^1.1.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^25.1.0",
     "eslint": "^7.4.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -56,10 +57,11 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.5",
-    "jest": "^24.9.0",
-    "metro-react-native-babel-preset": "^0.58.0",
+    "jest": "^25.1.0",
+    "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.0.5",
-    "react-test-renderer": "16.11.0",
+    "react-native-clean-project": "^3.4.0",
+    "react-test-renderer": "16.13.1",
     "reactotron-react-native": "^5.0.0"
   },
   "jest": {
