@@ -122,9 +122,17 @@ const AddProduct = ({ navigation }) => {
                 <Camera
                     captureAudio={false}
                     type="back"
-                    ratio="9:21"
+                    ratio="7:16"
                     autoFocus="on"
                     flashMode="auto"
+                    googleVisionBarcodeType={
+                        Camera.Constants.GoogleVisionBarcodeDetection
+                            .BarcodeType.EAN_13
+                    }
+                    googleVisionBarcodeMode={
+                        Camera.Constants.GoogleVisionBarcodeDetection
+                            .BarcodeMode.ALTERNATE
+                    }
                     barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
                     onBarCodeRead={({ data }) => {
                         setCode(data);
