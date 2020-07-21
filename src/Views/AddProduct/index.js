@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, Keyboard } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button as ButtonPaper, Dialog } from 'react-native-paper';
 import { setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
@@ -169,6 +169,9 @@ const AddProduct = ({ navigation }) => {
                             onChangeText={(value) => {
                                 setName(value);
                             }}
+                            onFocus={() => {
+                                setCameraEnebled(false);
+                            }}
                         />
                         <View
                             style={{
@@ -183,6 +186,9 @@ const AddProduct = ({ navigation }) => {
                                 value={code}
                                 onChangeText={(value) => setCode(value)}
                                 style={{ flex: 1 }}
+                                onFocus={() => {
+                                    setCameraEnebled(false);
+                                }}
                             />
                             <ButtonPaper
                                 style={{
@@ -197,6 +203,7 @@ const AddProduct = ({ navigation }) => {
                                     />
                                 )}
                                 onPress={() => {
+                                    Keyboard.dismiss();
                                     setCameraEnebled(!cameraEnabled);
                                 }}
                             />
@@ -209,6 +216,9 @@ const AddProduct = ({ navigation }) => {
                                 value={lote}
                                 onChangeText={(value) => setLote(value)}
                                 style={{ flex: 3, marginRight: 5 }}
+                                onFocus={() => {
+                                    setCameraEnebled(false);
+                                }}
                             />
                             <InputText
                                 style={{ flex: 2 }}
@@ -217,6 +227,9 @@ const AddProduct = ({ navigation }) => {
                                 keyboardType="numeric"
                                 value={String(amount)}
                                 onChangeText={(value) => setAmount(value)}
+                                onFocus={() => {
+                                    setCameraEnebled(false);
+                                }}
                             />
                         </InputGroup>
 

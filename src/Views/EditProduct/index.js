@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Keyboard } from 'react-native';
 
 import { Button } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { RNCamera } from 'react-native-camera';
 
 import {
     Container,
     PageTitle,
     InputContainer,
     InputText,
-    Camera,
 } from '../AddProduct/styles';
+
+import { Camera } from './styles';
 
 const EditProduct = ({ navigation, route }) => {
     const { product } = route.params;
@@ -53,6 +56,9 @@ const EditProduct = ({ navigation, route }) => {
                     onChangeText={(value) => {
                         setName(value);
                     }}
+                    onFocus={() => {
+                        setCameraEnebled(false);
+                    }}
                 />
                 <View
                     style={{
@@ -67,6 +73,9 @@ const EditProduct = ({ navigation, route }) => {
                         value={code}
                         onChangeText={(value) => setCode(value)}
                         style={{ flex: 1 }}
+                        onFocus={() => {
+                            setCameraEnebled(false);
+                        }}
                     />
                     <Button
                         style={{
@@ -81,6 +90,7 @@ const EditProduct = ({ navigation, route }) => {
                             />
                         )}
                         onPress={() => {
+                            Keyboard.dismiss();
                             setCameraEnebled(!cameraEnabled);
                         }}
                     />
@@ -90,7 +100,7 @@ const EditProduct = ({ navigation, route }) => {
                     <Camera
                         captureAudio={false}
                         type="back"
-                        ratio="7:16"
+                        ratio="21:9"
                         autoFocus="on"
                         flashMode="auto"
                         googleVisionBarcodeType={
