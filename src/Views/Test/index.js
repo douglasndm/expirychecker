@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Button } from 'react-native';
 import { addDays } from 'date-fns';
 import Realm from '../../Services/Realm';
+
+import { Modal } from 'react-native-paper';
+import Camera from '../../Components/Camera';
 
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
@@ -63,28 +66,51 @@ const Test = () => {
         }
     }
 
+    const [cameraEnabled, setCameraEnabled] = useState(false);
+
+    useEffect(() => {
+
+    }, [])
+
     return (
-        <View>
-            <Category>
-                <Button title="Disparar notificação" onPress={() => note()} />
-            </Category>
+        <>
+            <Modal
+                visible={cameraEnabled}
+                onDismiss={() => setCameraEnabled(false)}>
+                <Camera />
+            </Modal>
 
-            <Category>
-                <Button
-                    title="Load with sample data"
-                    onPress={() => sampleData()}
-                />
-            </Category>
+            <View>
+                <Category>
+                    <Button title="Disparar notificação" onPress={() => note()} />
+                </Category>
 
-            <Category>
-                <Button
-                    title="Delete all products"
-                    onPress={() => {
-                        deleteProducts();
-                    }}
-                />
-            </Category>
-        </View>
+                <Category>
+                    <Button
+                        title="Load with sample data"
+                        onPress={() => sampleData()}
+                    />
+                </Category>
+
+                <Category>
+                    <Button
+                        title="Delete all products"
+                        onPress={() => {
+                            deleteProducts();
+                        }}
+                    />
+                </Category>
+
+                <Category>
+                    <Button
+                        title="Open camera"
+                        onPress={() => {
+                            setCameraEnabled(true);
+                        }}
+                    />
+                </Category>
+            </View>
+        </>
     );
 };
 
