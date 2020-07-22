@@ -3,7 +3,7 @@ import { RNCamera } from 'react-native-camera';
 import DatePicker from 'react-native-date-picker';
 
 export const Container = styled.View`
-    padding: 16px;
+    padding: 16px 16px 0 16px;
 
     flex: 1;
     flex-direction: column;
@@ -44,6 +44,7 @@ export const ExpDateLabel = styled.Text`
 
 export const CustomDatePicker = styled(DatePicker)`
     background: white;
+    z-index: 1;
 `;
 
 export const Camera = styled(RNCamera)`
@@ -53,7 +54,7 @@ export const Camera = styled(RNCamera)`
     margin-bottom: 10px;
 
     width: 100%;
-    height: 25%;
+    height: 5%;
 `;
 
 export const Button = styled.TouchableOpacity`
