@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button } from 'react-native';
 import { addDays } from 'date-fns';
+import { Modal } from 'react-native-paper';
+import BackgroundFetch from 'react-native-background-fetch';
 import Realm from '../../Services/Realm';
 
-import { Modal } from 'react-native-paper';
 import Camera from '../../Components/Camera';
 
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
@@ -68,21 +69,23 @@ const Test = () => {
 
     const [cameraEnabled, setCameraEnabled] = useState(false);
 
-    useEffect(() => {
-
-    }, [])
+    useEffect(() => {}, []);
 
     return (
         <>
             <Modal
                 visible={cameraEnabled}
-                onDismiss={() => setCameraEnabled(false)}>
+                onDismiss={() => setCameraEnabled(false)}
+            >
                 <Camera />
             </Modal>
 
-            <View>
+            <View style={{ zIndex: 1 }}>
                 <Category>
-                    <Button title="Disparar notificação" onPress={() => note()} />
+                    <Button
+                        title="Disparar notificação"
+                        onPress={() => note()}
+                    />
                 </Category>
 
                 <Category>
@@ -106,6 +109,65 @@ const Test = () => {
                         title="Open camera"
                         onPress={() => {
                             setCameraEnabled(true);
+                        }}
+                    />
+                </Category>
+
+                <Category>
+                    <Button
+                        title="Background job"
+                        onPress={() => {
+                            // Configure it.
+                            BackgroundFetch.configure(
+                                {
+                                    minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
+                                    // Android options
+                                    forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
+                                    stopOnTerminate: false,
+                                    startOnBoot: true,
+                                    requiredNetworkType:
+                                        BackgroundFetch.NETWORK_TYPE_NONE, // Default
+                                    requiresCharging: false, // Default
+                                    requiresDeviceIdle: false, // Default
+                                    requiresBatteryNotLow: false, // Default
+                                    requiresStorageNotLow: false, // Default
+                                },
+                                async (taskId) => {
+                                    getAllProductsNextToExp();
+                                    console.log(
+                                        '[js] Received background-fetch event: ',
+                                        taskId
+                                    );
+                                    // Required: Signal completion of your task to native code
+                                    // If you fail to do this, the OS can terminate your app
+                                    // or assign battery-blame for consuming too much background-time
+                                    BackgroundFetch.finish(taskId);
+                                },
+                                (error) => {
+                                    console.log(
+                                        '[js] RNBackgroundFetch failed to start'
+                                    );
+                                }
+                            );
+
+                            // Optional: Query the authorization status.
+                            BackgroundFetch.status((status) => {
+                                switch (status) {
+                                    case BackgroundFetch.STATUS_RESTRICTED:
+                                        console.log(
+                                            'BackgroundFetch restricted'
+                                        );
+                                        break;
+                                    case BackgroundFetch.STATUS_DENIED:
+                                        console.log('BackgroundFetch denied');
+                                        break;
+                                    case BackgroundFetch.STATUS_AVAILABLE:
+                                        console.log(
+                                            'BackgroundFetch is enabled'
+                                        );
+                                        break;
+                                }
+                            });
                         }}
                     />
                 </Category>
