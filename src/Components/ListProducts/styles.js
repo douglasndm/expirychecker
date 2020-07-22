@@ -5,7 +5,7 @@ export const Container = styled.View`
 `;
 export const HeaderContainer = styled.View`
     width: 100%;
-    padding: 25px;
+    padding: 15px 30px 15px 0px;
 
     justify-content: center;
     align-items: center;
@@ -13,6 +13,10 @@ export const HeaderContainer = styled.View`
     background-color: #14d48f;
 
     margin-bottom: 15px;
+
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const TextLogo = styled.Text`

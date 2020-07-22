@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorange from '@react-native-community/async-storage';
+import { Button } from 'react-native-paper';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ProductItem from '../Product';
 
@@ -52,6 +55,18 @@ export default function ListProducts({ products, isHome }) {
             <View>
                 {isHome ? (
                     <HeaderContainer>
+                        <Button
+                            color="transparent"
+                            icon={() => (
+                                <Ionicons
+                                    name="menu-outline"
+                                    size={38}
+                                    color="white"
+                                />
+                            )}
+                            accessibilityLabel="Botão para abrir o menu"
+                            onPress={() => navigation.toggleDrawer()}
+                        />
                         <TextLogo>Controle de validade</TextLogo>
                     </HeaderContainer>
                 ) : null}
