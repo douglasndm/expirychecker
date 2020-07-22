@@ -112,10 +112,10 @@ export default function ListProducts({ products, isHome }) {
                 data={products}
                 keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
                     return (
                         <>
-                            {item.id % 5 === 0 ? (
+                            {index !== 0 && index % 5 === 0 ? (
                                 <BannerAd
                                     unitId={adUnitId}
                                     size={BannerAdSize.FULL_BANNER}
