@@ -16,7 +16,7 @@ const About = () => {
 
             <AboutSection>
                 <ApplicationName>Controle de Validade</ApplicationName>
-                <ApplicationVersion>Versão 0.2.1.0</ApplicationVersion>
+                <ApplicationVersion>Versão 1.0</ApplicationVersion>
             </AboutSection>
 
             <AboutSection>
