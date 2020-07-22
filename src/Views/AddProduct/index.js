@@ -134,128 +134,140 @@ const AddProduct = ({ navigation }) => {
 
     return (
         <>
-            <Container>
-                {cameraEnabled ? (
-                    <Camera
-                        captureAudio={false}
-                        type="back"
-                        ratio="7:16"
-                        autoFocus="on"
-                        flashMode="auto"
-                        googleVisionBarcodeType={
-                            Camera.Constants.GoogleVisionBarcodeDetection
-                                .BarcodeType.EAN_13
-                        }
-                        googleVisionBarcodeMode={
-                            Camera.Constants.GoogleVisionBarcodeDetection
-                                .BarcodeMode.ALTERNATE
-                        }
-                        barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                        onBarCodeRead={({ data }) => {
-                            setCode(data);
-                            setCameraEnebled(false);
-                        }}
-                    />
-                ) : null}
-
-                <ScrollView>
-                    <PageTitle>Adicionar um novo produto</PageTitle>
-
-                    <InputContainer>
-                        <InputText
-                            placeholder="Nome do produto"
-                            accessibilityLabel="Campo de texto para nome do produto"
-                            value={name}
-                            onChangeText={(value) => {
-                                setName(value);
-                            }}
-                            onFocus={() => {
+            {cameraEnabled ? (
+                <>
+                    <View style={{ justifyContent: 'center', flex: 1 }}>
+                        <Camera
+                            captureAudio={false}
+                            type="back"
+                            autoFocus="on"
+                            flashMode="auto"
+                            googleVisionBarcodeType={
+                                Camera.Constants.GoogleVisionBarcodeDetection
+                                    .BarcodeType.EAN_13
+                            }
+                            googleVisionBarcodeMode={
+                                Camera.Constants.GoogleVisionBarcodeDetection
+                                    .BarcodeMode.ALTERNATE
+                            }
+                            barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
+                            onBarCodeRead={({ data }) => {
+                                setCode(data);
                                 setCameraEnebled(false);
                             }}
                         />
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <InputText
-                                placeholder="Código"
-                                accessibilityLabel="Campo de texto para código de barras do produto"
-                                value={code}
-                                onChangeText={(value) => setCode(value)}
-                                style={{ flex: 1 }}
-                                onFocus={() => {
-                                    setCameraEnebled(false);
-                                }}
-                            />
-                            <ButtonPaper
-                                style={{
-                                    alignSelf: 'center',
-                                    marginBottom: 8,
-                                }}
-                                icon={() => (
-                                    <Ionicons
-                                        name="camera-outline"
-                                        size={42}
-                                        color="black"
-                                    />
-                                )}
-                                onPress={() => {
-                                    Keyboard.dismiss();
-                                    setCameraEnebled(!cameraEnabled);
-                                }}
-                            />
-                        </View>
-
-                        <InputGroup>
-                            <InputText
-                                placeholder="Lote"
-                                accessibilityLabel="Campo de texto para lote do produto"
-                                value={lote}
-                                onChangeText={(value) => setLote(value)}
-                                style={{ flex: 3, marginRight: 5 }}
-                                onFocus={() => {
-                                    setCameraEnebled(false);
-                                }}
-                            />
-                            <InputText
-                                style={{ flex: 2 }}
-                                placeholder="Quantidade"
-                                accessibilityLabel="Campo de texto para quantidade do produto"
-                                keyboardType="numeric"
-                                value={String(amount)}
-                                onChangeText={(value) => setAmount(value)}
-                                onFocus={() => {
-                                    setCameraEnebled(false);
-                                }}
-                            />
-                        </InputGroup>
-
-                        <ExpDateGroup>
-                            <ExpDateLabel>Data de vencimento</ExpDateLabel>
-                            <CustomDatePicker
-                                accessibilityLabel="Campo de seleção da data de vencimento do produto"
-                                date={expDate}
-                                onDateChange={(value) => {
-                                    setExpDate(value);
-                                }}
-                                fadeToColor="none"
-                                mode="date"
-                                locale="pt-br"
-                            />
-                        </ExpDateGroup>
-                    </InputContainer>
+                    </View>
 
                     <Button
-                        accessibilityLabel="Botão para salvar o novo produto"
-                        onPress={() => handleSave()}
+                        style={{
+                            alignSelf: 'center',
+                        }}
+                        onPress={() => setCameraEnebled(false)}
                     >
-                        <ButtonText>Salvar</ButtonText>
+                        <ButtonText>Fechar</ButtonText>
                     </Button>
-                </ScrollView>
-            </Container>
+                </>
+            ) : (
+                <Container>
+                    <ScrollView>
+                        <PageTitle>Adicionar um novo produto</PageTitle>
+
+                        <InputContainer>
+                            <InputText
+                                placeholder="Nome do produto"
+                                accessibilityLabel="Campo de texto para nome do produto"
+                                value={name}
+                                onChangeText={(value) => {
+                                    setName(value);
+                                }}
+                                onFocus={() => {
+                                    setCameraEnebled(false);
+                                }}
+                            />
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <InputText
+                                    placeholder="Código"
+                                    accessibilityLabel="Campo de texto para código de barras do produto"
+                                    value={code}
+                                    onChangeText={(value) => setCode(value)}
+                                    style={{ flex: 1 }}
+                                    onFocus={() => {
+                                        setCameraEnebled(false);
+                                    }}
+                                />
+                                <ButtonPaper
+                                    style={{
+                                        alignSelf: 'center',
+                                        marginBottom: 8,
+                                    }}
+                                    icon={() => (
+                                        <Ionicons
+                                            name="camera-outline"
+                                            size={42}
+                                            color="black"
+                                        />
+                                    )}
+                                    onPress={() => {
+                                        Keyboard.dismiss();
+                                        setCameraEnebled(!cameraEnabled);
+                                    }}
+                                />
+                            </View>
+
+                            <InputGroup>
+                                <InputText
+                                    placeholder="Lote"
+                                    accessibilityLabel="Campo de texto para lote do produto"
+                                    value={lote}
+                                    onChangeText={(value) => setLote(value)}
+                                    style={{ flex: 3, marginRight: 5 }}
+                                    onFocus={() => {
+                                        setCameraEnebled(false);
+                                    }}
+                                />
+                                <InputText
+                                    style={{ flex: 2 }}
+                                    placeholder="Quantidade"
+                                    accessibilityLabel="Campo de texto para quantidade do produto"
+                                    keyboardType="numeric"
+                                    value={String(amount)}
+                                    onChangeText={(value) => setAmount(value)}
+                                    onFocus={() => {
+                                        setCameraEnebled(false);
+                                    }}
+                                />
+                            </InputGroup>
+
+                            <ExpDateGroup>
+                                <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                                <CustomDatePicker
+                                    accessibilityLabel="Campo de seleção da data de vencimento do produto"
+                                    date={expDate}
+                                    onDateChange={(value) => {
+                                        setExpDate(value);
+                                    }}
+                                    fadeToColor="none"
+                                    mode="date"
+                                    locale="pt-br"
+                                />
+                            </ExpDateGroup>
+                        </InputContainer>
+
+                        <Button
+                            accessibilityLabel="Botão para salvar o novo produto"
+                            onPress={() => handleSave()}
+                        >
+                            <ButtonText>Salvar</ButtonText>
+                        </Button>
+                    </ScrollView>
+                </Container>
+            )}
 
             <Dialog
                 visible={productAlreadyExists}
