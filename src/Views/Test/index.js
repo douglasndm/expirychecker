@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button } from 'react-native';
 import { addDays } from 'date-fns';
-import { Modal } from 'react-native-paper';
 import BackgroundFetch from 'react-native-background-fetch';
 import Realm from '../../Services/Realm';
-
-import Camera from '../../Components/Camera';
 
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
@@ -67,20 +64,9 @@ const Test = () => {
         }
     }
 
-    const [cameraEnabled, setCameraEnabled] = useState(false);
-
-    useEffect(() => {}, []);
-
     return (
         <>
-            <Modal
-                visible={cameraEnabled}
-                onDismiss={() => setCameraEnabled(false)}
-            >
-                <Camera />
-            </Modal>
-
-            <View style={{ zIndex: 1 }}>
+            <View>
                 <Category>
                     <Button
                         title="Disparar notificação"
@@ -106,15 +92,6 @@ const Test = () => {
 
                 <Category>
                     <Button
-                        title="Open camera"
-                        onPress={() => {
-                            setCameraEnabled(true);
-                        }}
-                    />
-                </Category>
-
-                <Category>
-                    <Button
                         title="Background job"
                         onPress={() => {
                             // Configure it.
@@ -122,7 +99,7 @@ const Test = () => {
                                 {
                                     minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
                                     // Android options
-                                    forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
+                                    forceAlarmManager: true, // <-- Set true to bypass JobScheduler.
                                     stopOnTerminate: false,
                                     startOnBoot: true,
                                     requiredNetworkType:
