@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from 'react-native-paper';
 import Realm from '../../Services/Realm';
 
 import {
@@ -20,6 +21,8 @@ import { ProductHeader, ProductName, ProductCode } from './styles';
 const AddLote = ({ route }) => {
     const { productId } = route.params;
     const navigation = useNavigation();
+
+    const theme = useTheme();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -70,26 +73,43 @@ const AddLote = ({ route }) => {
     }, []);
 
     return (
-        <Container>
+        <Container style={{ backgroundColor: theme.colors.background }}>
             <ScrollView>
-                <PageTitle>Adicionar um lote</PageTitle>
+                <PageTitle style={{ color: theme.colors.text }}>
+                    Adicionar um lote
+                </PageTitle>
 
                 <InputContainer>
                     <ProductHeader>
-                        <ProductName>{name}</ProductName>
-                        <ProductCode>{code}</ProductCode>
+                        <ProductName style={{ color: theme.colors.text }}>
+                            {name}
+                        </ProductName>
+                        <ProductCode style={{ color: theme.colors.text }}>
+                            {code}
+                        </ProductCode>
                     </ProductHeader>
 
                     <InputGroup>
                         <InputText
+                            style={{
+                                flex: 3,
+                                marginRight: 5,
+                                backgroundColor: theme.colors.inputBackground,
+                                color: theme.colors.inputText,
+                            }}
                             placeholder="Lote"
+                            placeholderTextColor={theme.colors.subText}
                             value={lote}
                             onChangeText={(value) => setLote(value)}
-                            style={{ flex: 3, marginRight: 5 }}
                         />
                         <InputText
-                            style={{ flex: 2 }}
+                            style={{
+                                flex: 2,
+                                backgroundColor: theme.colors.inputBackground,
+                                color: theme.colors.inputText,
+                            }}
                             placeholder="Quantidade"
+                            placeholderTextColor={theme.colors.subText}
                             keyboardType="numeric"
                             value={String(amount)}
                             onChangeText={(value) => setAmount(value)}
@@ -97,8 +117,14 @@ const AddLote = ({ route }) => {
                     </InputGroup>
 
                     <ExpDateGroup>
-                        <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                        <ExpDateLabel style={{ color: theme.colors.subText }}>
+                            Data de vencimento
+                        </ExpDateLabel>
                         <CustomDatePicker
+                            style={{
+                                backgroundColor: theme.colors.productBackground,
+                            }}
+                            textColor={theme.colors.subText}
                             date={expDate}
                             onDateChange={(value) => {
                                 setExpDate(value);
@@ -109,7 +135,10 @@ const AddLote = ({ route }) => {
                         />
                     </ExpDateGroup>
                 </InputContainer>
-                <Button onPress={() => handleSave()}>
+                <Button
+                    onPress={() => handleSave()}
+                    style={{ backgroundColor: theme.colors.accent }}
+                >
                     <ButtonText>Salvar</ButtonText>
                 </Button>
             </ScrollView>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import { RadioButton, useTheme } from 'react-native-paper';
 import Realm from '../../Services/Realm';
 
 import {
@@ -20,6 +20,8 @@ import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
 const EditLote = ({ route, navigation }) => {
     const { productId, loteId } = route.params;
+
+    const theme = useTheme();
 
     const [product, setProduct] = useState({});
 
@@ -78,26 +80,43 @@ const EditLote = ({ route, navigation }) => {
     }, []);
 
     return (
-        <Container>
+        <Container style={{ backgroundColor: theme.colors.background }}>
             <ScrollView>
-                <PageTitle>Editar lote</PageTitle>
+                <PageTitle style={{ color: theme.colors.text }}>
+                    Editar lote
+                </PageTitle>
 
                 <InputContainer>
                     <ProductHeader>
-                        <ProductName>{product.name}</ProductName>
-                        <ProductCode>{product.code}</ProductCode>
+                        <ProductName style={{ color: theme.colors.text }}>
+                            {product.name}
+                        </ProductName>
+                        <ProductCode style={{ color: theme.colors.text }}>
+                            {product.code}
+                        </ProductCode>
                     </ProductHeader>
 
                     <InputGroup>
                         <InputText
+                            style={{
+                                flex: 3,
+                                marginRight: 5,
+                                backgroundColor: theme.colors.inputBackground,
+                                color: theme.colors.inputText,
+                            }}
                             placeholder="Lote"
+                            placeholderTextColor={theme.colors.subText}
                             value={lote}
                             onChangeText={(value) => setLote(value)}
-                            style={{ flex: 3, marginRight: 5 }}
                         />
                         <InputText
-                            style={{ flex: 2 }}
+                            style={{
+                                flex: 2,
+                                backgroundColor: theme.colors.inputBackground,
+                                color: theme.colors.inputText,
+                            }}
                             placeholder="Quantidade"
+                            placeholderTextColor={theme.colors.subText}
                             keyboardType="numeric"
                             value={String(amount)}
                             onChangeText={(value) => setAmount(value)}
@@ -124,7 +143,9 @@ const EditLote = ({ route, navigation }) => {
                                 onPress={() => setTratado(true)}
                                 color="#14d48f"
                             />
-                            <Text>Tratado</Text>
+                            <Text style={{ color: theme.colors.text }}>
+                                Tratado
+                            </Text>
                         </View>
                         <View
                             style={{
@@ -140,13 +161,21 @@ const EditLote = ({ route, navigation }) => {
                                 onPress={() => setTratado(false)}
                                 color="#14d48f"
                             />
-                            <Text>Não tratado</Text>
+                            <Text style={{ color: theme.colors.text }}>
+                                Não tratado
+                            </Text>
                         </View>
                     </View>
 
                     <ExpDateGroup>
-                        <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                        <ExpDateLabel style={{ color: theme.colors.subText }}>
+                            Data de vencimento
+                        </ExpDateLabel>
                         <CustomDatePicker
+                            style={{
+                                backgroundColor: theme.colors.productBackground,
+                            }}
+                            textColor={theme.colors.inputText}
                             date={expDate}
                             onDateChange={(value) => {
                                 setExpDate(value);
@@ -157,7 +186,10 @@ const EditLote = ({ route, navigation }) => {
                         />
                     </ExpDateGroup>
                 </InputContainer>
-                <Button onPress={() => handleSave()}>
+                <Button
+                    onPress={() => handleSave()}
+                    style={{ backgroundColor: theme.colors.accent }}
+                >
                     <ButtonText>Salvar</ButtonText>
                 </Button>
             </ScrollView>

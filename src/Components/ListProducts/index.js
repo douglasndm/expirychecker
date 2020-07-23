@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorange from '@react-native-community/async-storage';
-import { Button } from 'react-native-paper';
+import { useTheme, Button } from 'react-native-paper';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
@@ -34,6 +34,7 @@ async function getDaysToBeNext() {
 
 export default function ListProducts({ products, isHome }) {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     const [daysToBeNext, setDaysToBeNext] = useState();
 
@@ -54,7 +55,9 @@ export default function ListProducts({ products, isHome }) {
         return (
             <View>
                 {isHome ? (
-                    <HeaderContainer>
+                    <HeaderContainer
+                        style={{ backgroundColor: theme.colors.accent }}
+                    >
                         <Button
                             color="transparent"
                             icon={() => (
@@ -85,7 +88,13 @@ export default function ListProducts({ products, isHome }) {
 
     const EmptyList = () => {
         return (
-            <Text style={{ marginLeft: 15, marginRight: 15 }}>
+            <Text
+                style={{
+                    marginLeft: 15,
+                    marginRight: 15,
+                    color: theme.colors.text,
+                }}
+            >
                 Não há nenhum produto cadastrado ainda...
             </Text>
         );
@@ -95,6 +104,7 @@ export default function ListProducts({ products, isHome }) {
         if (products.length > 5 && isHome) {
             return (
                 <ButtonLoadMore
+                    style={{ backgroundColor: theme.colors.accent }}
                     onPress={() => {
                         navigation.navigate('AllProducts');
                     }}
@@ -109,6 +119,7 @@ export default function ListProducts({ products, isHome }) {
         return (
             <>
                 <ButtonLoadMore
+                    style={{ backgroundColor: theme.colors.accent }}
                     onPress={() => {
                         navigation.push('AddProduct');
                     }}
@@ -122,7 +133,7 @@ export default function ListProducts({ products, isHome }) {
     }
 
     return (
-        <Container>
+        <Container style={{ backgroundColor: theme.colors.background }}>
             <FlatList
                 data={products}
                 keyExtractor={(item) => String(item.id)}

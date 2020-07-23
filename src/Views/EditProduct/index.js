@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Keyboard } from 'react-native';
 
-import { Button as ButtonPaper } from 'react-native-paper';
+import { Button as ButtonPaper, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
@@ -19,6 +19,8 @@ import { Camera } from './styles';
 
 const EditProduct = ({ navigation, route }) => {
     const { product } = route.params;
+
+    const theme = useTheme();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -52,7 +54,13 @@ const EditProduct = ({ navigation, route }) => {
         <>
             {cameraEnabled ? (
                 <>
-                    <View style={{ justifyContent: 'center', flex: 1 }}>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            flex: 1,
+                            backgroundColor: theme.colors.background,
+                        }}
+                    >
                         <Camera
                             captureAudio={false}
                             type="back"
@@ -84,12 +92,19 @@ const EditProduct = ({ navigation, route }) => {
                     </Button>
                 </>
             ) : (
-                <Container>
-                    <PageTitle>Editar produto</PageTitle>
+                <Container style={{ backgroundColor: theme.colors.background }}>
+                    <PageTitle style={{ color: theme.colors.text }}>
+                        Editar produto
+                    </PageTitle>
 
                     <InputContainer>
                         <InputText
+                            style={{
+                                backgroundColor: theme.colors.inputBackground,
+                                color: theme.colors.text,
+                            }}
                             placeholder="Nome do produto"
+                            placeholderTextColor={theme.colors.subText}
                             accessibilityLabel="Campo de texto para nome do produto"
                             value={name}
                             onChangeText={(value) => {
@@ -107,11 +122,17 @@ const EditProduct = ({ navigation, route }) => {
                             }}
                         >
                             <InputText
-                                placeholder="Código"
+                                style={{
+                                    flex: 1,
+                                    backgroundColor:
+                                        theme.colors.inputBackground,
+                                    color: theme.colors.text,
+                                }}
+                                placeholder="Código do produto"
+                                placeholderTextColor={theme.colors.subText}
                                 accessibilityLabel="Campo de texto para código de barras do produto"
                                 value={code}
                                 onChangeText={(value) => setCode(value)}
-                                style={{ flex: 1 }}
                                 onFocus={() => {
                                     setCameraEnebled(false);
                                 }}
@@ -125,7 +146,7 @@ const EditProduct = ({ navigation, route }) => {
                                     <Ionicons
                                         name="camera-outline"
                                         size={42}
-                                        color="black"
+                                        color={theme.colors.text}
                                     />
                                 )}
                                 onPress={() => {
@@ -134,33 +155,6 @@ const EditProduct = ({ navigation, route }) => {
                                 }}
                             />
                         </View>
-
-                        {cameraEnabled ? (
-                            <Camera
-                                captureAudio={false}
-                                type="back"
-                                ratio="21:9"
-                                autoFocus="on"
-                                flashMode="auto"
-                                googleVisionBarcodeType={
-                                    Camera.Constants
-                                        .GoogleVisionBarcodeDetection
-                                        .BarcodeType.EAN_13
-                                }
-                                googleVisionBarcodeMode={
-                                    Camera.Constants
-                                        .GoogleVisionBarcodeDetection
-                                        .BarcodeMode.ALTERNATE
-                                }
-                                barCodeTypes={[
-                                    Camera.Constants.BarCodeType.ean13,
-                                ]}
-                                onBarCodeRead={({ data }) => {
-                                    setCode(data);
-                                    setCameraEnebled(false);
-                                }}
-                            />
-                        ) : null}
 
                         <View
                             style={{
@@ -172,11 +166,11 @@ const EditProduct = ({ navigation, route }) => {
                                 icon={() => (
                                     <Ionicons
                                         name="save-outline"
-                                        color="black"
+                                        color={theme.colors.text}
                                         size={22}
                                     />
                                 )}
-                                color="#14d48f"
+                                color={theme.colors.accent}
                                 onPress={() => {
                                     updateProduct();
                                 }}
@@ -187,11 +181,11 @@ const EditProduct = ({ navigation, route }) => {
                                 icon={() => (
                                     <Ionicons
                                         name="exit-outline"
-                                        color="black"
+                                        color={theme.colors.text}
                                         size={22}
                                     />
                                 )}
-                                color="#14d48f"
+                                color={theme.colors.accent}
                                 onPress={() => {
                                     navigation.goBack();
                                 }}
