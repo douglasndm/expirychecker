@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import Crashes from 'appcenter-crashes';
 import Analytics from 'appcenter-analytics';
@@ -9,6 +9,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 
 import './Services/ReactotronConfig';
+
+import { getDarkModeEnabled } from './Functions/Settings';
+
+import DarkTheme from './Themes/Dark';
+import LightTheme from './Themes/Light';
 
 import Routes from './Routes/DrawerContainer';
 
@@ -41,11 +46,20 @@ admob()
     });
 
 export default () => {
+    const [theme, setTheme] = useState(LightTheme);
+
+    async function getTheme() {
+        const result = (await getDarkModeEnabled()) ? DarkTheme : LightTheme;
+
+        setTheme(result);
+    }
+    getTheme();
+
     return (
-        <PaperProvider>
+        <PaperProvider theme={theme}>
             <Portal>
                 <NavigationContainer>
-                    <StatusBar backgroundColor="#14d48f" />
+                    <StatusBar backgroundColor={theme.colors.accent} />
                     <Routes />
                 </NavigationContainer>
             </Portal>
