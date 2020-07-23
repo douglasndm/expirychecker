@@ -9,6 +9,7 @@ import EnvConfig from 'react-native-config';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ProductItem from '../Product';
+import GenericButton from '../Button';
 
 import {
     Container,
@@ -16,8 +17,6 @@ import {
     TextLogo,
     CategoryDetails,
     CategoryDetailsText,
-    ButtonLoadMore,
-    ButtonLoadMoreText,
 } from './styles';
 
 async function getDaysToBeNext() {
@@ -103,32 +102,22 @@ export default function ListProducts({ products, isHome }) {
     function FooterButton() {
         if (products.length > 5 && isHome) {
             return (
-                <ButtonLoadMore
-                    style={{ backgroundColor: theme.colors.accent }}
+                <GenericButton
+                    text="Mostrar todos os produtos"
                     onPress={() => {
-                        navigation.navigate('AllProducts');
+                        navigation.push('AllProducts');
                     }}
-                >
-                    <ButtonLoadMoreText>
-                        Mostrar todos os produtos
-                    </ButtonLoadMoreText>
-                </ButtonLoadMore>
+                />
             );
         }
 
         return (
-            <>
-                <ButtonLoadMore
-                    style={{ backgroundColor: theme.colors.accent }}
-                    onPress={() => {
-                        navigation.push('AddProduct');
-                    }}
-                >
-                    <ButtonLoadMoreText>
-                        Cadastrar um produto
-                    </ButtonLoadMoreText>
-                </ButtonLoadMore>
-            </>
+            <GenericButton
+                text="Cadastrar um produto"
+                onPress={() => {
+                    navigation.push('AddProduct');
+                }}
+            />
         );
     }
 
