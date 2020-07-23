@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Drawer } from 'react-native-paper';
+import { Drawer, useTheme } from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -11,12 +11,15 @@ import { MenuHeader, LogoImage } from './styles';
 
 export function DrawerMenu(props) {
     const { navigation } = props;
+    const theme = useTheme();
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
             <DrawerContentScrollView {...props}>
                 <View>
-                    <MenuHeader>
+                    <MenuHeader
+                        style={{ backgroundColor: theme.colors.accent }}
+                    >
                         <LogoImage resizeMode="center" source={Logo} />
                     </MenuHeader>
 
@@ -25,29 +28,36 @@ export function DrawerMenu(props) {
                             icon={() => (
                                 <Ionicons
                                     name="home-outline"
-                                    color="black"
+                                    color={theme.colors.text}
                                     size={22}
                                 />
                             )}
                             label="Início"
+                            labelStyle={{ color: theme.colors.text }}
                             onPress={() => navigation.navigate('Home')}
                         />
                         <DrawerItem
                             icon={() => (
-                                <Ionicons name="add" color="black" size={22} />
+                                <Ionicons
+                                    name="add"
+                                    color={theme.colors.text}
+                                    size={22}
+                                />
                             )}
                             label="Adicionar produto"
+                            labelStyle={{ color: theme.colors.text }}
                             onPress={() => navigation.navigate('AddProduct')}
                         />
                         <DrawerItem
                             icon={() => (
                                 <Ionicons
                                     name="apps-outline"
-                                    color="black"
+                                    color={theme.colors.text}
                                     size={22}
                                 />
                             )}
                             label="Todos os produtos"
+                            labelStyle={{ color: theme.colors.text }}
                             onPress={() => navigation.navigate('AllProducts')}
                         />
                     </Drawer.Section>
@@ -58,22 +68,24 @@ export function DrawerMenu(props) {
                     icon={() => (
                         <Ionicons
                             name="settings-outline"
-                            color="black"
+                            color={theme.colors.text}
                             size={22}
                         />
                     )}
                     label="Configurações"
+                    labelStyle={{ color: theme.colors.text }}
                     onPress={() => navigation.navigate('Settings')}
                 />
                 <DrawerItem
                     icon={() => (
                         <Ionicons
                             name="help-circle-outline"
-                            color="black"
+                            color={theme.colors.text}
                             size={22}
                         />
                     )}
                     label="Sobre"
+                    labelStyle={{ color: theme.colors.text }}
                     onPress={() => navigation.navigate('About')}
                 />
 
@@ -82,11 +94,12 @@ export function DrawerMenu(props) {
                         icon={() => (
                             <Ionicons
                                 name="bug-outline"
-                                color="black"
+                                color={theme.colors.text}
                                 size={22}
                             />
                         )}
                         label="Test"
+                        labelStyle={{ color: theme.colors.text }}
                         onPress={() => navigation.navigate('Test')}
                     />
                 ) : null}

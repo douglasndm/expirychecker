@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { FAB } from 'react-native-paper';
+import { FAB, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const FABProducts = () => {
     const [fabOpen, setFabOpen] = useState(false);
     const navigation = useNavigation();
 
+    const theme = useTheme();
+
     return (
         <FAB.Group
             actions={[
                 {
-                    icon: () => (
-                        <Ionicons name="add" size={24} color="#14d48f" />
-                    ),
+                    style: {
+                        backgroundColor: theme.colors.accent,
+                    },
+                    color: theme.colors.accent,
+                    icon: () => <Ionicons name="add" size={24} color="white" />,
                     label: 'Adicionar produto',
                     onPress: () => {
                         navigation.push('AddProduct');
@@ -26,7 +30,7 @@ const FABProducts = () => {
             onStateChange={() => setFabOpen(!fabOpen)}
             visible
             onPress={() => setFabOpen(!fabOpen)}
-            fabStyle={{ backgroundColor: '#14d48f' }}
+            fabStyle={{ backgroundColor: theme.colors.accent }}
         />
     );
 };
