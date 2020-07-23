@@ -4,12 +4,14 @@ import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import Crashes from 'appcenter-crashes';
 import Analytics from 'appcenter-analytics';
 import { enableScreens } from 'react-native-screens';
+import BackgroundJob from 'react-native-background-job';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 
 import './Services/ReactotronConfig';
 
+import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
 import { getDarkModeEnabled } from './Functions/Settings';
 
 import DarkTheme from './Themes/Dark';
@@ -44,6 +46,28 @@ admob()
         if (__DEV__) console.tron(err);
         else throw new Error(err);
     });
+
+const backgroundJob = {
+    jobKey: 'backgroundNotification',
+    job: () => {
+        setTimeout(() => {
+            console.log('dentro do time');
+        }, 2000);
+        console.log('HAHA');
+
+        getAllProductsNextToExp();
+    },
+};
+
+BackgroundJob.register(backgroundJob);
+
+const backgroundSchedule = {
+    jobKey: 'backgroundNotification',
+};
+
+BackgroundJob.schedule(backgroundSchedule)
+    .then(() => console.log('Success'))
+    .catch((err) => console.err(err));
 
 export default () => {
     const [theme, setTheme] = useState(LightTheme);
