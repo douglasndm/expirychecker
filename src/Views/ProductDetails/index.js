@@ -10,6 +10,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
 
+import GenericButton from '../../Components/Button';
+
 import { getProductById } from '../../Functions/Product';
 import { sortLoteByExpDate } from '../../Functions/lotes';
 
@@ -239,6 +241,15 @@ export default ({ route, navigation }) => {
                             );
                         })}
                     </Table>
+
+                    <GenericButton
+                        text="Cadastrar novo lote"
+                        onPress={() => {
+                            navigation.push('AddLote', {
+                                productId,
+                            });
+                        }}
+                    />
                 </Container>
             </ScrollView>
 
@@ -279,14 +290,12 @@ export default ({ route, navigation }) => {
             <FAB.Group
                 actions={[
                     {
+                        style: {
+                            backgroundColor: theme.colors.accent,
+                        },
                         icon: () => (
-                            <Ionicons
-                                name="add"
-                                size={24}
-                                color={theme.colors.accent}
-                            />
+                            <Ionicons name="add" size={24} color="#FFFFFF" />
                         ),
-                        label: 'Adicionar novo lote',
                         onPress: () => {
                             navigation.push('AddLote', { productId });
                         },
@@ -298,6 +307,7 @@ export default ({ route, navigation }) => {
                 visible
                 onPress={() => setFabOpen(!fabOpen)}
                 fabStyle={{ backgroundColor: theme.colors.accent }}
+                color={theme.colors.accent}
             />
         </>
     );

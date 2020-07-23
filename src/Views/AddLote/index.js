@@ -124,7 +124,7 @@ const AddLote = ({ route }) => {
                             style={{
                                 backgroundColor: theme.colors.productBackground,
                             }}
-                            textColor={theme.colors.subText}
+                            textColor={theme.colors.inputText}
                             date={expDate}
                             onDateChange={(value) => {
                                 setExpDate(value);
