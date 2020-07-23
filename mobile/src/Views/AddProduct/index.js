@@ -285,7 +285,7 @@ const AddProduct = ({ navigation }) => {
                                         backgroundColor:
                                             theme.colors.productBackground,
                                     }}
-                                    textColor={theme.colors.text}
+                                    textColor={theme.colors.inputText}
                                     accessibilityLabel="Campo de seleção da data de vencimento do produto"
                                     date={expDate}
                                     onDateChange={(value) => {
