@@ -3,6 +3,7 @@ import TextInputMask from '@react-native-community/masked-view';
 
 export const Container = styled.View`
     padding: 16px;
+    flex: 1;
 `;
 
 export const PageTitle = styled.Text`

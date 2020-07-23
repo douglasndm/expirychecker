@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Alert } from 'react-native';
 import AsyncStorange from '@react-native-community/async-storage';
 import { StackActions } from '@react-navigation/native';
-import { FAB, Button, Dialog } from 'react-native-paper';
+import { FAB, Button, Dialog, useTheme } from 'react-native-paper';
 import { format, isPast, addDays } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
 
@@ -43,6 +43,8 @@ async function getDaysToBeNext() {
 
 export default ({ route, navigation }) => {
     const productId = route.params.id;
+
+    const theme = useTheme();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -122,15 +124,25 @@ export default ({ route, navigation }) => {
 
     return (
         <>
-            <ScrollView>
+            <ScrollView style={{ backgroundColor: theme.colors.background }}>
                 <Container>
                     <PageHeader>
                         <ProductDetailsContainer>
-                            <PageTitle>Detalhes</PageTitle>
+                            <PageTitle style={{ color: theme.colors.text }}>
+                                Detalhes
+                            </PageTitle>
 
                             <View>
-                                <ProductName>{name}</ProductName>
-                                <ProductCode>Código: {code}</ProductCode>
+                                <ProductName
+                                    style={{ color: theme.colors.text }}
+                                >
+                                    {name}
+                                </ProductName>
+                                <ProductCode
+                                    style={{ color: theme.colors.text }}
+                                >
+                                    Código: {code}
+                                </ProductCode>
                             </View>
                         </ProductDetailsContainer>
 
@@ -139,11 +151,11 @@ export default ({ route, navigation }) => {
                                 icon={() => (
                                     <Ionicons
                                         name="create-outline"
-                                        color="black"
+                                        color={theme.colors.text}
                                         size={22}
                                     />
                                 )}
-                                color="#14d48f"
+                                color={theme.colors.accent}
                                 onPress={() => handleEdit()}
                             >
                                 Editar
@@ -152,11 +164,11 @@ export default ({ route, navigation }) => {
                                 icon={() => (
                                     <Ionicons
                                         name="trash-outline"
-                                        color="black"
+                                        color={theme.colors.text}
                                         size={22}
                                     />
                                 )}
-                                color="#14d48f"
+                                color={theme.colors.accent}
                                 onPress={() => {
                                     setDeleteComponentVisible(true);
                                 }}
@@ -167,12 +179,18 @@ export default ({ route, navigation }) => {
                     </PageHeader>
 
                     <CategoryDetails>
-                        <CategoryDetailsText>
+                        <CategoryDetailsText
+                            style={{ color: theme.colors.accent }}
+                        >
                             Todos os lotes cadastrados
                         </CategoryDetailsText>
                     </CategoryDetails>
 
-                    <Table style={{ backgroundColor: '#fff' }}>
+                    <Table
+                        style={{
+                            backgroundColor: theme.colors.productBackground,
+                        }}
+                    >
                         <TableHeader>
                             <TableTitle>LOTE</TableTitle>
                             <TableTitle>VENCIMENTO</TableTitle>
@@ -188,8 +206,11 @@ export default ({ route, navigation }) => {
 
                             let bgColor = null;
 
-                            if (vencido) bgColor = '#CC4B4B';
-                            else if (proximo) bgColor = '#DDE053';
+                            if (vencido)
+                                bgColor = theme.colors.productExpiredBackground;
+                            else if (proximo)
+                                bgColor =
+                                    theme.colors.productNextToExpBackground;
 
                             return (
                                 <TableRow
@@ -226,10 +247,11 @@ export default ({ route, navigation }) => {
                 onDismiss={() => {
                     setDeleteComponentVisible(false);
                 }}
+                style={{ backgroundColor: theme.colors.productBackground }}
             >
                 <Dialog.Title>Você tem certeza?</Dialog.Title>
                 <Dialog.Content>
-                    <Text>
+                    <Text style={{ color: theme.colors.text }}>
                         Se continuar você irá apagar o produto e todos os seus
                         lotes
                     </Text>
@@ -244,7 +266,7 @@ export default ({ route, navigation }) => {
                         APAGAR
                     </Button>
                     <Button
-                        color="#14d48f"
+                        color={theme.colors.accent}
                         onPress={() => {
                             setDeleteComponentVisible(false);
                         }}
@@ -258,7 +280,11 @@ export default ({ route, navigation }) => {
                 actions={[
                     {
                         icon: () => (
-                            <Ionicons name="add" size={24} color="#14d48f" />
+                            <Ionicons
+                                name="add"
+                                size={24}
+                                color={theme.colors.accent}
+                            />
                         ),
                         label: 'Adicionar novo lote',
                         onPress: () => {
@@ -271,7 +297,7 @@ export default ({ route, navigation }) => {
                 onStateChange={() => setFabOpen(!fabOpen)}
                 visible
                 onPress={() => setFabOpen(!fabOpen)}
-                fabStyle={{ backgroundColor: '#14d48f' }}
+                fabStyle={{ backgroundColor: theme.colors.accent }}
             />
         </>
     );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Keyboard } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Button as ButtonPaper, Dialog } from 'react-native-paper';
+import { Button as ButtonPaper, Dialog, useTheme } from 'react-native-paper';
 import { setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
 import EnvConfig from 'react-native-config';
 import {
@@ -31,6 +31,8 @@ import {
 } from './styles';
 
 const AddProduct = ({ navigation }) => {
+    const theme = useTheme();
+
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
@@ -168,13 +170,21 @@ const AddProduct = ({ navigation }) => {
                     </Button>
                 </>
             ) : (
-                <Container>
+                <Container style={{ backgroundColor: theme.colors.background }}>
                     <ScrollView>
-                        <PageTitle>Adicionar um novo produto</PageTitle>
+                        <PageTitle style={{ color: theme.colors.text }}>
+                            Adicionar um novo produto
+                        </PageTitle>
 
                         <InputContainer>
                             <InputText
+                                style={{
+                                    backgroundColor:
+                                        theme.colors.inputBackground,
+                                    color: theme.colors.inputText,
+                                }}
                                 placeholder="Nome do produto"
+                                placeholderTextColor={theme.colors.subText}
                                 accessibilityLabel="Campo de texto para nome do produto"
                                 value={name}
                                 onChangeText={(value) => {
@@ -192,11 +202,17 @@ const AddProduct = ({ navigation }) => {
                                 }}
                             >
                                 <InputText
+                                    style={{
+                                        flex: 1,
+                                        backgroundColor:
+                                            theme.colors.inputBackground,
+                                        color: theme.colors.inputText,
+                                    }}
                                     placeholder="Código"
+                                    placeholderTextColor={theme.colors.subText}
                                     accessibilityLabel="Campo de texto para código de barras do produto"
                                     value={code}
                                     onChangeText={(value) => setCode(value)}
-                                    style={{ flex: 1 }}
                                     onFocus={() => {
                                         setCameraEnebled(false);
                                     }}
@@ -210,7 +226,7 @@ const AddProduct = ({ navigation }) => {
                                         <Ionicons
                                             name="camera-outline"
                                             size={42}
-                                            color="black"
+                                            color={theme.colors.text}
                                         />
                                     )}
                                     onPress={() => {
@@ -222,18 +238,31 @@ const AddProduct = ({ navigation }) => {
 
                             <InputGroup>
                                 <InputText
+                                    style={{
+                                        backgroundColor:
+                                            theme.colors.inputBackground,
+                                        color: theme.colors.inputText,
+                                        flex: 3,
+                                        marginRight: 5,
+                                    }}
                                     placeholder="Lote"
+                                    placeholderTextColor={theme.colors.subText}
                                     accessibilityLabel="Campo de texto para lote do produto"
                                     value={lote}
                                     onChangeText={(value) => setLote(value)}
-                                    style={{ flex: 3, marginRight: 5 }}
                                     onFocus={() => {
                                         setCameraEnebled(false);
                                     }}
                                 />
                                 <InputText
-                                    style={{ flex: 2 }}
+                                    style={{
+                                        flex: 2,
+                                        backgroundColor:
+                                            theme.colors.inputBackground,
+                                        color: theme.colors.inputText,
+                                    }}
                                     placeholder="Quantidade"
+                                    placeholderTextColor={theme.colors.subText}
                                     accessibilityLabel="Campo de texto para quantidade do produto"
                                     keyboardType="numeric"
                                     value={String(amount)}
@@ -245,8 +274,18 @@ const AddProduct = ({ navigation }) => {
                             </InputGroup>
 
                             <ExpDateGroup>
-                                <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                                <ExpDateLabel
+                                    style={{ color: theme.colors.subText }}
+                                >
+                                    Data de vencimento
+                                </ExpDateLabel>
+
                                 <CustomDatePicker
+                                    style={{
+                                        backgroundColor:
+                                            theme.colors.productBackground,
+                                    }}
+                                    textColor={theme.colors.text}
                                     accessibilityLabel="Campo de seleção da data de vencimento do produto"
                                     date={expDate}
                                     onDateChange={(value) => {
@@ -260,6 +299,7 @@ const AddProduct = ({ navigation }) => {
                         </InputContainer>
 
                         <Button
+                            style={{ backgroundColor: theme.colors.accent }}
                             accessibilityLabel="Botão para salvar o novo produto"
                             onPress={() => handleSave()}
                         >

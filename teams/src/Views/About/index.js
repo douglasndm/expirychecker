@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 import {
     Container,
@@ -10,24 +11,36 @@ import {
 } from './styles';
 
 const About = () => {
+    const theme = useTheme();
+
     return (
-        <Container>
-            <PageTitle>Sobre</PageTitle>
+        <Container style={{ backgroundColor: theme.colors.background }}>
+            <PageTitle style={{ color: theme.colors.text }}>Sobre</PageTitle>
 
             <AboutSection>
-                <ApplicationName>Controle de Validade</ApplicationName>
-                <ApplicationVersion>Versão 1.0</ApplicationVersion>
+                <ApplicationName style={{ color: theme.colors.text }}>
+                    Controle de Validade
+                </ApplicationName>
+                <ApplicationVersion style={{ color: theme.colors.text }}>
+                    Versão 1.1
+                </ApplicationVersion>
             </AboutSection>
 
             <AboutSection>
-                <Text>Desenvolvido por Douglas Nunes de Mattos</Text>
+                <Text style={{ color: theme.colors.text }}>
+                    Desenvolvido por Douglas Nunes de Mattos
+                </Text>
             </AboutSection>
 
             <AboutSection>
-                <Text>Logo só possível por</Text>
+                <Text style={{ color: theme.colors.text }}>
+                    Logo só possível por
+                </Text>
 
                 <View>
-                    <Text>https://www.flaticon.com/authors/srip</Text>
+                    <Text style={{ color: theme.colors.text }}>
+                        https://www.flaticon.com/authors/srip
+                    </Text>
                 </View>
             </AboutSection>
         </Container>

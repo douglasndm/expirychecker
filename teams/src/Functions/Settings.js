@@ -11,3 +11,23 @@ export async function getDaysToBeNextToExp() {
 
     return 30;
 }
+
+export async function getDarkModeEnabled() {
+    try {
+        const getDarkModeSetting = await AsyncStorange.getItem(
+            'settings/darkMode'
+        );
+
+        if (getDarkModeSetting != null) {
+            if (getDarkModeSetting === 'true') {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    } catch (err) {
+        console.warn(err);
+    }
+
+    return false;
+}
