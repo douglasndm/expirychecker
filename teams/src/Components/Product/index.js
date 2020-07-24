@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { format, isPast, formatDistanceToNow, addDays } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
 
 import {
@@ -18,34 +18,24 @@ import {
     Amount,
 } from './styles';
 
-export default ({ product, daysToBeNext }) => {
+export default ({ product, expired, nextToExp }) => {
     const navigation = useNavigation();
+
     const theme = useTheme();
 
-    const [daysToConsiderNext, setDaysToConsiderNext] = useState(0);
+    let background;
+    let foreground;
 
-    const vencido =
-        product.lotes[0] && isPast(product.lotes[0].exp_date, new Date());
-    const proximo =
-        product.lotes[0] &&
-        addDays(new Date(), daysToConsiderNext) > product.lotes[0].exp_date;
-
-    const [bgColor, setBgColor] = useState(theme.colors.productBackground);
-    const [textColor, setTextColor] = useState(theme.colors.text);
-
-    useEffect(() => {
-        setDaysToConsiderNext(daysToBeNext);
-    }, [daysToBeNext]);
-
-    useEffect(() => {
-        if (vencido) {
-            setBgColor(theme.colors.productExpiredBackground);
-            setTextColor(theme.colors.productNextOrExpiredText);
-        } else if (proximo) {
-            setBgColor(theme.colors.productNextToExpBackground);
-            setTextColor(theme.colors.productNextOrExpiredText);
-        }
-    }, [vencido, proximo]);
+    if (expired) {
+        background = theme.colors.productExpiredBackground;
+        foreground = theme.colors.productNextOrExpiredText;
+    } else if (nextToExp) {
+        background = theme.colors.productNextToExpBackground;
+        foreground = theme.colors.productNextOrExpiredText;
+    } else {
+        background = theme.colors.productBackground;
+        foreground = theme.colors.text;
+    }
 
     return (
         <Container>
@@ -53,33 +43,33 @@ export default ({ product, daysToBeNext }) => {
                 onPress={() => {
                     navigation.navigate('ProductDetails', { id: product.id });
                 }}
-                bgColor={bgColor}
+                style={{ backgroundColor: background }}
             >
                 <ProductDetails>
                     <ProductDetailsContainer>
-                        <ProductName textColor={textColor}>
+                        <ProductName style={{ color: foreground }}>
                             {product.name}
                         </ProductName>
-                        <ProductCode textColor={textColor}>
+                        <ProductCode style={{ color: foreground }}>
                             Código: {product.code}
                         </ProductCode>
-                        <ProductLote textColor={textColor}>
+                        <ProductLote style={{ color: foreground }}>
                             Lote: {product.lotes[0].lote}
                         </ProductLote>
                     </ProductDetailsContainer>
 
                     <AmountContainer>
-                        <AmountContainerText textColor={textColor}>
+                        <AmountContainerText style={{ color: foreground }}>
                             Quantidade
                         </AmountContainerText>
-                        <Amount textColor={textColor}>
+                        <Amount style={{ color: foreground }}>
                             {product.lotes[0].amount}
                         </Amount>
                     </AmountContainer>
                 </ProductDetails>
 
-                <ProductExpDate textColor={textColor}>
-                    {vencido ? 'Venceu ' : 'Vence '}
+                <ProductExpDate style={{ color: foreground }}>
+                    {expired ? 'Venceu ' : 'Vence '}
                     {formatDistanceToNow(product.lotes[0].exp_date, {
                         addSuffix: true,
                         locale: br,

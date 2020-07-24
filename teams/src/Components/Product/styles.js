@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 export const Container = styled.View``;
 
 export const Card = styled.TouchableOpacity`
-    background-color: ${(props) => (props.bgColor ? props.bgColor : 'white')};
+    background-color: white;
     margin: 3px 6px;
     border-radius: 12px;
 
@@ -18,7 +18,7 @@ export const ProductDetails = styled.View`
 `;
 
 export const ProductDetailsContainer = styled.View`
-    max-width: 75%;
+    max-width: 71%;
 `;
 
 export const ProductName = styled.Text`
