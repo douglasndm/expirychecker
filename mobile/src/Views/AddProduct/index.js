@@ -10,6 +10,8 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
+import GenericButton from '../../Components/Button';
+
 import Realm from '../../Services/Realm';
 import {
     checkIfProductAlreadyExistsByCode,
@@ -298,13 +300,11 @@ const AddProduct = ({ navigation }) => {
                             </ExpDateGroup>
                         </InputContainer>
 
-                        <Button
-                            style={{ backgroundColor: theme.colors.accent }}
+                        <GenericButton
+                            text="Salvar"
                             accessibilityLabel="Botão para salvar o novo produto"
                             onPress={() => handleSave()}
-                        >
-                            <ButtonText>Salvar</ButtonText>
-                        </Button>
+                        />
                     </ScrollView>
                 </Container>
             )}
@@ -314,10 +314,11 @@ const AddProduct = ({ navigation }) => {
                 onDismiss={() => {
                     setProductAlreadyExists(false);
                 }}
+                style={{ backgroundColor: theme.colors.background }}
             >
                 <Dialog.Title>Produto duplicado</Dialog.Title>
                 <Dialog.Content>
-                    <Text>
+                    <Text style={{ color: theme.colors.text }}>
                         Não é possível adicionar este produto pois já existe um
                         mesmo com esse código. Você pode editar o produto
                         existente adicionando um novo lote a ele ou trocar o
@@ -326,7 +327,7 @@ const AddProduct = ({ navigation }) => {
                 </Dialog.Content>
                 <Dialog.Actions>
                     <ButtonPaper
-                        color="#14d48f"
+                        color={theme.colors.accent}
                         onPress={async () => {
                             const existsProductCode = await getProductByCode(
                                 code
@@ -339,7 +340,7 @@ const AddProduct = ({ navigation }) => {
                         Editar produto existente
                     </ButtonPaper>
                     <ButtonPaper
-                        color="#14d48f"
+                        color={theme.colors.accent}
                         onPress={() => {
                             setProductAlreadyExists(false);
                         }}
