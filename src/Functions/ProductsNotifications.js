@@ -77,16 +77,14 @@ export async function getAllProductsNextToExp() {
             NotificationTitle =
                 'VOCÊ TEM PRODUTOS VENCIDOS E PRÓXIMOS AO VENCIMENTO!';
             NotificationMessage = `Você tem ${productsVencidosCount} lotes vencidos e ${productsNextToExpCount} lotes próximos ao vencimento`;
-        } else {
-            NotificationTitle = 'Tudo certo.';
-            NotificationMessage =
-                'Você não tem nenhum produto próximo ao vencimento.';
         }
 
-        Notifications.postLocalNotification({
-            title: NotificationTitle,
-            body: NotificationMessage,
-        });
+        if (NotificationTitle !== null || NotificationTitle !== '') {
+            Notifications.postLocalNotification({
+                title: NotificationTitle,
+                body: NotificationMessage,
+            });
+        }
     } catch (err) {
         console.tron(err);
     }
