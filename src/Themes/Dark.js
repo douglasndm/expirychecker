@@ -16,7 +16,7 @@ export default {
         subText: '#EAEAEA',
         textAccent: '#14d48f',
 
-        inputText: '#fff',
+        inputText: '#ffffff',
         inputBackground: '#565657',
 
         productBackground: '#565657',

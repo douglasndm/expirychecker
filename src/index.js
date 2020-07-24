@@ -47,27 +47,14 @@ admob()
         else throw new Error(err);
     });
 
+// REGISTRA O SERVIÇO QUE VAI RODAR AS NOTIFICAÇÕES
 const backgroundJob = {
     jobKey: 'backgroundNotification',
     job: () => {
-        setTimeout(() => {
-            console.log('dentro do time');
-        }, 2000);
-        console.log('HAHA');
-
         getAllProductsNextToExp();
     },
 };
-
 BackgroundJob.register(backgroundJob);
-
-const backgroundSchedule = {
-    jobKey: 'backgroundNotification',
-};
-
-BackgroundJob.schedule(backgroundSchedule)
-    .then(() => console.log('Success'))
-    .catch((err) => console.err(err));
 
 export default () => {
     const [theme, setTheme] = useState(LightTheme);
