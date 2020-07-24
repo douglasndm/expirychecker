@@ -1,12 +1,28 @@
 import React from 'react';
 import { View, Button } from 'react-native';
 import { addDays } from 'date-fns';
+import BackgroundJob from 'react-native-background-job';
+
 import Realm from '../../Services/Realm';
 
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
 
 const Test = () => {
+    function setBackgroundJob() {
+        const backgroundSchedule = {
+            jobKey: 'backgroundNotification',
+        };
+
+        BackgroundJob.schedule(backgroundSchedule)
+            .then(() => console.log('Success'))
+            .catch((err) => {
+                if (__DEV__) {
+                    console.warn(err);
+                }
+            });
+    }
+
     function note() {
         getAllProductsNextToExp();
     }
@@ -90,7 +106,10 @@ const Test = () => {
                 </Category>
 
                 <Category>
-                    <Button title="Background job" />
+                    <Button
+                        title="Background job"
+                        onPress={() => setBackgroundJob()}
+                    />
                 </Category>
             </View>
         </>
