@@ -5,6 +5,7 @@ import AsyncStorange from '@react-native-community/async-storage';
 import { useTheme, Button } from 'react-native-paper';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
+import { addDays, isPast } from 'date-fns';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -128,6 +129,14 @@ export default function ListProducts({ products, isHome }) {
                 keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={({ item, index }) => {
+                    const expired =
+                        item.lotes[0] &&
+                        isPast(item.lotes[0].exp_date, new Date());
+                    const nextToExp =
+                        item.lotes[0] &&
+                        addDays(new Date(), daysToBeNext) >
+                            item.lotes[0].exp_date;
+
                     return (
                         <>
                             {index !== 0 && index % 5 === 0 ? (
@@ -140,6 +149,8 @@ export default function ListProducts({ products, isHome }) {
                             <ProductItem
                                 product={item}
                                 daysToBeNext={daysToBeNext}
+                                expired={expired}
+                                nextToExp={nextToExp}
                             />
                         </>
                     );
