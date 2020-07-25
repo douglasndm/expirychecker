@@ -19,7 +19,6 @@ const FABProducts = () => {
                     },
                     color: theme.colors.accent,
                     icon: () => <Ionicons name="add" size={24} color="white" />,
-                    label: 'Adicionar produto',
                     onPress: () => {
                         navigation.push('AddProduct');
                     },
