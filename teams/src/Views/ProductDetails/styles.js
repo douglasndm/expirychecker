@@ -63,8 +63,6 @@ export const TableHeader = styled(DataTable.Header)``;
 
 export const TableTitle = styled(DataTable.Title)``;
 
-export const TableRow = styled(DataTable.Row)`
-    background-color: ${(props) => (props.bgcolor ? props.bgcolor : 'white')};
-`;
+export const TableRow = styled(DataTable.Row)``;
 
 export const TableCell = styled(DataTable.Cell)``;

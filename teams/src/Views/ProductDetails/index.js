@@ -213,11 +213,12 @@ export default ({ route, navigation }) => {
                             else if (proximo)
                                 bgColor =
                                     theme.colors.productNextToExpBackground;
+                            else bgColor = theme.colors.productBackground;
 
                             return (
                                 <TableRow
                                     key={lote.id}
-                                    bgcolor={bgColor}
+                                    style={{ backgroundColor: bgColor }}
                                     onPress={() => {
                                         navigation.push('EditLote', {
                                             productId,

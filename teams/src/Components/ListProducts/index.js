@@ -140,10 +140,19 @@ export default function ListProducts({ products, isHome }) {
                     return (
                         <>
                             {index !== 0 && index % 5 === 0 ? (
-                                <BannerAd
-                                    unitId={adUnitId}
-                                    size={BannerAdSize.FULL_BANNER}
-                                />
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        alignItems: 'center',
+                                        marginTop: 5,
+                                        marginBottom: 5,
+                                    }}
+                                >
+                                    <BannerAd
+                                        unitId={adUnitId}
+                                        size={BannerAdSize.BANNER}
+                                    />
+                                </View>
                             ) : null}
 
                             <ProductItem
