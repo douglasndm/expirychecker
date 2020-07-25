@@ -207,13 +207,20 @@ export default ({ route, navigation }) => {
                                 lote.exp_date;
 
                             let bgColor = null;
+                            let foreground = null;
 
-                            if (vencido)
+                            if (vencido) {
                                 bgColor = theme.colors.productExpiredBackground;
-                            else if (proximo)
+                                foreground = '#FFFFFF';
+                            } else if (proximo) {
                                 bgColor =
                                     theme.colors.productNextToExpBackground;
-                            else bgColor = theme.colors.productBackground;
+                                foreground = '#FFFFFF';
+                            } else {
+                                bgColor = theme.colors.productBackground;
+
+                                foreground = theme.colors.text;
+                            }
 
                             return (
                                 <TableRow
@@ -226,17 +233,37 @@ export default ({ route, navigation }) => {
                                         });
                                     }}
                                 >
-                                    <TableCell>{lote.lote}</TableCell>
                                     <TableCell>
-                                        {format(lote.exp_date, 'dd/MM/yyyy', {
-                                            locale: br,
-                                        })}
+                                        <Text style={{ color: foreground }}>
+                                            {lote.lote}
+                                        </Text>
                                     </TableCell>
-                                    <TableCell>{lote.amount}</TableCell>
                                     <TableCell>
-                                        {lote.status
-                                            ? lote.status
-                                            : 'Não tratado'}
+                                        <Text style={{ color: foreground }}>
+                                            {format(
+                                                lote.exp_date,
+                                                'dd/MM/yyyy',
+                                                {
+                                                    locale: br,
+                                                }
+                                            )}
+                                        </Text>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Text
+                                            style={{
+                                                color: foreground,
+                                            }}
+                                        >
+                                            {lote.amount}
+                                        </Text>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Text style={{ color: foreground }}>
+                                            {lote.status
+                                                ? lote.status
+                                                : 'Não tratado'}
+                                        </Text>
                                     </TableCell>
                                 </TableRow>
                             );
