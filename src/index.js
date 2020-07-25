@@ -56,6 +56,23 @@ const backgroundJob = {
 };
 BackgroundJob.register(backgroundJob);
 
+const backgroundSchedule = {
+    jobKey: 'backgroundNotification',
+    period: 86400000,
+};
+
+BackgroundJob.schedule(backgroundSchedule)
+    .then(() => console.log('Success'))
+    .catch((err) => {
+        if (__DEV__) {
+            console.warn(err);
+        } else {
+            Analytics.trackEvent(
+                `Erro ao tentar agendar evento de notificação. ${err}`
+            );
+        }
+    });
+
 export default () => {
     const [theme, setTheme] = useState(LightTheme);
 
