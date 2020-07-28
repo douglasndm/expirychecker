@@ -3,6 +3,8 @@ import { Alert, ScrollView, View, Text } from 'react-native';
 import { RadioButton, useTheme } from 'react-native-paper';
 import Realm from '../../Services/Realm';
 
+import GenericButton from '../../Components/Button';
+
 import {
     Container,
     PageTitle,
@@ -12,8 +14,6 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-    Button,
-    ButtonText,
 } from '../AddProduct/styles';
 
 import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
@@ -186,12 +186,8 @@ const EditLote = ({ route, navigation }) => {
                         />
                     </ExpDateGroup>
                 </InputContainer>
-                <Button
-                    onPress={() => handleSave()}
-                    style={{ backgroundColor: theme.colors.accent }}
-                >
-                    <ButtonText>Salvar</ButtonText>
-                </Button>
+
+                <GenericButton text="Salvar" onPress={() => handleSave()} />
             </ScrollView>
         </Container>
     );
