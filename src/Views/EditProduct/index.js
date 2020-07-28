@@ -6,13 +6,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
 
+import GenericButton from '../../Components/Button';
+
 import {
     Container,
     PageTitle,
     InputContainer,
     InputText,
-    Button,
-    ButtonText,
 } from '../AddProduct/styles';
 
 import { Camera } from './styles';
@@ -53,12 +53,16 @@ const EditProduct = ({ navigation, route }) => {
     return (
         <>
             {cameraEnabled ? (
-                <>
+                <View
+                    style={{
+                        backgroundColor: theme.colors.background,
+                        flex: 1,
+                    }}
+                >
                     <View
                         style={{
                             justifyContent: 'center',
                             flex: 1,
-                            backgroundColor: theme.colors.background,
                         }}
                     >
                         <Camera
@@ -82,15 +86,14 @@ const EditProduct = ({ navigation, route }) => {
                         />
                     </View>
 
-                    <Button
+                    <GenericButton
+                        text="Fechar"
                         style={{
                             alignSelf: 'center',
                         }}
                         onPress={() => setCameraEnebled(false)}
-                    >
-                        <ButtonText>Fechar</ButtonText>
-                    </Button>
-                </>
+                    />
+                </View>
             ) : (
                 <Container style={{ backgroundColor: theme.colors.background }}>
                     <PageTitle style={{ color: theme.colors.text }}>

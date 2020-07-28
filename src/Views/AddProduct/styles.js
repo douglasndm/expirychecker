@@ -56,19 +56,3 @@ export const Camera = styled(RNCamera)`
     width: 100%;
     height: 5%;
 `;
-
-export const Button = styled.TouchableOpacity`
-    background-color: #14d48f;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 100px;
-    padding: 15px;
-    border-radius: 12px;
-
-    align-self: center;
-`;
-
-export const ButtonText = styled.Text`
-    color: #fff;
-    text-align: center;
-`;
