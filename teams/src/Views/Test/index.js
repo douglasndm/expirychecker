@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Alert } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
-import RNShare from 'react-native-share';
 
 import { useTheme } from 'react-native-paper';
 
@@ -10,6 +9,7 @@ import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
+import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
 
@@ -85,18 +85,7 @@ const Test = () => {
     }
 
     async function saveFile() {
-        RNShare.open({
-            title: 'Esse é o titulo',
-            message: 'Esta é a mensagem obrigatoria',
-            filename: 'salvamento',
-            saveToFiles: true,
-        })
-            .then(() => {
-                console.log('Abriu');
-            })
-            .catch(() => {
-                console.log('fechou');
-            });
+        ExportBackupFile();
     }
 
     const theme = useTheme();
@@ -125,7 +114,12 @@ const Test = () => {
                     onPress={() => setBackgroundJob()}
                 />
 
-                <Button text="Import file" onPress={() => {}} />
+                <Button
+                    text="Import file"
+                    onPress={() => {
+                        ImportBackupFile();
+                    }}
+                />
 
                 <Button
                     text="Export file"
