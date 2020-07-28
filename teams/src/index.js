@@ -9,8 +9,6 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 
-import './Services/ReactotronConfig';
-
 import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
 import { getDarkModeEnabled } from './Functions/Settings';
 
