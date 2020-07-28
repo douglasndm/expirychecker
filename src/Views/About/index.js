@@ -2,13 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
-import {
-    Container,
-    PageTitle,
-    AboutSection,
-    ApplicationName,
-    ApplicationVersion,
-} from './styles';
+import { Container, PageTitle, AboutSection, ApplicationName } from './styles';
 
 const About = () => {
     const theme = useTheme();
@@ -21,9 +15,6 @@ const About = () => {
                 <ApplicationName style={{ color: theme.colors.text }}>
                     Controle de Validade
                 </ApplicationName>
-                <ApplicationVersion style={{ color: theme.colors.text }}>
-                    Versão 1.1
-                </ApplicationVersion>
             </AboutSection>
 
             <AboutSection>
