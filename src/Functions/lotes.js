@@ -1,3 +1,11 @@
+import {
+    setHours,
+    setMinutes,
+    setSeconds,
+    setMilliseconds,
+    parseISO,
+} from 'date-fns';
+
 import Realm from '../Services/Realm';
 
 import { getProductByCode } from './Product';
@@ -63,11 +71,11 @@ export async function checkIfLoteAlreadyExists(loteName, productCode) {
 }
 
 export async function createLote(lote, productCode) {
-    try {
-        if (await checkIfLoteAlreadyExists(lote.lote, productCode)) {
-            throw new Error('Lote já existe');
-        }
+    if (await checkIfLoteAlreadyExists(lote.lote, productCode)) {
+        return false;
+    }
 
+    try {
         const realm = await Realm();
 
         realm.write(() => {
@@ -85,10 +93,20 @@ export async function createLote(lote, productCode) {
             const lastLote = realm.objects('Lote').sorted('id', true)[0];
             const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
+            // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
+            // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
+            const formatedDate = setHours(
+                setMinutes(
+                    setSeconds(setMilliseconds(parseISO(lote.exp_date), 0), 0),
+                    0
+                ),
+                0
+            );
+
             product[0].lotes.push({
                 id: nextLoteId,
                 lote: lote.lote,
-                exp_date: lote.exp_date,
+                exp_date: formatedDate,
                 amount: lote.amount,
                 status: lote.status,
             });
@@ -96,4 +114,6 @@ export async function createLote(lote, productCode) {
     } catch (err) {
         console.warn(err.message);
     }
+
+    return null;
 }
