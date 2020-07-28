@@ -139,8 +139,18 @@ const AddProduct = ({ navigation }) => {
     return (
         <>
             {cameraEnabled ? (
-                <>
-                    <View style={{ justifyContent: 'center', flex: 1 }}>
+                <View
+                    style={{
+                        backgroundColor: theme.colors.background,
+                        flex: 1,
+                    }}
+                >
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            flex: 1,
+                        }}
+                    >
                         <Camera
                             captureAudio={false}
                             type="back"
@@ -162,15 +172,14 @@ const AddProduct = ({ navigation }) => {
                         />
                     </View>
 
-                    <Button
+                    <GenericButton
+                        text="Fechar"
                         style={{
                             alignSelf: 'center',
                         }}
                         onPress={() => setCameraEnebled(false)}
-                    >
-                        <ButtonText>Fechar</ButtonText>
-                    </Button>
-                </>
+                    />
+                </View>
             ) : (
                 <Container style={{ backgroundColor: theme.colors.background }}>
                     <ScrollView>
