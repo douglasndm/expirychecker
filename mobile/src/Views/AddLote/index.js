@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'react-native-paper';
+
+import GenericButton from '../../Components/Button';
+
 import Realm from '../../Services/Realm';
 
 import {
@@ -13,8 +16,6 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-    Button,
-    ButtonText,
 } from '../AddProduct/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
@@ -135,12 +136,8 @@ const AddLote = ({ route }) => {
                         />
                     </ExpDateGroup>
                 </InputContainer>
-                <Button
-                    onPress={() => handleSave()}
-                    style={{ backgroundColor: theme.colors.accent }}
-                >
-                    <ButtonText>Salvar</ButtonText>
-                </Button>
+
+                <GenericButton text="Salvar" onPress={() => handleSave()} />
             </ScrollView>
         </Container>
     );
