@@ -9,6 +9,7 @@ import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
+import { createLote } from '../../Functions/Lotes';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
@@ -125,6 +126,21 @@ const Test = () => {
                     text="Export file"
                     onPress={() => {
                         saveFile();
+                    }}
+                />
+
+                <Button
+                    text="Check lote"
+                    onPress={async () => {
+                        await createLote(
+                            {
+                                lote: 'ABCxyz123',
+                                exp_date: new Date(),
+                                amount: 23,
+                                status: 'pedente',
+                            },
+                            '213'
+                        );
                     }}
                 />
             </Category>
