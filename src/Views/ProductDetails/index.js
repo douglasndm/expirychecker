@@ -13,7 +13,7 @@ import Realm from '../../Services/Realm';
 import GenericButton from '../../Components/Button';
 
 import { getProductById } from '../../Functions/Product';
-import { sortLoteByExpDate } from '../../Functions/lotes';
+import { sortLoteByExpDate } from '../../Functions/Lotes';
 
 import {
     Container,

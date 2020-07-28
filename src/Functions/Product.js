@@ -63,6 +63,9 @@ export async function createProduct(product) {
     try {
         const realm = await Realm();
 
+        if (await checkIfProductAlreadyExistsByCode(product.code)) {
+        }
+
         // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
         // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
         const lastProduct = realm.objects('Product').sorted('id', true)[0];
