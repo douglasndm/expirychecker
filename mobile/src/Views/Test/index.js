@@ -1,9 +1,14 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Alert } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
+import RNShare from 'react-native-share';
+
+import { useTheme } from 'react-native-paper';
 
 import Realm from '../../Services/Realm';
+
+import Button from '../../Components/Button';
 
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
@@ -32,7 +37,7 @@ const Test = () => {
 
         try {
             realm.write(() => {
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 50; i++) {
                     const lastProduct = realm
                         .objects('Product')
                         .sorted('id', true)[0];
@@ -79,40 +84,57 @@ const Test = () => {
         }
     }
 
+    async function saveFile() {
+        RNShare.open({
+            title: 'Esse é o titulo',
+            message: 'Esta é a mensagem obrigatoria',
+            filename: 'salvamento',
+            saveToFiles: true,
+        })
+            .then(() => {
+                console.log('Abriu');
+            })
+            .catch(() => {
+                console.log('fechou');
+            });
+    }
+
+    const theme = useTheme();
+
     return (
-        <>
-            <View>
-                <Category>
-                    <Button
-                        title="Disparar notificação"
-                        onPress={() => note()}
-                    />
-                </Category>
+        <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
+            <Category
+                style={{ backgroundColor: theme.colors.productBackground }}
+            >
+                <Button text="Disparar notificação" onPress={() => note()} />
 
-                <Category>
-                    <Button
-                        title="Load with sample data"
-                        onPress={() => sampleData()}
-                    />
-                </Category>
+                <Button
+                    text="Load with sample data"
+                    onPress={() => sampleData()}
+                />
 
-                <Category>
-                    <Button
-                        title="Delete all products"
-                        onPress={() => {
-                            deleteProducts();
-                        }}
-                    />
-                </Category>
+                <Button
+                    text="Delete all products"
+                    onPress={() => {
+                        deleteProducts();
+                    }}
+                />
 
-                <Category>
-                    <Button
-                        title="Background job"
-                        onPress={() => setBackgroundJob()}
-                    />
-                </Category>
-            </View>
-        </>
+                <Button
+                    text="Background job"
+                    onPress={() => setBackgroundJob()}
+                />
+
+                <Button text="Import file" onPress={() => {}} />
+
+                <Button
+                    text="Export file"
+                    onPress={() => {
+                        saveFile();
+                    }}
+                />
+            </Category>
+        </View>
     );
 };
 
