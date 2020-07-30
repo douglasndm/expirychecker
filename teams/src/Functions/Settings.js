@@ -1,4 +1,5 @@
 import AsyncStorange from '@react-native-community/async-storage';
+import Realm from '../Services/Realm';
 
 export async function getDaysToBeNextToExp() {
     try {
@@ -12,22 +13,41 @@ export async function getDaysToBeNextToExp() {
     return 30;
 }
 
-export async function getDarkModeEnabled() {
+export async function getAppTheme() {
     try {
-        const getDarkModeSetting = await AsyncStorange.getItem(
-            'settings/darkMode'
-        );
+        const realm = await Realm();
 
-        if (getDarkModeSetting != null) {
-            if (getDarkModeSetting === 'true') {
-                return true;
-            }
-            return false;
+        const appTheme = await realm
+            .objects('Setting')
+            .filtered("name = 'appTheme'")[0];
+
+        if (!appTheme) {
+            return 'system';
         }
-        return false;
+
+        return appTheme.value;
     } catch (err) {
-        console.warn(err);
+        console.log(err.message);
     }
 
-    return false;
+    return 'system';
+}
+
+export async function setAppTheme(theme) {
+    try {
+        const realm = await Realm();
+
+        realm.write(() => {
+            realm.create(
+                'Setting',
+                {
+                    name: 'appTheme',
+                    value: theme.trim(),
+                },
+                true
+            );
+        });
+    } catch (err) {
+        console.log(err);
+    }
 }

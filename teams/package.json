@@ -18,6 +18,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/picker": "^1.6.5",
     "@react-native-firebase/admob": "^7.3.2",
     "@react-native-firebase/app": "^8.2.0",
     "@react-navigation/drawer": "^5.8.4",
@@ -39,6 +40,7 @@
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-iap": "^4.5.0",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-notifications": "3.2.2",
     "react-native-paper": "^3.10.1",
     "react-native-reanimated": "^1.9.0",

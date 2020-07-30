@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import Crashes from 'appcenter-crashes';
 import Analytics from 'appcenter-analytics';
@@ -9,11 +9,11 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 
-import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
-import { getDarkModeEnabled } from './Functions/Settings';
+import Realm from './Services/Realm';
 
-import DarkTheme from './Themes/Dark';
-import LightTheme from './Themes/Light';
+import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
+
+import Themes, { getActualAppTheme } from './Themes';
 
 import Routes from './Routes/DrawerContainer';
 
@@ -41,7 +41,7 @@ admob()
         tagForUnderAgeOfConsent: true,
     })
     .catch((err) => {
-        if (__DEV__) console.tron(err);
+        if (__DEV__) console.warn(err);
         else throw new Error(err);
     });
 
@@ -56,7 +56,7 @@ BackgroundJob.register(backgroundJob);
 
 const backgroundSchedule = {
     jobKey: 'backgroundNotification',
-    period: 86400000,
+    period: __DEV__ ? 900000 : 86400000,
 };
 
 BackgroundJob.schedule(backgroundSchedule)
@@ -72,14 +72,26 @@ BackgroundJob.schedule(backgroundSchedule)
     });
 
 export default () => {
-    const [theme, setTheme] = useState(LightTheme);
+    const [theme, setTheme] = useState(Themes.Light);
 
     async function getTheme() {
-        const result = (await getDarkModeEnabled()) ? DarkTheme : LightTheme;
-
-        setTheme(result);
+        const appTheme = await getActualAppTheme();
+        setTheme(appTheme);
     }
     getTheme();
+
+    // Troca o tema do app a cada alteração em tempo real na pagina de configurações
+    useEffect(() => {
+        async function setThemeModificationNotification() {
+            const realm = await Realm();
+
+            realm.addListener('change', async () => {
+                await getTheme();
+            });
+        }
+
+        setThemeModificationNotification();
+    }, []);
 
     return (
         <PaperProvider theme={theme}>
