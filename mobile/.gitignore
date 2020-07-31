@@ -7,6 +7,8 @@ firebase.json
 java_pid24724.hprof
 .hprof
 
+sentry.properties
+
 # OSX
 #
 .DS_Store
