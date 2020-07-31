@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
@@ -9,6 +10,8 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 
+import EnvConfig from 'react-native-config';
+
 import Realm from './Services/Realm';
 
 import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
@@ -16,6 +19,11 @@ import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
 import Themes, { getActualAppTheme } from './Themes';
 
 import Routes from './Routes/DrawerContainer';
+
+Sentry.init({
+    dsn: EnvConfig.SENTRY_DSN,
+    enableAutoSessionTracking: true,
+});
 
 enableScreens();
 
