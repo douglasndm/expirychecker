@@ -122,50 +122,54 @@ export default function ListProducts({ products, isHome }) {
         );
     }
 
+    function renderComponent({ item, index }) {
+        const expired =
+            item.lotes[0] && isPast(item.lotes[0].exp_date, new Date());
+        const nextToExp =
+            item.lotes[0] &&
+            addDays(new Date(), daysToBeNext) > item.lotes[0].exp_date;
+
+        return (
+            <>
+                {index !== 0 && index % 5 === 0 ? (
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            marginTop: 5,
+                            marginBottom: 5,
+                        }}
+                    >
+                        <BannerAd
+                            unitId={adUnitId}
+                            size={BannerAdSize.BANNER}
+                        />
+                    </View>
+                ) : null}
+
+                <ProductItem
+                    product={item}
+                    daysToBeNext={daysToBeNext}
+                    expired={expired}
+                    nextToExp={nextToExp}
+                />
+            </>
+        );
+    }
+
     return (
         <Container style={{ backgroundColor: theme.colors.background }}>
             <FlatList
                 data={products}
-                keyExtractor={(item) => String(item.id)}
-                ListHeaderComponent={ListHeader}
-                renderItem={({ item, index }) => {
-                    const expired =
-                        item.lotes[0] &&
-                        isPast(item.lotes[0].exp_date, new Date());
-                    const nextToExp =
-                        item.lotes[0] &&
-                        addDays(new Date(), daysToBeNext) >
-                            item.lotes[0].exp_date;
-
-                    return (
-                        <>
-                            {index !== 0 && index % 5 === 0 ? (
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        alignItems: 'center',
-                                        marginTop: 5,
-                                        marginBottom: 5,
-                                    }}
-                                >
-                                    <BannerAd
-                                        unitId={adUnitId}
-                                        size={BannerAdSize.BANNER}
-                                    />
-                                </View>
-                            ) : null}
-
-                            <ProductItem
-                                product={item}
-                                daysToBeNext={daysToBeNext}
-                                expired={expired}
-                                nextToExp={nextToExp}
-                            />
-                        </>
-                    );
+                keyExtractor={(item, index) => {
+                    return !item.code ? String(item.code) : String(index);
                 }}
+                ListHeaderComponent={ListHeader}
+                renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
+                initialNumToRender="10"
+                removeClippedSubviews
             />
         </Container>
     );

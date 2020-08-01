@@ -27,7 +27,6 @@
     "@sentry/react-native": "^1.7.0",
     "appcenter": "^3.1.0",
     "appcenter-analytics": "^3.1.0",
-    "appcenter-crashes": "^3.1.0",
     "crypto-js": "3.1.9-1",
     "date-fns": "^2.14.0",
     "polished": "^3.6.5",
