@@ -2,7 +2,6 @@ import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
-import Crashes from 'appcenter-crashes';
 import Analytics from 'appcenter-analytics';
 import { enableScreens } from 'react-native-screens';
 import BackgroundJob from 'react-native-background-job';
@@ -28,7 +27,6 @@ Sentry.init({
 enableScreens();
 
 async function disableAppCenterIfInDevMode() {
-    await Crashes.setEnabled(false);
     await Analytics.setEnabled(false);
 }
 
