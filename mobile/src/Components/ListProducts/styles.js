@@ -7,16 +7,12 @@ export const HeaderContainer = styled.View`
     width: 100%;
     padding: 15px 30px 15px 0px;
 
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
     background-color: #14d48f;
 
-    margin-bottom: 15px;
-
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
 `;
 
 export const TextLogo = styled.Text`
@@ -25,6 +21,7 @@ export const TextLogo = styled.Text`
     color: white;
 `;
 export const CategoryDetails = styled.View`
+    margin-top: 15px;
     flex-direction: row;
     justify-content: space-between;
 
