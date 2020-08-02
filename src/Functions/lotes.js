@@ -4,6 +4,7 @@ import {
     setSeconds,
     setMilliseconds,
     parseISO,
+    isValid,
 } from 'date-fns';
 
 import Realm from '../Services/Realm';
@@ -97,17 +98,30 @@ export async function createLote(lote, productCode) {
             // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
             const formatedDate = setHours(
                 setMinutes(
-                    setSeconds(setMilliseconds(parseISO(lote.exp_date), 0), 0),
+                    setSeconds(
+                        setMilliseconds(
+                            isValid(lote.exp_date)
+                                ? lote.exp_date
+                                : parseISO(lote.exp_date),
+                            0
+                        ),
+                        0
+                    ),
                     0
                 ),
                 0
             );
 
+            const loteAmount =
+                typeof lote.amount === 'string' || lote.amount instanceof String
+                    ? Number(lote.amount)
+                    : lote.amount;
+
             product[0].lotes.push({
                 id: nextLoteId,
                 lote: lote.lote,
                 exp_date: formatedDate,
-                amount: lote.amount,
+                amount: loteAmount,
                 status: lote.status,
             });
         });

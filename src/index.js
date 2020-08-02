@@ -7,11 +7,11 @@ import { enableScreens } from 'react-native-screens';
 import BackgroundJob from 'react-native-background-job';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 
 import EnvConfig from 'react-native-config';
 
 import Realm from './Services/Realm';
+import './Services/Admob';
 
 import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
 
@@ -35,23 +35,6 @@ async function disableAppCenterIfInDevMode() {
 if (__DEV__) {
     disableAppCenterIfInDevMode();
 }
-
-admob()
-    .setRequestConfiguration({
-        // Update all future requests suitable for parental guidance
-        maxAdContentRating: MaxAdContentRating.PG,
-
-        // Indicates that you want your content treated as child-directed for purposes of COPPA.
-        tagForChildDirectedTreatment: false,
-
-        // Indicates that you want the ad request to be handled in a
-        // manner suitable for users under the age of consent.
-        tagForUnderAgeOfConsent: true,
-    })
-    .catch((err) => {
-        if (__DEV__) console.warn(err);
-        else throw new Error(err);
-    });
 
 // REGISTRA O SERVIÇO QUE VAI RODAR AS NOTIFICAÇÕES
 const backgroundJob = {

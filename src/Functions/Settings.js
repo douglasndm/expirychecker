@@ -51,3 +51,42 @@ export async function setAppTheme(theme) {
         console.log(err);
     }
 }
+
+export async function getAdsEnabled() {
+    try {
+        const realm = await Realm();
+
+        const adsEnabled = await realm
+            .objects('Setting')
+            .filtered("name = 'isAdsEnabled'")[0];
+
+        if (!adsEnabled) {
+            return false;
+        }
+
+        return adsEnabled.value === 'true';
+    } catch (err) {
+        console.log(err.message);
+    }
+
+    return false;
+}
+
+export async function setAdsEnabled(isEnabled) {
+    try {
+        const realm = await Realm();
+
+        realm.write(() => {
+            realm.create(
+                'Setting',
+                {
+                    name: 'isAdsEnabled',
+                    value: isEnabled ? 'true' : 'false',
+                },
+                true
+            );
+        });
+    } catch (err) {
+        console.warn(err);
+    }
+}
