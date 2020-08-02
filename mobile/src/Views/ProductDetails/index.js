@@ -100,9 +100,7 @@ export default ({ route, navigation }) => {
     }, []);
 
     async function handleEdit() {
-        const prod = await getProductById(productId);
-
-        navigation.push('EditProduct', { product: prod });
+        navigation.push('EditProduct', { productId });
     }
 
     async function deleteProduct() {

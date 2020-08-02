@@ -50,22 +50,27 @@ export default ({ product, expired, nextToExp }) => {
                         <ProductName style={{ color: foreground }}>
                             {product.name}
                         </ProductName>
-                        <ProductCode style={{ color: foreground }}>
-                            Código: {product.code}
-                        </ProductCode>
+                        {product.code && product.code !== '' ? (
+                            <ProductCode style={{ color: foreground }}>
+                                Código: {product.code}
+                            </ProductCode>
+                        ) : null}
                         <ProductLote style={{ color: foreground }}>
                             Lote: {product.lotes[0].lote}
                         </ProductLote>
                     </ProductDetailsContainer>
 
-                    <AmountContainer>
-                        <AmountContainerText style={{ color: foreground }}>
-                            Quantidade
-                        </AmountContainerText>
-                        <Amount style={{ color: foreground }}>
-                            {product.lotes[0].amount}
-                        </Amount>
-                    </AmountContainer>
+                    {product.lotes[0].amount &&
+                    product.lotes[0].amount !== '' ? (
+                        <AmountContainer>
+                            <AmountContainerText style={{ color: foreground }}>
+                                Quantidade
+                            </AmountContainerText>
+                            <Amount style={{ color: foreground }}>
+                                {product.lotes[0].amount}
+                            </Amount>
+                        </AmountContainer>
+                    ) : null}
                 </ProductDetails>
 
                 <ProductExpDate style={{ color: foreground }}>

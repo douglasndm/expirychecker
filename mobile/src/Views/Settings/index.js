@@ -50,8 +50,11 @@ const Settings = () => {
         async function getSettingsAlreadySetted() {
             const settingDays = await getSetting('settings/daysToBeNext');
 
-            if (settingDays != null) setDaysToBeNext(settingDays);
-            else setDaysToBeNext(30);
+            const regex = /^[0-9\b]+$/;
+
+            if (settingDays === '' || regex.test(settingDays)) {
+                setDaysToBeNext(settingDays);
+            }
         }
 
         getSettingsAlreadySetted();
