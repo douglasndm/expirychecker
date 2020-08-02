@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
-import { RadioButton, useTheme } from 'react-native-paper';
+import { StackActions } from '@react-navigation/native';
+import { RadioButton, useTheme, Dialog, Button } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import Realm from '../../Services/Realm';
+
+import { deleteLote } from '../../Functions/Lotes';
 
 import GenericButton from '../../Components/Button';
 
@@ -20,6 +25,8 @@ import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
 const EditLote = ({ route, navigation }) => {
     const { productId, loteId } = route.params;
+
+    const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const theme = useTheme();
 
@@ -56,6 +63,17 @@ const EditLote = ({ route, navigation }) => {
         }
     }
 
+    async function handleDelete() {
+        try {
+            await deleteLote(loteId);
+
+            Alert.alert(`O lote ${lote} foi apagado.`);
+            navigation.dispatch(StackActions.popToTop());
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+
     useEffect(() => {
         async function getProduct() {
             const realm = await Realm();
@@ -80,116 +98,178 @@ const EditLote = ({ route, navigation }) => {
     }, []);
 
     return (
-        <Container style={{ backgroundColor: theme.colors.background }}>
-            <ScrollView>
-                <PageTitle style={{ color: theme.colors.text }}>
-                    Editar lote
-                </PageTitle>
-
-                <InputContainer>
-                    <ProductHeader>
-                        <ProductName style={{ color: theme.colors.text }}>
-                            {product.name}
-                        </ProductName>
-                        <ProductCode style={{ color: theme.colors.text }}>
-                            {product.code}
-                        </ProductCode>
-                    </ProductHeader>
-
-                    <InputGroup>
-                        <InputText
-                            style={{
-                                flex: 3,
-                                marginRight: 5,
-                                backgroundColor: theme.colors.inputBackground,
-                                color: theme.colors.inputText,
-                            }}
-                            placeholder="Lote"
-                            placeholderTextColor={theme.colors.subText}
-                            value={lote}
-                            onChangeText={(value) => setLote(value)}
-                        />
-                        <InputText
-                            style={{
-                                flex: 2,
-                                backgroundColor: theme.colors.inputBackground,
-                                color: theme.colors.inputText,
-                            }}
-                            placeholder="Quantidade"
-                            placeholderTextColor={theme.colors.subText}
-                            keyboardType="numeric"
-                            value={String(amount)}
-                            onChangeText={(value) => setAmount(value)}
-                        />
-                    </InputGroup>
-
+        <>
+            <Container style={{ backgroundColor: theme.colors.background }}>
+                <ScrollView>
                     <View
                         style={{
                             flexDirection: 'row',
-                            justifyContent: 'center',
+                            justifyContent: 'space-between',
                         }}
                     >
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
+                        <PageTitle style={{ color: theme.colors.text }}>
+                            Editar lote
+                        </PageTitle>
+
+                        <Button
+                            icon={() => (
+                                <Ionicons
+                                    name="trash-outline"
+                                    color={theme.colors.text}
+                                    size={22}
+                                />
+                            )}
+                            color={theme.colors.accent}
+                            onPress={() => {
+                                setDeleteComponentVisible(true);
                             }}
                         >
-                            <RadioButton
-                                value="tratado"
-                                status={
-                                    tratado === true ? 'checked' : 'unchecked'
-                                }
-                                onPress={() => setTratado(true)}
-                                color="#14d48f"
-                            />
-                            <Text style={{ color: theme.colors.text }}>
-                                Tratado
-                            </Text>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <RadioButton
-                                value="Não tratado"
-                                status={
-                                    tratado === !true ? 'checked' : 'unchecked'
-                                }
-                                onPress={() => setTratado(false)}
-                                color="#14d48f"
-                            />
-                            <Text style={{ color: theme.colors.text }}>
-                                Não tratado
-                            </Text>
-                        </View>
+                            Apagar
+                        </Button>
                     </View>
 
-                    <ExpDateGroup>
-                        <ExpDateLabel style={{ color: theme.colors.subText }}>
-                            Data de vencimento
-                        </ExpDateLabel>
-                        <CustomDatePicker
-                            style={{
-                                backgroundColor: theme.colors.productBackground,
-                            }}
-                            textColor={theme.colors.inputText}
-                            date={expDate}
-                            onDateChange={(value) => {
-                                setExpDate(value);
-                            }}
-                            fadeToColor="none"
-                            mode="date"
-                            locale="pt-br"
-                        />
-                    </ExpDateGroup>
-                </InputContainer>
+                    <InputContainer>
+                        <ProductHeader>
+                            <ProductName style={{ color: theme.colors.text }}>
+                                {product.name}
+                            </ProductName>
+                            <ProductCode style={{ color: theme.colors.text }}>
+                                {product.code}
+                            </ProductCode>
+                        </ProductHeader>
 
-                <GenericButton text="Salvar" onPress={() => handleSave()} />
-            </ScrollView>
-        </Container>
+                        <InputGroup>
+                            <InputText
+                                style={{
+                                    flex: 3,
+                                    marginRight: 5,
+                                    backgroundColor:
+                                        theme.colors.inputBackground,
+                                    color: theme.colors.inputText,
+                                }}
+                                placeholder="Lote"
+                                placeholderTextColor={theme.colors.subText}
+                                value={lote}
+                                onChangeText={(value) => setLote(value)}
+                            />
+                            <InputText
+                                style={{
+                                    flex: 2,
+                                    backgroundColor:
+                                        theme.colors.inputBackground,
+                                    color: theme.colors.inputText,
+                                }}
+                                placeholder="Quantidade"
+                                placeholderTextColor={theme.colors.subText}
+                                keyboardType="numeric"
+                                value={String(amount)}
+                                onChangeText={(value) => setAmount(value)}
+                            />
+                        </InputGroup>
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <RadioButton
+                                    value="tratado"
+                                    status={
+                                        tratado === true
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() => setTratado(true)}
+                                    color="#14d48f"
+                                />
+                                <Text style={{ color: theme.colors.text }}>
+                                    Tratado
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <RadioButton
+                                    value="Não tratado"
+                                    status={
+                                        tratado === !true
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() => setTratado(false)}
+                                    color="#14d48f"
+                                />
+                                <Text style={{ color: theme.colors.text }}>
+                                    Não tratado
+                                </Text>
+                            </View>
+                        </View>
+
+                        <ExpDateGroup>
+                            <ExpDateLabel
+                                style={{ color: theme.colors.subText }}
+                            >
+                                Data de vencimento
+                            </ExpDateLabel>
+                            <CustomDatePicker
+                                style={{
+                                    backgroundColor:
+                                        theme.colors.productBackground,
+                                }}
+                                textColor={theme.colors.inputText}
+                                date={expDate}
+                                onDateChange={(value) => {
+                                    setExpDate(value);
+                                }}
+                                fadeToColor="none"
+                                mode="date"
+                                locale="pt-br"
+                            />
+                        </ExpDateGroup>
+                    </InputContainer>
+
+                    <GenericButton text="Salvar" onPress={() => handleSave()} />
+                </ScrollView>
+            </Container>
+
+            <Dialog
+                visible={deleteComponentVisible}
+                onDismiss={() => {
+                    setDeleteComponentVisible(false);
+                }}
+                style={{ backgroundColor: theme.colors.productBackground }}
+            >
+                <Dialog.Title>Você tem certeza?</Dialog.Title>
+                <Dialog.Content>
+                    <Text style={{ color: theme.colors.text }}>
+                        Se continuar você irá apagar este lote
+                    </Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button color="red" onPress={handleDelete}>
+                        APAGAR
+                    </Button>
+                    <Button
+                        color={theme.colors.accent}
+                        onPress={() => {
+                            setDeleteComponentVisible(false);
+                        }}
+                    >
+                        MANTER
+                    </Button>
+                </Dialog.Actions>
+            </Dialog>
+        </>
     );
 };
 
