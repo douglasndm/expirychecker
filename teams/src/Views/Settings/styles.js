@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import TextInputMask from '@react-native-community/masked-view';
 
 export const Container = styled.View`
     padding: 16px;

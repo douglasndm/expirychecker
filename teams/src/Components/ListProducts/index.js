@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorange from '@react-native-community/async-storage';
 import { useTheme, Button } from 'react-native-paper';
@@ -52,6 +52,8 @@ export default function ListProducts({ products, isHome }) {
     }, []);
 
     const ListHeader = () => {
+        const titleFontSize = PixelRatio.get() < 1.5 ? 22 : 28;
+
         return (
             <View>
                 {isHome ? (
@@ -67,10 +69,13 @@ export default function ListProducts({ products, isHome }) {
                                     color="white"
                                 />
                             )}
+                            compact
                             accessibilityLabel="Botão para abrir o menu"
                             onPress={() => navigation.toggleDrawer()}
                         />
-                        <TextLogo>Controle de validade</TextLogo>
+                        <TextLogo style={{ fontSize: titleFontSize }}>
+                            Controle de validade
+                        </TextLogo>
                     </HeaderContainer>
                 ) : null}
 
