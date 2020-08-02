@@ -103,10 +103,14 @@ const Settings = () => {
                             borderColor: theme.colors.text,
                         }}
                         keyboardType="numeric"
-                        placeholder="Quantos dias para produto ser considerado próximo"
+                        placeholder="Quantidade de dias"
                         value={daysToBeNext}
-                        onChangeText={(value) => {
-                            setDaysToBeNext(value);
+                        onChangeText={(v) => {
+                            const regex = /^[0-9\b]+$/;
+
+                            if (v === '' || regex.test(v)) {
+                                setDaysToBeNext(v);
+                            }
                         }}
                     />
                 </CategoryOptions>

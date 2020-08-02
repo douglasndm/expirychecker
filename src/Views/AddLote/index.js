@@ -113,7 +113,13 @@ const AddLote = ({ route }) => {
                             placeholderTextColor={theme.colors.subText}
                             keyboardType="numeric"
                             value={String(amount)}
-                            onChangeText={(value) => setAmount(value)}
+                            onChangeText={(v) => {
+                                const regex = /^[0-9\b]+$/;
+
+                                if (v === '' || regex.test(v)) {
+                                    setAmount(v);
+                                }
+                            }}
                         />
                     </InputGroup>
 
