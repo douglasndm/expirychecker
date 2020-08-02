@@ -131,3 +131,17 @@ export async function createLote(lote, productCode) {
 
     return null;
 }
+
+export async function deleteLote(loteId) {
+    try {
+        const realm = await Realm();
+
+        const lote = await realm.objects('Lote').filtered(`id = "${loteId}"`);
+
+        realm.write(() => {
+            realm.delete(lote);
+        });
+    } catch (err) {
+        console.warn(err);
+    }
+}
