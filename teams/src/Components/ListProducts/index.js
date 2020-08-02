@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorange from '@react-native-community/async-storage';
 import { useTheme, Button } from 'react-native-paper';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 import { addDays, isPast } from 'date-fns';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { getAdsEnabled, getDaysToBeNextToExp } from '../../Functions/Settings';
 
 import ProductItem from '../Product';
 import GenericButton from '../Button';
@@ -20,23 +21,12 @@ import {
     CategoryDetailsText,
 } from './styles';
 
-async function getDaysToBeNext() {
-    try {
-        const days = await AsyncStorange.getItem('settings/daysToBeNext');
-
-        if (days != null) return days;
-    } catch (err) {
-        console.log(err);
-    }
-
-    return 30;
-}
-
 export default function ListProducts({ products, isHome }) {
     const navigation = useNavigation();
     const theme = useTheme();
 
     const [daysToBeNext, setDaysToBeNext] = useState();
+    const [adsEnabled, setAdsEnabled] = useState(false);
 
     const adUnitId = __DEV__
         ? TestIds.BANNER
@@ -44,8 +34,14 @@ export default function ListProducts({ products, isHome }) {
 
     useEffect(() => {
         async function getAppData() {
-            const days = await getDaysToBeNext();
+            const days = await getDaysToBeNextToExp();
             setDaysToBeNext(days);
+
+            if (await getAdsEnabled()) {
+                setAdsEnabled(true);
+            } else {
+                setAdsEnabled(false);
+            }
         }
 
         getAppData();
@@ -136,7 +132,7 @@ export default function ListProducts({ products, isHome }) {
 
         return (
             <>
-                {index !== 0 && index % 5 === 0 ? (
+                {adsEnabled && index !== 0 && index % 5 === 0 ? (
                     <View
                         style={{
                             flex: 1,
@@ -148,6 +144,9 @@ export default function ListProducts({ products, isHome }) {
                         <BannerAd
                             unitId={adUnitId}
                             size={BannerAdSize.BANNER}
+                            onAdFailedToLoad={() => {
+                                console.log('Falha com carregar anúncios');
+                            }}
                         />
                     </View>
                 ) : null}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Keyboard } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button as ButtonPaper, Dialog, useTheme } from 'react-native-paper';
-import { setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
 import EnvConfig from 'react-native-config';
 import {
     InterstitialAd,
@@ -12,10 +11,12 @@ import {
 
 import GenericButton from '../../Components/Button';
 
-import Realm from '../../Services/Realm';
+import { getAdsEnabled } from '../../Functions/Settings';
+
 import {
     checkIfProductAlreadyExistsByCode,
     getProductByCode,
+    createProduct,
 } from '../../Functions/Product';
 
 import {
@@ -28,12 +29,12 @@ import {
     ExpDateLabel,
     CustomDatePicker,
     Camera,
-    Button,
-    ButtonText,
 } from './styles';
 
 const AddProduct = ({ navigation }) => {
     const theme = useTheme();
+
+    const [adsEnabled, setAdsEnabled] = useState(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -56,55 +57,29 @@ const AddProduct = ({ navigation }) => {
     interstitialAd.load();
 
     async function handleSave() {
-        const realm = await Realm();
-
         if (!(await checkIfProductAlreadyExistsByCode(code))) {
             try {
-                // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
-                // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
-                const lastProduct = realm
-                    .objects('Product')
-                    .sorted('id', true)[0];
-                const nextProductId =
-                    lastProduct == null ? 1 : lastProduct.id + 1;
+                const newProduct = {
+                    name,
+                    code,
+                    lotes: [
+                        {
+                            lote,
+                            exp_date: expDate,
+                            amount,
+                            status: 'Não tratado',
+                        },
+                    ],
+                };
 
-                const lastLote = realm.objects('Lote').sorted('id', true)[0];
-                const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
+                await createProduct(newProduct);
 
-                realm.write(() => {
-                    const productResult = realm.create('Product', {
-                        id: nextProductId,
-                        name,
-                        code,
-                    });
+                if (adsEnabled && adReady) {
+                    interstitialAd.show();
+                }
 
-                    // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
-                    // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
-                    const formatedDate = setHours(
-                        setMinutes(
-                            setSeconds(setMilliseconds(expDate, 0), 0),
-                            0
-                        ),
-                        0
-                    );
-
-                    productResult.lotes.push({
-                        id: nextLoteId,
-                        lote,
-                        exp_date: formatedDate,
-                        amount: parseInt(amount),
-                    });
-
-                    // Vefica o id gerado no banco de dados e divide por 2 e se o resto da divisao for zero mostra um ad
-                    // Fazendo isso apenas para reduzir a quantidade de ads e não irritar o usuário
-                    // principalmente os que acabaram de baixar o app e terão que cadastrar multiplos produtos
-                    if (adReady && productResult.id % 2 === 0) {
-                        interstitialAd.show();
-                    }
-
-                    navigation.push('Home', {
-                        notificationToUser: 'Produto cadastrado.',
-                    });
+                navigation.push('Home', {
+                    notificationToUser: 'Produto cadastrado.',
                 });
             } catch (error) {
                 console.warn(error);
@@ -113,27 +88,40 @@ const AddProduct = ({ navigation }) => {
             setProductAlreadyExists(true);
         }
     }
+    useEffect(() => {
+        async function getAppData() {
+            if (await getAdsEnabled()) {
+                setAdsEnabled(true);
+            } else {
+                setAdsEnabled(false);
+            }
+        }
+
+        getAppData();
+    }, []);
 
     useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent((type) => {
-            if (type === AdEventType.LOADED) {
-                setAdReady(true);
-            }
-            if (type === AdEventType.CLOSED) {
-                setAdReady(false);
+        if (adsEnabled) {
+            const eventListener = interstitialAd.onAdEvent((type) => {
+                if (type === AdEventType.LOADED) {
+                    setAdReady(true);
+                }
+                if (type === AdEventType.CLOSED) {
+                    setAdReady(false);
 
-                // reload ad
-                interstitialAd.load();
-            }
-        });
+                    // reload ad
+                    interstitialAd.load();
+                }
+            });
 
-        // Start loading the interstitial straight away
-        interstitialAd.load();
+            // Start loading the interstitial straight away
+            interstitialAd.load();
 
-        // Unsubscribe from events on unmount
-        return () => {
-            eventListener();
-        };
+            // Unsubscribe from events on unmount
+            return () => {
+                eventListener();
+            };
+        }
     }, [adReady]);
 
     return (
