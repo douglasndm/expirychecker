@@ -19,10 +19,12 @@ import Themes, { getActualAppTheme } from './Themes';
 
 import Routes from './Routes/DrawerContainer';
 
-Sentry.init({
-    dsn: EnvConfig.SENTRY_DSN,
-    enableAutoSessionTracking: true,
-});
+if (!__DEV__) {
+    Sentry.init({
+        dsn: EnvConfig.SENTRY_DSN,
+        enableAutoSessionTracking: true,
+    });
+}
 
 enableScreens();
 
