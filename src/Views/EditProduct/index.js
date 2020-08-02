@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Keyboard } from 'react-native';
+import { View, Keyboard, Alert } from 'react-native';
 
 import { Button as ButtonPaper, useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
+import { getProductById } from '../../Functions/Product';
 
 import GenericButton from '../../Components/Button';
 
@@ -18,7 +19,7 @@ import {
 import { Camera } from './styles';
 
 const EditProduct = ({ navigation, route }) => {
-    const { product } = route.params;
+    const { productId } = route.params;
 
     const theme = useTheme();
 
@@ -28,18 +29,28 @@ const EditProduct = ({ navigation, route }) => {
     const [cameraEnabled, setCameraEnebled] = useState(false);
 
     useEffect(() => {
-        setName(product.name);
-        setCode(product.code);
+        async function getProductData() {
+            const product = await getProductById(productId);
+
+            setName(product.name);
+            setCode(product.code);
+        }
+        getProductData();
     }, []);
 
     async function updateProduct() {
+        if (!name || name.trim() === '') {
+            Alert.alert('Digite o nome do produto');
+            return;
+        }
+
         try {
             const realm = await Realm();
 
             realm.write(() => {
                 realm.create(
                     'Product',
-                    { id: product.id, name, code },
+                    { id: productId, name, code },
                     'modified'
                 );
             });

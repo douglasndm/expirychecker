@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, Keyboard } from 'react-native';
+import { View, ScrollView, Text, Keyboard, Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Button as ButtonPaper, Dialog, useTheme } from 'react-native-paper';
 import EnvConfig from 'react-native-config';
@@ -57,6 +57,11 @@ const AddProduct = ({ navigation }) => {
     interstitialAd.load();
 
     async function handleSave() {
+        if (!name || name.trim() === '') {
+            Alert.alert('Digite o nome do produto');
+            return;
+        }
+
         if (!(await checkIfProductAlreadyExistsByCode(code))) {
             try {
                 const newProduct = {
