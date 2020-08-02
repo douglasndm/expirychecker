@@ -39,16 +39,23 @@ const EditLote = ({ route, navigation }) => {
     const [tratado, setTratado] = useState(false);
 
     async function handleSave() {
+        if (!lote || lote.trim() === '') {
+            Alert.alert('Digite o nome do lote');
+            return;
+        }
         const realm = await Realm();
 
         try {
             realm.write(() => {
+                const loteAmount =
+                    amount.trim() !== '' ? parseInt(amount) : null;
+
                 realm.create(
                     'Lote',
                     {
                         id: loteId,
                         lote,
-                        amount: parseInt(amount),
+                        amount: loteAmount,
                         exp_date: expDate,
                         status: tratado ? 'Tratado' : 'Não tratado',
                     },
@@ -88,8 +95,12 @@ const EditLote = ({ route, navigation }) => {
 
             const jaTratado = resultLote.status === 'Tratado';
 
+            const regex = /^[0-9\b]+$/;
+            if (resultLote.amount === '' || regex.test(resultLote.amount)) {
+                setAmount(resultLote.amount);
+            }
+
             setLote(resultLote.lote);
-            setAmount(resultLote.amount);
             setExpDate(resultLote.exp_date);
             setTratado(jaTratado);
         }
