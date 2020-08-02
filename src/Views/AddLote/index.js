@@ -33,6 +33,11 @@ const AddLote = ({ route }) => {
     const [expDate, setExpDate] = useState(new Date());
 
     async function handleSave() {
+        if (!lote || lote.trim() === '') {
+            Alert.alert('Digite o nome do lote');
+            return;
+        }
+
         const realm = await Realm();
 
         try {
@@ -43,11 +48,13 @@ const AddLote = ({ route }) => {
             const lastLote = realm.objects('Lote').sorted('id', true)[0];
             const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
+            const loteAmount = amount.trim() !== '' ? parseInt(amount) : null;
+
             await realm.write(() => {
                 result.lotes.push({
                     id: nextLoteId,
                     lote,
-                    amount: parseInt(amount),
+                    amount: loteAmount,
                     exp_date: expDate,
                 });
             });
