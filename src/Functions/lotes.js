@@ -53,7 +53,7 @@ export async function checkIfLoteAlreadyExists(loteName, productCode) {
             return false;
         }
         const productsLotes = product.lotes.filter((l) => {
-            if (l.lote === loteName) {
+            if (l.lote.toLowerCase() === loteName.toLowerCase()) {
                 return true;
             }
             return false;
