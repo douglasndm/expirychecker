@@ -6,6 +6,7 @@ import { useTheme } from 'react-native-paper';
 import GenericButton from '../../Components/Button';
 
 import Realm from '../../Services/Realm';
+import { checkIfLoteAlreadyExists } from '../../Functions/Lotes';
 
 import {
     Container,
@@ -38,9 +39,14 @@ const AddLote = ({ route }) => {
             return;
         }
 
-        const realm = await Realm();
+        if (await checkIfLoteAlreadyExists(lote, code)) {
+            Alert.alert('Já existe um lote cadastrado para o mesmo produto');
+            return;
+        }
 
         try {
+            const realm = await Realm();
+
             const result = realm
                 .objects('Product')
                 .filtered(`id == ${productId}`)[0];

@@ -161,13 +161,15 @@ export default function ListProducts({ products, isHome }) {
         );
     }
 
+    function keyExtractor(item, index) {
+        return String(index);
+    }
+
     return (
         <Container style={{ backgroundColor: theme.colors.background }}>
             <FlatList
                 data={products}
-                keyExtractor={(item, index) => {
-                    return !item.code ? String(item.code) : String(index);
-                }}
+                keyExtractor={keyExtractor}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
