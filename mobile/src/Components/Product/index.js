@@ -55,9 +55,12 @@ export default ({ product, expired, nextToExp }) => {
                                 Código: {product.code}
                             </ProductCode>
                         ) : null}
-                        <ProductLote style={{ color: foreground }}>
-                            Lote: {product.lotes[0].lote}
-                        </ProductLote>
+
+                        {product.lotes[0].lote ? (
+                            <ProductLote style={{ color: foreground }}>
+                                Lote: {product.lotes[0].lote}
+                            </ProductLote>
+                        ) : null}
                     </ProductDetailsContainer>
 
                     {product.lotes[0].amount &&
