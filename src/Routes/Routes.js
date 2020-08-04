@@ -10,6 +10,7 @@ import ProductDetails from '../Views/ProductDetails';
 import AllProducts from '../Views/AllProducts';
 import Settings from '../Views/Settings';
 import About from '../Views/About';
+import PremiumSubscription from '../Views/PremiumSubscription';
 
 import Test from '../Views/Test';
 
@@ -28,6 +29,10 @@ export default () => {
             <Stack.Screen name="EditProduct" component={EditProduct} />
             <Stack.Screen name="EditLote" component={EditLote} />
             <Stack.Screen name="Test" component={Test} />
+            <Stack.Screen
+                name="PremiumSubscription"
+                component={PremiumSubscription}
+            />
         </Stack.Navigator>
     );
 };

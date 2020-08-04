@@ -7,6 +7,7 @@ import {
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
 } from '../../Functions/Products';
+import { CheckIfSubscriptionIsActive } from '../../Functions/Premium';
 
 import FABProducts from '../../Components/FABProducts';
 import ListProducts from '../../Components/ListProducts';
@@ -19,6 +20,14 @@ export default function Home({ notificationToUser }) {
         if (notificationToUser && notificationToUser !== '')
             setSnackBarVisible(true);
     }, [notificationToUser]);
+
+    useEffect(() => {
+        async function checkIfUserIsPremium() {
+            await CheckIfSubscriptionIsActive();
+        }
+
+        checkIfUserIsPremium();
+    }, []);
 
     async function getProduts(realm) {
         try {
