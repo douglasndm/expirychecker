@@ -1,12 +1,14 @@
 import { Appearance } from 'react-native';
 import Light from './Light';
 import Dark from './Dark';
+import UltraViolet from './UltraViolet';
 
 import { getAppTheme } from '../Functions/Settings';
 
 export default {
     Light,
     Dark,
+    UltraViolet,
 };
 
 export async function getActualAppTheme() {
@@ -18,6 +20,9 @@ export async function getActualAppTheme() {
     }
     if (theme === 'dark') {
         return Dark;
+    }
+    if (theme === 'ultraviolet') {
+        return UltraViolet;
     }
     if (theme === 'system') {
         if (systemTheme === 'light') {

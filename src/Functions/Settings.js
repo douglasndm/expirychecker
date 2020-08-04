@@ -1,18 +1,42 @@
-import AsyncStorange from '@react-native-community/async-storage';
 import Realm from '../Services/Realm';
 
 import { GetPremium } from './Premium';
 
 export async function getDaysToBeNextToExp() {
     try {
-        const days = await AsyncStorange.getItem('settings/daysToBeNext');
+        const realm = await Realm();
 
-        if (days != null) return days;
+        const daysToBeNext = await realm
+            .objects('Setting')
+            .filtered("name = 'daysToBeNext'")[0];
+
+        if (daysToBeNext && daysToBeNext !== null) {
+            return daysToBeNext.value;
+        }
     } catch (err) {
         console.tron(err);
     }
 
     return 30;
+}
+
+export async function setDaysToBeNextToExp(days) {
+    try {
+        const realm = await Realm();
+
+        realm.write(() => {
+            realm.create(
+                'Setting',
+                {
+                    name: 'daysToBeNext',
+                    value: days.trim(),
+                },
+                true
+            );
+        });
+    } catch (err) {
+        console.warn(err);
+    }
 }
 
 export async function getAppTheme() {
@@ -29,7 +53,7 @@ export async function getAppTheme() {
 
         return appTheme.value;
     } catch (err) {
-        console.log(err.message);
+        console.warn(err.message);
     }
 
     return 'system';
@@ -50,7 +74,7 @@ export async function setAppTheme(theme) {
             );
         });
     } catch (err) {
-        console.log(err);
+        console.warn(err);
     }
 }
 
@@ -72,7 +96,7 @@ export async function getAdsEnabled() {
 
         return adsEnabled.value === 'true';
     } catch (err) {
-        console.log(err.message);
+        console.warn(err.message);
     }
 
     return false;
