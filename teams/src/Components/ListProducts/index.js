@@ -82,7 +82,9 @@ export default function ListProducts({ products, isHome }) {
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 ? (
                     <CategoryDetails>
-                        <CategoryDetailsText>
+                        <CategoryDetailsText
+                            style={{ color: theme.colors.textAccent }}
+                        >
                             Produtos mais próximos ao vencimento
                         </CategoryDetailsText>
                     </CategoryDetails>
@@ -132,7 +134,7 @@ export default function ListProducts({ products, isHome }) {
             item.lotes[0] && isPast(item.lotes[0].exp_date, new Date());
         const nextToExp =
             item.lotes[0] &&
-            addDays(new Date(), daysToBeNext) > item.lotes[0].exp_date;
+            addDays(new Date(), daysToBeNext) >= item.lotes[0].exp_date;
 
         return (
             <>

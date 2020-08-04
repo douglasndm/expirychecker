@@ -50,7 +50,7 @@ const PremiumSubscription = () => {
 
     return (
         <Container style={{ backgroundColor: theme.colors.background }}>
-            <HeaderContainer>
+            <HeaderContainer style={{ backgroundColor: theme.colors.accent }}>
                 <TitleContainer>
                     <IntroductionText>Conheça o</IntroductionText>
                     <AppNameTitle>Controle de validade</AppNameTitle>
@@ -78,17 +78,29 @@ const PremiumSubscription = () => {
                     style={{ backgroundColor: theme.colors.productBackground }}
                 >
                     <AdvantageText style={{ color: theme.colors.text }}>
+                        TEMAS EXCLUSIVOS
+                    </AdvantageText>
+                </AdvantageContainer>
+                <AdvantageContainer
+                    style={{ backgroundColor: theme.colors.productBackground }}
+                >
+                    <AdvantageText style={{ color: theme.colors.text }}>
                         PEQUENO VALOR A CADA TRÊS MESES
                     </AdvantageText>
                 </AdvantageContainer>
             </AdvantagesGroup>
 
             {alreadyPremium ? (
-                <ButtonSubscription>
+                <ButtonSubscription
+                    style={{ backgroundColor: theme.colors.accent }}
+                >
                     <TextSubscription>VOCÊ JÁ É PREMIUM</TextSubscription>
                 </ButtonSubscription>
             ) : (
-                <ButtonSubscription onPress={makeSubscription}>
+                <ButtonSubscription
+                    style={{ backgroundColor: theme.colors.accent }}
+                    onPress={makeSubscription}
+                >
                     <TextSubscription>ASSINAR POR</TextSubscription>
                     <TextSubscription>R$4,99 TRIMESTRAIS</TextSubscription>
                 </ButtonSubscription>
