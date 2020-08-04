@@ -1,6 +1,13 @@
 import IAP from 'react-native-iap';
 import Realm from '../Services/Realm';
 
+import { setAppTheme, setAdsEnabled } from './Settings';
+
+async function removePremiumFeatures() {
+    await setAppTheme('system');
+    await setAdsEnabled(true);
+}
+
 async function setPremium(active) {
     try {
         const realm = await Realm();
@@ -54,6 +61,7 @@ export async function CheckIfSubscriptionIsActive() {
         }
 
         await setPremium(false);
+        await removePremiumFeatures();
         return false;
     } catch (err) {
         console.warn(err);
