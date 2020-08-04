@@ -5,11 +5,7 @@ export const Container = styled.View`
     flex: 1;
 `;
 
-export const HeaderContainer = styled(LinearGradient).attrs({
-    colors: ['#14D48F', '#5FF39B'],
-    start: { x: 0, y: 0 },
-    end: { x: 0.5, y: 1.8 },
-})`
+export const HeaderContainer = styled.View`
     margin-left: -15px;
     margin-top: -18px;
     width: 120%;

@@ -3,11 +3,15 @@ import { View, Text, ScrollView, Linking } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { Picker } from '@react-native-community/picker';
-import AsyncStorange from '@react-native-community/async-storage';
 
 import GenericButton from '../../Components/Button';
 
-import { getAppTheme, setAppTheme } from '../../Functions/Settings';
+import {
+    getAppTheme,
+    setAppTheme,
+    getDaysToBeNextToExp,
+    setDaysToBeNextToExp,
+} from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
 import * as Premium from '../../Functions/Premium';
 
@@ -36,32 +40,12 @@ const Settings = () => {
     const theme = useTheme();
 
     async function setSettingDaysToBeNext(days) {
-        try {
-            await AsyncStorange.setItem('settings/daysToBeNext', days);
-        } catch (err) {
-            console.tron(err);
-        }
-    }
-
-    async function getSetting(settingName) {
-        try {
-            const setting = await AsyncStorange.getItem(settingName);
-
-            if (setting !== null) {
-                return setting;
-            }
-
-            return null;
-        } catch (err) {
-            console.tron(err);
-        }
-
-        return null;
+        await setDaysToBeNextToExp(days);
     }
 
     useEffect(() => {
         async function getSettingsAlreadySetted() {
-            const settingDays = await getSetting('settings/daysToBeNext');
+            const settingDays = await getDaysToBeNextToExp();
 
             const regex = /^[0-9\b]+$/;
 
@@ -78,12 +62,11 @@ const Settings = () => {
 
     useEffect(() => {
         async function SetNewDays() {
-            const previousDaysToBeNext = await getSetting(
-                'settings/daysToBeNext'
-            );
+            const previousDaysToBeNext = await getDaysToBeNextToExp();
 
-            if (previousDaysToBeNext !== daysToBeNext)
-                setSettingDaysToBeNext(String(daysToBeNext));
+            if (previousDaysToBeNext !== daysToBeNext) {
+                await setSettingDaysToBeNext(String(daysToBeNext));
+            }
         }
 
         SetNewDays();
@@ -180,90 +163,92 @@ const Settings = () => {
                                 />
                                 <Picker.Item label="Claro" value="light" />
                                 <Picker.Item label="Escuro" value="dark" />
+                                {userIsPremium || __DEV__ ? (
+                                    <Picker.Item
+                                        label="Ultra violeta (Premium)"
+                                        value="ultraviolet"
+                                    />
+                                ) : null}
                             </Picker>
                         </View>
                     </CategoryOptions>
                 </Category>
 
-                {!__DEV__ ? null : (
-                    <Category
-                        style={{
-                            backgroundColor: theme.colors.productBackground,
-                        }}
-                    >
-                        <CategoryTitle style={{ color: theme.colors.text }}>
-                            Premium
-                        </CategoryTitle>
+                <Category
+                    style={{
+                        backgroundColor: theme.colors.productBackground,
+                    }}
+                >
+                    <CategoryTitle style={{ color: theme.colors.text }}>
+                        Premium
+                    </CategoryTitle>
 
-                        {!userIsPremium ? (
-                            <GenericButton
-                                text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
-                                onPress={() => {
-                                    navigation.push('PremiumSubscription');
-                                }}
-                            />
-                        ) : null}
+                    {!userIsPremium ? (
+                        <GenericButton
+                            text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
+                            onPress={() => {
+                                navigation.push('PremiumSubscription');
+                            }}
+                        />
+                    ) : null}
 
-                        <CategoryOptions notPremium={!userIsPremium}>
-                            <View>
-                                <SettingDescription
-                                    style={{ color: theme.colors.text }}
+                    <CategoryOptions notPremium={!userIsPremium}>
+                        <View>
+                            <SettingDescription
+                                style={{ color: theme.colors.text }}
+                            >
+                                Com a função de importar e exportar você
+                                consegue salvar todos os seus produtos
+                                externamente em um cartão de memória por exemplo
+                                e depois importar em outro telefone ou depois de
+                                formatar este.
+                            </SettingDescription>
+
+                            <PremiumButtonsContainer>
+                                <ButtonPremium
+                                    style={{
+                                        backgroundColor: theme.colors.accent,
+                                    }}
+                                    disabled={!userIsPremium}
+                                    onPress={async () => {
+                                        await ImportBackupFile();
+                                    }}
                                 >
-                                    Com a função de importar e exportar você
-                                    consegue salvar todos os seus produtos
-                                    externamente em um cartão de memória por
-                                    exemplo e depois importar em outro telefone
-                                    ou depois de formatar este.
-                                </SettingDescription>
-
-                                <PremiumButtonsContainer>
-                                    <ButtonPremium
-                                        style={{
-                                            backgroundColor:
-                                                theme.colors.accent,
-                                        }}
-                                        disabled={!userIsPremium}
-                                        onPress={async () => {
-                                            await ImportBackupFile();
-                                        }}
+                                    <ButtonPremiumText
+                                        style={{ color: theme.colors.text }}
                                     >
-                                        <ButtonPremiumText
-                                            style={{ color: theme.colors.text }}
-                                        >
-                                            Importar
-                                        </ButtonPremiumText>
-                                    </ButtonPremium>
-                                    <ButtonPremium
-                                        style={{
-                                            backgroundColor:
-                                                theme.colors.accent,
-                                        }}
-                                        disabled={!userIsPremium}
-                                        onPress={async () => {
-                                            await ExportBackupFile();
-                                        }}
-                                    >
-                                        <ButtonPremiumText
-                                            style={{ color: theme.colors.text }}
-                                        >
-                                            Exportar
-                                        </ButtonPremiumText>
-                                    </ButtonPremium>
-                                </PremiumButtonsContainer>
-                            </View>
-                        </CategoryOptions>
-
-                        {userIsPremium ? (
-                            <ButtonCancel onPress={handleCancel}>
-                                <ButtonCancelText
-                                    style={{ color: theme.colors.text }}
+                                        Importar
+                                    </ButtonPremiumText>
+                                </ButtonPremium>
+                                <ButtonPremium
+                                    style={{
+                                        backgroundColor: theme.colors.accent,
+                                    }}
+                                    disabled={!userIsPremium}
+                                    onPress={async () => {
+                                        await ExportBackupFile();
+                                    }}
                                 >
-                                    Cancelar assinatura
-                                </ButtonCancelText>
-                            </ButtonCancel>
-                        ) : null}
-                    </Category>
-                )}
+                                    <ButtonPremiumText
+                                        style={{ color: theme.colors.text }}
+                                    >
+                                        Exportar
+                                    </ButtonPremiumText>
+                                </ButtonPremium>
+                            </PremiumButtonsContainer>
+                        </View>
+                    </CategoryOptions>
+
+                    {userIsPremium ? (
+                        <ButtonCancel onPress={handleCancel}>
+                            <ButtonCancelText
+                                style={{ color: theme.colors.text }}
+                            >
+                                Cancelar assinatura
+                            </ButtonCancelText>
+                        </ButtonCancel>
+                    ) : null}
+                </Category>
             </Container>
         </ScrollView>
     );

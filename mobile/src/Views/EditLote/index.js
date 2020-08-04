@@ -204,7 +204,7 @@ const EditLote = ({ route, navigation }) => {
                                             : 'unchecked'
                                     }
                                     onPress={() => setTratado(true)}
-                                    color="#14d48f"
+                                    color={theme.colors.accent}
                                 />
                                 <Text style={{ color: theme.colors.text }}>
                                     Tratado
@@ -224,7 +224,7 @@ const EditLote = ({ route, navigation }) => {
                                             : 'unchecked'
                                     }
                                     onPress={() => setTratado(false)}
-                                    color="#14d48f"
+                                    color={theme.colors.accent}
                                 />
                                 <Text style={{ color: theme.colors.text }}>
                                     Não tratado
