@@ -9,6 +9,7 @@ import { addDays, isPast } from 'date-fns';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { getAdsEnabled, getDaysToBeNextToExp } from '../../Functions/Settings';
+import { GetPremium } from '../../Functions/Premium';
 
 import ProductItem from '../Product';
 import GenericButton from '../Button';
@@ -27,6 +28,7 @@ export default function ListProducts({ products, isHome }) {
 
     const [daysToBeNext, setDaysToBeNext] = useState();
     const [adsEnabled, setAdsEnabled] = useState(false);
+    const [isPremium, setIsPremium] = useState(false);
 
     const adUnitId = __DEV__
         ? TestIds.BANNER
@@ -42,6 +44,8 @@ export default function ListProducts({ products, isHome }) {
             } else {
                 setAdsEnabled(false);
             }
+
+            setIsPremium(await GetPremium());
         }
 
         getAppData();
@@ -70,7 +74,7 @@ export default function ListProducts({ products, isHome }) {
                             onPress={() => navigation.toggleDrawer()}
                         />
                         <TextLogo style={{ fontSize: titleFontSize }}>
-                            Controle de validade
+                            {isPremium ? 'Premium' : 'Controle de validade'}
                         </TextLogo>
                     </HeaderContainer>
                 ) : null}

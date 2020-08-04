@@ -1,8 +1,9 @@
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
 import { getAdsEnabled, setAdsEnabled } from '../Functions/Settings';
+import { GetPremium } from '../Functions/Premium';
 
 async function prepareAds() {
-    await setAdsEnabled(true); // <- Will be removed in the future
+    await setAdsEnabled(!(await GetPremium()));
 
     if (await getAdsEnabled) {
         admob()

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Text } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
 
@@ -9,12 +9,28 @@ import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
-import { createLote } from '../../Functions/Lotes';
+import { getAdsEnabled } from '../../Functions/Settings';
+
+import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
 
 const Test = () => {
+    const [adsEnable, setAdsEnable] = useState(false);
+
+    useEffect(() => {
+        async function getAppData() {
+            if (await getAdsEnabled()) {
+                setAdsEnable(true);
+            } else {
+                setAdsEnable(false);
+            }
+        }
+
+        getAppData();
+    }, []);
+
     function setBackgroundJob() {
         const backgroundSchedule = {
             jobKey: 'backgroundNotification',
@@ -93,57 +109,79 @@ const Test = () => {
 
     return (
         <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
-            <Category
-                style={{ backgroundColor: theme.colors.productBackground }}
-            >
-                <Button text="Disparar notificação" onPress={() => note()} />
+            <ScrollView>
+                <Category
+                    style={{ backgroundColor: theme.colors.productBackground }}
+                >
+                    <Text>Is ads enabled: {String(adsEnable)}</Text>
 
-                <Button
-                    text="Load with sample data"
-                    onPress={() => sampleData()}
-                />
+                    <Button
+                        text="Logar detalhes da inscrição"
+                        onPress={async () => {
+                            console.log(await Premium.GetSubscriptionInfo());
+                        }}
+                    />
 
-                <Button
-                    text="Delete all products"
-                    onPress={() => {
-                        deleteProducts();
-                    }}
-                />
+                    <Button
+                        text="Logar se usuário tem inscrição ativa"
+                        onPress={async () => {
+                            console.log(
+                                await Premium.CheckIfSubscriptionIsActive()
+                            );
+                        }}
+                    />
 
-                <Button
-                    text="Background job"
-                    onPress={() => setBackgroundJob()}
-                />
+                    <Button
+                        text="Solicitar compra"
+                        onPress={async () => {
+                            console.log(await Premium.MakeASubscription());
+                        }}
+                    />
 
-                <Button
-                    text="Import file"
-                    onPress={() => {
-                        ImportBackupFile();
-                    }}
-                />
+                    <Button
+                        text="Clica"
+                        onPress={async () => {
+                            console.log(await Premium.GetPremium());
+                        }}
+                    />
 
-                <Button
-                    text="Export file"
-                    onPress={() => {
-                        saveFile();
-                    }}
-                />
+                    <Button
+                        text="Disparar notificação"
+                        onPress={() => note()}
+                    />
 
-                <Button
-                    text="Check lote"
-                    onPress={async () => {
-                        await createLote(
-                            {
-                                lote: 'ABCxyz123',
-                                exp_date: new Date(),
-                                amount: 23,
-                                status: 'pedente',
-                            },
-                            '213'
-                        );
-                    }}
-                />
-            </Category>
+                    <Button
+                        text="Load with sample data"
+                        onPress={() => sampleData()}
+                    />
+
+                    <Button
+                        text="Delete all products"
+                        onPress={() => {
+                            deleteProducts();
+                        }}
+                    />
+
+                    <Button
+                        text="Background job"
+                        onPress={() => setBackgroundJob()}
+                    />
+
+                    <Button
+                        text="Import file"
+                        onPress={() => {
+                            ImportBackupFile();
+                        }}
+                    />
+
+                    <Button
+                        text="Export file"
+                        onPress={() => {
+                            saveFile();
+                        }}
+                    />
+                </Category>
+            </ScrollView>
         </View>
     );
 };

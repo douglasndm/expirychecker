@@ -60,9 +60,25 @@ export function DrawerMenu(props) {
                             labelStyle={{ color: theme.colors.text }}
                             onPress={() => navigation.navigate('AllProducts')}
                         />
+
+                        <DrawerItem
+                            icon={() => (
+                                <Ionicons
+                                    name="analytics-outline"
+                                    color={theme.colors.text}
+                                    size={22}
+                                />
+                            )}
+                            label="Seja Premium"
+                            labelStyle={{ color: theme.colors.text }}
+                            onPress={() => {
+                                navigation.navigate('PremiumSubscription');
+                            }}
+                        />
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
+
             <Drawer.Section>
                 <DrawerItem
                     icon={() => (
