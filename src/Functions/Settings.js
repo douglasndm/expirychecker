@@ -1,6 +1,8 @@
 import AsyncStorange from '@react-native-community/async-storage';
 import Realm from '../Services/Realm';
 
+import { GetPremium } from './Premium';
+
 export async function getDaysToBeNextToExp() {
     try {
         const days = await AsyncStorange.getItem('settings/daysToBeNext');
@@ -54,6 +56,10 @@ export async function setAppTheme(theme) {
 
 export async function getAdsEnabled() {
     try {
+        if (await GetPremium()) {
+            return false;
+        }
+
         const realm = await Realm();
 
         const adsEnabled = await realm

@@ -80,7 +80,7 @@ const AddProduct = ({ navigation }) => {
                 await createProduct(newProduct);
 
                 if (adsEnabled && adReady) {
-                    interstitialAd.show();
+                    await interstitialAd.show();
                 }
 
                 navigation.push('Home', {
@@ -106,27 +106,25 @@ const AddProduct = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        if (adsEnabled) {
-            const eventListener = interstitialAd.onAdEvent((type) => {
-                if (type === AdEventType.LOADED) {
-                    setAdReady(true);
-                }
-                if (type === AdEventType.CLOSED) {
-                    setAdReady(false);
+        const eventListener = interstitialAd.onAdEvent((type) => {
+            if (type === AdEventType.LOADED) {
+                setAdReady(true);
+            }
+            if (type === AdEventType.CLOSED) {
+                setAdReady(false);
 
-                    // reload ad
-                    interstitialAd.load();
-                }
-            });
+                // reload ad
+                interstitialAd.load();
+            }
+        });
 
-            // Start loading the interstitial straight away
-            interstitialAd.load();
+        // Start loading the interstitial straight away
+        interstitialAd.load();
 
-            // Unsubscribe from events on unmount
-            return () => {
-                eventListener();
-            };
-        }
+        // Unsubscribe from events on unmount
+        return () => {
+            eventListener();
+        };
     }, [adReady]);
 
     return (

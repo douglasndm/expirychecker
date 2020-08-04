@@ -1,19 +1,18 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
-import { Provider as PaperProvider, Portal } from 'react-native-paper';
-import Analytics from 'appcenter-analytics';
-import { enableScreens } from 'react-native-screens';
-import BackgroundJob from 'react-native-background-job';
 import { StatusBar } from 'react-native';
+import { Provider as PaperProvider, Portal } from 'react-native-paper';
+import { enableScreens } from 'react-native-screens';
 import { NavigationContainer } from '@react-navigation/native';
-
+import Analytics from 'appcenter-analytics';
 import EnvConfig from 'react-native-config';
 
 import Realm from './Services/Realm';
 import './Services/Admob';
+import './Services/BackgroundJobs';
 
-import { getAllProductsNextToExp } from './Functions/ProductsNotifications';
+import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
 
 import Themes, { getActualAppTheme } from './Themes';
 
@@ -36,34 +35,16 @@ if (__DEV__) {
     disableAppCenterIfInDevMode();
 }
 
-// REGISTRA O SERVIÇO QUE VAI RODAR AS NOTIFICAÇÕES
-const backgroundJob = {
-    jobKey: 'backgroundNotification',
-    job: () => {
-        getAllProductsNextToExp();
-    },
-};
-BackgroundJob.register(backgroundJob);
-
-const backgroundSchedule = {
-    jobKey: 'backgroundNotification',
-    period: __DEV__ ? 900000 : 86400000,
-};
-
-BackgroundJob.schedule(backgroundSchedule)
-    .then(() => console.log('Success'))
-    .catch((err) => {
-        if (__DEV__) {
-            console.warn(err);
-        } else {
-            Analytics.trackEvent(
-                `Erro ao tentar agendar evento de notificação. ${err}`
-            );
-        }
-    });
-
 export default () => {
     const [theme, setTheme] = useState(Themes.Light);
+
+    useEffect(() => {
+        async function checkIfUserIsPremium() {
+            await CheckIfSubscriptionIsActive();
+        }
+
+        checkIfUserIsPremium();
+    }, []);
 
     async function getTheme() {
         const appTheme = await getActualAppTheme();
