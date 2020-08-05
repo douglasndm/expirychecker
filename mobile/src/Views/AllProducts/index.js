@@ -39,7 +39,7 @@ const AllProducts = () => {
 
             setProducts(results);
         } catch (error) {
-            if (__DEV__) console.tron(error);
+            if (__DEV__) console.warn(error);
             else throw new Error(error);
         }
     }

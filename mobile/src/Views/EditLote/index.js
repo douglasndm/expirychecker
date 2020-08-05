@@ -118,9 +118,32 @@ const EditLote = ({ route, navigation }) => {
                             justifyContent: 'space-between',
                         }}
                     >
-                        <PageTitle style={{ color: theme.colors.text }}>
-                            Editar lote
-                        </PageTitle>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                marginLeft: -15,
+                            }}
+                        >
+                            <Button
+                                style={{
+                                    alignSelf: 'flex-end',
+                                }}
+                                icon={() => (
+                                    <Ionicons
+                                        name="arrow-back-outline"
+                                        size={28}
+                                        color={theme.colors.text}
+                                    />
+                                )}
+                                compact
+                                onPress={() => {
+                                    navigation.goBack();
+                                }}
+                            />
+                            <PageTitle style={{ color: theme.colors.text }}>
+                                Editar lote
+                            </PageTitle>
+                        </View>
 
                         <Button
                             icon={() => (
@@ -152,7 +175,7 @@ const EditLote = ({ route, navigation }) => {
                         <InputGroup>
                             <InputText
                                 style={{
-                                    flex: 3,
+                                    flex: 5,
                                     marginRight: 5,
                                     backgroundColor:
                                         theme.colors.inputBackground,
@@ -165,7 +188,7 @@ const EditLote = ({ route, navigation }) => {
                             />
                             <InputText
                                 style={{
-                                    flex: 2,
+                                    flex: 4,
                                     backgroundColor:
                                         theme.colors.inputBackground,
                                     color: theme.colors.inputText,

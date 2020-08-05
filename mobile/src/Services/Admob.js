@@ -5,7 +5,7 @@ import { GetPremium } from '../Functions/Premium';
 async function prepareAds() {
     await setAdsEnabled(!(await GetPremium()));
 
-    if (await getAdsEnabled) {
+    if (await getAdsEnabled()) {
         admob()
             .setRequestConfiguration({
                 // Update all future requests suitable for parental guidance
