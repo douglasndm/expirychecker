@@ -52,7 +52,7 @@ export default function ListProducts({ products, isHome }) {
     }, []);
 
     const ListHeader = () => {
-        const titleFontSize = PixelRatio.get() < 1.5 ? 22 : 28;
+        const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
 
         return (
             <View>
@@ -64,7 +64,7 @@ export default function ListProducts({ products, isHome }) {
                         icon={() => (
                             <Ionicons
                                 name="menu-outline"
-                                size={38}
+                                size={33}
                                 color="white"
                             />
                         )}
