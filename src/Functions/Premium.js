@@ -61,7 +61,6 @@ export async function CheckIfSubscriptionIsActive() {
         }
 
         await setPremium(false);
-        await removePremiumFeatures();
         return false;
     } catch (err) {
         console.warn(err);
