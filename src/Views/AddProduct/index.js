@@ -174,9 +174,35 @@ const AddProduct = ({ navigation }) => {
             ) : (
                 <Container style={{ backgroundColor: theme.colors.background }}>
                     <ScrollView>
-                        <PageTitle style={{ color: theme.colors.text }}>
-                            Adicionar um novo produto
-                        </PageTitle>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                            }}
+                        >
+                            <ButtonPaper
+                                style={{
+                                    alignSelf: 'flex-end',
+                                }}
+                                icon={() => (
+                                    <Ionicons
+                                        name="arrow-back-outline"
+                                        size={28}
+                                        color={theme.colors.text}
+                                    />
+                                )}
+                                compact
+                                onPress={() => {
+                                    navigation.goBack();
+                                }}
+                            />
+                            <PageTitle
+                                style={{
+                                    color: theme.colors.text,
+                                }}
+                            >
+                                Novo produto
+                            </PageTitle>
+                        </View>
 
                         <InputContainer>
                             <InputText
@@ -244,7 +270,7 @@ const AddProduct = ({ navigation }) => {
                                         backgroundColor:
                                             theme.colors.inputBackground,
                                         color: theme.colors.inputText,
-                                        flex: 3,
+                                        flex: 5,
                                         marginRight: 5,
                                     }}
                                     placeholder="Lote"
@@ -258,7 +284,7 @@ const AddProduct = ({ navigation }) => {
                                 />
                                 <InputText
                                     style={{
-                                        flex: 2,
+                                        flex: 4,
                                         backgroundColor:
                                             theme.colors.inputBackground,
                                         color: theme.colors.inputText,

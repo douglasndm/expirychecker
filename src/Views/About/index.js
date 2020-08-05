@@ -1,15 +1,42 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { useTheme, Button as ButtonPaper } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Container, PageTitle, AboutSection, ApplicationName } from './styles';
 
 const About = () => {
     const theme = useTheme();
+    const navigation = useNavigation();
 
     return (
         <Container style={{ backgroundColor: theme.colors.background }}>
-            <PageTitle style={{ color: theme.colors.text }}>Sobre</PageTitle>
+            <View
+                style={{
+                    flexDirection: 'row',
+                }}
+            >
+                <ButtonPaper
+                    style={{
+                        alignSelf: 'flex-end',
+                    }}
+                    icon={() => (
+                        <Ionicons
+                            name="arrow-back-outline"
+                            size={28}
+                            color={theme.colors.text}
+                        />
+                    )}
+                    compact
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                />
+                <PageTitle style={{ color: theme.colors.text }}>
+                    Sobre
+                </PageTitle>
+            </View>
 
             <AboutSection>
                 <ApplicationName style={{ color: theme.colors.text }}>

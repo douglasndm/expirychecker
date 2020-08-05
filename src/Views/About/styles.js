@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
     flex: 1;
-    padding: 16px;
+    padding: 16px 10px;
 `;
 
 export const PageTitle = styled.Text`

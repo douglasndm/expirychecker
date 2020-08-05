@@ -56,28 +56,33 @@ export default function ListProducts({ products, isHome }) {
 
         return (
             <View>
-                {isHome ? (
-                    <HeaderContainer
-                        style={{ backgroundColor: theme.colors.accent }}
-                    >
-                        <Button
-                            color="transparent"
-                            icon={() => (
-                                <Ionicons
-                                    name="menu-outline"
-                                    size={38}
-                                    color="white"
-                                />
-                            )}
-                            compact
-                            accessibilityLabel="Botão para abrir o menu"
-                            onPress={() => navigation.toggleDrawer()}
-                        />
+                <HeaderContainer
+                    style={{ backgroundColor: theme.colors.accent }}
+                >
+                    <Button
+                        color="transparent"
+                        icon={() => (
+                            <Ionicons
+                                name="menu-outline"
+                                size={38}
+                                color="white"
+                            />
+                        )}
+                        compact
+                        accessibilityLabel="Botão para abrir o menu"
+                        onPress={() => navigation.toggleDrawer()}
+                    />
+
+                    {isHome ? (
                         <TextLogo style={{ fontSize: titleFontSize }}>
                             {isPremium ? 'Premium' : 'Controle de validade'}
                         </TextLogo>
-                    </HeaderContainer>
-                ) : null}
+                    ) : (
+                        <TextLogo style={{ fontSize: titleFontSize }}>
+                            Todos os produtos
+                        </TextLogo>
+                    )}
+                </HeaderContainer>
 
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 ? (
@@ -97,6 +102,7 @@ export default function ListProducts({ products, isHome }) {
         return (
             <Text
                 style={{
+                    marginTop: 10,
                     marginLeft: 15,
                     marginRight: 15,
                     color: theme.colors.text,
