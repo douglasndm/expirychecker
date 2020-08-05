@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Linking } from 'react-native';
-import { useNavigation, StackActions } from '@react-navigation/native';
 import { useTheme, Button as ButtonPaper } from 'react-native-paper';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-community/picker';
 
@@ -190,6 +190,30 @@ const Settings = () => {
                                     <Picker.Item
                                         label="Ultra violeta (Premium)"
                                         value="ultraviolet"
+                                    />
+                                ) : null}
+
+                                {
+                                    // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
+                                    userIsPremium || __DEV__ ? (
+                                        <Picker.Item
+                                            label="Dark Green (Premium)"
+                                            value="darkgreen"
+                                        />
+                                    ) : null
+                                }
+
+                                {userIsPremium || __DEV__ ? (
+                                    <Picker.Item
+                                        label="Happy Pink (Premium)"
+                                        value="happypink"
+                                    />
+                                ) : null}
+
+                                {userIsPremium || __DEV__ ? (
+                                    <Picker.Item
+                                        label="Ocean Blue (Premium)"
+                                        value="oceanblue"
                                     />
                                 ) : null}
                             </Picker>
