@@ -107,9 +107,32 @@ const EditProduct = ({ navigation, route }) => {
                 </View>
             ) : (
                 <Container style={{ backgroundColor: theme.colors.background }}>
-                    <PageTitle style={{ color: theme.colors.text }}>
-                        Editar produto
-                    </PageTitle>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            marginLeft: -15,
+                        }}
+                    >
+                        <ButtonPaper
+                            style={{
+                                alignSelf: 'flex-end',
+                            }}
+                            icon={() => (
+                                <Ionicons
+                                    name="arrow-back-outline"
+                                    size={28}
+                                    color={theme.colors.text}
+                                />
+                            )}
+                            compact
+                            onPress={() => {
+                                navigation.goBack();
+                            }}
+                        />
+                        <PageTitle style={{ color: theme.colors.text }}>
+                            Editar produto
+                        </PageTitle>
+                    </View>
 
                     <InputContainer>
                         <InputText

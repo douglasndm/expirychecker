@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Linking } from 'react-native';
-import { useTheme } from 'react-native-paper';
 import { useNavigation, StackActions } from '@react-navigation/native';
+import { useTheme, Button as ButtonPaper } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-community/picker';
 
 import GenericButton from '../../Components/Button';
@@ -50,7 +51,7 @@ const Settings = () => {
             const regex = /^[0-9\b]+$/;
 
             if (settingDays === '' || regex.test(settingDays)) {
-                setDaysToBeNext(settingDays);
+                setDaysToBeNext(String(settingDays));
             }
 
             const pre = await Premium.GetPremium();
@@ -95,9 +96,31 @@ const Settings = () => {
     return (
         <ScrollView style={{ backgroundColor: theme.colors.background }}>
             <Container>
-                <PageTitle style={{ color: theme.colors.text }}>
-                    Configurações
-                </PageTitle>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                    }}
+                >
+                    <ButtonPaper
+                        style={{
+                            alignSelf: 'flex-end',
+                        }}
+                        icon={() => (
+                            <Ionicons
+                                name="arrow-back-outline"
+                                size={28}
+                                color={theme.colors.text}
+                            />
+                        )}
+                        compact
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                    />
+                    <PageTitle style={{ color: theme.colors.text }}>
+                        Configurações
+                    </PageTitle>
+                </View>
 
                 <Category
                     style={{ backgroundColor: theme.colors.productBackground }}
