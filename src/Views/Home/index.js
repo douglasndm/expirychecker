@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Snackbar } from 'react-native-paper';
+import { Snackbar, useTheme } from 'react-native-paper';
 
 import Realm from '../../Services/Realm';
 import {
@@ -13,6 +13,8 @@ import FABProducts from '../../Components/FABProducts';
 import ListProducts from '../../Components/ListProducts';
 
 export default function Home({ notificationToUser }) {
+    const theme = useTheme();
+
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [products, setProducts] = useState([]);
 
@@ -33,7 +35,7 @@ export default function Home({ notificationToUser }) {
         try {
             const resultsDB = realm
                 .objects('Product')
-                .filtered("lotes.@count > 0 AND lotes.status != 'Tratado'")
+                .filtered('lotes.@count > 0 AND lotes.status != "Tratado"')
                 .slice();
 
             // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
@@ -52,15 +54,19 @@ export default function Home({ notificationToUser }) {
 
             if (results.length > 10) {
                 const resultsMin = [];
+                const howManyResultsToShow =
+                    results.length > 20 ? 20 : results.length;
 
-                for (let i = 0; i < 20; i++) resultsMin.push(results[i]);
+                for (let i = 0; i < howManyResultsToShow; i++) {
+                    resultsMin.push(results[i]);
+                }
 
                 setProducts(resultsMin);
             } else {
                 setProducts(results);
             }
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
     }
 
@@ -84,7 +90,7 @@ export default function Home({ notificationToUser }) {
                     visible={snackBarVisible}
                     duration={5000}
                     style={{
-                        backgroundColor: '#14d48f',
+                        backgroundColor: theme.colors.accent,
                         borderRadius: 12,
                         marginBottom: 90,
                         padding: 7,

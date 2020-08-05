@@ -1,3 +1,4 @@
+import Realm from '../Services/Realm';
 import { sortLoteByExpDate, removeLotesTratados } from './Lotes';
 
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
@@ -50,4 +51,35 @@ export function removeAllLotesTratadosFromAllProduts(listProducts) {
     });
 
     return results;
+}
+
+export async function GetAllProducts() {
+    try {
+        const realm = await Realm();
+
+        const results = realm.objects('Product').slice();
+
+        return results;
+    } catch (err) {
+        console.warn(err);
+    }
+
+    return null;
+}
+
+export async function GetAllProductsWithLotes() {
+    try {
+        const realm = await Realm();
+
+        const results = realm
+            .objects('Product')
+            .filtered('lotes.@count > 0')
+            .slice();
+
+        return results;
+    } catch (err) {
+        console.warn(err);
+    }
+
+    return null;
 }

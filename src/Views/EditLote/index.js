@@ -66,7 +66,7 @@ const EditLote = ({ route, navigation }) => {
             Alert.alert('Lote editado!');
             navigation.goBack();
         } catch (err) {
-            console.tron(err);
+            console.warn(err);
         }
     }
 
@@ -97,7 +97,7 @@ const EditLote = ({ route, navigation }) => {
 
             const regex = /^[0-9\b]+$/;
             if (resultLote.amount === '' || regex.test(resultLote.amount)) {
-                setAmount(resultLote.amount);
+                setAmount(String(resultLote.amount));
             }
 
             setLote(resultLote.lote);
