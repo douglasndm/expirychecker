@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Alert } from 'react-native';
-import AsyncStorange from '@react-native-community/async-storage';
 import { StackActions } from '@react-navigation/native';
 import { FAB, Button, Dialog, useTheme } from 'react-native-paper';
 import { format, isPast, addDays } from 'date-fns';
@@ -12,6 +11,7 @@ import Realm from '../../Services/Realm';
 
 import GenericButton from '../../Components/Button';
 
+import { getDaysToBeNextToExp } from '../../Functions/Settings';
 import { getProductById } from '../../Functions/Product';
 import { sortLoteByExpDate } from '../../Functions/Lotes';
 
@@ -31,18 +31,6 @@ import {
     TableCell,
 } from './styles';
 
-async function getDaysToBeNext() {
-    try {
-        const days = await AsyncStorange.getItem('settings/daysToBeNext');
-
-        if (days != null) return days;
-    } catch (err) {
-        console.log(err);
-    }
-
-    return 30;
-}
-
 export default ({ route, navigation }) => {
     const productId = route.params.id;
 
@@ -61,18 +49,16 @@ export default ({ route, navigation }) => {
 
     useEffect(() => {
         async function getAppData() {
-            const days = await getDaysToBeNext();
+            const days = await getDaysToBeNextToExp();
             setDaysToBeNext(days);
         }
 
         getAppData();
     }, []);
 
-    async function getProduct(realm) {
+    async function getProduct() {
         try {
-            const result = realm
-                .objects('Product')
-                .filtered(`id == ${productId}`)[0];
+            const result = await getProductById(productId);
 
             setName(result.name);
             setCode(result.code);
@@ -81,7 +67,7 @@ export default ({ route, navigation }) => {
 
             setLotes(lotesSorted);
         } catch (error) {
-            console.log(error);
+            console.warn(error);
         }
     }
 
@@ -90,10 +76,10 @@ export default ({ route, navigation }) => {
             const realm = await Realm();
 
             realm.addListener('change', () => {
-                getProduct(realm);
+                getProduct();
             });
 
-            getProduct(realm);
+            getProduct();
         }
 
         startRealm();
@@ -128,9 +114,32 @@ export default ({ route, navigation }) => {
                 <Container>
                     <PageHeader>
                         <ProductDetailsContainer>
-                            <PageTitle style={{ color: theme.colors.text }}>
-                                Detalhes
-                            </PageTitle>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    marginLeft: -15,
+                                }}
+                            >
+                                <Button
+                                    style={{
+                                        alignSelf: 'flex-end',
+                                    }}
+                                    icon={() => (
+                                        <Ionicons
+                                            name="arrow-back-outline"
+                                            size={28}
+                                            color={theme.colors.text}
+                                        />
+                                    )}
+                                    compact
+                                    onPress={() => {
+                                        navigation.goBack();
+                                    }}
+                                />
+                                <PageTitle style={{ color: theme.colors.text }}>
+                                    Detalhes
+                                </PageTitle>
+                            </View>
 
                             <View>
                                 <ProductName

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { Alert, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Button as ButtonPaper } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import GenericButton from '../../Components/Button';
 
@@ -89,9 +90,32 @@ const AddLote = ({ route }) => {
     return (
         <Container style={{ backgroundColor: theme.colors.background }}>
             <ScrollView>
-                <PageTitle style={{ color: theme.colors.text }}>
-                    Adicionar um lote
-                </PageTitle>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        marginLeft: -15,
+                    }}
+                >
+                    <ButtonPaper
+                        style={{
+                            alignSelf: 'flex-end',
+                        }}
+                        icon={() => (
+                            <Ionicons
+                                name="arrow-back-outline"
+                                size={28}
+                                color={theme.colors.text}
+                            />
+                        )}
+                        compact
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                    />
+                    <PageTitle style={{ color: theme.colors.text }}>
+                        Adicionar um lote
+                    </PageTitle>
+                </View>
 
                 <InputContainer>
                     <ProductHeader>
@@ -106,7 +130,7 @@ const AddLote = ({ route }) => {
                     <InputGroup>
                         <InputText
                             style={{
-                                flex: 3,
+                                flex: 5,
                                 marginRight: 5,
                                 backgroundColor: theme.colors.inputBackground,
                                 color: theme.colors.inputText,
@@ -118,7 +142,7 @@ const AddLote = ({ route }) => {
                         />
                         <InputText
                             style={{
-                                flex: 2,
+                                flex: 4,
                                 backgroundColor: theme.colors.inputBackground,
                                 color: theme.colors.inputText,
                             }}
