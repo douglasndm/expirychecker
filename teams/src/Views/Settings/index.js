@@ -99,6 +99,7 @@ const Settings = () => {
                 <View
                     style={{
                         flexDirection: 'row',
+                        marginLeft: -15,
                     }}
                 >
                     <ButtonPaper
