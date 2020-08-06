@@ -1,13 +1,12 @@
 import styled from 'styled-components/native';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const Container = styled.View`
     flex: 1;
 `;
 
 export const HeaderContainer = styled.View`
-    margin-left: -15px;
-    margin-top: -18px;
+    margin-left: -16px;
+    margin-top: -22px;
     width: 120%;
     transform: rotate(-4deg);
 `;
