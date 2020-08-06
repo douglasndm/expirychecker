@@ -50,8 +50,8 @@ const PremiumSubscription = () => {
     }
 
     return (
-        <ScrollView>
-            <Container style={{ backgroundColor: theme.colors.background }}>
+        <Container style={{ backgroundColor: theme.colors.background }}>
+            <ScrollView>
                 <HeaderContainer
                     style={{ backgroundColor: theme.colors.accent }}
                 >
@@ -126,8 +126,8 @@ const PremiumSubscription = () => {
                 >
                     <TextSubscription>Voltar ao início</TextSubscription>
                 </ButtonSubscription>
-            </Container>
-        </ScrollView>
+            </ScrollView>
+        </Container>
     );
 };
 
