@@ -71,14 +71,20 @@ export default function Home({ notificationToUser }) {
     }
 
     useEffect(() => {
+        let realm;
+
         async function startRealm() {
-            const realm = await Realm();
+            realm = await Realm();
             realm.addListener('change', () => getProduts(realm));
 
             getProduts(realm);
         }
 
         startRealm();
+
+        return () => {
+            realm.removeAllListeners();
+        };
     }, []);
 
     return (

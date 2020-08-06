@@ -72,8 +72,10 @@ export default ({ route, navigation }) => {
     }
 
     useEffect(() => {
+        let realm;
+
         async function startRealm() {
-            const realm = await Realm();
+            realm = await Realm();
 
             realm.addListener('change', () => {
                 getProduct();
@@ -83,6 +85,10 @@ export default ({ route, navigation }) => {
         }
 
         startRealm();
+
+        return () => {
+            realm.removeAllListeners();
+        };
     }, []);
 
     async function handleEdit() {
