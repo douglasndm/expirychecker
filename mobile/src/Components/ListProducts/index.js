@@ -156,8 +156,10 @@ export default function ListProducts({ products, isHome }) {
                         <BannerAd
                             unitId={adUnitId}
                             size={BannerAdSize.BANNER}
-                            onAdFailedToLoad={() => {
-                                console.log('Falha com carregar anúncios');
+                            onAdFailedToLoad={(err) => {
+                                console.log(
+                                    `Falha ao carregar anúncios ${err}`
+                                );
                             }}
                         />
                     </View>
