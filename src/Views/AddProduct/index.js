@@ -31,10 +31,17 @@ import {
     Camera,
 } from './styles';
 
+const adUnitID = __DEV__
+    ? TestIds.INTERSTITIAL
+    : EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
+
+const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
+
 const AddProduct = ({ navigation }) => {
     const theme = useTheme();
 
     const [adsEnabled, setAdsEnabled] = useState(false);
+    const [adReady, setAdReady] = useState(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -45,16 +52,6 @@ const AddProduct = ({ navigation }) => {
 
     const [cameraEnabled, setCameraEnebled] = useState(false);
     const [productAlreadyExists, setProductAlreadyExists] = useState(false);
-
-    const [adReady, setAdReady] = useState(false);
-
-    const adUnitID = __DEV__
-        ? TestIds.INTERSTITIAL
-        : EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
-
-    const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
-
-    interstitialAd.load();
 
     async function handleSave() {
         if (!name || name.trim() === '') {
@@ -80,7 +77,7 @@ const AddProduct = ({ navigation }) => {
                 await createProduct(newProduct);
 
                 if (adsEnabled && adReady) {
-                    await interstitialAd.show();
+                    interstitialAd.show();
                 }
 
                 navigation.push('Home', {
@@ -93,28 +90,29 @@ const AddProduct = ({ navigation }) => {
             setProductAlreadyExists(true);
         }
     }
+
     useEffect(() => {
         async function getAppData() {
             if (await getAdsEnabled()) {
                 setAdsEnabled(true);
+
+                interstitialAd.load();
             } else {
                 setAdsEnabled(false);
             }
         }
 
         getAppData();
-    }, []);
 
-    useEffect(() => {
         const eventListener = interstitialAd.onAdEvent((type) => {
             if (type === AdEventType.LOADED) {
                 setAdReady(true);
             }
             if (type === AdEventType.CLOSED) {
                 setAdReady(false);
-
-                // reload ad
-                interstitialAd.load();
+            }
+            if (type === AdEventType.ERROR) {
+                setAdReady(false);
             }
         });
 
@@ -125,7 +123,7 @@ const AddProduct = ({ navigation }) => {
         return () => {
             eventListener();
         };
-    }, [adReady]);
+    }, []);
 
     return (
         <>
@@ -177,6 +175,7 @@ const AddProduct = ({ navigation }) => {
                         <View
                             style={{
                                 flexDirection: 'row',
+                                marginLeft: -15,
                             }}
                         >
                             <ButtonPaper

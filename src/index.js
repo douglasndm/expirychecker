@@ -12,7 +12,7 @@ import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
+import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
 import Themes, { getActualAppTheme } from './Themes';
 
