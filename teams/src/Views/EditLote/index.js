@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Realm from '../../Services/Realm';
 
+import { getProductById } from '../../Functions/Product';
 import { deleteLote } from '../../Functions/Lotes';
 
 import GenericButton from '../../Components/Button';
@@ -83,15 +84,11 @@ const EditLote = ({ route, navigation }) => {
 
     useEffect(() => {
         async function getProduct() {
-            const realm = await Realm();
+            const p = await getProductById(productId);
 
-            const result = await realm
-                .objects('Product')
-                .filtered(`id == ${productId}`)[0];
+            setProduct(p);
 
-            setProduct(result);
-
-            const resultLote = result.lotes.find((l) => l.id === loteId);
+            const resultLote = p.lotes.find((l) => l.id === loteId);
 
             const jaTratado = resultLote.status === 'Tratado';
 
