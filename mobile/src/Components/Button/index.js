@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTheme } from 'react-native-paper';
 
 import { Button as Btn, ButtonText } from './styles';
@@ -14,3 +15,12 @@ const Button = ({ text, onPress }) => {
 };
 
 export default Button;
+
+Button.defaultProps = {
+    onPress: () => {},
+};
+
+Button.propTypes = {
+    text: PropTypes.string.isRequired,
+    onPress: PropTypes.func,
+};
