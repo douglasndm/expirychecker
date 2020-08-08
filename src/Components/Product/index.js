@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { format, formatDistanceToNow } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
 
+import PropTypes from 'prop-types';
+
 import {
     Container,
     Card,
@@ -18,7 +20,7 @@ import {
     Amount,
 } from './styles';
 
-export default ({ product, expired, nextToExp }) => {
+const Product = ({ product, expired, nextToExp }) => {
     const navigation = useNavigation();
 
     const theme = useTheme();
@@ -89,4 +91,28 @@ export default ({ product, expired, nextToExp }) => {
             </Card>
         </Container>
     );
+};
+
+export default React.memo(Product);
+
+Product.defaultProps = {
+    expired: false,
+    nextToExp: false,
+};
+
+Product.propTypes = {
+    product: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        code: PropTypes.string,
+        lotes: PropTypes.shape({
+            id: PropTypes.number,
+            lote: PropTypes.string,
+            exp_date: PropTypes.string,
+            amount: PropTypes.number,
+            status: PropTypes.string,
+        }),
+    }).isRequired,
+    expired: PropTypes.bool,
+    nextToExp: PropTypes.bool,
 };
