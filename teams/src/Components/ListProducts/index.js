@@ -8,7 +8,7 @@ import { addDays, isPast } from 'date-fns';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { getAdsEnabled, getDaysToBeNextToExp } from '../../Functions/Settings';
+import { getDaysToBeNextToExp } from '../../Functions/Settings';
 import { GetPremium } from '../../Functions/Premium';
 
 import ProductItem from '../Product';
@@ -27,7 +27,6 @@ export default function ListProducts({ products, isHome }) {
     const theme = useTheme();
 
     const [daysToBeNext, setDaysToBeNext] = useState();
-    const [adsEnabled, setAdsEnabled] = useState(false);
     const [isPremium, setIsPremium] = useState(false);
 
     const adUnitId = __DEV__
@@ -38,12 +37,6 @@ export default function ListProducts({ products, isHome }) {
         async function getAppData() {
             const days = await getDaysToBeNextToExp();
             setDaysToBeNext(days);
-
-            if (await getAdsEnabled()) {
-                setAdsEnabled(true);
-            } else {
-                setAdsEnabled(false);
-            }
 
             setIsPremium(await GetPremium());
         }
@@ -144,7 +137,7 @@ export default function ListProducts({ products, isHome }) {
 
         return (
             <>
-                {adsEnabled && index !== 0 && index % 5 === 0 ? (
+                {!isPremium && index !== 0 && index % 5 === 0 ? (
                     <View
                         style={{
                             flex: 1,

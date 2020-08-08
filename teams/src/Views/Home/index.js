@@ -21,7 +21,7 @@ export default function Home({ notificationToUser }) {
     useEffect(() => {
         if (notificationToUser && notificationToUser !== '')
             setSnackBarVisible(true);
-    }, [notificationToUser]);
+    }, []);
 
     useEffect(() => {
         async function checkIfUserIsPremium() {
