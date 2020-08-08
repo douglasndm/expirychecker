@@ -1,7 +1,5 @@
 import Realm from '../Services/Realm';
 
-import { GetPremium } from './Premium';
-
 export async function getDaysToBeNextToExp() {
     try {
         const realm = await Realm();
@@ -69,49 +67,6 @@ export async function setAppTheme(theme) {
                 {
                     name: 'appTheme',
                     value: theme.trim(),
-                },
-                true
-            );
-        });
-    } catch (err) {
-        console.warn(err);
-    }
-}
-
-export async function getAdsEnabled() {
-    try {
-        if (await GetPremium()) {
-            return false;
-        }
-
-        const realm = await Realm();
-
-        const adsEnabled = await realm
-            .objects('Setting')
-            .filtered("name = 'isAdsEnabled'")[0];
-
-        if (!adsEnabled) {
-            return false;
-        }
-
-        return adsEnabled.value === 'true';
-    } catch (err) {
-        console.warn(err.message);
-    }
-
-    return false;
-}
-
-export async function setAdsEnabled(isEnabled) {
-    try {
-        const realm = await Realm();
-
-        realm.write(() => {
-            realm.create(
-                'Setting',
-                {
-                    name: 'isAdsEnabled',
-                    value: isEnabled ? 'true' : 'false',
                 },
                 true
             );

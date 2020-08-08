@@ -11,7 +11,7 @@ import {
 
 import GenericButton from '../../Components/Button';
 
-import { getAdsEnabled } from '../../Functions/Settings';
+import { GetPremium } from '../../Functions/Premium';
 
 import {
     checkIfProductAlreadyExistsByCode,
@@ -40,7 +40,7 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 const AddProduct = ({ navigation }) => {
     const theme = useTheme();
 
-    const [adsEnabled, setAdsEnabled] = useState(false);
+    const [isPremium, setIsPremium] = useState(false);
     const [adReady, setAdReady] = useState(false);
 
     const [name, setName] = useState('');
@@ -76,7 +76,7 @@ const AddProduct = ({ navigation }) => {
 
                 await createProduct(newProduct);
 
-                if (adsEnabled && adReady) {
+                if (!isPremium && adReady) {
                     interstitialAd.show();
                 }
 
@@ -93,12 +93,12 @@ const AddProduct = ({ navigation }) => {
 
     useEffect(() => {
         async function getAppData() {
-            if (await getAdsEnabled()) {
-                setAdsEnabled(true);
+            if (!(await GetPremium())) {
+                setIsPremium(true);
 
                 interstitialAd.load();
             } else {
-                setAdsEnabled(false);
+                setIsPremium(false);
             }
         }
 
