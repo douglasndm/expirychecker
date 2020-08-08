@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Keyboard, Alert } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 import { Button as ButtonPaper, Dialog, useTheme } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import EnvConfig from 'react-native-config';
 import {
     InterstitialAd,
@@ -37,7 +38,8 @@ const adUnitID = __DEV__
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
-const AddProduct = ({ navigation }) => {
+const AddProduct = () => {
+    const navigation = useNavigation();
     const theme = useTheme();
 
     const [isPremium, setIsPremium] = useState(false);
@@ -76,7 +78,7 @@ const AddProduct = ({ navigation }) => {
 
                 await createProduct(newProduct);
 
-                if (!isPremium && adReady) {
+                if (!!isPremium && adReady) {
                     interstitialAd.show();
                 }
 
