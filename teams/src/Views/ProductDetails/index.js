@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Alert } from 'react-native';
 import { StackActions } from '@react-navigation/native';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { FAB, Button, Dialog, useTheme } from 'react-native-paper';
 import { format, isPast, addDays } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
@@ -60,6 +61,16 @@ export default ({ route, navigation }) => {
         try {
             const result = await getProductById(productId);
 
+            if (!result || result === null) {
+                crashlytics().log(
+                    `Product retornou null da função. ID: ${productId}`
+                );
+                console.log(
+                    `Product retornou null da função. ID: ${productId}`
+                );
+                return;
+            }
+
             setName(result.name);
             setCode(result.code);
 
@@ -67,6 +78,7 @@ export default ({ route, navigation }) => {
 
             setLotes(lotesSorted);
         } catch (error) {
+            crashlytics().recordError(error);
             console.warn(error);
         }
     }

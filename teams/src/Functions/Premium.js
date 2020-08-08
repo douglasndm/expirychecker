@@ -1,11 +1,15 @@
 import IAP from 'react-native-iap';
 import Realm from '../Services/Realm';
 
-import { setAppTheme, setAdsEnabled } from './Settings';
+export async function IsPlayStoreIsAvailable() {
+    try {
+        await IAP.initConnection();
 
-async function removePremiumFeatures() {
-    await setAppTheme('system');
-    await setAdsEnabled(true);
+        return true;
+    } catch (err) {
+        console.warn(err);
+        return false;
+    }
 }
 
 async function setPremium(active) {
