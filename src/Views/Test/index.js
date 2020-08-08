@@ -97,7 +97,7 @@ const Test = () => {
                 realm.delete(results);
             });
         } catch (err) {
-            console.tron(err);
+            console.warn(err);
         }
     }
 
@@ -114,6 +114,13 @@ const Test = () => {
                     style={{ backgroundColor: theme.colors.productBackground }}
                 >
                     <Text>Is ads enabled: {String(adsEnable)}</Text>
+
+                    <Button
+                        text="Check play store"
+                        onPress={async () => {
+                            console.log(await Premium.IsPlayStoreIsAvailable());
+                        }}
+                    />
 
                     <Button
                         text="Logar detalhes da inscrição"

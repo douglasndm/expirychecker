@@ -2,8 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Drawer, useTheme } from 'react-native-paper';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { IsPlayStoreIsAvailable } from '../../Functions/Premium';
 
 import Logo from '../../Assets/Logo.png';
 
@@ -12,6 +13,18 @@ import { MenuHeader, LogoImage } from './styles';
 export function DrawerMenu(props) {
     const { navigation } = props;
     const theme = useTheme();
+
+    const [playAvailable, setPlayAvailable] = React.useState(false);
+
+    React.useEffect(() => {
+        async function getDatas() {
+            const result = await IsPlayStoreIsAvailable();
+
+            setPlayAvailable(result);
+        }
+
+        getDatas();
+    }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
@@ -61,20 +74,22 @@ export function DrawerMenu(props) {
                             onPress={() => navigation.navigate('AllProducts')}
                         />
 
-                        <DrawerItem
-                            icon={() => (
-                                <Ionicons
-                                    name="analytics-outline"
-                                    color={theme.colors.text}
-                                    size={22}
-                                />
-                            )}
-                            label="Seja Premium"
-                            labelStyle={{ color: theme.colors.text }}
-                            onPress={() => {
-                                navigation.navigate('PremiumSubscription');
-                            }}
-                        />
+                        {playAvailable ? (
+                            <DrawerItem
+                                icon={() => (
+                                    <Ionicons
+                                        name="analytics-outline"
+                                        color={theme.colors.text}
+                                        size={22}
+                                    />
+                                )}
+                                label="Seja Premium"
+                                labelStyle={{ color: theme.colors.text }}
+                                onPress={() => {
+                                    navigation.navigate('PremiumSubscription');
+                                }}
+                            />
+                        ) : null}
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
