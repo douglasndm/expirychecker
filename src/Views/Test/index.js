@@ -9,8 +9,6 @@ import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
-import { getAdsEnabled } from '../../Functions/Settings';
-
 import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
@@ -21,7 +19,7 @@ const Test = () => {
 
     useEffect(() => {
         async function getAppData() {
-            if (await getAdsEnabled()) {
+            if (!(await Premium.GetPremium())) {
                 setAdsEnable(true);
             } else {
                 setAdsEnable(false);
