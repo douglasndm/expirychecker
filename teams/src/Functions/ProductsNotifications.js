@@ -1,5 +1,6 @@
 import { Notifications } from 'react-native-notifications';
 import { addDays, isPast } from 'date-fns';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { getDaysToBeNextToExp } from './Settings';
 import Realm from '../Services/Realm';
@@ -86,6 +87,8 @@ export async function getAllProductsNextToExp() {
             });
         }
     } catch (err) {
-        console.tron(err);
+        crashlytics().recordError();
+        crashlytics().log('Falha ao enviar notificação');
+        console.warn(err);
     }
 }
