@@ -138,8 +138,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 29
-        versionName "1.2.1.6"
+        versionCode 31
+        versionName "1.2.1.8"
 
         missingDimensionStrategy 'react-native-camera', 'mlkit'
     }
@@ -246,7 +246,7 @@ apply from: file("../../node_modules/@react-native-community/cli-platform-androi
 
 //React Native Vector Icons
 project.ext.vectoricons = [
-    iconFontNames: [ 'Ionicons.ttf', 'MaterialCommunityIcons' ] // Name of the font files you want to copy
+    iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
 ]
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
