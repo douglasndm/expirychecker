@@ -1,12 +1,9 @@
-import { DefaultTheme } from 'react-native-paper';
+import { DefaultTheme } from 'styled-components/native';
 import { darken } from 'polished';
 
-export default {
-    ...DefaultTheme,
-
-    dark: true, // whether this is a dark theme or light theme.
+const UltraViolet: DefaultTheme = {
+    dark: true,
     mode: 'exact',
-    roundness: 12,
 
     colors: {
         primary: darken(0.1, '#7b00ba'),
@@ -26,3 +23,5 @@ export default {
         productNextOrExpiredText: '#FFF',
     },
 };
+
+export default UltraViolet;

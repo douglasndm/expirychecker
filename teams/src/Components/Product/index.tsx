@@ -18,24 +18,23 @@ import {
     Amount,
 } from './styles';
 
-const Product = ({ product, expired, nextToExp }) => {
+interface Request {
+    product: {
+        id: number;
+        name: string;
+        code?: string;
+        lotes: []
+    }
+
+    expired: boolean;
+    nextToExp: boolean;
+}
+const Product = ({ product, expired, nextToExp }: Request) => {
     const navigation = useNavigation();
 
     const theme = useTheme();
 
-    let background;
-    let foreground;
-
-    if (expired) {
-        background = theme.colors.productExpiredBackground;
-        foreground = theme.colors.productNextOrExpiredText;
-    } else if (nextToExp) {
-        background = theme.colors.productNextToExpBackground;
-        foreground = theme.colors.productNextOrExpiredText;
-    } else {
-        background = theme.colors.productBackground;
-        foreground = theme.colors.text;
-    }
+    const expiredOrNext = expired || nextToExp ? true : false;
 
     return (
         <Container>
@@ -43,21 +42,22 @@ const Product = ({ product, expired, nextToExp }) => {
                 onPress={() => {
                     navigation.navigate('ProductDetails', { id: product.id });
                 }}
-                style={{ backgroundColor: background }}
+                expired={expired}
+                nextToExp={nextToExp}
             >
                 <ProductDetails>
                     <ProductDetailsContainer>
-                        <ProductName style={{ color: foreground }}>
+                        <ProductName expiredOrNext={expiredOrNext}>
                             {product.name}
                         </ProductName>
-                        {product.code && product.code !== '' ? (
-                            <ProductCode style={{ color: foreground }}>
+                        {product.code &&
+                            <ProductCode expiredOrNext={expiredOrNext}>
                                 Código: {product.code}
                             </ProductCode>
-                        ) : null}
+                        }
 
                         {product.lotes[0].lote ? (
-                            <ProductLote style={{ color: foreground }}>
+                            <ProductLote expiredOrNext={expiredOrNext}>
                                 Lote: {product.lotes[0].lote}
                             </ProductLote>
                         ) : null}
@@ -66,17 +66,17 @@ const Product = ({ product, expired, nextToExp }) => {
                     {product.lotes[0].amount &&
                     product.lotes[0].amount !== '' ? (
                         <AmountContainer>
-                            <AmountContainerText style={{ color: foreground }}>
+                            <AmountContainerText expiredOrNext={expiredOrNext}>
                                 Quantidade
                             </AmountContainerText>
-                            <Amount style={{ color: foreground }}>
+                            <Amount expiredOrNext={expiredOrNext}>
                                 {product.lotes[0].amount}
                             </Amount>
                         </AmountContainer>
                     ) : null}
                 </ProductDetails>
 
-                <ProductExpDate style={{ color: foreground }}>
+                <ProductExpDate expiredOrNext={expiredOrNext}>
                     {expired ? 'Venceu ' : 'Vence '}
                     {formatDistanceToNow(product.lotes[0].exp_date, {
                         addSuffix: true,
