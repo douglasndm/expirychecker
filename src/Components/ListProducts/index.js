@@ -49,9 +49,7 @@ export default function ListProducts({ products, isHome }) {
 
         return (
             <View>
-                <HeaderContainer
-                    style={{ backgroundColor: theme.colors.accent }}
-                >
+                <HeaderContainer>
                     <Button
                         color="transparent"
                         icon={() => (
@@ -80,9 +78,7 @@ export default function ListProducts({ products, isHome }) {
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 ? (
                     <CategoryDetails>
-                        <CategoryDetailsText
-                            style={{ color: theme.colors.textAccent }}
-                        >
+                        <CategoryDetailsText>
                             Produtos mais próximos ao vencimento
                         </CategoryDetailsText>
                     </CategoryDetails>
@@ -173,7 +169,7 @@ export default function ListProducts({ products, isHome }) {
     }
 
     return (
-        <Container style={{ backgroundColor: theme.colors.background }}>
+        <Container>
             <FlatList
                 data={products}
                 keyExtractor={keyExtractor}
