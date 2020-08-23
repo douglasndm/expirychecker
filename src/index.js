@@ -65,7 +65,7 @@ export default () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <PaperProvider theme={theme}>
+            <PaperProvider>
                 <Portal>
                     <NavigationContainer>
                         <StatusBar backgroundColor={theme.colors.accent} />
