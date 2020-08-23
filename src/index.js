@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
-import { enableScreens } from 'react-native-screens';
+import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 import EnvConfig from 'react-native-config';
@@ -24,8 +24,6 @@ if (!__DEV__) {
         enableAutoSessionTracking: true,
     });
 }
-
-enableScreens();
 
 async function disableAppCenterIfInDevMode() {
     await Analytics.setEnabled(false);
@@ -66,13 +64,15 @@ export default () => {
     }, []);
 
     return (
-        <PaperProvider theme={theme}>
-            <Portal>
-                <NavigationContainer>
-                    <StatusBar backgroundColor={theme.colors.accent} />
-                    <Routes />
-                </NavigationContainer>
-            </Portal>
-        </PaperProvider>
+        <ThemeProvider theme={theme}>
+            <PaperProvider theme={theme}>
+                <Portal>
+                    <NavigationContainer>
+                        <StatusBar backgroundColor={theme.colors.accent} />
+                        <Routes />
+                    </NavigationContainer>
+                </Portal>
+            </PaperProvider>
+        </ThemeProvider>
     );
 };
