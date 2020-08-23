@@ -1,11 +1,8 @@
-import { DefaultTheme } from 'react-native-paper';
+import { DefaultTheme } from 'styled-components/native';
 
-export default {
-    ...DefaultTheme,
-
-    dark: false, // whether this is a dark theme or light theme.
+const Light: DefaultTheme = {
+    dark: false,
     mode: 'exact',
-    roundness: 12,
 
     colors: {
         primary: '#14d48f',
@@ -25,3 +22,5 @@ export default {
         productNextOrExpiredText: '#FFF',
     },
 };
+
+export default Light;
