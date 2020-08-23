@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
     flex: 1;
+    background: ${(props) => props.theme.colors.background};
 `;
 export const HeaderContainer = styled.View`
     width: 100%;
@@ -10,7 +11,7 @@ export const HeaderContainer = styled.View`
     justify-content: flex-start;
     align-items: center;
 
-    background-color: #14d48f;
+    background-color: ${(props) => props.theme.colors.accent};
 
     flex-direction: row;
 `;
@@ -31,6 +32,6 @@ export const CategoryDetails = styled.View`
 `;
 
 export const CategoryDetailsText = styled.Text`
-    color: #14d48f;
+    color: ${(props) => props.theme.colors.textAccent};
     font-size: 18px;
 `;
