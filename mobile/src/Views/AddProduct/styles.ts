@@ -7,11 +7,14 @@ export const Container = styled.View`
 
     flex: 1;
     flex-direction: column;
+
+    background: ${({ theme }) => theme.colors.background};
 `;
 
 export const PageTitle = styled.Text`
     font-size: 28px;
     font-weight: bold;
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 export const InputContainer = styled.View`
@@ -28,8 +31,9 @@ export const InputText = styled.TextInput`
     margin-bottom: 10px;
     border-radius: 12px;
     padding: 15px;
-    background-color: #fff;
     font-size: 18px;
+    background-color: ${({ theme }) => theme.colors.inputBackground};
+    color: ${({ theme }) => theme.colors.inputText};
 `;
 
 export const ExpDateGroup = styled.View`
@@ -37,13 +41,13 @@ export const ExpDateGroup = styled.View`
 `;
 export const ExpDateLabel = styled.Text`
     font-size: 16px;
-    color: #999;
+    color: ${(props) => props.theme.colors.subText};
     margin-top: 10px;
     margin-bottom: 10px;
 `;
 
 export const CustomDatePicker = styled(DatePicker)`
-    background: white;
+    background: ${({ theme }) => theme.colors.productBackground};
     z-index: 1;
 `;
 
