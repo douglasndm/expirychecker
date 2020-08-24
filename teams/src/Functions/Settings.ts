@@ -1,24 +1,29 @@
 import Realm from '../Services/Realm';
 
-export async function getDaysToBeNextToExp() {
+interface ISetting {
+    name: string;
+    value?: string;
+}
+
+export async function getDaysToBeNextToExp(): Promise<number> {
     try {
         const realm = await Realm();
 
         const daysToBeNext = await realm
-            .objects('Setting')
+            .objects<ISetting>('Setting')
             .filtered("name = 'daysToBeNext'")[0];
 
         if (daysToBeNext && daysToBeNext !== null) {
-            return daysToBeNext.value;
+            return Number(daysToBeNext.value);
         }
     } catch (err) {
-        console.tron(err);
+        console.warn(err);
     }
 
     return 30;
 }
 
-export async function setDaysToBeNextToExp(days) {
+export async function setDaysToBeNextToExp(days: number): Promise<void> {
     try {
         const realm = await Realm();
 
@@ -27,7 +32,7 @@ export async function setDaysToBeNextToExp(days) {
                 'Setting',
                 {
                     name: 'daysToBeNext',
-                    value: days.trim(),
+                    value: days,
                 },
                 true
             );
@@ -37,19 +42,15 @@ export async function setDaysToBeNextToExp(days) {
     }
 }
 
-export async function getAppTheme() {
+export async function getAppTheme(): Promise<string> {
     try {
         const realm = await Realm();
 
         const appTheme = await realm
-            .objects('Setting')
+            .objects<ISetting>('Setting')
             .filtered("name = 'appTheme'")[0];
 
-        if (!appTheme) {
-            return 'system';
-        }
-
-        return appTheme.value;
+        return appTheme.value || 'system';
     } catch (err) {
         console.warn(err.message);
     }
@@ -57,7 +58,7 @@ export async function getAppTheme() {
     return 'system';
 }
 
-export async function setAppTheme(theme) {
+export async function setAppTheme(themeName: string): Promise<void> {
     try {
         const realm = await Realm();
 
@@ -66,7 +67,7 @@ export async function setAppTheme(theme) {
                 'Setting',
                 {
                     name: 'appTheme',
-                    value: theme.trim(),
+                    value: themeName.trim(),
                 },
                 true
             );
