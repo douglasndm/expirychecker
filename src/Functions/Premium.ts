@@ -1,7 +1,9 @@
-import IAP from 'react-native-iap';
-import Realm from '../Services/Realm';
+import IAP, { Subscription, SubscriptionPurchase } from 'react-native-iap';
 
-export async function IsPlayStoreIsAvailable() {
+import Realm from '../Services/Realm';
+import { getAppTheme, setAppTheme } from './Settings';
+
+export async function IsPlayStoreIsAvailable(): Promise<boolean> {
     try {
         await IAP.initConnection();
 
@@ -12,7 +14,7 @@ export async function IsPlayStoreIsAvailable() {
     }
 }
 
-async function setPremium(active) {
+async function setPremium(active: boolean): Promise<void> {
     try {
         const realm = await Realm();
 
@@ -31,7 +33,7 @@ async function setPremium(active) {
     }
 }
 
-export async function GetPremium() {
+export async function GetPremium(): Promise<boolean> {
     try {
         const realm = await Realm();
 
@@ -55,13 +57,24 @@ export async function GetPremium() {
     return false;
 }
 
-export async function CheckIfSubscriptionIsActive() {
+export async function CheckIfSubscriptionIsActive(): Promise<boolean | null> {
     try {
         const purchases = await IAP.getAvailablePurchases();
 
         if (purchases.length > 0) {
             await setPremium(true);
             return true;
+        }
+
+        // Se chegou aqui o usuário não é premium
+        // aqui faz a verificação se ele está usando algum tema premium(se já foi premium) e remove ele
+        const userTheme = await getAppTheme();
+        if (
+            userTheme === 'system' ||
+            userTheme === 'dark' ||
+            userTheme === 'light'
+        ) {
+            await setAppTheme('system');
         }
 
         await setPremium(false);
@@ -72,7 +85,9 @@ export async function CheckIfSubscriptionIsActive() {
     return null;
 }
 
-export async function GetSubscriptionInfo() {
+export async function GetSubscriptionInfo(): Promise<Array<
+    Subscription
+> | null> {
     try {
         const subscriptions = await IAP.getSubscriptions([
             'controledevalidade_premium',
@@ -86,7 +101,7 @@ export async function GetSubscriptionInfo() {
     return null;
 }
 
-export async function MakeASubscription() {
+export async function MakeASubscription(): Promise<SubscriptionPurchase | null> {
     await GetSubscriptionInfo();
 
     try {
@@ -101,5 +116,5 @@ export async function MakeASubscription() {
         console.warn(err);
     }
 
-    return false;
+    return null;
 }
