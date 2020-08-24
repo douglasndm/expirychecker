@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, Keyboard, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Button as ButtonPaper, Dialog, useTheme } from 'react-native-paper';
+import { useTheme } from 'styled-components';
+import { Button as ButtonPaper, Dialog } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EnvConfig from 'react-native-config';
 import {
@@ -38,7 +39,7 @@ const adUnitID = __DEV__
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
-const AddProduct = () => {
+const AddProduct: Reacf.FC = () => {
     const navigation = useNavigation();
     const theme = useTheme();
 
@@ -165,14 +166,11 @@ const AddProduct = () => {
 
                     <GenericButton
                         text="Fechar"
-                        style={{
-                            alignSelf: 'center',
-                        }}
                         onPress={() => setCameraEnebled(false)}
                     />
                 </View>
             ) : (
-                <Container style={{ backgroundColor: theme.colors.background }}>
+                <Container>
                     <ScrollView>
                         <View
                             style={{
@@ -196,22 +194,11 @@ const AddProduct = () => {
                                     navigation.goBack();
                                 }}
                             />
-                            <PageTitle
-                                style={{
-                                    color: theme.colors.text,
-                                }}
-                            >
-                                Novo produto
-                            </PageTitle>
+                            <PageTitle>Novo produto</PageTitle>
                         </View>
 
                         <InputContainer>
                             <InputText
-                                style={{
-                                    backgroundColor:
-                                        theme.colors.inputBackground,
-                                    color: theme.colors.inputText,
-                                }}
                                 placeholder="Nome do produto"
                                 placeholderTextColor={theme.colors.subText}
                                 accessibilityLabel="Campo de texto para nome do produto"
@@ -231,12 +218,7 @@ const AddProduct = () => {
                                 }}
                             >
                                 <InputText
-                                    style={{
-                                        flex: 1,
-                                        backgroundColor:
-                                            theme.colors.inputBackground,
-                                        color: theme.colors.inputText,
-                                    }}
+                                    style={{ flex: 1 }}
                                     placeholder="Código"
                                     placeholderTextColor={theme.colors.subText}
                                     accessibilityLabel="Campo de texto para código de barras do produto"
@@ -268,9 +250,6 @@ const AddProduct = () => {
                             <InputGroup>
                                 <InputText
                                     style={{
-                                        backgroundColor:
-                                            theme.colors.inputBackground,
-                                        color: theme.colors.inputText,
                                         flex: 5,
                                         marginRight: 5,
                                     }}
@@ -286,9 +265,6 @@ const AddProduct = () => {
                                 <InputText
                                     style={{
                                         flex: 4,
-                                        backgroundColor:
-                                            theme.colors.inputBackground,
-                                        color: theme.colors.inputText,
                                     }}
                                     placeholder="Quantidade"
                                     placeholderTextColor={theme.colors.subText}
@@ -309,17 +285,9 @@ const AddProduct = () => {
                             </InputGroup>
 
                             <ExpDateGroup>
-                                <ExpDateLabel
-                                    style={{ color: theme.colors.subText }}
-                                >
-                                    Data de vencimento
-                                </ExpDateLabel>
+                                <ExpDateLabel>Data de vencimento</ExpDateLabel>
 
                                 <CustomDatePicker
-                                    style={{
-                                        backgroundColor:
-                                            theme.colors.productBackground,
-                                    }}
                                     textColor={theme.colors.inputText}
                                     accessibilityLabel="Campo de seleção da data de vencimento do produto"
                                     date={expDate}
