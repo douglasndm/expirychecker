@@ -1,32 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, PixelRatio } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme, Button } from 'react-native-paper';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 import { addDays, isPast } from 'date-fns';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import { getDaysToBeNextToExp } from '../../Functions/Settings';
 import { GetPremium } from '../../Functions/Premium';
 
+import Header from '../Header';
 import ProductItem from '../Product';
 import GenericButton from '../Button';
 
 import {
     Container,
-    HeaderContainer,
-    TextLogo,
     CategoryDetails,
     CategoryDetailsText,
+    EmptyListText,
 } from './styles';
 
-export default function ListProducts({ products, isHome }) {
-    const navigation = useNavigation();
-    const theme = useTheme();
+interface RequestProps {
+    products: {};
+    isHome?: boolean;
+}
 
-    const [daysToBeNext, setDaysToBeNext] = useState();
+const ListProducts: React.FC<RequestProps> = ({
+    products,
+    isHome,
+}: RequestProps) => {
+    const navigation = useNavigation();
+
+    const [daysToBeNext, setDaysToBeNext] = useState<number>();
     const [isPremium, setIsPremium] = useState(false);
 
     const adUnitId = __DEV__
@@ -44,65 +48,31 @@ export default function ListProducts({ products, isHome }) {
         getAppData();
     }, []);
 
-    const ListHeader = () => {
-        const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
-
+    const ListHeader = useCallback(() => {
         return (
             <View>
-                <HeaderContainer>
-                    <Button
-                        color="transparent"
-                        icon={() => (
-                            <Ionicons
-                                name="menu-outline"
-                                size={33}
-                                color="white"
-                            />
-                        )}
-                        compact
-                        accessibilityLabel="Botão para abrir o menu"
-                        onPress={() => navigation.toggleDrawer()}
-                    />
-
-                    {isHome ? (
-                        <TextLogo style={{ fontSize: titleFontSize }}>
-                            {isPremium ? 'Premium' : 'Controle de validade'}
-                        </TextLogo>
-                    ) : (
-                        <TextLogo style={{ fontSize: titleFontSize }}>
-                            Todos os produtos
-                        </TextLogo>
-                    )}
-                </HeaderContainer>
-
+                <Header isHome={isHome} isPremium={isPremium} />
                 {/* Verificar se há items antes de criar o titulo */}
-                {products.length > 0 ? (
+                {products.length > 0 && (
                     <CategoryDetails>
                         <CategoryDetailsText>
                             Produtos mais próximos ao vencimento
                         </CategoryDetailsText>
                     </CategoryDetails>
-                ) : null}
+                )}
             </View>
         );
-    };
+    }, [isPremium, isHome, products.length]);
 
-    const EmptyList = () => {
+    const EmptyList = useCallback(() => {
         return (
-            <Text
-                style={{
-                    marginTop: 10,
-                    marginLeft: 15,
-                    marginRight: 15,
-                    color: theme.colors.text,
-                }}
-            >
+            <EmptyListText>
                 Não há nenhum produto cadastrado ainda...
-            </Text>
+            </EmptyListText>
         );
-    };
+    }, []);
 
-    function FooterButton() {
+    const FooterButton = useCallback(() => {
         if (products.length > 5 && isHome) {
             return (
                 <GenericButton
@@ -122,7 +92,7 @@ export default function ListProducts({ products, isHome }) {
                 }}
             />
         );
-    }
+    }, [products.length, isHome, navigation]);
 
     function renderComponent({ item, index }) {
         const expired =
@@ -133,7 +103,7 @@ export default function ListProducts({ products, isHome }) {
 
         return (
             <>
-                {!isPremium && index !== 0 && index % 5 === 0 ? (
+                {!isPremium && index !== 0 && index % 5 === 0 && (
                     <View
                         style={{
                             flex: 1,
@@ -152,11 +122,10 @@ export default function ListProducts({ products, isHome }) {
                             }}
                         />
                     </View>
-                ) : null}
+                )}
 
                 <ProductItem
                     product={item}
-                    daysToBeNext={daysToBeNext}
                     expired={expired}
                     nextToExp={nextToExp}
                 />
@@ -182,4 +151,6 @@ export default function ListProducts({ products, isHome }) {
             />
         </Container>
     );
-}
+};
+
+export default ListProducts;

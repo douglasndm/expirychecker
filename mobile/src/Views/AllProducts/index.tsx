@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import Realm from '../../Services/Realm';
 
@@ -13,10 +13,10 @@ import {
 
 import { Container } from './styles';
 
-const AllProducts = () => {
+const AllProducts: React.FC = () => {
     const [products, setProducts] = useState([]);
 
-    async function getProduts(realm) {
+    const getProducts = useCallback(async (realm) => {
         try {
             const resultsDB = realm
                 .objects('Product')
@@ -42,16 +42,16 @@ const AllProducts = () => {
             if (__DEV__) console.warn(error);
             else throw new Error(error);
         }
-    }
+    }, []);
 
     useEffect(() => {
-        let realm;
+        let realm: Realm;
 
         async function startRealm() {
             realm = await Realm();
-            realm.addListener('change', () => getProduts(realm));
+            realm.addListener('change', () => getProducts(realm));
 
-            getProduts(realm);
+            getProducts(realm);
         }
 
         startRealm();

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { FAB, useTheme } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
+import { useTheme } from 'styled-components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const FABProducts = () => {
+const FABProducts: React.FC = () => {
     const [fabOpen, setFabOpen] = useState(false);
     const navigation = useNavigation();
 
