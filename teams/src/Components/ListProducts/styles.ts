@@ -21,8 +21,8 @@ export const CategoryDetailsText = styled.Text`
 `;
 
 export const EmptyListText = styled.Text`
-    margin-top: 10;
-    margin-left: 15;
-    margin-right: 15;
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
     color: ${({ theme }) => theme.colors.text};
 `;
