@@ -1,18 +1,21 @@
 import React from 'react';
 
-import { Button as Btn, ButtonText } from './styles';
+import { Button, ButtonText } from './styles';
 
 interface Request {
     text: string;
+    accessibilityLabel?: string;
     onPress: () => void;
 }
 
-const Button = ({ text, onPress }: Request) => {
-    return (
-        <Btn onPress={onPress}>
-            <ButtonText>{text}</ButtonText>
-        </Btn>
-    );
-};
+const GenericButton: React.FC<Request> = ({
+    text,
+    accessibilityLabel = '',
+    onPress,
+}: Request) => (
+    <Button onPress={onPress} accessibilityLabel={accessibilityLabel}>
+        <ButtonText>{text}</ButtonText>
+    </Button>
+);
 
-export default Button;
+export default GenericButton;
