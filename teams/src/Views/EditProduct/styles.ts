@@ -15,7 +15,9 @@ export const Camera = styled(RNCamera)`
     z-index: -1;
 `;
 
-export const ButtonPaper = styled(Button)``;
+export const ButtonPaper = styled(Button).attrs((props) => ({
+    color: props.theme.colors.textAccent,
+}))``;
 
 export const Icons = styled(Ionicons)`
     color: ${({ theme }) => theme.colors.text};
