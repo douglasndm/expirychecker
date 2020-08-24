@@ -4,23 +4,7 @@ export const Container = styled.View`
     flex: 1;
     background: ${(props) => props.theme.colors.background};
 `;
-export const HeaderContainer = styled.View`
-    width: 100%;
-    padding: 15px 30px 15px 0px;
 
-    justify-content: flex-start;
-    align-items: center;
-
-    background-color: ${(props) => props.theme.colors.accent};
-
-    flex-direction: row;
-`;
-
-export const TextLogo = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-`;
 export const CategoryDetails = styled.View`
     margin-top: 15px;
     flex-direction: row;
@@ -34,4 +18,11 @@ export const CategoryDetails = styled.View`
 export const CategoryDetailsText = styled.Text`
     color: ${(props) => props.theme.colors.textAccent};
     font-size: 18px;
+`;
+
+export const EmptyListText = styled.Text`
+    margin-top: 10;
+    margin-left: 15;
+    margin-right: 15;
+    color: ${({ theme }) => theme.colors.text};
 `;
