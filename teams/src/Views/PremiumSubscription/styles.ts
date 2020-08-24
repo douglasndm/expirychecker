@@ -2,9 +2,11 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
     flex: 1;
+    background-color: ${(props) => props.theme.colors.background};
 `;
 
 export const HeaderContainer = styled.View`
+    background-color: ${(props) => props.theme.colors.accent};
     margin-left: -16px;
     margin-top: -22px;
     width: 120%;
@@ -41,7 +43,7 @@ export const AdvantagesGroup = styled.View`
 `;
 
 export const AdvantageContainer = styled.View`
-    background-color: #fff;
+    background-color: ${(props) => props.theme.colors.productBackground};
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 15px;
@@ -49,12 +51,13 @@ export const AdvantageContainer = styled.View`
 `;
 
 export const AdvantageText = styled.Text`
+    color: ${(props) => props.theme.colors.text};
     font-size: 16px;
     text-align: center;
 `;
 
 export const ButtonSubscription = styled.TouchableOpacity`
-    background-color: #14d48f;
+    background-color: ${(props) => props.theme.colors.accent};
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 10px;

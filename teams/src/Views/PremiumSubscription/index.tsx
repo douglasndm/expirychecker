@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
-import { useTheme } from 'react-native-paper';
 
 import {
     CheckIfSubscriptionIsActive,
@@ -22,8 +21,7 @@ import {
     TextSubscription,
 } from './styles';
 
-const PremiumSubscription = () => {
-    const theme = useTheme();
+const PremiumSubscription: React.FC = () => {
     const [alreadyPremium, setAlreadyPremium] = useState(false);
 
     const navigation = useNavigation();
@@ -37,7 +35,7 @@ const PremiumSubscription = () => {
         getData();
     }, []);
 
-    async function makeSubscription() {
+    const makeSubscription = useCallback(async () => {
         try {
             const result = await MakeASubscription();
 
@@ -47,14 +45,12 @@ const PremiumSubscription = () => {
         } catch (err) {
             console.warn(err);
         }
-    }
+    }, [navigation]);
 
     return (
-        <Container style={{ backgroundColor: theme.colors.background }}>
+        <Container>
             <ScrollView>
-                <HeaderContainer
-                    style={{ backgroundColor: theme.colors.accent }}
-                >
+                <HeaderContainer>
                     <TitleContainer>
                         <IntroductionText>Conheça o</IntroductionText>
                         <AppNameTitle>Controle de validade</AppNameTitle>
@@ -63,63 +59,37 @@ const PremiumSubscription = () => {
                 </HeaderContainer>
 
                 <AdvantagesGroup>
-                    <AdvantageContainer
-                        style={{
-                            backgroundColor: theme.colors.productBackground,
-                        }}
-                    >
-                        <AdvantageText style={{ color: theme.colors.text }}>
-                            SEM ANÚNCIOS
-                        </AdvantageText>
+                    <AdvantageContainer>
+                        <AdvantageText>SEM ANÚNCIOS</AdvantageText>
                     </AdvantageContainer>
-                    <AdvantageContainer
-                        style={{
-                            backgroundColor: theme.colors.productBackground,
-                        }}
-                    >
-                        <AdvantageText style={{ color: theme.colors.text }}>
+                    <AdvantageContainer>
+                        <AdvantageText>
                             OPÇÃO PARA SALVAR SEU BANCO DE DADOS EM CASO DE
                             FORMATAÇÃO OU PERDA DO TELEFONE
                         </AdvantageText>
                     </AdvantageContainer>
-                    <AdvantageContainer
-                        style={{
-                            backgroundColor: theme.colors.productBackground,
-                        }}
-                    >
-                        <AdvantageText style={{ color: theme.colors.text }}>
-                            TEMAS EXCLUSIVOS
-                        </AdvantageText>
+                    <AdvantageContainer>
+                        <AdvantageText>TEMAS EXCLUSIVOS</AdvantageText>
                     </AdvantageContainer>
-                    <AdvantageContainer
-                        style={{
-                            backgroundColor: theme.colors.productBackground,
-                        }}
-                    >
-                        <AdvantageText style={{ color: theme.colors.text }}>
+                    <AdvantageContainer>
+                        <AdvantageText>
                             PEQUENO VALOR A CADA TRÊS MESES
                         </AdvantageText>
                     </AdvantageContainer>
                 </AdvantagesGroup>
 
                 {alreadyPremium ? (
-                    <ButtonSubscription
-                        style={{ backgroundColor: theme.colors.accent }}
-                    >
+                    <ButtonSubscription>
                         <TextSubscription>VOCÊ JÁ É PREMIUM</TextSubscription>
                     </ButtonSubscription>
                 ) : (
-                    <ButtonSubscription
-                        style={{ backgroundColor: theme.colors.accent }}
-                        onPress={makeSubscription}
-                    >
+                    <ButtonSubscription onPress={makeSubscription}>
                         <TextSubscription>ASSINAR POR</TextSubscription>
                         <TextSubscription>R$4,99 TRIMESTRAIS</TextSubscription>
                     </ButtonSubscription>
                 )}
 
                 <ButtonSubscription
-                    style={{ backgroundColor: theme.colors.accent }}
                     onPress={() => {
                         navigation.dispatch(StackActions.popToTop());
                     }}
