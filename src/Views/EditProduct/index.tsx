@@ -46,7 +46,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setCode(product.code);
         }
         getProductData();
-    }, []);
+    }, [productId]);
 
     async function updateProduct() {
         if (!name || name.trim() === '') {
