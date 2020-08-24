@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Keyboard, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import { Button as ButtonPaper, useTheme } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
 
 import Realm from '../../Services/Realm';
 import { getProductById } from '../../Functions/Product';
@@ -16,10 +16,20 @@ import {
     InputText,
 } from '../AddProduct/styles';
 
-import { Camera } from './styles';
+import { Camera, ButtonPaper, Icons } from './styles';
 
-const EditProduct = ({ navigation, route }) => {
+interface RequestParams {
+    route: {
+        params: {
+            productId: number;
+        };
+    };
+}
+
+const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { productId } = route.params;
+
+    const navigation = useNavigation();
 
     const theme = useTheme();
 
@@ -99,14 +109,11 @@ const EditProduct = ({ navigation, route }) => {
 
                     <GenericButton
                         text="Fechar"
-                        style={{
-                            alignSelf: 'center',
-                        }}
                         onPress={() => setCameraEnebled(false)}
                     />
                 </View>
             ) : (
-                <Container style={{ backgroundColor: theme.colors.background }}>
+                <Container>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -118,28 +125,18 @@ const EditProduct = ({ navigation, route }) => {
                                 alignSelf: 'flex-end',
                             }}
                             icon={() => (
-                                <Ionicons
-                                    name="arrow-back-outline"
-                                    size={28}
-                                    color={theme.colors.text}
-                                />
+                                <Icons name="arrow-back-outline" size={28} />
                             )}
                             compact
                             onPress={() => {
                                 navigation.goBack();
                             }}
                         />
-                        <PageTitle style={{ color: theme.colors.text }}>
-                            Editar produto
-                        </PageTitle>
+                        <PageTitle>Editar produto</PageTitle>
                     </View>
 
                     <InputContainer>
                         <InputText
-                            style={{
-                                backgroundColor: theme.colors.inputBackground,
-                                color: theme.colors.text,
-                            }}
                             placeholder="Nome do produto"
                             placeholderTextColor={theme.colors.subText}
                             accessibilityLabel="Campo de texto para nome do produto"
@@ -161,9 +158,6 @@ const EditProduct = ({ navigation, route }) => {
                             <InputText
                                 style={{
                                     flex: 1,
-                                    backgroundColor:
-                                        theme.colors.inputBackground,
-                                    color: theme.colors.text,
                                 }}
                                 placeholder="Código do produto"
                                 placeholderTextColor={theme.colors.subText}
@@ -180,11 +174,7 @@ const EditProduct = ({ navigation, route }) => {
                                     marginBottom: 8,
                                 }}
                                 icon={() => (
-                                    <Ionicons
-                                        name="camera-outline"
-                                        size={42}
-                                        color={theme.colors.text}
-                                    />
+                                    <Icons name="camera-outline" size={42} />
                                 )}
                                 onPress={() => {
                                     Keyboard.dismiss();
@@ -201,13 +191,8 @@ const EditProduct = ({ navigation, route }) => {
                         >
                             <ButtonPaper
                                 icon={() => (
-                                    <Ionicons
-                                        name="save-outline"
-                                        color={theme.colors.text}
-                                        size={22}
-                                    />
+                                    <Icons name="save-outline" size={22} />
                                 )}
-                                color={theme.colors.accent}
                                 onPress={() => {
                                     updateProduct();
                                 }}
@@ -216,13 +201,8 @@ const EditProduct = ({ navigation, route }) => {
                             </ButtonPaper>
                             <ButtonPaper
                                 icon={() => (
-                                    <Ionicons
-                                        name="exit-outline"
-                                        color={theme.colors.text}
-                                        size={22}
-                                    />
+                                    <Icons name="exit-outline" size={22} />
                                 )}
-                                color={theme.colors.accent}
                                 onPress={() => {
                                     navigation.goBack();
                                 }}
