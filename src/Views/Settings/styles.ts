@@ -1,34 +1,44 @@
 import styled from 'styled-components/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+interface Request {
+    notPremium?: boolean;
+}
 
 export const Container = styled.View`
-    padding: 16px;
     flex: 1;
+    padding: 16px;
+
+    background: ${(props) => props.theme.colors.background};
 `;
 
 export const PageTitle = styled.Text`
     font-size: 28px;
     font-weight: bold;
+    color: ${(props) => props.theme.colors.text};
 `;
 
 export const Category = styled.View`
     margin-top: 20px;
     padding: 15px;
 
-    background-color: #fff;
+    background-color: ${(props) => props.theme.colors.productBackground};
     border-radius: 12px;
 `;
 
 export const CategoryTitle = styled.Text`
     font-size: 21px;
+    color: ${(props) => props.theme.colors.text};
 `;
 
-export const CategoryOptions = styled.View`
+export const CategoryOptions = styled.View<Request>`
     margin-top: 20px;
 
     opacity: ${(props) => (props.notPremium ? 0.2 : 1)};
 `;
 export const SettingDescription = styled.Text`
     font-size: 14px;
+    color: ${(props) => props.theme.colors.text};
 `;
 
 export const InputSetting = styled.TextInput`
@@ -36,6 +46,9 @@ export const InputSetting = styled.TextInput`
     border-radius: 12px;
     margin-top: 8px;
     padding: 10px;
+
+    color: ${(props) => props.theme.colors.text};
+    border-color: ${(props) => props.theme.colors.text};
 `;
 
 export const PremiumButtonsContainer = styled.View`
@@ -47,13 +60,14 @@ export const PremiumButtonsContainer = styled.View`
 export const ButtonPremium = styled.TouchableOpacity`
     margin-left: 10px;
     margin-right: 10px;
-    background-color: #fff;
+    background-color: ${(props) => props.theme.colors.accent};
     padding: 20px;
     border-radius: 12px;
 `;
 
 export const ButtonPremiumText = styled.Text`
     font-size: 14px;
+    color: ${(props) => props.theme.colors.text};
 `;
 
 export const ButtonCancel = styled.TouchableOpacity`
@@ -67,4 +81,10 @@ export const ButtonCancel = styled.TouchableOpacity`
 
 export const ButtonCancelText = styled.Text`
     font-size: 13px;
+
+    color: ${(props) => props.theme.colors.text};
+`;
+
+export const Icons = styled(Ionicons)`
+    color: ${(props) => props.theme.colors.text};
 `;

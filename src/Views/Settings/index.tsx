@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, Linking } from 'react-native';
-import { useTheme, Button as ButtonPaper } from 'react-native-paper';
+import { Button as ButtonPaper } from 'react-native-paper';
+import { useTheme } from 'styled-components/native';
 import { useNavigation, StackActions } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-community/picker';
 
 import GenericButton from '../../Components/Button';
@@ -29,9 +29,10 @@ import {
     ButtonPremiumText,
     ButtonCancel,
     ButtonCancelText,
+    Icons,
 } from './styles';
 
-const Settings = () => {
+const Settings: React.FC = () => {
     const [daysToBeNext, setDaysToBeNext] = useState();
     const [selectedTheme, setSelectedTheme] = useState();
     const [userIsPremium, setUserIsPremium] = useState(false);
@@ -40,9 +41,19 @@ const Settings = () => {
 
     const theme = useTheme();
 
-    async function setSettingDaysToBeNext(days) {
+    const setSettingDaysToBeNext = useCallback(async (days: number) => {
         await setDaysToBeNextToExp(days);
-    }
+    }, []);
+
+    const handleCancel = useCallback(async () => {
+        await Linking.openURL(
+            'https://play.google.com/store/account/subscriptions?sku=controledevalidade_premium&package=com.controledevalidade'
+        );
+
+        if (!(await Premium.CheckIfSubscriptionIsActive())) {
+            navigation.navigate(StackActions.popToTop());
+        }
+    }, [navigation]);
 
     useEffect(() => {
         async function getSettingsAlreadySetted() {
@@ -83,19 +94,9 @@ const Settings = () => {
         getTheme();
     }, []);
 
-    async function handleCancel() {
-        await Linking.openURL(
-            'https://play.google.com/store/account/subscriptions?sku=controledevalidade_premium&package=com.controledevalidade'
-        );
-
-        if (!(await Premium.CheckIfSubscriptionIsActive())) {
-            navigation.navigate(StackActions.popToTop());
-        }
-    }
-
     return (
-        <ScrollView style={{ backgroundColor: theme.colors.background }}>
-            <Container>
+        <Container>
+            <ScrollView>
                 <View
                     style={{
                         flexDirection: 'row',
@@ -107,40 +108,24 @@ const Settings = () => {
                             alignSelf: 'flex-end',
                         }}
                         icon={() => (
-                            <Ionicons
-                                name="arrow-back-outline"
-                                size={28}
-                                color={theme.colors.text}
-                            />
+                            <Icons name="arrow-back-outline" size={28} />
                         )}
                         compact
                         onPress={() => {
                             navigation.goBack();
                         }}
                     />
-                    <PageTitle style={{ color: theme.colors.text }}>
-                        Configurações
-                    </PageTitle>
+                    <PageTitle>Configurações</PageTitle>
                 </View>
 
-                <Category
-                    style={{ backgroundColor: theme.colors.productBackground }}
-                >
-                    <CategoryTitle style={{ color: theme.colors.text }}>
-                        Geral
-                    </CategoryTitle>
+                <Category>
+                    <CategoryTitle>Geral</CategoryTitle>
 
                     <CategoryOptions>
-                        <SettingDescription
-                            style={{ color: theme.colors.text }}
-                        >
+                        <SettingDescription>
                             Quantos dias para produto ser considerado próximo
                         </SettingDescription>
                         <InputSetting
-                            style={{
-                                color: theme.colors.text,
-                                borderColor: theme.colors.text,
-                            }}
                             keyboardType="numeric"
                             placeholder="Quantidade de dias"
                             placeholderTextColor={theme.colors.text}
@@ -156,9 +141,7 @@ const Settings = () => {
                     </CategoryOptions>
 
                     <CategoryOptions>
-                        <CategoryTitle style={{ color: theme.colors.text }}>
-                            Aparência
-                        </CategoryTitle>
+                        <CategoryTitle>Aparência</CategoryTitle>
 
                         <View
                             style={{
@@ -222,29 +205,21 @@ const Settings = () => {
                     </CategoryOptions>
                 </Category>
 
-                <Category
-                    style={{
-                        backgroundColor: theme.colors.productBackground,
-                    }}
-                >
-                    <CategoryTitle style={{ color: theme.colors.text }}>
-                        Premium
-                    </CategoryTitle>
+                <Category>
+                    <CategoryTitle>Premium</CategoryTitle>
 
-                    {!userIsPremium ? (
+                    {!userIsPremium && (
                         <GenericButton
                             text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
                             onPress={() => {
                                 navigation.push('PremiumSubscription');
                             }}
                         />
-                    ) : null}
+                    )}
 
                     <CategoryOptions notPremium={!userIsPremium}>
                         <View>
-                            <SettingDescription
-                                style={{ color: theme.colors.text }}
-                            >
+                            <SettingDescription>
                                 Com a função de importar e exportar você
                                 consegue salvar todos os seus produtos
                                 externamente em um cartão de memória por exemplo
@@ -254,32 +229,22 @@ const Settings = () => {
 
                             <PremiumButtonsContainer>
                                 <ButtonPremium
-                                    style={{
-                                        backgroundColor: theme.colors.accent,
-                                    }}
                                     disabled={!userIsPremium}
                                     onPress={async () => {
                                         await ImportBackupFile();
                                     }}
                                 >
-                                    <ButtonPremiumText
-                                        style={{ color: theme.colors.text }}
-                                    >
+                                    <ButtonPremiumText>
                                         Importar
                                     </ButtonPremiumText>
                                 </ButtonPremium>
                                 <ButtonPremium
-                                    style={{
-                                        backgroundColor: theme.colors.accent,
-                                    }}
                                     disabled={!userIsPremium}
                                     onPress={async () => {
                                         await ExportBackupFile();
                                     }}
                                 >
-                                    <ButtonPremiumText
-                                        style={{ color: theme.colors.text }}
-                                    >
+                                    <ButtonPremiumText>
                                         Exportar
                                     </ButtonPremiumText>
                                 </ButtonPremium>
@@ -287,18 +252,16 @@ const Settings = () => {
                         </View>
                     </CategoryOptions>
 
-                    {userIsPremium ? (
+                    {userIsPremium && (
                         <ButtonCancel onPress={handleCancel}>
-                            <ButtonCancelText
-                                style={{ color: theme.colors.text }}
-                            >
+                            <ButtonCancelText>
                                 Cancelar assinatura
                             </ButtonCancelText>
                         </ButtonCancel>
-                    ) : null}
+                    )}
                 </Category>
-            </Container>
-        </ScrollView>
+            </ScrollView>
+        </Container>
     );
 };
 
