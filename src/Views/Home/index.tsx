@@ -12,16 +12,20 @@ import { CheckIfSubscriptionIsActive } from '../../Functions/Premium';
 import FABProducts from '../../Components/FABProducts';
 import ListProducts from '../../Components/ListProducts';
 
-export default function Home({ notificationToUser }) {
+interface HomeProps {
+    notificationToUser?: string;
+}
+
+const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
     const theme = useTheme();
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState<Array<IProduct>>([]);
 
     useEffect(() => {
         if (notificationToUser && notificationToUser !== '')
             setSnackBarVisible(true);
-    }, []);
+    }, [notificationToUser]);
 
     useEffect(() => {
         async function checkIfUserIsPremium() {
@@ -31,10 +35,10 @@ export default function Home({ notificationToUser }) {
         checkIfUserIsPremium();
     }, []);
 
-    async function getProduts(realm) {
+    async function getProduts(realm: Realm) {
         try {
             const resultsDB = realm
-                .objects('Product')
+                .objects<IProduct>('Product')
                 .filtered('lotes.@count > 0 AND lotes.status != "Tratado"')
                 .slice();
 
@@ -71,7 +75,7 @@ export default function Home({ notificationToUser }) {
     }
 
     useEffect(() => {
-        let realm;
+        let realm: Realm;
 
         async function startRealm() {
             realm = await Realm();
@@ -91,7 +95,7 @@ export default function Home({ notificationToUser }) {
         <>
             <ListProducts products={products} isHome />
 
-            {snackBarVisible ? (
+            {snackBarVisible && (
                 <Snackbar
                     visible={snackBarVisible}
                     duration={5000}
@@ -114,9 +118,11 @@ export default function Home({ notificationToUser }) {
                 >
                     {notificationToUser}
                 </Snackbar>
-            ) : null}
+            )}
 
             <FABProducts />
         </>
     );
-}
+};
+
+export default Home;

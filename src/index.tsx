@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StatusBar } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
@@ -33,7 +33,7 @@ if (__DEV__) {
     disableAppCenterIfInDevMode();
 }
 
-export default () => {
+const App: React.FC = () => {
     const [theme, setTheme] = useState(Themes.Light);
 
     useEffect(() => {
@@ -44,10 +44,10 @@ export default () => {
         checkIfUserIsPremium();
     }, []);
 
-    async function getTheme() {
+    const getTheme = useCallback(async () => {
         const appTheme = await getActualAppTheme();
         setTheme(appTheme);
-    }
+    }, []);
     getTheme();
 
     // Troca o tema do app a cada alteração em tempo real na pagina de configurações
@@ -65,7 +65,7 @@ export default () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <PaperProvider>
+            <PaperProvider theme={theme}>
                 <Portal>
                     <NavigationContainer>
                         <StatusBar backgroundColor={theme.colors.accent} />
@@ -76,3 +76,5 @@ export default () => {
         </ThemeProvider>
     );
 };
+
+export default App;
