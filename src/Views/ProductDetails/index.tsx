@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text, Alert } from 'react-native';
-import { StackActions } from '@react-navigation/native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, ScrollView, Alert } from 'react-native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { FAB, Button, Dialog, useTheme } from 'react-native-paper';
-import { format, isPast, addDays } from 'date-fns';
-import br from 'date-fns/locale/pt-BR';
+import { useTheme } from 'styled-components/native';
+import { FAB, Button } from 'react-native-paper';
+import br, { format, isPast, addDays } from 'date-fns';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -23,6 +23,8 @@ import {
     PageTitle,
     ProductName,
     ProductCode,
+    ButtonPaper,
+    Icons,
     CategoryDetails,
     CategoryDetailsText,
     Table,
@@ -30,9 +32,21 @@ import {
     TableTitle,
     TableRow,
     TableCell,
+    Text,
+    DialogPaper,
 } from './styles';
 
-export default ({ route, navigation }) => {
+interface Request {
+    route: {
+        params: {
+            id: number;
+        };
+    };
+}
+
+const ProductDetails: React.FC<Request> = ({ route }: Request) => {
+    const navigation = useNavigation();
+
     const productId = route.params.id;
 
     const theme = useTheme();
@@ -43,21 +57,11 @@ export default ({ route, navigation }) => {
     const [lotes, setLotes] = useState([]);
 
     const [fabOpen, setFabOpen] = useState(false);
-
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
-    const [daysToBeNext, setDaysToBeNext] = useState();
+    const [daysToBeNext, setDaysToBeNext] = useState<number>();
 
-    useEffect(() => {
-        async function getAppData() {
-            const days = await getDaysToBeNextToExp();
-            setDaysToBeNext(days);
-        }
-
-        getAppData();
-    }, []);
-
-    async function getProduct() {
+    const getProduct = useCallback(async () => {
         try {
             const result = await getProductById(productId);
 
@@ -81,10 +85,37 @@ export default ({ route, navigation }) => {
             crashlytics().recordError(error);
             console.warn(error);
         }
-    }
+    }, [productId]);
+
+    const handleEdit = useCallback(() => {
+        navigation.push('EditProduct', { productId });
+    }, []);
+
+    const deleteProduct = useCallback(async () => {
+        const realm = await Realm();
+
+        const prod = await realm
+            .objects('Product')
+            .filtered(`id == ${productId}`);
+
+        try {
+            realm.write(async () => {
+                await realm.delete(prod);
+
+                Alert.alert(`${name} foi apagado.`);
+                navigation.dispatch(StackActions.popToTop());
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }, [name, productId, navigation]);
 
     useEffect(() => {
-        let realm;
+        getDaysToBeNextToExp().then((response) => setDaysToBeNext(response));
+    }, []);
+
+    useEffect(() => {
+        let realm: Realm;
 
         async function startRealm() {
             realm = await Realm();
@@ -103,33 +134,10 @@ export default ({ route, navigation }) => {
         };
     }, []);
 
-    async function handleEdit() {
-        navigation.push('EditProduct', { productId });
-    }
-
-    async function deleteProduct() {
-        const realm = await Realm();
-
-        const prod = await realm
-            .objects('Product')
-            .filtered(`id == ${productId}`);
-
-        try {
-            realm.write(async () => {
-                await realm.delete(prod);
-
-                Alert.alert(`${name} foi apagado.`);
-                navigation.dispatch(StackActions.popToTop());
-            });
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
     return (
         <>
-            <ScrollView style={{ backgroundColor: theme.colors.background }}>
-                <Container>
+            <Container>
+                <ScrollView>
                     <PageHeader>
                         <ProductDetailsContainer>
                             <View
@@ -143,7 +151,7 @@ export default ({ route, navigation }) => {
                                         alignSelf: 'flex-end',
                                     }}
                                     icon={() => (
-                                        <Ionicons
+                                        <Icons
                                             name="arrow-back-outline"
                                             size={28}
                                             color={theme.colors.text}
@@ -154,70 +162,44 @@ export default ({ route, navigation }) => {
                                         navigation.goBack();
                                     }}
                                 />
-                                <PageTitle style={{ color: theme.colors.text }}>
-                                    Detalhes
-                                </PageTitle>
+                                <PageTitle>Detalhes</PageTitle>
                             </View>
 
                             <View>
-                                <ProductName
-                                    style={{ color: theme.colors.text }}
-                                >
-                                    {name}
-                                </ProductName>
-                                <ProductCode
-                                    style={{ color: theme.colors.text }}
-                                >
-                                    Código: {code}
-                                </ProductCode>
+                                <ProductName>{name}</ProductName>
+                                <ProductCode>Código: {code}</ProductCode>
                             </View>
                         </ProductDetailsContainer>
 
                         <View>
-                            <Button
+                            <ButtonPaper
                                 icon={() => (
-                                    <Ionicons
-                                        name="create-outline"
-                                        color={theme.colors.text}
-                                        size={22}
-                                    />
+                                    <Icons name="create-outline" size={22} />
                                 )}
-                                color={theme.colors.accent}
                                 onPress={() => handleEdit()}
                             >
                                 Editar
-                            </Button>
-                            <Button
+                            </ButtonPaper>
+                            <ButtonPaper
                                 icon={() => (
-                                    <Ionicons
-                                        name="trash-outline"
-                                        color={theme.colors.text}
-                                        size={22}
-                                    />
+                                    <Icons name="trash-outline" size={22} />
                                 )}
-                                color={theme.colors.accent}
                                 onPress={() => {
                                     setDeleteComponentVisible(true);
                                 }}
                             >
                                 Apagar
-                            </Button>
+                            </ButtonPaper>
                         </View>
                     </PageHeader>
 
                     <CategoryDetails>
-                        <CategoryDetailsText
-                            style={{ color: theme.colors.accent }}
-                        >
+                        <CategoryDetailsText>
                             Todos os lotes cadastrados
                         </CategoryDetailsText>
                     </CategoryDetails>
 
-                    <Table
-                        style={{
-                            backgroundColor: theme.colors.productBackground,
-                        }}
-                    >
+                    <Table>
                         <TableHeader>
                             <TableTitle>LOTE</TableTitle>
                             <TableTitle>VENCIMENTO</TableTitle>
@@ -226,31 +208,18 @@ export default ({ route, navigation }) => {
                         </TableHeader>
 
                         {lotes.map((lote) => {
-                            const vencido = isPast(lote.exp_date, new Date());
-                            const proximo =
+                            const expired = isPast(lote.exp_date, new Date());
+                            const nextToExp =
                                 addDays(new Date(), daysToBeNext) >
                                 lote.exp_date;
 
-                            let bgColor = null;
-                            let foreground = null;
-
-                            if (vencido) {
-                                bgColor = theme.colors.productExpiredBackground;
-                                foreground = '#FFFFFF';
-                            } else if (proximo) {
-                                bgColor =
-                                    theme.colors.productNextToExpBackground;
-                                foreground = '#FFFFFF';
-                            } else {
-                                bgColor = theme.colors.productBackground;
-
-                                foreground = theme.colors.text;
-                            }
+                            const expiredOrNext = !!(expired || nextToExp);
 
                             return (
                                 <TableRow
                                     key={lote.id}
-                                    style={{ backgroundColor: bgColor }}
+                                    expired={expired}
+                                    nextToExp={nextToExp}
                                     onPress={() => {
                                         navigation.push('EditLote', {
                                             productId,
@@ -259,12 +228,12 @@ export default ({ route, navigation }) => {
                                     }}
                                 >
                                     <TableCell>
-                                        <Text style={{ color: foreground }}>
+                                        <Text expiredOrNext={expiredOrNext}>
                                             {lote.lote}
                                         </Text>
                                     </TableCell>
                                     <TableCell>
-                                        <Text style={{ color: foreground }}>
+                                        <Text expiredOrNext={expiredOrNext}>
                                             {format(
                                                 lote.exp_date,
                                                 'dd/MM/yyyy',
@@ -275,16 +244,12 @@ export default ({ route, navigation }) => {
                                         </Text>
                                     </TableCell>
                                     <TableCell>
-                                        <Text
-                                            style={{
-                                                color: foreground,
-                                            }}
-                                        >
+                                        <Text expiredOrNext={expiredOrNext}>
                                             {lote.amount}
                                         </Text>
                                     </TableCell>
                                     <TableCell>
-                                        <Text style={{ color: foreground }}>
+                                        <Text expiredOrNext={expiredOrNext}>
                                             {lote.status
                                                 ? lote.status
                                                 : 'Não tratado'}
@@ -303,24 +268,23 @@ export default ({ route, navigation }) => {
                             });
                         }}
                     />
-                </Container>
-            </ScrollView>
+                </ScrollView>
+            </Container>
 
-            <Dialog
+            <DialogPaper
                 visible={deleteComponentVisible}
                 onDismiss={() => {
                     setDeleteComponentVisible(false);
                 }}
-                style={{ backgroundColor: theme.colors.productBackground }}
             >
-                <Dialog.Title>Você tem certeza?</Dialog.Title>
-                <Dialog.Content>
+                <DialogPaper.Title>Você tem certeza?</DialogPaper.Title>
+                <DialogPaper.Content>
                     <Text style={{ color: theme.colors.text }}>
                         Se continuar você irá apagar o produto e todos os seus
                         lotes
                     </Text>
-                </Dialog.Content>
-                <Dialog.Actions>
+                </DialogPaper.Content>
+                <DialogPaper.Actions>
                     <Button
                         color="red"
                         onPress={() => {
@@ -337,8 +301,8 @@ export default ({ route, navigation }) => {
                     >
                         MANTER
                     </Button>
-                </Dialog.Actions>
-            </Dialog>
+                </DialogPaper.Actions>
+            </DialogPaper>
 
             <FAB.Group
                 actions={[
@@ -365,3 +329,5 @@ export default ({ route, navigation }) => {
         </>
     );
 };
+
+export default ProductDetails;

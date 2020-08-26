@@ -6,8 +6,12 @@ export const ProductHeader = styled.View`
 
 export const ProductName = styled.Text`
     font-size: 34px;
+
+    color: ${(props) => props.theme.colors.text};
 `;
 
 export const ProductCode = styled.Text`
     font-size: 18px;
+
+    color: ${(props) => props.theme.colors.text};
 `;
