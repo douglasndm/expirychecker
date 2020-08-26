@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme, Button as ButtonPaper } from 'react-native-paper';
+import { Button as ButtonPaper } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
 
 import GenericButton from '../../Components/Button';
 
@@ -21,7 +22,15 @@ import {
 } from '../AddProduct/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
-const AddLote = ({ route }) => {
+interface AddLoteParams {
+    route: {
+        params: {
+            productId: number;
+        };
+    };
+}
+
+const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const { productId } = route.params;
     const navigation = useNavigation();
 
@@ -88,7 +97,7 @@ const AddLote = ({ route }) => {
     }, []);
 
     return (
-        <Container style={{ backgroundColor: theme.colors.background }}>
+        <Container>
             <ScrollView>
                 <View
                     style={{
@@ -112,19 +121,13 @@ const AddLote = ({ route }) => {
                             navigation.goBack();
                         }}
                     />
-                    <PageTitle style={{ color: theme.colors.text }}>
-                        Adicionar um lote
-                    </PageTitle>
+                    <PageTitle>Adicionar um lote</PageTitle>
                 </View>
 
                 <InputContainer>
                     <ProductHeader>
-                        <ProductName style={{ color: theme.colors.text }}>
-                            {name}
-                        </ProductName>
-                        <ProductCode style={{ color: theme.colors.text }}>
-                            {code}
-                        </ProductCode>
+                        <ProductName>{name}</ProductName>
+                        <ProductCode>{code}</ProductCode>
                     </ProductHeader>
 
                     <InputGroup>
@@ -132,22 +135,16 @@ const AddLote = ({ route }) => {
                             style={{
                                 flex: 5,
                                 marginRight: 5,
-                                backgroundColor: theme.colors.inputBackground,
-                                color: theme.colors.inputText,
                             }}
                             placeholder="Lote"
-                            placeholderTextColor={theme.colors.subText}
                             value={lote}
                             onChangeText={(value) => setLote(value)}
                         />
                         <InputText
                             style={{
                                 flex: 4,
-                                backgroundColor: theme.colors.inputBackground,
-                                color: theme.colors.inputText,
                             }}
                             placeholder="Quantidade"
-                            placeholderTextColor={theme.colors.subText}
                             keyboardType="numeric"
                             value={String(amount)}
                             onChangeText={(v) => {
@@ -161,14 +158,8 @@ const AddLote = ({ route }) => {
                     </InputGroup>
 
                     <ExpDateGroup>
-                        <ExpDateLabel style={{ color: theme.colors.subText }}>
-                            Data de vencimento
-                        </ExpDateLabel>
+                        <ExpDateLabel>Data de vencimento</ExpDateLabel>
                         <CustomDatePicker
-                            style={{
-                                backgroundColor: theme.colors.productBackground,
-                            }}
-                            textColor={theme.colors.inputText}
                             date={expDate}
                             onDateChange={(value) => {
                                 setExpDate(value);
@@ -180,7 +171,7 @@ const AddLote = ({ route }) => {
                     </ExpDateGroup>
                 </InputContainer>
 
-                <GenericButton text="Salvar" onPress={() => handleSave()} />
+                <GenericButton text="Salvar" onPress={handleSave} />
             </ScrollView>
         </Container>
     );

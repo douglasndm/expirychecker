@@ -200,7 +200,6 @@ const AddProduct: Reacf.FC = () => {
                         <InputContainer>
                             <InputText
                                 placeholder="Nome do produto"
-                                placeholderTextColor={theme.colors.subText}
                                 accessibilityLabel="Campo de texto para nome do produto"
                                 value={name}
                                 onChangeText={(value) => {
@@ -220,7 +219,6 @@ const AddProduct: Reacf.FC = () => {
                                 <InputText
                                     style={{ flex: 1 }}
                                     placeholder="Código"
-                                    placeholderTextColor={theme.colors.subText}
                                     accessibilityLabel="Campo de texto para código de barras do produto"
                                     value={code}
                                     onChangeText={(value) => setCode(value)}
@@ -254,7 +252,6 @@ const AddProduct: Reacf.FC = () => {
                                         marginRight: 5,
                                     }}
                                     placeholder="Lote"
-                                    placeholderTextColor={theme.colors.subText}
                                     accessibilityLabel="Campo de texto para lote do produto"
                                     value={lote}
                                     onChangeText={(value) => setLote(value)}
@@ -267,7 +264,6 @@ const AddProduct: Reacf.FC = () => {
                                         flex: 4,
                                     }}
                                     placeholder="Quantidade"
-                                    placeholderTextColor={theme.colors.subText}
                                     accessibilityLabel="Campo de texto para quantidade do produto"
                                     keyboardType="numeric"
                                     value={String(amount)}
@@ -288,7 +284,6 @@ const AddProduct: Reacf.FC = () => {
                                 <ExpDateLabel>Data de vencimento</ExpDateLabel>
 
                                 <CustomDatePicker
-                                    textColor={theme.colors.inputText}
                                     accessibilityLabel="Campo de seleção da data de vencimento do produto"
                                     date={expDate}
                                     onDateChange={(value) => {
@@ -304,7 +299,7 @@ const AddProduct: Reacf.FC = () => {
                         <GenericButton
                             text="Salvar"
                             accessibilityLabel="Botão para salvar o novo produto"
-                            onPress={() => handleSave()}
+                            onPress={handleSave}
                         />
                     </ScrollView>
                 </Container>

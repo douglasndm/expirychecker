@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
-import { StackActions } from '@react-navigation/native';
-import { RadioButton, useTheme, Dialog, Button } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { RadioButton, Dialog } from 'react-native-paper';
+import { useTheme } from 'styled-components';
 
 import Realm from '../../Services/Realm';
 
@@ -22,10 +22,23 @@ import {
     CustomDatePicker,
 } from '../AddProduct/styles';
 
+import { Button, Icons } from './styles';
+
 import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
-const EditLote = ({ route, navigation }) => {
+interface EditLoteProps {
+    route: {
+        params: {
+            productId: number;
+            loteId: number;
+        };
+    };
+}
+
+const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
     const { productId, loteId } = route.params;
+
+    const navigation = useNavigation();
 
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
@@ -107,7 +120,7 @@ const EditLote = ({ route, navigation }) => {
 
     return (
         <>
-            <Container style={{ backgroundColor: theme.colors.background }}>
+            <Container>
                 <ScrollView>
                     <View
                         style={{
@@ -126,10 +139,9 @@ const EditLote = ({ route, navigation }) => {
                                     alignSelf: 'flex-end',
                                 }}
                                 icon={() => (
-                                    <Ionicons
+                                    <Icons
                                         name="arrow-back-outline"
                                         size={28}
-                                        color={theme.colors.text}
                                     />
                                 )}
                                 compact
@@ -137,20 +149,13 @@ const EditLote = ({ route, navigation }) => {
                                     navigation.goBack();
                                 }}
                             />
-                            <PageTitle style={{ color: theme.colors.text }}>
-                                Editar lote
-                            </PageTitle>
+                            <PageTitle>Editar lote</PageTitle>
                         </View>
 
                         <Button
                             icon={() => (
-                                <Ionicons
-                                    name="trash-outline"
-                                    color={theme.colors.text}
-                                    size={22}
-                                />
+                                <Icons name="trash-outline" size={22} />
                             )}
-                            color={theme.colors.accent}
                             onPress={() => {
                                 setDeleteComponentVisible(true);
                             }}
@@ -161,12 +166,8 @@ const EditLote = ({ route, navigation }) => {
 
                     <InputContainer>
                         <ProductHeader>
-                            <ProductName style={{ color: theme.colors.text }}>
-                                {product.name}
-                            </ProductName>
-                            <ProductCode style={{ color: theme.colors.text }}>
-                                {product.code}
-                            </ProductCode>
+                            <ProductName>{product.name}</ProductName>
+                            <ProductCode>{product.code}</ProductCode>
                         </ProductHeader>
 
                         <InputGroup>
@@ -174,24 +175,16 @@ const EditLote = ({ route, navigation }) => {
                                 style={{
                                     flex: 5,
                                     marginRight: 5,
-                                    backgroundColor:
-                                        theme.colors.inputBackground,
-                                    color: theme.colors.inputText,
                                 }}
                                 placeholder="Lote"
-                                placeholderTextColor={theme.colors.subText}
                                 value={lote}
                                 onChangeText={(value) => setLote(value)}
                             />
                             <InputText
                                 style={{
                                     flex: 4,
-                                    backgroundColor:
-                                        theme.colors.inputBackground,
-                                    color: theme.colors.inputText,
                                 }}
                                 placeholder="Quantidade"
-                                placeholderTextColor={theme.colors.subText}
                                 keyboardType="numeric"
                                 value={String(amount)}
                                 onChangeText={(v) => {
@@ -253,17 +246,8 @@ const EditLote = ({ route, navigation }) => {
                         </View>
 
                         <ExpDateGroup>
-                            <ExpDateLabel
-                                style={{ color: theme.colors.subText }}
-                            >
-                                Data de vencimento
-                            </ExpDateLabel>
+                            <ExpDateLabel>Data de vencimento</ExpDateLabel>
                             <CustomDatePicker
-                                style={{
-                                    backgroundColor:
-                                        theme.colors.productBackground,
-                                }}
-                                textColor={theme.colors.inputText}
                                 date={expDate}
                                 onDateChange={(value) => {
                                     setExpDate(value);
@@ -275,7 +259,7 @@ const EditLote = ({ route, navigation }) => {
                         </ExpDateGroup>
                     </InputContainer>
 
-                    <GenericButton text="Salvar" onPress={() => handleSave()} />
+                    <GenericButton text="Salvar" onPress={handleSave} />
                 </ScrollView>
             </Container>
 
