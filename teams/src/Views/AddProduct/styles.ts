@@ -26,7 +26,9 @@ export const InputGroup = styled.View`
     margin: 0 1px;
 `;
 
-export const InputText = styled.TextInput`
+export const InputText = styled.TextInput.attrs((props) => ({
+    placeholderTextColor: props.theme.colors.subText,
+}))`
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
     border-radius: 12px;
@@ -46,7 +48,9 @@ export const ExpDateLabel = styled.Text`
     margin-bottom: 10px;
 `;
 
-export const CustomDatePicker = styled(DatePicker)`
+export const CustomDatePicker = styled(DatePicker).attrs((props) => ({
+    textColor: props.theme.colors.inputText,
+}))`
     background: ${({ theme }) => theme.colors.productBackground};
     z-index: 1;
 `;
