@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/native';
-import { Button, DataTable, Dialog } from 'react-native-paper';
+import { Button, DataTable, Dialog, FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface IProduct {
@@ -11,7 +11,6 @@ interface IProduct {
 export const Container = styled.View`
     flex: 1;
     padding: 16px;
-    elevation: 2;
 
     background: ${({ theme }) => theme.colors.background};
 `;
@@ -113,4 +112,14 @@ export const Text = styled.Text<IProduct>`
 
 export const DialogPaper = styled(Dialog)`
     background: ${(props) => props.theme.colors.productBackground};
+`;
+
+export const FloatButton = styled(FAB).attrs((props) => ({
+    color: 'white',
+}))`
+    background-color: ${({ theme }) => theme.colors.accent};
+
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 `;
