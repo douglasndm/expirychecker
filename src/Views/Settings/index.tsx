@@ -33,7 +33,7 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
-    const [daysToBeNext, setDaysToBeNext] = useState();
+    const [daysToBeNext, setDaysToBeNext] = useState<number>();
     const [selectedTheme, setSelectedTheme] = useState();
     const [userIsPremium, setUserIsPremium] = useState(false);
 
@@ -110,6 +110,7 @@ const Settings: React.FC = () => {
                         icon={() => (
                             <Icons name="arrow-back-outline" size={28} />
                         )}
+                        color={theme.colors.accent}
                         compact
                         onPress={() => {
                             navigation.goBack();
