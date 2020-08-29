@@ -70,9 +70,9 @@ export async function CheckIfSubscriptionIsActive(): Promise<boolean | null> {
         // aqui faz a verificação se ele está usando algum tema premium(se já foi premium) e remove ele
         const userTheme = await getAppTheme();
         if (
-            userTheme === 'system' ||
-            userTheme === 'dark' ||
-            userTheme === 'light'
+            userTheme !== 'system' &&
+            userTheme !== 'dark' &&
+            userTheme !== 'light'
         ) {
             await setAppTheme('system');
         }
