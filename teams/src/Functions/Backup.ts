@@ -7,21 +7,35 @@ import EnvConfig from 'react-native-config';
 import { createProduct } from './Product';
 import Realm from '../Services/Realm';
 
-export async function ExportBackupFile() {
+interface ILote {
+    id: number;
+    lote: string;
+    exp_date: string;
+    amount?: number;
+    status?: string;
+}
+interface IProduct {
+    id: number;
+    name: string;
+    code?: string;
+    lotes?: Array<ILote>;
+}
+
+export async function ExportBackupFile(): Promise<void> {
     try {
         const realm = await Realm();
 
-        const allProducts = realm.objects('Product');
+        const allProducts = realm.objects<IProduct>('Product');
 
         // O REALM GRAVA TUDO EM OBJETOS E NÃO EM ARRAYS
         // ISSO CONVERTE TUDO EM ARRAYS
         // APENAS PARA ORGANIZAÇÃO FUTURA
-        const arrayProducts = [];
+        const arrayProducts: Array<IProduct> = [];
 
-        allProducts.map((p) => {
-            const arrayLotes = [];
+        allProducts.forEach((p) => {
+            const arrayLotes: Array<ILote> = [];
 
-            p.lotes.map((l) => {
+            p.lotes?.forEach((l) => {
                 arrayLotes.push(l);
             });
 
@@ -52,7 +66,7 @@ export async function ExportBackupFile() {
 
         // write the file
         RNFS.writeFile(path, encryptedProducts, 'utf8')
-            .then((success) => {
+            .then(() => {
                 Share.open({
                     title: 'Salvar arquivo de exportação',
                     message:
@@ -68,12 +82,12 @@ export async function ExportBackupFile() {
     }
 }
 
-export async function ImportBackupFile() {
+export async function ImportBackupFile(): Promise<void> {
     try {
         const filePicked = await DocumentPicker.pick();
 
         // Separa o nome do arquivo da extensão para fazer a validação da extensão do arquivo
-        const [fileName, extension] = filePicked.name.split('.');
+        const [, extension] = filePicked.name.split('.');
 
         // caso a extensão do arquivo não for cvbf lança um erro e sai da função
         if (extension !== 'cvbf') {
@@ -84,7 +98,7 @@ export async function ImportBackupFile() {
         const fileRead = await RNFS.readFile(filePicked.fileCopyUri);
 
         // decriptografa o arquivo lido
-        const decryptedFile = await CryptoJS.AES.decrypt(
+        const decryptedFile = CryptoJS.AES.decrypt(
             fileRead,
             EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT
         );
