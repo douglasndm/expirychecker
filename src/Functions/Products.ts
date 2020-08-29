@@ -3,7 +3,9 @@ import { sortLoteByExpDate, removeLotesTratados } from './Lotes';
 
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
 // POR DATA DE VENCIMENTO, OU SEJA CADA PRODUTO DA LISTA VAI TER UM ARRAY DE LOTE JÁ ORDERNADO POR DATA DE VENCIMENTO
-export function sortProductsLotesByLotesExpDate(listProducts) {
+export function sortProductsLotesByLotesExpDate(
+    listProducts: Array<IProduct>
+): Array<IProduct> {
     const productsLotesSorted = listProducts.map((prod) => {
         const prodLotesSorted = sortLoteByExpDate(prod.lotes);
 
@@ -21,7 +23,9 @@ export function sortProductsLotesByLotesExpDate(listProducts) {
 // classifica os produtos em geral pelo o mais proximo de vencer
 // ATENÇÃO QUE A FUNÇÃO SÓ PEGA O PRIMEIRO VALOR DO ARRAY DE LOTES, OU SEJA
 // É ESPERADO QUE O ARRAY DE LOTES JÁ TENHA SIDO ORDERNADO ANTES
-export function sortProductsByFisrtLoteExpDate(listProducts) {
+export function sortProductsByFisrtLoteExpDate(
+    listProducts: Array<IProduct>
+): Array<IProduct> {
     const results = listProducts.sort((item1, item2) => {
         if (item1.lotes !== null && item1.lotes.length > 0) {
             if (item2.lotes !== null && item2.lotes.length > 0) {
@@ -40,7 +44,9 @@ export function sortProductsByFisrtLoteExpDate(listProducts) {
     return results;
 }
 
-export function removeAllLotesTratadosFromAllProduts(listProducts) {
+export function removeAllLotesTratadosFromAllProduts(
+    listProducts: Array<IProduct>
+): Array<IProduct> {
     const results = listProducts.map((prod) => {
         return {
             id: prod.id,
@@ -53,26 +59,26 @@ export function removeAllLotesTratadosFromAllProduts(listProducts) {
     return results;
 }
 
-export async function GetAllProducts() {
+export async function GetAllProducts(): Promise<Array<IProduct>> {
     try {
         const realm = await Realm();
 
-        const results = realm.objects('Product').slice();
+        const results = realm.objects<IProduct>('Product').slice();
 
         return results;
     } catch (err) {
         console.warn(err);
     }
 
-    return null;
+    return [];
 }
 
-export async function GetAllProductsWithLotes() {
+export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
     try {
         const realm = await Realm();
 
         const results = realm
-            .objects('Product')
+            .objects<IProduct>('Product')
             .filtered('lotes.@count > 0')
             .slice();
 
@@ -81,5 +87,5 @@ export async function GetAllProductsWithLotes() {
         console.warn(err);
     }
 
-    return null;
+    return [];
 }
