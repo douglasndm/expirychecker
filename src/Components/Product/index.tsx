@@ -1,8 +1,6 @@
 import React from 'react';
-import { useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { format, formatDistanceToNow } from 'date-fns';
-import br from 'date-fns/locale/pt-BR';
+import br, { format, formatDistanceToNow } from 'date-fns';
 
 import {
     Container,
@@ -19,12 +17,7 @@ import {
 } from './styles';
 
 interface Request {
-    product: {
-        id: number;
-        name: string;
-        code?: string;
-        lotes: []
-    }
+    product: IProduct;
 
     expired: boolean;
     nextToExp: boolean;
@@ -32,9 +25,7 @@ interface Request {
 const Product = ({ product, expired, nextToExp }: Request) => {
     const navigation = useNavigation();
 
-    const theme = useTheme();
-
-    const expiredOrNext = expired || nextToExp ? true : false;
+    const expiredOrNext = !!(expired || nextToExp);
 
     return (
         <Container>
@@ -50,21 +41,20 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                         <ProductName expiredOrNext={expiredOrNext}>
                             {product.name}
                         </ProductName>
-                        {product.code &&
+                        {!!product.code && (
                             <ProductCode expiredOrNext={expiredOrNext}>
                                 Código: {product.code}
                             </ProductCode>
-                        }
+                        )}
 
-                        {product.lotes[0].lote ? (
+                        {!!product.lotes.length && (
                             <ProductLote expiredOrNext={expiredOrNext}>
                                 Lote: {product.lotes[0].lote}
                             </ProductLote>
-                        ) : null}
+                        )}
                     </ProductDetailsContainer>
 
-                    {product.lotes[0].amount &&
-                    product.lotes[0].amount !== '' ? (
+                    {!!product.lotes.length && (
                         <AmountContainer>
                             <AmountContainerText expiredOrNext={expiredOrNext}>
                                 Quantidade
@@ -73,19 +63,25 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                 {product.lotes[0].amount}
                             </Amount>
                         </AmountContainer>
-                    ) : null}
+                    )}
                 </ProductDetails>
 
-                <ProductExpDate expiredOrNext={expiredOrNext}>
-                    {expired ? 'Venceu ' : 'Vence '}
-                    {formatDistanceToNow(product.lotes[0].exp_date, {
-                        addSuffix: true,
-                        locale: br,
-                    })}
-                    {format(product.lotes[0].exp_date, ', EEEE, dd/MM/yyyy', {
-                        locale: br,
-                    })}
-                </ProductExpDate>
+                {!!product.lotes.length && (
+                    <ProductExpDate expiredOrNext={expiredOrNext}>
+                        {expired ? 'Venceu ' : 'Vence '}
+                        {formatDistanceToNow(product.lotes[0].exp_date, {
+                            addSuffix: true,
+                            locale: br,
+                        })}
+                        {format(
+                            product.lotes[0].exp_date,
+                            ', EEEE, dd/MM/yyyy',
+                            {
+                                locale: br,
+                            }
+                        )}
+                    </ProductExpDate>
+                )}
             </Card>
         </Container>
     );
