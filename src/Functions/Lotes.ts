@@ -1,17 +1,10 @@
-import {
-    setHours,
-    setMinutes,
-    setSeconds,
-    setMilliseconds,
-    parseISO,
-    isValid,
-} from 'date-fns';
+import { setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
 
 import Realm from '../Services/Realm';
 
-import { getProductByCode } from './Product';
+import { getProductByCode, getProductById } from './Product';
 
-export function sortLoteByExpDate(lotes) {
+export function sortLoteByExpDate(lotes: Array<ILote>): Array<ILote> {
     // Não sei pq o certo mas o Realm transformou o array em uma coleção de objetos
     // e sendo objetos não consigo fazer o sort deles usando as funções nativas do javscript
     // solução -> percorrer todo o objeto de lotes e colocar cada um dentro de um array temporario
@@ -30,7 +23,7 @@ export function sortLoteByExpDate(lotes) {
     return arrayTemp;
 }
 
-export function removeLotesTratados(lotes) {
+export function removeLotesTratados(lotes: Array<ILote>): Array<ILote> {
     // Não sei pq o certo mas o Realm transformou o array em uma coleção de objetos
     // e sendo objetos não consigo fazer o sort deles usando as funções nativas do javscript
     // solução -> percorrer todo o objeto de lotes e colocar cada um dentro de um array temporario
@@ -45,13 +38,42 @@ export function removeLotesTratados(lotes) {
     return results;
 }
 
-export async function checkIfLoteAlreadyExists(loteName, productCode) {
-    try {
-        const product = await getProductByCode(productCode);
+interface checkIfLoteAlreadyExistsProps {
+    loteName: string;
+    productCode?: string;
+    productId?: number;
+}
 
-        if (!product) {
-            return false;
+export async function checkIfLoteAlreadyExists({
+    loteName,
+    productCode,
+    productId,
+}: checkIfLoteAlreadyExistsProps): Promise<boolean> {
+    try {
+        let product: IProduct;
+
+        if (productCode) {
+            const prod = await getProductByCode(productCode);
+
+            if (!prod) {
+                throw new Error('Não foi possível encontrar o produto');
+            }
+
+            product = prod;
+        } else if (productId) {
+            const prod = await getProductById(productId);
+
+            if (!prod) {
+                throw new Error('Não foi possível encontrar o produto');
+            }
+
+            product = prod;
+        } else {
+            throw new Error(
+                'ID do produto ou código devem ser passados para verificar se o lote já existe'
+            );
         }
+
         const productsLotes = product.lotes.filter((l) => {
             if (l.lote.toLowerCase() === loteName.toLowerCase()) {
                 return true;
@@ -71,19 +93,40 @@ export async function checkIfLoteAlreadyExists(loteName, productCode) {
     return false;
 }
 
-export async function createLote(lote, productCode) {
-    if (await checkIfLoteAlreadyExists(lote.lote, productCode)) {
-        return false;
+interface createLoteProps {
+    lote: ILote;
+    productCode?: string;
+    productId?: number;
+}
+
+export async function createLote({
+    lote,
+    productCode,
+    productId,
+}: createLoteProps): Promise<void> {
+    if (
+        productCode &&
+        (await checkIfLoteAlreadyExists({ productCode, loteName: lote.lote }))
+    ) {
+        throw new Error('Já existe o mesmo lote cadastro');
+    } else if (
+        productId &&
+        (await checkIfLoteAlreadyExists({ productId, loteName: lote.lote }))
+    ) {
+        throw new Error('Já existe o mesmo lote cadastro');
     }
 
     try {
         const realm = await Realm();
 
         realm.write(() => {
-            const product = realm
-                .objects('Product')
-                .filtered(`code = "${productCode}"`)
-                .slice();
+            const product = realm.objects<IProduct>('Product');
+
+            if (productCode) {
+                product.filtered(`code = "${productCode}"`).slice();
+            } else {
+                product.filtered(`id = "${productId}"`).slice();
+            }
 
             if (product.length < 1) {
                 throw new Error(
@@ -91,52 +134,34 @@ export async function createLote(lote, productCode) {
                 );
             }
 
-            const lastLote = realm.objects('Lote').sorted('id', true)[0];
+            const lastLote = realm.objects<ILote>('Lote').sorted('id', true)[0];
             const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
             // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
             // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
             const formatedDate = setHours(
-                setMinutes(
-                    setSeconds(
-                        setMilliseconds(
-                            isValid(lote.exp_date)
-                                ? lote.exp_date
-                                : parseISO(lote.exp_date),
-                            0
-                        ),
-                        0
-                    ),
-                    0
-                ),
+                setMinutes(setSeconds(setMilliseconds(lote.exp_date, 0), 0), 0),
                 0
             );
-
-            const loteAmount =
-                typeof lote.amount === 'string' || lote.amount instanceof String
-                    ? Number(lote.amount)
-                    : lote.amount;
 
             product[0].lotes.push({
                 id: nextLoteId,
                 lote: lote.lote,
                 exp_date: formatedDate,
-                amount: loteAmount,
+                amount: lote.amount,
                 status: lote.status,
             });
         });
     } catch (err) {
         console.warn(err.message);
     }
-
-    return null;
 }
 
-export async function deleteLote(loteId) {
+export async function deleteLote(loteId: number): Promise<void> {
     try {
         const realm = await Realm();
 
-        const lote = await realm.objects('Lote').filtered(`id = "${loteId}"`);
+        const lote = realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);
 
         realm.write(() => {
             realm.delete(lote);
