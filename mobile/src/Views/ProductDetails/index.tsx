@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useTheme } from 'styled-components/native';
-import { FAB, Button } from 'react-native-paper';
+import { useTheme } from 'styled-components';
+import { Button } from 'react-native-paper';
 import br, { format, isPast, addDays } from 'date-fns';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -34,6 +34,7 @@ import {
     TableCell,
     Text,
     DialogPaper,
+    FloatButton,
 } from './styles';
 
 interface Request {
@@ -54,12 +55,11 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
 
-    const [lotes, setLotes] = useState([]);
+    const [lotes, setLotes] = useState<Array<ILote>>([]);
 
-    const [fabOpen, setFabOpen] = useState(false);
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
-    const [daysToBeNext, setDaysToBeNext] = useState<number>();
+    const [daysToBeNext, setDaysToBeNext] = useState<number>(0);
 
     const getProduct = useCallback(async () => {
         try {
@@ -87,9 +87,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         }
     }, [productId]);
 
+    const addNewLote = useCallback(() => {
+        navigation.navigate('AddLote', { productId });
+    }, [navigation, productId]);
+
     const handleEdit = useCallback(() => {
         navigation.push('EditProduct', { productId });
-    }, []);
+    }, [navigation, productId]);
 
     const deleteProduct = useCallback(async () => {
         const realm = await Realm();
@@ -128,10 +132,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         }
 
         startRealm();
-
-        return () => {
-            realm.removeAllListeners();
-        };
     }, []);
 
     return (
@@ -157,6 +157,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             color={theme.colors.text}
                                         />
                                     )}
+                                    color={theme.colors.accent}
                                     compact
                                     onPress={() => {
                                         navigation.goBack();
@@ -167,7 +168,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                             <View>
                                 <ProductName>{name}</ProductName>
-                                <ProductCode>Código: {code}</ProductCode>
+                                {!!code && (
+                                    <ProductCode>Código: {code}</ProductCode>
+                                )}
                             </View>
                         </ProductDetailsContainer>
 
@@ -208,7 +211,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         </TableHeader>
 
                         {lotes.map((lote) => {
-                            const expired = isPast(lote.exp_date, new Date());
+                            const expired = isPast(lote.exp_date);
                             const nextToExp =
                                 addDays(new Date(), daysToBeNext) >
                                 lote.exp_date;
@@ -271,13 +274,24 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                 </ScrollView>
             </Container>
 
+            <FloatButton
+                icon={() => (
+                    <Ionicons name="add-outline" color="white" size={22} />
+                )}
+                small
+                label="Adicionar lote"
+                onPress={addNewLote}
+            />
+
             <DialogPaper
                 visible={deleteComponentVisible}
                 onDismiss={() => {
                     setDeleteComponentVisible(false);
                 }}
             >
-                <DialogPaper.Title>Você tem certeza?</DialogPaper.Title>
+                <DialogPaper.Title style={{ color: theme.colors.text }}>
+                    Você tem certeza?
+                </DialogPaper.Title>
                 <DialogPaper.Content>
                     <Text style={{ color: theme.colors.text }}>
                         Se continuar você irá apagar o produto e todos os seus
@@ -303,29 +317,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     </Button>
                 </DialogPaper.Actions>
             </DialogPaper>
-
-            <FAB.Group
-                actions={[
-                    {
-                        style: {
-                            backgroundColor: theme.colors.accent,
-                        },
-                        icon: () => (
-                            <Ionicons name="add" size={24} color="#FFFFFF" />
-                        ),
-                        onPress: () => {
-                            navigation.push('AddLote', { productId });
-                        },
-                    },
-                ]}
-                icon={() => <Ionicons name="reader" size={24} color="#FFF" />}
-                open={fabOpen}
-                onStateChange={() => setFabOpen(!fabOpen)}
-                visible
-                onPress={() => setFabOpen(!fabOpen)}
-                fabStyle={{ backgroundColor: theme.colors.accent }}
-                color={theme.colors.accent}
-            />
         </>
     );
 };
