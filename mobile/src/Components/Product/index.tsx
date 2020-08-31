@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import br, { format, formatDistanceToNow } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
+import br from 'date-fns/locale/pt-BR' // eslint-disable-line
 
 import {
     Container,
