@@ -1,8 +1,8 @@
 import 'styled-components';
 
-declare module "styled-components" {
+declare module 'styled-components' {
     export interface DefaultTheme {
-        dark: boolean,
+        dark: boolean;
         mode?: string;
 
         fonts?: {
@@ -10,7 +10,7 @@ declare module "styled-components" {
             medium?: number;
             light?: number;
             thin?: number;
-        }
+        };
 
         colors: {
             primary: string;
@@ -28,6 +28,6 @@ declare module "styled-components" {
             productExpiredBackground: string;
             productNextToExpBackground: string;
             productNextOrExpiredText: string;
-        },
+        };
     }
-  }
+}
