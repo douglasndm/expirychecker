@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import { TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
-import { addDays, isPast } from 'date-fns';
 
 import { getDaysToBeNextToExp } from '../../Functions/Settings';
 import { GetPremium } from '../../Functions/Premium';
 
 import Header from '../Header';
-import ProductItem from '../Product';
+import ProductItem from '../ProductItem';
 import GenericButton from '../Button';
 
 import {
@@ -20,7 +19,7 @@ import {
 } from './styles';
 
 interface RequestProps {
-    products: {};
+    products: Array<IProduct>;
     isHome?: boolean;
 }
 
@@ -30,7 +29,7 @@ const ListProducts: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const navigation = useNavigation();
 
-    const [daysToBeNext, setDaysToBeNext] = useState<number>();
+    const [daysToBeNext, setDaysToBeNext] = useState<number>(30);
     const [isPremium, setIsPremium] = useState(false);
 
     const adUnitId = __DEV__
@@ -94,59 +93,31 @@ const ListProducts: React.FC<RequestProps> = ({
         );
     }, [products.length, isHome, navigation]);
 
-    function renderComponent({ item, index }) {
-        const expired =
-            item.lotes[0] && isPast(item.lotes[0].exp_date, new Date());
-        const nextToExp =
-            item.lotes[0] &&
-            addDays(new Date(), daysToBeNext) >= item.lotes[0].exp_date;
-
-        return (
-            <>
-                {!isPremium && index !== 0 && index % 5 === 0 && (
-                    <View
-                        style={{
-                            flex: 1,
-                            alignItems: 'center',
-                            marginTop: 5,
-                            marginBottom: 5,
-                        }}
-                    >
-                        <BannerAd
-                            unitId={adUnitId}
-                            size={BannerAdSize.BANNER}
-                            onAdFailedToLoad={(err) => {
-                                console.log(
-                                    `Falha ao carregar anúncios ${err}`
-                                );
-                            }}
-                        />
-                    </View>
-                )}
-
+    const renderComponent = useCallback(
+        ({ item, index }) => {
+            return (
                 <ProductItem
                     product={item}
-                    expired={expired}
-                    nextToExp={nextToExp}
+                    index={index}
+                    adUnitId={adUnitId}
+                    daysToBeNext={daysToBeNext}
+                    isPremium={isPremium}
                 />
-            </>
-        );
-    }
-
-    function keyExtractor(item, index) {
-        return String(index);
-    }
+            );
+        },
+        [adUnitId, daysToBeNext, isPremium]
+    );
 
     return (
         <Container>
             <FlatList
                 data={products}
-                keyExtractor={keyExtractor}
+                keyExtractor={(item, index) => String(index)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
-                initialNumToRender="10"
+                initialNumToRender={10}
                 removeClippedSubviews
             />
         </Container>
