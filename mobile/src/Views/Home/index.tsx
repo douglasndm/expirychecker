@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Snackbar, useTheme } from 'react-native-paper';
 
 import Realm from '../../Services/Realm';
 import {
@@ -12,19 +11,20 @@ import { CheckIfSubscriptionIsActive } from '../../Functions/Premium';
 import FABProducts from '../../Components/FABProducts';
 import ListProducts from '../../Components/ListProducts';
 
+import { SnackBar } from './styles';
+
 interface HomeProps {
     notificationToUser?: string;
 }
 
 const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
-    const theme = useTheme();
+    // const theme = useTheme();
 
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
     useEffect(() => {
-        if (notificationToUser && notificationToUser !== '')
-            setSnackBarVisible(true);
+        if (notificationToUser) setSnackBarVisible(true);
     }, [notificationToUser]);
 
     useEffect(() => {
@@ -96,28 +96,20 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
             <ListProducts products={products} isHome />
 
             {snackBarVisible && (
-                <Snackbar
+                <SnackBar
                     visible={snackBarVisible}
-                    duration={5000}
-                    style={{
-                        backgroundColor: theme.colors.accent,
-                        borderRadius: 12,
-                        marginBottom: 90,
-                        padding: 7,
-                        opacity: 0.95,
-                    }}
-                    theme={{ colors: { accent: 'white' } }}
+                    duration={7000}
                     onDismiss={() => setSnackBarVisible(false)}
-                    action={{
-                        label: 'fechar',
-                        accessibilityLabel: 'Fechar notificação',
-                        onPress: () => {
-                            setSnackBarVisible(false);
-                        },
-                    }}
+                    // action={{
+                    //     label: 'fechar',
+                    //     accessibilityLabel: 'Fechar notificação',
+                    //     onPress: () => {
+                    //         setSnackBarVisible(false);
+                    //     },
+                    // }}
                 >
                     {notificationToUser}
-                </Snackbar>
+                </SnackBar>
             )}
 
             <FABProducts />
