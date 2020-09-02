@@ -1,20 +1,29 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Button as ButtonPaper } from 'react-native-paper';
 
 import {
     Container,
     Content,
+    ButtonPaper,
     PageTitle,
     AboutSection,
     ApplicationName,
     Icons,
     Text,
+    Link,
 } from './styles';
 
 const About: React.FC = () => {
     const navigation = useNavigation();
+
+    const handleLinkedinPress = useCallback(async () => {
+        await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
+    }, []);
+
+    const handleFlatIconPress = useCallback(async () => {
+        await Linking.openURL('https://www.flaticon.com/authors/srip');
+    }, []);
 
     return (
         <Container>
@@ -38,13 +47,16 @@ const About: React.FC = () => {
 
             <AboutSection>
                 <Text>Desenvolvido por Douglas Nunes de Mattos</Text>
+                <Link onPress={handleLinkedinPress}>Linkedin</Link>
             </AboutSection>
 
             <AboutSection>
                 <Text>Logo só possível por</Text>
 
                 <View>
-                    <Text>https://www.flaticon.com/authors/srip</Text>
+                    <Link onPress={handleFlatIconPress}>
+                        https://www.flaticon.com/authors/srip
+                    </Link>
                 </View>
             </AboutSection>
         </Container>
