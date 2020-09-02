@@ -59,7 +59,9 @@ export async function getProductById(
     return null;
 }
 
-export async function createProduct(product: IProduct): Promise<void> {
+export async function createProduct(
+    product: Omit<IProduct, 'id'>
+): Promise<void> {
     try {
         const realm = await Realm();
 
