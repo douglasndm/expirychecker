@@ -94,7 +94,7 @@ export async function checkIfLoteAlreadyExists({
 }
 
 interface createLoteProps {
-    lote: ILote;
+    lote: Omit<ILote, 'id'>;
     productCode?: string;
     productId?: number;
 }
