@@ -1,3 +1,5 @@
+import AsyncStorange from '@react-native-community/async-storage';
+
 import Realm from '../Services/Realm';
 
 interface ISetting {
@@ -74,5 +76,35 @@ export async function setAppTheme(themeName: string): Promise<void> {
         });
     } catch (err) {
         console.warn(err);
+    }
+}
+
+export async function getNotificationsEnabled(): Promise<boolean> {
+    const isEnabled = await AsyncStorange.getItem(
+        '@ControleDeValidade/NotificationsEnabled'
+    );
+
+    if (!isEnabled) {
+        return true;
+    }
+    if (isEnabled === 'false') {
+        return false;
+    }
+
+    return true;
+}
+
+export async function setNotificationsEnabled(
+    isEnabled: boolean
+): Promise<void> {
+    try {
+        await AsyncStorange.setItem(
+            '@ControleDeValidade/NotificationsEnabled',
+            String(isEnabled)
+        );
+    } catch (err) {
+        throw new Error(
+            `Falha ao salvar as configurações de notificações. ${err.message}`
+        );
     }
 }
