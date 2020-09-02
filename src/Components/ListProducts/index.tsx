@@ -112,7 +112,7 @@ const ListProducts: React.FC<RequestProps> = ({
         <Container>
             <FlatList
                 data={products}
-                keyExtractor={(item, index) => String(index)}
+                keyExtractor={(item, index) => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
