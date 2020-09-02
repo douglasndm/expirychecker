@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, Alert } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
 
-import { useTheme } from 'react-native-paper';
+import { useTheme } from 'styled-components/native';
 
 import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
+import {
+    getNotificationsEnabled,
+    setNotificationsEnabled,
+} from '../../Functions/Settings';
 import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
 
-const Test = () => {
+const Test: React.FC = () => {
     const [adsEnable, setAdsEnable] = useState(false);
 
     useEffect(() => {
@@ -103,6 +107,22 @@ const Test = () => {
         ExportBackupFile();
     }
 
+    async function getNot() {
+        const noti = await getNotificationsEnabled();
+
+        if (noti) {
+            Alert.alert('Habilitado');
+        } else {
+            Alert.alert('Desabilitado');
+        }
+    }
+
+    async function setNot() {
+        const noti = await getNotificationsEnabled();
+
+        await setNotificationsEnabled(!noti);
+    }
+
     const theme = useTheme();
 
     return (
@@ -112,6 +132,12 @@ const Test = () => {
                     style={{ backgroundColor: theme.colors.productBackground }}
                 >
                     <Text>Is ads enabled: {String(adsEnable)}</Text>
+
+                    <Button text="Notification Status" onPress={getNot} />
+                    <Button
+                        text="Invert Notification Status"
+                        onPress={setNot}
+                    />
 
                     <Button
                         text="Check play store"
