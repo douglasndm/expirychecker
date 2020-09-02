@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { useTheme } from 'styled-components';
 
 import GenericButton from '../../Components/Button';
+import Notification from '../../Components/Notification';
 
-import Realm from '../../Services/Realm';
-import { checkIfLoteAlreadyExists } from '../../Functions/Lotes';
+import { createLote } from '../../Functions/Lotes';
+import { getProductById } from '../../Functions/Product';
 
 import {
     Container,
@@ -35,66 +37,50 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const navigation = useNavigation();
 
     const theme = useTheme();
+    const [notification, setNotification] = useState<string>();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState<number>(0);
 
     const [expDate, setExpDate] = useState(new Date());
 
-    async function handleSave() {
+    const handleSave = useCallback(async () => {
         if (!lote || lote.trim() === '') {
             Alert.alert('Digite o nome do lote');
             return;
         }
-
-        if (await checkIfLoteAlreadyExists(lote, code)) {
-            Alert.alert('Já existe um lote cadastrado para o mesmo produto');
-            return;
-        }
-
         try {
-            const realm = await Realm();
-
-            const result = realm
-                .objects('Product')
-                .filtered(`id == ${productId}`)[0];
-
-            const lastLote = realm.objects('Lote').sorted('id', true)[0];
-            const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
-
-            const loteAmount = amount.trim() !== '' ? parseInt(amount) : null;
-
-            await realm.write(() => {
-                result.lotes.push({
-                    id: nextLoteId,
+            await createLote({
+                productId,
+                lote: {
                     lote,
-                    amount: loteAmount,
+                    amount,
                     exp_date: expDate,
-                });
+                },
             });
 
             Alert.alert('Lote cadastrado com sucesso');
             navigation.goBack();
         } catch (err) {
-            console.log(err);
+            crashlytics().recordError(err);
+            setNotification(err);
         }
-    }
+    }, [amount, productId, expDate, lote, navigation]);
 
     useEffect(() => {
         async function getProduct() {
-            const realm = await Realm();
+            const prod = await getProductById(productId);
 
-            const result = realm
-                .objects('Product')
-                .filtered(`id == ${productId}`)[0];
+            if (prod) {
+                setName(prod.name);
 
-            setName(result.name);
-            setCode(result.code);
+                if (prod.code) setCode(prod.code);
+            }
         }
         getProduct();
-    }, []);
+    }, [productId]);
 
     return (
         <Container>
@@ -151,7 +137,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                                 const regex = /^[0-9\b]+$/;
 
                                 if (v === '' || regex.test(v)) {
-                                    setAmount(v);
+                                    setAmount(Number(v));
                                 }
                             }}
                         />
@@ -173,6 +159,13 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
 
                 <GenericButton text="Salvar" onPress={handleSave} />
             </ScrollView>
+
+            {!!notification && (
+                <Notification
+                    NotificationMessage={notification}
+                    NotificationType="error"
+                />
+            )}
         </Container>
     );
 };
