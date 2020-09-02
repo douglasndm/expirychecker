@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 import { BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { addDays, isPast } from 'date-fns';
@@ -30,7 +31,7 @@ const ProductItem: React.FC<RequestProps> = ({
         addDays(new Date(), daysToBeNext) >= product.lotes[0].exp_date;
 
     return (
-        <>
+        <View>
             {!isPremium && index !== 0 && index % 5 === 0 && !adFailed && (
                 <AdView>
                     <BannerAd
@@ -51,8 +52,8 @@ const ProductItem: React.FC<RequestProps> = ({
                 expired={expired}
                 nextToExp={nextToExp}
             />
-        </>
+        </View>
     );
 };
 
-export default ProductItem;
+export default React.memo(ProductItem);
