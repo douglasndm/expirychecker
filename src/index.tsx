@@ -61,7 +61,7 @@ const App: React.FC = () => {
         }
 
         setThemeModificationNotification();
-    }, []);
+    }, [getTheme]);
 
     return (
         <ThemeProvider theme={theme}>

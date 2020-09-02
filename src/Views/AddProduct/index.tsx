@@ -39,7 +39,7 @@ const adUnitID = __DEV__
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
-const AddProduct: Reacf.FC = () => {
+const AddProduct: React.FC = () => {
     const navigation = useNavigation();
     const theme = useTheme();
 
