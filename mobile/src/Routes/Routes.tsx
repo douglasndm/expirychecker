@@ -16,7 +16,7 @@ import Test from '../Views/Test';
 
 const Stack = createStackNavigator();
 
-export default () => {
+const Routes: React.FC = () => {
     return (
         <Stack.Navigator headerMode="none">
             <Stack.Screen name="Home" component={Home} />
@@ -36,3 +36,5 @@ export default () => {
         </Stack.Navigator>
     );
 };
+
+export default Routes;
