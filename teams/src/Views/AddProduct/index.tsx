@@ -71,7 +71,7 @@ const AddProduct: React.FC = () => {
                         {
                             lote,
                             exp_date: expDate,
-                            amount,
+                            amount: Number(amount),
                             status: 'Não tratado',
                         },
                     ],
