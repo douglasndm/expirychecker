@@ -9,19 +9,17 @@ import {
 import { CheckIfSubscriptionIsActive } from '../../Functions/Premium';
 
 import FABProducts from '../../Components/FABProducts';
+import Notification from '../../Components/Notification';
 import ListProducts from '../../Components/ListProducts';
-
-import { SnackBar } from './styles';
 
 interface HomeProps {
     notificationToUser?: string;
 }
 
 const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
-    // const theme = useTheme();
-
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [products, setProducts] = useState<Array<IProduct>>([]);
+    const [error, setError] = useState<string>();
 
     useEffect(() => {
         if (notificationToUser) setSnackBarVisible(true);
@@ -69,8 +67,8 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
             } else {
                 setProducts(results);
             }
-        } catch (error) {
-            console.warn(error);
+        } catch (err) {
+            setError(err.message);
         }
     }
 
@@ -94,24 +92,15 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
     return (
         <>
             <ListProducts products={products} isHome />
-
-            {snackBarVisible && (
-                <SnackBar
-                    visible={snackBarVisible}
-                    duration={7000}
-                    onDismiss={() => setSnackBarVisible(false)}
-                    // action={{
-                    //     label: 'fechar',
-                    //     accessibilityLabel: 'Fechar notificação',
-                    //     onPress: () => {
-                    //         setSnackBarVisible(false);
-                    //     },
-                    // }}
-                >
-                    {notificationToUser}
-                </SnackBar>
+            {snackBarVisible && notificationToUser && (
+                <Notification NotificationMessage={notificationToUser} />
             )}
-
+            {!notificationToUser && error && (
+                <Notification
+                    NotificationMessage={error}
+                    NotificationType="error"
+                />
+            )}
             <FABProducts />
         </>
     );
