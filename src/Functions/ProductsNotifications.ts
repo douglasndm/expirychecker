@@ -2,17 +2,21 @@ import { Notifications } from 'react-native-notifications';
 import { addDays, isPast } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { getDaysToBeNextToExp } from './Settings';
+import { getDaysToBeNextToExp, getNotificationsEnabled } from './Settings';
 import Realm from '../Services/Realm';
 
-export async function getAllProductsNextToExp() {
+export async function getAllProductsNextToExp(): Promise<void> {
+    const isNotifcationEnabled = await getNotificationsEnabled();
+
+    if (!isNotifcationEnabled) return;
+
     const daysToBeNext = await getDaysToBeNextToExp();
 
     try {
         const realm = await Realm();
 
         const products = realm
-            .objects('Product')
+            .objects<IProduct>('Product')
             .filtered("lotes.@count > 0 AND lotes.status != 'Tratado'")
             .slice();
 
@@ -22,7 +26,7 @@ export async function getAllProductsNextToExp() {
             const lotesFiltered = lotes.filter((l) => {
                 if (
                     l.exp_date < addDays(new Date(), daysToBeNext) &&
-                    !isPast(l.exp_date, new Date()) &&
+                    !isPast(l.exp_date) &&
                     l.status !== 'Tratado'
                 ) {
                     return true;
@@ -41,7 +45,7 @@ export async function getAllProductsNextToExp() {
             const lotes = p.lotes.slice();
 
             const lotesFiltered = lotes.filter((l) => {
-                if (isPast(l.exp_date, new Date()) && l.status !== 'Tratado') {
+                if (isPast(l.exp_date) && l.status !== 'Tratado') {
                     return true;
                 }
 
@@ -80,14 +84,17 @@ export async function getAllProductsNextToExp() {
             NotificationMessage = `Você tem ${productsVencidosCount} lotes vencidos e ${productsNextToExpCount} lotes próximos ao vencimento`;
         }
 
-        if (NotificationTitle !== null || NotificationTitle !== '') {
-            Notifications.postLocalNotification({
-                title: NotificationTitle,
-                body: NotificationMessage,
-            });
+        if (!!NotificationTitle && !!NotificationMessage) {
+            Notifications.postLocalNotification(
+                {
+                    title: NotificationTitle,
+                    body: NotificationMessage,
+                },
+                1
+            );
         }
     } catch (err) {
-        crashlytics().recordError();
+        crashlytics().recordError(err);
         crashlytics().log('Falha ao enviar notificação');
         console.warn(err);
     }
