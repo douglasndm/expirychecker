@@ -120,12 +120,18 @@ export async function createLote({
         const realm = await Realm();
 
         realm.write(() => {
-            const product = realm.objects<IProduct>('Product');
+            let product;
 
             if (productCode) {
-                product.filtered(`code = "${productCode}"`).slice();
+                product = realm
+                    .objects<IProduct>('Product')
+                    .filtered(`code = "${productCode}"`)
+                    .slice();
             } else {
-                product.filtered(`id = "${productId}"`).slice();
+                product = realm
+                    .objects<IProduct>('Product')
+                    .filtered(`id = "${productId}"`)
+                    .slice();
             }
 
             if (product.length < 1) {
@@ -153,7 +159,7 @@ export async function createLote({
             });
         });
     } catch (err) {
-        console.warn(err.message);
+        throw new Error(err);
     }
 }
 
@@ -167,6 +173,6 @@ export async function deleteLote(loteId: number): Promise<void> {
             realm.delete(lote);
         });
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
 }
