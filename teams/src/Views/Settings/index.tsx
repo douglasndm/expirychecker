@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, Linking } from 'react-native';
-import { Button as ButtonPaper } from 'react-native-paper';
+import { Button as ButtonPaper, Switch } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { Picker } from '@react-native-community/picker';
@@ -12,6 +12,8 @@ import {
     setAppTheme,
     getDaysToBeNextToExp,
     setDaysToBeNextToExp,
+    getNotificationsEnabled,
+    setNotificationsEnabled,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
 import * as Premium from '../../Functions/Premium';
@@ -36,6 +38,7 @@ const Settings: React.FC = () => {
     const [daysToBeNext, setDaysToBeNext] = useState<number>();
     const [selectedTheme, setSelectedTheme] = useState();
     const [userIsPremium, setUserIsPremium] = useState(false);
+    const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
 
     const navigation = useNavigation();
 
@@ -55,18 +58,22 @@ const Settings: React.FC = () => {
         }
     }, [navigation]);
 
+    const handleNotificationEnabledSwitch = useCallback(async () => {
+        await setNotificationsEnabled(!isNotificationsEnabled);
+
+        setIsNotificationsEnabled(!isNotificationsEnabled);
+    }, [isNotificationsEnabled]);
+
     useEffect(() => {
         async function getSettingsAlreadySetted() {
             const settingDays = await getDaysToBeNextToExp();
-
-            const regex = /^[0-9\b]+$/;
-
-            if (settingDays === '' || regex.test(settingDays)) {
-                setDaysToBeNext(String(settingDays));
-            }
+            setDaysToBeNext(String(settingDays));
 
             const pre = await Premium.GetPremium();
             setUserIsPremium(pre);
+
+            const notificationEnabled = await getNotificationsEnabled();
+            setIsNotificationsEnabled(notificationEnabled);
         }
 
         getSettingsAlreadySetted();
@@ -139,6 +146,23 @@ const Settings: React.FC = () => {
                                 }
                             }}
                         />
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: 15,
+                            }}
+                        >
+                            <SettingDescription>
+                                Notificações habilitadas?
+                            </SettingDescription>
+                            <Switch
+                                value={isNotificationsEnabled}
+                                onValueChange={handleNotificationEnabledSwitch}
+                            />
+                        </View>
                     </CategoryOptions>
 
                     <CategoryOptions>
