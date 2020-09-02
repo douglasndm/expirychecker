@@ -7,7 +7,7 @@ import Routes from './Routes';
 
 const Drawer = createDrawerNavigator();
 
-export default () => {
+const DrawerContainer: React.FC = () => {
     return (
         <Drawer.Navigator
             drawerType="slide"
@@ -19,3 +19,5 @@ export default () => {
         </Drawer.Navigator>
     );
 };
+
+export default DrawerContainer;
