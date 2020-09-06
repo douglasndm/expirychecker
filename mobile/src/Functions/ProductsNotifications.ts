@@ -13,10 +13,7 @@ export async function getAllProductsNextToExp(): Promise<void> {
     const daysToBeNext = await getDaysToBeNextToExp();
 
     try {
-        const realm = await Realm();
-
-        const products = realm
-            .objects<IProduct>('Product')
+        const products = Realm.objects<IProduct>('Product')
             .filtered("lotes.@count > 0 AND lotes.status != 'Tratado'")
             .slice();
 

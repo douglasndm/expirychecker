@@ -42,11 +42,19 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         async function getProductData() {
             const product = await getProductById(productId);
 
+            if (!product) {
+                navigation.push('Home', {
+                    notificationToUser: 'Produto não encontrado',
+                });
+
+                return;
+            }
+
             setName(product.name);
-            setCode(product.code);
+            if (product.code) setCode(product.code);
         }
         getProductData();
-    }, [productId]);
+    }, [productId, navigation]);
 
     async function updateProduct() {
         if (!name || name.trim() === '') {
@@ -55,10 +63,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
 
         try {
-            const realm = await Realm();
-
-            realm.write(() => {
-                realm.create(
+            Realm.write(() => {
+                Realm.create(
                     'Product',
                     { id: productId, name, code },
                     'modified'

@@ -9,11 +9,9 @@ interface ISetting {
 
 export async function getDaysToBeNextToExp(): Promise<number> {
     try {
-        const realm = await Realm();
-
-        const daysToBeNext = await realm
-            .objects<ISetting>('Setting')
-            .filtered("name = 'daysToBeNext'")[0];
+        const daysToBeNext = Realm.objects<ISetting>('Setting').filtered(
+            "name = 'daysToBeNext'"
+        )[0];
 
         if (daysToBeNext && daysToBeNext !== null) {
             return Number(daysToBeNext.value);
@@ -27,10 +25,8 @@ export async function getDaysToBeNextToExp(): Promise<number> {
 
 export async function setDaysToBeNextToExp(days: number): Promise<void> {
     try {
-        const realm = await Realm();
-
-        realm.write(() => {
-            realm.create(
+        Realm.write(() => {
+            Realm.create(
                 'Setting',
                 {
                     name: 'daysToBeNext',
@@ -46,11 +42,9 @@ export async function setDaysToBeNextToExp(days: number): Promise<void> {
 
 export async function getAppTheme(): Promise<string> {
     try {
-        const realm = await Realm();
-
-        const appTheme = await realm
-            .objects<ISetting>('Setting')
-            .filtered("name = 'appTheme'")[0];
+        const appTheme = Realm.objects<ISetting>('Setting').filtered(
+            "name = 'appTheme'"
+        )[0];
 
         return appTheme.value || 'system';
     } catch (err) {
@@ -62,10 +56,8 @@ export async function getAppTheme(): Promise<string> {
 
 export async function setAppTheme(themeName: string): Promise<void> {
     try {
-        const realm = await Realm();
-
-        realm.write(() => {
-            realm.create(
+        Realm.write(() => {
+            Realm.create(
                 'Setting',
                 {
                     name: 'appTheme',

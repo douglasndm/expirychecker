@@ -23,9 +23,7 @@ interface IProduct {
 
 export async function ExportBackupFile(): Promise<void> {
     try {
-        const realm = await Realm();
-
-        const allProducts = realm.objects<IProduct>('Product');
+        const allProducts = Realm.objects<IProduct>('Product');
 
         // O REALM GRAVA TUDO EM OBJETOS E NÃO EM ARRAYS
         // ISSO CONVERTE TUDO EM ARRAYS

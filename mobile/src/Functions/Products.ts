@@ -61,9 +61,7 @@ export function removeAllLotesTratadosFromAllProduts(
 
 export async function GetAllProducts(): Promise<Array<IProduct>> {
     try {
-        const realm = await Realm();
-
-        const results = realm.objects<IProduct>('Product').slice();
+        const results = Realm.objects<IProduct>('Product').slice();
 
         return results;
     } catch (err) {
@@ -75,10 +73,7 @@ export async function GetAllProducts(): Promise<Array<IProduct>> {
 
 export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
     try {
-        const realm = await Realm();
-
-        const results = realm
-            .objects<IProduct>('Product')
+        const results = Realm.objects<IProduct>('Product')
             .filtered('lotes.@count > 0')
             .slice();
 

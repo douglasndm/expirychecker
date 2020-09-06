@@ -16,10 +16,8 @@ export async function IsPlayStoreIsAvailable(): Promise<boolean> {
 
 async function setPremium(active: boolean): Promise<void> {
     try {
-        const realm = await Realm();
-
-        realm.write(() => {
-            realm.create(
+        Realm.write(() => {
+            Realm.create(
                 'Setting',
                 {
                     name: 'isPremium',
@@ -35,11 +33,9 @@ async function setPremium(active: boolean): Promise<void> {
 
 export async function GetPremium(): Promise<boolean> {
     try {
-        const realm = await Realm();
-
-        const isPremium = await realm
-            .objects('Setting')
-            .filtered('name = "isPremium"')[0];
+        const isPremium = Realm.objects('Setting').filtered(
+            'name = "isPremium"'
+        )[0];
 
         if (!isPremium) {
             return false;

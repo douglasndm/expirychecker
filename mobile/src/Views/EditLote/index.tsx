@@ -57,14 +57,13 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
             Alert.alert('Digite o nome do lote');
             return;
         }
-        const realm = await Realm();
 
         try {
-            realm.write(() => {
+            Realm.write(() => {
                 const loteAmount =
                     amount.trim() !== '' ? parseInt(amount) : null;
 
-                realm.create(
+                Realm.create(
                     'Lote',
                     {
                         id: loteId,
