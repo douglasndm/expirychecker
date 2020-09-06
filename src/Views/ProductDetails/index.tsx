@@ -76,7 +76,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             }
 
             setName(result.name);
-            setCode(result.code);
+            if (result.code) setCode(result.code);
 
             const lotesSorted = sortLoteByExpDate(result.lotes);
 
@@ -96,15 +96,11 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [navigation, productId]);
 
     const deleteProduct = useCallback(async () => {
-        const realm = await Realm();
-
-        const prod = await realm
-            .objects('Product')
-            .filtered(`id == ${productId}`);
+        const prod = Realm.objects('Product').filtered(`id == ${productId}`);
 
         try {
-            realm.write(async () => {
-                await realm.delete(prod);
+            Realm.write(async () => {
+                Realm.delete(prod);
 
                 Alert.alert(`${name} foi apagado.`);
                 navigation.dispatch(StackActions.popToTop());
@@ -119,12 +115,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, []);
 
     useEffect(() => {
-        let realm: Realm;
-
         async function startRealm() {
-            realm = await Realm();
-
-            realm.addListener('change', () => {
+            Realm.addListener('change', () => {
                 getProduct();
             });
 

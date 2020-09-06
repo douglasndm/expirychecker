@@ -53,9 +53,7 @@ const App: React.FC = () => {
     // Troca o tema do app a cada alteração em tempo real na pagina de configurações
     useEffect(() => {
         async function setThemeModificationNotification() {
-            const realm = await Realm();
-
-            realm.addListener('change', async () => {
+            Realm.addListener('change', async () => {
                 await getTheme();
             });
         }

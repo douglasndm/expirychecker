@@ -6,7 +6,6 @@ import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
 
 import {
-    removeAllLotesTratadosFromAllProduts,
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
 } from '../../Functions/Products';
@@ -42,19 +41,16 @@ const AllProducts: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        let realm: Realm;
-
         async function startRealm() {
-            realm = await Realm();
-            realm.addListener('change', () => getProducts(realm));
+            Realm.addListener('change', () => getProducts(Realm));
 
-            getProducts(realm);
+            getProducts(Realm);
         }
 
         startRealm();
 
         return () => {
-            realm.removeAllListeners();
+            Realm.removeAllListeners();
         };
     }, []);
 
