@@ -73,19 +73,16 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
     }
 
     useEffect(() => {
-        let realm: Realm;
-
         async function startRealm() {
-            realm = await Realm();
-            realm.addListener('change', () => getProduts(realm));
+            Realm.addListener('change', () => getProduts(Realm));
 
-            getProduts(realm);
+            getProduts(Realm);
         }
 
         startRealm();
 
         return () => {
-            realm.removeAllListeners();
+            Realm.removeAllListeners();
         };
     }, []);
 
