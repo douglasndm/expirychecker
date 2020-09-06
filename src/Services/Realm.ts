@@ -4,9 +4,9 @@ import { ProductSchema } from '../Schemas/ProductSchema';
 import { LoteSchema } from '../Schemas/LoteSchema';
 import SettingSchema from '../Schemas/SettingSchema';
 
-export default (): ProgressPromise => {
-    return Realm.open({
-        schema: [ProductSchema, LoteSchema, SettingSchema],
-        schemaVersion: 1,
-    });
-};
+const RealmInstance = new Realm({
+    schema: [ProductSchema, LoteSchema, SettingSchema],
+    schemaVersion: 1,
+});
+
+export default RealmInstance;

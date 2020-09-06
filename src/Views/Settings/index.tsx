@@ -84,12 +84,12 @@ const Settings: React.FC = () => {
             const previousDaysToBeNext = await getDaysToBeNextToExp();
 
             if (previousDaysToBeNext !== daysToBeNext) {
-                await setSettingDaysToBeNext(String(daysToBeNext));
+                await setSettingDaysToBeNext(daysToBeNext);
             }
         }
 
         SetNewDays();
-    }, [daysToBeNext]);
+    }, [daysToBeNext, setSettingDaysToBeNext]);
 
     useEffect(() => {
         async function getTheme() {

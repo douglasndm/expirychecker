@@ -87,10 +87,8 @@ export async function checkIfLoteAlreadyExists({
 
         return false;
     } catch (err) {
-        console.warn(err.message);
+        throw new Error(err);
     }
-
-    return false;
 }
 
 interface createLoteProps {
@@ -117,19 +115,15 @@ export async function createLote({
     }
 
     try {
-        const realm = await Realm();
-
-        realm.write(() => {
+        Realm.write(() => {
             let product;
 
             if (productCode) {
-                product = realm
-                    .objects<IProduct>('Product')
+                product = Realm.objects<IProduct>('Product')
                     .filtered(`code = "${productCode}"`)
                     .slice();
             } else {
-                product = realm
-                    .objects<IProduct>('Product')
+                product = Realm.objects<IProduct>('Product')
                     .filtered(`id = "${productId}"`)
                     .slice();
             }
@@ -140,7 +134,7 @@ export async function createLote({
                 );
             }
 
-            const lastLote = realm.objects<ILote>('Lote').sorted('id', true)[0];
+            const lastLote = Realm.objects<ILote>('Lote').sorted('id', true)[0];
             const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
             // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
@@ -165,12 +159,10 @@ export async function createLote({
 
 export async function deleteLote(loteId: number): Promise<void> {
     try {
-        const realm = await Realm();
+        const lote = Realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);
 
-        const lote = realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);
-
-        realm.write(() => {
-            realm.delete(lote);
+        Realm.write(() => {
+            Realm.delete(lote);
         });
     } catch (err) {
         throw new Error(err);

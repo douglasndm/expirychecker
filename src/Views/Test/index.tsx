@@ -52,23 +52,23 @@ const Test: React.FC = () => {
     }
 
     async function sampleData() {
-        const realm = await Realm();
-
         try {
-            realm.write(() => {
+            Realm.write(() => {
                 for (let i = 0; i < 50; i++) {
-                    const lastProduct = realm
-                        .objects('Product')
-                        .sorted('id', true)[0];
+                    const lastProduct = Realm.objects('Product').sorted(
+                        'id',
+                        true
+                    )[0];
                     const nextProductId =
                         lastProduct == null ? 1 : lastProduct.id + 1;
 
-                    const lastLote = realm
-                        .objects('Lote')
-                        .sorted('id', true)[0];
+                    const lastLote = Realm.objects('Lote').sorted(
+                        'id',
+                        true
+                    )[0];
                     const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
-                    realm.create('Product', {
+                    Realm.create('Product', {
                         id: nextProductId,
                         name: `Product ${i}`,
                         code: `${i}7841686${i}`,
@@ -91,12 +91,10 @@ const Test: React.FC = () => {
 
     async function deleteProducts() {
         try {
-            const realm = await Realm();
+            Realm.write(() => {
+                const results = Realm.objects('Product');
 
-            realm.write(() => {
-                const results = realm.objects('Product');
-
-                realm.delete(results);
+                Realm.delete(results);
             });
         } catch (err) {
             console.warn(err);
