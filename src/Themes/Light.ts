@@ -1,6 +1,4 @@
-import { DefaultTheme } from 'styled-components/native';
-
-const Light: DefaultTheme = {
+const Light: ITheme = {
     dark: false,
     mode: 'exact',
 

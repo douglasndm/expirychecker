@@ -1,6 +1,4 @@
-import { DefaultTheme } from 'styled-components/native';
-
-const HappyPink: DefaultTheme = {
+const HappyPink: ITheme = {
     dark: false,
     mode: 'exact',
 

@@ -18,7 +18,7 @@ export default {
     OceanBlue,
 };
 
-export async function getActualAppTheme() {
+export const getActualAppTheme = async (): Promise<ITheme> => {
     const theme = await getAppTheme();
     const systemTheme = Appearance.getColorScheme();
 
@@ -49,4 +49,4 @@ export async function getActualAppTheme() {
         }
     }
     return Light;
-}
+};
