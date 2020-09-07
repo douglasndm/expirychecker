@@ -1,7 +1,6 @@
-import { DefaultTheme } from 'styled-components/native';
 import { darken } from 'polished';
 
-const Dark: DefaultTheme = {
+const Dark: ITheme = {
     dark: true, // whether this is a dark theme or light theme.
     mode: 'exact',
 
