@@ -1,6 +1,4 @@
-import { DefaultTheme } from 'styled-components/native';
-
-const OceanBlue: DefaultTheme = {
+const OceanBlue: ITheme = {
     dark: false,
     mode: 'exact',
 

@@ -36,19 +36,20 @@ if (__DEV__) {
 const App: React.FC = () => {
     const [theme, setTheme] = useState(Themes.Light);
 
+    const getTheme = useCallback(async () => {
+        const appTheme = await getActualAppTheme();
+        setTheme(appTheme);
+    }, []);
+
     useEffect(() => {
+        getTheme();
+
         async function checkIfUserIsPremium() {
             await CheckIfSubscriptionIsActive();
         }
 
         checkIfUserIsPremium();
     }, []);
-
-    const getTheme = useCallback(async () => {
-        const appTheme = await getActualAppTheme();
-        setTheme(appTheme);
-    }, []);
-    getTheme();
 
     // Troca o tema do app a cada alteração em tempo real na pagina de configurações
     useEffect(() => {
