@@ -1,8 +1,8 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
-import { useTheme } from 'styled-components'
+import { useTheme } from 'styled-components';
 
 import { IsPlayStoreIsAvailable } from '../../Functions/Premium';
 
@@ -10,7 +10,7 @@ import Logo from '../../Assets/Logo.png';
 
 import { Container, MenuHeader, LogoImage, MenuItem, Icons } from './styles';
 
-export function DrawerMenu(props) {
+const DrawerMenu: React.FC = (props) => {
     const { navigation } = props;
     const theme = useTheme();
 
@@ -60,7 +60,7 @@ export function DrawerMenu(props) {
                             onPress={() => navigation.navigate('AllProducts')}
                         />
 
-                        {playAvailable &&
+                        {playAvailable && (
                             <MenuItem
                                 icon={() => (
                                     <Icons name="analytics-outline" size={22} />
@@ -71,7 +71,7 @@ export function DrawerMenu(props) {
                                     navigation.navigate('PremiumSubscription');
                                 }}
                             />
-                        }
+                        )}
                     </Drawer.Section>
                 </View>
             </DrawerContentScrollView>
@@ -90,15 +90,17 @@ export function DrawerMenu(props) {
                     onPress={() => navigation.navigate('About')}
                 />
 
-                {__DEV__ &&
+                {__DEV__ && (
                     <MenuItem
                         icon={() => <Icons name="bug-outline" size={22} />}
                         label="Test"
                         labelStyle={{ color: theme.colors.text }}
                         onPress={() => navigation.navigate('Test')}
                     />
-                }
+                )}
             </Drawer.Section>
         </Container>
     );
-}
+};
+
+export default DrawerMenu;
