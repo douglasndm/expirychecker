@@ -124,6 +124,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         }
 
         startRealm();
+
+        return () => Realm.removeAllListeners();
     }, []);
 
     return (
