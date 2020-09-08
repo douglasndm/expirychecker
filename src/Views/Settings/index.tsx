@@ -36,7 +36,7 @@ import {
 
 const Settings: React.FC = () => {
     const [daysToBeNext, setDaysToBeNext] = useState<number>();
-    const [selectedTheme, setSelectedTheme] = useState();
+    const [selectedTheme, setSelectedTheme] = useState<string>('system');
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
 
@@ -137,12 +137,12 @@ const Settings: React.FC = () => {
                             keyboardType="numeric"
                             placeholder="Quantidade de dias"
                             placeholderTextColor={theme.colors.text}
-                            value={daysToBeNext}
+                            value={String(daysToBeNext)}
                             onChangeText={(v) => {
                                 const regex = /^[0-9\b]+$/;
 
                                 if (v === '' || regex.test(v)) {
-                                    setDaysToBeNext(v);
+                                    setDaysToBeNext(Number(v));
                                 }
                             }}
                         />
