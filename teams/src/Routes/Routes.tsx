@@ -14,7 +14,7 @@ import PremiumSubscription from '../Views/PremiumSubscription';
 
 import Test from '../Views/Test';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<IAppRoute>();
 
 const Routes: React.FC = () => {
     return (
