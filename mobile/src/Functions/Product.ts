@@ -14,10 +14,8 @@ export async function checkIfProductAlreadyExistsByCode(
         }
         return false;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-
-    return false;
 }
 
 export async function getProductByCode(
@@ -54,7 +52,7 @@ export async function getProductById(
 
 export async function createProduct(
     product: Omit<IProduct, 'id'>
-): Promise<void> {
+): Promise<number | void> {
     try {
         if (
             product.code &&
@@ -84,12 +82,17 @@ export async function createProduct(
             const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
 
             Realm.write(async () => {
-                await Realm.create('Product', {
-                    id: nextProductId,
-                    name: product.name,
-                    code: product.code,
-                    lotes: [],
-                });
+                Realm.create(
+                    'Product',
+                    {
+                        id: nextProductId,
+                        name: product.name,
+                        code: product.code,
+                        store: product.store,
+                        lotes: [],
+                    },
+                    false
+                );
 
                 product.lotes.map(async (l) => {
                     await createLote({
@@ -98,8 +101,10 @@ export async function createProduct(
                     });
                 });
             });
+
+            return nextProductId;
         }
     } catch (err) {
-        console.warn(err.message);
+        throw new Error(err);
     }
 }
