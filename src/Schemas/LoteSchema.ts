@@ -1,4 +1,4 @@
-export const LoteSchema = {
+const LoteSchema = {
     name: 'Lote',
     primaryKey: 'id',
     properties: {
@@ -9,3 +9,5 @@ export const LoteSchema = {
         status: 'string?',
     },
 };
+
+export default LoteSchema;

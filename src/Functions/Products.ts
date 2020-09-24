@@ -13,6 +13,7 @@ export function sortProductsLotesByLotesExpDate(
             id: prod.id,
             name: prod.name,
             code: prod.code,
+            store: prod.store,
             lotes: prodLotesSorted,
         };
     });
@@ -52,6 +53,7 @@ export function removeAllLotesTratadosFromAllProduts(
             id: prod.id,
             name: prod.name,
             code: prod.code,
+            store: prod.store,
             lotes: removeLotesTratados(prod.lotes),
         };
     });
@@ -65,10 +67,8 @@ export async function GetAllProducts(): Promise<Array<IProduct>> {
 
         return results;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-
-    return [];
 }
 
 export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
