@@ -9,6 +9,8 @@ import { getProductById } from '../../Functions/Product';
 
 import GenericButton from '../../Components/Button';
 
+import { getMultipleStores } from '../../Functions/Settings';
+
 import {
     Container,
     PageTitle,
@@ -35,8 +37,16 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+    const [store, setStore] = useState<string>();
+    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const [cameraEnabled, setCameraEnebled] = useState(false);
+
+    useEffect(() => {
+        getMultipleStores().then((data) => {
+            setMultipleStoresState(data);
+        });
+    }, []);
 
     useEffect(() => {
         async function getProductData() {
@@ -52,6 +62,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
             setName(product.name);
             if (product.code) setCode(product.code);
+            if (product.store) setStore(product.store);
         }
         getProductData();
     }, [productId, navigation]);
@@ -66,7 +77,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
             Realm.write(() => {
                 Realm.create(
                     'Product',
-                    { id: productId, name, code },
+                    { id: productId, name, code, store },
                     'modified'
                 );
             });
@@ -144,7 +155,6 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     <InputContainer>
                         <InputText
                             placeholder="Nome do produto"
-                            placeholderTextColor={theme.colors.subText}
                             accessibilityLabel="Campo de texto para nome do produto"
                             value={name}
                             onChangeText={(value) => {
@@ -166,7 +176,6 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     flex: 1,
                                 }}
                                 placeholder="Código do produto"
-                                placeholderTextColor={theme.colors.subText}
                                 accessibilityLabel="Campo de texto para código de barras do produto"
                                 value={code}
                                 onChangeText={(value) => setCode(value)}
@@ -188,6 +197,20 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 }}
                             />
                         </View>
+
+                        {multipleStoresState && (
+                            <InputText
+                                placeholder="Loja do produto"
+                                accessibilityLabel="Campo de texto para loja do produto"
+                                value={store}
+                                onChangeText={(value) => {
+                                    setStore(value);
+                                }}
+                                onFocus={() => {
+                                    setCameraEnebled(false);
+                                }}
+                            />
+                        )}
 
                         <View
                             style={{
