@@ -100,3 +100,31 @@ export async function setNotificationsEnabled(
         );
     }
 }
+
+export async function setMultipleStores(enabled: boolean): Promise<void> {
+    try {
+        await AsyncStorange.setItem(
+            '@ControleDeValidade/MultipleStores',
+            String(enabled)
+        );
+    } catch (err) {
+        throw new Error(
+            `Falha ao salvar as configurações de múltiplas lojas. ${err.message}`
+        );
+    }
+}
+
+export async function getMultipleStores(): Promise<boolean> {
+    const isEnabled = await AsyncStorange.getItem(
+        '@ControleDeValidade/MultipleStores'
+    );
+
+    if (!isEnabled) {
+        return false;
+    }
+    if (isEnabled === 'true') {
+        return true;
+    }
+
+    return false;
+}
