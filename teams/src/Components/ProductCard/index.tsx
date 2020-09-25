@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
 import br from 'date-fns/locale/pt-BR' // eslint-disable-line
+
+import { getMultipleStores } from '../../Functions/Settings';
 
 import {
     Container,
@@ -11,6 +13,7 @@ import {
     ProductName,
     ProductCode,
     ProductLote,
+    ProductStore,
     ProductExpDate,
     AmountContainer,
     AmountContainerText,
@@ -25,8 +28,15 @@ interface Request {
 }
 const Product = ({ product, expired, nextToExp }: Request) => {
     const navigation = useNavigation();
+    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const expiredOrNext = !!(expired || nextToExp);
+
+    useEffect(() => {
+        getMultipleStores().then((data) => {
+            setMultipleStoresState(data);
+        });
+    }, []);
 
     return (
         <Container>
@@ -48,10 +58,16 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductCode>
                         )}
 
-                        {!!product.lotes.length && (
+                        {!!product.lotes[0].lote && (
                             <ProductLote expiredOrNext={expiredOrNext}>
                                 Lote: {product.lotes[0].lote}
                             </ProductLote>
+                        )}
+
+                        {multipleStoresState && !!product.store && (
+                            <ProductStore expiredOrNext={expiredOrNext}>
+                                Loja: {product.store}
+                            </ProductStore>
                         )}
                     </ProductDetailsContainer>
 

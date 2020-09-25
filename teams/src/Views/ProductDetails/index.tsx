@@ -12,7 +12,10 @@ import Realm from '../../Services/Realm';
 
 import GenericButton from '../../Components/Button';
 
-import { getDaysToBeNextToExp } from '../../Functions/Settings';
+import {
+    getDaysToBeNextToExp,
+    getMultipleStores,
+} from '../../Functions/Settings';
 import { getProductById } from '../../Functions/Product';
 import { sortLoteByExpDate } from '../../Functions/Lotes';
 
@@ -23,6 +26,7 @@ import {
     PageTitle,
     ProductName,
     ProductCode,
+    ProductStore,
     ButtonPaper,
     Icons,
     CategoryDetails,
@@ -54,9 +58,11 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+    const [product, setProduct] = useState<IProduct>();
 
     const [lotes, setLotes] = useState<Array<ILote>>([]);
 
+    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const [daysToBeNext, setDaysToBeNext] = useState<number>(0);
@@ -74,6 +80,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                 );
                 return;
             }
+
+            setProduct(result);
 
             setName(result.name);
             if (result.code) setCode(result.code);
@@ -109,6 +117,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             console.log(err);
         }
     }, [name, productId, navigation]);
+
+    useEffect(() => {
+        getMultipleStores().then((data) => {
+            setMultipleStoresState(data);
+        });
+    }, []);
 
     useEffect(() => {
         getDaysToBeNextToExp().then((response) => setDaysToBeNext(response));
@@ -164,6 +178,11 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 <ProductName>{name}</ProductName>
                                 {!!code && (
                                     <ProductCode>Código: {code}</ProductCode>
+                                )}
+                                {multipleStoresState && product?.store && (
+                                    <ProductStore>
+                                        Loja: {product.store}
+                                    </ProductStore>
                                 )}
                             </View>
                         </ProductDetailsContainer>

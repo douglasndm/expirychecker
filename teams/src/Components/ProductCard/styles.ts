@@ -20,15 +20,19 @@ export const Card = styled.TouchableOpacity<ICard>`
 
     elevation: 2;
 
-    background: ${props => props.theme.colors.productBackground}
-
-    ${props => props.nextToExp && css`
-        background-color: ${props.theme.colors.productNextToExpBackground}
-    `}
-
-    ${props => props.expired && css`
-        background-color: ${props.theme.colors.productExpiredBackground}
-    `}
+    background: ${(props) => props.theme.colors.productBackground}
+        ${(props) =>
+            props.nextToExp &&
+            css`
+                background-color: ${props.theme.colors
+                    .productNextToExpBackground};
+            `}
+        ${(props) =>
+            props.expired &&
+            css`
+                background-color: ${props.theme.colors
+                    .productExpiredBackground};
+            `};
 `;
 
 export const ProductDetails = styled.View`
@@ -44,9 +48,10 @@ export const ProductName = styled.Text<IProductInfo>`
     font-size: 22px;
     font-weight: bold;
 
-    color: ${props => props.expiredOrNext ?
-                      props.theme.colors.productNextOrExpiredText :
-                      props.theme.colors.text};
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
 `;
 
 export const ProductCode = styled.Text<IProductInfo>`
@@ -54,9 +59,17 @@ export const ProductCode = styled.Text<IProductInfo>`
     font-size: 12px;
     margin-left: 2px;
 
-    color: ${props => props.expiredOrNext ?
-                      props.theme.colors.productNextOrExpiredText :
-                      props.theme.colors.text};
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
+`;
+
+export const ProductStore = styled.Text<IProductInfo>`
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
 `;
 
 export const InputText = styled.TextInput`
@@ -72,9 +85,10 @@ export const ProductLote = styled.Text<IProductInfo>`
     font-size: 12px;
     margin-left: 2px;
 
-    color: ${props => props.expiredOrNext ?
-                      props.theme.colors.productNextOrExpiredText :
-                      props.theme.colors.text};
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
 `;
 
 export const ProductExpDate = styled.Text<IProductInfo>`
@@ -82,9 +96,10 @@ export const ProductExpDate = styled.Text<IProductInfo>`
     margin-left: 2px;
     margin-top: 5px;
 
-    color: ${props => props.expiredOrNext ?
-                      props.theme.colors.productNextOrExpiredText :
-                      props.theme.colors.text};
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
 `;
 
 export const AmountContainer = styled.View`
@@ -96,9 +111,10 @@ export const AmountContainer = styled.View`
 export const AmountContainerText = styled.Text<IProductInfo>`
     font-size: 16px;
 
-    color: ${props => props.expiredOrNext ?
-                      props.theme.colors.productNextOrExpiredText :
-                      props.theme.colors.text};
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
 `;
 
 export const Amount = styled.Text<IProductInfo>`
@@ -106,7 +122,8 @@ export const Amount = styled.Text<IProductInfo>`
     font-weight: bold;
     margin-top: 5px;
 
-    color: ${props => props.expiredOrNext ?
-                      props.theme.colors.productNextOrExpiredText :
-                      props.theme.colors.text};
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
 `;

@@ -48,6 +48,15 @@ export const ProductCode = styled.Text`
     color: ${({ theme }) => theme.colors.text};
 `;
 
+export const ProductStore = styled.Text`
+    font-size: 18px;
+    margin-left: 5px;
+
+    margin-bottom: 7px;
+
+    color: ${({ theme }) => theme.colors.text};
+`;
+
 export const ButtonPaper = styled(Button).attrs((props) => ({
     color: props.theme.colors.accent,
 }))`
