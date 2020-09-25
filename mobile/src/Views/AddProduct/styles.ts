@@ -38,6 +38,15 @@ export const InputText = styled.TextInput.attrs((props) => ({
     color: ${({ theme }) => theme.colors.inputText};
 `;
 
+export const MoreInformationsContainer = styled.View``;
+
+export const MoreInformationsTitle = styled.Text`
+    font-size: 16px;
+    text-align: right;
+    color: ${({ theme }) => theme.colors.subText};
+    margin-bottom: 5px;
+`;
+
 export const ExpDateGroup = styled.View`
     align-items: center;
 `;
