@@ -37,7 +37,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
-    const [store, setStore] = useState<string>();
+    const [store, setStore] = useState<string>('');
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const [cameraEnabled, setCameraEnebled] = useState(false);

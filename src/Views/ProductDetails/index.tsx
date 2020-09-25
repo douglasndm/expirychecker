@@ -179,7 +179,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 {!!code && (
                                     <ProductCode>Código: {code}</ProductCode>
                                 )}
-                                {multipleStoresState && product?.store && (
+                                {multipleStoresState && !!product?.store && (
                                     <ProductStore>
                                         Loja: {product.store}
                                     </ProductStore>
