@@ -14,6 +14,8 @@ import {
     setDaysToBeNextToExp,
     getNotificationsEnabled,
     setNotificationsEnabled,
+    getMultipleStores,
+    setMultipleStores,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
 import * as Premium from '../../Functions/Premium';
@@ -39,6 +41,7 @@ const Settings: React.FC = () => {
     const [selectedTheme, setSelectedTheme] = useState<string>('system');
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
+    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const navigation = useNavigation();
 
@@ -64,16 +67,25 @@ const Settings: React.FC = () => {
         setIsNotificationsEnabled(!isNotificationsEnabled);
     }, [isNotificationsEnabled]);
 
+    const handleMultiStoresEnableSwitch = useCallback(async () => {
+        await setMultipleStores(!multipleStoresState);
+
+        setMultipleStoresState(!multipleStoresState);
+    }, [multipleStoresState, setMultipleStoresState]);
+
     useEffect(() => {
         async function getSettingsAlreadySetted() {
             const settingDays = await getDaysToBeNextToExp();
-            setDaysToBeNext(String(settingDays));
+            setDaysToBeNext(settingDays);
 
             const pre = await Premium.GetPremium();
             setUserIsPremium(pre);
 
             const notificationEnabled = await getNotificationsEnabled();
             setIsNotificationsEnabled(notificationEnabled);
+
+            const mulStores = await getMultipleStores();
+            setMultipleStoresState(mulStores);
         }
 
         getSettingsAlreadySetted();
@@ -161,6 +173,23 @@ const Settings: React.FC = () => {
                             <Switch
                                 value={isNotificationsEnabled}
                                 onValueChange={handleNotificationEnabledSwitch}
+                            />
+                        </View>
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: 15,
+                            }}
+                        >
+                            <SettingDescription>
+                                Habilitar modo de múltiplas lojas
+                            </SettingDescription>
+                            <Switch
+                                value={multipleStoresState}
+                                onValueChange={handleMultiStoresEnableSwitch}
                             />
                         </View>
                     </CategoryOptions>
