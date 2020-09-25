@@ -13,6 +13,7 @@ import {
 
 import GenericButton from '../../Components/Button';
 
+import { getMultipleStores } from '../../Functions/Settings';
 import { GetPremium } from '../../Functions/Premium';
 
 import {
@@ -21,12 +22,16 @@ import {
     createProduct,
 } from '../../Functions/Product';
 
+import { createLote } from '../../Functions/Lotes';
+
 import {
     Container,
     PageTitle,
     InputContainer,
     InputText,
     InputGroup,
+    MoreInformationsContainer,
+    MoreInformationsTitle,
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
@@ -50,8 +55,11 @@ const AddProduct: React.FC = () => {
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
+    const [store, setStore] = useState<string>();
 
     const [expDate, setExpDate] = useState(new Date());
+
+    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const [cameraEnabled, setCameraEnebled] = useState(false);
     const [productAlreadyExists, setProductAlreadyExists] = useState(false);
@@ -64,28 +72,36 @@ const AddProduct: React.FC = () => {
 
         if (!(await checkIfProductAlreadyExistsByCode(code))) {
             try {
-                const newProduct = {
+                const newProduct: Omit<IProduct, 'id'> = {
                     name,
                     code,
-                    lotes: [
-                        {
-                            lote,
-                            exp_date: expDate,
-                            amount: Number(amount),
-                            status: 'Não tratado',
-                        },
-                    ],
+                    store,
+                    lotes: [],
                 };
 
-                await createProduct(newProduct);
+                const newLote: Omit<ILote, 'id'> = {
+                    lote,
+                    exp_date: expDate,
+                    amount: Number(amount),
+                    status: 'Não tratado',
+                };
 
-                if (!!isPremium && adReady) {
-                    interstitialAd.show();
+                const productCreatedId = await createProduct(newProduct);
+
+                if (productCreatedId) {
+                    await createLote({
+                        lote: newLote,
+                        productId: productCreatedId,
+                    });
+
+                    if (!!isPremium && adReady) {
+                        interstitialAd.show();
+                    }
+
+                    navigation.push('Home', {
+                        notificationToUser: 'Produto cadastrado.',
+                    });
                 }
-
-                navigation.push('Home', {
-                    notificationToUser: 'Produto cadastrado.',
-                });
             } catch (error) {
                 console.warn(error);
             }
@@ -93,6 +109,12 @@ const AddProduct: React.FC = () => {
             setProductAlreadyExists(true);
         }
     }
+
+    useEffect(() => {
+        getMultipleStores().then((data) => {
+            setMultipleStoresState(data);
+        });
+    }, []);
 
     useEffect(() => {
         async function getAppData() {
@@ -279,6 +301,31 @@ const AddProduct: React.FC = () => {
                                     }}
                                 />
                             </InputGroup>
+
+                            {multipleStoresState && (
+                                <MoreInformationsContainer>
+                                    <MoreInformationsTitle>
+                                        Mais informações
+                                    </MoreInformationsTitle>
+
+                                    <InputGroup>
+                                        <InputText
+                                            style={{
+                                                flex: 1,
+                                            }}
+                                            placeholder="Loja"
+                                            accessibilityLabel="Campo de texto para loja de onde o produto está cadastrado"
+                                            onFocus={() => {
+                                                setCameraEnebled(false);
+                                            }}
+                                            value={store}
+                                            onChangeText={(value) =>
+                                                setStore(value)
+                                            }
+                                        />
+                                    </InputGroup>
+                                </MoreInformationsContainer>
+                            )}
 
                             <ExpDateGroup>
                                 <ExpDateLabel>Data de vencimento</ExpDateLabel>
