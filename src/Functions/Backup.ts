@@ -7,20 +7,6 @@ import EnvConfig from 'react-native-config';
 import { createProduct } from './Product';
 import Realm from '../Services/Realm';
 
-interface ILote {
-    id: number;
-    lote: string;
-    exp_date: string;
-    amount?: number;
-    status?: string;
-}
-interface IProduct {
-    id: number;
-    name: string;
-    code?: string;
-    lotes?: Array<ILote>;
-}
-
 export async function ExportBackupFile(): Promise<void> {
     try {
         const allProducts = Realm.objects<IProduct>('Product');
@@ -41,6 +27,7 @@ export async function ExportBackupFile(): Promise<void> {
                 id: p.id,
                 name: p.name,
                 code: p.code,
+                store: p.store,
                 lotes: arrayLotes,
             };
 
