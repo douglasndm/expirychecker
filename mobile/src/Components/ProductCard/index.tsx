@@ -58,7 +58,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductCode>
                         )}
 
-                        {!!product.lotes[0].lote && (
+                        {product.lotes.length > 0 && (
                             <ProductLote expiredOrNext={expiredOrNext}>
                                 Lote: {product.lotes[0].lote}
                             </ProductLote>
@@ -71,7 +71,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                         )}
                     </ProductDetailsContainer>
 
-                    {!!product.lotes.length && (
+                    {product.lotes.length > 0 && (
                         <AmountContainer>
                             <AmountContainerText expiredOrNext={expiredOrNext}>
                                 Quantidade
