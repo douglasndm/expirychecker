@@ -13,6 +13,7 @@ import {
     getNotificationsEnabled,
     setNotificationsEnabled,
 } from '../../Functions/Settings';
+import { getAllStores } from '../../Functions/Products';
 import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
@@ -130,6 +131,15 @@ const Test: React.FC = () => {
                     style={{ backgroundColor: theme.colors.productBackground }}
                 >
                     <Text>Is ads enabled: {String(adsEnable)}</Text>
+
+                    <Button
+                        text="Distict stores"
+                        onPress={async () => {
+                            const result = await getAllStores();
+
+                            console.log(result);
+                        }}
+                    />
 
                     <Button text="Notification Status" onPress={getNot} />
                     <Button
