@@ -8,6 +8,7 @@ import FABProducts from '../../Components/FABProducts';
 import {
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
+    GetAllProducts,
 } from '../../Functions/Products';
 
 import { Container } from './styles';
@@ -15,18 +16,18 @@ import { Container } from './styles';
 const AllProducts: React.FC = () => {
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
-    const getProducts = useCallback(async (realm) => {
+    const getProducts = useCallback(async () => {
         try {
-            const resultsDB: Array<IProduct> = realm.objects('Product').slice();
+            const allProducts: Array<IProduct> = await GetAllProducts();
 
             // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
             // ESSA FUNÇÃO REMOVE QUALQUER VESTIGIO DE LOTES TRATADOS
-            // const semTratados = removeAllLotesTratadosFromAllProduts(resultsDB);
+            // const semTratados = removeAllLotesTratadosFromAllProduts(allProducts);
 
             // PRIMEIRO PRECISEI PERCORRER TODOS OS RESULTADOS E ORDERNAR CADA LOTE INDIVIDUALMENTE
             // E COM ISSO RETORNA UM NOVO ARRAY DE OBJETO, PQ NAO ERA POSSIVEL RETORNA O
             // ANTIGO MODIFICADO
-            const resultsTemp = sortProductsLotesByLotesExpDate(resultsDB);
+            const resultsTemp = sortProductsLotesByLotesExpDate(allProducts);
             // classifica os produtos em geral pelo o mais proximo de vencer
             // DEPOIS DE TER TODOS OS PRODUTOS COM OS SEUS LOTES ORDENADOS POR VENCIMENTO, SIMPLISMENTE PEGO O
             // PRIMEIRO LOTE DE CADA PRODUTO(JÁ QUE SEMPRE SERÁ O MAIS PROXIMO A VENCER) E FAÇO A ORDENAÇÃO
@@ -35,16 +36,15 @@ const AllProducts: React.FC = () => {
 
             setProducts(results);
         } catch (error) {
-            if (__DEV__) console.warn(error);
-            else throw new Error(error);
+            throw new Error(error);
         }
     }, []);
 
     useEffect(() => {
         async function startRealm() {
-            Realm.addListener('change', () => getProducts(Realm));
+            Realm.addListener('change', () => getProducts());
 
-            getProducts(Realm);
+            getProducts();
         }
 
         startRealm();
