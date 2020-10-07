@@ -95,7 +95,7 @@ const Settings: React.FC = () => {
         async function SetNewDays() {
             const previousDaysToBeNext = await getDaysToBeNextToExp();
 
-            if (previousDaysToBeNext !== daysToBeNext) {
+            if (daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
                 await setSettingDaysToBeNext(daysToBeNext);
             }
         }
