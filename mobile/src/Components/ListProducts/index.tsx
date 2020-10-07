@@ -50,7 +50,11 @@ const ListProducts: React.FC<RequestProps> = ({
     const ListHeader = useCallback(() => {
         return (
             <View>
-                <Header isHome={isHome} isPremium={isPremium} />
+                {isHome ? (
+                    <Header isPremium={isPremium} />
+                ) : (
+                    <Header title="Todos os produtos" isPremium={isPremium} />
+                )}
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
                     <CategoryDetails>
