@@ -30,7 +30,7 @@ export async function setDaysToBeNextToExp(days: number): Promise<void> {
                 'Setting',
                 {
                     name: 'daysToBeNext',
-                    value: days,
+                    value: String(days),
                 },
                 true
             );
