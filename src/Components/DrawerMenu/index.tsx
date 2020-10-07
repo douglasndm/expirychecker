@@ -60,6 +60,15 @@ const DrawerMenu: React.FC = (props) => {
                             onPress={() => navigation.navigate('AllProducts')}
                         />
 
+                        <MenuItem
+                            icon={() => <Icons name="apps-outline" size={22} />}
+                            label="Todos os produtos por loja"
+                            labelStyle={{ color: theme.colors.text }}
+                            onPress={() =>
+                                navigation.navigate('AllProductsByStore')
+                            }
+                        />
+
                         {playAvailable && (
                             <MenuItem
                                 icon={() => (
