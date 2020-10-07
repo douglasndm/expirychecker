@@ -10,18 +10,20 @@ import { AdView } from './styles';
 
 interface RequestProps {
     product: IProduct;
-    index: number;
-    adUnitId: string;
+    index?: number;
     daysToBeNext: number;
-    isPremium: boolean;
+    isPremium?: boolean;
+    adUnitId?: string;
+    disableAds?: boolean;
 }
 
 const ProductItem: React.FC<RequestProps> = ({
     product,
     index,
-    adUnitId,
     daysToBeNext,
     isPremium,
+    adUnitId,
+    disableAds,
 }: RequestProps) => {
     const [adFailed, setAdFailed] = useState(false);
 
@@ -32,20 +34,25 @@ const ProductItem: React.FC<RequestProps> = ({
 
     return (
         <View>
-            {!isPremium && index !== 0 && index % 5 === 0 && !adFailed && (
-                <AdView>
-                    <BannerAd
-                        unitId={adUnitId}
-                        size={BannerAdSize.BANNER}
-                        onAdFailedToLoad={(err: Error) => {
-                            setAdFailed(true);
-                            crashlytics().log(
-                                `Falha ao carregar o anúncio ${err}`
-                            );
-                        }}
-                    />
-                </AdView>
-            )}
+            {!disableAds &&
+                !isPremium &&
+                !!index &&
+                index !== 0 &&
+                index % 5 === 0 &&
+                !adFailed && (
+                    <AdView>
+                        <BannerAd
+                            unitId={adUnitId}
+                            size={BannerAdSize.BANNER}
+                            onAdFailedToLoad={(err: Error) => {
+                                setAdFailed(true);
+                                crashlytics().log(
+                                    `Falha ao carregar o anúncio ${err}`
+                                );
+                            }}
+                        />
+                    </AdView>
+                )}
 
             <ProductCard
                 product={product}

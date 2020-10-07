@@ -8,6 +8,7 @@ import EditProduct from '../Views/EditProduct';
 import EditLote from '../Views/EditLote';
 import ProductDetails from '../Views/ProductDetails';
 import AllProducts from '../Views/AllProducts';
+import AllProductsByStore from '../Views/AllProductsByStore';
 import Settings from '../Views/Settings';
 import About from '../Views/About';
 import PremiumSubscription from '../Views/PremiumSubscription';
@@ -22,6 +23,10 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
+            <Stack.Screen
+                name="AllProductsByStore"
+                component={AllProductsByStore}
+            />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="About" component={About} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
