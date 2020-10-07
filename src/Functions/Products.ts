@@ -85,6 +85,32 @@ export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
     return [];
 }
 
+export async function GetAllProductsByStore(
+    store: string
+): Promise<Array<IProduct>> {
+    try {
+        const results = Realm.objects<IProduct>('Product')
+            .filtered(`store = '${store}'`)
+            .slice();
+
+        return results;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+export async function GetAllProductsWithoutStore(): Promise<Array<IProduct>> {
+    try {
+        const results = Realm.objects<IProduct>('Product')
+            .filtered(`store == null OR store == ''`)
+            .slice();
+
+        return results;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 export async function getAllStores(): Promise<Array<string>> {
     try {
         const stores: Array<string> = [];

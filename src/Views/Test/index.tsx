@@ -13,7 +13,7 @@ import {
     getNotificationsEnabled,
     setNotificationsEnabled,
 } from '../../Functions/Settings';
-import { getAllStores } from '../../Functions/Products';
+import { GetAllProductsWithoutStore } from '../../Functions/Products';
 import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
@@ -133,9 +133,9 @@ const Test: React.FC = () => {
                     <Text>Is ads enabled: {String(adsEnable)}</Text>
 
                     <Button
-                        text="Distict stores"
+                        text="All products without stores"
                         onPress={async () => {
-                            const result = await getAllStores();
+                            const result = await GetAllProductsWithoutStore();
 
                             console.log(result);
                         }}
