@@ -3,6 +3,7 @@ type IAppRoute = {
     AddProduct: React.FC;
     AddLote: { productId: number };
     AllProducts: React.FC;
+    AllProductsByStore: React.FC;
     Settings: React.FC;
     About: React.FC;
     ProductDetails: { productId: number };
