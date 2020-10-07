@@ -5,14 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import { HeaderContainer, TextLogo, Icons, Button } from './styles';
 
 interface RequestProps {
-    isHome?: boolean;
     isPremium?: boolean;
+    title?: string;
 }
 
-const Header: React.FC<RequestProps> = ({
-    isHome,
-    isPremium,
-}: RequestProps) => {
+const Header: React.FC<RequestProps> = ({ isPremium, title }: RequestProps) => {
     const navigation = useNavigation();
 
     const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
@@ -29,13 +26,11 @@ const Header: React.FC<RequestProps> = ({
                 onPress={() => navigation.toggleDrawer()}
             />
 
-            {isHome ? (
-                <TextLogo style={{ fontSize: titleFontSize }}>
-                    {isPremium ? 'Premium' : 'Controle de validade'}
-                </TextLogo>
+            {title ? (
+                <TextLogo style={{ fontSize: titleFontSize }}>{title}</TextLogo>
             ) : (
                 <TextLogo style={{ fontSize: titleFontSize }}>
-                    Todos os produtos
+                    {isPremium ? 'Premium' : 'Controle de validade'}
                 </TextLogo>
             )}
         </HeaderContainer>
