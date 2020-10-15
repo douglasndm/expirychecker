@@ -35,7 +35,7 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
 
     return (
         <StoreGroupContainer>
-            <StoreTitle>Loja {storeName}</StoreTitle>
+            <StoreTitle>{storeName}</StoreTitle>
 
             {results.map((product) => (
                 <ProductItem
