@@ -5,6 +5,7 @@ import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
 import { IsPlayStoreIsAvailable } from '../../Functions/Premium';
+import { getMultipleStores } from '../../Functions/Settings';
 
 import Logo from '../../Assets/Logo.png';
 
@@ -15,8 +16,13 @@ const DrawerMenu: React.FC = (props) => {
     const theme = useTheme();
 
     const [playAvailable, setPlayAvailable] = useState(false);
+    const [multipleStores, setMultipleStores] = useState(false);
 
     useEffect(() => {
+        getMultipleStores().then((response) => {
+            setMultipleStores(response);
+        });
+
         async function getDatas() {
             const result = await IsPlayStoreIsAvailable();
 
@@ -60,14 +66,18 @@ const DrawerMenu: React.FC = (props) => {
                             onPress={() => navigation.navigate('AllProducts')}
                         />
 
-                        <MenuItem
-                            icon={() => <Icons name="apps-outline" size={22} />}
-                            label="Todos os produtos por loja"
-                            labelStyle={{ color: theme.colors.text }}
-                            onPress={() =>
-                                navigation.navigate('AllProductsByStore')
-                            }
-                        />
+                        {multipleStores && (
+                            <MenuItem
+                                icon={() => (
+                                    <Icons name="list-outline" size={22} />
+                                )}
+                                label="Todos os produtos por loja"
+                                labelStyle={{ color: theme.colors.text }}
+                                onPress={() =>
+                                    navigation.navigate('AllProductsByStore')
+                                }
+                            />
+                        )}
 
                         {playAvailable && (
                             <MenuItem
