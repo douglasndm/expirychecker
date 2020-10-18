@@ -21,6 +21,7 @@ const AllProductsByStore: React.FC = () => {
                 <Header title="Todos os produtos por loja" />
                 {allProducts.map((storeGroup) => (
                     <StoreGroup
+                        key={storeGroup.name}
                         storeName={storeGroup.name}
                         products={storeGroup.products}
                     />
