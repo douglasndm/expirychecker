@@ -10,6 +10,7 @@ import {
     sortProductsByFisrtLoteExpDate,
 } from '../../Functions/Products';
 
+import { GetPremium } from '../../Functions/Premium';
 import { getDaysToBeNextToExp } from '../../Functions/Settings';
 
 import { StoreGroupContainer, StoreTitle } from './styles';
@@ -21,6 +22,7 @@ interface IRequest {
 
 const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
     const [daysToBeNext, setDaysToBeNext] = useState<number>(30);
+    const [isPremium, setIsPremium] = useState(false);
 
     const adUnitId = __DEV__
         ? TestIds.BANNER
@@ -28,6 +30,7 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
 
     useEffect(() => {
         getDaysToBeNextToExp().then((days) => setDaysToBeNext(days));
+        GetPremium().then((result) => setIsPremium(result));
     }, []);
 
     const resultsTemp = sortProductsLotesByLotesExpDate(products);
@@ -39,15 +42,18 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
 
             {results.map((product) => (
                 <ProductItem
+                    key={product.id}
                     product={product}
                     daysToBeNext={daysToBeNext}
                     disableAds
                 />
             ))}
 
-            <AdView>
-                <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
-            </AdView>
+            {!isPremium && (
+                <AdView>
+                    <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
+                </AdView>
+            )}
         </StoreGroupContainer>
     );
 };
