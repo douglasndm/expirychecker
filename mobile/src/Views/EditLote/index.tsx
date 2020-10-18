@@ -4,10 +4,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { RadioButton, Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
-import Realm from '../../Services/Realm';
-
-import { getProductById } from '../../Functions/Product';
-import { deleteLote } from '../../Functions/Lotes';
+import { updateLote, deleteLote } from '../../Functions/Lotes';
 
 import GenericButton from '../../Components/Button';
 
@@ -22,21 +19,21 @@ import {
     CustomDatePicker,
 } from '../AddProduct/styles';
 
-import { Button, Icons } from './styles';
+import { Button, Icons, NumericInputField } from './styles';
 
 import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
 interface EditLoteProps {
     route: {
         params: {
-            productId: number;
+            product: IProduct;
             loteId: number;
         };
     };
 }
 
 const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
-    const { productId, loteId } = route.params;
+    const { product, loteId } = route.params;
 
     const navigation = useNavigation();
 
@@ -44,10 +41,9 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
 
     const theme = useTheme();
 
-    const [product, setProduct] = useState({});
-
     const [lote, setLote] = useState('');
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState(0);
+    const [price, setPrice] = useState(0);
 
     const [expDate, setExpDate] = useState(new Date());
     const [tratado, setTratado] = useState(false);
@@ -59,21 +55,13 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
         }
 
         try {
-            Realm.write(() => {
-                const loteAmount =
-                    amount.trim() !== '' ? parseInt(amount) : null;
-
-                Realm.create(
-                    'Lote',
-                    {
-                        id: loteId,
-                        lote,
-                        amount: loteAmount,
-                        exp_date: expDate,
-                        status: tratado ? 'Tratado' : 'Não tratado',
-                    },
-                    'modified'
-                );
+            await updateLote({
+                id: loteId,
+                lote,
+                amount,
+                exp_date: expDate,
+                price,
+                status: tratado ? 'Tratado' : 'Não tratado',
             });
 
             Alert.alert('Lote editado!');
@@ -95,26 +83,20 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
     }
 
     useEffect(() => {
-        async function getProduct() {
-            const p = await getProductById(productId);
+        const loteResult = product.lotes.find((l) => l.id === loteId);
 
-            setProduct(p);
-
-            const resultLote = p.lotes.find((l) => l.id === loteId);
-
-            const jaTratado = resultLote.status === 'Tratado';
-
-            const regex = /^[0-9\b]+$/;
-            if (resultLote.amount === '' || regex.test(resultLote.amount)) {
-                setAmount(String(resultLote.amount));
-            }
-
-            setLote(resultLote.lote);
-            setExpDate(resultLote.exp_date);
-            setTratado(jaTratado);
+        if (!loteResult) {
+            throw new Error('Lote não encontrado!');
         }
 
-        getProduct();
+        const loteStatus = loteResult.status === 'Tratado';
+
+        setLote(loteResult.lote);
+        setExpDate(loteResult.exp_date);
+        setTratado(loteStatus);
+
+        if (loteResult.amount) setAmount(loteResult.amount);
+        if (loteResult.price) setPrice(loteResult.price);
     }, []);
 
     return (
@@ -166,7 +148,9 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
                     <InputContainer>
                         <ProductHeader>
                             <ProductName>{product.name}</ProductName>
-                            <ProductCode>{product.code}</ProductCode>
+                            {product.code && (
+                                <ProductCode>{product.code}</ProductCode>
+                            )}
                         </ProductHeader>
 
                         <InputGroup>
@@ -190,11 +174,20 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
                                     const regex = /^[0-9\b]+$/;
 
                                     if (v === '' || regex.test(v)) {
-                                        setAmount(v);
+                                        setAmount(Number(v));
                                     }
                                 }}
                             />
                         </InputGroup>
+
+                        <NumericInputField
+                            type="currency"
+                            locale="pt-BR"
+                            currency="BRL"
+                            value={price}
+                            onUpdate={(value: number) => setPrice(value)}
+                            placeholder="Valor unitário"
+                        />
 
                         <View
                             style={{

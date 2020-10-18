@@ -157,6 +157,27 @@ export async function createLote({
     }
 }
 
+export async function updateLote(lote: ILote): Promise<void> {
+    try {
+        Realm.write(() => {
+            Realm.create(
+                'Lote',
+                {
+                    id: lote.id,
+                    lote: lote.lote,
+                    amount: lote.amount,
+                    exp_date: lote.exp_date,
+                    price: lote.price,
+                    status: lote.status,
+                },
+                'modified'
+            );
+        });
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 export async function deleteLote(loteId: number): Promise<void> {
     try {
         const lote = Realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);

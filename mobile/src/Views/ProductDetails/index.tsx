@@ -238,7 +238,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     nextToExp={nextToExp}
                                     onPress={() => {
                                         navigation.push('EditLote', {
-                                            productId,
+                                            product,
                                             loteId: lote.id,
                                         });
                                     }}
