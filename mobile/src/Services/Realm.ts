@@ -6,7 +6,7 @@ import SettingSchema from '../Schemas/SettingSchema';
 
 const RealmInstance = new Realm({
     schema: [ProductSchema, LoteSchema, SettingSchema],
-    schemaVersion: 2,
+    schemaVersion: 3,
 });
 
 export default RealmInstance;
