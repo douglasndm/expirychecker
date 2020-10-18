@@ -3,5 +3,6 @@ interface ILote {
     lote: string;
     exp_date: Date;
     amount?: number;
+    price?: number;
     status?: string;
 }
