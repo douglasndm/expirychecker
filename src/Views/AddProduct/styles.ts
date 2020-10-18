@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { RNCamera } from 'react-native-camera';
 import DatePicker from 'react-native-date-picker';
+import NumericInput from '@wwdrew/react-native-numeric-textinput';
 
 export const Container = styled.View`
     padding: 16px 16px 0 16px;
@@ -19,6 +20,18 @@ export const PageTitle = styled.Text`
 
 export const InputContainer = styled.View`
     margin-top: 25px;
+`;
+
+export const NumericInputField = styled(NumericInput).attrs((props) => ({
+    placeholderTextColor: props.theme.colors.subText,
+}))`
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 18px;
+    background-color: ${({ theme }) => theme.colors.inputBackground};
+    color: ${({ theme }) => theme.colors.inputText};
 `;
 
 export const InputGroup = styled.View`

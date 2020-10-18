@@ -29,6 +29,7 @@ import {
     PageTitle,
     InputContainer,
     InputText,
+    NumericInputField,
     InputGroup,
     MoreInformationsContainer,
     MoreInformationsTitle,
@@ -55,6 +56,7 @@ const AddProduct: React.FC = () => {
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
+    const [price, setPrice] = useState(0);
     const [store, setStore] = useState<string>();
 
     const [expDate, setExpDate] = useState(new Date());
@@ -83,6 +85,7 @@ const AddProduct: React.FC = () => {
                     lote,
                     exp_date: expDate,
                     amount: Number(amount),
+                    price,
                     status: 'Não tratado',
                 };
 
@@ -301,6 +304,15 @@ const AddProduct: React.FC = () => {
                                     }}
                                 />
                             </InputGroup>
+
+                            <NumericInputField
+                                type="currency"
+                                locale="pt-BR"
+                                currency="BRL"
+                                value={price}
+                                onUpdate={(value: number) => setPrice(value)}
+                                placeholder="Valor unitário"
+                            />
 
                             {multipleStoresState && (
                                 <MoreInformationsContainer>

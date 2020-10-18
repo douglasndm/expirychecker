@@ -149,6 +149,7 @@ export async function createLote({
                 lote: lote.lote,
                 exp_date: formatedDate,
                 amount: lote.amount,
+                price: lote.price,
                 status: lote.status,
             });
         });
