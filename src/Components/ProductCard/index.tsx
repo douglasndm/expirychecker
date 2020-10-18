@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
 import br from 'date-fns/locale/pt-BR' // eslint-disable-line
+import NumberFormat from 'react-number-format';
 
 import { getMultipleStores } from '../../Functions/Settings';
 
@@ -15,9 +16,13 @@ import {
     ProductLote,
     ProductStore,
     ProductExpDate,
+    LoteDetailsContainer,
     AmountContainer,
     AmountContainerText,
     Amount,
+    PriceContainer,
+    PriceContainerText,
+    Price,
 } from './styles';
 
 interface Request {
@@ -29,6 +34,7 @@ interface Request {
 const Product = ({ product, expired, nextToExp }: Request) => {
     const navigation = useNavigation();
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
+    const [totalPrice, setTotalPrice] = useState(0);
 
     const expiredOrNext = !!(expired || nextToExp);
 
@@ -37,6 +43,14 @@ const Product = ({ product, expired, nextToExp }: Request) => {
             setMultipleStoresState(data);
         });
     }, []);
+
+    useEffect(() => {
+        if (product.lotes[0]) {
+            if (product.lotes[0].amount && product.lotes[0].price) {
+                setTotalPrice(product.lotes[0].price * product.lotes[0].amount);
+            }
+        }
+    }, [product]);
 
     return (
         <Container>
@@ -72,14 +86,38 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                     </ProductDetailsContainer>
 
                     {product.lotes.length > 0 && (
-                        <AmountContainer>
-                            <AmountContainerText expiredOrNext={expiredOrNext}>
-                                Quantidade
-                            </AmountContainerText>
-                            <Amount expiredOrNext={expiredOrNext}>
-                                {product.lotes[0].amount}
-                            </Amount>
-                        </AmountContainer>
+                        <LoteDetailsContainer>
+                            <AmountContainer>
+                                <AmountContainerText
+                                    expiredOrNext={expiredOrNext}
+                                >
+                                    Quantidade
+                                </AmountContainerText>
+                                <Amount expiredOrNext={expiredOrNext}>
+                                    {product.lotes[0].amount}
+                                </Amount>
+                            </AmountContainer>
+
+                            {totalPrice > 0 && (
+                                <PriceContainer>
+                                    <PriceContainerText
+                                        expiredOrNext={expiredOrNext}
+                                    >
+                                        Preço total
+                                    </PriceContainerText>
+                                    <Price expiredOrNext={expiredOrNext}>
+                                        <NumberFormat
+                                            value={totalPrice}
+                                            displayType="text"
+                                            thousandSeparator
+                                            prefix="R$"
+                                            renderText={(value) => value}
+                                            decimalScale={2}
+                                        />
+                                    </Price>
+                                </PriceContainer>
+                            )}
+                        </LoteDetailsContainer>
                     )}
                 </ProductDetails>
 

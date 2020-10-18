@@ -41,7 +41,7 @@ export const ProductDetails = styled.View`
 `;
 
 export const ProductDetailsContainer = styled.View`
-    max-width: 71%;
+    max-width: 50%;
 `;
 
 export const ProductName = styled.Text<IProductInfo>`
@@ -102,6 +102,10 @@ export const ProductExpDate = styled.Text<IProductInfo>`
             : props.theme.colors.text};
 `;
 
+export const LoteDetailsContainer = styled.View`
+    flex-direction: row;
+`;
+
 export const AmountContainer = styled.View`
     justify-content: center;
     align-items: center;
@@ -118,6 +122,32 @@ export const AmountContainerText = styled.Text<IProductInfo>`
 `;
 
 export const Amount = styled.Text<IProductInfo>`
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 5px;
+
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
+`;
+
+export const PriceContainer = styled.View`
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+`;
+
+export const PriceContainerText = styled.Text<IProductInfo>`
+    font-size: 16px;
+
+    color: ${(props) =>
+        props.expiredOrNext
+            ? props.theme.colors.productNextOrExpiredText
+            : props.theme.colors.text};
+`;
+
+export const Price = styled.Text<IProductInfo>`
     font-size: 22px;
     font-weight: bold;
     margin-top: 5px;
