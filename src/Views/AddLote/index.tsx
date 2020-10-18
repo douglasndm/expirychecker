@@ -17,6 +17,7 @@ import {
     PageTitle,
     InputContainer,
     InputText,
+    NumericInputField,
     InputGroup,
     ExpDateGroup,
     ExpDateLabel,
@@ -43,6 +44,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState<number>(0);
+    const [price, setPrice] = useState(0);
 
     const [expDate, setExpDate] = useState(new Date());
 
@@ -58,6 +60,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                     lote,
                     amount,
                     exp_date: expDate,
+                    price,
                 },
             });
 
@@ -67,7 +70,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
             crashlytics().recordError(err);
             setNotification(err);
         }
-    }, [amount, productId, expDate, lote, navigation]);
+    }, [amount, productId, expDate, lote, navigation, price]);
 
     useEffect(() => {
         async function getProduct() {
@@ -142,6 +145,15 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                             }}
                         />
                     </InputGroup>
+
+                    <NumericInputField
+                        type="currency"
+                        locale="pt-BR"
+                        currency="BRL"
+                        value={price}
+                        onUpdate={(value: number) => setPrice(value)}
+                        placeholder="Valor unitário"
+                    />
 
                     <ExpDateGroup>
                         <ExpDateLabel>Data de vencimento</ExpDateLabel>
