@@ -13,13 +13,14 @@ import {
     PageTitle,
     InputContainer,
     InputText,
+    NumericInputField,
     InputGroup,
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
 } from '../AddProduct/styles';
 
-import { Button, Icons, NumericInputField } from './styles';
+import { Button, Icons } from './styles';
 
 import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
