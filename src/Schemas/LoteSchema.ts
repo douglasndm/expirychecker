@@ -6,6 +6,7 @@ const LoteSchema = {
         lote: 'string',
         exp_date: 'date',
         amount: 'int?',
+        price: 'float?',
         status: 'string?',
     },
 };
