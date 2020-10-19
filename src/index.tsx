@@ -5,7 +5,6 @@ import { StatusBar } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
-import Analytics from 'appcenter-analytics';
 import EnvConfig from 'react-native-config';
 
 import Realm from './Services/Realm';
@@ -23,14 +22,6 @@ if (!__DEV__) {
         dsn: EnvConfig.SENTRY_DSN,
         enableAutoSessionTracking: true,
     });
-}
-
-async function disableAppCenterIfInDevMode() {
-    await Analytics.setEnabled(false);
-}
-
-if (__DEV__) {
-    disableAppCenterIfInDevMode();
 }
 
 const App: React.FC = () => {
