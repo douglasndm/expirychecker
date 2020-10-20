@@ -293,27 +293,29 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                                     {lote.amount}
                                                 </Text>
                                             </TableCell>
-                                            <TableCell>
-                                                <Text
-                                                    expiredOrNext={
-                                                        expiredOrNext
-                                                    }
-                                                >
-                                                    <NumberFormat
-                                                        value={
-                                                            lote.amount *
-                                                            lote.price
+                                            {lote.amount && lote.price && (
+                                                <TableCell>
+                                                    <Text
+                                                        expiredOrNext={
+                                                            expiredOrNext
                                                         }
-                                                        displayType="text"
-                                                        thousandSeparator
-                                                        prefix="R$"
-                                                        renderText={(value) =>
-                                                            value
-                                                        }
-                                                        decimalScale={2}
-                                                    />
-                                                </Text>
-                                            </TableCell>
+                                                    >
+                                                        <NumberFormat
+                                                            value={
+                                                                lote.amount *
+                                                                lote.price
+                                                            }
+                                                            displayType="text"
+                                                            thousandSeparator
+                                                            prefix="R$"
+                                                            renderText={(
+                                                                value
+                                                            ) => value}
+                                                            decimalScale={2}
+                                                        />
+                                                    </Text>
+                                                </TableCell>
+                                            )}
                                         </TableRow>
                                     );
                                 })}
@@ -392,27 +394,29 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                                     {lote.amount}
                                                 </Text>
                                             </TableCell>
-                                            <TableCell>
-                                                <Text
-                                                    expiredOrNext={
-                                                        expiredOrNext
-                                                    }
-                                                >
-                                                    <NumberFormat
-                                                        value={
-                                                            lote.amount *
-                                                            lote.price
+                                            {lote.amount && lote.price && (
+                                                <TableCell>
+                                                    <Text
+                                                        expiredOrNext={
+                                                            expiredOrNext
                                                         }
-                                                        displayType="text"
-                                                        thousandSeparator
-                                                        prefix="R$"
-                                                        renderText={(value) =>
-                                                            value
-                                                        }
-                                                        decimalScale={2}
-                                                    />
-                                                </Text>
-                                            </TableCell>
+                                                    >
+                                                        <NumberFormat
+                                                            value={
+                                                                lote.amount *
+                                                                lote.price
+                                                            }
+                                                            displayType="text"
+                                                            thousandSeparator
+                                                            prefix="R$"
+                                                            renderText={(
+                                                                value
+                                                            ) => value}
+                                                            decimalScale={2}
+                                                        />
+                                                    </Text>
+                                                </TableCell>
+                                            )}
                                         </TableRow>
                                     );
                                 })}
