@@ -79,6 +79,8 @@ export const CategoryDetailsText = styled.Text`
     font-size: 18px;
 `;
 
+export const TableContainer = styled.View``;
+
 export const Table = styled(DataTable)`
     background-color: ${(props) => props.theme.colors.productBackground};
     border-radius: 12px;
