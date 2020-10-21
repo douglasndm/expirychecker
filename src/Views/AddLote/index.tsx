@@ -136,11 +136,15 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                             placeholder="Quantidade"
                             keyboardType="numeric"
                             value={String(amount)}
-                            onChangeText={(v) => {
+                            onChangeText={(value) => {
                                 const regex = /^[0-9\b]+$/;
 
-                                if (v === '' || regex.test(v)) {
-                                    setAmount(Number(v));
+                                if (value === '' || regex.test(value)) {
+                                    if (value === '') {
+                                        setAmount(0);
+                                        return;
+                                    }
+                                    setAmount(Number(value));
                                 }
                             }}
                         />
