@@ -58,11 +58,11 @@ export async function getAllProductsNextToExp(): Promise<void> {
         let productsNextToExpCount = 0;
         let productsVencidosCount = 0;
 
-        productsNextFiltered.map((p) => {
+        productsNextFiltered.forEach((p) => {
             productsNextToExpCount += p.lotes.length;
         });
 
-        productsVencidosFiltered.map((p) => {
+        productsVencidosFiltered.forEach((p) => {
             productsVencidosCount += p.lotes.length;
         });
 

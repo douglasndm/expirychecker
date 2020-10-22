@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
-import Realm from '../../Services/Realm';
 import {
     removeAllLotesTratadosFromAllProduts,
     sortProductsLotesByLotesExpDate,
@@ -12,11 +11,14 @@ import FABProducts from '../../Components/FABProducts';
 import Notification from '../../Components/Notification';
 import ListProducts from '../../Components/ListProducts';
 
+import RealmContext from '../../Contexts/RealmContext';
+
 interface HomeProps {
     notificationToUser?: string;
 }
 
 const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
+    const { Realm } = useContext(RealmContext);
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [error, setError] = useState<string>();
