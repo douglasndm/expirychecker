@@ -7,9 +7,19 @@ interface Request {
 
 export const Container = styled.View`
     flex: 1;
-    padding: 16px;
-
     background: ${(props) => props.theme.colors.background};
+`;
+export const PageHeader = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const BackButton = styled(Ionicons).attrs((props) => ({
+    name: 'arrow-back-outline',
+    color: props.theme.colors.text,
+    size: 28,
+}))`
+    margin-right: 10px;
 `;
 
 export const PageTitle = styled.Text`
@@ -82,9 +92,5 @@ export const ButtonCancel = styled.TouchableOpacity`
 export const ButtonCancelText = styled.Text`
     font-size: 13px;
 
-    color: ${(props) => props.theme.colors.text};
-`;
-
-export const Icons = styled(Ionicons)`
     color: ${(props) => props.theme.colors.text};
 `;

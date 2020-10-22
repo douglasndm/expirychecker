@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, Linking } from 'react-native';
-import { Button as ButtonPaper, Switch } from 'react-native-paper';
+import { Switch } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { Picker } from '@react-native-community/picker';
@@ -22,6 +22,8 @@ import * as Premium from '../../Functions/Premium';
 
 import {
     Container,
+    PageHeader,
+    BackButton,
     PageTitle,
     Category,
     CategoryTitle,
@@ -33,7 +35,6 @@ import {
     ButtonPremiumText,
     ButtonCancel,
     ButtonCancelText,
-    Icons,
 } from './styles';
 
 const Settings: React.FC = () => {
@@ -46,6 +47,10 @@ const Settings: React.FC = () => {
     const navigation = useNavigation();
 
     const theme = useTheme();
+
+    const handleBackButton = useCallback(() => {
+        navigation.goBack();
+    }, [navigation]);
 
     const setSettingDaysToBeNext = useCallback(async (days: number) => {
         await setDaysToBeNextToExp(days);
@@ -115,28 +120,11 @@ const Settings: React.FC = () => {
 
     return (
         <Container>
-            <ScrollView>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        marginLeft: -15,
-                    }}
-                >
-                    <ButtonPaper
-                        style={{
-                            alignSelf: 'flex-end',
-                        }}
-                        icon={() => (
-                            <Icons name="arrow-back-outline" size={28} />
-                        )}
-                        color={theme.colors.accent}
-                        compact
-                        onPress={() => {
-                            navigation.goBack();
-                        }}
-                    />
+            <ScrollView style={{ padding: 16, flex: 1 }}>
+                <PageHeader>
+                    <BackButton onPress={handleBackButton} />
                     <PageTitle>Configurações</PageTitle>
-                </View>
+                </PageHeader>
 
                 <Category>
                     <CategoryTitle>Geral</CategoryTitle>
@@ -213,9 +201,9 @@ const Settings: React.FC = () => {
                                 }}
                                 mode="dropdown"
                                 selectedValue={selectedTheme}
-                                onValueChange={async (t) => {
-                                    setSelectedTheme(t);
-                                    await setAppTheme(t);
+                                onValueChange={async (themeName) => {
+                                    setSelectedTheme(String(themeName));
+                                    await setAppTheme(String(themeName));
                                 }}
                             >
                                 <Picker.Item
