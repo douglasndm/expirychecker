@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Keyboard, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from 'styled-components';
 
-import Realm from '../../Services/Realm';
 import { getProductById } from '../../Functions/Product';
 
 import GenericButton from '../../Components/Button';
@@ -19,6 +18,7 @@ import {
 } from '../AddProduct/styles';
 
 import { Camera, ButtonPaper, Icons } from './styles';
+import RealmContext from '../../Contexts/RealmContext';
 
 interface RequestParams {
     route: {
@@ -29,6 +29,7 @@ interface RequestParams {
 }
 
 const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
+    const { Realm } = useContext(RealmContext);
     const { productId } = route.params;
 
     const navigation = useNavigation();

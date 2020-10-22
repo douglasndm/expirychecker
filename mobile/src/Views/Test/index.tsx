@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, Text, Alert } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
 
 import { useTheme } from 'styled-components/native';
-
-import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
@@ -18,8 +16,11 @@ import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
+import RealmContext from '../../Contexts/RealmContext';
 
 const Test: React.FC = () => {
+    const { Realm } = useContext(RealmContext);
+
     const [adsEnable, setAdsEnable] = useState(false);
 
     useEffect(() => {
