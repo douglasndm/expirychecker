@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StatusBar } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
@@ -13,7 +13,7 @@ import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import { getDaysToBeNextToExp } from './Functions/Settings';
+import { getDaysToBeNextToExp, getMultipleStores } from './Functions/Settings';
 import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
 
 import Themes, { getActualAppTheme } from './Themes';
@@ -61,6 +61,7 @@ const App: React.FC = () => {
         howManyDaysToBeNextToExpire: 30,
         isUserPremium: true,
         appTheme: 'system',
+        multiplesStores: false,
     });
 
     useEffect(() => {
@@ -68,11 +69,13 @@ const App: React.FC = () => {
             const daysToBeNext = await getDaysToBeNextToExp();
             const isPremium = await GetPremium();
             const appTheme = await getActualAppTheme();
+            const multiplesStores = await getMultipleStores();
 
             setPreferences({
                 howManyDaysToBeNextToExpire: daysToBeNext,
                 isUserPremium: isPremium,
                 appTheme,
+                multiplesStores,
             });
         }
 
