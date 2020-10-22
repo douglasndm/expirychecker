@@ -1,10 +1,29 @@
 import Realm from '../Services/Realm';
 import { createLote } from './Lotes';
 
-export async function checkIfProductAlreadyExistsByCode(
-    productCode: string
-): Promise<boolean> {
+interface ICheckIfProductAlreadyExistsByCodeProps {
+    productCode: string;
+    productStore?: string;
+}
+
+export async function checkIfProductAlreadyExistsByCode({
+    productCode,
+    productStore,
+}: ICheckIfProductAlreadyExistsByCodeProps): Promise<boolean> {
     try {
+        if (productStore) {
+            const results = Realm.objects('Product')
+                .filtered(
+                    `code = "${productCode}" AND store = "${productStore}"`
+                )
+                .slice();
+
+            if (results.length > 0) {
+                return true;
+            }
+            return false;
+        }
+
         const results = Realm.objects('Product')
             .filtered(`code = "${productCode}"`)
             .slice();
