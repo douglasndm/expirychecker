@@ -19,9 +19,9 @@ export async function ExportBackupFile(): Promise<void> {
         allProducts.forEach((p) => {
             const arrayLotes: Array<ILote> = [];
 
-            p.lotes?.forEach((l) => {
-                arrayLotes.push(l);
-            });
+            if (p.lotes.length > 0) {
+                p.lotes.forEach((lote) => arrayLotes.push(lote));
+            }
 
             const newProduct = {
                 id: p.id,
@@ -60,7 +60,7 @@ export async function ExportBackupFile(): Promise<void> {
                 });
             })
             .catch((err) => {
-                console.warn(err.message);
+                throw new Error(err);
             });
     } catch (err) {
         console.warn(err);
