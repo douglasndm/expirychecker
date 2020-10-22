@@ -1,16 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Button as ButtonPaper } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useTheme } from 'styled-components';
+import EnvConfig from 'react-native-config';
+import {
+    InterstitialAd,
+    AdEventType,
+    TestIds,
+} from '@react-native-firebase/admob';
 
 import GenericButton from '../../Components/Button';
 import Notification from '../../Components/Notification';
 
 import { createLote } from '../../Functions/Lotes';
 import { getProductById } from '../../Functions/Product';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -32,13 +40,22 @@ interface AddLoteParams {
         };
     };
 }
+const adUnitID = __DEV__
+    ? TestIds.INTERSTITIAL
+    : EnvConfig.ANDROID_ADMOB_ADUNITID_ADDLOTE;
+
+const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
 const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const { productId } = route.params;
     const navigation = useNavigation();
 
+    const { isUserPremium } = useContext(PreferencesContext);
+
     const theme = useTheme();
     const [notification, setNotification] = useState<string>();
+
+    const [adReady, setAdReady] = useState(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -64,13 +81,48 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                 },
             });
 
+            if (!isUserPremium && adReady) {
+                interstitialAd.show();
+            }
+
             Alert.alert('Lote cadastrado com sucesso');
             navigation.goBack();
         } catch (err) {
             crashlytics().recordError(err);
             setNotification(err);
         }
-    }, [amount, productId, expDate, lote, navigation, price]);
+    }, [
+        amount,
+        productId,
+        expDate,
+        lote,
+        navigation,
+        price,
+        adReady,
+        isUserPremium,
+    ]);
+
+    useEffect(() => {
+        const eventListener = interstitialAd.onAdEvent((type) => {
+            if (type === AdEventType.LOADED) {
+                setAdReady(true);
+            }
+            if (type === AdEventType.CLOSED) {
+                setAdReady(false);
+            }
+            if (type === AdEventType.ERROR) {
+                setAdReady(false);
+            }
+        });
+
+        // Start loading the interstitial straight away
+        interstitialAd.load();
+
+        // Unsubscribe from events on unmount
+        return () => {
+            eventListener();
+        };
+    }, []);
 
     useEffect(() => {
         async function getProduct() {
