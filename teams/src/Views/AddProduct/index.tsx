@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, Text, Keyboard, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -13,9 +13,6 @@ import {
 
 import GenericButton from '../../Components/Button';
 
-import { getMultipleStores } from '../../Functions/Settings';
-import { GetPremium } from '../../Functions/Premium';
-
 import {
     checkIfProductAlreadyExistsByCode,
     getProductByCode,
@@ -23,6 +20,8 @@ import {
 } from '../../Functions/Product';
 
 import { createLote } from '../../Functions/Lotes';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -47,9 +46,11 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
 const AddProduct: React.FC = () => {
     const navigation = useNavigation();
+
+    const { isUserPremium, multiplesStores } = useContext(PreferencesContext);
+
     const theme = useTheme();
 
-    const [isPremium, setIsPremium] = useState(false);
     const [adReady, setAdReady] = useState(false);
 
     const [name, setName] = useState('');
@@ -61,8 +62,6 @@ const AddProduct: React.FC = () => {
 
     const [expDate, setExpDate] = useState(new Date());
 
-    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
-
     const [cameraEnabled, setCameraEnebled] = useState(false);
     const [productAlreadyExists, setProductAlreadyExists] = useState(false);
 
@@ -72,66 +71,65 @@ const AddProduct: React.FC = () => {
             return;
         }
 
-        if (!(await checkIfProductAlreadyExistsByCode(code))) {
-            try {
-                const newProduct: Omit<IProduct, 'id'> = {
-                    name,
-                    code,
-                    store,
-                    lotes: [],
-                };
+        if (!!store && store !== '') {
+            const productExists = await checkIfProductAlreadyExistsByCode({
+                productCode: code,
+                productStore: store,
+            });
 
-                const newLote: Omit<ILote, 'id'> = {
-                    lote,
-                    exp_date: expDate,
-                    amount: Number(amount),
-                    price,
-                    status: 'Não tratado',
-                };
-
-                const productCreatedId = await createProduct(newProduct);
-
-                if (productCreatedId) {
-                    await createLote({
-                        lote: newLote,
-                        productId: productCreatedId,
-                    });
-
-                    if (!!isPremium && adReady) {
-                        interstitialAd.show();
-                    }
-
-                    navigation.push('Home', {
-                        notificationToUser: 'Produto cadastrado.',
-                    });
-                }
-            } catch (error) {
-                console.warn(error);
+            if (productExists) {
+                setProductAlreadyExists(true);
+                return;
             }
         } else {
-            setProductAlreadyExists(true);
+            const productExist = await checkIfProductAlreadyExistsByCode({
+                productCode: code,
+            });
+
+            if (productExist) {
+                setProductAlreadyExists(true);
+                return;
+            }
+        }
+
+        try {
+            const newProduct: Omit<IProduct, 'id'> = {
+                name,
+                code,
+                store,
+                lotes: [],
+            };
+
+            const newLote: Omit<ILote, 'id'> = {
+                lote,
+                exp_date: expDate,
+                amount: Number(amount),
+                price,
+                status: 'Não tratado',
+            };
+
+            const productCreatedId = await createProduct(newProduct);
+
+            if (productCreatedId) {
+                await createLote({
+                    lote: newLote,
+                    productId: productCreatedId,
+                });
+
+                if (!!isUserPremium && adReady) {
+                    interstitialAd.show();
+                }
+
+                navigation.push('Home', {
+                    notificationToUser: 'Produto cadastrado.',
+                });
+            }
+        } catch (error) {
+            console.warn(error);
         }
     }
 
     useEffect(() => {
-        getMultipleStores().then((data) => {
-            setMultipleStoresState(data);
-        });
-    }, []);
-
-    useEffect(() => {
-        async function getAppData() {
-            if (!(await GetPremium())) {
-                setIsPremium(true);
-
-                interstitialAd.load();
-            } else {
-                setIsPremium(false);
-            }
-        }
-
-        getAppData();
-
         const eventListener = interstitialAd.onAdEvent((type) => {
             if (type === AdEventType.LOADED) {
                 setAdReady(true);
@@ -314,7 +312,7 @@ const AddProduct: React.FC = () => {
                                 placeholder="Valor unitário"
                             />
 
-                            {multipleStoresState && (
+                            {multiplesStores && (
                                 <MoreInformationsContainer>
                                     <MoreInformationsTitle>
                                         Mais informações
