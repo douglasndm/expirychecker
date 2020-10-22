@@ -108,3 +108,11 @@ export async function createProduct(
         throw new Error(err);
     }
 }
+
+export async function deleteProduct(productId: number): Promise<void> {
+    const product = Realm.objects('Product').filtered(`id == ${productId}`);
+
+    Realm.write(async () => {
+        Realm.delete(product);
+    });
+}
