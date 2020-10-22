@@ -7,7 +7,6 @@ import EnvConfig from 'react-native-config';
 import { getDaysToBeNextToExp } from '../../Functions/Settings';
 import { GetPremium } from '../../Functions/Premium';
 
-import Header from '../Header';
 import ProductItem from '../ProductItem';
 import GenericButton from '../Button';
 
@@ -50,11 +49,6 @@ const ListProducts: React.FC<RequestProps> = ({
     const ListHeader = useCallback(() => {
         return (
             <View>
-                {isHome ? (
-                    <Header isPremium={isPremium} />
-                ) : (
-                    <Header title="Todos os produtos" isPremium={isPremium} />
-                )}
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
                     <CategoryDetails>
@@ -65,7 +59,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [isPremium, isHome, products.length]);
+    }, [products]);
 
     const EmptyList = useCallback(() => {
         return (
@@ -116,7 +110,7 @@ const ListProducts: React.FC<RequestProps> = ({
         <Container>
             <FlatList
                 data={products}
-                keyExtractor={(item, index) => String(item.id)}
+                keyExtractor={(item) => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}

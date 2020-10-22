@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 
 import {
     removeAllLotesTratadosFromAllProduts,
@@ -7,11 +7,14 @@ import {
 } from '../../Functions/Products';
 import { CheckIfSubscriptionIsActive } from '../../Functions/Premium';
 
+import Header from '../../Components/Header';
 import FABProducts from '../../Components/FABProducts';
 import Notification from '../../Components/Notification';
 import ListProducts from '../../Components/ListProducts';
 
 import RealmContext from '../../Contexts/RealmContext';
+
+import { Container, InputSearch } from './styles';
 
 interface HomeProps {
     notificationToUser?: string;
@@ -19,9 +22,13 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
     const { Realm } = useContext(RealmContext);
+
     const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [error, setError] = useState<string>();
+
+    const [searchString, setSearchString] = useState<string>();
+    const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
     useEffect(() => {
         if (notificationToUser) setSnackBarVisible(true);
@@ -88,9 +95,40 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
         };
     }, []);
 
+    useEffect(() => {
+        setProductsSearch(products);
+    }, [products]);
+
+    const handleSearchChange = useCallback(
+        (search: string) => {
+            setSearchString(search);
+
+            if (search && search !== '') {
+                const productsFind = products.filter((product) => {
+                    return !!product.name
+                        .toLowerCase()
+                        .includes(search.toLowerCase());
+                });
+
+                setProductsSearch(productsFind);
+            } else {
+                setProductsSearch(products);
+            }
+        },
+        [products]
+    );
+
     return (
-        <>
-            <ListProducts products={products} isHome />
+        <Container>
+            <Header />
+
+            <InputSearch
+                placeholder="Pesquisar por um produto"
+                value={searchString}
+                onChangeText={handleSearchChange}
+            />
+
+            <ListProducts products={productsSearch} isHome />
             {snackBarVisible && notificationToUser && (
                 <Notification NotificationMessage={notificationToUser} />
             )}
@@ -101,7 +139,7 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
                 />
             )}
             <FABProducts />
-        </>
+        </Container>
     );
 };
 
