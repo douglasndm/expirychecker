@@ -6,7 +6,6 @@ export const Container = styled.View`
 `;
 
 export const CategoryDetails = styled.View`
-    margin-top: 15px;
     flex-direction: row;
     justify-content: space-between;
 

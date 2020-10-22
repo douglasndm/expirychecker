@@ -11,11 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import GenericButton from '../../Components/Button';
 
-import {
-    getDaysToBeNextToExp,
-    getMultipleStores,
-} from '../../Functions/Settings';
-import { getProductById } from '../../Functions/Product';
+import { getProductById, deleteProduct } from '../../Functions/Product';
 import { sortLoteByExpDate } from '../../Functions/Lotes';
 
 import {
@@ -42,6 +38,7 @@ import {
 } from './styles';
 
 import RealmContext from '../../Contexts/RealmContext';
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 interface Request {
     route: {
@@ -53,6 +50,10 @@ interface Request {
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { Realm } = useContext(RealmContext);
+    const { howManyDaysToBeNextToExpire, multiplesStores } = useContext(
+        PreferencesContext
+    );
+
     const navigation = useNavigation();
 
     const productId = route.params.id;
@@ -67,10 +68,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
 
-    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
-
-    const [daysToBeNext, setDaysToBeNext] = useState<number>(0);
 
     const getProduct = useCallback(async () => {
         try {
@@ -103,30 +101,16 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         navigation.push('EditProduct', { productId });
     }, [navigation, productId]);
 
-    const deleteProduct = useCallback(async () => {
-        const prod = Realm.objects('Product').filtered(`id == ${productId}`);
-
+    const handleDeleteProduct = useCallback(async () => {
         try {
-            Realm.write(async () => {
-                Realm.delete(prod);
+            await deleteProduct(productId);
 
-                Alert.alert(`${name} foi apagado.`);
-                navigation.dispatch(StackActions.popToTop());
-            });
+            Alert.alert(`${name} foi apagado.`);
+            navigation.dispatch(StackActions.popToTop());
         } catch (err) {
             console.log(err);
         }
     }, [name, productId, navigation]);
-
-    useEffect(() => {
-        getMultipleStores().then((data) => {
-            setMultipleStoresState(data);
-        });
-    }, []);
-
-    useEffect(() => {
-        getDaysToBeNextToExp().then((response) => setDaysToBeNext(response));
-    }, []);
 
     useEffect(() => {
         async function startRealm() {
@@ -189,7 +173,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 {!!code && (
                                     <ProductCode>Código: {code}</ProductCode>
                                 )}
-                                {multipleStoresState && !!product?.store && (
+                                {multiplesStores && !!product?.store && (
                                     <ProductStore>
                                         Loja: {product.store}
                                     </ProductStore>
@@ -238,8 +222,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 {lotesNaoTratados.map((lote) => {
                                     const expired = isPast(lote.exp_date);
                                     const nextToExp =
-                                        addDays(new Date(), daysToBeNext) >
-                                        lote.exp_date;
+                                        addDays(
+                                            new Date(),
+                                            howManyDaysToBeNextToExpire
+                                        ) > lote.exp_date;
 
                                     const expiredOrNext = !!(
                                         expired || nextToExp
@@ -339,20 +325,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 </TableHeader>
 
                                 {lotesTratados.map((lote) => {
-                                    const expired = isPast(lote.exp_date);
-                                    const nextToExp =
-                                        addDays(new Date(), daysToBeNext) >
-                                        lote.exp_date;
-
-                                    const expiredOrNext = !!(
-                                        expired || nextToExp
-                                    );
-
                                     return (
                                         <TableRow
                                             key={lote.id}
-                                            expired={expired}
-                                            nextToExp={nextToExp}
                                             onPress={() => {
                                                 navigation.push('EditLote', {
                                                     product,
@@ -361,20 +336,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             }}
                                         >
                                             <TableCell>
-                                                <Text
-                                                    expiredOrNext={
-                                                        expiredOrNext
-                                                    }
-                                                >
-                                                    {lote.lote}
-                                                </Text>
+                                                <Text>{lote.lote}</Text>
                                             </TableCell>
                                             <TableCell>
-                                                <Text
-                                                    expiredOrNext={
-                                                        expiredOrNext
-                                                    }
-                                                >
+                                                <Text>
                                                     {format(
                                                         lote.exp_date,
                                                         'dd/MM/yyyy',
@@ -385,23 +350,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                                 </Text>
                                             </TableCell>
                                             <TableCell>
-                                                <Text
-                                                    expiredOrNext={
-                                                        expiredOrNext
-                                                    }
-                                                >
-                                                    {lote.amount}
-                                                </Text>
+                                                <Text>{lote.amount}</Text>
                                             </TableCell>
                                             {!!lote.amount &&
                                                 !!lote.price &&
                                                 lote.price > 0 && (
                                                     <TableCell>
-                                                        <Text
-                                                            expiredOrNext={
-                                                                expiredOrNext
-                                                            }
-                                                        >
+                                                        <Text>
                                                             <NumberFormat
                                                                 value={
                                                                     lote.amount *
@@ -461,12 +416,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     </Text>
                 </DialogPaper.Content>
                 <DialogPaper.Actions>
-                    <Button
-                        color="red"
-                        onPress={() => {
-                            deleteProduct();
-                        }}
-                    >
+                    <Button color="red" onPress={handleDeleteProduct}>
                         APAGAR
                     </Button>
                     <Button
