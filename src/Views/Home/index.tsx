@@ -5,7 +5,6 @@ import {
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
 } from '../../Functions/Products';
-import { CheckIfSubscriptionIsActive } from '../../Functions/Premium';
 
 import Header from '../../Components/Header';
 import FABProducts from '../../Components/FABProducts';
@@ -33,14 +32,6 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
     useEffect(() => {
         if (notificationToUser) setSnackBarVisible(true);
     }, [notificationToUser]);
-
-    useEffect(() => {
-        async function checkIfUserIsPremium() {
-            await CheckIfSubscriptionIsActive();
-        }
-
-        checkIfUserIsPremium();
-    }, []);
 
     async function getProduts(realm: Realm) {
         try {

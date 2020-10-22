@@ -1,11 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { TestIds } from '@react-native-firebase/admob';
-import EnvConfig from 'react-native-config';
-
-import { getDaysToBeNextToExp } from '../../Functions/Settings';
-import { GetPremium } from '../../Functions/Premium';
 
 import ProductItem from '../ProductItem';
 import GenericButton from '../Button';
@@ -27,24 +22,6 @@ const ListProducts: React.FC<RequestProps> = ({
     isHome,
 }: RequestProps) => {
     const navigation = useNavigation();
-
-    const [daysToBeNext, setDaysToBeNext] = useState<number>(30);
-    const [isPremium, setIsPremium] = useState(false);
-
-    const adUnitId = __DEV__
-        ? TestIds.BANNER
-        : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
-
-    useEffect(() => {
-        async function getAppData() {
-            const days = await getDaysToBeNextToExp();
-            setDaysToBeNext(days);
-
-            setIsPremium(await GetPremium());
-        }
-
-        getAppData();
-    }, []);
 
     const ListHeader = useCallback(() => {
         return (
@@ -91,20 +68,9 @@ const ListProducts: React.FC<RequestProps> = ({
         );
     }, [products.length, isHome, navigation]);
 
-    const renderComponent = useCallback(
-        ({ item, index }) => {
-            return (
-                <ProductItem
-                    product={item}
-                    index={index}
-                    adUnitId={adUnitId}
-                    daysToBeNext={daysToBeNext}
-                    isPremium={isPremium}
-                />
-            );
-        },
-        [adUnitId, daysToBeNext, isPremium]
-    );
+    const renderComponent = useCallback(({ item, index }) => {
+        return <ProductItem product={item} index={index} />;
+    }, []);
 
     return (
         <Container>
