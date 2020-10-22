@@ -116,7 +116,7 @@ const AddProduct: React.FC = () => {
                     productId: productCreatedId,
                 });
 
-                if (!!isUserPremium && adReady) {
+                if (!isUserPremium && adReady) {
                     interstitialAd.show();
                 }
 
