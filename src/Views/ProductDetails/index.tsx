@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -8,8 +8,6 @@ import br, { format, isPast, addDays } from 'date-fns';
 import NumberFormat from 'react-number-format';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import Realm from '../../Services/Realm';
 
 import GenericButton from '../../Components/Button';
 
@@ -43,6 +41,8 @@ import {
     FloatButton,
 } from './styles';
 
+import RealmContext from '../../Contexts/RealmContext';
+
 interface Request {
     route: {
         params: {
@@ -52,6 +52,7 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
+    const { Realm } = useContext(RealmContext);
     const navigation = useNavigation();
 
     const productId = route.params.id;

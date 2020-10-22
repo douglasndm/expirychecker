@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
-
-import Realm from '../../Services/Realm';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
+
+import RealmContext from '../../Contexts/RealmContext';
 
 import {
     sortProductsLotesByLotesExpDate,
@@ -14,6 +14,8 @@ import {
 import { Container } from './styles';
 
 const AllProducts: React.FC = () => {
+    const { Realm } = useContext(RealmContext);
+
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
     const getProducts = useCallback(async () => {

@@ -19,10 +19,9 @@ import {
     ExpDateLabel,
     CustomDatePicker,
 } from '../AddProduct/styles';
+import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
 import { Button, Icons } from './styles';
-
-import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
 interface EditLoteProps {
     route: {

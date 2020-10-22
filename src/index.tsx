@@ -7,6 +7,8 @@ import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
+import RealmContext from './Contexts/RealmContext';
+
 import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
@@ -54,16 +56,18 @@ const App: React.FC = () => {
     }, [getTheme]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <PaperProvider>
-                <Portal>
-                    <NavigationContainer>
-                        <StatusBar backgroundColor={theme.colors.accent} />
-                        <Routes />
-                    </NavigationContainer>
-                </Portal>
-            </PaperProvider>
-        </ThemeProvider>
+        <RealmContext.Provider value={{ Realm }}>
+            <ThemeProvider theme={theme}>
+                <PaperProvider>
+                    <Portal>
+                        <NavigationContainer>
+                            <StatusBar backgroundColor={theme.colors.accent} />
+                            <Routes />
+                        </NavigationContainer>
+                    </Portal>
+                </PaperProvider>
+            </ThemeProvider>
+        </RealmContext.Provider>
     );
 };
 
