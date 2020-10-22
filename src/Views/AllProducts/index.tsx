@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 
+import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
 
@@ -59,6 +60,7 @@ const AllProducts: React.FC = () => {
     return (
         <>
             <Container>
+                <Header title="Todos os produtos" />
                 <ListProducts products={products} />
             </Container>
 
