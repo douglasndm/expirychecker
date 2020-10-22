@@ -12,3 +12,10 @@ export const StoreTitle = styled.Text`
     margin-right: 15px;
     margin-top: 10px;
 `;
+
+export const AdView = styled.View`
+    flex: 1;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+`;

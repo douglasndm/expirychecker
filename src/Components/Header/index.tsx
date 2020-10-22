@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import { HeaderContainer, TextLogo, Icons, Button } from './styles';
 
 interface RequestProps {
-    isPremium?: boolean;
     title?: string;
 }
 
-const Header: React.FC<RequestProps> = ({ isPremium, title }: RequestProps) => {
+const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
     const navigation = useNavigation();
+
+    const { isUserPremium } = useContext(PreferencesContext);
 
     const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
 
@@ -30,7 +33,7 @@ const Header: React.FC<RequestProps> = ({ isPremium, title }: RequestProps) => {
                 <TextLogo style={{ fontSize: titleFontSize }}>{title}</TextLogo>
             ) : (
                 <TextLogo style={{ fontSize: titleFontSize }}>
-                    {isPremium ? 'Premium' : 'Controle de validade'}
+                    {isUserPremium ? 'Premium' : 'Controle de validade'}
                 </TextLogo>
             )}
         </HeaderContainer>
