@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
-import { AdView } from '../ProductItem/styles';
 import ProductItem from '../ProductItem';
 
 import {
@@ -10,10 +9,9 @@ import {
     sortProductsByFisrtLoteExpDate,
 } from '../../Functions/Products';
 
-import { GetPremium } from '../../Functions/Premium';
-import { getDaysToBeNextToExp } from '../../Functions/Settings';
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
-import { StoreGroupContainer, StoreTitle } from './styles';
+import { StoreGroupContainer, StoreTitle, AdView } from './styles';
 
 interface IRequest {
     storeName: string;
@@ -21,17 +19,11 @@ interface IRequest {
 }
 
 const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
-    const [daysToBeNext, setDaysToBeNext] = useState<number>(30);
-    const [isPremium, setIsPremium] = useState(false);
+    const { isUserPremium } = useContext(PreferencesContext);
 
     const adUnitId = __DEV__
         ? TestIds.BANNER
         : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENSTOREGROUPS;
-
-    useEffect(() => {
-        getDaysToBeNextToExp().then((days) => setDaysToBeNext(days));
-        GetPremium().then((result) => setIsPremium(result));
-    }, []);
 
     const resultsTemp = sortProductsLotesByLotesExpDate(products);
     const results = sortProductsByFisrtLoteExpDate(resultsTemp);
@@ -41,15 +33,10 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
             <StoreTitle>{storeName}</StoreTitle>
 
             {results.map((product) => (
-                <ProductItem
-                    key={product.id}
-                    product={product}
-                    daysToBeNext={daysToBeNext}
-                    disableAds
-                />
+                <ProductItem key={product.id} product={product} disableAds />
             ))}
 
-            {!isPremium && (
+            {!isUserPremium && (
                 <AdView>
                     <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
                 </AdView>
