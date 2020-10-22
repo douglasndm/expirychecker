@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
 import br from 'date-fns/locale/pt-BR' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
-import { getMultipleStores } from '../../Functions/Settings';
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -33,16 +33,12 @@ interface Request {
 }
 const Product = ({ product, expired, nextToExp }: Request) => {
     const navigation = useNavigation();
-    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
+
+    const { multiplesStores } = useContext(PreferencesContext);
+
     const [totalPrice, setTotalPrice] = useState(0);
 
     const expiredOrNext = !!(expired || nextToExp);
-
-    useEffect(() => {
-        getMultipleStores().then((data) => {
-            setMultipleStoresState(data);
-        });
-    }, []);
 
     useEffect(() => {
         if (product.lotes[0]) {
@@ -78,7 +74,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductLote>
                         )}
 
-                        {multipleStoresState && !!product.store && (
+                        {multiplesStores && !!product.store && (
                             <ProductStore expiredOrNext={expiredOrNext}>
                                 Loja: {product.store}
                             </ProductStore>
