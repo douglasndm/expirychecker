@@ -1,41 +1,46 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
-import { BannerAd, BannerAdSize } from '@react-native-firebase/admob';
-import crashlytics from '@react-native-firebase/crashlytics';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import EnvConfig from 'react-native-config';
 import { addDays, isPast } from 'date-fns';
 
 import ProductCard from '../ProductCard';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import { AdView } from './styles';
 
 interface RequestProps {
     product: IProduct;
     index?: number;
-    daysToBeNext: number;
-    isPremium?: boolean;
-    adUnitId?: string;
     disableAds?: boolean;
 }
 
 const ProductItem: React.FC<RequestProps> = ({
     product,
     index,
-    daysToBeNext,
-    isPremium,
-    adUnitId,
     disableAds,
 }: RequestProps) => {
+    const { howManyDaysToBeNextToExpire, isUserPremium } = useContext(
+        PreferencesContext
+    );
+
     const [adFailed, setAdFailed] = useState(false);
+
+    const adUnitId = __DEV__
+        ? TestIds.BANNER
+        : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
 
     const expired = product.lotes[0] && isPast(product.lotes[0].exp_date);
     const nextToExp =
         product.lotes[0] &&
-        addDays(new Date(), daysToBeNext) >= product.lotes[0].exp_date;
+        addDays(new Date(), howManyDaysToBeNextToExpire) >=
+            product.lotes[0].exp_date;
 
     return (
         <View>
             {!disableAds &&
-                !isPremium &&
+                !isUserPremium &&
                 !!index &&
                 index !== 0 &&
                 index % 5 === 0 &&
@@ -44,12 +49,7 @@ const ProductItem: React.FC<RequestProps> = ({
                         <BannerAd
                             unitId={adUnitId}
                             size={BannerAdSize.BANNER}
-                            onAdFailedToLoad={(err: Error) => {
-                                setAdFailed(true);
-                                crashlytics().log(
-                                    `Falha ao carregar o anúncio ${err}`
-                                );
-                            }}
+                            onAdFailedToLoad={() => setAdFailed(true)}
                         />
                     </AdView>
                 )}

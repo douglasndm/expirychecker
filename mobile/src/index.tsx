@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { StatusBar } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
@@ -13,11 +13,13 @@ import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import { CheckIfSubscriptionIsActive } from './Functions/Premium';
+import { getDaysToBeNextToExp } from './Functions/Settings';
+import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
 
 import Themes, { getActualAppTheme } from './Themes';
 
 import Routes from './Routes/DrawerContainer';
+import PreferencesContext from './Contexts/PreferencesContext';
 
 if (!__DEV__) {
     Sentry.init({
@@ -55,18 +57,44 @@ const App: React.FC = () => {
         setThemeModificationNotification();
     }, [getTheme]);
 
+    const [preferences, setPreferences] = useState({
+        howManyDaysToBeNextToExpire: 30,
+        isUserPremium: true,
+        appTheme: 'system',
+    });
+
+    useEffect(() => {
+        async function getData() {
+            const daysToBeNext = await getDaysToBeNextToExp();
+            const isPremium = await GetPremium();
+            const appTheme = await getActualAppTheme();
+
+            setPreferences({
+                howManyDaysToBeNextToExpire: daysToBeNext,
+                isUserPremium: isPremium,
+                appTheme,
+            });
+        }
+
+        getData();
+    }, []);
+
     return (
         <RealmContext.Provider value={{ Realm }}>
-            <ThemeProvider theme={theme}>
-                <PaperProvider>
-                    <Portal>
-                        <NavigationContainer>
-                            <StatusBar backgroundColor={theme.colors.accent} />
-                            <Routes />
-                        </NavigationContainer>
-                    </Portal>
-                </PaperProvider>
-            </ThemeProvider>
+            <PreferencesContext.Provider value={preferences}>
+                <ThemeProvider theme={theme}>
+                    <PaperProvider>
+                        <Portal>
+                            <NavigationContainer>
+                                <StatusBar
+                                    backgroundColor={theme.colors.accent}
+                                />
+                                <Routes />
+                            </NavigationContainer>
+                        </Portal>
+                    </PaperProvider>
+                </ThemeProvider>
+            </PreferencesContext.Provider>
         </RealmContext.Provider>
     );
 };

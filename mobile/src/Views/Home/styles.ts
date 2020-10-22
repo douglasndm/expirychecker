@@ -8,7 +8,7 @@ export const Container = styled.View`
 export const InputSearch = styled.TextInput.attrs(({ theme }) => ({
     placeholderColor: theme.colors.inputText,
 }))`
-    margin: 10px;
+    margin: 10px 10px 0 10px;
     background-color: ${(props) => props.theme.colors.inputBackground};
     color: ${(props) => props.theme.colors.inputText};
     border-radius: 12px;
