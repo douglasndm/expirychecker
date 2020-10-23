@@ -68,11 +68,12 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductCode>
                         )}
 
-                        {product.lotes.length > 0 && (
-                            <ProductLote expiredOrNext={expiredOrNext}>
-                                Lote: {product.lotes[0].lote}
-                            </ProductLote>
-                        )}
+                        {product.lotes.length > 0 &&
+                            !!product.lotes[0].lote && (
+                                <ProductLote expiredOrNext={expiredOrNext}>
+                                    Lote: {product.lotes[0].lote}
+                                </ProductLote>
+                            )}
 
                         {multiplesStores && !!product.store && (
                             <ProductStore expiredOrNext={expiredOrNext}>
