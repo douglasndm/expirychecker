@@ -113,11 +113,13 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
         <Container>
             <Header />
 
-            <InputSearch
-                placeholder="Pesquisar por um produto"
-                value={searchString}
-                onChangeText={handleSearchChange}
-            />
+            {products.length > 0 && (
+                <InputSearch
+                    placeholder="Pesquisar por um produto"
+                    value={searchString}
+                    onChangeText={handleSearchChange}
+                />
+            )}
 
             <ListProducts products={productsSearch} isHome />
             {snackBarVisible && notificationToUser && (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { RadioButton, Dialog } from 'react-native-paper';
@@ -71,7 +71,7 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
         }
     }
 
-    async function handleDelete() {
+    const handleDelete = useCallback(async () => {
         try {
             await deleteLote(loteId);
 
@@ -80,7 +80,7 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
         } catch (err) {
             console.warn(err);
         }
-    }
+    }, [lote, loteId, navigation]);
 
     useEffect(() => {
         const loteResult = product.lotes.find((l) => l.id === loteId);
@@ -148,7 +148,7 @@ const EditLote: React.FC<EditLoteProps> = ({ route }: EditLoteProps) => {
                     <InputContainer>
                         <ProductHeader>
                             <ProductName>{product.name}</ProductName>
-                            {product.code && (
+                            {!!product.code && (
                                 <ProductCode>{product.code}</ProductCode>
                             )}
                         </ProductHeader>
