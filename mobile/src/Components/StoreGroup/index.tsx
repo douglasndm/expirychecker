@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
+import { useNavigation } from '@react-navigation/native';
 import ProductItem from '../ProductItem';
 
 import {
@@ -11,6 +12,8 @@ import {
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
+import Button from '../Button';
+
 import { StoreGroupContainer, StoreTitle, AdView } from './styles';
 
 interface IRequest {
@@ -19,6 +22,7 @@ interface IRequest {
 }
 
 const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
+    const navigation = useNavigation();
     const { isUserPremium } = useContext(PreferencesContext);
 
     const adUnitId = __DEV__
@@ -28,13 +32,26 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
     const resultsTemp = sortProductsLotesByLotesExpDate(products);
     const results = sortProductsByFisrtLoteExpDate(resultsTemp);
 
+    const handleStoreDetails = useCallback(() => {
+        navigation.push('StoreDetails', {
+            storeName,
+        });
+    }, [storeName, navigation]);
+
     return (
         <StoreGroupContainer>
-            <StoreTitle>{storeName}</StoreTitle>
+            <StoreTitle onPress={handleStoreDetails}>{storeName}</StoreTitle>
 
             {results.map((product) => (
                 <ProductItem key={product.id} product={product} disableAds />
             ))}
+
+            {products.length >= 5 && (
+                <Button
+                    text="Mostrar todos os produtos da loja"
+                    onPress={handleStoreDetails}
+                />
+            )}
 
             {!isUserPremium && (
                 <AdView>
