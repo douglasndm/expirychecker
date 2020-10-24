@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
 import br from 'date-fns/locale/pt-BR' // eslint-disable-line
@@ -95,7 +96,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                 </Amount>
                             </AmountContainer>
 
-                            {totalPrice > 0 && (
+                            {PixelRatio.get() > 1 && totalPrice > 0 && (
                                 <PriceContainer>
                                     <PriceContainerText
                                         expiredOrNext={expiredOrNext}
