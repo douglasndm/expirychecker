@@ -86,12 +86,18 @@ export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
 }
 
 export async function GetAllProductsByStore(
-    store: string
+    store: string,
+    limit?: number
 ): Promise<Array<IProduct>> {
     try {
         const results = Realm.objects<IProduct>('Product')
             .filtered(`store = '${store}'`)
             .slice();
+
+        if (limit) {
+            const limitedResults = results.slice(0, limit);
+            return limitedResults;
+        }
 
         return results;
     } catch (err) {

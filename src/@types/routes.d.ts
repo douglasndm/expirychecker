@@ -7,6 +7,7 @@ type IAppRoute = {
     Settings: React.FC;
     About: React.FC;
     ProductDetails: { productId: number };
+    StoreDetails: { storeName: string };
     EditProduct: { productId: number };
     EditLote: { product: IProduct; loteId: number };
     Test: React.FC;

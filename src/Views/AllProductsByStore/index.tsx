@@ -12,7 +12,9 @@ const AllProductsByStore: React.FC = () => {
     const [allProducts, setAllProducsts] = useState<IStoreGroup[]>([]);
 
     useEffect(() => {
-        GetAllProductsOrderedByStore().then((data) => setAllProducsts(data));
+        GetAllProductsOrderedByStore({ limit: 5 }).then((data) =>
+            setAllProducsts(data)
+        );
     }, []);
 
     return (
