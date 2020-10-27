@@ -91,6 +91,18 @@ export async function checkIfLoteAlreadyExists({
     }
 }
 
+export async function getLoteById(loteId: number): Promise<ILote> {
+    try {
+        const result = Realm.objects<ILote>('Lote').filtered(
+            `id = "${loteId}"`
+        )[0];
+
+        return result;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 interface createLoteProps {
     lote: Omit<ILote, 'id'>;
     productCode?: string;
