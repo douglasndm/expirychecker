@@ -85,6 +85,20 @@ export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
     return [];
 }
 
+export async function GetAllProductsWithLotesAndNotTratado(): Promise<
+    Array<IProduct>
+> {
+    try {
+        const results = Realm.objects<IProduct>('Product')
+            .filtered('lotes.@count > 0 AND lotes.status != "Tratado"')
+            .slice();
+
+        return results;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 export async function GetAllProductsByStore(
     store: string,
     limit?: number
