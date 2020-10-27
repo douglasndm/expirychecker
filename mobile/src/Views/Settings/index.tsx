@@ -24,6 +24,7 @@ import {
     Container,
     PageHeader,
     BackButton,
+    BackButtonImage,
     PageTitle,
     Category,
     CategoryTitle,
@@ -122,7 +123,10 @@ const Settings: React.FC = () => {
         <Container>
             <ScrollView style={{ padding: 16, flex: 1 }}>
                 <PageHeader>
-                    <BackButton onPress={handleBackButton} />
+                    <BackButton>
+                        <BackButtonImage onPress={handleBackButton} />
+                    </BackButton>
+
                     <PageTitle>Configurações</PageTitle>
                 </PageHeader>
 
