@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 
 import {
+    GetAllProductsWithLotesAndNotTratado,
     removeAllLotesTratadosFromAllProduts,
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
@@ -33,12 +34,9 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
         if (notificationToUser) setSnackBarVisible(true);
     }, [notificationToUser]);
 
-    async function getProduts(realm: Realm) {
+    async function getProduts() {
         try {
-            const resultsDB = realm
-                .objects<IProduct>('Product')
-                .filtered('lotes.@count > 0 AND lotes.status != "Tratado"')
-                .slice();
+            const resultsDB = await GetAllProductsWithLotesAndNotTratado();
 
             // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
             // ESSA FUNÇÃO REMOVE QUALQUER VESTIGIO DE LOTES TRATADOS
@@ -74,9 +72,9 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
 
     useEffect(() => {
         async function startRealm() {
-            Realm.addListener('change', () => getProduts(Realm));
+            Realm.addListener('change', () => getProduts());
 
-            getProduts(Realm);
+            getProduts();
         }
 
         startRealm();
@@ -84,7 +82,7 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
         return () => {
             Realm.removeAllListeners();
         };
-    }, []);
+    }, [Realm]);
 
     useEffect(() => {
         setProductsSearch(products);
@@ -168,7 +166,7 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
             )}
 
             <ListProducts products={productsSearch} isHome />
-            {snackBarVisible && notificationToUser && (
+            {snackBarVisible && !!notificationToUser && (
                 <Notification NotificationMessage={notificationToUser} />
             )}
             {!notificationToUser && error && (
