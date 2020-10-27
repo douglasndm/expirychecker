@@ -95,10 +95,56 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
             setSearchString(search);
 
             if (search && search !== '') {
+                const query = search.trim().toLowerCase();
+
                 const productsFind = products.filter((product) => {
-                    return !!product.name
+                    const searchByName = product.name
                         .toLowerCase()
-                        .includes(search.toLowerCase());
+                        .includes(query);
+
+                    if (searchByName) {
+                        return true;
+                    }
+
+                    if (product.code) {
+                        const searchBycode = product.code
+                            .toLowerCase()
+                            .includes(query);
+
+                        if (searchBycode) {
+                            return true;
+                        }
+                    }
+
+                    if (product.store) {
+                        const searchByStore = product.store
+                            .toLowerCase()
+                            .includes(query);
+
+                        if (searchByStore) {
+                            return true;
+                        }
+                    }
+
+                    if (product.lotes.length > 0) {
+                        const lotesFounded = product.lotes.filter((lote) => {
+                            const searchByLoteName = lote.lote
+                                .toLowerCase()
+                                .includes(query);
+
+                            if (searchByLoteName) {
+                                return true;
+                            }
+
+                            return false;
+                        });
+
+                        if (lotesFounded.length > 0) {
+                            return true;
+                        }
+                    }
+
+                    return false;
                 });
 
                 setProductsSearch(productsFind);
