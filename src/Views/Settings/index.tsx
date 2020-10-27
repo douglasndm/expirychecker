@@ -242,6 +242,14 @@ const Settings: React.FC = () => {
                                         value="oceanblue"
                                     />
                                 ) : null}
+
+                                {userIsPremium ||
+                                    (__DEV__ && (
+                                        <Picker.Item
+                                            label="Relax (Premium)"
+                                            value="relax"
+                                        />
+                                    ))}
                             </Picker>
                         </View>
                     </CategoryOptions>
