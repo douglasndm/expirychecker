@@ -6,6 +6,7 @@ import UltraViolet from './UltraViolet';
 import DarkGreen from './DarkGreen';
 import HappyPink from './HappyPink';
 import OceanBlue from './OceanBlue';
+import Relax from './Relax';
 
 import { getAppTheme } from '../Functions/Settings';
 
@@ -16,6 +17,7 @@ export default {
     DarkGreen,
     HappyPink,
     OceanBlue,
+    Relax,
 };
 
 export const getActualAppTheme = async (): Promise<ITheme> => {
@@ -39,6 +41,9 @@ export const getActualAppTheme = async (): Promise<ITheme> => {
     }
     if (theme === 'oceanblue') {
         return OceanBlue;
+    }
+    if (theme === 'relax') {
+        return Relax;
     }
     if (theme === 'system') {
         if (systemTheme === 'light') {
