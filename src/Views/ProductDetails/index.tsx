@@ -9,6 +9,7 @@ import NumberFormat from 'react-number-format';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import { getProductById, deleteProduct } from '../../Functions/Product';
@@ -145,25 +146,11 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <View
                                 style={{
                                     flexDirection: 'row',
-                                    marginLeft: -15,
+                                    alignItems: 'center',
                                 }}
                             >
-                                <Button
-                                    style={{
-                                        alignSelf: 'flex-end',
-                                    }}
-                                    icon={() => (
-                                        <Icons
-                                            name="arrow-back-outline"
-                                            size={28}
-                                            color={theme.colors.text}
-                                        />
-                                    )}
-                                    color={theme.colors.accent}
-                                    compact
-                                    onPress={() => {
-                                        navigation.goBack();
-                                    }}
+                                <BackButton
+                                    handleOnPress={() => navigation.goBack()}
                                 />
                                 <PageTitle>Detalhes</PageTitle>
                             </View>
