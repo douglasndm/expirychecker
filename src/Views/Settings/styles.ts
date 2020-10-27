@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Request {
@@ -14,15 +15,16 @@ export const PageHeader = styled.View`
     align-items: center;
 `;
 
-export const BackButton = styled(Ionicons).attrs((props) => ({
+export const BackButton = styled(RectButton)``;
+
+export const BackButtonImage = styled(Ionicons).attrs((props) => ({
     name: 'arrow-back-outline',
     color: props.theme.colors.text,
     size: 28,
-}))`
-    margin-right: 10px;
-`;
+}))``;
 
 export const PageTitle = styled.Text`
+    margin-left: 10px;
     font-size: 28px;
     font-weight: bold;
     color: ${(props) => props.theme.colors.text};
