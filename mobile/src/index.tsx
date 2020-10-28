@@ -19,6 +19,7 @@ import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
 import Themes, { getActualAppTheme } from './Themes';
 
 import Routes from './Routes/DrawerContainer';
+
 import PreferencesContext from './Contexts/PreferencesContext';
 
 if (!__DEV__) {
@@ -38,13 +39,7 @@ const App: React.FC = () => {
 
     useEffect(() => {
         getTheme();
-
-        async function checkIfUserIsPremium() {
-            await CheckIfSubscriptionIsActive();
-        }
-
-        checkIfUserIsPremium();
-    }, []);
+    }, [getTheme]);
 
     // Troca o tema do app a cada alteração em tempo real na pagina de configurações
     useEffect(() => {
@@ -77,6 +72,8 @@ const App: React.FC = () => {
                 appTheme,
                 multiplesStores,
             });
+
+            await CheckIfSubscriptionIsActive();
         }
 
         getData();
