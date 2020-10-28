@@ -29,6 +29,7 @@ import {
     Category,
     CategoryTitle,
     CategoryOptions,
+    SettingContainer,
     SettingDescription,
     InputSetting,
     PremiumButtonsContainer,
@@ -78,6 +79,11 @@ const Settings: React.FC = () => {
 
         setMultipleStoresState(!multipleStoresState);
     }, [multipleStoresState, setMultipleStoresState]);
+
+    const handleThemeChange = useCallback(async (themeName) => {
+        setSelectedTheme(String(themeName));
+        await setAppTheme(String(themeName));
+    }, []);
 
     useEffect(() => {
         async function getSettingsAlreadySetted() {
@@ -151,14 +157,7 @@ const Settings: React.FC = () => {
                             }}
                         />
 
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                marginTop: 15,
-                            }}
-                        >
+                        <SettingContainer>
                             <SettingDescription>
                                 Notificações habilitadas?
                             </SettingDescription>
@@ -166,16 +165,9 @@ const Settings: React.FC = () => {
                                 value={isNotificationsEnabled}
                                 onValueChange={handleNotificationEnabledSwitch}
                             />
-                        </View>
+                        </SettingContainer>
 
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                marginTop: 15,
-                            }}
-                        >
+                        <SettingContainer>
                             <SettingDescription>
                                 Habilitar modo de múltiplas lojas
                             </SettingDescription>
@@ -183,7 +175,7 @@ const Settings: React.FC = () => {
                                 value={multipleStoresState}
                                 onValueChange={handleMultiStoresEnableSwitch}
                             />
-                        </View>
+                        </SettingContainer>
                     </CategoryOptions>
 
                     <CategoryOptions>
@@ -205,10 +197,7 @@ const Settings: React.FC = () => {
                                 }}
                                 mode="dropdown"
                                 selectedValue={selectedTheme}
-                                onValueChange={async (themeName) => {
-                                    setSelectedTheme(String(themeName));
-                                    await setAppTheme(String(themeName));
-                                }}
+                                onValueChange={handleThemeChange}
                             >
                                 <Picker.Item
                                     label="Baseado no sistema (Padrão)"
