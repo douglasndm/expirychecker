@@ -48,6 +48,14 @@ export const CategoryOptions = styled.View<Request>`
 
     opacity: ${(props) => (props.notPremium ? 0.2 : 1)};
 `;
+
+export const SettingContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+`;
+
 export const SettingDescription = styled.Text`
     font-size: 14px;
     color: ${(props) => props.theme.colors.text};
