@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
@@ -39,7 +39,9 @@ const Product = ({ product, expired, nextToExp }: Request) => {
 
     const [totalPrice, setTotalPrice] = useState(0);
 
-    const expiredOrNext = !!(expired || nextToExp);
+    const expiredOrNext = useMemo(() => {
+        return !!(expired || nextToExp);
+    }, [expired, nextToExp]);
 
     useEffect(() => {
         if (product.lotes[0]) {

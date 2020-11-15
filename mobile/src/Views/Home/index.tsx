@@ -16,23 +16,14 @@ import RealmContext from '../../Contexts/RealmContext';
 
 import { Container, InputSearch } from './styles';
 
-interface HomeProps {
-    notificationToUser?: string;
-}
-
-const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
+const Home: React.FC = () => {
     const { Realm } = useContext(RealmContext);
 
-    const [snackBarVisible, setSnackBarVisible] = useState(false);
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [error, setError] = useState<string>();
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
-
-    useEffect(() => {
-        if (notificationToUser) setSnackBarVisible(true);
-    }, [notificationToUser]);
 
     async function getProduts() {
         try {
@@ -166,10 +157,7 @@ const Home: React.FC<HomeProps> = ({ notificationToUser }: HomeProps) => {
             )}
 
             <ListProducts products={productsSearch} isHome />
-            {snackBarVisible && !!notificationToUser && (
-                <Notification NotificationMessage={notificationToUser} />
-            )}
-            {!notificationToUser && error && (
+            {error && (
                 <Notification
                     NotificationMessage={error}
                     NotificationType="error"
