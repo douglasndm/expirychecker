@@ -1,8 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import Button from '../../Components/Button';
 
@@ -20,6 +22,8 @@ interface Props {
 const Success: React.FC = () => {
     const route = useRoute();
     const { reset } = useNavigation();
+
+    const { isUserPremium } = useContext(PreferencesContext);
 
     const routeParams = route.params as Props;
 
@@ -104,7 +108,9 @@ const Success: React.FC = () => {
                     onPress={handleNavigateToHome}
                 />
 
-                <BannerAd size={BannerAdSize.BANNER} unitId={adUnitId} />
+                {!isUserPremium && (
+                    <BannerAd size={BannerAdSize.BANNER} unitId={adUnitId} />
+                )}
             </SuccessMessageContainer>
         </Container>
     );
