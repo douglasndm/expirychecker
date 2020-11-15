@@ -48,7 +48,7 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
 const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const { productId } = route.params;
-    const navigation = useNavigation();
+    const { reset, goBack } = useNavigation();
 
     const { isUserPremium } = useContext(PreferencesContext);
 
@@ -85,8 +85,14 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                 interstitialAd.show();
             }
 
-            Alert.alert('Lote cadastrado com sucesso');
-            navigation.goBack();
+            reset({
+                index: 1,
+                routes: [
+                    { name: 'Home' },
+                    { name: 'ProductDetails', params: { id: productId } },
+                    { name: 'Success', params: { type: 'create_batch' } },
+                ],
+            });
         } catch (err) {
             crashlytics().recordError(err);
             setNotification(err);
@@ -96,7 +102,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
         productId,
         expDate,
         lote,
-        navigation,
+        reset,
         price,
         adReady,
         isUserPremium,
@@ -158,9 +164,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                             />
                         )}
                         compact
-                        onPress={() => {
-                            navigation.goBack();
-                        }}
+                        onPress={goBack}
                     />
                     <PageTitle>Adicionar um lote</PageTitle>
                 </View>
