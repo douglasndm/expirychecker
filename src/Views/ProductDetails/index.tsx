@@ -111,15 +111,17 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         try {
             await deleteProduct(productId);
 
-            Alert.alert(`${name} foi apagado.`);
             reset({
                 index: 1,
-                routes: [{ name: 'Home' }],
+                routes: [
+                    { name: 'Home' },
+                    { name: 'Success', params: { type: 'delete_product' } },
+                ],
             });
         } catch (err) {
             console.log(err);
         }
-    }, [name, productId, reset]);
+    }, [productId, reset]);
 
     useEffect(() => {
         getProduct();
