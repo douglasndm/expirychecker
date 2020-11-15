@@ -21,7 +21,15 @@ const ListProducts: React.FC<RequestProps> = ({
     products,
     isHome,
 }: RequestProps) => {
-    const navigation = useNavigation();
+    const { navigate } = useNavigation();
+
+    const handleNavigateToAllProducts = useCallback(() => {
+        navigate('AllProducts');
+    }, [navigate]);
+
+    const handleNavigateAddNewProduct = useCallback(() => {
+        navigate('AddProduct');
+    }, [navigate]);
 
     const ListHeader = useCallback(() => {
         return (
@@ -51,9 +59,7 @@ const ListProducts: React.FC<RequestProps> = ({
             return (
                 <GenericButton
                     text="Mostrar todos os produtos"
-                    onPress={() => {
-                        navigation.push('AllProducts');
-                    }}
+                    onPress={handleNavigateToAllProducts}
                 />
             );
         }
@@ -61,12 +67,15 @@ const ListProducts: React.FC<RequestProps> = ({
         return (
             <GenericButton
                 text="Cadastrar um produto"
-                onPress={() => {
-                    navigation.push('AddProduct');
-                }}
+                onPress={handleNavigateAddNewProduct}
             />
         );
-    }, [products.length, isHome, navigation]);
+    }, [
+        products.length,
+        isHome,
+        handleNavigateAddNewProduct,
+        handleNavigateToAllProducts,
+    ]);
 
     const renderComponent = useCallback(({ item, index }) => {
         return <ProductItem product={item} index={index} />;
