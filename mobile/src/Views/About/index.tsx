@@ -2,20 +2,20 @@ import React, { useCallback } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import BackButton from '../../Components/BackButton';
+
 import {
     Container,
     Content,
-    ButtonPaper,
     PageTitle,
     AboutSection,
     ApplicationName,
-    Icons,
     Text,
     Link,
 } from './styles';
 
 const About: React.FC = () => {
-    const navigation = useNavigation();
+    const { goBack } = useNavigation();
 
     const handleLinkedinPress = useCallback(async () => {
         await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
@@ -28,16 +28,7 @@ const About: React.FC = () => {
     return (
         <Container>
             <Content>
-                <ButtonPaper
-                    style={{
-                        alignSelf: 'flex-end',
-                    }}
-                    icon={() => <Icons name="arrow-back-outline" size={28} />}
-                    compact
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                />
+                <BackButton handleOnPress={goBack} />
                 <PageTitle>Sobre</PageTitle>
             </Content>
 

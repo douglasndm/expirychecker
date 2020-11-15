@@ -4,18 +4,25 @@ import DatePicker from 'react-native-date-picker';
 import NumericInput from '@wwdrew/react-native-numeric-textinput';
 
 export const Container = styled.View`
-    padding: 16px 16px 0 16px;
-
     flex: 1;
     flex-direction: column;
 
     background: ${({ theme }) => theme.colors.background};
 `;
 
+export const PageHeader = styled.View`
+    flex-direction: row;
+    margin-top: 15px;
+`;
+
 export const PageTitle = styled.Text`
     font-size: 28px;
     font-weight: bold;
     color: ${({ theme }) => theme.colors.text};
+`;
+
+export const PageContent = styled.View`
+    padding: 0 16px 16px 16px;
 `;
 
 export const InputContainer = styled.View`
