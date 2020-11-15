@@ -32,7 +32,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { Realm } = useContext(RealmContext);
     const { productId } = route.params;
 
-    const navigation = useNavigation();
+    const { reset, goBack } = useNavigation();
 
     const theme = useTheme();
 
@@ -54,11 +54,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
             const product = await getProductById(productId);
 
             if (!product) {
-                navigation.push('Home', {
-                    notificationToUser: 'Produto não encontrado',
-                });
-
-                return;
+                throw new Error('Produto não encontrado');
             }
 
             setName(product.name);
@@ -66,7 +62,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
             if (product.store) setStore(product.store);
         }
         getProductData();
-    }, [productId, navigation]);
+    }, [productId]);
 
     async function updateProduct() {
         if (!name || name.trim() === '') {
@@ -83,7 +79,10 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 );
             });
 
-            navigation.goBack();
+            reset({
+                index: 1,
+                routes: [{ name: 'ProductDetails', params: { id: productId } }],
+            });
         } catch (err) {
             console.log(err);
         }
@@ -146,9 +145,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 <Icons name="arrow-back-outline" size={28} />
                             )}
                             compact
-                            onPress={() => {
-                                navigation.goBack();
-                            }}
+                            onPress={goBack}
                         />
                         <PageTitle>Editar produto</PageTitle>
                     </View>
@@ -233,9 +230,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 icon={() => (
                                     <Icons name="exit-outline" size={22} />
                                 )}
-                                onPress={() => {
-                                    navigation.goBack();
-                                }}
+                                onPress={goBack}
                             >
                                 Cancelar
                             </ButtonPaper>

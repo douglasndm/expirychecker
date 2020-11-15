@@ -32,7 +32,7 @@ interface EditLoteProps {
 
 const EditLote: React.FC = () => {
     const route = useRoute();
-    const { navigate, reset, goBack } = useNavigation();
+    const { reset, goBack } = useNavigation();
 
     const routeParams = route.params as EditLoteProps;
 
@@ -102,7 +102,10 @@ const EditLote: React.FC = () => {
             Alert.alert('Lote editado!');
             reset({
                 index: 1,
-                routes: [{ name: 'ProductDetails', params: { id: productId } }],
+                routes: [
+                    { name: 'Home' },
+                    { name: 'ProductDetails', params: { id: productId } },
+                ],
             });
         } catch (err) {
             console.warn(err);
