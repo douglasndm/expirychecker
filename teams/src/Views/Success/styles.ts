@@ -12,6 +12,7 @@ export const SuccessMessageContainer = styled.View`
 `;
 
 export const Title = styled.Text`
+    color: ${(props) => props.theme.colors.text};
     font-size: 24px;
     font-weight: bold;
 `;
