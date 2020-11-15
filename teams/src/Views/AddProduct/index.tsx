@@ -120,7 +120,7 @@ const AddProduct: React.FC = () => {
                     interstitialAd.show();
                 }
 
-                navigation.navigate('Success', { type: 'product' });
+                navigation.navigate('Success', { type: 'create_product' });
             }
         } catch (error) {
             console.warn(error);

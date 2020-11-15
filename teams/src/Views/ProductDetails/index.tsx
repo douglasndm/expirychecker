@@ -1,6 +1,12 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useContext,
+    useMemo,
+} from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useTheme } from 'styled-components';
 import { Button } from 'react-native-paper';
@@ -38,7 +44,6 @@ import {
     FloatButton,
 } from './styles';
 
-import RealmContext from '../../Contexts/RealmContext';
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 interface Request {
@@ -50,14 +55,14 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-    const { Realm } = useContext(RealmContext);
     const { howManyDaysToBeNextToExpire, multiplesStores } = useContext(
         PreferencesContext
     );
 
-    const navigation = useNavigation();
-
-    const productId = route.params.id;
+    const { navigate, goBack, reset } = useNavigation();
+    const productId = useMemo(() => {
+        return route.params.id;
+    }, [route.params.id]);
 
     const theme = useTheme();
 
@@ -76,7 +81,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             const result = await getProductById(productId);
 
             if (!result || result === null) {
-                navigation.goBack();
+                goBack();
                 return;
             }
 
@@ -92,40 +97,33 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             crashlytics().recordError(error);
             console.warn(error);
         }
-    }, [productId, navigation]);
+    }, [productId, goBack]);
 
     const addNewLote = useCallback(() => {
-        navigation.navigate('AddLote', { productId });
-    }, [navigation, productId]);
+        navigate('AddLote', { productId });
+    }, [navigate, productId]);
 
     const handleEdit = useCallback(() => {
-        navigation.push('EditProduct', { productId });
-    }, [navigation, productId]);
+        navigate('EditProduct', { productId });
+    }, [navigate, productId]);
 
     const handleDeleteProduct = useCallback(async () => {
         try {
             await deleteProduct(productId);
 
             Alert.alert(`${name} foi apagado.`);
-            navigation.dispatch(StackActions.popToTop());
+            reset({
+                index: 1,
+                routes: [{ name: 'Home' }],
+            });
         } catch (err) {
             console.log(err);
         }
-    }, [name, productId, navigation]);
+    }, [name, productId, reset]);
 
     useEffect(() => {
-        async function startRealm() {
-            Realm.addListener('change', () => {
-                getProduct();
-            });
-
-            getProduct();
-        }
-
-        startRealm();
-
-        return () => Realm.removeAllListeners();
-    }, []);
+        getProduct();
+    }, [getProduct]);
 
     useEffect(() => {
         setLotesTratados(() =>
@@ -149,9 +147,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     alignItems: 'center',
                                 }}
                             >
-                                <BackButton
-                                    handleOnPress={() => navigation.goBack()}
-                                />
+                                <BackButton handleOnPress={goBack} />
                                 <PageTitle>Detalhes</PageTitle>
                             </View>
 
@@ -224,8 +220,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             expired={expired}
                                             nextToExp={nextToExp}
                                             onPress={() => {
-                                                navigation.push('EditLote', {
-                                                    product,
+                                                navigate('EditLote', {
+                                                    productId,
                                                     loteId: lote.id,
                                                 });
                                             }}
@@ -316,8 +312,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                         <TableRow
                                             key={lote.id}
                                             onPress={() => {
-                                                navigation.push('EditLote', {
-                                                    product,
+                                                navigate('EditLote', {
+                                                    productId,
                                                     loteId: lote.id,
                                                 });
                                             }}
@@ -370,7 +366,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     <GenericButton
                         text="Cadastrar novo lote"
                         onPress={() => {
-                            navigation.push('AddLote', {
+                            navigate('AddLote', {
                                 productId,
                             });
                         }}
