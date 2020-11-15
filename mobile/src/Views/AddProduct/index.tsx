@@ -48,7 +48,7 @@ const adUnitID = __DEV__
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
 const AddProduct: React.FC = () => {
-    const { goBack, navigate } = useNavigation();
+    const { goBack, navigate, reset } = useNavigation();
 
     const { isUserPremium, multiplesStores } = useContext(PreferencesContext);
 
@@ -123,7 +123,13 @@ const AddProduct: React.FC = () => {
                     interstitialAd.show();
                 }
 
-                navigate('Success', { type: 'create_product' });
+                reset({
+                    index: 1,
+                    routes: [
+                        { name: 'Home' },
+                        { name: 'Success', params: { type: 'create_product' } },
+                    ],
+                });
             }
         } catch (error) {
             console.warn(error);
