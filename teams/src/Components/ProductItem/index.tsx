@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
@@ -27,15 +27,23 @@ const ProductItem: React.FC<RequestProps> = ({
 
     const [adFailed, setAdFailed] = useState(false);
 
-    const adUnitId = __DEV__
-        ? TestIds.BANNER
-        : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
+    const expired = useMemo(() => {
+        return product.lotes[0] && isPast(product.lotes[0].exp_date);
+    }, [product.lotes]);
 
-    const expired = product.lotes[0] && isPast(product.lotes[0].exp_date);
-    const nextToExp =
-        product.lotes[0] &&
-        addDays(new Date(), howManyDaysToBeNextToExpire) >=
-            product.lotes[0].exp_date;
+    const nextToExp = useMemo(() => {
+        return (
+            product.lotes[0] &&
+            addDays(new Date(), howManyDaysToBeNextToExpire) >=
+                product.lotes[0].exp_date
+        );
+    }, [howManyDaysToBeNextToExpire, product.lotes]);
+
+    const adUnitId = useMemo(() => {
+        return __DEV__
+            ? TestIds.BANNER
+            : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
+    }, []);
 
     return (
         <View>
