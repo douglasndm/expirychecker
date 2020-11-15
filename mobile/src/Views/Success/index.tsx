@@ -39,13 +39,14 @@ const Success: React.FC<Props> = ({ type }: Props) => {
                 <LottieView
                     source={require('../../Assets/Animations/success-loading.json')}
                     autoPlay
+                    loop={false}
                     style={{ width: 180, height: 180 }}
                 />
 
                 <Title>Produto cadastrado</Title>
 
                 <Description>
-                    Seu produto foi cadastrado com sucesso
+                    Seu produto foi cadastrado com sucesso.
                 </Description>
 
                 <Button
