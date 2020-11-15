@@ -22,7 +22,6 @@ export default {
 
 export const getActualAppTheme = async (): Promise<ITheme> => {
     const theme = await getAppTheme();
-    const systemTheme = Appearance.getColorScheme();
 
     if (theme === 'light') {
         return Light;
@@ -46,12 +45,12 @@ export const getActualAppTheme = async (): Promise<ITheme> => {
         return Relax;
     }
     if (theme === 'system') {
-        if (systemTheme === 'light') {
-            return Light;
-        }
+        const systemTheme = Appearance.getColorScheme();
+
         if (systemTheme === 'dark') {
             return Dark;
         }
+        return Light;
     }
     return Light;
 };

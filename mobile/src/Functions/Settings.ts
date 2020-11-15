@@ -40,20 +40,6 @@ export async function setDaysToBeNextToExp(days: number): Promise<void> {
     }
 }
 
-export async function getAppTheme(): Promise<string> {
-    try {
-        const appTheme = Realm.objects<ISetting>('Setting').filtered(
-            "name = 'appTheme'"
-        )[0];
-
-        return appTheme.value || 'system';
-    } catch (err) {
-        console.warn(err.message);
-    }
-
-    return 'system';
-}
-
 export async function setAppTheme(themeName: string): Promise<void> {
     try {
         Realm.write(() => {
@@ -68,6 +54,23 @@ export async function setAppTheme(themeName: string): Promise<void> {
         });
     } catch (err) {
         console.warn(err);
+    }
+}
+
+export async function getAppTheme(): Promise<string> {
+    try {
+        const appTheme = Realm.objects<ISetting>('Setting').filtered(
+            "name = 'appTheme'"
+        )[0];
+
+        if (appTheme.value) {
+            return appTheme.value;
+        }
+
+        await setAppTheme('system');
+        return 'system';
+    } catch (err) {
+        throw new Error(err);
     }
 }
 
