@@ -13,6 +13,7 @@ import GenericButton from '../../Components/Button';
 import {
     Container,
     PageTitle,
+    PageContent,
     InputContainer,
     InputText,
     NumericInputField,
@@ -23,7 +24,13 @@ import {
 } from '../AddProduct/styles';
 import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
-import { LoadingText, PageTitleContainer, Button, Icons } from './styles';
+import {
+    LoadingText,
+    PageHeader,
+    PageTitleContainer,
+    Button,
+    Icons,
+} from './styles';
 
 interface EditLoteProps {
     productId: number;
@@ -135,12 +142,7 @@ const EditLote: React.FC = () => {
             ) : (
                 <Container>
                     <ScrollView>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                            }}
-                        >
+                        <PageHeader>
                             <PageTitleContainer>
                                 <BackButton handleOnPress={goBack} />
                                 <PageTitle>Editar lote</PageTitle>
@@ -156,119 +158,134 @@ const EditLote: React.FC = () => {
                             >
                                 Apagar
                             </Button>
-                        </View>
+                        </PageHeader>
 
-                        <InputContainer>
-                            <ProductHeader>
-                                <ProductName>{product.name}</ProductName>
-                                {!!product.code && (
-                                    <ProductCode>{product.code}</ProductCode>
-                                )}
-                            </ProductHeader>
+                        <PageContent>
+                            <InputContainer>
+                                <ProductHeader>
+                                    <ProductName>{product.name}</ProductName>
+                                    {!!product.code && (
+                                        <ProductCode>
+                                            {product.code}
+                                        </ProductCode>
+                                    )}
+                                </ProductHeader>
 
-                            <InputGroup>
-                                <InputText
-                                    style={{
-                                        flex: 5,
-                                        marginRight: 5,
-                                    }}
-                                    placeholder="Lote"
-                                    value={lote}
-                                    onChangeText={(value) => setLote(value)}
-                                />
-                                <InputText
-                                    style={{
-                                        flex: 4,
-                                    }}
-                                    placeholder="Quantidade"
-                                    keyboardType="numeric"
-                                    value={String(amount)}
-                                    onChangeText={(value) => {
-                                        const regex = /^[0-9\b]+$/;
+                                <InputGroup>
+                                    <InputText
+                                        style={{
+                                            flex: 5,
+                                            marginRight: 5,
+                                        }}
+                                        placeholder="Lote"
+                                        value={lote}
+                                        onChangeText={(value) => setLote(value)}
+                                    />
+                                    <InputText
+                                        style={{
+                                            flex: 4,
+                                        }}
+                                        placeholder="Quantidade"
+                                        keyboardType="numeric"
+                                        value={String(amount)}
+                                        onChangeText={(value) => {
+                                            const regex = /^[0-9\b]+$/;
 
-                                        if (value === '' || regex.test(value)) {
-                                            if (value === '') {
-                                                setAmount(0);
-                                                return;
+                                            if (
+                                                value === '' ||
+                                                regex.test(value)
+                                            ) {
+                                                if (value === '') {
+                                                    setAmount(0);
+                                                    return;
+                                                }
+                                                setAmount(Number(value));
                                             }
-                                            setAmount(Number(value));
-                                        }
-                                    }}
+                                        }}
+                                    />
+                                </InputGroup>
+
+                                <NumericInputField
+                                    type="currency"
+                                    locale="pt-BR"
+                                    currency="BRL"
+                                    value={price}
+                                    onUpdate={(value: number) =>
+                                        setPrice(value)
+                                    }
+                                    placeholder="Valor unitário"
                                 />
-                            </InputGroup>
 
-                            <NumericInputField
-                                type="currency"
-                                locale="pt-BR"
-                                currency="BRL"
-                                value={price}
-                                onUpdate={(value: number) => setPrice(value)}
-                                placeholder="Valor unitário"
-                            />
-
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                }}
-                            >
                                 <View
                                     style={{
                                         flexDirection: 'row',
-                                        alignItems: 'center',
+                                        justifyContent: 'center',
                                     }}
                                 >
-                                    <RadioButton
-                                        value="tratado"
-                                        status={
-                                            tratado === true
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() => setTratado(true)}
-                                        color={theme.colors.accent}
-                                    />
-                                    <Text style={{ color: theme.colors.text }}>
-                                        Tratado
-                                    </Text>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <RadioButton
+                                            value="tratado"
+                                            status={
+                                                tratado === true
+                                                    ? 'checked'
+                                                    : 'unchecked'
+                                            }
+                                            onPress={() => setTratado(true)}
+                                            color={theme.colors.accent}
+                                        />
+                                        <Text
+                                            style={{ color: theme.colors.text }}
+                                        >
+                                            Tratado
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <RadioButton
+                                            value="Não tratado"
+                                            status={
+                                                tratado === !true
+                                                    ? 'checked'
+                                                    : 'unchecked'
+                                            }
+                                            onPress={() => setTratado(false)}
+                                            color={theme.colors.accent}
+                                        />
+                                        <Text
+                                            style={{ color: theme.colors.text }}
+                                        >
+                                            Não tratado
+                                        </Text>
+                                    </View>
                                 </View>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <RadioButton
-                                        value="Não tratado"
-                                        status={
-                                            tratado === !true
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() => setTratado(false)}
-                                        color={theme.colors.accent}
+
+                                <ExpDateGroup>
+                                    <ExpDateLabel>
+                                        Data de vencimento
+                                    </ExpDateLabel>
+                                    <CustomDatePicker
+                                        date={expDate}
+                                        onDateChange={(value) => {
+                                            setExpDate(value);
+                                        }}
+                                        fadeToColor="none"
+                                        mode="date"
+                                        locale="pt-br"
                                     />
-                                    <Text style={{ color: theme.colors.text }}>
-                                        Não tratado
-                                    </Text>
-                                </View>
-                            </View>
+                                </ExpDateGroup>
+                            </InputContainer>
 
-                            <ExpDateGroup>
-                                <ExpDateLabel>Data de vencimento</ExpDateLabel>
-                                <CustomDatePicker
-                                    date={expDate}
-                                    onDateChange={(value) => {
-                                        setExpDate(value);
-                                    }}
-                                    fadeToColor="none"
-                                    mode="date"
-                                    locale="pt-br"
-                                />
-                            </ExpDateGroup>
-                        </InputContainer>
-
-                        <GenericButton text="Salvar" onPress={handleSave} />
+                            <GenericButton text="Salvar" onPress={handleSave} />
+                        </PageContent>
                     </ScrollView>
                 </Container>
             )}

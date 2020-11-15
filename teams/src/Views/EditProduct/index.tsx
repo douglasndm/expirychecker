@@ -4,15 +4,17 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from 'styled-components';
 
-import { getProductById } from '../../Functions/Product';
-
+import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
+import { getProductById } from '../../Functions/Product';
 import { getMultipleStores } from '../../Functions/Settings';
 
 import {
     Container,
+    PageHeader,
     PageTitle,
+    PageContent,
     InputContainer,
     InputText,
 } from '../AddProduct/styles';
@@ -81,7 +83,10 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
             reset({
                 index: 1,
-                routes: [{ name: 'ProductDetails', params: { id: productId } }],
+                routes: [
+                    { name: 'Home' },
+                    { name: 'ProductDetails', params: { id: productId } },
+                ],
             });
         } catch (err) {
             console.log(err);
@@ -131,111 +136,102 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 </View>
             ) : (
                 <Container>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginLeft: -15,
-                        }}
-                    >
-                        <ButtonPaper
-                            style={{
-                                alignSelf: 'flex-end',
-                            }}
-                            icon={() => (
-                                <Icons name="arrow-back-outline" size={28} />
-                            )}
-                            compact
-                            onPress={goBack}
-                        />
+                    <PageHeader>
+                        <BackButton handleOnPress={goBack} />
                         <PageTitle>Editar produto</PageTitle>
-                    </View>
+                    </PageHeader>
 
-                    <InputContainer>
-                        <InputText
-                            placeholder="Nome do produto"
-                            accessibilityLabel="Campo de texto para nome do produto"
-                            value={name}
-                            onChangeText={(value) => {
-                                setName(value);
-                            }}
-                            onFocus={() => {
-                                setCameraEnebled(false);
-                            }}
-                        />
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
+                    <PageContent>
+                        <InputContainer>
                             <InputText
-                                style={{
-                                    flex: 1,
-                                }}
-                                placeholder="Código do produto"
-                                accessibilityLabel="Campo de texto para código de barras do produto"
-                                value={code}
-                                onChangeText={(value) => setCode(value)}
-                                onFocus={() => {
-                                    setCameraEnebled(false);
-                                }}
-                            />
-                            <ButtonPaper
-                                style={{
-                                    alignSelf: 'center',
-                                    marginBottom: 8,
-                                }}
-                                icon={() => (
-                                    <Icons name="camera-outline" size={42} />
-                                )}
-                                onPress={() => {
-                                    Keyboard.dismiss();
-                                    setCameraEnebled(!cameraEnabled);
-                                }}
-                            />
-                        </View>
-
-                        {multipleStoresState && (
-                            <InputText
-                                placeholder="Loja do produto"
-                                accessibilityLabel="Campo de texto para loja do produto"
-                                value={store}
+                                placeholder="Nome do produto"
+                                accessibilityLabel="Campo de texto para nome do produto"
+                                value={name}
                                 onChangeText={(value) => {
-                                    setStore(value);
+                                    setName(value);
                                 }}
                                 onFocus={() => {
                                     setCameraEnebled(false);
                                 }}
                             />
-                        )}
-
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <ButtonPaper
-                                icon={() => (
-                                    <Icons name="save-outline" size={22} />
-                                )}
-                                onPress={() => {
-                                    updateProduct();
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
-                                Salvar
-                            </ButtonPaper>
-                            <ButtonPaper
-                                icon={() => (
-                                    <Icons name="exit-outline" size={22} />
-                                )}
-                                onPress={goBack}
+                                <InputText
+                                    style={{
+                                        flex: 1,
+                                    }}
+                                    placeholder="Código do produto"
+                                    accessibilityLabel="Campo de texto para código de barras do produto"
+                                    value={code}
+                                    onChangeText={(value) => setCode(value)}
+                                    onFocus={() => {
+                                        setCameraEnebled(false);
+                                    }}
+                                />
+                                <ButtonPaper
+                                    style={{
+                                        alignSelf: 'center',
+                                        marginBottom: 8,
+                                    }}
+                                    icon={() => (
+                                        <Icons
+                                            name="camera-outline"
+                                            size={42}
+                                        />
+                                    )}
+                                    onPress={() => {
+                                        Keyboard.dismiss();
+                                        setCameraEnebled(!cameraEnabled);
+                                    }}
+                                />
+                            </View>
+
+                            {multipleStoresState && (
+                                <InputText
+                                    placeholder="Loja do produto"
+                                    accessibilityLabel="Campo de texto para loja do produto"
+                                    value={store}
+                                    onChangeText={(value) => {
+                                        setStore(value);
+                                    }}
+                                    onFocus={() => {
+                                        setCameraEnebled(false);
+                                    }}
+                                />
+                            )}
+
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                }}
                             >
-                                Cancelar
-                            </ButtonPaper>
-                        </View>
-                    </InputContainer>
+                                <ButtonPaper
+                                    icon={() => (
+                                        <Icons name="save-outline" size={22} />
+                                    )}
+                                    onPress={() => {
+                                        updateProduct();
+                                    }}
+                                >
+                                    Salvar
+                                </ButtonPaper>
+                                <ButtonPaper
+                                    icon={() => (
+                                        <Icons name="exit-outline" size={22} />
+                                    )}
+                                    onPress={goBack}
+                                >
+                                    Cancelar
+                                </ButtonPaper>
+                            </View>
+                        </InputContainer>
+                    </PageContent>
                 </Container>
             )}
         </>

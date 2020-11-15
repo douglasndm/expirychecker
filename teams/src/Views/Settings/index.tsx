@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components/native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { Picker } from '@react-native-community/picker';
 
+import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import {
@@ -23,9 +24,8 @@ import * as Premium from '../../Functions/Premium';
 import {
     Container,
     PageHeader,
-    BackButton,
-    BackButtonImage,
     PageTitle,
+    SettingsContent,
     Category,
     CategoryTitle,
     CategoryOptions,
@@ -127,182 +127,187 @@ const Settings: React.FC = () => {
 
     return (
         <Container>
-            <ScrollView style={{ padding: 16, flex: 1 }}>
+            <ScrollView>
                 <PageHeader>
-                    <BackButton>
-                        <BackButtonImage onPress={handleBackButton} />
-                    </BackButton>
+                    <BackButton handleOnPress={handleBackButton} />
 
                     <PageTitle>Configurações</PageTitle>
                 </PageHeader>
 
-                <Category>
-                    <CategoryTitle>Geral</CategoryTitle>
+                <SettingsContent>
+                    <Category>
+                        <CategoryTitle>Geral</CategoryTitle>
 
-                    <CategoryOptions>
-                        <SettingDescription>
-                            Quantos dias para produto ser considerado próximo
-                        </SettingDescription>
-                        <InputSetting
-                            keyboardType="numeric"
-                            placeholder="Quantidade de dias"
-                            placeholderTextColor={theme.colors.text}
-                            value={String(daysToBeNext)}
-                            onChangeText={(v) => {
-                                const regex = /^[0-9\b]+$/;
-
-                                if (v === '' || regex.test(v)) {
-                                    setDaysToBeNext(Number(v));
-                                }
-                            }}
-                        />
-
-                        <SettingContainer>
+                        <CategoryOptions>
                             <SettingDescription>
-                                Notificações habilitadas?
+                                Quantos dias para produto ser considerado
+                                próximo
                             </SettingDescription>
-                            <Switch
-                                value={isNotificationsEnabled}
-                                onValueChange={handleNotificationEnabledSwitch}
-                            />
-                        </SettingContainer>
+                            <InputSetting
+                                keyboardType="numeric"
+                                placeholder="Quantidade de dias"
+                                placeholderTextColor={theme.colors.text}
+                                value={String(daysToBeNext)}
+                                onChangeText={(v) => {
+                                    const regex = /^[0-9\b]+$/;
 
-                        <SettingContainer>
-                            <SettingDescription>
-                                Habilitar modo de múltiplas lojas
-                            </SettingDescription>
-                            <Switch
-                                value={multipleStoresState}
-                                onValueChange={handleMultiStoresEnableSwitch}
-                            />
-                        </SettingContainer>
-                    </CategoryOptions>
-
-                    <CategoryOptions>
-                        <CategoryTitle>Aparência</CategoryTitle>
-
-                        <View
-                            style={{
-                                marginTop: 10,
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Text style={{ color: theme.colors.text }}>
-                                Tema do aplicativo
-                            </Text>
-
-                            <Picker
-                                style={{
-                                    color: theme.colors.text,
+                                    if (v === '' || regex.test(v)) {
+                                        setDaysToBeNext(Number(v));
+                                    }
                                 }}
-                                mode="dropdown"
-                                selectedValue={selectedTheme}
-                                onValueChange={handleThemeChange}
-                            >
-                                <Picker.Item
-                                    label="Baseado no sistema (Padrão)"
-                                    value="system"
+                            />
+
+                            <SettingContainer>
+                                <SettingDescription>
+                                    Notificações habilitadas?
+                                </SettingDescription>
+                                <Switch
+                                    value={isNotificationsEnabled}
+                                    onValueChange={
+                                        handleNotificationEnabledSwitch
+                                    }
                                 />
-                                <Picker.Item label="Claro" value="light" />
-                                <Picker.Item label="Escuro" value="dark" />
-                                {userIsPremium || __DEV__ ? (
-                                    <Picker.Item
-                                        label="Ultra violeta (Premium)"
-                                        value="ultraviolet"
-                                    />
-                                ) : null}
+                            </SettingContainer>
 
-                                {
-                                    // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
-                                    userIsPremium || __DEV__ ? (
-                                        <Picker.Item
-                                            label="Dark Green (Premium)"
-                                            value="darkgreen"
-                                        />
-                                    ) : null
-                                }
+                            <SettingContainer>
+                                <SettingDescription>
+                                    Habilitar modo de múltiplas lojas
+                                </SettingDescription>
+                                <Switch
+                                    value={multipleStoresState}
+                                    onValueChange={
+                                        handleMultiStoresEnableSwitch
+                                    }
+                                />
+                            </SettingContainer>
+                        </CategoryOptions>
 
-                                {userIsPremium || __DEV__ ? (
-                                    <Picker.Item
-                                        label="Happy Pink (Premium)"
-                                        value="happypink"
-                                    />
-                                ) : null}
+                        <CategoryOptions>
+                            <CategoryTitle>Aparência</CategoryTitle>
 
-                                {userIsPremium || __DEV__ ? (
-                                    <Picker.Item
-                                        label="Ocean Blue (Premium)"
-                                        value="oceanblue"
-                                    />
-                                ) : null}
+                            <View
+                                style={{
+                                    marginTop: 10,
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Text style={{ color: theme.colors.text }}>
+                                    Tema do aplicativo
+                                </Text>
 
-                                {userIsPremium ||
-                                    (__DEV__ && (
-                                        <Picker.Item
-                                            label="Relax (Premium)"
-                                            value="relax"
-                                        />
-                                    ))}
-                            </Picker>
-                        </View>
-                    </CategoryOptions>
-                </Category>
-
-                <Category>
-                    <CategoryTitle>Premium</CategoryTitle>
-
-                    {!userIsPremium && (
-                        <GenericButton
-                            text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
-                            onPress={() => {
-                                navigation.push('PremiumSubscription');
-                            }}
-                        />
-                    )}
-
-                    <CategoryOptions notPremium={!userIsPremium}>
-                        <View>
-                            <SettingDescription>
-                                Com a função de importar e exportar você
-                                consegue salvar todos os seus produtos
-                                externamente em um cartão de memória por exemplo
-                                e depois importar em outro telefone ou depois de
-                                formatar este.
-                            </SettingDescription>
-
-                            <PremiumButtonsContainer>
-                                <ButtonPremium
-                                    disabled={!userIsPremium}
-                                    onPress={async () => {
-                                        await ImportBackupFile();
+                                <Picker
+                                    style={{
+                                        color: theme.colors.text,
                                     }}
+                                    mode="dropdown"
+                                    selectedValue={selectedTheme}
+                                    onValueChange={handleThemeChange}
                                 >
-                                    <ButtonPremiumText>
-                                        Importar
-                                    </ButtonPremiumText>
-                                </ButtonPremium>
-                                <ButtonPremium
-                                    disabled={!userIsPremium}
-                                    onPress={async () => {
-                                        await ExportBackupFile();
-                                    }}
-                                >
-                                    <ButtonPremiumText>
-                                        Exportar
-                                    </ButtonPremiumText>
-                                </ButtonPremium>
-                            </PremiumButtonsContainer>
-                        </View>
-                    </CategoryOptions>
+                                    <Picker.Item
+                                        label="Baseado no sistema (Padrão)"
+                                        value="system"
+                                    />
+                                    <Picker.Item label="Claro" value="light" />
+                                    <Picker.Item label="Escuro" value="dark" />
+                                    {userIsPremium || __DEV__ ? (
+                                        <Picker.Item
+                                            label="Ultra violeta (Premium)"
+                                            value="ultraviolet"
+                                        />
+                                    ) : null}
 
-                    {userIsPremium && (
-                        <ButtonCancel onPress={handleCancel}>
-                            <ButtonCancelText>
-                                Cancelar assinatura
-                            </ButtonCancelText>
-                        </ButtonCancel>
-                    )}
-                </Category>
+                                    {
+                                        // I CANT USE FRAGMENT SO I NEED TO DO EACH PICKER WITH IT OWN 'IF' WHY RN???
+                                        userIsPremium || __DEV__ ? (
+                                            <Picker.Item
+                                                label="Dark Green (Premium)"
+                                                value="darkgreen"
+                                            />
+                                        ) : null
+                                    }
+
+                                    {userIsPremium || __DEV__ ? (
+                                        <Picker.Item
+                                            label="Happy Pink (Premium)"
+                                            value="happypink"
+                                        />
+                                    ) : null}
+
+                                    {userIsPremium || __DEV__ ? (
+                                        <Picker.Item
+                                            label="Ocean Blue (Premium)"
+                                            value="oceanblue"
+                                        />
+                                    ) : null}
+
+                                    {userIsPremium ||
+                                        (__DEV__ && (
+                                            <Picker.Item
+                                                label="Relax (Premium)"
+                                                value="relax"
+                                            />
+                                        ))}
+                                </Picker>
+                            </View>
+                        </CategoryOptions>
+                    </Category>
+
+                    <Category>
+                        <CategoryTitle>Premium</CategoryTitle>
+
+                        {!userIsPremium && (
+                            <GenericButton
+                                text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
+                                onPress={() => {
+                                    navigation.push('PremiumSubscription');
+                                }}
+                            />
+                        )}
+
+                        <CategoryOptions notPremium={!userIsPremium}>
+                            <View>
+                                <SettingDescription>
+                                    Com a função de importar e exportar você
+                                    consegue salvar todos os seus produtos
+                                    externamente em um cartão de memória por
+                                    exemplo e depois importar em outro telefone
+                                    ou depois de formatar este.
+                                </SettingDescription>
+
+                                <PremiumButtonsContainer>
+                                    <ButtonPremium
+                                        disabled={!userIsPremium}
+                                        onPress={async () => {
+                                            await ImportBackupFile();
+                                        }}
+                                    >
+                                        <ButtonPremiumText>
+                                            Importar
+                                        </ButtonPremiumText>
+                                    </ButtonPremium>
+                                    <ButtonPremium
+                                        disabled={!userIsPremium}
+                                        onPress={async () => {
+                                            await ExportBackupFile();
+                                        }}
+                                    >
+                                        <ButtonPremiumText>
+                                            Exportar
+                                        </ButtonPremiumText>
+                                    </ButtonPremium>
+                                </PremiumButtonsContainer>
+                            </View>
+                        </CategoryOptions>
+
+                        {userIsPremium && (
+                            <ButtonCancel onPress={handleCancel}>
+                                <ButtonCancelText>
+                                    Cancelar assinatura
+                                </ButtonCancelText>
+                            </ButtonCancel>
+                        )}
+                    </Category>
+                </SettingsContent>
             </ScrollView>
         </Container>
     );
