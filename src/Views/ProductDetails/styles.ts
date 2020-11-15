@@ -10,8 +10,6 @@ interface IProduct {
 
 export const Container = styled.View`
     flex: 1;
-    padding: 16px;
-
     background: ${({ theme }) => theme.colors.background};
 `;
 
@@ -19,10 +17,15 @@ export const PageHeader = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: 15px 5px 10px 5px;
 `;
 
 export const ProductDetailsContainer = styled.View`
     max-width: 60%;
+`;
+
+export const PageTitleContent = styled.View`
+    flex-direction: row;
 `;
 
 export const PageTitle = styled.Text`
@@ -30,6 +33,10 @@ export const PageTitle = styled.Text`
     font-weight: bold;
 
     color: ${({ theme }) => theme.colors.text};
+`;
+
+export const ProductInformationContent = styled.View`
+    padding: 0 10px;
 `;
 
 export const ProductName = styled.Text`
@@ -55,6 +62,10 @@ export const ProductStore = styled.Text`
     margin-bottom: 7px;
 
     color: ${({ theme }) => theme.colors.text};
+`;
+
+export const PageContent = styled.View`
+    padding: 0 16px 16px 16px;
 `;
 
 export const ButtonPaper = styled(Button).attrs((props) => ({

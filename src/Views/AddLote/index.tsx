@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Alert, ScrollView, View } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Button as ButtonPaper } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useTheme } from 'styled-components';
 import EnvConfig from 'react-native-config';
@@ -12,6 +10,7 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
+import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 import Notification from '../../Components/Notification';
 
@@ -22,7 +21,9 @@ import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
+    PageHeader,
     PageTitle,
+    PageContent,
     InputContainer,
     InputText,
     NumericInputField,
@@ -146,90 +147,74 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     return (
         <Container>
             <ScrollView>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        marginLeft: -15,
-                    }}
-                >
-                    <ButtonPaper
-                        style={{
-                            alignSelf: 'flex-end',
-                        }}
-                        icon={() => (
-                            <Ionicons
-                                name="arrow-back-outline"
-                                size={28}
-                                color={theme.colors.text}
-                            />
-                        )}
-                        compact
-                        onPress={goBack}
-                    />
+                <PageHeader>
+                    <BackButton handleOnPress={goBack} />
                     <PageTitle>Adicionar um lote</PageTitle>
-                </View>
+                </PageHeader>
 
-                <InputContainer>
-                    <ProductHeader>
-                        <ProductName>{name}</ProductName>
-                        <ProductCode>{code}</ProductCode>
-                    </ProductHeader>
+                <PageContent>
+                    <InputContainer>
+                        <ProductHeader>
+                            <ProductName>{name}</ProductName>
+                            <ProductCode>{code}</ProductCode>
+                        </ProductHeader>
 
-                    <InputGroup>
-                        <InputText
-                            style={{
-                                flex: 5,
-                                marginRight: 5,
-                            }}
-                            placeholder="Lote"
-                            value={lote}
-                            onChangeText={(value) => setLote(value)}
-                        />
-                        <InputText
-                            style={{
-                                flex: 4,
-                            }}
-                            placeholder="Quantidade"
-                            keyboardType="numeric"
-                            value={String(amount)}
-                            onChangeText={(value) => {
-                                const regex = /^[0-9\b]+$/;
+                        <InputGroup>
+                            <InputText
+                                style={{
+                                    flex: 5,
+                                    marginRight: 5,
+                                }}
+                                placeholder="Lote"
+                                value={lote}
+                                onChangeText={(value) => setLote(value)}
+                            />
+                            <InputText
+                                style={{
+                                    flex: 4,
+                                }}
+                                placeholder="Quantidade"
+                                keyboardType="numeric"
+                                value={String(amount)}
+                                onChangeText={(value) => {
+                                    const regex = /^[0-9\b]+$/;
 
-                                if (value === '' || regex.test(value)) {
-                                    if (value === '') {
-                                        setAmount(0);
-                                        return;
+                                    if (value === '' || regex.test(value)) {
+                                        if (value === '') {
+                                            setAmount(0);
+                                            return;
+                                        }
+                                        setAmount(Number(value));
                                     }
-                                    setAmount(Number(value));
-                                }
-                            }}
+                                }}
+                            />
+                        </InputGroup>
+
+                        <NumericInputField
+                            type="currency"
+                            locale="pt-BR"
+                            currency="BRL"
+                            value={price}
+                            onUpdate={(value: number) => setPrice(value)}
+                            placeholder="Valor unitário"
                         />
-                    </InputGroup>
 
-                    <NumericInputField
-                        type="currency"
-                        locale="pt-BR"
-                        currency="BRL"
-                        value={price}
-                        onUpdate={(value: number) => setPrice(value)}
-                        placeholder="Valor unitário"
-                    />
+                        <ExpDateGroup>
+                            <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                            <CustomDatePicker
+                                date={expDate}
+                                onDateChange={(value) => {
+                                    setExpDate(value);
+                                }}
+                                fadeToColor="none"
+                                mode="date"
+                                locale="pt-br"
+                            />
+                        </ExpDateGroup>
+                    </InputContainer>
 
-                    <ExpDateGroup>
-                        <ExpDateLabel>Data de vencimento</ExpDateLabel>
-                        <CustomDatePicker
-                            date={expDate}
-                            onDateChange={(value) => {
-                                setExpDate(value);
-                            }}
-                            fadeToColor="none"
-                            mode="date"
-                            locale="pt-br"
-                        />
-                    </ExpDateGroup>
-                </InputContainer>
-
-                <GenericButton text="Salvar" onPress={handleSave} />
+                    <GenericButton text="Salvar" onPress={handleSave} />
+                </PageContent>
             </ScrollView>
 
             {!!notification && (

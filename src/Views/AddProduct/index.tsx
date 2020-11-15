@@ -11,6 +11,7 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
+import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import {
@@ -25,7 +26,9 @@ import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
+    PageHeader,
     PageTitle,
+    PageContent,
     InputContainer,
     InputText,
     NumericInputField,
@@ -45,7 +48,7 @@ const adUnitID = __DEV__
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 
 const AddProduct: React.FC = () => {
-    const navigation = useNavigation();
+    const { goBack, navigate } = useNavigation();
 
     const { isUserPremium, multiplesStores } = useContext(PreferencesContext);
 
@@ -120,7 +123,7 @@ const AddProduct: React.FC = () => {
                     interstitialAd.show();
                 }
 
-                navigation.navigate('Success', { type: 'create_product' });
+                navigate('Success', { type: 'create_product' });
             }
         } catch (error) {
             console.warn(error);
@@ -193,169 +196,155 @@ const AddProduct: React.FC = () => {
             ) : (
                 <Container>
                     <ScrollView>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                marginLeft: -15,
-                            }}
-                        >
-                            <ButtonPaper
-                                style={{
-                                    alignSelf: 'flex-end',
-                                }}
-                                icon={() => (
-                                    <Ionicons
-                                        name="arrow-back-outline"
-                                        size={28}
-                                        color={theme.colors.text}
-                                    />
-                                )}
-                                compact
-                                onPress={() => {
-                                    navigation.goBack();
-                                }}
-                            />
+                        <PageHeader>
+                            <BackButton handleOnPress={goBack} />
                             <PageTitle>Novo produto</PageTitle>
-                        </View>
+                        </PageHeader>
 
-                        <InputContainer>
-                            <InputText
-                                placeholder="Nome do produto"
-                                accessibilityLabel="Campo de texto para nome do produto"
-                                value={name}
-                                onChangeText={(value) => {
-                                    setName(value);
-                                }}
-                                onFocus={() => {
-                                    setCameraEnebled(false);
-                                }}
-                            />
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
+                        <PageContent>
+                            <InputContainer>
                                 <InputText
-                                    style={{ flex: 1 }}
-                                    placeholder="Código"
-                                    accessibilityLabel="Campo de texto para código de barras do produto"
-                                    value={code}
-                                    onChangeText={(value) => setCode(value)}
-                                    onFocus={() => {
-                                        setCameraEnebled(false);
-                                    }}
-                                />
-                                <ButtonPaper
-                                    style={{
-                                        alignSelf: 'center',
-                                        marginBottom: 8,
-                                    }}
-                                    icon={() => (
-                                        <Ionicons
-                                            name="camera-outline"
-                                            size={42}
-                                            color={theme.colors.text}
-                                        />
-                                    )}
-                                    onPress={() => {
-                                        Keyboard.dismiss();
-                                        setCameraEnebled(!cameraEnabled);
-                                    }}
-                                />
-                            </View>
-
-                            <InputGroup>
-                                <InputText
-                                    style={{
-                                        flex: 5,
-                                        marginRight: 5,
-                                    }}
-                                    placeholder="Lote"
-                                    accessibilityLabel="Campo de texto para lote do produto"
-                                    value={lote}
-                                    onChangeText={(value) => setLote(value)}
-                                    onFocus={() => {
-                                        setCameraEnebled(false);
-                                    }}
-                                />
-                                <InputText
-                                    style={{
-                                        flex: 4,
-                                    }}
-                                    placeholder="Quantidade"
-                                    accessibilityLabel="Campo de texto para quantidade do produto"
-                                    keyboardType="numeric"
-                                    value={String(amount)}
-                                    onChangeText={(v) => {
-                                        const regex = /^[0-9\b]+$/;
-
-                                        if (v === '' || regex.test(v)) {
-                                            setAmount(v);
-                                        }
+                                    placeholder="Nome do produto"
+                                    accessibilityLabel="Campo de texto para nome do produto"
+                                    value={name}
+                                    onChangeText={(value) => {
+                                        setName(value);
                                     }}
                                     onFocus={() => {
                                         setCameraEnebled(false);
                                     }}
                                 />
-                            </InputGroup>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <InputText
+                                        style={{ flex: 1 }}
+                                        placeholder="Código"
+                                        accessibilityLabel="Campo de texto para código de barras do produto"
+                                        value={code}
+                                        onChangeText={(value) => setCode(value)}
+                                        onFocus={() => {
+                                            setCameraEnebled(false);
+                                        }}
+                                    />
+                                    <ButtonPaper
+                                        style={{
+                                            alignSelf: 'center',
+                                            marginBottom: 8,
+                                        }}
+                                        icon={() => (
+                                            <Ionicons
+                                                name="camera-outline"
+                                                size={42}
+                                                color={theme.colors.text}
+                                            />
+                                        )}
+                                        onPress={() => {
+                                            Keyboard.dismiss();
+                                            setCameraEnebled(!cameraEnabled);
+                                        }}
+                                    />
+                                </View>
 
-                            <NumericInputField
-                                type="currency"
-                                locale="pt-BR"
-                                currency="BRL"
-                                value={price}
-                                onUpdate={(value: number) => setPrice(value)}
-                                placeholder="Valor unitário"
-                            />
+                                <InputGroup>
+                                    <InputText
+                                        style={{
+                                            flex: 5,
+                                            marginRight: 5,
+                                        }}
+                                        placeholder="Lote"
+                                        accessibilityLabel="Campo de texto para lote do produto"
+                                        value={lote}
+                                        onChangeText={(value) => setLote(value)}
+                                        onFocus={() => {
+                                            setCameraEnebled(false);
+                                        }}
+                                    />
+                                    <InputText
+                                        style={{
+                                            flex: 4,
+                                        }}
+                                        placeholder="Quantidade"
+                                        accessibilityLabel="Campo de texto para quantidade do produto"
+                                        keyboardType="numeric"
+                                        value={String(amount)}
+                                        onChangeText={(v) => {
+                                            const regex = /^[0-9\b]+$/;
 
-                            {multiplesStores && (
-                                <MoreInformationsContainer>
-                                    <MoreInformationsTitle>
-                                        Mais informações
-                                    </MoreInformationsTitle>
-
-                                    <InputGroup>
-                                        <InputText
-                                            style={{
-                                                flex: 1,
-                                            }}
-                                            placeholder="Loja"
-                                            accessibilityLabel="Campo de texto para loja de onde o produto está cadastrado"
-                                            onFocus={() => {
-                                                setCameraEnebled(false);
-                                            }}
-                                            value={store}
-                                            onChangeText={(value) =>
-                                                setStore(value)
+                                            if (v === '' || regex.test(v)) {
+                                                setAmount(v);
                                             }
-                                        />
-                                    </InputGroup>
-                                </MoreInformationsContainer>
-                            )}
+                                        }}
+                                        onFocus={() => {
+                                            setCameraEnebled(false);
+                                        }}
+                                    />
+                                </InputGroup>
 
-                            <ExpDateGroup>
-                                <ExpDateLabel>Data de vencimento</ExpDateLabel>
-
-                                <CustomDatePicker
-                                    accessibilityLabel="Campo de seleção da data de vencimento do produto"
-                                    date={expDate}
-                                    onDateChange={(value) => {
-                                        setExpDate(value);
-                                    }}
-                                    fadeToColor="none"
-                                    mode="date"
-                                    locale="pt-br"
+                                <NumericInputField
+                                    type="currency"
+                                    locale="pt-BR"
+                                    currency="BRL"
+                                    value={price}
+                                    onUpdate={(value: number) =>
+                                        setPrice(value)
+                                    }
+                                    placeholder="Valor unitário"
                                 />
-                            </ExpDateGroup>
-                        </InputContainer>
 
-                        <GenericButton
-                            text="Salvar"
-                            accessibilityLabel="Botão para salvar o novo produto"
-                            onPress={handleSave}
-                        />
+                                {multiplesStores && (
+                                    <MoreInformationsContainer>
+                                        <MoreInformationsTitle>
+                                            Mais informações
+                                        </MoreInformationsTitle>
+
+                                        <InputGroup>
+                                            <InputText
+                                                style={{
+                                                    flex: 1,
+                                                }}
+                                                placeholder="Loja"
+                                                accessibilityLabel="Campo de texto para loja de onde o produto está cadastrado"
+                                                onFocus={() => {
+                                                    setCameraEnebled(false);
+                                                }}
+                                                value={store}
+                                                onChangeText={(value) =>
+                                                    setStore(value)
+                                                }
+                                            />
+                                        </InputGroup>
+                                    </MoreInformationsContainer>
+                                )}
+
+                                <ExpDateGroup>
+                                    <ExpDateLabel>
+                                        Data de vencimento
+                                    </ExpDateLabel>
+
+                                    <CustomDatePicker
+                                        accessibilityLabel="Campo de seleção da data de vencimento do produto"
+                                        date={expDate}
+                                        onDateChange={(value) => {
+                                            setExpDate(value);
+                                        }}
+                                        fadeToColor="none"
+                                        mode="date"
+                                        locale="pt-br"
+                                    />
+                                </ExpDateGroup>
+                            </InputContainer>
+
+                            <GenericButton
+                                text="Salvar"
+                                accessibilityLabel="Botão para salvar o novo produto"
+                                onPress={handleSave}
+                            />
+                        </PageContent>
                     </ScrollView>
                 </Container>
             )}
@@ -383,7 +372,7 @@ const AddProduct: React.FC = () => {
                             const existsProductCode = await getProductByCode(
                                 code
                             );
-                            navigation.push('ProductDetails', {
+                            navigate('ProductDetails', {
                                 id: existsProductCode.id,
                             });
                         }}
