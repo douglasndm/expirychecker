@@ -13,10 +13,11 @@ import StoreDetails from '../Views/StoreDetails';
 import Settings from '../Views/Settings';
 import About from '../Views/About';
 import PremiumSubscription from '../Views/PremiumSubscription';
+import Success from '../Views/Success';
 
 import Test from '../Views/Test';
 
-const Stack = createStackNavigator<IAppRoute>();
+const Stack = createStackNavigator();
 
 const Routes: React.FC = () => {
     return (
@@ -40,6 +41,7 @@ const Routes: React.FC = () => {
                 name="PremiumSubscription"
                 component={PremiumSubscription}
             />
+            <Stack.Screen name="Success" component={Success} />
         </Stack.Navigator>
     );
 };
