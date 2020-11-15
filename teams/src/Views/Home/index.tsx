@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import {
     GetAllProductsWithLotesAndNotTratado,
@@ -12,13 +12,9 @@ import FABProducts from '../../Components/FABProducts';
 import Notification from '../../Components/Notification';
 import ListProducts from '../../Components/ListProducts';
 
-import RealmContext from '../../Contexts/RealmContext';
-
 import { Container, InputSearch } from './styles';
 
 const Home: React.FC = () => {
-    const { Realm } = useContext(RealmContext);
-
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [error, setError] = useState<string>();
 
@@ -62,18 +58,8 @@ const Home: React.FC = () => {
     }
 
     useEffect(() => {
-        async function startRealm() {
-            Realm.addListener('change', () => getProduts());
-
-            getProduts();
-        }
-
-        startRealm();
-
-        return () => {
-            Realm.removeAllListeners();
-        };
-    }, [Realm]);
+        getProduts();
+    }, []);
 
     useEffect(() => {
         setProductsSearch(products);
