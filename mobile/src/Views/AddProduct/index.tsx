@@ -120,9 +120,7 @@ const AddProduct: React.FC = () => {
                     interstitialAd.show();
                 }
 
-                navigation.push('Home', {
-                    notificationToUser: 'Produto cadastrado.',
-                });
+                navigation.navigate('Success', { type: 'product' });
             }
         } catch (error) {
             console.warn(error);
