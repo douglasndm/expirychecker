@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">Controle de Validade</string>
-
-    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
 </resources>

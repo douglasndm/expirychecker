@@ -1,4 +1,10 @@
-import { setHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
+import {
+    setHours,
+    setMinutes,
+    setSeconds,
+    setMilliseconds,
+    parseISO,
+} from 'date-fns';
 
 import Realm from '../Services/Realm';
 
@@ -151,10 +157,28 @@ export async function createLote({
 
             // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
             // E CONSIDERAR APENAS OS DIAS NO CONTROLE DE VENCIMENTO
-            const formatedDate = setHours(
-                setMinutes(setSeconds(setMilliseconds(lote.exp_date, 0), 0), 0),
-                0
-            );
+            let formatedDate = new Date();
+
+            if (typeof lote.exp_date === 'string') {
+                formatedDate = setHours(
+                    setMinutes(
+                        setSeconds(
+                            setMilliseconds(parseISO(lote.exp_date), 0),
+                            0
+                        ),
+                        0
+                    ),
+                    0
+                );
+            } else {
+                formatedDate = setHours(
+                    setMinutes(
+                        setSeconds(setMilliseconds(lote.exp_date, 0), 0),
+                        0
+                    ),
+                    0
+                );
+            }
 
             product[0].lotes.push({
                 id: nextLoteId,
