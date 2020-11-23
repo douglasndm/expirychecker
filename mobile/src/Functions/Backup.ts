@@ -94,9 +94,9 @@ export async function ImportBackupFile(): Promise<void> {
         // converte tudo de novo para json
         const products = JSON.parse(originalFile);
 
-        products.map(async (p) => {
+        for (const p of products) {
             await createProduct(p);
-        });
+        }
     } catch (err) {
         console.log(err.message);
     }

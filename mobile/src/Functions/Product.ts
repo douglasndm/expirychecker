@@ -75,7 +75,9 @@ export async function createProduct(
     try {
         if (
             product.code &&
-            (await checkIfProductAlreadyExistsByCode(product.code))
+            (await checkIfProductAlreadyExistsByCode({
+                productCode: product.code,
+            }))
         ) {
             const productLotes = product.lotes.slice();
 
@@ -112,14 +114,14 @@ export async function createProduct(
                     },
                     false
                 );
-
-                product.lotes.map(async (l) => {
-                    await createLote({
-                        productCode: product.code,
-                        lote: l,
-                    });
-                });
             });
+
+            for (const l of product.lotes) {
+                await createLote({
+                    productId: nextProductId,
+                    lote: l,
+                });
+            }
 
             return nextProductId;
         }
