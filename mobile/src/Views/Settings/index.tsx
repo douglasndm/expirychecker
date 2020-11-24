@@ -64,12 +64,12 @@ const Settings: React.FC = () => {
         async (days: number) => {
             await setDaysToBeNextToExp(days);
 
-            setUserPreferences((prevState) => ({
-                ...prevState,
+            setUserPreferences({
+                ...userPreferences,
                 howManyDaysToBeNextToExpire: days,
-            }));
+            });
         },
-        [setUserPreferences]
+        [setUserPreferences, userPreferences]
     );
 
     const handleCancel = useCallback(async () => {
@@ -104,12 +104,12 @@ const Settings: React.FC = () => {
 
             const changeToTheme = await getActualAppTheme();
 
-            setUserPreferences((prevState) => ({
-                ...prevState,
+            setUserPreferences({
+                ...userPreferences,
                 appTheme: changeToTheme,
-            }));
+            });
         },
-        [setUserPreferences]
+        [setUserPreferences, userPreferences]
     );
 
     useEffect(() => {

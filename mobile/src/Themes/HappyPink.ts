@@ -1,7 +1,6 @@
-const HappyPink: ITheme = {
-    dark: false,
-    mode: 'exact',
+import { DefaultTheme } from 'styled-components';
 
+const HappyPink: DefaultTheme = {
     colors: {
         primary: '#f772b7',
         accent: '#f772b7',
