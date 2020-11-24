@@ -1,7 +1,6 @@
-const Relax: ITheme = {
-    dark: false,
-    mode: 'exact',
+import { DefaultTheme } from 'styled-components';
 
+const Relax: DefaultTheme = {
     colors: {
         primary: '#99e1d9',
         accent: '#99e1d9',
