@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { View, Text, ScrollView, Linking } from 'react-native';
 import { Switch } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
@@ -9,7 +9,6 @@ import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import {
-    getAppTheme,
     setAppTheme,
     getDaysToBeNextToExp,
     setDaysToBeNextToExp,
@@ -20,6 +19,9 @@ import {
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
 import * as Premium from '../../Functions/Premium';
+import Themes, { getActualAppTheme } from '../../Themes';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -45,6 +47,10 @@ const Settings: React.FC = () => {
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
+
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
 
     const navigation = useNavigation();
 
@@ -80,10 +86,50 @@ const Settings: React.FC = () => {
         setMultipleStoresState(!multipleStoresState);
     }, [multipleStoresState, setMultipleStoresState]);
 
-    const handleThemeChange = useCallback(async (themeName) => {
-        setSelectedTheme(String(themeName));
-        await setAppTheme(String(themeName));
-    }, []);
+    const handleThemeChange = useCallback(
+        async (themeName: string) => {
+            setSelectedTheme(String(themeName));
+            await setAppTheme(String(themeName));
+
+            const changeToTheme = await getActualAppTheme();
+
+            setUserPreferences((prevState) => ({
+                ...prevState,
+                appTheme: changeToTheme,
+            }));
+        },
+        [setUserPreferences]
+    );
+
+    useEffect(() => {
+        const { appTheme } = userPreferences;
+
+        switch (appTheme) {
+            case Themes.Dark:
+                setSelectedTheme('dark');
+                break;
+            case Themes.Light:
+                setSelectedTheme('light');
+                break;
+            case Themes.UltraViolet:
+                setSelectedTheme('ultraviolet');
+                break;
+            case Themes.DarkGreen:
+                setSelectedTheme('darkgreen');
+                break;
+            case Themes.HappyPink:
+                setSelectedTheme('happyPink');
+                break;
+            case Themes.OceanBlue:
+                setSelectedTheme('oceanblue');
+                break;
+            case Themes.Relax:
+                setSelectedTheme('relax');
+                break;
+            default:
+                setSelectedTheme('system');
+        }
+    }, [userPreferences]);
 
     useEffect(() => {
         async function getSettingsAlreadySetted() {
@@ -114,16 +160,6 @@ const Settings: React.FC = () => {
 
         SetNewDays();
     }, [daysToBeNext, setSettingDaysToBeNext]);
-
-    useEffect(() => {
-        async function getTheme() {
-            const appTheme = await getAppTheme();
-
-            setSelectedTheme(appTheme);
-        }
-
-        getTheme();
-    }, []);
 
     return (
         <Container>

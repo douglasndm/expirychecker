@@ -1,4 +1,5 @@
 import { Appearance } from 'react-native';
+import { DefaultTheme } from 'styled-components';
 
 import Light from './Light';
 import Dark from './Dark';
@@ -20,7 +21,7 @@ export default {
     Relax,
 };
 
-export const getActualAppTheme = async (): Promise<ITheme> => {
+export const getActualAppTheme = async (): Promise<DefaultTheme> => {
     const theme = await getAppTheme();
 
     if (theme === 'light') {
