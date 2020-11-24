@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { useTheme } from 'styled-components';
 import EnvConfig from 'react-native-config';
 import {
     InterstitialAd,
@@ -51,9 +50,8 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const { productId } = route.params;
     const { reset, goBack } = useNavigation();
 
-    const { isUserPremium } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
-    const theme = useTheme();
     const [notification, setNotification] = useState<string>();
 
     const [adReady, setAdReady] = useState(false);
@@ -82,7 +80,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                 },
             });
 
-            if (!isUserPremium && adReady) {
+            if (!userPreferences.isUserPremium && adReady) {
                 interstitialAd.show();
             }
 
@@ -106,7 +104,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
         reset,
         price,
         adReady,
-        isUserPremium,
+        userPreferences.isUserPremium,
     ]);
 
     useEffect(() => {
