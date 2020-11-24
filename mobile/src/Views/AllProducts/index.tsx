@@ -12,12 +12,17 @@ import {
     GetAllProducts,
 } from '../../Functions/Products';
 
+import { InputSearch } from '../Home/styles';
+
 import { Container } from './styles';
 
 const AllProducts: React.FC = () => {
     const { Realm } = useContext(RealmContext);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
+
+    const [searchString, setSearchString] = useState<string>();
+    const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
     const getProducts = useCallback(async () => {
         try {
@@ -57,11 +62,89 @@ const AllProducts: React.FC = () => {
         };
     }, []);
 
+    useEffect(() => {
+        setProductsSearch(products);
+    }, [products]);
+
+    const handleSearchChange = useCallback(
+        (search: string) => {
+            setSearchString(search);
+
+            if (search && search !== '') {
+                const query = search.trim().toLowerCase();
+
+                const productsFind = products.filter((product) => {
+                    const searchByName = product.name
+                        .toLowerCase()
+                        .includes(query);
+
+                    if (searchByName) {
+                        return true;
+                    }
+
+                    if (product.code) {
+                        const searchBycode = product.code
+                            .toLowerCase()
+                            .includes(query);
+
+                        if (searchBycode) {
+                            return true;
+                        }
+                    }
+
+                    if (product.store) {
+                        const searchByStore = product.store
+                            .toLowerCase()
+                            .includes(query);
+
+                        if (searchByStore) {
+                            return true;
+                        }
+                    }
+
+                    if (product.lotes.length > 0) {
+                        const lotesFounded = product.lotes.filter((lote) => {
+                            const searchByLoteName = lote.lote
+                                .toLowerCase()
+                                .includes(query);
+
+                            if (searchByLoteName) {
+                                return true;
+                            }
+
+                            return false;
+                        });
+
+                        if (lotesFounded.length > 0) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                });
+
+                setProductsSearch(productsFind);
+            } else {
+                setProductsSearch(products);
+            }
+        },
+        [products]
+    );
+
     return (
         <>
             <Container>
                 <Header title="Todos os produtos" />
-                <ListProducts products={products} />
+
+                {products.length > 0 && (
+                    <InputSearch
+                        placeholder="Pesquisar por um produto"
+                        value={searchString}
+                        onChangeText={handleSearchChange}
+                    />
+                )}
+
+                <ListProducts products={productsSearch} />
             </Container>
 
             <FABProducts />
