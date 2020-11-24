@@ -80,7 +80,7 @@ export const ButtonPremium = styled.TouchableOpacity`
 
 export const ButtonPremiumText = styled.Text`
     font-size: 14px;
-    color: ${(props) => props.theme.colors.text};
+    color: #fff;
 `;
 
 export const ButtonCancel = styled.TouchableOpacity`
@@ -95,5 +95,5 @@ export const ButtonCancel = styled.TouchableOpacity`
 export const ButtonCancelText = styled.Text`
     font-size: 13px;
 
-    color: ${(props) => props.theme.colors.text};
+    color: #fff;
 `;
