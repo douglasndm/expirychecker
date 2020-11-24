@@ -1,7 +1,6 @@
-const OceanBlue: ITheme = {
-    dark: false,
-    mode: 'exact',
+import { DefaultTheme } from 'styled-components';
 
+const OceanBlue: DefaultTheme = {
     colors: {
         primary: '#69dafa',
         accent: '#69dafa',

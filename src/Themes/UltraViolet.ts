@@ -1,9 +1,7 @@
 import { darken } from 'polished';
+import { DefaultTheme } from 'styled-components';
 
-const UltraViolet: ITheme = {
-    dark: true,
-    mode: 'exact',
-
+const UltraViolet: DefaultTheme = {
     colors: {
         primary: darken(0.1, '#7b00ba'),
         accent: darken(0.1, '#7b00ba'),
