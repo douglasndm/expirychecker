@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 
@@ -6,6 +6,8 @@ import {
     CheckIfSubscriptionIsActive,
     MakeASubscription,
 } from '../../Functions/Premium';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -22,6 +24,9 @@ import {
 } from './styles';
 
 const PremiumSubscription: React.FC = () => {
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
     const [alreadyPremium, setAlreadyPremium] = useState(false);
 
     const navigation = useNavigation();
@@ -41,11 +46,16 @@ const PremiumSubscription: React.FC = () => {
 
             if (result !== false) {
                 navigation.dispatch(StackActions.popToTop());
+
+                setUserPreferences({
+                    ...userPreferences,
+                    isUserPremium: true,
+                });
             }
         } catch (err) {
             console.warn(err);
         }
-    }, [navigation]);
+    }, [navigation, userPreferences, setUserPreferences]);
 
     return (
         <Container>

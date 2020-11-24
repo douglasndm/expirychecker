@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Button as ButtonPaper } from 'react-native-paper';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const HeaderContainer = styled.View`
     width: 100%;
@@ -20,6 +20,12 @@ export const TextLogo = styled.Text`
     color: white;
 `;
 
-export const Icons = styled(Ionicons)``;
+export const MenuButton = styled(RectButton)`
+    margin: 0 10px;
+`;
 
-export const Button = styled(ButtonPaper)``;
+export const MenuIcon = styled(Ionicons).attrs({
+    name: 'menu-outline',
+    size: 33,
+    color: 'white',
+})``;
