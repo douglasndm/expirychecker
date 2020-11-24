@@ -60,9 +60,17 @@ const Settings: React.FC = () => {
         navigation.goBack();
     }, [navigation]);
 
-    const setSettingDaysToBeNext = useCallback(async (days: number) => {
-        await setDaysToBeNextToExp(days);
-    }, []);
+    const setSettingDaysToBeNext = useCallback(
+        async (days: number) => {
+            await setDaysToBeNextToExp(days);
+
+            setUserPreferences((prevState) => ({
+                ...prevState,
+                howManyDaysToBeNextToExpire: days,
+            }));
+        },
+        [setUserPreferences]
+    );
 
     const handleCancel = useCallback(async () => {
         await Linking.openURL(
@@ -182,8 +190,9 @@ const Settings: React.FC = () => {
                             <InputSetting
                                 keyboardType="numeric"
                                 placeholder="Quantidade de dias"
-                                placeholderTextColor={theme.colors.text}
-                                value={String(daysToBeNext)}
+                                value={String(
+                                    userPreferences.howManyDaysToBeNextToExpire
+                                )}
                                 onChangeText={(v) => {
                                     const regex = /^[0-9\b]+$/;
 
