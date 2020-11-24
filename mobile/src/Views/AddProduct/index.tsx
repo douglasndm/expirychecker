@@ -50,7 +50,7 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnitID);
 const AddProduct: React.FC = () => {
     const { goBack, navigate, reset } = useNavigation();
 
-    const { isUserPremium, multiplesStores } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const theme = useTheme();
 
@@ -119,7 +119,7 @@ const AddProduct: React.FC = () => {
                     productId: productCreatedId,
                 });
 
-                if (!isUserPremium && adReady) {
+                if (!userPreferences.isUserPremium && adReady) {
                     interstitialAd.show();
                 }
 
@@ -302,7 +302,7 @@ const AddProduct: React.FC = () => {
                                     placeholder="Valor unitário"
                                 />
 
-                                {multiplesStores && (
+                                {userPreferences.multiplesStores && (
                                     <MoreInformationsContainer>
                                         <MoreInformationsTitle>
                                             Mais informações
