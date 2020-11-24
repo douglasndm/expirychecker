@@ -54,7 +54,9 @@ export const SettingDescription = styled.Text`
     color: ${(props) => props.theme.colors.text};
 `;
 
-export const InputSetting = styled.TextInput`
+export const InputSetting = styled.TextInput.attrs((props) => ({
+    placeholderTextColor: props.theme.colors.text,
+}))`
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     margin-top: 8px;
