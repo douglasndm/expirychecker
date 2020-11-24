@@ -58,9 +58,7 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-    const { howManyDaysToBeNextToExpire, multiplesStores } = useContext(
-        PreferencesContext
-    );
+    const { userPreferences } = useContext(PreferencesContext);
 
     const { navigate, goBack, reset } = useNavigation();
     const productId = useMemo(() => {
@@ -156,11 +154,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 {!!code && (
                                     <ProductCode>Código: {code}</ProductCode>
                                 )}
-                                {multiplesStores && !!product?.store && (
-                                    <ProductStore>
-                                        Loja: {product.store}
-                                    </ProductStore>
-                                )}
+                                {userPreferences.multiplesStores &&
+                                    !!product?.store && (
+                                        <ProductStore>
+                                            Loja: {product.store}
+                                        </ProductStore>
+                                    )}
                             </ProductInformationContent>
                         </ProductDetailsContainer>
 
@@ -208,7 +207,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                         const nextToExp =
                                             addDays(
                                                 new Date(),
-                                                howManyDaysToBeNextToExpire
+                                                userPreferences.howManyDaysToBeNextToExpire
                                             ) > lote.exp_date;
 
                                         const expiredOrNext = !!(
