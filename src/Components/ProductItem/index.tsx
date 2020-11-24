@@ -21,9 +21,7 @@ const ProductItem: React.FC<RequestProps> = ({
     index,
     disableAds,
 }: RequestProps) => {
-    const { howManyDaysToBeNextToExpire, isUserPremium } = useContext(
-        PreferencesContext
-    );
+    const { userPreferences } = useContext(PreferencesContext);
 
     const [adFailed, setAdFailed] = useState(false);
 
@@ -34,10 +32,10 @@ const ProductItem: React.FC<RequestProps> = ({
     const nextToExp = useMemo(() => {
         return (
             product.lotes[0] &&
-            addDays(new Date(), howManyDaysToBeNextToExpire) >=
+            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
                 product.lotes[0].exp_date
         );
-    }, [howManyDaysToBeNextToExpire, product.lotes]);
+    }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
 
     const adUnitId = useMemo(() => {
         return __DEV__
@@ -48,7 +46,7 @@ const ProductItem: React.FC<RequestProps> = ({
     return (
         <View>
             {!disableAds &&
-                !isUserPremium &&
+                !userPreferences.isUserPremium &&
                 !!index &&
                 index !== 0 &&
                 index % 5 === 0 &&
