@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useCallback } from 'react';
-import { StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
@@ -22,6 +21,8 @@ import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
+import StatusBar from './Components/StatusBar';
+
 if (!__DEV__) {
     Sentry.init({
         dsn: EnvConfig.SENTRY_DSN,
@@ -30,32 +31,10 @@ if (!__DEV__) {
 }
 
 const App: React.FC = () => {
-    const [theme, setTheme] = useState(Themes.Light);
-
-    const getTheme = useCallback(async () => {
-        const appTheme = await getActualAppTheme();
-        setTheme(appTheme);
-    }, []);
-
-    useEffect(() => {
-        getTheme();
-    }, [getTheme]);
-
-    // Troca o tema do app a cada alteração em tempo real na pagina de configurações
-    useEffect(() => {
-        async function setThemeModificationNotification() {
-            Realm.addListener('change', async () => {
-                await getTheme();
-            });
-        }
-
-        setThemeModificationNotification();
-    }, [getTheme]);
-
     const [preferences, setPreferences] = useState({
         howManyDaysToBeNextToExpire: 30,
         isUserPremium: true,
-        appTheme: 'system',
+        appTheme: Themes.Light,
         multiplesStores: false,
     });
 
@@ -81,14 +60,17 @@ const App: React.FC = () => {
 
     return (
         <RealmContext.Provider value={{ Realm }}>
-            <PreferencesContext.Provider value={preferences}>
-                <ThemeProvider theme={theme}>
+            <PreferencesContext.Provider
+                value={{
+                    userPreferences: preferences,
+                    setUserPreferences: setPreferences,
+                }}
+            >
+                <ThemeProvider theme={preferences.appTheme}>
                     <PaperProvider>
                         <Portal>
                             <NavigationContainer>
-                                <StatusBar
-                                    backgroundColor={theme.colors.accent}
-                                />
+                                <StatusBar />
                                 <Routes />
                             </NavigationContainer>
                         </Portal>
