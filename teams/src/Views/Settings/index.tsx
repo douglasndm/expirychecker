@@ -91,8 +91,11 @@ const Settings: React.FC = () => {
     const handleMultiStoresEnableSwitch = useCallback(async () => {
         await setMultipleStores(!multipleStoresState);
 
-        setMultipleStoresState(!multipleStoresState);
-    }, [multipleStoresState, setMultipleStoresState]);
+        setUserPreferences({
+            ...userPreferences,
+            multiplesStores: !userPreferences.multiplesStores,
+        });
+    }, [multipleStoresState, setUserPreferences, userPreferences]);
 
     const handleThemeChange = useCallback(
         async (themeName: string) => {
@@ -219,7 +222,7 @@ const Settings: React.FC = () => {
                                     Habilitar modo de múltiplas lojas
                                 </SettingDescription>
                                 <Switch
-                                    value={multipleStoresState}
+                                    value={userPreferences.multiplesStores}
                                     onValueChange={
                                         handleMultiStoresEnableSwitch
                                     }
