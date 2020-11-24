@@ -23,7 +23,7 @@ const Success: React.FC = () => {
     const route = useRoute();
     const { reset } = useNavigation();
 
-    const { isUserPremium } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const routeParams = route.params as Props;
 
@@ -108,7 +108,7 @@ const Success: React.FC = () => {
                     onPress={handleNavigateToHome}
                 />
 
-                {!isUserPremium && (
+                {!userPreferences.isUserPremium && (
                     <BannerAd size={BannerAdSize.BANNER} unitId={adUnitId} />
                 )}
             </SuccessMessageContainer>

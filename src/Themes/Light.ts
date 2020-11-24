@@ -1,7 +1,6 @@
-const Light: ITheme = {
-    dark: false,
-    mode: 'exact',
+import { DefaultTheme } from 'styled-components';
 
+const Light: DefaultTheme = {
     colors: {
         primary: '#14d48f',
         accent: '#14d48f',

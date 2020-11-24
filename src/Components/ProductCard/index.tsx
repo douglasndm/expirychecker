@@ -35,7 +35,7 @@ interface Request {
 const Product = ({ product, expired, nextToExp }: Request) => {
     const navigation = useNavigation();
 
-    const { multiplesStores } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const [totalPrice, setTotalPrice] = useState(0);
 
@@ -78,7 +78,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                 </ProductLote>
                             )}
 
-                        {multiplesStores && !!product.store && (
+                        {userPreferences.multiplesStores && !!product.store && (
                             <ProductStore expiredOrNext={expiredOrNext}>
                                 Loja: {product.store}
                             </ProductStore>

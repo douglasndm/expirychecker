@@ -23,7 +23,7 @@ interface IRequest {
 
 const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
     const navigation = useNavigation();
-    const { isUserPremium } = useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const adUnitId = __DEV__
         ? TestIds.BANNER
@@ -53,7 +53,7 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
                 />
             )}
 
-            {!isUserPremium && (
+            {!userPreferences.isUserPremium && (
                 <AdView>
                     <BannerAd unitId={adUnitId} size={BannerAdSize.BANNER} />
                 </AdView>

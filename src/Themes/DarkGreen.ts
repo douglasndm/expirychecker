@@ -1,9 +1,7 @@
 import { darken } from 'polished';
+import { DefaultTheme } from 'styled-components';
 
-const DarkGreen: ITheme = {
-    dark: true,
-    mode: 'exact',
-
+const DarkGreen: DefaultTheme = {
     colors: {
         primary: darken(0.1, '#33e860'),
         accent: darken(0.1, '#33e860'),
