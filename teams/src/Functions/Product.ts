@@ -77,6 +77,7 @@ export async function createProduct(
             product.code &&
             (await checkIfProductAlreadyExistsByCode({
                 productCode: product.code,
+                productStore: product?.store,
             }))
         ) {
             const productLotes = product.lotes.slice();

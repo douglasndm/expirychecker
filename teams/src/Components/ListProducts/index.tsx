@@ -38,7 +38,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 {products.length > 0 && (
                     <CategoryDetails>
                         <CategoryDetailsText>
-                            Produtos mais próximos ao vencimento
+                            Produtos próximos ao vencimento
                         </CategoryDetailsText>
                     </CategoryDetails>
                 )}
