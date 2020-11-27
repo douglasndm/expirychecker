@@ -23,7 +23,11 @@ export const LogoImage = styled.Image`
     height: 65px;
 `;
 
-export const MenuItem = styled(DrawerItem)``;
+export const MenuItem = styled(DrawerItem).attrs((props) => ({
+    labelStyle: {
+        color: props.theme.colors.text,
+    },
+}))``;
 
 export const Icons = styled(Ionicons)`
     color: ${({ theme }) => theme.colors.text};
