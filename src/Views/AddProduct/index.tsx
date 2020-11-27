@@ -74,24 +74,26 @@ const AddProduct: React.FC = () => {
             return;
         }
 
-        if (!!store && store !== '') {
-            const productExists = await checkIfProductAlreadyExistsByCode({
-                productCode: code,
-                productStore: store,
-            });
+        if (code) {
+            if (!!store && store !== '') {
+                const productExists = await checkIfProductAlreadyExistsByCode({
+                    productCode: code,
+                    productStore: store,
+                });
 
-            if (productExists) {
-                setProductAlreadyExists(true);
-                return;
-            }
-        } else {
-            const productExist = await checkIfProductAlreadyExistsByCode({
-                productCode: code,
-            });
+                if (productExists) {
+                    setProductAlreadyExists(true);
+                    return;
+                }
+            } else {
+                const productExist = await checkIfProductAlreadyExistsByCode({
+                    productCode: code,
+                });
 
-            if (productExist) {
-                setProductAlreadyExists(true);
-                return;
+                if (productExist) {
+                    setProductAlreadyExists(true);
+                    return;
+                }
             }
         }
 
