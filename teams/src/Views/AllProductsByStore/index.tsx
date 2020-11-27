@@ -20,7 +20,7 @@ const AllProductsByStore: React.FC = () => {
     return (
         <Container>
             <ScrollView>
-                <Header title="Todos os produtos por loja" />
+                <Header title="Produtos por loja" />
                 {allProducts.map((storeGroup) => (
                     <StoreGroup
                         key={storeGroup.name}
