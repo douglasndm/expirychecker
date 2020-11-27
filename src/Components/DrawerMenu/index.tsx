@@ -44,7 +44,6 @@ const DrawerMenu: React.FC = (props) => {
                         <MenuItem
                             icon={() => <Icons name="home-outline" size={22} />}
                             label="Início"
-                            labelStyle={{ color: theme.colors.text }}
                             onPress={() => navigation.navigate('Home')}
                         />
                         <MenuItem
@@ -56,13 +55,11 @@ const DrawerMenu: React.FC = (props) => {
                                 />
                             )}
                             label="Adicionar produto"
-                            labelStyle={{ color: theme.colors.text }}
                             onPress={() => navigation.navigate('AddProduct')}
                         />
                         <MenuItem
                             icon={() => <Icons name="apps-outline" size={22} />}
                             label="Todos os produtos"
-                            labelStyle={{ color: theme.colors.text }}
                             onPress={() => navigation.navigate('AllProducts')}
                         />
 
@@ -71,8 +68,7 @@ const DrawerMenu: React.FC = (props) => {
                                 icon={() => (
                                     <Icons name="list-outline" size={22} />
                                 )}
-                                label="Todos os produtos por loja"
-                                labelStyle={{ color: theme.colors.text }}
+                                label="Produtos por loja"
                                 onPress={() =>
                                     navigation.navigate('AllProductsByStore')
                                 }
@@ -85,7 +81,6 @@ const DrawerMenu: React.FC = (props) => {
                                     <Icons name="analytics-outline" size={22} />
                                 )}
                                 label="Seja Premium"
-                                labelStyle={{ color: theme.colors.text }}
                                 onPress={() => {
                                     navigation.navigate('PremiumSubscription');
                                 }}
@@ -99,13 +94,11 @@ const DrawerMenu: React.FC = (props) => {
                 <MenuItem
                     icon={() => <Icons name="settings-outline" size={22} />}
                     label="Configurações"
-                    labelStyle={{ color: theme.colors.text }}
                     onPress={() => navigation.navigate('Settings')}
                 />
                 <MenuItem
                     icon={() => <Icons name="help-circle-outline" size={22} />}
                     label="Sobre"
-                    labelStyle={{ color: theme.colors.text }}
                     onPress={() => navigation.navigate('About')}
                 />
 
@@ -113,7 +106,6 @@ const DrawerMenu: React.FC = (props) => {
                     <MenuItem
                         icon={() => <Icons name="bug-outline" size={22} />}
                         label="Test"
-                        labelStyle={{ color: theme.colors.text }}
                         onPress={() => navigation.navigate('Test')}
                     />
                 )}
