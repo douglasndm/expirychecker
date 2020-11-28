@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import { DrawerContentScrollView } from '@react-navigation/drawer';
+import {
+    DrawerContentOptions,
+    DrawerContentScrollView,
+} from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
@@ -11,7 +14,9 @@ import Logo from '../../Assets/Logo.png';
 
 import { Container, MenuHeader, LogoImage, MenuItem, Icons } from './styles';
 
-const DrawerMenu: React.FC = (props) => {
+const DrawerMenu: React.FC<DrawerContentOptions> = (
+    props: DrawerContentOptions
+) => {
     const { navigation } = props;
     const theme = useTheme();
 
