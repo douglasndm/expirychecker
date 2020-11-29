@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react-native';
+import 'reflect-metadata';
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
@@ -8,6 +9,7 @@ import EnvConfig from 'react-native-config';
 
 import RealmContext from './Contexts/RealmContext';
 
+import './Services/TypeORM';
 import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
