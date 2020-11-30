@@ -40,8 +40,9 @@ export async function migrateSettings(): Promise<void> {
     );
 
     console.log('settings from async storange');
-    console.log(`notifications= ${isNotificationsEnabled}`);
-    console.log(`multiples stores= ${isMultiplesStoresEnabled}`);
+    console.log(
+        `notifications= ${isNotificationsEnabled} & multiples stores= ${isMultiplesStoresEnabled}`
+    );
 
     if (!daysNextSetting) {
         await setHowManyDaysToBeNextExp(30);

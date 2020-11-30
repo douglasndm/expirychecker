@@ -199,3 +199,34 @@ export async function setEnableProVersion(enable: boolean): Promise<void> {
         value: String(enable),
     });
 }
+
+async function getSetting({
+    type,
+}: Omit<ISetSettingProps, 'value'>): Promise<Setting> {
+    const connection = await getConnection();
+    try {
+        const settingRepository = connection.getRepository(Setting);
+
+        const setting = await settingRepository.findOne({
+            where: {
+                name: type,
+            },
+        });
+
+        if (!setting) {
+            throw new Error('Configuração não encontrada');
+        }
+
+        return setting;
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+export async function getHowManyDaysToBeNextExp(): Promise<number> {
+    const setting = await getSetting({ type: 'HowManyDaysToBeNextExp' });
+
+    return Number(setting.value);
+}
