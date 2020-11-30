@@ -8,7 +8,7 @@ import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import { getProductById } from '../../Functions/Product';
-import { getMultipleStores } from '../../Functions/Settings';
+import { getEnableMultipleStoresMode } from '../../Functions/Settings';
 
 import {
     Container,
@@ -46,7 +46,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [cameraEnabled, setCameraEnebled] = useState(false);
 
     useEffect(() => {
-        getMultipleStores().then((data) => {
+        getEnableMultipleStoresMode().then((data) => {
             setMultipleStoresState(data);
         });
     }, []);

@@ -2,7 +2,7 @@ import AsyncStorange from '@react-native-community/async-storage';
 import {
     setAppTheme,
     setHowManyDaysToBeNextExp,
-    setNotificationsEnabled,
+    setEnableNotifications,
     setEnableMultipleStoresMode,
     setEnableProVersion,
 } from './Settings';
@@ -65,9 +65,9 @@ export async function migrateSettings(): Promise<void> {
     }
 
     if (!isNotificationsEnabled) {
-        await setNotificationsEnabled(true);
+        await setEnableNotifications(true);
     } else {
-        await setNotificationsEnabled(Boolean(isNotificationsEnabled));
+        await setEnableNotifications(Boolean(isNotificationsEnabled));
     }
 
     if (!isMultiplesStoresEnabled) {

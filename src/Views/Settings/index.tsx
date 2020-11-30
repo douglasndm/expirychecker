@@ -10,12 +10,9 @@ import GenericButton from '../../Components/Button';
 
 import {
     setHowManyDaysToBeNextExp,
-    getHowManyDaysToBeNextExp,
     setAppTheme,
-    getNotificationsEnabled,
-    setNotificationsEnabled,
-    getMultipleStores,
-    setMultipleStores,
+    setEnableNotifications,
+    setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
 import * as Premium from '../../Functions/Premium';
@@ -42,7 +39,7 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
-    const [daysToBeNext, setDaysToBeNext] = useState<number>();
+    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [selectedTheme, setSelectedTheme] = useState<string>('system');
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
@@ -83,13 +80,13 @@ const Settings: React.FC = () => {
     }, [navigation]);
 
     const handleNotificationEnabledSwitch = useCallback(async () => {
-        await setNotificationsEnabled(!isNotificationsEnabled);
+        await setEnableNotifications(!isNotificationsEnabled);
 
         setIsNotificationsEnabled(!isNotificationsEnabled);
     }, [isNotificationsEnabled]);
 
     const handleMultiStoresEnableSwitch = useCallback(async () => {
-        await setMultipleStores(!multipleStoresState);
+        await setEnableMultipleStoresMode(!multipleStoresState);
 
         setUserPreferences({
             ...userPreferences,
@@ -143,34 +140,33 @@ const Settings: React.FC = () => {
     }, [userPreferences]);
 
     useEffect(() => {
-        async function getSettingsAlreadySetted() {
-            const settingDays = await getHowManyDaysToBeNextExp();
-            setDaysToBeNext(settingDays);
-
-            const pre = await Premium.GetPremium();
-            setUserIsPremium(pre);
-
-            const notificationEnabled = await getNotificationsEnabled();
-            setIsNotificationsEnabled(notificationEnabled);
-
-            const mulStores = await getMultipleStores();
-            setMultipleStoresState(mulStores);
-        }
-
-        getSettingsAlreadySetted();
-    }, []);
+        setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
+        setUserIsPremium(userPreferences.isUserPremium);
+        setMultipleStoresState(userPreferences.multiplesStores);
+        setIsNotificationsEnabled(userPreferences.enableNotifications);
+    }, [userPreferences]);
 
     useEffect(() => {
         async function SetNewDays() {
-            const previousDaysToBeNext = await getHowManyDaysToBeNextExp();
+            const previousDaysToBeNext = String(
+                userPreferences.howManyDaysToBeNextToExpire
+            );
 
-            if (daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
-                await setSettingDaysToBeNext(daysToBeNext);
+            if (!daysToBeNext || daysToBeNext === '') {
+                return;
+            }
+
+            if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
+                await setSettingDaysToBeNext(Number(daysToBeNext));
             }
         }
 
         SetNewDays();
-    }, [daysToBeNext, setSettingDaysToBeNext]);
+    }, [
+        daysToBeNext,
+        setSettingDaysToBeNext,
+        userPreferences.howManyDaysToBeNextToExpire,
+    ]);
 
     return (
         <Container>
@@ -193,14 +189,12 @@ const Settings: React.FC = () => {
                             <InputSetting
                                 keyboardType="numeric"
                                 placeholder="Quantidade de dias"
-                                value={String(
-                                    userPreferences.howManyDaysToBeNextToExpire
-                                )}
+                                value={daysToBeNext}
                                 onChangeText={(v) => {
                                     const regex = /^[0-9\b]+$/;
 
                                     if (v === '' || regex.test(v)) {
-                                        setDaysToBeNext(Number(v));
+                                        setDaysToBeNext(v);
                                     }
                                 }}
                             />

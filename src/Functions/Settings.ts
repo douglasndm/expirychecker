@@ -1,89 +1,6 @@
-import AsyncStorange from '@react-native-community/async-storage';
-
 import { Setting } from '../Models/Setting';
 
 import { getConnection } from '../Services/TypeORM';
-import Realm from '../Services/Realm';
-
-interface ISetting {
-    name: string;
-    value?: string;
-}
-
-export async function getAppTheme(): Promise<string> {
-    try {
-        const appTheme = Realm.objects<ISetting>('Setting').filtered(
-            "name = 'appTheme'"
-        )[0];
-
-        if (appTheme.value) {
-            return appTheme.value;
-        }
-
-        await setAppTheme('system');
-        return 'system';
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function getNotificationsEnabled(): Promise<boolean> {
-    const isEnabled = await AsyncStorange.getItem(
-        '@ControleDeValidade/NotificationsEnabled'
-    );
-
-    if (!isEnabled) {
-        return true;
-    }
-    if (isEnabled === 'false') {
-        return false;
-    }
-
-    return true;
-}
-
-export async function setNotificationsEnabled(
-    isEnabled: boolean
-): Promise<void> {
-    try {
-        await AsyncStorange.setItem(
-            '@ControleDeValidade/NotificationsEnabled',
-            String(isEnabled)
-        );
-    } catch (err) {
-        throw new Error(
-            `Falha ao salvar as configurações de notificações. ${err.message}`
-        );
-    }
-}
-
-export async function setMultipleStores(enabled: boolean): Promise<void> {
-    try {
-        await AsyncStorange.setItem(
-            '@ControleDeValidade/MultipleStores',
-            String(enabled)
-        );
-    } catch (err) {
-        throw new Error(
-            `Falha ao salvar as configurações de múltiplas lojas. ${err.message}`
-        );
-    }
-}
-
-export async function getMultipleStores(): Promise<boolean> {
-    const isEnabled = await AsyncStorange.getItem(
-        '@ControleDeValidade/MultipleStores'
-    );
-
-    if (!isEnabled) {
-        return false;
-    }
-    if (isEnabled === 'true') {
-        return true;
-    }
-
-    return false;
-}
 
 /* TYPEORM */
 interface ISetSettingProps {
@@ -98,6 +15,7 @@ interface ISetSettingProps {
 
 async function setSetting({ type, value }: ISetSettingProps): Promise<void> {
     const connection = await getConnection();
+
     try {
         const setting = new Setting();
 
@@ -171,6 +89,7 @@ async function getSetting({
     type,
 }: Omit<ISetSettingProps, 'value'>): Promise<Setting> {
     const connection = await getConnection();
+
     try {
         const settingRepository = connection.getRepository(Setting);
 
@@ -181,7 +100,7 @@ async function getSetting({
         });
 
         if (!setting) {
-            throw new Error('Configuração não encontrada');
+            throw new Error(`Configuração não encontrada. ${type}`);
         }
 
         return setting;
@@ -196,4 +115,28 @@ export async function getHowManyDaysToBeNextExp(): Promise<number> {
     const setting = await getSetting({ type: 'HowManyDaysToBeNextExp' });
 
     return Number(setting.value);
+}
+
+export async function getAppTheme(): Promise<string> {
+    const setting = await getSetting({ type: 'AppTheme' });
+
+    return setting.value;
+}
+
+export async function getEnableNotifications(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableNotifications' });
+
+    return Boolean(setting.value);
+}
+
+export async function getEnableMultipleStoresMode(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableMultipleStores' });
+
+    return Boolean(setting.value);
+}
+
+export async function getEnableProVersion(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableProVersion' });
+
+    return Boolean(setting.value);
 }

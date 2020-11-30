@@ -16,7 +16,8 @@ import './Services/BackgroundJobs';
 
 import {
     getHowManyDaysToBeNextExp,
-    getMultipleStores,
+    getEnableMultipleStoresMode,
+    getEnableNotifications,
 } from './Functions/Settings';
 import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
 
@@ -41,6 +42,7 @@ const App: React.FC = () => {
         isUserPremium: false,
         appTheme: Themes.Light,
         multiplesStores: false,
+        enableNotifications: true,
     });
 
     useEffect(() => {
@@ -48,13 +50,15 @@ const App: React.FC = () => {
             const daysToBeNext = await getHowManyDaysToBeNextExp();
             const isPremium = await GetPremium();
             const appTheme = await getActualAppTheme();
-            const multiplesStores = await getMultipleStores();
+            const multiplesStores = await getEnableMultipleStoresMode();
+            const enableNotifications = await getEnableNotifications();
 
             setPreferences({
                 howManyDaysToBeNextToExpire: daysToBeNext,
                 isUserPremium: isPremium,
                 appTheme,
                 multiplesStores,
+                enableNotifications,
             });
 
             await CheckIfSubscriptionIsActive();

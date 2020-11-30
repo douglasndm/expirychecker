@@ -7,6 +7,7 @@ interface IUserPreferences {
     isUserPremium: boolean;
     appTheme: DefaultTheme;
     multiplesStores: boolean;
+    enableNotifications: boolean;
 }
 
 const PreferencesContext = createContext({
@@ -15,12 +16,14 @@ const PreferencesContext = createContext({
         isUserPremium: false,
         appTheme: Themes.Light,
         multiplesStores: false,
+        enableNotifications: true,
     },
     setUserPreferences: ({
         howManyDaysToBeNextToExpire,
         isUserPremium,
         appTheme,
         multiplesStores,
+        enableNotifications,
     }: IUserPreferences) => {},
 });
 

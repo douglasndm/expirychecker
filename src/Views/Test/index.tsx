@@ -8,8 +8,8 @@ import { useTheme } from 'styled-components/native';
 import Button from '../../Components/Button';
 
 import {
-    getNotificationsEnabled,
-    setNotificationsEnabled,
+    getEnableNotifications,
+    setEnableNotifications,
 } from '../../Functions/Settings';
 import { GetAllProductsWithoutStore } from '../../Functions/Products';
 import * as Premium from '../../Functions/Premium';
@@ -108,7 +108,7 @@ const Test: React.FC = () => {
     }
 
     async function getNot() {
-        const noti = await getNotificationsEnabled();
+        const noti = await getEnableNotifications();
 
         if (noti) {
             Alert.alert('Habilitado');
@@ -118,9 +118,9 @@ const Test: React.FC = () => {
     }
 
     async function setNot() {
-        const noti = await getNotificationsEnabled();
+        const noti = await getEnableNotifications();
 
-        await setNotificationsEnabled(!noti);
+        await setEnableNotifications(!noti);
     }
 
     const theme = useTheme();
