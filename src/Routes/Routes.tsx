@@ -14,6 +14,7 @@ import Settings from '../Views/Settings';
 import About from '../Views/About';
 import PremiumSubscription from '../Views/PremiumSubscription';
 import Success from '../Views/Success';
+import Migration from '../Views/Migration';
 
 import Test from '../Views/Test';
 
@@ -22,6 +23,7 @@ const Stack = createStackNavigator();
 const Routes: React.FC = () => {
     return (
         <Stack.Navigator headerMode="none">
+            <Stack.Screen name="Migration" component={Migration} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
