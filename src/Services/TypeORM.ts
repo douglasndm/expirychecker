@@ -5,13 +5,12 @@ import { Batch } from '../Models/Batch';
 import { Setting } from '../Models/Setting';
 
 export async function getConnection(): Promise<Connection> {
-    const connection = await createConnection({
+    return createConnection({
         type: 'react-native',
         database: 'controledevalidadedatabase',
         location: 'default',
         entities: [Product, Batch, Setting],
         synchronize: true,
+        logging: true,
     });
-
-    return connection;
 }
