@@ -1,17 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'Settings' })
 export class Setting {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
-
-    @Column({
-        unique: true,
+    @PrimaryColumn({
+        type: 'varchar',
         length: 30,
     })
     name: string;
 
     @Column({
+        type: 'varchar',
         length: 30,
     })
     value: string;
