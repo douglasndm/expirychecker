@@ -2,7 +2,7 @@ import { Notifications } from 'react-native-notifications';
 import { addDays, isPast } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import { getDaysToBeNextToExp, getNotificationsEnabled } from './Settings';
+import { getHowManyDaysToBeNextExp, getNotificationsEnabled } from './Settings';
 import Realm from '../Services/Realm';
 
 export async function getAllProductsNextToExp(): Promise<void> {
@@ -10,7 +10,7 @@ export async function getAllProductsNextToExp(): Promise<void> {
 
     if (!isNotifcationEnabled) return;
 
-    const daysToBeNext = await getDaysToBeNextToExp();
+    const daysToBeNext = await getHowManyDaysToBeNextExp();
 
     try {
         const products = Realm.objects<IProduct>('Product')

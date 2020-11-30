@@ -14,7 +14,10 @@ import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import { getDaysToBeNextToExp, getMultipleStores } from './Functions/Settings';
+import {
+    getHowManyDaysToBeNextExp,
+    getMultipleStores,
+} from './Functions/Settings';
 import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
 
 import Themes, { getActualAppTheme } from './Themes';
@@ -42,7 +45,7 @@ const App: React.FC = () => {
 
     useEffect(() => {
         async function getData() {
-            const daysToBeNext = await getDaysToBeNextToExp();
+            const daysToBeNext = await getHowManyDaysToBeNextExp();
             const isPremium = await GetPremium();
             const appTheme = await getActualAppTheme();
             const multiplesStores = await getMultipleStores();

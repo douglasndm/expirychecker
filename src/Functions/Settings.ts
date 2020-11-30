@@ -10,39 +10,6 @@ interface ISetting {
     value?: string;
 }
 
-export async function getDaysToBeNextToExp(): Promise<number> {
-    try {
-        const daysToBeNext = Realm.objects<ISetting>('Setting').filtered(
-            "name = 'daysToBeNext'"
-        )[0];
-
-        if (daysToBeNext && daysToBeNext !== null) {
-            return Number(daysToBeNext.value);
-        }
-    } catch (err) {
-        console.warn(err);
-    }
-
-    return 30;
-}
-
-export async function setDaysToBeNextToExp(days: number): Promise<void> {
-    try {
-        Realm.write(() => {
-            Realm.create(
-                'Setting',
-                {
-                    name: 'daysToBeNext',
-                    value: String(days),
-                },
-                true
-            );
-        });
-    } catch (err) {
-        console.warn(err);
-    }
-}
-
 export async function getAppTheme(): Promise<string> {
     try {
         const appTheme = Realm.objects<ISetting>('Setting').filtered(

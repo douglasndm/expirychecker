@@ -9,9 +9,9 @@ import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import {
+    setHowManyDaysToBeNextExp,
+    getHowManyDaysToBeNextExp,
     setAppTheme,
-    getDaysToBeNextToExp,
-    setDaysToBeNextToExp,
     getNotificationsEnabled,
     setNotificationsEnabled,
     getMultipleStores,
@@ -62,7 +62,7 @@ const Settings: React.FC = () => {
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
-            await setDaysToBeNextToExp(days);
+            await setHowManyDaysToBeNextExp(days);
 
             setUserPreferences({
                 ...userPreferences,
@@ -144,7 +144,7 @@ const Settings: React.FC = () => {
 
     useEffect(() => {
         async function getSettingsAlreadySetted() {
-            const settingDays = await getDaysToBeNextToExp();
+            const settingDays = await getHowManyDaysToBeNextExp();
             setDaysToBeNext(settingDays);
 
             const pre = await Premium.GetPremium();
@@ -162,7 +162,7 @@ const Settings: React.FC = () => {
 
     useEffect(() => {
         async function SetNewDays() {
-            const previousDaysToBeNext = await getDaysToBeNextToExp();
+            const previousDaysToBeNext = await getHowManyDaysToBeNextExp();
 
             if (daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
                 await setSettingDaysToBeNext(daysToBeNext);
