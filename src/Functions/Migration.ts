@@ -4,6 +4,7 @@ import {
     setHowManyDaysToBeNextExp,
     setNotificationsEnabled,
     setEnableMultipleStoresMode,
+    setEnableProVersion,
 } from './Settings';
 
 import Realm from '../Services/Realm';
@@ -17,11 +18,17 @@ export async function migrateSettings(): Promise<void> {
     // #region
     const settingsFromRealm = Realm.objects<ISetting>('Setting').slice();
 
+    console.log('Settings from realm now:');
+    console.log(settingsFromRealm);
+
     const daysNextSetting = settingsFromRealm.find(
         (setting) => setting.name === 'daysToBeNext'
     );
     const appThemeSetting = settingsFromRealm.find(
         (setting) => setting.name === 'appTheme'
+    );
+    const userPremium = settingsFromRealm.find(
+        (setting) => setting.name === 'isPremium'
     );
 
     const isNotificationsEnabled = await AsyncStorange.getItem(
@@ -31,6 +38,10 @@ export async function migrateSettings(): Promise<void> {
     const isMultiplesStoresEnabled = await AsyncStorange.getItem(
         '@ControleDeValidade/MultipleStores'
     );
+
+    console.log('settings from async storange');
+    console.log(`notifications= ${isNotificationsEnabled}`);
+    console.log(`multiples stores= ${isMultiplesStoresEnabled}`);
 
     if (!daysNextSetting) {
         await setHowManyDaysToBeNextExp(30);
@@ -42,6 +53,14 @@ export async function migrateSettings(): Promise<void> {
         await setAppTheme('system');
     } else {
         await setAppTheme(appThemeSetting.value);
+    }
+
+    if (!userPremium) {
+        await setEnableProVersion(false);
+    } else if (userPremium.value === 'true') {
+        await setEnableProVersion(true);
+    } else {
+        await setEnableProVersion(false);
     }
 
     if (!isNotificationsEnabled) {

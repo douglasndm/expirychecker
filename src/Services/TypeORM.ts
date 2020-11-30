@@ -11,6 +11,5 @@ export async function getConnection(): Promise<Connection> {
         location: 'default',
         entities: [Product, Batch, Setting],
         synchronize: true,
-        logging: true,
     });
 }

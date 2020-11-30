@@ -124,7 +124,8 @@ interface ISetSettingProps {
         | 'HowManyDaysToBeNextExp'
         | 'AppTheme'
         | 'EnableNotifications'
-        | 'EnableMultipleStores';
+        | 'EnableMultipleStores'
+        | 'EnableProVersion';
     value: string;
 }
 
@@ -138,21 +139,21 @@ async function setSetting({ type, value }: ISetSettingProps): Promise<void> {
 
         const settingRepository = connection.getRepository(Setting);
 
+        // check if the setting exist for update it and not create again
         const findExistintSetting = await settingRepository.findOne({
             where: {
-                value: '123',
+                name: type,
             },
         });
 
-        // if (findExistintSetting.length <= 0) {
-        //     await settingRepository.save(setting);
-        //     return;
-        // }
+        if (!findExistintSetting) {
+            await settingRepository.save(setting);
+            return;
+        }
 
-        // console.log(findExistintSetting);
-
-        // findExistintSetting[0].value = value;
-        // await settingRepository.save(findExistintSetting[0]);
+        // need to set here after find an existent setting for updating it and not create again
+        findExistintSetting.value = value;
+        await settingRepository.save(findExistintSetting);
     } catch (err) {
         throw new Error(err);
     } finally {
@@ -188,6 +189,13 @@ export async function setEnableMultipleStoresMode(
 ): Promise<void> {
     await setSetting({
         type: 'EnableMultipleStores',
+        value: String(enable),
+    });
+}
+
+export async function setEnableProVersion(enable: boolean): Promise<void> {
+    await setSetting({
+        type: 'EnableProVersion',
         value: String(enable),
     });
 }
