@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Batch } from './Batch';
 
-@Entity()
+@Entity({ name: 'Products' })
 export class Product {
     @PrimaryGeneratedColumn('increment')
     id: number;
@@ -12,11 +13,16 @@ export class Product {
 
     @Column({
         length: 20,
+        nullable: true,
     })
     code?: string;
 
     @Column({
         length: 30,
+        nullable: true,
     })
     store?: string;
+
+    @OneToMany((type) => Batch, (batch) => batch.product)
+    batches: Batch[];
 }
