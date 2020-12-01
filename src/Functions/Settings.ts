@@ -143,3 +143,19 @@ export async function getEnableProVersion(): Promise<boolean> {
     }
     return false;
 }
+
+export async function getAllSettings(): Promise<Array<Setting>> {
+    const connection = await getConnection();
+
+    try {
+        const settingRepository = connection.getRepository(Setting);
+
+        const settings = await settingRepository.find();
+
+        return settings;
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}

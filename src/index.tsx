@@ -14,21 +14,16 @@ import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import {
-    getHowManyDaysToBeNextExp,
-    getEnableMultipleStoresMode,
-    getEnableNotifications,
-    getEnableProVersion,
-} from './Functions/Settings';
 import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
-import Themes, { getActualAppTheme } from './Themes';
+import Themes from './Themes';
 
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
 import StatusBar from './Components/StatusBar';
+import { getUserPreferences } from './Functions/UserPreferences';
 
 if (!__DEV__) {
     Sentry.init({
@@ -48,19 +43,9 @@ const App: React.FC = () => {
 
     useEffect(() => {
         async function getData() {
-            const daysToBeNext = await getHowManyDaysToBeNextExp();
-            const isPremium = await getEnableProVersion();
-            const appTheme = await getActualAppTheme();
-            const multiplesStores = await getEnableMultipleStoresMode();
-            const enableNotifications = await getEnableNotifications();
+            const userPreferences = await getUserPreferences();
 
-            setPreferences({
-                howManyDaysToBeNextToExpire: daysToBeNext,
-                isUserPremium: isPremium,
-                appTheme,
-                multiplesStores,
-                enableNotifications,
-            });
+            setPreferences(userPreferences);
 
             await CheckIfSubscriptionIsActive();
         }
