@@ -18,8 +18,9 @@ import {
     getHowManyDaysToBeNextExp,
     getEnableMultipleStoresMode,
     getEnableNotifications,
+    getEnableProVersion,
 } from './Functions/Settings';
-import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
+import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
 import Themes, { getActualAppTheme } from './Themes';
 
@@ -48,7 +49,7 @@ const App: React.FC = () => {
     useEffect(() => {
         async function getData() {
             const daysToBeNext = await getHowManyDaysToBeNextExp();
-            const isPremium = await GetPremium();
+            const isPremium = await getEnableProVersion();
             const appTheme = await getActualAppTheme();
             const multiplesStores = await getEnableMultipleStoresMode();
             const enableNotifications = await getEnableNotifications();
