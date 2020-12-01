@@ -138,5 +138,8 @@ export async function getEnableMultipleStoresMode(): Promise<boolean> {
 export async function getEnableProVersion(): Promise<boolean> {
     const setting = await getSetting({ type: 'EnableProVersion' });
 
-    return Boolean(setting.value);
+    if (setting.value === 'true') {
+        return true;
+    }
+    return false;
 }
