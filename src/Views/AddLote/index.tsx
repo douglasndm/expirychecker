@@ -13,8 +13,8 @@ import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 import Notification from '../../Components/Notification';
 
-import { createLote } from '../../Functions/Lotes';
 import { getProductById } from '../../Functions/Product';
+import { createBatch } from '../../Functions/Batches';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -70,13 +70,14 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
             return;
         }
         try {
-            await createLote({
+            await createBatch({
                 productId,
-                lote: {
-                    lote,
+                batch: {
+                    name: lote,
                     amount,
                     exp_date: expDate,
                     price,
+                    status: 'Não tratado',
                 },
             });
 
