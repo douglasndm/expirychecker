@@ -71,7 +71,7 @@ export async function getProductByCode(
 
 export async function getProductById(
     productId: number
-): Promise<IProduct | undefined> {
+): Promise<Product | undefined> {
     const connection = await getConnection();
     try {
         const productRepository = connection.getRepository(Product);

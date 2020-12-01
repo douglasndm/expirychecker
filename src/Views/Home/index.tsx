@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import {
-    GetAllProductsWithLotesAndNotTratado,
-    removeAllLotesTratadosFromAllProduts,
-    sortProductsLotesByLotesExpDate,
-    sortProductsByFisrtLoteExpDate,
+    getAllProductsWithBatches,
+    removeAllTreatedBatchesFromAllProducts,
+    sortProductsBatchesByBatchExpDate,
+    sortProductsByFirstBatchExpDate,
 } from '../../Functions/Products';
 
 import Header from '../../Components/Header';
@@ -23,21 +23,23 @@ const Home: React.FC = () => {
 
     async function getProduts() {
         try {
-            const resultsDB = await GetAllProductsWithLotesAndNotTratado();
+            const resultsDB = await getAllProductsWithBatches();
 
             // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
             // ESSA FUNÇÃO REMOVE QUALQUER VESTIGIO DE LOTES TRATADOS
-            const semTratados = removeAllLotesTratadosFromAllProduts(resultsDB);
+            const semTratados = removeAllTreatedBatchesFromAllProducts(
+                resultsDB
+            );
 
             // PRIMEIRO PRECISEI PERCORRER TODOS OS RESULTADOS E ORDERNAR CADA LOTE INDIVIDUALMENTE
             // E COM ISSO RETORNA UM NOVO ARRAY DE OBJETO, PQ NAO ERA POSSIVEL RETORNA O
             // ANTIGO MODIFICADO
-            const resultsTemp = sortProductsLotesByLotesExpDate(semTratados);
+            const resultsTemp = sortProductsBatchesByBatchExpDate(semTratados);
             // classifica os produtos em geral pelo o mais proximo de vencer
             // DEPOIS DE TER TODOS OS PRODUTOS COM OS SEUS LOTES ORDENADOS POR VENCIMENTO, SIMPLISMENTE PEGO O
             // PRIMEIRO LOTE DE CADA PRODUTO(JÁ QUE SEMPRE SERÁ O MAIS PROXIMO A VENCER) E FAÇO A ORDENAÇÃO
             // DE TODOS OS PRODUTOS BASEADO NESTE PRIMEIRO LOTE
-            const results = sortProductsByFisrtLoteExpDate(resultsTemp);
+            const results = sortProductsByFirstBatchExpDate(resultsTemp);
 
             if (results.length > 10) {
                 const resultsMin = [];

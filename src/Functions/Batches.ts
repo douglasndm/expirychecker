@@ -13,6 +13,14 @@ export function sortByBatchExpDate(batches: Array<IBatch>): Array<IBatch> {
     return sortedBatches;
 }
 
+export function removeAllTreatedBatches(batches: Array<IBatch>): Array<IBatch> {
+    const newBatches = batches.filter(
+        (batch) => batch.status === 'Não tratado'
+    );
+
+    return newBatches;
+}
+
 interface createBatchProps {
     batch: Omit<IBatch, 'id'>;
     productId: number;
