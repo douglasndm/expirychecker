@@ -15,11 +15,7 @@ import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 import Notification from '../../Components/Notification';
 
-import {
-    checkIfProductAlreadyExistsByCode,
-    getProductByCode,
-    createProduct,
-} from '../../Functions/Product';
+import { getProductByCode, createProduct } from '../../Functions/Product';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -73,29 +69,6 @@ const AddProduct: React.FC = () => {
         if (!name || name.trim() === '') {
             Alert.alert('Digite o nome do produto');
             return;
-        }
-
-        if (code) {
-            if (!!store && store !== '') {
-                const productExists = await checkIfProductAlreadyExistsByCode({
-                    productCode: code,
-                    productStore: store,
-                });
-
-                if (productExists) {
-                    setProductAlreadyExists(true);
-                    return;
-                }
-            } else {
-                const productExist = await checkIfProductAlreadyExistsByCode({
-                    productCode: code,
-                });
-
-                if (productExist) {
-                    setProductAlreadyExists(true);
-                    return;
-                }
-            }
         }
 
         try {
