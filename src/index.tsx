@@ -7,13 +7,11 @@ import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
-import RealmContext from './Contexts/RealmContext';
-
 import './Services/TypeORM';
-import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
+import { getUserPreferences } from './Functions/UserPreferences';
 import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
 import Themes from './Themes';
@@ -23,7 +21,6 @@ import Routes from './Routes/DrawerContainer';
 import PreferencesContext from './Contexts/PreferencesContext';
 
 import StatusBar from './Components/StatusBar';
-import { getUserPreferences } from './Functions/UserPreferences';
 
 if (!__DEV__) {
     Sentry.init({
@@ -54,25 +51,23 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        <RealmContext.Provider value={{ Realm }}>
-            <PreferencesContext.Provider
-                value={{
-                    userPreferences: preferences,
-                    setUserPreferences: setPreferences,
-                }}
-            >
-                <ThemeProvider theme={preferences.appTheme}>
-                    <PaperProvider>
-                        <Portal>
-                            <NavigationContainer>
-                                <StatusBar />
-                                <Routes />
-                            </NavigationContainer>
-                        </Portal>
-                    </PaperProvider>
-                </ThemeProvider>
-            </PreferencesContext.Provider>
-        </RealmContext.Provider>
+        <PreferencesContext.Provider
+            value={{
+                userPreferences: preferences,
+                setUserPreferences: setPreferences,
+            }}
+        >
+            <ThemeProvider theme={preferences.appTheme}>
+                <PaperProvider>
+                    <Portal>
+                        <NavigationContainer>
+                            <StatusBar />
+                            <Routes />
+                        </NavigationContainer>
+                    </Portal>
+                </PaperProvider>
+            </ThemeProvider>
+        </PreferencesContext.Provider>
     );
 };
 
