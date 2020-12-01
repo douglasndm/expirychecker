@@ -136,6 +136,14 @@ const EditLote: React.FC = () => {
         }
     }, [loteId, reset]);
 
+    const handleAmountChange = useCallback((value) => {
+        const regex = /^[0-9\b]+$/;
+
+        if (value === '' || regex.test(value)) {
+            setAmount(value);
+        }
+    }, []);
+
     return (
         <>
             {!product ? (
@@ -189,20 +197,7 @@ const EditLote: React.FC = () => {
                                         placeholder="Quantidade"
                                         keyboardType="numeric"
                                         value={String(amount)}
-                                        onChangeText={(value) => {
-                                            const regex = /^[0-9\b]+$/;
-
-                                            if (
-                                                value === '' ||
-                                                regex.test(value)
-                                            ) {
-                                                if (value === '') {
-                                                    setAmount(0);
-                                                    return;
-                                                }
-                                                setAmount(Number(value));
-                                            }
-                                        }}
+                                        onChangeText={handleAmountChange}
                                     />
                                 </InputGroup>
 

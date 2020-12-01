@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { View, ScrollView, Text, Keyboard, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
@@ -130,6 +130,14 @@ const AddProduct: React.FC = () => {
         };
     }, []);
 
+    const handleAmountChange = useCallback((value) => {
+        const regex = /^[0-9\b]+$/;
+
+        if (value === '' || regex.test(value)) {
+            setAmount(value);
+        }
+    }, []);
+
     return (
         <>
             {cameraEnabled ? (
@@ -257,13 +265,7 @@ const AddProduct: React.FC = () => {
                                         accessibilityLabel="Campo de texto para quantidade do produto"
                                         keyboardType="numeric"
                                         value={String(amount)}
-                                        onChangeText={(v) => {
-                                            const regex = /^[0-9\b]+$/;
-
-                                            if (v === '' || regex.test(v)) {
-                                                setAmount(v);
-                                            }
-                                        }}
+                                        onChangeText={handleAmountChange}
                                         onFocus={() => {
                                             setCameraEnebled(false);
                                         }}
