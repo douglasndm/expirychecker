@@ -39,14 +39,21 @@ const Product = ({ product, expired, nextToExp }: Request) => {
 
     const [totalPrice, setTotalPrice] = useState(0);
 
+    const exp_date = useMemo(() => {
+        if (product.batches[0]) return new Date(product.batches[0].exp_date);
+        return null;
+    }, [product.batches]);
+
     const expiredOrNext = useMemo(() => {
         return !!(expired || nextToExp);
     }, [expired, nextToExp]);
 
     useEffect(() => {
-        if (product.lotes[0]) {
-            if (product.lotes[0].amount && product.lotes[0].price) {
-                setTotalPrice(product.lotes[0].price * product.lotes[0].amount);
+        if (product.batches[0]) {
+            if (product.batches[0].amount && product.batches[0].price) {
+                setTotalPrice(
+                    product.batches[0].price * product.batches[0].amount
+                );
             }
         }
     }, [product]);
@@ -71,10 +78,10 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                             </ProductCode>
                         )}
 
-                        {product.lotes.length > 0 &&
-                            !!product.lotes[0].lote && (
+                        {product.batches.length > 0 &&
+                            !!product.batches[0].name && (
                                 <ProductLote expiredOrNext={expiredOrNext}>
-                                    Lote: {product.lotes[0].lote}
+                                    Lote: {product.batches[0].name}
                                 </ProductLote>
                             )}
 
@@ -85,7 +92,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                         )}
                     </ProductDetailsContainer>
 
-                    {product.lotes.length > 0 && (
+                    {product.batches.length > 0 && (
                         <LoteDetailsContainer>
                             <AmountContainer>
                                 <AmountContainerText
@@ -94,7 +101,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                                     Quantidade
                                 </AmountContainerText>
                                 <Amount expiredOrNext={expiredOrNext}>
-                                    {product.lotes[0].amount}
+                                    {product.batches[0].amount}
                                 </Amount>
                             </AmountContainer>
 
@@ -121,20 +128,16 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                     )}
                 </ProductDetails>
 
-                {!!product.lotes.length && (
+                {!!exp_date && (
                     <ProductExpDate expiredOrNext={expiredOrNext}>
                         {expired ? 'Venceu ' : 'Vence '}
-                        {formatDistanceToNow(product.lotes[0].exp_date, {
+                        {formatDistanceToNow(exp_date, {
                             addSuffix: true,
                             locale: br,
                         })}
-                        {format(
-                            product.lotes[0].exp_date,
-                            ', EEEE, dd/MM/yyyy',
-                            {
-                                locale: br,
-                            }
-                        )}
+                        {format(exp_date, ', EEEE, dd/MM/yyyy', {
+                            locale: br,
+                        })}
                     </ProductExpDate>
                 )}
             </Card>
