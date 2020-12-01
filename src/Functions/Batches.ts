@@ -75,3 +75,27 @@ export async function updateBatch(batch: IBatch): Promise<void> {
         await connection.close();
     }
 }
+
+export async function deleteBatch(batchId: number): Promise<void> {
+    const connection = await getConnection();
+
+    try {
+        const batchRepository = connection.getRepository(Batch);
+
+        const batch = await batchRepository.findOne({
+            where: {
+                id: batchId,
+            },
+        });
+
+        if (!batch) {
+            throw new Error('Lote não encontrado');
+        }
+
+        await batchRepository.delete(batch);
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}

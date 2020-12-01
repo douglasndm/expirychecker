@@ -4,8 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { RadioButton, Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
-import { deleteLote } from '../../Functions/Lotes';
-import { updateBatch } from '../../Functions/Batches';
+import { updateBatch, deleteBatch } from '../../Functions/Batches';
 import { getProductById } from '../../Functions/Product';
 
 import BackButton from '../../Components/BackButton';
@@ -82,7 +81,7 @@ const EditLote: React.FC = () => {
             const batchStatus = batchResult.status === 'Tratado';
 
             setLote(batchResult.name);
-            setExpDate(batchResult.exp_date);
+            setExpDate(new Date(batchResult.exp_date));
             setTratado(batchStatus);
 
             if (batchResult.amount) setAmount(batchResult.amount);
@@ -123,7 +122,7 @@ const EditLote: React.FC = () => {
 
     const handleDelete = useCallback(async () => {
         try {
-            await deleteLote(loteId);
+            await deleteBatch(loteId);
 
             reset({
                 index: 1,
