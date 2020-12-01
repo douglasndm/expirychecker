@@ -13,14 +13,13 @@ import {
 
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
+import Notification from '../../Components/Notification';
 
 import {
     checkIfProductAlreadyExistsByCode,
     getProductByCode,
     createProduct,
 } from '../../Functions/Product';
-
-import { createLote } from '../../Functions/Lotes';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -68,6 +67,8 @@ const AddProduct: React.FC = () => {
     const [cameraEnabled, setCameraEnebled] = useState(false);
     const [productAlreadyExists, setProductAlreadyExists] = useState(false);
 
+    const [errorMessage, setErrorMessage] = useState<string>('');
+
     async function handleSave() {
         if (!name || name.trim() === '') {
             Alert.alert('Digite o nome do produto');
@@ -102,39 +103,35 @@ const AddProduct: React.FC = () => {
                 name,
                 code,
                 store,
-                lotes: [],
+                batches: [],
             };
 
-            const newLote: Omit<ILote, 'id'> = {
-                lote,
+            const newLote: Omit<IBatch, 'id'> = {
+                name: lote,
                 exp_date: expDate,
                 amount: Number(amount),
                 price,
                 status: 'Não tratado',
             };
 
-            const productCreatedId = await createProduct(newProduct);
+            newProduct.batches.push(newLote);
 
-            if (productCreatedId) {
-                await createLote({
-                    lote: newLote,
-                    productId: productCreatedId,
-                });
+            await createProduct(newProduct);
 
-                if (!userPreferences.isUserPremium && adReady) {
-                    interstitialAd.show();
-                }
-
-                reset({
-                    index: 1,
-                    routes: [
-                        { name: 'Home' },
-                        { name: 'Success', params: { type: 'create_product' } },
-                    ],
-                });
+            if (!userPreferences.isUserPremium && adReady) {
+                interstitialAd.show();
             }
-        } catch (error) {
-            console.warn(error);
+
+            reset({
+                index: 1,
+                routes: [
+                    { name: 'Home' },
+                    { name: 'Success', params: { type: 'create_product' } },
+                ],
+            });
+        } catch (err) {
+            console.warn(err);
+            setErrorMessage(String(err));
         }
     }
 
@@ -210,6 +207,13 @@ const AddProduct: React.FC = () => {
                         </PageHeader>
 
                         <PageContent>
+                            {!!errorMessage && (
+                                <Notification
+                                    NotificationType="error"
+                                    NotificationMessage={errorMessage}
+                                />
+                            )}
+
                             <InputContainer>
                                 <InputText
                                     placeholder="Nome do produto"

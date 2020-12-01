@@ -23,6 +23,9 @@ export class Product {
     })
     store?: string;
 
-    @OneToMany((type) => Batch, (batch) => batch.product)
+    @OneToMany((type) => Batch, (batch) => batch.product, {
+        cascade: true,
+        eager: true,
+    })
     batches: Batch[];
 }

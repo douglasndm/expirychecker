@@ -1,7 +1,7 @@
 interface IProduct {
-    id: number;
+    id?: number;
     name: string;
     code?: string;
     store?: string;
-    lotes: Array<ILote>;
+    batches: Array<IBatch>;
 }

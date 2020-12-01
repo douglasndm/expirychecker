@@ -1,6 +1,55 @@
+import { getConnection } from '../Services/TypeORM';
+
+import { Product } from '../Models/Product';
+
 import Realm from '../Services/Realm';
 import { createLote } from './Lotes';
+import { Batch } from '../Models/Batch';
 
+interface checkIfProductExistsProps {
+    productCode: string;
+    productStore?: string;
+}
+
+export async function checkIfProductExistsByCode({
+    productCode,
+    productStore,
+}: checkIfProductExistsProps): Promise<boolean> {
+    const connection = await getConnection();
+
+    try {
+        const productRepository = connection.getRepository(Product);
+
+        if (productStore) {
+            const result = await productRepository.findOne({
+                where: {
+                    code: productCode,
+                    store: productStore,
+                },
+            });
+
+            if (result) {
+                return true;
+            }
+            return false;
+        }
+
+        const result = await productRepository.findOne({
+            where: {
+                code: productCode,
+            },
+        });
+
+        if (result) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        throw new Error(error);
+    } finally {
+        await connection.close();
+    }
+}
 interface ICheckIfProductAlreadyExistsByCodeProps {
     productCode: string;
     productStore?: string;
@@ -70,6 +119,51 @@ export async function getProductById(
 }
 
 export async function createProduct(
+    product: Omit<IProduct, 'id'>
+): Promise<void> {
+    if (product.code) {
+        const existProduct = await checkIfProductExistsByCode({
+            productCode: product.code,
+            productStore: product.store,
+        });
+
+        if (existProduct) {
+            throw new Error('Produto já está cadastrado');
+        }
+    }
+
+    const connection = await getConnection();
+
+    try {
+        const productRepository = connection.getRepository(Product);
+
+        const prod = new Product();
+        prod.name = product.name;
+        prod.code = product.code;
+        prod.store = product.store;
+
+        prod.batches = product.batches.map((batch) => {
+            const newBatch = new Batch();
+
+            newBatch.name = batch.name;
+            newBatch.exp_date = batch.exp_date;
+            newBatch.amount = batch.amount;
+            newBatch.price = batch.price;
+            newBatch.status = batch.status;
+            newBatch.product = prod;
+
+            return newBatch;
+        });
+
+        await productRepository.save(prod);
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+export async function createProductRealm(
     product: Omit<IProduct, 'id'>
 ): Promise<number | void> {
     try {
