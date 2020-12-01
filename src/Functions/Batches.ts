@@ -47,3 +47,31 @@ export async function createBatch({
         await connection.close();
     }
 }
+
+export async function updateBatch(batch: IBatch): Promise<void> {
+    const connection = await getConnection();
+
+    try {
+        const batchRepository = connection.getRepository(Batch);
+
+        const batchInDatabase = await batchRepository.findOne({
+            where: { id: batch.id },
+        });
+
+        if (!batchInDatabase) {
+            throw new Error('Lote não encontrado');
+        }
+
+        batchInDatabase.name = batch.name;
+        batchInDatabase.exp_date = batch.exp_date;
+        batchInDatabase.amount = batch.amount;
+        batchInDatabase.price = batch.price;
+        batchInDatabase.status = batch.status;
+
+        await batchRepository.save(batchInDatabase);
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}
