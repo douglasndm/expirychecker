@@ -1,93 +1,10 @@
+import { IsNull } from 'typeorm';
 import { getConnection } from '../Services/TypeORM';
 
 import { Product } from '../Models/Product';
 
-import Realm from '../Services/Realm';
 import { removeAllTreatedBatches, sortByBatchExpDate } from './Batches';
 
-export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
-    try {
-        const results = Realm.objects<IProduct>('Product')
-            .filtered('lotes.@count > 0')
-            .slice();
-
-        return results;
-    } catch (err) {
-        console.warn(err);
-    }
-
-    return [];
-}
-
-export async function GetAllProductsWithLotesAndNotTratado(): Promise<
-    Array<IProduct>
-> {
-    try {
-        const results = Realm.objects<IProduct>('Product')
-            .filtered('lotes.@count > 0 AND lotes.status != "Tratado"')
-            .slice();
-
-        return results;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function GetAllProductsByStore(
-    store: string,
-    limit?: number
-): Promise<Array<IProduct>> {
-    try {
-        const results = Realm.objects<IProduct>('Product')
-            .filtered(`store = '${store}'`)
-            .slice();
-
-        if (limit) {
-            const limitedResults = results.slice(0, limit);
-            return limitedResults;
-        }
-
-        return results;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function GetAllProductsWithoutStore(): Promise<Array<IProduct>> {
-    try {
-        const results = Realm.objects<IProduct>('Product')
-            .filtered(`store == null OR store == ''`)
-            .slice();
-
-        return results;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function getAllStores(): Promise<Array<string>> {
-    try {
-        const stores: Array<string> = [];
-
-        const results = Realm.objects<IProduct>('Product').sorted('store');
-
-        results.forEach((product) => {
-            if (product.store) {
-                const temp = stores.find((store) => store === product.store);
-
-                if (!temp) {
-                    stores.push(product.store);
-                }
-            }
-        });
-
-        return stores;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-// typeorm
 export async function getAllProducts(): Promise<Array<Product>> {
     const connection = await getConnection();
 
@@ -114,11 +31,30 @@ export async function getAllProductsWithBatches(): Promise<Array<Product>> {
     return filtedredProducts;
 }
 
+export async function getAllProductsWithoutStore(): Promise<Array<Product>> {
+    const connection = await getConnection();
+
+    try {
+        const productRepository = connection.getRepository(Product);
+
+        const results = await productRepository.find({
+            where: {
+                store: IsNull(),
+            },
+        });
+
+        return results;
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
 // POR DATA DE VENCIMENTO, OU SEJA CADA PRODUTO DA LISTA VAI TER UM ARRAY DE LOTE JÁ ORDERNADO POR DATA DE VENCIMENTO
 export function sortProductsBatchesByBatchExpDate(
     products: Array<Product>
-): Array<Product> {
+): Array<IProduct> {
     const sortedProducts = products.map((prod) => {
         const sortedBatches = sortByBatchExpDate(prod.batches);
 
