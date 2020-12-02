@@ -1,7 +1,4 @@
-import { Setting } from '../Models/Setting';
-
-import { getConnection } from '../Services/TypeORM';
-
+import AsyncStorage from '@react-native-community/async-storage';
 /* TYPEORM */
 interface ISetSettingProps {
     type:
@@ -14,35 +11,10 @@ interface ISetSettingProps {
 }
 
 async function setSetting({ type, value }: ISetSettingProps): Promise<void> {
-    const connection = await getConnection();
-
     try {
-        const setting = new Setting();
-
-        setting.name = type;
-        setting.value = value;
-
-        const settingRepository = connection.getRepository(Setting);
-
-        // check if the setting exist for update it and not create again
-        const findExistintSetting = await settingRepository.findOne({
-            where: {
-                name: type,
-            },
-        });
-
-        if (!findExistintSetting) {
-            await settingRepository.save(setting);
-            return;
-        }
-
-        // need to set here after find an existent setting for updating it and not create again
-        findExistintSetting.value = value;
-        await settingRepository.save(findExistintSetting);
+        await AsyncStorage.setItem(type, value);
     } catch (err) {
         throw new Error(err);
-    } finally {
-        await connection.close();
     }
 }
 
@@ -87,75 +59,51 @@ export async function setEnableProVersion(enable: boolean): Promise<void> {
 
 async function getSetting({
     type,
-}: Omit<ISetSettingProps, 'value'>): Promise<Setting> {
-    const connection = await getConnection();
-
+}: Omit<ISetSettingProps, 'value'>): Promise<string> {
     try {
-        const settingRepository = connection.getRepository(Setting);
-
-        const setting = await settingRepository.findOne({
-            where: {
-                name: type,
-            },
-        });
+        const setting = await AsyncStorage.getItem(type);
 
         if (!setting) {
-            throw new Error(`Configuração não encontrada. ${type}`);
+            throw new Error('Configuração não encontrada');
         }
 
         return setting;
     } catch (err) {
         throw new Error(err);
-    } finally {
-        await connection.close();
     }
 }
 
 export async function getHowManyDaysToBeNextExp(): Promise<number> {
     const setting = await getSetting({ type: 'HowManyDaysToBeNextExp' });
 
-    return Number(setting.value);
+    return Number(setting);
 }
 
 export async function getAppTheme(): Promise<string> {
     const setting = await getSetting({ type: 'AppTheme' });
 
-    return setting.value;
+    return setting;
 }
 
 export async function getEnableNotifications(): Promise<boolean> {
     const setting = await getSetting({ type: 'EnableNotifications' });
 
-    return Boolean(setting.value);
+    if (setting === 'true') return true;
+    return false;
 }
 
 export async function getEnableMultipleStoresMode(): Promise<boolean> {
     const setting = await getSetting({ type: 'EnableMultipleStores' });
 
-    return Boolean(setting.value);
+    if (setting === 'true') return true;
+    return false;
 }
 
 export async function getEnableProVersion(): Promise<boolean> {
     const setting = await getSetting({ type: 'EnableProVersion' });
 
-    if (setting.value === 'true') {
+    if (setting === 'true') {
         return true;
     }
     return false;
-}
-
-export async function getAllSettings(): Promise<Array<Setting>> {
-    const connection = await getConnection();
-
-    try {
-        const settingRepository = connection.getRepository(Setting);
-
-        const settings = await settingRepository.find();
-
-        return settings;
-    } catch (err) {
-        throw new Error(err);
-    } finally {
-        await connection.close();
-    }
 }

@@ -11,7 +11,7 @@ import './Services/TypeORM';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import { getUserPreferences } from './Functions/UserPreferences';
+import { getAllUserPreferences } from './Functions/UserPreferences';
 import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
 import Themes from './Themes';
@@ -40,7 +40,7 @@ const App: React.FC = () => {
 
     useEffect(() => {
         async function getData() {
-            const userPreferences = await getUserPreferences();
+            const userPreferences = await getAllUserPreferences();
 
             setPreferences(userPreferences);
 

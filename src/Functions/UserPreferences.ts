@@ -1,43 +1,31 @@
 import { IUserPreferences } from '../@types/userPreference';
 import { getThemeByName } from '../Themes';
-import { getAllSettings } from './Settings';
+import {
+    getAppTheme,
+    getEnableMultipleStoresMode,
+    getEnableNotifications,
+    getEnableProVersion,
+    getHowManyDaysToBeNextExp,
+} from './Settings';
 
-export async function getUserPreferences(): Promise<IUserPreferences> {
-    const settings = await getAllSettings();
+export async function getAllUserPreferences(): Promise<IUserPreferences> {
+    try {
+        const settingDay = await getHowManyDaysToBeNextExp();
+        const settingTheme = await getAppTheme();
+        const settingNotification = await getEnableNotifications();
+        const settingMultipleStores = await getEnableMultipleStoresMode();
+        const settingProMode = await getEnableProVersion();
 
-    const daysSetting = settings.find(
-        (setting) => setting.name === 'HowManyDaysToBeNextExp'
-    );
+        const settings: IUserPreferences = {
+            howManyDaysToBeNextToExpire: settingDay,
+            appTheme: getThemeByName(settingTheme),
+            enableNotifications: settingNotification,
+            isUserPremium: settingProMode,
+            multiplesStores: settingMultipleStores,
+        };
 
-    const themeSetting = settings.find(
-        (setting) => setting.name === 'AppTheme'
-    );
-
-    const proModeSetting = settings.find(
-        (setting) => setting.name === 'EnableProVersion'
-    );
-
-    const multipleStoresSetting = settings.find(
-        (setting) => setting.name === 'EnableMultipleStores'
-    );
-
-    const enableNotificationsSetting = settings.find(
-        (setting) => setting.name === 'EnableNotifications'
-    );
-
-    const daysToBeNext = daysSetting ? Number(daysSetting.value) : 30;
-    const appTheme = themeSetting ? themeSetting.value : 'system';
-    const isProMode = proModeSetting?.value === 'true';
-    const multiplesStores = multipleStoresSetting?.value === 'true';
-    const enableNotifications = enableNotificationsSetting?.value === 'true';
-
-    const preferences: IUserPreferences = {
-        howManyDaysToBeNextToExpire: daysToBeNext,
-        appTheme: getThemeByName(appTheme),
-        isUserPremium: isProMode,
-        multiplesStores,
-        enableNotifications,
-    };
-
-    return preferences;
+        return settings;
+    } catch (err) {
+        throw new Error(err);
+    }
 }
