@@ -103,9 +103,9 @@ const Home: React.FC = () => {
                         }
                     }
 
-                    if (product.lotes.length > 0) {
-                        const lotesFounded = product.lotes.filter((lote) => {
-                            const searchByLoteName = lote.lote
+                    if (product.batches.length > 0) {
+                        const lotesFounded = product.batches.filter((lote) => {
+                            const searchByLoteName = lote.name
                                 .toLowerCase()
                                 .includes(query);
 
