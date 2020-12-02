@@ -122,7 +122,6 @@ export async function createProduct(
             newBatch.amount = batch.amount;
             newBatch.price = batch.price;
             newBatch.status = batch.status;
-            newBatch.product = prod;
 
             return newBatch;
         });

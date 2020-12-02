@@ -8,6 +8,7 @@ import {
 } from './Settings';
 
 import Realm from '../Services/Realm';
+import { createProduct } from './Product';
 
 interface ISetting {
     name: string;
@@ -17,9 +18,6 @@ interface ISetting {
 export async function migrateSettings(): Promise<void> {
     // #region
     const settingsFromRealm = Realm.objects<ISetting>('Setting').slice();
-
-    console.log('Settings from realm now:');
-    console.log(settingsFromRealm);
 
     const daysNextSetting = settingsFromRealm.find(
         (setting) => setting.name === 'daysToBeNext'
@@ -39,6 +37,8 @@ export async function migrateSettings(): Promise<void> {
         '@ControleDeValidade/MultipleStores'
     );
 
+    console.log('Settings from realm now:');
+    console.log(settingsFromRealm);
     console.log('settings from async storange');
     console.log(
         `notifications= ${isNotificationsEnabled} & multiples stores= ${isMultiplesStoresEnabled}`
@@ -76,4 +76,33 @@ export async function migrateSettings(): Promise<void> {
         await setEnableMultipleStoresMode(Boolean(isMultiplesStoresEnabled));
     }
     // #endregion
+}
+
+export async function migrateProducts(): Promise<void> {
+    const productsFromRealm = Realm.objects<IProductRealm>('Product').slice();
+
+    for (const product of productsFromRealm) { // eslint-disable-line
+
+
+        const newProductFormat: IProduct = {
+            name: product.name,
+            code: product.code,
+            store: product.store,
+
+            batches: product.lotes.map((lote) => {
+                const newBatchFormat: IBatch = {
+                    name: lote.lote,
+                    exp_date: lote.exp_date,
+                    amount: lote.amount,
+                    price: lote.price,
+                    status:
+                        lote.status === 'Tratado' ? 'Tratado' : 'Não tratado',
+                };
+
+                return newBatchFormat;
+            }),
+        };
+
+        await createProduct(newProductFormat); // eslint-disable-line
+    }
 }
