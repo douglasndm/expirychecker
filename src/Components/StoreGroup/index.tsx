@@ -6,8 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import ProductItem from '../ProductItem';
 
 import {
-    sortProductsLotesByLotesExpDate,
-    sortProductsByFisrtLoteExpDate,
+    sortProductsBatchesByBatchExpDate,
+    sortProductsByFirstBatchExpDate,
 } from '../../Functions/Products';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
@@ -29,8 +29,8 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
         ? TestIds.BANNER
         : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENSTOREGROUPS;
 
-    const resultsTemp = sortProductsLotesByLotesExpDate(products);
-    const results = sortProductsByFisrtLoteExpDate(resultsTemp);
+    const resultsTemp = sortProductsBatchesByBatchExpDate(products);
+    const results = sortProductsByFirstBatchExpDate(resultsTemp);
 
     const handleStoreDetails = useCallback(() => {
         navigation.push('StoreDetails', {

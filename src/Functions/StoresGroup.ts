@@ -1,8 +1,5 @@
-import {
-    GetAllProductsByStore,
-    GetAllProductsWithoutStore,
-    getAllStores,
-} from './Products';
+import { getAllStoresNames, getAllProductsByStore } from './Stores';
+import { getAllProductsWithoutStore } from './Products';
 
 interface RequestProps {
     limit?: number;
@@ -13,20 +10,20 @@ export async function GetAllProductsOrderedByStore({
 }: RequestProps): Promise<Array<IStoreGroup>> {
     const storeGroup: Array<IStoreGroup> = [];
 
-    const stores = await getAllStores();
+    const stores = await getAllStoresNames();
 
-    stores.forEach(async (store) => {
+    for (const store of stores) { // eslint-disable-line
         const products = limit
-            ? await GetAllProductsByStore(store, limit)
-            : await GetAllProductsByStore(store);
+            ? await getAllProductsByStore({ store, limit })
+            : await getAllProductsByStore({ store });
 
         storeGroup.push({
             name: store,
             products,
         });
-    });
+    }
 
-    const productsWithoutStore = await GetAllProductsWithoutStore();
+    const productsWithoutStore = await getAllProductsWithoutStore();
 
     storeGroup.push({
         name: 'Sem loja',

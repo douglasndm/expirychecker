@@ -38,11 +38,7 @@ export async function getAllStoresNames(): Promise<Array<string>> {
         const stores: Array<string> = [];
 
         const productRepository = connection.getRepository(Product);
-        const results = await productRepository.find({
-            where: {
-                store: Not(IsNull),
-            },
-        });
+        const results = await productRepository.find();
 
         results.forEach((product) => {
             if (product.store) {
