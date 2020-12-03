@@ -26,16 +26,18 @@ const ProductItem: React.FC<RequestProps> = ({
     const [adFailed, setAdFailed] = useState(false);
 
     const expired = useMemo(() => {
-        return product.lotes[0] && isPast(product.lotes[0].exp_date);
-    }, [product.lotes]);
+        return (
+            product.batches[0] && isPast(new Date(product.batches[0].exp_date))
+        );
+    }, [product.batches]);
 
     const nextToExp = useMemo(() => {
         return (
-            product.lotes[0] &&
+            product.batches[0] &&
             addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
-                product.lotes[0].exp_date
+                new Date(product.batches[0].exp_date)
         );
-    }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
+    }, [userPreferences.howManyDaysToBeNextToExpire, product.batches]);
 
     const adUnitId = useMemo(() => {
         return __DEV__

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as Sentry from '@sentry/react-native';
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
@@ -6,16 +7,14 @@ import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
-import RealmContext from './Contexts/RealmContext';
-
-import Realm from './Services/Realm';
+import './Services/TypeORM';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import { getDaysToBeNextToExp, getMultipleStores } from './Functions/Settings';
-import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
+import { getAllUserPreferences } from './Functions/UserPreferences';
+import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
-import Themes, { getActualAppTheme } from './Themes';
+import Themes from './Themes';
 
 import Routes from './Routes/DrawerContainer';
 
@@ -36,21 +35,14 @@ const App: React.FC = () => {
         isUserPremium: false,
         appTheme: Themes.Light,
         multiplesStores: false,
+        enableNotifications: true,
     });
 
     useEffect(() => {
         async function getData() {
-            const daysToBeNext = await getDaysToBeNextToExp();
-            const isPremium = await GetPremium();
-            const appTheme = await getActualAppTheme();
-            const multiplesStores = await getMultipleStores();
+            const userPreferences = await getAllUserPreferences();
 
-            setPreferences({
-                howManyDaysToBeNextToExpire: daysToBeNext,
-                isUserPremium: isPremium,
-                appTheme,
-                multiplesStores,
-            });
+            setPreferences(userPreferences);
 
             await CheckIfSubscriptionIsActive();
         }
@@ -59,25 +51,23 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        <RealmContext.Provider value={{ Realm }}>
-            <PreferencesContext.Provider
-                value={{
-                    userPreferences: preferences,
-                    setUserPreferences: setPreferences,
-                }}
-            >
-                <ThemeProvider theme={preferences.appTheme}>
-                    <PaperProvider>
-                        <Portal>
-                            <NavigationContainer>
-                                <StatusBar />
-                                <Routes />
-                            </NavigationContainer>
-                        </Portal>
-                    </PaperProvider>
-                </ThemeProvider>
-            </PreferencesContext.Provider>
-        </RealmContext.Provider>
+        <PreferencesContext.Provider
+            value={{
+                userPreferences: preferences,
+                setUserPreferences: setPreferences,
+            }}
+        >
+            <ThemeProvider theme={preferences.appTheme}>
+                <PaperProvider>
+                    <Portal>
+                        <NavigationContainer>
+                            <StatusBar />
+                            <Routes />
+                        </NavigationContainer>
+                    </Portal>
+                </PaperProvider>
+            </ThemeProvider>
+        </PreferencesContext.Provider>
     );
 };
 

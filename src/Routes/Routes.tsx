@@ -14,6 +14,7 @@ import Settings from '../Views/Settings';
 import About from '../Views/About';
 import PremiumSubscription from '../Views/PremiumSubscription';
 import Success from '../Views/Success';
+import Migration from '../Views/Migration';
 
 import Test from '../Views/Test';
 
@@ -42,6 +43,7 @@ const Routes: React.FC = () => {
                 component={PremiumSubscription}
             />
             <Stack.Screen name="Success" component={Success} />
+            <Stack.Screen name="Migration" component={Migration} />
         </Stack.Navigator>
     );
 };

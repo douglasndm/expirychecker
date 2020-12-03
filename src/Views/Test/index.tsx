@@ -1,40 +1,27 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, ScrollView, Text, Alert } from 'react-native';
+import React, { useCallback } from 'react';
+import { Alert } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
 
 import { useTheme } from 'styled-components/native';
 
+import AsyncStorage from '@react-native-community/async-storage';
+import Realm from '../../Services/Realm';
+
 import Button from '../../Components/Button';
 
 import {
-    getNotificationsEnabled,
-    setNotificationsEnabled,
+    getEnableNotifications,
+    setEnableNotifications,
 } from '../../Functions/Settings';
-import { GetAllProductsWithoutStore } from '../../Functions/Products';
 import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
-import RealmContext from '../../Contexts/RealmContext';
+
+import { Container } from './styles';
 
 const Test: React.FC = () => {
-    const { Realm } = useContext(RealmContext);
-
-    const [adsEnable, setAdsEnable] = useState(false);
-
-    useEffect(() => {
-        async function getAppData() {
-            if (!(await Premium.GetPremium())) {
-                setAdsEnable(true);
-            } else {
-                setAdsEnable(false);
-            }
-        }
-
-        getAppData();
-    }, []);
-
     function setBackgroundJob() {
         const backgroundSchedule = {
             jobKey: 'backgroundNotification',
@@ -87,7 +74,7 @@ const Test: React.FC = () => {
                 }
             });
         } catch (err) {
-            console.log(err);
+            throw new Error(err);
         }
     }
 
@@ -99,16 +86,12 @@ const Test: React.FC = () => {
                 Realm.delete(results);
             });
         } catch (err) {
-            console.warn(err);
+            throw new Error(err);
         }
     }
 
-    async function saveFile() {
-        ExportBackupFile();
-    }
-
     async function getNot() {
-        const noti = await getNotificationsEnabled();
+        const noti = await getEnableNotifications();
 
         if (noti) {
             Alert.alert('Habilitado');
@@ -117,112 +100,85 @@ const Test: React.FC = () => {
         }
     }
 
-    async function setNot() {
-        const noti = await getNotificationsEnabled();
+    const handleInvertEnableNotification = useCallback(async () => {
+        const notification = await getEnableNotifications();
 
-        await setNotificationsEnabled(!noti);
-    }
+        await setEnableNotifications(!notification);
+    }, []);
+
+    const handleExportFile = useCallback(async () => {
+        await ExportBackupFile();
+    }, []);
+
+    const handleImportFile = useCallback(async () => {
+        await ImportBackupFile();
+    }, []);
 
     const theme = useTheme();
 
+    const handleDeleteMigrateStatus = useCallback(async () => {
+        await AsyncStorage.removeItem('MigrationStatus');
+    }, []);
+
     return (
-        <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
-            <ScrollView>
-                <Category
-                    style={{ backgroundColor: theme.colors.productBackground }}
-                >
-                    <Text>Is ads enabled: {String(adsEnable)}</Text>
+        <Container>
+            <Category
+                style={{ backgroundColor: theme.colors.productBackground }}
+            >
+                <Button
+                    text="Remover status de migração do banco de dados das configurações"
+                    onPress={handleDeleteMigrateStatus}
+                />
 
-                    <Button
-                        text="All products without stores"
-                        onPress={async () => {
-                            const result = await GetAllProductsWithoutStore();
+                <Button text="Notification Status" onPress={getNot} />
+                <Button
+                    text="Invert Notification Status"
+                    onPress={handleInvertEnableNotification}
+                />
 
-                            console.log(result);
-                        }}
-                    />
+                <Button
+                    text="Check play store"
+                    onPress={async () => {
+                        console.log(await Premium.IsPlayStoreIsAvailable());
+                    }}
+                />
 
-                    <Button text="Notification Status" onPress={getNot} />
-                    <Button
-                        text="Invert Notification Status"
-                        onPress={setNot}
-                    />
+                <Button
+                    text="Logar detalhes da inscrição"
+                    onPress={async () => {
+                        console.log(await Premium.GetSubscriptionInfo());
+                    }}
+                />
 
-                    <Button
-                        text="Check play store"
-                        onPress={async () => {
-                            console.log(await Premium.IsPlayStoreIsAvailable());
-                        }}
-                    />
+                <Button
+                    text="Logar se usuário tem inscrição ativa"
+                    onPress={async () => {
+                        console.log(
+                            await Premium.CheckIfSubscriptionIsActive()
+                        );
+                    }}
+                />
 
-                    <Button
-                        text="Logar detalhes da inscrição"
-                        onPress={async () => {
-                            console.log(await Premium.GetSubscriptionInfo());
-                        }}
-                    />
+                <Button
+                    text="Solicitar compra"
+                    onPress={async () => {
+                        console.log(await Premium.MakeASubscription());
+                    }}
+                />
 
-                    <Button
-                        text="Logar se usuário tem inscrição ativa"
-                        onPress={async () => {
-                            console.log(
-                                await Premium.CheckIfSubscriptionIsActive()
-                            );
-                        }}
-                    />
+                <Button text="Disparar notificação" onPress={note} />
 
-                    <Button
-                        text="Solicitar compra"
-                        onPress={async () => {
-                            console.log(await Premium.MakeASubscription());
-                        }}
-                    />
+                <Button text="Load with sample data" onPress={sampleData} />
 
-                    <Button
-                        text="Clica"
-                        onPress={async () => {
-                            console.log(await Premium.GetPremium());
-                        }}
-                    />
+                <Button text="Delete all products" onPress={deleteProducts} />
 
-                    <Button
-                        text="Disparar notificação"
-                        onPress={() => note()}
-                    />
+                <Button text="Background job" onPress={setBackgroundJob} />
 
-                    <Button
-                        text="Load with sample data"
-                        onPress={() => sampleData()}
-                    />
+                <Button text="Import file" onPress={handleImportFile} />
 
-                    <Button
-                        text="Delete all products"
-                        onPress={() => {
-                            deleteProducts();
-                        }}
-                    />
-
-                    <Button
-                        text="Background job"
-                        onPress={() => setBackgroundJob()}
-                    />
-
-                    <Button
-                        text="Import file"
-                        onPress={() => {
-                            ImportBackupFile();
-                        }}
-                    />
-
-                    <Button
-                        text="Export file"
-                        onPress={() => {
-                            saveFile();
-                        }}
-                    />
-                </Category>
-            </ScrollView>
-        </View>
+                <Button text="Export file" onPress={handleExportFile} />
+            </Category>
+        </Container>
     );
 };
 

@@ -1,133 +1,139 @@
-import AsyncStorange from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import Realm from '../Services/Realm';
-
-interface ISetting {
-    name: string;
-    value?: string;
+/* TYPEORM */
+interface ISetSettingProps {
+    type:
+        | 'HowManyDaysToBeNextExp'
+        | 'AppTheme'
+        | 'EnableNotifications'
+        | 'EnableMultipleStores'
+        | 'EnableProVersion'
+        | 'MigrationStatus';
+    value: string;
 }
 
-export async function getDaysToBeNextToExp(): Promise<number> {
+async function setSetting({ type, value }: ISetSettingProps): Promise<void> {
     try {
-        const daysToBeNext = Realm.objects<ISetting>('Setting').filtered(
-            "name = 'daysToBeNext'"
-        )[0];
-
-        if (daysToBeNext && daysToBeNext !== null) {
-            return Number(daysToBeNext.value);
-        }
-    } catch (err) {
-        console.warn(err);
-    }
-
-    return 30;
-}
-
-export async function setDaysToBeNextToExp(days: number): Promise<void> {
-    try {
-        Realm.write(() => {
-            Realm.create(
-                'Setting',
-                {
-                    name: 'daysToBeNext',
-                    value: String(days),
-                },
-                true
-            );
-        });
-    } catch (err) {
-        console.warn(err);
-    }
-}
-
-export async function setAppTheme(themeName: string): Promise<void> {
-    try {
-        Realm.write(() => {
-            Realm.create(
-                'Setting',
-                {
-                    name: 'appTheme',
-                    value: themeName.trim(),
-                },
-                true
-            );
-        });
-    } catch (err) {
-        console.warn(err);
-    }
-}
-
-export async function getAppTheme(): Promise<string> {
-    try {
-        const appTheme = Realm.objects<ISetting>('Setting').filtered(
-            "name = 'appTheme'"
-        )[0];
-
-        if (appTheme.value) {
-            return appTheme.value;
-        }
-
-        await setAppTheme('system');
-        return 'system';
+        await AsyncStorage.setItem(type, value);
     } catch (err) {
         throw new Error(err);
     }
 }
 
-export async function getNotificationsEnabled(): Promise<boolean> {
-    const isEnabled = await AsyncStorange.getItem(
-        '@ControleDeValidade/NotificationsEnabled'
-    );
-
-    if (!isEnabled) {
-        return true;
-    }
-    if (isEnabled === 'false') {
-        return false;
-    }
-
-    return true;
-}
-
-export async function setNotificationsEnabled(
-    isEnabled: boolean
+export async function setHowManyDaysToBeNextExp(
+    howManyDays: number
 ): Promise<void> {
+    await setSetting({
+        type: 'HowManyDaysToBeNextExp',
+        value: String(howManyDays),
+    });
+}
+
+export async function setAppTheme(themeName: string): Promise<void> {
+    await setSetting({
+        type: 'AppTheme',
+        value: themeName,
+    });
+}
+
+export async function setEnableNotifications(enable: boolean): Promise<void> {
+    await setSetting({
+        type: 'EnableNotifications',
+        value: String(enable),
+    });
+}
+
+export async function setEnableMultipleStoresMode(
+    enable: boolean
+): Promise<void> {
+    await setSetting({
+        type: 'EnableMultipleStores',
+        value: String(enable),
+    });
+}
+
+export async function setEnableProVersion(enable: boolean): Promise<void> {
+    await setSetting({
+        type: 'EnableProVersion',
+        value: String(enable),
+    });
+}
+
+export async function setMigrationStatus(
+    status: 'Completed' | 'Pending'
+): Promise<void> {
+    await setSetting({
+        type: 'MigrationStatus',
+        value: status,
+    });
+}
+
+async function getSetting({
+    type,
+}: Omit<ISetSettingProps, 'value'>): Promise<string | undefined> {
     try {
-        await AsyncStorange.setItem(
-            '@ControleDeValidade/NotificationsEnabled',
-            String(isEnabled)
-        );
+        const setting = await AsyncStorage.getItem(type);
+
+        if (!setting) {
+            return undefined;
+        }
+
+        return setting;
     } catch (err) {
-        throw new Error(
-            `Falha ao salvar as configurações de notificações. ${err.message}`
-        );
+        throw new Error(err);
     }
 }
 
-export async function setMultipleStores(enabled: boolean): Promise<void> {
-    try {
-        await AsyncStorange.setItem(
-            '@ControleDeValidade/MultipleStores',
-            String(enabled)
-        );
-    } catch (err) {
-        throw new Error(
-            `Falha ao salvar as configurações de múltiplas lojas. ${err.message}`
-        );
+export async function getHowManyDaysToBeNextExp(): Promise<number> {
+    const setting = await getSetting({ type: 'HowManyDaysToBeNextExp' });
+
+    if (!setting) {
+        return 30;
     }
+
+    return Number(setting);
 }
 
-export async function getMultipleStores(): Promise<boolean> {
-    const isEnabled = await AsyncStorange.getItem(
-        '@ControleDeValidade/MultipleStores'
-    );
+export async function getAppTheme(): Promise<string> {
+    const setting = await getSetting({ type: 'AppTheme' });
 
-    if (!isEnabled) {
-        return false;
+    if (!setting) {
+        return 'system';
     }
-    if (isEnabled === 'true') {
+
+    return setting;
+}
+
+export async function getEnableNotifications(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableNotifications' });
+
+    if (setting === 'true') return true;
+    return false;
+}
+
+export async function getEnableMultipleStoresMode(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableMultipleStores' });
+
+    if (setting === 'true') return true;
+    return false;
+}
+
+export async function getEnableProVersion(): Promise<boolean> {
+    const setting = await getSetting({ type: 'EnableProVersion' });
+
+    if (setting === 'true') {
         return true;
     }
-
     return false;
+}
+
+export async function getMigrationStatus(): Promise<string> {
+    const setting = await getSetting({ type: 'MigrationStatus' });
+
+    if (!setting) {
+        await setMigrationStatus('Pending');
+        return 'Pending';
+    }
+
+    return setting;
 }

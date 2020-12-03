@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { RadioButton, Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
-import { updateLote, deleteLote } from '../../Functions/Lotes';
+import { updateBatch, deleteBatch } from '../../Functions/Batches';
 import { getProductById } from '../../Functions/Product';
 
 import BackButton from '../../Components/BackButton';
@@ -67,24 +67,25 @@ const EditLote: React.FC = () => {
     useEffect(() => {
         async function getData() {
             const response = await getProductById(productId);
-            setProduct(response);
 
             if (!response) return;
 
-            const loteResult = response.lotes.find((l) => l.id === loteId);
+            setProduct(response);
 
-            if (!loteResult) {
+            const batchResult = response.batches.find((b) => b.id === loteId);
+
+            if (!batchResult) {
                 throw new Error('Lote não encontrado!');
             }
 
-            const loteStatus = loteResult.status === 'Tratado';
+            const batchStatus = batchResult.status === 'Tratado';
 
-            setLote(loteResult.lote);
-            setExpDate(loteResult.exp_date);
-            setTratado(loteStatus);
+            setLote(batchResult.name);
+            setExpDate(new Date(batchResult.exp_date));
+            setTratado(batchStatus);
 
-            if (loteResult.amount) setAmount(loteResult.amount);
-            if (loteResult.price) setPrice(loteResult.price);
+            if (batchResult.amount) setAmount(batchResult.amount);
+            if (batchResult.price) setPrice(batchResult.price);
         }
 
         getData();
@@ -97,11 +98,11 @@ const EditLote: React.FC = () => {
         }
 
         try {
-            await updateLote({
+            await updateBatch({
                 id: loteId,
-                lote,
-                amount,
+                name: lote,
                 exp_date: expDate,
+                amount,
                 price,
                 status: tratado ? 'Tratado' : 'Não tratado',
             });
@@ -121,7 +122,7 @@ const EditLote: React.FC = () => {
 
     const handleDelete = useCallback(async () => {
         try {
-            await deleteLote(loteId);
+            await deleteBatch(loteId);
 
             reset({
                 index: 1,
@@ -134,6 +135,14 @@ const EditLote: React.FC = () => {
             throw new Error(err);
         }
     }, [loteId, reset]);
+
+    const handleAmountChange = useCallback((value) => {
+        const regex = /^[0-9\b]+$/;
+
+        if (value === '' || regex.test(value)) {
+            setAmount(value);
+        }
+    }, []);
 
     return (
         <>
@@ -188,20 +197,7 @@ const EditLote: React.FC = () => {
                                         placeholder="Quantidade"
                                         keyboardType="numeric"
                                         value={String(amount)}
-                                        onChangeText={(value) => {
-                                            const regex = /^[0-9\b]+$/;
-
-                                            if (
-                                                value === '' ||
-                                                regex.test(value)
-                                            ) {
-                                                if (value === '') {
-                                                    setAmount(0);
-                                                    return;
-                                                }
-                                                setAmount(Number(value));
-                                            }
-                                        }}
+                                        onChangeText={handleAmountChange}
                                     />
                                 </InputGroup>
 

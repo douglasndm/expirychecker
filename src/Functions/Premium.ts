@@ -1,7 +1,6 @@
 import IAP, { Subscription, SubscriptionPurchase } from 'react-native-iap';
 
-import Realm from '../Services/Realm';
-import { getAppTheme, setAppTheme } from './Settings';
+import { getAppTheme, setAppTheme, setEnableProVersion } from './Settings';
 
 export async function IsPlayStoreIsAvailable(): Promise<boolean> {
     try {
@@ -9,56 +8,16 @@ export async function IsPlayStoreIsAvailable(): Promise<boolean> {
 
         return true;
     } catch (err) {
-        console.warn(err);
-        return false;
+        throw new Error(err);
     }
 }
 
-async function setPremium(active: boolean): Promise<void> {
-    try {
-        Realm.write(() => {
-            Realm.create(
-                'Setting',
-                {
-                    name: 'isPremium',
-                    value: String(active),
-                },
-                true
-            );
-        });
-    } catch (err) {
-        console.warn(err);
-    }
-}
-
-export async function GetPremium(): Promise<boolean> {
-    try {
-        const isPremium = Realm.objects('Setting').filtered(
-            'name = "isPremium"'
-        )[0];
-
-        if (!isPremium) {
-            return false;
-        }
-
-        if (isPremium.value === 'true') {
-            return true;
-        }
-
-        return false;
-    } catch (err) {
-        console.warn(err);
-    }
-
-    return false;
-}
-
-export async function CheckIfSubscriptionIsActive(): Promise<boolean | null> {
+export async function CheckIfSubscriptionIsActive(): Promise<boolean> {
     try {
         const purchases = await IAP.getAvailablePurchases();
 
         if (purchases.length > 0) {
-            await setPremium(true);
+            await setEnableProVersion(true);
             return true;
         }
 
@@ -73,17 +32,14 @@ export async function CheckIfSubscriptionIsActive(): Promise<boolean | null> {
             await setAppTheme('system');
         }
 
-        await setPremium(false);
+        await setEnableProVersion(false);
         return false;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-    return null;
 }
 
-export async function GetSubscriptionInfo(): Promise<Array<
-    Subscription
-> | null> {
+export async function GetSubscriptionInfo(): Promise<Array<Subscription>> {
     try {
         const subscriptions = await IAP.getSubscriptions([
             'controledevalidade_premium',
@@ -91,13 +47,11 @@ export async function GetSubscriptionInfo(): Promise<Array<
 
         return subscriptions;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-
-    return null;
 }
 
-export async function MakeASubscription(): Promise<SubscriptionPurchase | null> {
+export async function MakeASubscription(): Promise<SubscriptionPurchase> {
     await GetSubscriptionInfo();
 
     try {
@@ -105,12 +59,10 @@ export async function MakeASubscription(): Promise<SubscriptionPurchase | null> 
             'controledevalidade_premium'
         );
 
-        await setPremium(true);
+        await setEnableProVersion(true);
 
         return result;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-
-    return null;
 }

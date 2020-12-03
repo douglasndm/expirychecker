@@ -5,13 +5,11 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useTheme } from 'styled-components';
 import { Button } from 'react-native-paper';
-import br, { format, isPast, addDays } from 'date-fns';
-import NumberFormat from 'react-number-format';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -19,7 +17,9 @@ import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import { getProductById, deleteProduct } from '../../Functions/Product';
-import { sortLoteByExpDate } from '../../Functions/Lotes';
+import { sortByBatchExpDate } from '../../Functions/Batches';
+
+import BatchesTable from './BatchesTable';
 
 import {
     Container,
@@ -34,14 +34,6 @@ import {
     PageContent,
     ButtonPaper,
     Icons,
-    CategoryDetails,
-    CategoryDetailsText,
-    TableContainer,
-    Table,
-    TableHeader,
-    TableTitle,
-    TableRow,
-    TableCell,
     Text,
     DialogPaper,
     FloatButton,
@@ -71,9 +63,11 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [code, setCode] = useState('');
     const [product, setProduct] = useState<IProduct>();
 
-    const [lotes, setLotes] = useState<Array<ILote>>([]);
-    const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
-    const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
+    const [batches, setBatches] = useState<Array<IBatch>>([]);
+    const [treatedBatches, setTreatedBatches] = useState<Array<IBatch>>([]);
+    const [notTreatedBatches, setNotTreatedBatches] = useState<Array<IBatch>>(
+        []
+    );
 
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
@@ -91,9 +85,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             setName(result.name);
             if (result.code) setCode(result.code);
 
-            const lotesSorted = sortLoteByExpDate(result.lotes);
+            const lotesSorted = sortByBatchExpDate(result.batches);
 
-            setLotes(lotesSorted);
+            setBatches(lotesSorted);
         } catch (error) {
             crashlytics().recordError(error);
             console.warn(error);
@@ -129,14 +123,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [getProduct]);
 
     useEffect(() => {
-        setLotesTratados(() =>
-            lotes.filter((lote) => lote.status === 'Tratado')
+        setTreatedBatches(() =>
+            batches.filter((lote) => lote.status === 'Tratado')
         );
 
-        setLotesNaoTratados(() =>
-            lotes.filter((lote) => lote.status !== 'Tratado')
+        setNotTreatedBatches(() =>
+            batches.filter((lote) => lote.status !== 'Tratado')
         );
-    }, [lotes]);
+    }, [batches]);
 
     return (
         <>
@@ -186,185 +180,20 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     </PageHeader>
 
                     <PageContent>
-                        {lotesNaoTratados.length > 0 && (
-                            <TableContainer>
-                                <CategoryDetails>
-                                    <CategoryDetailsText>
-                                        Todos os lotes ainda não tratados
-                                    </CategoryDetailsText>
-                                </CategoryDetails>
-
-                                <Table>
-                                    <TableHeader>
-                                        <TableTitle>LOTE</TableTitle>
-                                        <TableTitle>VENCIMENTO</TableTitle>
-                                        <TableTitle>QUANTIDADE</TableTitle>
-                                        <TableTitle>PREÇO</TableTitle>
-                                    </TableHeader>
-
-                                    {lotesNaoTratados.map((lote) => {
-                                        const expired = isPast(lote.exp_date);
-                                        const nextToExp =
-                                            addDays(
-                                                new Date(),
-                                                userPreferences.howManyDaysToBeNextToExpire
-                                            ) > lote.exp_date;
-
-                                        const expiredOrNext = !!(
-                                            expired || nextToExp
-                                        );
-
-                                        return (
-                                            <TableRow
-                                                key={lote.id}
-                                                expired={expired}
-                                                nextToExp={nextToExp}
-                                                onPress={() => {
-                                                    navigate('EditLote', {
-                                                        productId,
-                                                        loteId: lote.id,
-                                                    });
-                                                }}
-                                            >
-                                                <TableCell>
-                                                    <Text
-                                                        expiredOrNext={
-                                                            expiredOrNext
-                                                        }
-                                                    >
-                                                        {lote.lote}
-                                                    </Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text
-                                                        expiredOrNext={
-                                                            expiredOrNext
-                                                        }
-                                                    >
-                                                        {format(
-                                                            lote.exp_date,
-                                                            'dd/MM/yyyy',
-                                                            {
-                                                                locale: br,
-                                                            }
-                                                        )}
-                                                    </Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text
-                                                        expiredOrNext={
-                                                            expiredOrNext
-                                                        }
-                                                    >
-                                                        {lote.amount}
-                                                    </Text>
-                                                </TableCell>
-                                                {!!lote.amount &&
-                                                    !!lote.price &&
-                                                    lote.price > 0 && (
-                                                        <TableCell>
-                                                            <Text
-                                                                expiredOrNext={
-                                                                    expiredOrNext
-                                                                }
-                                                            >
-                                                                <NumberFormat
-                                                                    value={
-                                                                        lote.amount *
-                                                                        lote.price
-                                                                    }
-                                                                    displayType="text"
-                                                                    thousandSeparator
-                                                                    prefix="R$"
-                                                                    renderText={(
-                                                                        value
-                                                                    ) => value}
-                                                                    decimalScale={
-                                                                        2
-                                                                    }
-                                                                />
-                                                            </Text>
-                                                        </TableCell>
-                                                    )}
-                                            </TableRow>
-                                        );
-                                    })}
-                                </Table>
-                            </TableContainer>
+                        {notTreatedBatches.length > 0 && (
+                            <BatchesTable
+                                productId={productId}
+                                title="Todos os lotes não tratados"
+                                batches={notTreatedBatches}
+                            />
                         )}
 
-                        {lotesTratados.length > 0 && (
-                            <>
-                                <CategoryDetails>
-                                    <CategoryDetailsText>
-                                        Todos os lotes tratados
-                                    </CategoryDetailsText>
-                                </CategoryDetails>
-
-                                <Table>
-                                    <TableHeader>
-                                        <TableTitle>LOTE</TableTitle>
-                                        <TableTitle>VENCIMENTO</TableTitle>
-                                        <TableTitle>QUANTIDADE</TableTitle>
-                                        <TableTitle>PREÇO</TableTitle>
-                                    </TableHeader>
-
-                                    {lotesTratados.map((lote) => {
-                                        return (
-                                            <TableRow
-                                                key={lote.id}
-                                                onPress={() => {
-                                                    navigate('EditLote', {
-                                                        productId,
-                                                        loteId: lote.id,
-                                                    });
-                                                }}
-                                            >
-                                                <TableCell>
-                                                    <Text>{lote.lote}</Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text>
-                                                        {format(
-                                                            lote.exp_date,
-                                                            'dd/MM/yyyy',
-                                                            {
-                                                                locale: br,
-                                                            }
-                                                        )}
-                                                    </Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text>{lote.amount}</Text>
-                                                </TableCell>
-                                                {!!lote.amount &&
-                                                    !!lote.price &&
-                                                    lote.price > 0 && (
-                                                        <TableCell>
-                                                            <Text>
-                                                                <NumberFormat
-                                                                    value={
-                                                                        lote.amount *
-                                                                        lote.price
-                                                                    }
-                                                                    displayType="text"
-                                                                    thousandSeparator
-                                                                    prefix="R$"
-                                                                    renderText={(
-                                                                        value
-                                                                    ) => value}
-                                                                    decimalScale={
-                                                                        2
-                                                                    }
-                                                                />
-                                                            </Text>
-                                                        </TableCell>
-                                                    )}
-                                            </TableRow>
-                                        );
-                                    })}
-                                </Table>
-                            </>
+                        {treatedBatches.length > 0 && (
+                            <BatchesTable
+                                productId={productId}
+                                title="Todos os lotes tratados"
+                                batches={treatedBatches}
+                            />
                         )}
 
                         <GenericButton

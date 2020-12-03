@@ -1,140 +1,187 @@
-import Realm from '../Services/Realm';
-import { createLote } from './Lotes';
+import { getConnection } from '../Services/TypeORM';
 
-interface ICheckIfProductAlreadyExistsByCodeProps {
+import { Product } from '../Models/Product';
+import { Batch } from '../Models/Batch';
+
+interface checkIfProductExistsProps {
     productCode: string;
     productStore?: string;
 }
 
-export async function checkIfProductAlreadyExistsByCode({
+export async function checkIfProductExistsByCode({
     productCode,
     productStore,
-}: ICheckIfProductAlreadyExistsByCodeProps): Promise<boolean> {
-    try {
-        if (productStore) {
-            const results = Realm.objects('Product')
-                .filtered(
-                    `code = "${productCode}" AND store = "${productStore}"`
-                )
-                .slice();
+}: checkIfProductExistsProps): Promise<boolean> {
+    const connection = await getConnection();
 
-            if (results.length > 0) {
+    try {
+        const productRepository = connection.getRepository(Product);
+
+        if (productStore) {
+            const result = await productRepository.findOne({
+                where: {
+                    code: productCode,
+                    store: productStore,
+                },
+            });
+
+            if (result) {
                 return true;
             }
             return false;
         }
 
-        const results = Realm.objects('Product')
-            .filtered(`code = "${productCode}"`)
-            .slice();
+        const result = await productRepository.findOne({
+            where: {
+                code: productCode,
+            },
+        });
 
-        if (results.length > 0) {
+        if (result) {
             return true;
         }
         return false;
-    } catch (err) {
-        throw new Error(err);
+    } catch (error) {
+        throw new Error(error);
+    } finally {
+        await connection.close();
     }
 }
 
 export async function getProductByCode(
     productCode: string
-): Promise<IProduct | null> {
+): Promise<IProduct | undefined> {
+    const connection = await getConnection();
     try {
-        const result = Realm.objects<IProduct>('Product').filtered(
-            `code = "${productCode}"`
-        )[0];
+        const productRepository = connection.getRepository(Product);
 
-        return result;
+        const product = await productRepository.findOne({
+            where: {
+                code: productCode,
+            },
+        });
+
+        return product;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
+    } finally {
+        await connection.close();
     }
-
-    return null;
 }
 
 export async function getProductById(
     productId: number
-): Promise<IProduct | null> {
+): Promise<Product | undefined> {
+    const connection = await getConnection();
     try {
-        const result = Realm.objects<IProduct>('Product').filtered(
-            `id = "${productId}"`
-        )[0];
+        const productRepository = connection.getRepository(Product);
 
-        return result;
+        const product = await productRepository.findOne({
+            where: {
+                id: productId,
+            },
+        });
+
+        return product;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
+    } finally {
+        await connection.close();
     }
-
-    return null;
 }
 
 export async function createProduct(
     product: Omit<IProduct, 'id'>
-): Promise<number | void> {
-    try {
-        if (
-            product.code &&
-            (await checkIfProductAlreadyExistsByCode({
-                productCode: product.code,
-                productStore: product?.store,
-            }))
-        ) {
-            const productLotes = product.lotes.slice();
+): Promise<void> {
+    if (product.code) {
+        const existProduct = await checkIfProductExistsByCode({
+            productCode: product.code,
+            productStore: product.store,
+        });
 
-            if (productLotes.length < 1) {
-                throw new Error(
-                    'Produto já existe. Não há lotes para adicionar'
-                );
-            }
-
-            productLotes.map(async (l) => {
-                await createLote({
-                    productCode: product.code,
-                    lote: l,
-                });
-            });
-        } else {
-            // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
-            // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
-            const lastProduct = Realm.objects<IProduct>('Product').sorted(
-                'id',
-                true
-            )[0];
-            const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
-
-            Realm.write(async () => {
-                Realm.create(
-                    'Product',
-                    {
-                        id: nextProductId,
-                        name: product.name,
-                        code: product.code,
-                        store: product.store,
-                        lotes: [],
-                    },
-                    false
-                );
-            });
-
-            for (const l of product.lotes) {
-                await createLote({
-                    productId: nextProductId,
-                    lote: l,
-                });
-            }
-
-            return nextProductId;
+        if (existProduct) {
+            throw new Error('Produto já está cadastrado');
         }
+    }
+
+    const connection = await getConnection();
+
+    try {
+        const productRepository = connection.getRepository(Product);
+
+        const prod = new Product();
+        prod.name = product.name;
+        prod.code = product.code;
+        prod.store = product.store;
+
+        prod.batches = product.batches.map((batch) => {
+            const newBatch = new Batch();
+
+            newBatch.name = batch.name;
+            newBatch.exp_date = batch.exp_date;
+            newBatch.amount = batch.amount;
+            newBatch.price = batch.price;
+            newBatch.status = batch.status;
+
+            return newBatch;
+        });
+
+        await productRepository.save(prod);
     } catch (err) {
         throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
+export async function updateProduct(
+    product: Omit<IProduct, 'batches'>
+): Promise<void> {
+    const connection = await getConnection();
+
+    try {
+        const productRepository = connection.getRepository(Product);
+        const findedProduct = await productRepository.findOne({
+            where: {
+                id: product.id,
+            },
+        });
+
+        if (!findedProduct) {
+            throw new Error('Produto não encontrado');
+        }
+
+        findedProduct.name = product.name;
+        findedProduct.code = product.code;
+        findedProduct.store = product.store;
+
+        await productRepository.save(findedProduct);
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
     }
 }
 
 export async function deleteProduct(productId: number): Promise<void> {
-    const product = Realm.objects('Product').filtered(`id == ${productId}`);
+    const connection = await getConnection();
+    try {
+        const productRepository = connection.getRepository(Product);
 
-    Realm.write(async () => {
-        Realm.delete(product);
-    });
+        const product = await productRepository.findOne({
+            where: {
+                id: productId,
+            },
+        });
+
+        if (!product) {
+            throw new Error('Produto não encontrado');
+        }
+
+        await productRepository.remove(product);
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
 }
