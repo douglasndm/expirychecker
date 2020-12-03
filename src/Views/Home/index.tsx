@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import {
     getAllProductsWithBatches,
@@ -13,15 +14,29 @@ import Notification from '../../Components/Notification';
 import ListProducts from '../../Components/ListProducts';
 
 import { Container, InputSearch } from './styles';
+import { getMigrationStatus } from '../../Functions/Settings';
 
 const Home: React.FC = () => {
+    const { reset } = useNavigation();
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [error, setError] = useState<string>();
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
-    async function getProduts() {
+    const loadData = useCallback(async () => {
+        // check if the applications already had migrate data to typeorm
+        const isMigrated = await getMigrationStatus();
+
+        if (isMigrated !== 'Completed') {
+            reset({
+                index: 1,
+                routes: [{ name: 'Migration' }],
+            });
+
+            return;
+        }
+
         try {
             const resultsDB = await getAllProductsWithBatches();
 
@@ -59,11 +74,11 @@ const Home: React.FC = () => {
         } catch (err) {
             setError(err.message);
         }
-    }
+    }, [reset]);
 
     useEffect(() => {
-        getProduts();
-    }, []);
+        loadData();
+    }, [loadData]);
 
     useEffect(() => {
         setProductsSearch(products);

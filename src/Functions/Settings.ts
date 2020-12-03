@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+
 /* TYPEORM */
 interface ISetSettingProps {
     type:
@@ -6,7 +7,8 @@ interface ISetSettingProps {
         | 'AppTheme'
         | 'EnableNotifications'
         | 'EnableMultipleStores'
-        | 'EnableProVersion';
+        | 'EnableProVersion'
+        | 'MigrationStatus';
     value: string;
 }
 
@@ -57,14 +59,23 @@ export async function setEnableProVersion(enable: boolean): Promise<void> {
     });
 }
 
+export async function setMigrationStatus(
+    status: 'Completed' | 'Pending'
+): Promise<void> {
+    await setSetting({
+        type: 'MigrationStatus',
+        value: status,
+    });
+}
+
 async function getSetting({
     type,
-}: Omit<ISetSettingProps, 'value'>): Promise<string> {
+}: Omit<ISetSettingProps, 'value'>): Promise<string | undefined> {
     try {
         const setting = await AsyncStorage.getItem(type);
 
         if (!setting) {
-            throw new Error('Configuração não encontrada');
+            return undefined;
         }
 
         return setting;
@@ -76,11 +87,19 @@ async function getSetting({
 export async function getHowManyDaysToBeNextExp(): Promise<number> {
     const setting = await getSetting({ type: 'HowManyDaysToBeNextExp' });
 
+    if (!setting) {
+        return 30;
+    }
+
     return Number(setting);
 }
 
 export async function getAppTheme(): Promise<string> {
     const setting = await getSetting({ type: 'AppTheme' });
+
+    if (!setting) {
+        return 'system';
+    }
 
     return setting;
 }
@@ -106,4 +125,15 @@ export async function getEnableProVersion(): Promise<boolean> {
         return true;
     }
     return false;
+}
+
+export async function getMigrationStatus(): Promise<string> {
+    const setting = await getSetting({ type: 'MigrationStatus' });
+
+    if (!setting) {
+        await setMigrationStatus('Pending');
+        return 'Pending';
+    }
+
+    return setting;
 }

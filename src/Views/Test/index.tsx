@@ -5,6 +5,7 @@ import BackgroundJob from 'react-native-background-job';
 
 import { useTheme } from 'styled-components/native';
 
+import AsyncStorage from '@react-native-community/async-storage';
 import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
@@ -115,11 +116,20 @@ const Test: React.FC = () => {
 
     const theme = useTheme();
 
+    const handleDeleteMigrateStatus = useCallback(async () => {
+        await AsyncStorage.removeItem('MigrationStatus');
+    }, []);
+
     return (
         <Container>
             <Category
                 style={{ backgroundColor: theme.colors.productBackground }}
             >
+                <Button
+                    text="Remover status de migração do banco de dados das configurações"
+                    onPress={handleDeleteMigrateStatus}
+                />
+
                 <Button text="Notification Status" onPress={getNot} />
                 <Button
                     text="Invert Notification Status"
