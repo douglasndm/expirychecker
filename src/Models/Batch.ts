@@ -31,6 +31,9 @@ export class Batch {
     })
     status?: string;
 
-    @ManyToOne((type) => Product, (product) => product.batches)
+    @ManyToOne((type) => Product, (product) => product.batches, {
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+    })
     product: Product;
 }
