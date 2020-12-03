@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { Product } from '../../Models/Product';
 
+import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
@@ -17,12 +18,15 @@ import { InputSearch } from '../Home/styles';
 import { Container } from './styles';
 
 const AllProducts: React.FC = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
     const getProducts = useCallback(async () => {
+        setIsLoading(true);
         try {
             const allProducts: Array<Product> = await getAllProducts();
 
@@ -43,6 +47,8 @@ const AllProducts: React.FC = () => {
             setProducts(results);
         } catch (error) {
             throw new Error(error);
+        } finally {
+            setIsLoading(false);
         }
     }, []);
 
@@ -119,7 +125,9 @@ const AllProducts: React.FC = () => {
         [products]
     );
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             <Container>
                 <Header title="Todos os produtos" />

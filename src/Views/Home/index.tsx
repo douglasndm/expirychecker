@@ -8,6 +8,7 @@ import {
     sortProductsByFirstBatchExpDate,
 } from '../../Functions/Products';
 
+import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import FABProducts from '../../Components/FABProducts';
 import Notification from '../../Components/Notification';
@@ -18,13 +19,16 @@ import { getMigrationStatus } from '../../Functions/Settings';
 
 const Home: React.FC = () => {
     const { reset } = useNavigation();
+
     const [products, setProducts] = useState<Array<IProduct>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>();
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
     const loadData = useCallback(async () => {
+        setIsLoading(true);
         // check if the applications already had migrate data to typeorm
         const isMigrated = await getMigrationStatus();
 
@@ -73,6 +77,8 @@ const Home: React.FC = () => {
             }
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsLoading(false);
         }
     }, [reset]);
 
@@ -149,7 +155,9 @@ const Home: React.FC = () => {
         [products]
     );
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Header />
 

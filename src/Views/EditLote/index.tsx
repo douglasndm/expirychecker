@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 import { updateBatch, deleteBatch } from '../../Functions/Batches';
 import { getProductById } from '../../Functions/Product';
 
+import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
@@ -43,6 +44,8 @@ const EditLote: React.FC = () => {
 
     const routeParams = route.params as EditLoteProps;
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [product, setProduct] = useState<IProduct | null>(null);
 
     const productId = useMemo(() => {
@@ -66,6 +69,7 @@ const EditLote: React.FC = () => {
 
     useEffect(() => {
         async function getData() {
+            setIsLoading(true);
             const response = await getProductById(productId);
 
             if (!response) return;
@@ -86,6 +90,7 @@ const EditLote: React.FC = () => {
 
             if (batchResult.amount) setAmount(batchResult.amount);
             if (batchResult.price) setPrice(batchResult.price);
+            setIsLoading(false);
         }
 
         getData();
@@ -144,7 +149,9 @@ const EditLote: React.FC = () => {
         }
     }, []);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             {!product ? (
                 <LoadingText>Carregando</LoadingText>

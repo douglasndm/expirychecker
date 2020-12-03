@@ -25,6 +25,7 @@ import {
 
 import { ButtonPaper, Icons, SaveCancelButtonsContainer } from './styles';
 import PreferencesContext from '../../Contexts/PreferencesContext';
+import Loading from '../../Components/Loading';
 
 interface RequestParams {
     route: {
@@ -40,6 +41,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const { reset, goBack } = useNavigation();
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const theme = useTheme();
 
     const [name, setName] = useState('');
@@ -50,6 +53,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     useEffect(() => {
         async function getProductData() {
+            setIsLoading(true);
             const product = await getProductById(productId);
 
             if (!product) {
@@ -59,6 +63,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setName(product.name);
             if (product.code) setCode(product.code);
             if (product.store) setStore(product.store);
+
+            setIsLoading(false);
         }
         getProductData();
     }, [productId]);
@@ -89,7 +95,9 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
     }
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             {cameraEnabled ? (
                 <View
