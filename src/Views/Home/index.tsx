@@ -41,18 +41,20 @@ const Home: React.FC = () => {
             // DE TODOS OS PRODUTOS BASEADO NESTE PRIMEIRO LOTE
             const results = sortProductsByFirstBatchExpDate(resultsTemp);
 
+            const prods = results.filter((p) => p.batches.length > 0);
+
             if (results.length > 10) {
                 const resultsMin = [];
                 const howManyResultsToShow =
-                    results.length > 20 ? 20 : results.length;
+                    prods.length > 20 ? 20 : prods.length;
 
                 for (let i = 0; i < howManyResultsToShow; i++) {
-                    resultsMin.push(results[i]);
+                    resultsMin.push(prods[i]);
                 }
 
                 setProducts(resultsMin);
             } else {
-                setProducts(results);
+                setProducts(prods);
             }
         } catch (err) {
             setError(err.message);
