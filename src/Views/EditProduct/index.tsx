@@ -7,8 +7,7 @@ import { useTheme } from 'styled-components';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
-import { getProductById } from '../../Functions/Product';
-import { getEnableMultipleStoresMode } from '../../Functions/Settings';
+import { getProductById, updateProduct } from '../../Functions/Product';
 
 import {
     Container,
@@ -20,7 +19,7 @@ import {
 } from '../AddProduct/styles';
 
 import { Camera, ButtonPaper, Icons } from './styles';
-import RealmContext from '../../Contexts/RealmContext';
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 interface RequestParams {
     route: {
@@ -31,7 +30,7 @@ interface RequestParams {
 }
 
 const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
-    const { Realm } = useContext(RealmContext);
+    const { userPreferences } = useContext(PreferencesContext);
     const { productId } = route.params;
 
     const { reset, goBack } = useNavigation();
@@ -41,15 +40,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [store, setStore] = useState<string>('');
-    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const [cameraEnabled, setCameraEnebled] = useState(false);
-
-    useEffect(() => {
-        getEnableMultipleStoresMode().then((data) => {
-            setMultipleStoresState(data);
-        });
-    }, []);
 
     useEffect(() => {
         async function getProductData() {
@@ -66,19 +58,18 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         getProductData();
     }, [productId]);
 
-    async function updateProduct() {
+    async function updateProd() {
         if (!name || name.trim() === '') {
             Alert.alert('Digite o nome do produto');
             return;
         }
 
         try {
-            Realm.write(() => {
-                Realm.create(
-                    'Product',
-                    { id: productId, name, code, store },
-                    'modified'
-                );
+            await updateProduct({
+                id: productId,
+                name,
+                code,
+                store,
             });
 
             reset({
@@ -191,7 +182,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 />
                             </View>
 
-                            {multipleStoresState && (
+                            {userPreferences.multiplesStores && (
                                 <InputText
                                     placeholder="Loja do produto"
                                     accessibilityLabel="Campo de texto para loja do produto"
@@ -215,9 +206,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     icon={() => (
                                         <Icons name="save-outline" size={22} />
                                     )}
-                                    onPress={() => {
-                                        updateProduct();
-                                    }}
+                                    onPress={updateProd}
                                 >
                                     Salvar
                                 </ButtonPaper>

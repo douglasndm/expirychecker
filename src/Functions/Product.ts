@@ -134,6 +134,35 @@ export async function createProduct(
     }
 }
 
+export async function updateProduct(
+    product: Omit<IProduct, 'batches'>
+): Promise<void> {
+    const connection = await getConnection();
+
+    try {
+        const productRepository = connection.getRepository(Product);
+        const findedProduct = await productRepository.findOne({
+            where: {
+                id: product.id,
+            },
+        });
+
+        if (!findedProduct) {
+            throw new Error('Produto não encontrado');
+        }
+
+        findedProduct.name = product.name;
+        findedProduct.code = product.code;
+        findedProduct.store = product.store;
+
+        await productRepository.save(findedProduct);
+    } catch (err) {
+        throw new Error(err);
+    } finally {
+        await connection.close();
+    }
+}
+
 export async function deleteProduct(productId: number): Promise<void> {
     const connection = await getConnection();
     try {
@@ -149,7 +178,7 @@ export async function deleteProduct(productId: number): Promise<void> {
             throw new Error('Produto não encontrado');
         }
 
-        await productRepository.delete(product);
+        await productRepository.remove(product);
     } catch (err) {
         throw new Error(err);
     } finally {
