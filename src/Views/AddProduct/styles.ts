@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 import { RNCamera } from 'react-native-camera';
 import DatePicker from 'react-native-date-picker';
 import NumericInput from '@wwdrew/react-native-numeric-textinput';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
     flex: 1;
@@ -44,6 +46,35 @@ export const NumericInputField = styled(NumericInput).attrs((props) => ({
 export const InputGroup = styled.View`
     flex-direction: row;
     margin: 0 1px;
+`;
+
+export const InputCodeTextContainer = styled.View`
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background-color: ${({ theme }) => theme.colors.inputBackground};
+    padding-right: 10px;
+`;
+
+export const InputTextIconContainer = styled(RectButton)``;
+
+export const InputCodeTextIcon = styled(Ionicons).attrs((props) => ({
+    name: 'barcode-outline',
+    size: 36,
+    color: props.theme.colors.text,
+}))``;
+
+export const InputCodeText = styled.TextInput.attrs((props) => ({
+    placeholderTextColor: props.theme.colors.subText,
+}))`
+    flex: 1;
+    padding: 15px 5px 15px 15px;
+    font-size: 18px;
 `;
 
 export const InputText = styled.TextInput.attrs((props) => ({

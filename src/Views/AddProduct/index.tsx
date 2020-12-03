@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, ScrollView, Text, Keyboard, Alert } from 'react-native';
+import { View, ScrollView, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { Button as ButtonPaper, Dialog } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import EnvConfig from 'react-native-config';
 import {
     InterstitialAd,
@@ -39,6 +38,10 @@ import {
     ExpDateLabel,
     CustomDatePicker,
     Camera,
+    InputCodeTextContainer,
+    InputCodeTextIcon,
+    InputCodeText,
+    InputTextIconContainer,
 } from './styles';
 
 const adUnitID = __DEV__
@@ -222,41 +225,20 @@ const AddProduct: React.FC = () => {
                                         setCameraEnebled(false);
                                     }}
                                 />
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <InputText
-                                        style={{ flex: 1 }}
-                                        placeholder="Código"
+
+                                <InputCodeTextContainer>
+                                    <InputCodeText
+                                        placeholder="Código do produto"
                                         accessibilityLabel="Campo de texto para código de barras do produto"
                                         value={code}
                                         onChangeText={(value) => setCode(value)}
-                                        onFocus={() => {
-                                            setCameraEnebled(false);
-                                        }}
                                     />
-                                    <ButtonPaper
-                                        style={{
-                                            alignSelf: 'center',
-                                            marginBottom: 8,
-                                        }}
-                                        icon={() => (
-                                            <Ionicons
-                                                name="camera-outline"
-                                                size={42}
-                                                color={theme.colors.text}
-                                            />
-                                        )}
-                                        onPress={() => {
-                                            Keyboard.dismiss();
-                                            setCameraEnebled(!cameraEnabled);
-                                        }}
-                                    />
-                                </View>
+                                    <InputTextIconContainer
+                                        onPress={() => setCameraEnebled(true)}
+                                    >
+                                        <InputCodeTextIcon />
+                                    </InputTextIconContainer>
+                                </InputCodeTextContainer>
 
                                 <InputGroup>
                                     <InputText

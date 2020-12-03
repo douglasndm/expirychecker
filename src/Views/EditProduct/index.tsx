@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Keyboard, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from 'styled-components';
@@ -17,9 +17,14 @@ import {
     PageContent,
     InputContainer,
     InputText,
+    Camera,
+    InputCodeTextContainer,
+    InputCodeTextIcon,
+    InputCodeText,
+    InputTextIconContainer,
 } from '../AddProduct/styles';
 
-import { Camera, ButtonPaper, Icons } from './styles';
+import { ButtonPaper, Icons, SaveCancelButtonsContainer } from './styles';
 import RealmContext from '../../Contexts/RealmContext';
 
 interface RequestParams {
@@ -154,42 +159,20 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     setCameraEnebled(false);
                                 }}
                             />
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <InputText
-                                    style={{
-                                        flex: 1,
-                                    }}
+
+                            <InputCodeTextContainer>
+                                <InputCodeText
                                     placeholder="Código do produto"
                                     accessibilityLabel="Campo de texto para código de barras do produto"
                                     value={code}
                                     onChangeText={(value) => setCode(value)}
-                                    onFocus={() => {
-                                        setCameraEnebled(false);
-                                    }}
                                 />
-                                <ButtonPaper
-                                    style={{
-                                        alignSelf: 'center',
-                                        marginBottom: 8,
-                                    }}
-                                    icon={() => (
-                                        <Icons
-                                            name="camera-outline"
-                                            size={42}
-                                        />
-                                    )}
-                                    onPress={() => {
-                                        Keyboard.dismiss();
-                                        setCameraEnebled(!cameraEnabled);
-                                    }}
-                                />
-                            </View>
+                                <InputTextIconContainer
+                                    onPress={() => setCameraEnebled(true)}
+                                >
+                                    <InputCodeTextIcon />
+                                </InputTextIconContainer>
+                            </InputCodeTextContainer>
 
                             {multipleStoresState && (
                                 <InputText
@@ -205,12 +188,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 />
                             )}
 
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                }}
-                            >
+                            <SaveCancelButtonsContainer>
                                 <ButtonPaper
                                     icon={() => (
                                         <Icons name="save-outline" size={22} />
@@ -229,7 +207,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 >
                                     Cancelar
                                 </ButtonPaper>
-                            </View>
+                            </SaveCancelButtonsContainer>
                         </InputContainer>
                     </PageContent>
                 </Container>
