@@ -85,7 +85,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                         )}
                     </ProductDetailsContainer>
 
-                    {product.lotes.length > 0 && (
+                    {product.lotes.length > 0 && !!product.lotes[0].amount && (
                         <LoteDetailsContainer>
                             <AmountContainer>
                                 <AmountContainerText
