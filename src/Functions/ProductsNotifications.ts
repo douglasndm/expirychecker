@@ -3,7 +3,8 @@ import { addDays, isPast } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import { getHowManyDaysToBeNextExp, getEnableNotifications } from './Settings';
-import Realm from '../Services/Realm';
+
+import { getAllProductsWithBatches } from './Products';
 
 export async function getAllProductsNextToExp(): Promise<void> {
     const isNotifcationEnabled = await getEnableNotifications();
@@ -13,18 +14,26 @@ export async function getAllProductsNextToExp(): Promise<void> {
     const daysToBeNext = await getHowManyDaysToBeNextExp();
 
     try {
-        const products = Realm.objects<IProduct>('Product')
-            .filtered("lotes.@count > 0 AND lotes.status != 'Tratado'")
-            .slice();
+        const allProducts = await getAllProductsWithBatches();
 
-        const productsNextFiltered = products.map((p) => {
-            const lotes = p.lotes.slice();
+        const products = allProducts.map((p) => {
+            const filtedBatches = p.batches.filter(
+                (batch) => batch.status !== 'Tratado'
+            );
 
-            const lotesFiltered = lotes.filter((l) => {
+            return {
+                ...p,
+                batches: filtedBatches,
+            };
+        });
+
+        const productsWithBatchesNextToExp = products.map((p) => {
+            const filteredBatches = p.batches.filter((batch) => {
+                const batchDate = new Date(batch.exp_date);
+
                 if (
-                    l.exp_date < addDays(new Date(), daysToBeNext) &&
-                    !isPast(l.exp_date) &&
-                    l.status !== 'Tratado'
+                    batchDate < addDays(new Date(), daysToBeNext) &&
+                    !isPast(batchDate)
                 ) {
                     return true;
                 }
@@ -34,15 +43,15 @@ export async function getAllProductsNextToExp(): Promise<void> {
 
             return {
                 ...p,
-                lotes: lotesFiltered,
+                batches: filteredBatches,
             };
         });
 
-        const productsVencidosFiltered = products.map((p) => {
-            const lotes = p.lotes.slice();
+        const productWithExpiredBatches = products.map((p) => {
+            const filteredBatches = p.batches.filter((batch) => {
+                const batchDate = new Date(batch.exp_date);
 
-            const lotesFiltered = lotes.filter((l) => {
-                if (isPast(l.exp_date) && l.status !== 'Tratado') {
+                if (isPast(batchDate)) {
                     return true;
                 }
 
@@ -51,19 +60,19 @@ export async function getAllProductsNextToExp(): Promise<void> {
 
             return {
                 ...p,
-                lotes: lotesFiltered,
+                batches: filteredBatches,
             };
         });
 
         let productsNextToExpCount = 0;
         let productsVencidosCount = 0;
 
-        productsNextFiltered.forEach((p) => {
-            productsNextToExpCount += p.lotes.length;
+        productsWithBatchesNextToExp.forEach((p) => {
+            productsNextToExpCount += p.batches.length;
         });
 
-        productsVencidosFiltered.forEach((p) => {
-            productsVencidosCount += p.lotes.length;
+        productWithExpiredBatches.forEach((p) => {
+            productsVencidosCount += p.batches.length;
         });
 
         let NotificationTitle;
