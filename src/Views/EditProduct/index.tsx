@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Alert } from 'react-native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { useTheme } from 'styled-components';
-
 import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
+import BarCodeReader from '../../Components/BarCodeReader';
 
 import { getProductById, updateProduct } from '../../Functions/Product';
 
@@ -16,7 +14,6 @@ import {
     PageContent,
     InputContainer,
     InputText,
-    Camera,
     InputCodeTextContainer,
     InputCodeTextIcon,
     InputCodeText,
@@ -42,8 +39,6 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { reset, goBack } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const theme = useTheme();
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -95,49 +90,20 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
     }
 
+    const handleOnCodeRead = useCallback((codeRead: string) => {
+        setCode(codeRead);
+        setCameraEnebled(false);
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
         <>
             {cameraEnabled ? (
-                <View
-                    style={{
-                        backgroundColor: theme.colors.background,
-                        flex: 1,
-                    }}
-                >
-                    <View
-                        style={{
-                            justifyContent: 'center',
-                            flex: 1,
-                        }}
-                    >
-                        <Camera
-                            captureAudio={false}
-                            type="back"
-                            autoFocus="on"
-                            flashMode="auto"
-                            googleVisionBarcodeType={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeType.EAN_13
-                            }
-                            googleVisionBarcodeMode={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeMode.ALTERNATE
-                            }
-                            barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                            onBarCodeRead={({ data }) => {
-                                setCode(data);
-                                setCameraEnebled(false);
-                            }}
-                        />
-                    </View>
-
-                    <GenericButton
-                        text="Fechar"
-                        onPress={() => setCameraEnebled(false)}
-                    />
-                </View>
+                <BarCodeReader
+                    onCodeRead={handleOnCodeRead}
+                    onClose={() => setCameraEnebled(false)}
+                />
             ) : (
                 <Container>
                     <PageHeader>

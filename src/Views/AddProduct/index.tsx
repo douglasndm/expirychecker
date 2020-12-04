@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { View, ScrollView, Text, Alert } from 'react-native';
+import { ScrollView, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { Button as ButtonPaper, Dialog } from 'react-native-paper';
@@ -13,6 +13,7 @@ import {
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 import Notification from '../../Components/Notification';
+import BarCodeReader from '../../Components/BarCodeReader';
 
 import { getProductByCode, createProduct } from '../../Functions/Product';
 
@@ -32,7 +33,6 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-    Camera,
     InputCodeTextContainer,
     InputCodeTextIcon,
     InputCodeText,
@@ -141,47 +141,18 @@ const AddProduct: React.FC = () => {
         }
     }, []);
 
+    const handleOnCodeRead = useCallback((codeRead: string) => {
+        setCode(codeRead);
+        setCameraEnebled(false);
+    }, []);
+
     return (
         <>
             {cameraEnabled ? (
-                <View
-                    style={{
-                        backgroundColor: theme.colors.background,
-                        flex: 1,
-                    }}
-                >
-                    <View
-                        style={{
-                            justifyContent: 'center',
-                            flex: 1,
-                        }}
-                    >
-                        <Camera
-                            captureAudio={false}
-                            type="back"
-                            autoFocus="on"
-                            flashMode="auto"
-                            googleVisionBarcodeType={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeType.EAN_13
-                            }
-                            googleVisionBarcodeMode={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeMode.ALTERNATE
-                            }
-                            barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                            onBarCodeRead={({ data }) => {
-                                setCode(data);
-                                setCameraEnebled(false);
-                            }}
-                        />
-                    </View>
-
-                    <GenericButton
-                        text="Fechar"
-                        onPress={() => setCameraEnebled(false)}
-                    />
-                </View>
+                <BarCodeReader
+                    onCodeRead={handleOnCodeRead}
+                    onClose={() => setCameraEnebled(false)}
+                />
             ) : (
                 <Container>
                     <ScrollView>

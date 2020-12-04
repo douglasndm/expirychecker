@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { RNCamera } from 'react-native-camera';
 import DatePicker from 'react-native-date-picker';
 import NumericInput from '@wwdrew/react-native-numeric-textinput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -113,14 +112,4 @@ export const CustomDatePicker = styled(DatePicker).attrs((props) => ({
 }))`
     background: ${({ theme }) => theme.colors.productBackground};
     z-index: 1;
-`;
-
-export const Camera = styled(RNCamera)`
-    align-self: center;
-
-    margin-top: 10px;
-    margin-bottom: 10px;
-
-    width: 100%;
-    height: 5%;
 `;
