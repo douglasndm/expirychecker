@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import {
     DrawerContentOptions,
@@ -8,11 +8,11 @@ import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
 import { IsPlayStoreIsAvailable } from '../../Functions/Premium';
-import { getMultipleStores } from '../../Functions/Settings';
 
 import Logo from '../../Assets/Logo.png';
 
 import { Container, MenuHeader, LogoImage, MenuItem, Icons } from './styles';
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
     props: DrawerContentOptions
@@ -20,14 +20,11 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const { navigation } = props;
     const theme = useTheme();
 
+    const { userPreferences } = useContext(PreferencesContext);
+
     const [playAvailable, setPlayAvailable] = useState(false);
-    const [multipleStores, setMultipleStores] = useState(false);
 
     useEffect(() => {
-        getMultipleStores().then((response) => {
-            setMultipleStores(response);
-        });
-
         async function getDatas() {
             const result = await IsPlayStoreIsAvailable();
 
@@ -68,7 +65,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             onPress={() => navigation.navigate('AllProducts')}
                         />
 
-                        {multipleStores && (
+                        {userPreferences.multiplesStores && (
                             <MenuItem
                                 icon={() => (
                                     <Icons name="list-outline" size={22} />
@@ -80,7 +77,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             />
                         )}
 
-                        {playAvailable && (
+                        {playAvailable && !userPreferences.isUserPremium && (
                             <MenuItem
                                 icon={() => (
                                     <Icons name="analytics-outline" size={22} />
