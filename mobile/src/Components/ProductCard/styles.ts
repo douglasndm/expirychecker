@@ -41,7 +41,7 @@ export const ProductDetails = styled.View`
 `;
 
 export const ProductDetailsContainer = styled.View`
-    max-width: 50%;
+    max-width: 65%;
 `;
 
 export const ProductName = styled.Text<IProductInfo>`
@@ -103,7 +103,8 @@ export const ProductExpDate = styled.Text<IProductInfo>`
 `;
 
 export const LoteDetailsContainer = styled.View`
-    flex-direction: row;
+    max-width: 35%;
+    flex-direction: column;
 `;
 
 export const AmountContainer = styled.View`
