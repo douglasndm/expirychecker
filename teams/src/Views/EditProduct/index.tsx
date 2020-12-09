@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
+import Loading from '../../Components/Loading';
 import { getProductById } from '../../Functions/Product';
 import { getMultipleStores } from '../../Functions/Settings';
 
@@ -38,6 +39,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const theme = useTheme();
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [store, setStore] = useState<string>('');
@@ -53,6 +56,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     useEffect(() => {
         async function getProductData() {
+            setIsLoading(true);
+
             const product = await getProductById(productId);
 
             if (!product) {
@@ -62,6 +67,8 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setName(product.name);
             if (product.code) setCode(product.code);
             if (product.store) setStore(product.store);
+
+            setIsLoading(false);
         }
         getProductData();
     }, [productId]);
@@ -93,7 +100,9 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
     }
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             {cameraEnabled ? (
                 <View
