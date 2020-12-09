@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 
+import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
@@ -19,6 +20,8 @@ import { Container } from './styles';
 const AllProducts: React.FC = () => {
     const { Realm } = useContext(RealmContext);
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
     const [searchString, setSearchString] = useState<string>();
@@ -26,6 +29,7 @@ const AllProducts: React.FC = () => {
 
     const getProducts = useCallback(async () => {
         try {
+            setIsLoading(true);
             const allProducts: Array<IProduct> = await GetAllProducts();
 
             // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
@@ -45,6 +49,8 @@ const AllProducts: React.FC = () => {
             setProducts(results);
         } catch (error) {
             throw new Error(error);
+        } finally {
+            setIsLoading(false);
         }
     }, []);
 
@@ -131,7 +137,9 @@ const AllProducts: React.FC = () => {
         [products]
     );
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             <Container>
                 <Header title="Todos os produtos" />

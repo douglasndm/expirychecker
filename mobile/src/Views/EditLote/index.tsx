@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 import { updateLote, deleteLote } from '../../Functions/Lotes';
 import { getProductById } from '../../Functions/Product';
 
+import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
@@ -43,6 +44,8 @@ const EditLote: React.FC = () => {
 
     const routeParams = route.params as EditLoteProps;
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [product, setProduct] = useState<IProduct | null>(null);
 
     const productId = useMemo(() => {
@@ -66,6 +69,8 @@ const EditLote: React.FC = () => {
 
     useEffect(() => {
         async function getData() {
+            setIsLoading(true);
+
             const response = await getProductById(productId);
             setProduct(response);
 
@@ -85,6 +90,7 @@ const EditLote: React.FC = () => {
 
             if (loteResult.amount) setAmount(loteResult.amount);
             if (loteResult.price) setPrice(loteResult.price);
+            setIsLoading(false);
         }
 
         getData();
@@ -135,7 +141,9 @@ const EditLote: React.FC = () => {
         }
     }, [loteId, reset]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             {!product ? (
                 <LoadingText>Carregando</LoadingText>
