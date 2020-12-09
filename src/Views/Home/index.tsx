@@ -7,6 +7,7 @@ import {
     sortProductsByFisrtLoteExpDate,
 } from '../../Functions/Products';
 
+import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import FABProducts from '../../Components/FABProducts';
 import Notification from '../../Components/Notification';
@@ -15,6 +16,8 @@ import ListProducts from '../../Components/ListProducts';
 import { Container, InputSearch } from './styles';
 
 const Home: React.FC = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [error, setError] = useState<string>();
 
@@ -23,6 +26,7 @@ const Home: React.FC = () => {
 
     async function getProduts() {
         try {
+            setIsLoading(true);
             const resultsDB = await GetAllProductsWithLotesAndNotTratado();
 
             // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
@@ -54,6 +58,8 @@ const Home: React.FC = () => {
             }
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -130,7 +136,9 @@ const Home: React.FC = () => {
         [products]
     );
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Header />
 

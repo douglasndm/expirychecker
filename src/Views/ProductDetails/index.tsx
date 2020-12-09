@@ -15,6 +15,7 @@ import NumberFormat from 'react-number-format';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
@@ -61,11 +62,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const { navigate, goBack, reset } = useNavigation();
+
     const productId = useMemo(() => {
         return route.params.id;
     }, [route.params.id]);
 
     const theme = useTheme();
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -78,6 +82,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const getProduct = useCallback(async () => {
+        setIsLoading(true);
         try {
             const result = await getProductById(productId);
 
@@ -97,6 +102,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         } catch (error) {
             crashlytics().recordError(error);
             console.warn(error);
+        } finally {
+            setIsLoading(false);
         }
     }, [productId, goBack]);
 
@@ -138,7 +145,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         );
     }, [lotes]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             <Container>
                 <ScrollView>
