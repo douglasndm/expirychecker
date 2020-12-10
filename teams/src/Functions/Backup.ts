@@ -5,11 +5,11 @@ import CryptoJS from 'crypto-js';
 import EnvConfig from 'react-native-config';
 
 import { createProduct } from './Product';
-import Realm from '../Services/Realm';
+import { GetAllProducts } from './Products';
 
 export async function ExportBackupFile(): Promise<void> {
     try {
-        const allProducts = Realm.objects<IProduct>('Product');
+        const allProducts = await GetAllProducts();
 
         // O REALM GRAVA TUDO EM OBJETOS E NÃO EM ARRAYS
         // ISSO CONVERTE TUDO EM ARRAYS
