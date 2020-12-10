@@ -39,6 +39,13 @@ const Product = ({ product, expired, nextToExp }: Request) => {
 
     const [totalPrice, setTotalPrice] = useState(0);
 
+    const exp_date = useMemo(() => {
+        if (product.lotes[0]) {
+            return product.lotes[0].exp_date;
+        }
+        return null;
+    }, [product.lotes]);
+
     const expiredOrNext = useMemo(() => {
         return !!(expired || nextToExp);
     }, [expired, nextToExp]);
@@ -85,7 +92,7 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                         )}
                     </ProductDetailsContainer>
 
-                    {product.lotes.length > 0 && (
+                    {product.lotes.length > 0 && !!product.lotes[0].amount && (
                         <LoteDetailsContainer>
                             <AmountContainer>
                                 <AmountContainerText
@@ -121,20 +128,16 @@ const Product = ({ product, expired, nextToExp }: Request) => {
                     )}
                 </ProductDetails>
 
-                {!!product.lotes.length && (
+                {!!exp_date && (
                     <ProductExpDate expiredOrNext={expiredOrNext}>
                         {expired ? 'Venceu ' : 'Vence '}
-                        {formatDistanceToNow(product.lotes[0].exp_date, {
+                        {formatDistanceToNow(exp_date, {
                             addSuffix: true,
                             locale: br,
                         })}
-                        {format(
-                            product.lotes[0].exp_date,
-                            ', EEEE, dd/MM/yyyy',
-                            {
-                                locale: br,
-                            }
-                        )}
+                        {format(exp_date, ', EEEE, dd/MM/yyyy', {
+                            locale: br,
+                        })}
                     </ProductExpDate>
                 )}
             </Card>
