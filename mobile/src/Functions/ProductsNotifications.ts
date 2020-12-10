@@ -3,7 +3,7 @@ import { addDays, isPast } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import { getHowManyDaysToBeNextExp, getEnableNotifications } from './Settings';
-import Realm from '../Services/Realm';
+import { GetAllProductsWithLotesAndNotTratado } from './Products';
 
 export async function getAllProductsNextToExp(): Promise<void> {
     const isNotifcationEnabled = await getEnableNotifications();
@@ -13,9 +13,7 @@ export async function getAllProductsNextToExp(): Promise<void> {
     const daysToBeNext = await getHowManyDaysToBeNextExp();
 
     try {
-        const products = Realm.objects<IProduct>('Product')
-            .filtered("lotes.@count > 0 AND lotes.status != 'Tratado'")
-            .slice();
+        const products = await GetAllProductsWithLotesAndNotTratado();
 
         const productsNextFiltered = products.map((p) => {
             const lotes = p.lotes.slice();
@@ -93,6 +91,6 @@ export async function getAllProductsNextToExp(): Promise<void> {
     } catch (err) {
         crashlytics().recordError(err);
         crashlytics().log('Falha ao enviar notificação');
-        console.warn(err);
+        throw new Error(err);
     }
 }
