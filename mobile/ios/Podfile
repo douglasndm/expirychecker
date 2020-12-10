@@ -83,6 +83,8 @@ target 'controledevalidade' do
     'BarcodeDetectorMLKit'
     ]
 
+  pod 'RNPurchases', :path => '../node_modules/react-native-purchases'
+
   target 'controledevalidadeTests' do
     inherit! :complete
     # Pods for testing

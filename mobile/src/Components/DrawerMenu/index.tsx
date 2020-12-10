@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 import {
     DrawerContentOptions,
@@ -6,8 +6,6 @@ import {
 } from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
 import { useTheme } from 'styled-components';
-
-import { IsPlayStoreIsAvailable } from '../../Functions/Premium';
 
 import Logo from '../../Assets/Logo.png';
 
@@ -21,18 +19,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const theme = useTheme();
 
     const { userPreferences } = useContext(PreferencesContext);
-
-    const [playAvailable, setPlayAvailable] = useState(false);
-
-    useEffect(() => {
-        async function getDatas() {
-            const result = await IsPlayStoreIsAvailable();
-
-            setPlayAvailable(result);
-        }
-
-        getDatas();
-    }, []);
 
     return (
         <Container>
@@ -77,7 +63,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             />
                         )}
 
-                        {playAvailable && !userPreferences.isUserPremium && (
+                        {!userPreferences.isUserPremium && (
                             <MenuItem
                                 icon={() => (
                                     <Icons name="analytics-outline" size={22} />
