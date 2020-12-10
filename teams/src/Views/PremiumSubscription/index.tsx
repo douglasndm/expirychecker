@@ -4,6 +4,7 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 
 import {
     CheckIfSubscriptionIsActive,
+    IsPlayStoreIsAvailable,
     MakeASubscription,
 } from '../../Functions/Premium';
 
@@ -21,18 +22,26 @@ import {
     AdvantageText,
     ButtonSubscription,
     TextSubscription,
+    LoadingIndicator,
 } from './styles';
 
 const PremiumSubscription: React.FC = () => {
+    const [isLoadingMakeSubscription, setIsLoadingMakeSubscription] = useState<
+        boolean
+    >(false);
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
     );
     const [alreadyPremium, setAlreadyPremium] = useState(false);
+    const [playAvailable, setPlayAvailable] = useState(false);
 
     const navigation = useNavigation();
 
     useEffect(() => {
         async function getData() {
+            const availability = await IsPlayStoreIsAvailable();
+            setPlayAvailable(availability);
+
             const check = await CheckIfSubscriptionIsActive();
 
             if (check) setAlreadyPremium(true);
@@ -41,6 +50,7 @@ const PremiumSubscription: React.FC = () => {
     }, []);
 
     const makeSubscription = useCallback(async () => {
+        setIsLoadingMakeSubscription(true);
         try {
             const result = await MakeASubscription();
 
@@ -54,6 +64,8 @@ const PremiumSubscription: React.FC = () => {
             }
         } catch (err) {
             console.warn(err);
+        } finally {
+            setIsLoadingMakeSubscription(false);
         }
     }, [navigation, userPreferences, setUserPreferences]);
 
@@ -93,10 +105,34 @@ const PremiumSubscription: React.FC = () => {
                         <TextSubscription>VOCÊ JÁ É PREMIUM</TextSubscription>
                     </ButtonSubscription>
                 ) : (
-                    <ButtonSubscription onPress={makeSubscription}>
-                        <TextSubscription>ASSINAR POR</TextSubscription>
-                        <TextSubscription>R$4,99 TRIMESTRAIS</TextSubscription>
-                    </ButtonSubscription>
+                    <>
+                        {playAvailable ? (
+                            <ButtonSubscription
+                                onPress={makeSubscription}
+                                disabled={isLoadingMakeSubscription}
+                            >
+                                {isLoadingMakeSubscription && (
+                                    <LoadingIndicator />
+                                )}
+                                {!isLoadingMakeSubscription && (
+                                    <>
+                                        <TextSubscription>
+                                            ASSINAR POR
+                                        </TextSubscription>
+                                        <TextSubscription>
+                                            R$4,99 TRIMESTRAIS
+                                        </TextSubscription>
+                                    </>
+                                )}
+                            </ButtonSubscription>
+                        ) : (
+                            <ButtonSubscription disabled>
+                                <TextSubscription>
+                                    A PLAY STORE NÃO ESTÁ DISPONÍVEL NO MOMENTO
+                                </TextSubscription>
+                            </ButtonSubscription>
+                        )}
+                    </>
                 )}
 
                 <ButtonSubscription
