@@ -5,13 +5,11 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import crashlytics from '@react-native-firebase/crashlytics';
 import { useTheme } from 'styled-components';
 import { Button } from 'react-native-paper';
-import br, { format, isPast, addDays } from 'date-fns';
-import NumberFormat from 'react-number-format';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -38,17 +36,14 @@ import {
     CategoryDetails,
     CategoryDetailsText,
     TableContainer,
-    Table,
-    TableHeader,
-    TableTitle,
-    TableRow,
-    TableCell,
     Text,
     DialogPaper,
     FloatButton,
 } from './styles';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
+
+import BatchTable from './BatchesTable';
 
 interface Request {
     route: {
@@ -203,102 +198,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
-                                <Table>
-                                    <TableHeader>
-                                        <TableTitle>LOTE</TableTitle>
-                                        <TableTitle>VENCIMENTO</TableTitle>
-                                        <TableTitle>QUANTIDADE</TableTitle>
-                                        <TableTitle>PREÇO</TableTitle>
-                                    </TableHeader>
-
-                                    {lotesNaoTratados.map((lote) => {
-                                        const expired = isPast(lote.exp_date);
-                                        const nextToExp =
-                                            addDays(
-                                                new Date(),
-                                                userPreferences.howManyDaysToBeNextToExpire
-                                            ) > lote.exp_date;
-
-                                        const expiredOrNext = !!(
-                                            expired || nextToExp
-                                        );
-
-                                        return (
-                                            <TableRow
-                                                key={lote.id}
-                                                expired={expired}
-                                                nextToExp={nextToExp}
-                                                onPress={() => {
-                                                    navigate('EditLote', {
-                                                        productId,
-                                                        loteId: lote.id,
-                                                    });
-                                                }}
-                                            >
-                                                <TableCell>
-                                                    <Text
-                                                        expiredOrNext={
-                                                            expiredOrNext
-                                                        }
-                                                    >
-                                                        {lote.lote}
-                                                    </Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text
-                                                        expiredOrNext={
-                                                            expiredOrNext
-                                                        }
-                                                    >
-                                                        {format(
-                                                            lote.exp_date,
-                                                            'dd/MM/yyyy',
-                                                            {
-                                                                locale: br,
-                                                            }
-                                                        )}
-                                                    </Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text
-                                                        expiredOrNext={
-                                                            expiredOrNext
-                                                        }
-                                                    >
-                                                        {lote.amount}
-                                                    </Text>
-                                                </TableCell>
-                                                {!!lote.amount &&
-                                                    !!lote.price &&
-                                                    lote.price > 0 && (
-                                                        <TableCell>
-                                                            <Text
-                                                                expiredOrNext={
-                                                                    expiredOrNext
-                                                                }
-                                                            >
-                                                                <NumberFormat
-                                                                    value={
-                                                                        lote.amount *
-                                                                        lote.price
-                                                                    }
-                                                                    displayType="text"
-                                                                    thousandSeparator
-                                                                    prefix="R$"
-                                                                    renderText={(
-                                                                        value
-                                                                    ) => value}
-                                                                    decimalScale={
-                                                                        2
-                                                                    }
-                                                                />
-                                                            </Text>
-                                                        </TableCell>
-                                                    )}
-                                            </TableRow>
-                                        );
-                                    })}
-                                </Table>
+                                <BatchTable
+                                    batches={lotesNaoTratados}
+                                    productId={productId}
+                                />
                             </TableContainer>
                         )}
 
@@ -310,69 +213,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
-                                <Table>
-                                    <TableHeader>
-                                        <TableTitle>LOTE</TableTitle>
-                                        <TableTitle>VENCIMENTO</TableTitle>
-                                        <TableTitle>QUANTIDADE</TableTitle>
-                                        <TableTitle>PREÇO</TableTitle>
-                                    </TableHeader>
-
-                                    {lotesTratados.map((lote) => {
-                                        return (
-                                            <TableRow
-                                                key={lote.id}
-                                                onPress={() => {
-                                                    navigate('EditLote', {
-                                                        productId,
-                                                        loteId: lote.id,
-                                                    });
-                                                }}
-                                            >
-                                                <TableCell>
-                                                    <Text>{lote.lote}</Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text>
-                                                        {format(
-                                                            lote.exp_date,
-                                                            'dd/MM/yyyy',
-                                                            {
-                                                                locale: br,
-                                                            }
-                                                        )}
-                                                    </Text>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Text>{lote.amount}</Text>
-                                                </TableCell>
-                                                {!!lote.amount &&
-                                                    !!lote.price &&
-                                                    lote.price > 0 && (
-                                                        <TableCell>
-                                                            <Text>
-                                                                <NumberFormat
-                                                                    value={
-                                                                        lote.amount *
-                                                                        lote.price
-                                                                    }
-                                                                    displayType="text"
-                                                                    thousandSeparator
-                                                                    prefix="R$"
-                                                                    renderText={(
-                                                                        value
-                                                                    ) => value}
-                                                                    decimalScale={
-                                                                        2
-                                                                    }
-                                                                />
-                                                            </Text>
-                                                        </TableCell>
-                                                    )}
-                                            </TableRow>
-                                        );
-                                    })}
-                                </Table>
+                                <BatchTable
+                                    batches={lotesTratados}
+                                    productId={productId}
+                                />
                             </>
                         )}
 
