@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { GetAllProductsByStore } from '../../Functions/Products';
+import {
+    GetAllProductsByStore,
+    GetAllProductsWithoutStore,
+} from '../../Functions/Products';
 
+import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
 
@@ -16,17 +20,38 @@ interface RequestProps {
 }
 
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [products, setProducts] = useState<IProduct[]>([]);
 
     const { storeName } = route.params;
 
-    useEffect(() => {
-        GetAllProductsByStore(storeName).then((response) => {
-            setProducts(response);
-        });
+    const loadData = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            let results: Array<IProduct> = [];
+
+            if (storeName === 'Sem loja') {
+                results = await GetAllProductsWithoutStore();
+            } else {
+                results = await GetAllProductsByStore(storeName);
+            }
+
+            setProducts(results);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
     }, [storeName]);
 
-    return (
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Header />
 
