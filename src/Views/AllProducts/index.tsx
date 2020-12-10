@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
 import BarCodeReader from '../../Components/BarCodeReader';
-
-import RealmContext from '../../Contexts/RealmContext';
 
 import {
     sortProductsLotesByLotesExpDate,
@@ -24,8 +22,6 @@ import {
 import { Container } from './styles';
 
 const AllProducts: React.FC = () => {
-    const { Realm } = useContext(RealmContext);
-
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
@@ -64,18 +60,8 @@ const AllProducts: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        async function startRealm() {
-            Realm.addListener('change', () => getProducts());
-
-            getProducts();
-        }
-
-        startRealm();
-
-        return () => {
-            Realm.removeAllListeners();
-        };
-    }, []);
+        getProducts();
+    }, [getProducts]);
 
     useEffect(() => {
         setProductsSearch(products);
