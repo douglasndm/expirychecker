@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Alert, ScrollView, View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { RadioButton, Dialog } from 'react-native-paper';
+import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
 import { updateLote, deleteLote } from '../../Functions/Lotes';
@@ -26,11 +26,12 @@ import {
 import { ProductHeader, ProductName, ProductCode } from '../AddLote/styles';
 
 import {
-    LoadingText,
     PageHeader,
     PageTitleContainer,
     Button,
     Icons,
+    RadioButton,
+    RadioButtonText,
 } from './styles';
 
 interface EditLoteProps {
@@ -106,7 +107,7 @@ const EditLote: React.FC = () => {
             await updateLote({
                 id: loteId,
                 lote,
-                amount,
+                amount: Number(amount),
                 exp_date: expDate,
                 price,
                 status: tratado ? 'Tratado' : 'Não tratado',
@@ -141,162 +142,142 @@ const EditLote: React.FC = () => {
         }
     }, [loteId, reset]);
 
+    const handleAmountChange = useCallback((value) => {
+        const regex = /^[0-9\b]+$/;
+
+        if (value === '' || regex.test(value)) {
+            setAmount(value);
+        }
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
         <>
-            {!product ? (
-                <LoadingText>Carregando</LoadingText>
-            ) : (
-                <Container>
-                    <ScrollView>
-                        <PageHeader>
-                            <PageTitleContainer>
-                                <BackButton handleOnPress={goBack} />
-                                <PageTitle>Editar lote</PageTitle>
-                            </PageTitleContainer>
+            <Container>
+                <ScrollView>
+                    <PageHeader>
+                        <PageTitleContainer>
+                            <BackButton handleOnPress={goBack} />
+                            <PageTitle>Editar lote</PageTitle>
+                        </PageTitleContainer>
 
-                            <Button
-                                icon={() => (
-                                    <Icons name="trash-outline" size={22} />
+                        <Button
+                            icon={() => (
+                                <Icons name="trash-outline" size={22} />
+                            )}
+                            onPress={() => {
+                                setDeleteComponentVisible(true);
+                            }}
+                        >
+                            Apagar
+                        </Button>
+                    </PageHeader>
+
+                    <PageContent>
+                        <InputContainer>
+                            <ProductHeader>
+                                {!!product && (
+                                    <ProductName>{product.name}</ProductName>
                                 )}
-                                onPress={() => {
-                                    setDeleteComponentVisible(true);
+                                {!!product && !!product.code && (
+                                    <ProductCode>{product.code}</ProductCode>
+                                )}
+                            </ProductHeader>
+
+                            <InputGroup>
+                                <InputText
+                                    style={{
+                                        flex: 5,
+                                        marginRight: 5,
+                                    }}
+                                    placeholder="Lote"
+                                    value={lote}
+                                    onChangeText={(value) => setLote(value)}
+                                />
+                                <InputText
+                                    style={{
+                                        flex: 4,
+                                    }}
+                                    placeholder="Quantidade"
+                                    keyboardType="numeric"
+                                    value={String(amount)}
+                                    onChangeText={handleAmountChange}
+                                />
+                            </InputGroup>
+
+                            <NumericInputField
+                                type="currency"
+                                locale="pt-BR"
+                                currency="BRL"
+                                value={price}
+                                onUpdate={(value: number) => setPrice(value)}
+                                placeholder="Valor unitário"
+                            />
+
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
                                 }}
                             >
-                                Apagar
-                            </Button>
-                        </PageHeader>
-
-                        <PageContent>
-                            <InputContainer>
-                                <ProductHeader>
-                                    <ProductName>{product.name}</ProductName>
-                                    {!!product.code && (
-                                        <ProductCode>
-                                            {product.code}
-                                        </ProductCode>
-                                    )}
-                                </ProductHeader>
-
-                                <InputGroup>
-                                    <InputText
-                                        style={{
-                                            flex: 5,
-                                            marginRight: 5,
-                                        }}
-                                        placeholder="Lote"
-                                        value={lote}
-                                        onChangeText={(value) => setLote(value)}
-                                    />
-                                    <InputText
-                                        style={{
-                                            flex: 4,
-                                        }}
-                                        placeholder="Quantidade"
-                                        keyboardType="numeric"
-                                        value={String(amount)}
-                                        onChangeText={(value) => {
-                                            const regex = /^[0-9\b]+$/;
-
-                                            if (
-                                                value === '' ||
-                                                regex.test(value)
-                                            ) {
-                                                if (value === '') {
-                                                    setAmount(0);
-                                                    return;
-                                                }
-                                                setAmount(Number(value));
-                                            }
-                                        }}
-                                    />
-                                </InputGroup>
-
-                                <NumericInputField
-                                    type="currency"
-                                    locale="pt-BR"
-                                    currency="BRL"
-                                    value={price}
-                                    onUpdate={(value: number) =>
-                                        setPrice(value)
-                                    }
-                                    placeholder="Valor unitário"
-                                />
-
                                 <View
                                     style={{
                                         flexDirection: 'row',
-                                        justifyContent: 'center',
+                                        alignItems: 'center',
                                     }}
                                 >
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <RadioButton
-                                            value="tratado"
-                                            status={
-                                                tratado === true
-                                                    ? 'checked'
-                                                    : 'unchecked'
-                                            }
-                                            onPress={() => setTratado(true)}
-                                            color={theme.colors.accent}
-                                        />
-                                        <Text
-                                            style={{ color: theme.colors.text }}
-                                        >
-                                            Tratado
-                                        </Text>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <RadioButton
-                                            value="Não tratado"
-                                            status={
-                                                tratado === !true
-                                                    ? 'checked'
-                                                    : 'unchecked'
-                                            }
-                                            onPress={() => setTratado(false)}
-                                            color={theme.colors.accent}
-                                        />
-                                        <Text
-                                            style={{ color: theme.colors.text }}
-                                        >
-                                            Não tratado
-                                        </Text>
-                                    </View>
-                                </View>
-
-                                <ExpDateGroup>
-                                    <ExpDateLabel>
-                                        Data de vencimento
-                                    </ExpDateLabel>
-                                    <CustomDatePicker
-                                        date={expDate}
-                                        onDateChange={(value) => {
-                                            setExpDate(value);
-                                        }}
-                                        fadeToColor="none"
-                                        mode="date"
-                                        locale="pt-br"
+                                    <RadioButton
+                                        value="tratado"
+                                        status={
+                                            tratado === true
+                                                ? 'checked'
+                                                : 'unchecked'
+                                        }
+                                        onPress={() => setTratado(true)}
                                     />
-                                </ExpDateGroup>
-                            </InputContainer>
+                                    <RadioButtonText>Tratado</RadioButtonText>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <RadioButton
+                                        value="Não tratado"
+                                        status={
+                                            tratado === !true
+                                                ? 'checked'
+                                                : 'unchecked'
+                                        }
+                                        onPress={() => setTratado(false)}
+                                    />
+                                    <RadioButtonText>
+                                        Não tratado
+                                    </RadioButtonText>
+                                </View>
+                            </View>
 
-                            <GenericButton text="Salvar" onPress={handleSave} />
-                        </PageContent>
-                    </ScrollView>
-                </Container>
-            )}
+                            <ExpDateGroup>
+                                <ExpDateLabel>Data de vencimento</ExpDateLabel>
+                                <CustomDatePicker
+                                    date={expDate}
+                                    onDateChange={(value) => {
+                                        setExpDate(value);
+                                    }}
+                                    fadeToColor="none"
+                                    mode="date"
+                                    locale="pt-br"
+                                />
+                            </ExpDateGroup>
+                        </InputContainer>
+
+                        <GenericButton text="Salvar" onPress={handleSave} />
+                    </PageContent>
+                </ScrollView>
+            </Container>
+
             <Dialog
                 visible={deleteComponentVisible}
                 onDismiss={() => {
