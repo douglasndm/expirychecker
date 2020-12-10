@@ -6,9 +6,6 @@ import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
-import RealmContext from './Contexts/RealmContext';
-
-import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
@@ -52,25 +49,23 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        <RealmContext.Provider value={{ Realm }}>
-            <PreferencesContext.Provider
-                value={{
-                    userPreferences: preferences,
-                    setUserPreferences: setPreferences,
-                }}
-            >
-                <ThemeProvider theme={preferences.appTheme}>
-                    <PaperProvider>
-                        <Portal>
-                            <NavigationContainer>
-                                <StatusBar />
-                                <Routes />
-                            </NavigationContainer>
-                        </Portal>
-                    </PaperProvider>
-                </ThemeProvider>
-            </PreferencesContext.Provider>
-        </RealmContext.Provider>
+        <PreferencesContext.Provider
+            value={{
+                userPreferences: preferences,
+                setUserPreferences: setPreferences,
+            }}
+        >
+            <ThemeProvider theme={preferences.appTheme}>
+                <PaperProvider>
+                    <Portal>
+                        <NavigationContainer>
+                            <StatusBar />
+                            <Routes />
+                        </NavigationContainer>
+                    </Portal>
+                </PaperProvider>
+            </ThemeProvider>
+        </PreferencesContext.Provider>
     );
 };
 

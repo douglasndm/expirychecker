@@ -6,9 +6,8 @@ import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import BarCodeReader from '../../Components/BarCodeReader';
 
-import { getProductById } from '../../Functions/Product';
+import { getProductById, updateProduct } from '../../Functions/Product';
 
-import RealmContext from '../../Contexts/RealmContext';
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
@@ -37,7 +36,6 @@ interface RequestParams {
 const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    const { Realm } = useContext(RealmContext);
     const { productId } = route.params;
 
     const { reset, goBack } = useNavigation();
@@ -69,19 +67,18 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         getProductData();
     }, [productId]);
 
-    async function updateProduct() {
+    async function updateProd() {
         if (!name || name.trim() === '') {
             Alert.alert('Digite o nome do produto');
             return;
         }
 
         try {
-            Realm.write(() => {
-                Realm.create(
-                    'Product',
-                    { id: productId, name, code, store },
-                    'modified'
-                );
+            updateProduct({
+                id: productId,
+                name,
+                code,
+                store,
             });
 
             reset({
@@ -164,7 +161,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     icon={() => (
                                         <Icons name="save-outline" size={22} />
                                     )}
-                                    onPress={updateProduct}
+                                    onPress={updateProd}
                                 >
                                     Salvar
                                 </ButtonPaper>

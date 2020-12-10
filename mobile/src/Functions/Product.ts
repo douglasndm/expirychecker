@@ -10,9 +10,12 @@ export async function checkIfProductAlreadyExistsByCode({
     productCode,
     productStore,
 }: ICheckIfProductAlreadyExistsByCodeProps): Promise<boolean> {
+    const realm = await Realm();
+
     try {
         if (productStore) {
-            const results = Realm.objects('Product')
+            const results = realm
+                .objects('Product')
                 .filtered(
                     `code = "${productCode}" AND store = "${productStore}"`
                 )
@@ -24,7 +27,8 @@ export async function checkIfProductAlreadyExistsByCode({
             return false;
         }
 
-        const results = Realm.objects('Product')
+        const results = realm
+            .objects('Product')
             .filtered(`code = "${productCode}"`)
             .slice();
 
@@ -37,41 +41,39 @@ export async function checkIfProductAlreadyExistsByCode({
     }
 }
 
-export async function getProductByCode(
-    productCode: string
-): Promise<IProduct | null> {
+export async function getProductByCode(productCode: string): Promise<IProduct> {
+    const realm = await Realm();
+
     try {
-        const result = Realm.objects<IProduct>('Product').filtered(
-            `code = "${productCode}"`
-        )[0];
+        const result = realm
+            .objects<IProduct>('Product')
+            .filtered(`code = "${productCode}"`)[0];
 
         return result;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-
-    return null;
 }
 
-export async function getProductById(
-    productId: number
-): Promise<IProduct | null> {
+export async function getProductById(productId: number): Promise<IProduct> {
+    const realm = await Realm();
+
     try {
-        const result = Realm.objects<IProduct>('Product').filtered(
-            `id = "${productId}"`
-        )[0];
+        const result = realm
+            .objects<IProduct>('Product')
+            .filtered(`id = "${productId}"`)[0];
 
         return result;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-
-    return null;
 }
 
 export async function createProduct(
     product: Omit<IProduct, 'id'>
-): Promise<number | void> {
+): Promise<void | number> {
+    const realm = await Realm();
+
     try {
         if (
             product.code &&
@@ -97,24 +99,19 @@ export async function createProduct(
         } else {
             // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
             // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
-            const lastProduct = Realm.objects<IProduct>('Product').sorted(
-                'id',
-                true
-            )[0];
+            const lastProduct = realm
+                .objects<IProduct>('Product')
+                .sorted('id', true)[0];
             const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
 
-            Realm.write(async () => {
-                Realm.create(
-                    'Product',
-                    {
-                        id: nextProductId,
-                        name: product.name,
-                        code: product.code,
-                        store: product.store,
-                        lotes: [],
-                    },
-                    false
-                );
+            realm.write(async () => {
+                realm.create('Product', {
+                    id: nextProductId,
+                    name: product.name,
+                    code: product.code,
+                    store: product.store,
+                    lotes: [],
+                });
             });
 
             for (const l of product.lotes) {
@@ -131,10 +128,38 @@ export async function createProduct(
     }
 }
 
-export async function deleteProduct(productId: number): Promise<void> {
-    const product = Realm.objects('Product').filtered(`id == ${productId}`);
+interface updateProductProps {
+    id: number;
+    name?: string;
+    code?: string;
+    store?: string;
+    lotes?: Array<ILote>;
+}
 
-    Realm.write(async () => {
-        Realm.delete(product);
-    });
+export async function updateProduct(
+    product: updateProductProps
+): Promise<void> {
+    const realm = await Realm();
+
+    try {
+        realm.write(() => {
+            realm.create('Product', product, 'modified');
+        });
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
+export async function deleteProduct(productId: number): Promise<void> {
+    const realm = await Realm();
+
+    try {
+        const product = realm.objects('Product').filtered(`id == ${productId}`);
+
+        realm.write(async () => {
+            realm.delete(product);
+        });
+    } catch (err) {
+        throw new Error(err);
+    }
 }

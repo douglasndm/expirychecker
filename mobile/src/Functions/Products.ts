@@ -62,8 +62,10 @@ export function removeAllLotesTratadosFromAllProduts(
 }
 
 export async function GetAllProducts(): Promise<Array<IProduct>> {
+    const realm = await Realm();
+
     try {
-        const results = Realm.objects<IProduct>('Product').slice();
+        const results = realm.objects<IProduct>('Product').slice();
 
         return results;
     } catch (err) {
@@ -72,24 +74,28 @@ export async function GetAllProducts(): Promise<Array<IProduct>> {
 }
 
 export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
+    const realm = await Realm();
+
     try {
-        const results = Realm.objects<IProduct>('Product')
+        const results = realm
+            .objects<IProduct>('Product')
             .filtered('lotes.@count > 0')
             .slice();
 
         return results;
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
-
-    return [];
 }
 
 export async function GetAllProductsWithLotesAndNotTratado(): Promise<
     Array<IProduct>
 > {
+    const realm = await Realm();
+
     try {
-        const results = Realm.objects<IProduct>('Product')
+        const results = realm
+            .objects<IProduct>('Product')
             .filtered('lotes.@count > 0 AND lotes.status != "Tratado"')
             .slice();
 
@@ -103,8 +109,11 @@ export async function GetAllProductsByStore(
     store: string,
     limit?: number
 ): Promise<Array<IProduct>> {
+    const realm = await Realm();
+
     try {
-        const results = Realm.objects<IProduct>('Product')
+        const results = realm
+            .objects<IProduct>('Product')
             .filtered(`store = '${store}'`)
             .slice();
 
@@ -120,8 +129,11 @@ export async function GetAllProductsByStore(
 }
 
 export async function GetAllProductsWithoutStore(): Promise<Array<IProduct>> {
+    const realm = await Realm();
+
     try {
-        const results = Realm.objects<IProduct>('Product')
+        const results = realm
+            .objects<IProduct>('Product')
             .filtered(`store == null OR store == ''`)
             .slice();
 
@@ -132,10 +144,12 @@ export async function GetAllProductsWithoutStore(): Promise<Array<IProduct>> {
 }
 
 export async function getAllStores(): Promise<Array<string>> {
+    const realm = await Realm();
+
     try {
         const stores: Array<string> = [];
 
-        const results = Realm.objects<IProduct>('Product').sorted('store');
+        const results = realm.objects<IProduct>('Product').sorted('store');
 
         results.forEach((product) => {
             if (product.store) {

@@ -16,11 +16,8 @@ import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
-import RealmContext from '../../Contexts/RealmContext';
 
 const Test: React.FC = () => {
-    const { Realm } = useContext(RealmContext);
-
     const [adsEnable, setAdsEnable] = useState(false);
 
     useEffect(() => {
