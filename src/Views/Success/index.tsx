@@ -39,15 +39,6 @@ const Success: React.FC = () => {
 
     const animation = useMemo(() => {
         switch (type) {
-            case 'create_batch':
-                return require('../../Assets/Animations/success-loading.json');
-
-            case 'create_product':
-                return require('../../Assets/Animations/success-loading.json');
-            case 'edit_batch':
-                return require('../../Assets/Animations/success.json');
-            case 'edit_product':
-                return require('../../Assets/Animations/success.json');
             case 'delete_batch':
                 return require('../../Assets/Animations/delete-animation.json');
             case 'delete_product':
