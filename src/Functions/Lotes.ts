@@ -98,10 +98,12 @@ export async function checkIfLoteAlreadyExists({
 }
 
 export async function getLoteById(loteId: number): Promise<ILote> {
+    const realm = await Realm();
+
     try {
-        const result = Realm.objects<ILote>('Lote').filtered(
-            `id = "${loteId}"`
-        )[0];
+        const result = realm
+            .objects<ILote>('Lote')
+            .filtered(`id = "${loteId}"`)[0];
 
         return result;
     } catch (err) {
@@ -132,16 +134,20 @@ export async function createLote({
         throw new Error('Já existe o mesmo lote cadastro');
     }
 
+    const realm = await Realm();
+
     try {
-        Realm.write(() => {
+        realm.write(() => {
             let product;
 
             if (productCode) {
-                product = Realm.objects<IProduct>('Product')
+                product = realm
+                    .objects<IProduct>('Product')
                     .filtered(`code = "${productCode}"`)
                     .slice();
             } else {
-                product = Realm.objects<IProduct>('Product')
+                product = realm
+                    .objects<IProduct>('Product')
                     .filtered(`id = "${productId}"`)
                     .slice();
             }
@@ -152,7 +158,7 @@ export async function createLote({
                 );
             }
 
-            const lastLote = Realm.objects<ILote>('Lote').sorted('id', true)[0];
+            const lastLote = realm.objects<ILote>('Lote').sorted('id', true)[0];
             const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
             // UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
@@ -195,20 +201,11 @@ export async function createLote({
 }
 
 export async function updateLote(lote: ILote): Promise<void> {
+    const realm = await Realm();
+
     try {
-        Realm.write(() => {
-            Realm.create(
-                'Lote',
-                {
-                    id: lote.id,
-                    lote: lote.lote,
-                    amount: lote.amount,
-                    exp_date: lote.exp_date,
-                    price: lote.price,
-                    status: lote.status,
-                },
-                'modified'
-            );
+        realm.write(() => {
+            realm.create('Lote', lote, 'modified');
         });
     } catch (err) {
         throw new Error(err);
@@ -216,11 +213,13 @@ export async function updateLote(lote: ILote): Promise<void> {
 }
 
 export async function deleteLote(loteId: number): Promise<void> {
-    try {
-        const lote = Realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);
+    const realm = await Realm();
 
-        Realm.write(() => {
-            Realm.delete(lote);
+    try {
+        const lote = realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);
+
+        realm.write(() => {
+            realm.delete(lote);
         });
     } catch (err) {
         throw new Error(err);
