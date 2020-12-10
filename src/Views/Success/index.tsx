@@ -16,7 +16,13 @@ import {
 } from './styles';
 
 interface Props {
-    type: 'create_batch' | 'create_product' | 'delete_batch' | 'delete_product';
+    type:
+        | 'create_batch'
+        | 'create_product'
+        | 'edit_batch'
+        | 'edit_product'
+        | 'delete_batch'
+        | 'delete_product';
 }
 
 const Success: React.FC = () => {
@@ -32,42 +38,58 @@ const Success: React.FC = () => {
     }, [routeParams]);
 
     const animation = useMemo(() => {
-        if (type === 'create_batch')
-            return require('../../Assets/Animations/success-loading.json');
-        if (type === 'create_product')
-            return require('../../Assets/Animations/success-loading.json');
-        if (type === 'delete_batch')
-            return require('../../Assets/Animations/delete-animation.json');
-        if (type === 'delete_product')
-            return require('../../Assets/Animations/delete-animation.json');
+        switch (type) {
+            case 'create_batch':
+                return require('../../Assets/Animations/success-loading.json');
 
-        return require('../../Assets/Animations/success-loading.json');
+            case 'create_product':
+                return require('../../Assets/Animations/success-loading.json');
+            case 'edit_batch':
+                return require('../../Assets/Animations/success.json');
+            case 'edit_product':
+                return require('../../Assets/Animations/success.json');
+            case 'delete_batch':
+                return require('../../Assets/Animations/delete-animation.json');
+            case 'delete_product':
+                return require('../../Assets/Animations/delete-animation.json');
+            default:
+                return require('../../Assets/Animations/success.json');
+        }
     }, [type]);
-
-    const handleNavigateToHome = useCallback(() => {
-        reset({
-            index: 1,
-            routes: [{ name: 'Home' }],
-        });
-    }, [reset]);
 
     const adUnitId = useMemo(() => {
         if (__DEV__) return TestIds.BANNER;
 
-        if (type === 'create_batch')
-            return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDABATCH;
+        switch (type) {
+            case 'create_batch':
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDABATCH;
 
-        if (type === 'create_product')
-            return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
+            case 'create_product':
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
 
-        if (type === 'delete_batch')
-            return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEABATCH;
+            case 'edit_batch':
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTEREDITABATCH;
 
-        if (type === 'delete_product')
-            return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEAPRODUCT;
+            case 'edit_product':
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTEREDITAPRODUCT;
 
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
+            case 'delete_batch':
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEABATCH;
+
+            case 'delete_product':
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEAPRODUCT;
+
+            default: {
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT;
+            }
+        }
     }, [type]);
+
+    const handleNavigateToHome = useCallback(() => {
+        reset({
+            routes: [{ name: 'Home' }],
+        });
+    }, [reset]);
 
     return (
         <Container>
@@ -81,6 +103,8 @@ const Success: React.FC = () => {
 
                 {type === 'create_batch' && <Title>Lote cadastrado</Title>}
                 {type === 'create_product' && <Title>Produto cadastrado</Title>}
+                {type === 'edit_batch' && <Title>Lote atualizado</Title>}
+                {type === 'edit_product' && <Title>Produto atualizado</Title>}
                 {type === 'delete_batch' && <Title>Lote apagado</Title>}
                 {type === 'delete_product' && <Title>Produto apagado</Title>}
 
@@ -93,6 +117,12 @@ const Success: React.FC = () => {
                     <Description>
                         Seu produto foi cadastrado com sucesso.
                     </Description>
+                )}
+                {type === 'edit_batch' && (
+                    <Description>O lote foi atualizado.</Description>
+                )}
+                {type === 'edit_product' && (
+                    <Description>O produto foi atualizado.</Description>
                 )}
                 {type === 'delete_batch' && (
                     <Description>Seu lote foi apagado com sucesso.</Description>
