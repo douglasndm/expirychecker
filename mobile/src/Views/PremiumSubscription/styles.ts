@@ -70,3 +70,8 @@ export const TextSubscription = styled.Text`
     color: white;
     font-size: 18px;
 `;
+
+export const LoadingIndicator = styled.ActivityIndicator.attrs(() => ({
+    color: '#fff',
+    size: 36,
+}))``;
