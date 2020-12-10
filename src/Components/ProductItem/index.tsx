@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useState } from 'react';
-import { View } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 import { addDays, isPast } from 'date-fns';
@@ -8,7 +7,7 @@ import ProductCard from '../ProductCard';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
-import { AdView } from './styles';
+import { Container, AdView } from './styles';
 
 interface RequestProps {
     product: IProduct;
@@ -43,29 +42,33 @@ const ProductItem: React.FC<RequestProps> = ({
             : EnvConfig.ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS;
     }, []);
 
+    const showAd = useMemo(() => {
+        if (disableAds) return false;
+        if (userPreferences.isUserPremium) return false;
+        if (adFailed) return false;
+        if (index === 0) return false;
+        if (index && index % 5 === 0) return true;
+        return false;
+    }, [disableAds, userPreferences.isUserPremium, index, adFailed]);
+
     return (
-        <View>
-            {!disableAds &&
-                !userPreferences.isUserPremium &&
-                !!index &&
-                index !== 0 &&
-                index % 5 === 0 &&
-                !adFailed && (
-                    <AdView>
-                        <BannerAd
-                            unitId={adUnitId}
-                            size={BannerAdSize.BANNER}
-                            onAdFailedToLoad={() => setAdFailed(true)}
-                        />
-                    </AdView>
-                )}
+        <Container>
+            {showAd && (
+                <AdView>
+                    <BannerAd
+                        unitId={adUnitId}
+                        size={BannerAdSize.BANNER}
+                        onAdFailedToLoad={() => setAdFailed(true)}
+                    />
+                </AdView>
+            )}
 
             <ProductCard
                 product={product}
                 expired={expired}
                 nextToExp={nextToExp}
             />
-        </View>
+        </Container>
     );
 };
 
