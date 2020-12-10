@@ -1,25 +1,22 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { View, Text, ScrollView, Linking } from 'react-native';
+import { View, ScrollView, Linking } from 'react-native';
 import { Switch } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
-import { useNavigation, StackActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-community/picker';
 
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
 
 import {
+    setHowManyDaysToBeNextExp,
     setAppTheme,
-    getDaysToBeNextToExp,
-    setDaysToBeNextToExp,
-    getNotificationsEnabled,
-    setNotificationsEnabled,
-    getMultipleStores,
-    setMultipleStores,
+    setEnableNotifications,
+    setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
 import * as Premium from '../../Functions/Premium';
-import Themes, { getActualAppTheme } from '../../Themes';
+import { getActualAppTheme } from '../../Themes';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -39,30 +36,29 @@ import {
     ButtonPremiumText,
     ButtonCancel,
     ButtonCancelText,
+    Text,
 } from './styles';
 
 const Settings: React.FC = () => {
-    const [daysToBeNext, setDaysToBeNext] = useState<number>();
+    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [selectedTheme, setSelectedTheme] = useState<string>('system');
     const [userIsPremium, setUserIsPremium] = useState(false);
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
+    const [playAvailable, setPlayAvailable] = useState(false);
+
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
     );
 
-    const navigation = useNavigation();
+    const { navigate, goBack, reset } = useNavigation();
 
     const theme = useTheme();
 
-    const handleBackButton = useCallback(() => {
-        navigation.goBack();
-    }, [navigation]);
-
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
-            await setDaysToBeNextToExp(days);
+            await setHowManyDaysToBeNextExp(days);
 
             setUserPreferences({
                 ...userPreferences,
@@ -78,18 +74,20 @@ const Settings: React.FC = () => {
         );
 
         if (!(await Premium.CheckIfSubscriptionIsActive())) {
-            navigation.navigate(StackActions.popToTop());
+            reset({
+                routes: [{ name: 'Home' }],
+            });
         }
-    }, [navigation]);
+    }, [reset]);
 
     const handleNotificationEnabledSwitch = useCallback(async () => {
-        await setNotificationsEnabled(!isNotificationsEnabled);
+        await setEnableNotifications(!isNotificationsEnabled);
 
         setIsNotificationsEnabled(!isNotificationsEnabled);
     }, [isNotificationsEnabled]);
 
     const handleMultiStoresEnableSwitch = useCallback(async () => {
-        await setMultipleStores(!multipleStoresState);
+        await setEnableMultipleStoresMode(!multipleStoresState);
 
         setUserPreferences({
             ...userPreferences,
@@ -99,8 +97,8 @@ const Settings: React.FC = () => {
 
     const handleThemeChange = useCallback(
         async (themeName: string) => {
-            setSelectedTheme(String(themeName));
-            await setAppTheme(String(themeName));
+            setSelectedTheme(themeName);
+            await setAppTheme(themeName);
 
             const changeToTheme = await getActualAppTheme();
 
@@ -113,70 +111,53 @@ const Settings: React.FC = () => {
     );
 
     useEffect(() => {
-        const { appTheme } = userPreferences;
-
-        switch (appTheme) {
-            case Themes.Dark:
-                setSelectedTheme('dark');
-                break;
-            case Themes.Light:
-                setSelectedTheme('light');
-                break;
-            case Themes.UltraViolet:
-                setSelectedTheme('ultraviolet');
-                break;
-            case Themes.DarkGreen:
-                setSelectedTheme('darkgreen');
-                break;
-            case Themes.HappyPink:
-                setSelectedTheme('happyPink');
-                break;
-            case Themes.OceanBlue:
-                setSelectedTheme('oceanblue');
-                break;
-            case Themes.Relax:
-                setSelectedTheme('relax');
-                break;
-            default:
-                setSelectedTheme('system');
-        }
+        setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
+        setUserIsPremium(userPreferences.isUserPremium);
+        setMultipleStoresState(userPreferences.multiplesStores);
+        setIsNotificationsEnabled(userPreferences.enableNotifications);
     }, [userPreferences]);
 
     useEffect(() => {
-        async function getSettingsAlreadySetted() {
-            const settingDays = await getDaysToBeNextToExp();
-            setDaysToBeNext(settingDays);
+        async function getDatas() {
+            const result = await Premium.IsPlayStoreIsAvailable();
 
-            const pre = await Premium.GetPremium();
-            setUserIsPremium(pre);
-
-            const notificationEnabled = await getNotificationsEnabled();
-            setIsNotificationsEnabled(notificationEnabled);
-
-            const mulStores = await getMultipleStores();
-            setMultipleStoresState(mulStores);
+            setPlayAvailable(result);
         }
 
-        getSettingsAlreadySetted();
+        getDatas();
     }, []);
 
     useEffect(() => {
         async function SetNewDays() {
-            const previousDaysToBeNext = await getDaysToBeNextToExp();
+            const previousDaysToBeNext = String(
+                userPreferences.howManyDaysToBeNextToExpire
+            );
 
-            if (daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
-                await setSettingDaysToBeNext(daysToBeNext);
+            if (!daysToBeNext || daysToBeNext === '') {
+                return;
+            }
+
+            if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
+                await setSettingDaysToBeNext(Number(daysToBeNext));
             }
         }
 
         SetNewDays();
-    }, [daysToBeNext, setSettingDaysToBeNext]);
+    }, [
+        daysToBeNext,
+        setSettingDaysToBeNext,
+        userPreferences.howManyDaysToBeNextToExpire,
+    ]);
+
+    const navigateToPremiumView = useCallback(() => {
+        navigate('PremiumSubscription');
+    }, [navigate]);
 
     return (
         <Container>
             <ScrollView>
                 <PageHeader>
-                    <BackButton handleOnPress={handleBackButton} />
+                    <BackButton handleOnPress={goBack} />
 
                     <PageTitle>Configurações</PageTitle>
                 </PageHeader>
@@ -193,14 +174,12 @@ const Settings: React.FC = () => {
                             <InputSetting
                                 keyboardType="numeric"
                                 placeholder="Quantidade de dias"
-                                value={String(
-                                    userPreferences.howManyDaysToBeNextToExpire
-                                )}
+                                value={daysToBeNext}
                                 onChangeText={(v) => {
                                     const regex = /^[0-9\b]+$/;
 
                                     if (v === '' || regex.test(v)) {
-                                        setDaysToBeNext(Number(v));
+                                        setDaysToBeNext(v);
                                     }
                                 }}
                             />
@@ -239,9 +218,7 @@ const Settings: React.FC = () => {
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Text style={{ color: theme.colors.text }}>
-                                    Tema do aplicativo
-                                </Text>
+                                <Text>Tema do aplicativo</Text>
 
                                 <Picker
                                     style={{
@@ -300,61 +277,61 @@ const Settings: React.FC = () => {
                         </CategoryOptions>
                     </Category>
 
-                    <Category>
-                        <CategoryTitle>Premium</CategoryTitle>
+                    {playAvailable && (
+                        <Category>
+                            <CategoryTitle>Premium</CategoryTitle>
 
-                        {!userIsPremium && (
-                            <GenericButton
-                                text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
-                                onPress={() => {
-                                    navigation.push('PremiumSubscription');
-                                }}
-                            />
-                        )}
+                            {!userIsPremium && (
+                                <GenericButton
+                                    text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
+                                    onPress={navigateToPremiumView}
+                                />
+                            )}
 
-                        <CategoryOptions notPremium={!userIsPremium}>
-                            <View>
-                                <SettingDescription>
-                                    Com a função de importar e exportar você
-                                    consegue salvar todos os seus produtos
-                                    externamente em um cartão de memória por
-                                    exemplo e depois importar em outro telefone
-                                    ou depois de formatar este.
-                                </SettingDescription>
+                            <CategoryOptions notPremium={!userIsPremium}>
+                                <View>
+                                    <SettingDescription>
+                                        Com a função de importar e exportar você
+                                        consegue salvar todos os seus produtos
+                                        externamente em um cartão de memória por
+                                        exemplo e depois importar em outro
+                                        telefone ou depois de formatar este.
+                                    </SettingDescription>
 
-                                <PremiumButtonsContainer>
-                                    <ButtonPremium
-                                        disabled={!userIsPremium}
-                                        onPress={async () => {
-                                            await ImportBackupFile();
-                                        }}
-                                    >
-                                        <ButtonPremiumText>
-                                            Importar
-                                        </ButtonPremiumText>
-                                    </ButtonPremium>
-                                    <ButtonPremium
-                                        disabled={!userIsPremium}
-                                        onPress={async () => {
-                                            await ExportBackupFile();
-                                        }}
-                                    >
-                                        <ButtonPremiumText>
-                                            Exportar
-                                        </ButtonPremiumText>
-                                    </ButtonPremium>
-                                </PremiumButtonsContainer>
-                            </View>
-                        </CategoryOptions>
+                                    <PremiumButtonsContainer>
+                                        <ButtonPremium
+                                            disabled={!userIsPremium}
+                                            onPress={async () => {
+                                                await ImportBackupFile();
+                                            }}
+                                        >
+                                            <ButtonPremiumText>
+                                                Importar
+                                            </ButtonPremiumText>
+                                        </ButtonPremium>
+                                        <ButtonPremium
+                                            disabled={!userIsPremium}
+                                            onPress={async () => {
+                                                await ExportBackupFile();
+                                            }}
+                                        >
+                                            <ButtonPremiumText>
+                                                Exportar
+                                            </ButtonPremiumText>
+                                        </ButtonPremium>
+                                    </PremiumButtonsContainer>
+                                </View>
+                            </CategoryOptions>
 
-                        {userIsPremium && (
-                            <ButtonCancel onPress={handleCancel}>
-                                <ButtonCancelText>
-                                    Cancelar assinatura
-                                </ButtonCancelText>
-                            </ButtonCancel>
-                        )}
-                    </Category>
+                            {userIsPremium && (
+                                <ButtonCancel onPress={handleCancel}>
+                                    <ButtonCancelText>
+                                        Cancelar assinatura
+                                    </ButtonCancelText>
+                                </ButtonCancel>
+                            )}
+                        </Category>
+                    )}
                 </SettingsContent>
             </ScrollView>
         </Container>
