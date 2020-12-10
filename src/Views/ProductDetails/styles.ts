@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/native';
-import { Button, DataTable, Dialog, FAB } from 'react-native-paper';
+import { Button, Dialog, FAB } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface IProduct {
@@ -92,36 +92,6 @@ export const CategoryDetailsText = styled.Text`
 
 export const TableContainer = styled.View``;
 
-export const Table = styled(DataTable)`
-    background-color: ${(props) => props.theme.colors.productBackground};
-    border-radius: 12px;
-`;
-
-export const TableHeader = styled(DataTable.Header)``;
-
-export const TableTitle = styled(DataTable.Title)`
-    color: rgba(255, 255, 255, 1);
-`;
-
-export const TableRow = styled(DataTable.Row)<IProduct>`
-    background: ${({ theme }) => theme.colors.productBackground};
-
-    ${(props) =>
-        props.nextToExp &&
-        css`
-            background: ${({ theme }) =>
-                theme.colors.productNextToExpBackground};
-        `}
-
-    ${(props) =>
-        props.expired &&
-        css`
-            background: ${({ theme }) => theme.colors.productExpiredBackground};
-        `}
-`;
-
-export const TableCell = styled(DataTable.Cell)``;
-
 export const Text = styled.Text<IProduct>`
     color: ${(props) => props.theme.colors.text};
 
@@ -136,7 +106,7 @@ export const DialogPaper = styled(Dialog)`
     background: ${(props) => props.theme.colors.productBackground};
 `;
 
-export const FloatButton = styled(FAB).attrs((props) => ({
+export const FloatButton = styled(FAB).attrs(() => ({
     color: 'white',
 }))`
     background-color: ${({ theme }) => theme.colors.accent};
