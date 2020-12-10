@@ -15,7 +15,7 @@ import {
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
-import * as Premium from '../../Functions/Premium';
+import { isSubscriptionActive } from '../../Functions/ProMode';
 import { getActualAppTheme } from '../../Themes';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
@@ -46,8 +46,6 @@ const Settings: React.FC = () => {
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
-    const [playAvailable, setPlayAvailable] = useState(false);
-
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
     );
@@ -73,7 +71,7 @@ const Settings: React.FC = () => {
             'https://play.google.com/store/account/subscriptions?sku=controledevalidade_premium&package=com.controledevalidade'
         );
 
-        if (!(await Premium.CheckIfSubscriptionIsActive())) {
+        if (!(await isSubscriptionActive())) {
             reset({
                 routes: [{ name: 'Home' }],
             });
@@ -116,16 +114,6 @@ const Settings: React.FC = () => {
         setMultipleStoresState(userPreferences.multiplesStores);
         setIsNotificationsEnabled(userPreferences.enableNotifications);
     }, [userPreferences]);
-
-    useEffect(() => {
-        async function getDatas() {
-            const result = await Premium.IsPlayStoreIsAvailable();
-
-            setPlayAvailable(result);
-        }
-
-        getDatas();
-    }, []);
 
     useEffect(() => {
         async function SetNewDays() {
@@ -277,61 +265,59 @@ const Settings: React.FC = () => {
                         </CategoryOptions>
                     </Category>
 
-                    {playAvailable && (
-                        <Category>
-                            <CategoryTitle>Premium</CategoryTitle>
+                    <Category>
+                        <CategoryTitle>Premium</CategoryTitle>
 
-                            {!userIsPremium && (
-                                <GenericButton
-                                    text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
-                                    onPress={navigateToPremiumView}
-                                />
-                            )}
+                        {!userIsPremium && (
+                            <GenericButton
+                                text="SEJA PREMIUM E DESBLOQUEIE MAIS FUNÇÕES"
+                                onPress={navigateToPremiumView}
+                            />
+                        )}
 
-                            <CategoryOptions notPremium={!userIsPremium}>
-                                <View>
-                                    <SettingDescription>
-                                        Com a função de importar e exportar você
-                                        consegue salvar todos os seus produtos
-                                        externamente em um cartão de memória por
-                                        exemplo e depois importar em outro
-                                        telefone ou depois de formatar este.
-                                    </SettingDescription>
+                        <CategoryOptions notPremium={!userIsPremium}>
+                            <View>
+                                <SettingDescription>
+                                    Com a função de importar e exportar você
+                                    consegue salvar todos os seus produtos
+                                    externamente em um cartão de memória por
+                                    exemplo e depois importar em outro telefone
+                                    ou depois de formatar este.
+                                </SettingDescription>
 
-                                    <PremiumButtonsContainer>
-                                        <ButtonPremium
-                                            disabled={!userIsPremium}
-                                            onPress={async () => {
-                                                await ImportBackupFile();
-                                            }}
-                                        >
-                                            <ButtonPremiumText>
-                                                Importar
-                                            </ButtonPremiumText>
-                                        </ButtonPremium>
-                                        <ButtonPremium
-                                            disabled={!userIsPremium}
-                                            onPress={async () => {
-                                                await ExportBackupFile();
-                                            }}
-                                        >
-                                            <ButtonPremiumText>
-                                                Exportar
-                                            </ButtonPremiumText>
-                                        </ButtonPremium>
-                                    </PremiumButtonsContainer>
-                                </View>
-                            </CategoryOptions>
+                                <PremiumButtonsContainer>
+                                    <ButtonPremium
+                                        disabled={!userIsPremium}
+                                        onPress={async () => {
+                                            await ImportBackupFile();
+                                        }}
+                                    >
+                                        <ButtonPremiumText>
+                                            Importar
+                                        </ButtonPremiumText>
+                                    </ButtonPremium>
+                                    <ButtonPremium
+                                        disabled={!userIsPremium}
+                                        onPress={async () => {
+                                            await ExportBackupFile();
+                                        }}
+                                    >
+                                        <ButtonPremiumText>
+                                            Exportar
+                                        </ButtonPremiumText>
+                                    </ButtonPremium>
+                                </PremiumButtonsContainer>
+                            </View>
+                        </CategoryOptions>
 
-                            {userIsPremium && (
-                                <ButtonCancel onPress={handleCancel}>
-                                    <ButtonCancelText>
-                                        Cancelar assinatura
-                                    </ButtonCancelText>
-                                </ButtonCancel>
-                            )}
-                        </Category>
-                    )}
+                        {userIsPremium && (
+                            <ButtonCancel onPress={handleCancel}>
+                                <ButtonCancelText>
+                                    Cancelar assinatura
+                                </ButtonCancelText>
+                            </ButtonCancel>
+                        )}
+                    </Category>
                 </SettingsContent>
             </ScrollView>
         </Container>
