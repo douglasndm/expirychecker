@@ -21,6 +21,36 @@ export default {
     Relax,
 };
 
+export function getThemeByName(themeName: string): DefaultTheme {
+    if (themeName === 'system') {
+        const systemTheme = Appearance.getColorScheme();
+
+        if (systemTheme === 'dark') {
+            return Dark;
+        }
+        return Light;
+    }
+
+    switch (themeName) {
+        case 'light':
+            return Light;
+        case 'dark':
+            return Dark;
+        case 'ultraviolet':
+            return UltraViolet;
+        case 'darkgreen':
+            return DarkGreen;
+        case 'happypink':
+            return HappyPink;
+        case 'oceanblue':
+            return OceanBlue;
+        case 'relax':
+            return Relax;
+        default:
+            return Light;
+    }
+}
+
 export const getActualAppTheme = async (): Promise<DefaultTheme> => {
     const theme = await getAppTheme();
 
