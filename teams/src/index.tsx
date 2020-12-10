@@ -9,8 +9,8 @@ import EnvConfig from 'react-native-config';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
+import './Functions/ProMode';
 import { getAllUserPreferences } from './Functions/UserPreferences';
-import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
 import Themes from './Themes';
 
@@ -41,8 +41,6 @@ const App: React.FC = () => {
             const userPreferences = await getAllUserPreferences();
 
             setPreferences(userPreferences);
-
-            await CheckIfSubscriptionIsActive();
         }
 
         getData();

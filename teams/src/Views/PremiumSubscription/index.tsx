@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
+import { PurchasesPackage } from 'react-native-purchases';
 
 import {
-    CheckIfSubscriptionIsActive,
-    IsPlayStoreIsAvailable,
-    MakeASubscription,
-} from '../../Functions/Premium';
+    getSubscriptionDetails,
+    makeSubscription,
+    isSubscriptionActive,
+} from '../../Functions/ProMode';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
+
+import Loading from '../../Components/Loading';
 
 import {
     Container,
@@ -26,50 +29,66 @@ import {
 } from './styles';
 
 const PremiumSubscription: React.FC = () => {
-    const [isLoadingMakeSubscription, setIsLoadingMakeSubscription] = useState<
-        boolean
-    >(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
     );
+
+    const [isLoadingMakeSubscription, setIsLoadingMakeSubscription] = useState<
+        boolean
+    >(false);
+
+    const [
+        packageSubscription,
+        setPackageSubscription,
+    ] = useState<PurchasesPackage | null>(null);
+
     const [alreadyPremium, setAlreadyPremium] = useState(false);
     const [playAvailable, setPlayAvailable] = useState(false);
 
     const navigation = useNavigation();
 
-    useEffect(() => {
-        async function getData() {
-            const availability = await IsPlayStoreIsAvailable();
-            setPlayAvailable(availability);
-
-            const check = await CheckIfSubscriptionIsActive();
-
-            if (check) setAlreadyPremium(true);
-        }
-        getData();
-    }, []);
-
-    const makeSubscription = useCallback(async () => {
-        setIsLoadingMakeSubscription(true);
+    const loadData = useCallback(async () => {
         try {
-            const result = await MakeASubscription();
+            setIsLoading(true);
+            await isSubscriptionActive();
 
-            if (result !== false) {
-                navigation.dispatch(StackActions.popToTop());
+            const response = await getSubscriptionDetails();
 
-                setUserPreferences({
-                    ...userPreferences,
-                    isUserPremium: true,
-                });
+            if (!response.availablePackages[0]) {
+                setPackageSubscription(null);
+                return;
             }
+
+            setPackageSubscription(response.availablePackages[0]);
+            setPlayAvailable(true);
         } catch (err) {
             console.warn(err);
+            setPlayAvailable(false);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
+
+    const handleMakeSubscription = useCallback(async () => {
+        try {
+            setIsLoadingMakeSubscription(true);
+            await makeSubscription();
+        } catch (err) {
+            console.log(err);
         } finally {
             setIsLoadingMakeSubscription(false);
         }
-    }, [navigation, userPreferences, setUserPreferences]);
+    }, []);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <ScrollView>
                 <HeaderContainer>
@@ -108,7 +127,7 @@ const PremiumSubscription: React.FC = () => {
                     <>
                         {playAvailable ? (
                             <ButtonSubscription
-                                onPress={makeSubscription}
+                                onPress={handleMakeSubscription}
                                 disabled={isLoadingMakeSubscription}
                             >
                                 {isLoadingMakeSubscription && (
@@ -120,7 +139,7 @@ const PremiumSubscription: React.FC = () => {
                                             ASSINAR POR
                                         </TextSubscription>
                                         <TextSubscription>
-                                            R$4,99 TRIMESTRAIS
+                                            {`${packageSubscription?.product.price_string} TRIMESTRAIS`}
                                         </TextSubscription>
                                     </>
                                 )}
