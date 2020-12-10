@@ -59,7 +59,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
-    const [amount, setAmount] = useState<number>(0);
+    const [amount, setAmount] = useState<string>('');
     const [price, setPrice] = useState(0);
 
     const [expDate, setExpDate] = useState(new Date());
@@ -74,9 +74,10 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                 productId,
                 lote: {
                     lote,
-                    amount,
+                    amount: Number(amount),
                     exp_date: expDate,
                     price,
+                    status: 'Não tratado',
                 },
             });
 
@@ -85,7 +86,6 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
             }
 
             reset({
-                index: 1,
                 routes: [
                     { name: 'Home' },
                     { name: 'ProductDetails', params: { id: productId } },
@@ -142,6 +142,14 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
         getProduct();
     }, [productId]);
 
+    const handleAmountChange = useCallback((value) => {
+        const regex = /^[0-9\b]+$/;
+
+        if (value === '' || regex.test(value)) {
+            setAmount(value);
+        }
+    }, []);
+
     return (
         <Container>
             <ScrollView>
@@ -173,18 +181,8 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                                 }}
                                 placeholder="Quantidade"
                                 keyboardType="numeric"
-                                value={String(amount)}
-                                onChangeText={(value) => {
-                                    const regex = /^[0-9\b]+$/;
-
-                                    if (value === '' || regex.test(value)) {
-                                        if (value === '') {
-                                            setAmount(0);
-                                            return;
-                                        }
-                                        setAmount(Number(value));
-                                    }
-                                }}
+                                value={amount}
+                                onChangeText={handleAmountChange}
                             />
                         </InputGroup>
 
