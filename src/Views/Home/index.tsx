@@ -12,8 +12,15 @@ import Header from '../../Components/Header';
 import FABProducts from '../../Components/FABProducts';
 import Notification from '../../Components/Notification';
 import ListProducts from '../../Components/ListProducts';
+import BarCodeReader from '../../Components/BarCodeReader';
 
-import { Container, InputSearch } from './styles';
+import {
+    Container,
+    InputSearch,
+    InputTextContainer,
+    InputTextIcon,
+    InputTextIconContainer,
+} from './styles';
 
 const Home: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -23,6 +30,9 @@ const Home: React.FC = () => {
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+    const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
+        false
+    );
 
     async function getProduts() {
         try {
@@ -136,29 +146,62 @@ const Home: React.FC = () => {
         [products]
     );
 
+    const handleOnBarCodeReaderOpen = useCallback(() => {
+        setEnableBarCodeReader(true);
+    }, []);
+
+    const handleOnBarCodeReaderClose = useCallback(() => {
+        setEnableBarCodeReader(false);
+    }, []);
+
+    const handleOnCodeRead = useCallback(
+        (code) => {
+            setSearchString(code);
+            handleSearchChange(code);
+            setEnableBarCodeReader(false);
+        },
+        [handleSearchChange]
+    );
+
     return isLoading ? (
         <Loading />
     ) : (
-        <Container>
-            <Header />
-
-            {products.length > 0 && (
-                <InputSearch
-                    placeholder="Pesquisar por um produto"
-                    value={searchString}
-                    onChangeText={handleSearchChange}
+        <>
+            {enableBarCodeReader ? (
+                <BarCodeReader
+                    onCodeRead={handleOnCodeRead}
+                    onClose={handleOnBarCodeReaderClose}
                 />
-            )}
+            ) : (
+                <Container>
+                    <Header />
 
-            <ListProducts products={productsSearch} isHome />
-            {error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                />
+                    {products.length > 0 && (
+                        <InputTextContainer>
+                            <InputSearch
+                                placeholder="Pesquisar por um produto"
+                                value={searchString}
+                                onChangeText={handleSearchChange}
+                            />
+                            <InputTextIconContainer
+                                onPress={handleOnBarCodeReaderOpen}
+                            >
+                                <InputTextIcon name="barcode-outline" />
+                            </InputTextIconContainer>
+                        </InputTextContainer>
+                    )}
+
+                    <ListProducts products={productsSearch} isHome />
+                    {error && (
+                        <Notification
+                            NotificationMessage={error}
+                            NotificationType="error"
+                        />
+                    )}
+                    <FABProducts />
+                </Container>
             )}
-            <FABProducts />
-        </Container>
+        </>
     );
 };
 
