@@ -1,5 +1,8 @@
 import styled from 'styled-components/native';
-import { Button as ButtonPaper } from 'react-native-paper';
+import {
+    Button as ButtonPaper,
+    RadioButton as RadioPaper,
+} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const LoadingText = styled.Text``;
@@ -20,5 +23,14 @@ export const Button = styled(ButtonPaper).attrs((props) => ({
 }))``;
 
 export const Icons = styled(Ionicons)`
+    color: ${({ theme }) => theme.colors.text};
+`;
+
+export const RadioButton = styled(RadioPaper).attrs((props) => ({
+    color: props.theme.colors.accent,
+    uncheckedColor: props.theme.colors.subText,
+}))``;
+
+export const RadioButtonText = styled.Text`
     color: ${({ theme }) => theme.colors.text};
 `;
