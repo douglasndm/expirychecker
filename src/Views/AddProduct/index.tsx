@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, ScrollView, Text, Keyboard, Alert } from 'react-native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { ScrollView, Text, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { Button as ButtonPaper, Dialog } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import EnvConfig from 'react-native-config';
 import {
     InterstitialAd,
@@ -13,6 +12,7 @@ import {
 
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
+import BarCodeReader from '../../Components/BarCodeReader';
 
 import {
     checkIfProductAlreadyExistsByCode,
@@ -21,7 +21,6 @@ import {
 } from '../../Functions/Product';
 
 import { createLote } from '../../Functions/Lotes';
-
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
@@ -38,7 +37,10 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-    Camera,
+    InputCodeTextContainer,
+    InputCodeTextIcon,
+    InputCodeText,
+    InputTextIconContainer,
 } from './styles';
 
 const adUnitID = __DEV__
@@ -96,7 +98,6 @@ const AddProduct: React.FC = () => {
                 }
             }
         }
-
         try {
             const newProduct: Omit<IProduct, 'id'> = {
                 name,
@@ -160,47 +161,34 @@ const AddProduct: React.FC = () => {
         };
     }, []);
 
+    const handleAmountChange = useCallback((value) => {
+        const regex = /^[0-9\b]+$/;
+
+        if (value === '' || regex.test(value)) {
+            setAmount(value);
+        }
+    }, []);
+
+    const handleOnCodeRead = useCallback((codeRead: string) => {
+        setCode(codeRead);
+        setCameraEnebled(false);
+    }, []);
+
+    const handleNavigateToExistProduct = useCallback(async () => {
+        const prod = await getProductByCode(code);
+
+        if (prod) {
+            navigate('ProductDetails', { id: prod.id });
+        }
+    }, [code, navigate]);
+
     return (
         <>
             {cameraEnabled ? (
-                <View
-                    style={{
-                        backgroundColor: theme.colors.background,
-                        flex: 1,
-                    }}
-                >
-                    <View
-                        style={{
-                            justifyContent: 'center',
-                            flex: 1,
-                        }}
-                    >
-                        <Camera
-                            captureAudio={false}
-                            type="back"
-                            autoFocus="on"
-                            flashMode="auto"
-                            googleVisionBarcodeType={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeType.EAN_13
-                            }
-                            googleVisionBarcodeMode={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeMode.ALTERNATE
-                            }
-                            barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                            onBarCodeRead={({ data }) => {
-                                setCode(data);
-                                setCameraEnebled(false);
-                            }}
-                        />
-                    </View>
-
-                    <GenericButton
-                        text="Fechar"
-                        onPress={() => setCameraEnebled(false)}
-                    />
-                </View>
+                <BarCodeReader
+                    onCodeRead={handleOnCodeRead}
+                    onClose={() => setCameraEnebled(false)}
+                />
             ) : (
                 <Container>
                     <ScrollView>
@@ -222,41 +210,20 @@ const AddProduct: React.FC = () => {
                                         setCameraEnebled(false);
                                     }}
                                 />
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <InputText
-                                        style={{ flex: 1 }}
-                                        placeholder="Código"
+
+                                <InputCodeTextContainer>
+                                    <InputCodeText
+                                        placeholder="Código do produto"
                                         accessibilityLabel="Campo de texto para código de barras do produto"
                                         value={code}
                                         onChangeText={(value) => setCode(value)}
-                                        onFocus={() => {
-                                            setCameraEnebled(false);
-                                        }}
                                     />
-                                    <ButtonPaper
-                                        style={{
-                                            alignSelf: 'center',
-                                            marginBottom: 8,
-                                        }}
-                                        icon={() => (
-                                            <Ionicons
-                                                name="camera-outline"
-                                                size={42}
-                                                color={theme.colors.text}
-                                            />
-                                        )}
-                                        onPress={() => {
-                                            Keyboard.dismiss();
-                                            setCameraEnebled(!cameraEnabled);
-                                        }}
-                                    />
-                                </View>
+                                    <InputTextIconContainer
+                                        onPress={() => setCameraEnebled(true)}
+                                    >
+                                        <InputCodeTextIcon />
+                                    </InputTextIconContainer>
+                                </InputCodeTextContainer>
 
                                 <InputGroup>
                                     <InputText
@@ -280,13 +247,7 @@ const AddProduct: React.FC = () => {
                                         accessibilityLabel="Campo de texto para quantidade do produto"
                                         keyboardType="numeric"
                                         value={String(amount)}
-                                        onChangeText={(v) => {
-                                            const regex = /^[0-9\b]+$/;
-
-                                            if (v === '' || regex.test(v)) {
-                                                setAmount(v);
-                                            }
-                                        }}
+                                        onChangeText={handleAmountChange}
                                         onFocus={() => {
                                             setCameraEnebled(false);
                                         }}
@@ -376,14 +337,7 @@ const AddProduct: React.FC = () => {
                 <Dialog.Actions>
                     <ButtonPaper
                         color={theme.colors.accent}
-                        onPress={async () => {
-                            const existsProductCode = await getProductByCode(
-                                code
-                            );
-                            navigate('ProductDetails', {
-                                id: existsProductCode.id,
-                            });
-                        }}
+                        onPress={handleNavigateToExistProduct}
                     >
                         Editar produto existente
                     </ButtonPaper>
