@@ -4,6 +4,7 @@ import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
+import BarCodeReader from '../../Components/BarCodeReader';
 
 import RealmContext from '../../Contexts/RealmContext';
 
@@ -13,7 +14,12 @@ import {
     GetAllProducts,
 } from '../../Functions/Products';
 
-import { InputSearch } from '../Home/styles';
+import {
+    InputSearch,
+    InputTextContainer,
+    InputTextIconContainer,
+    InputTextIcon,
+} from '../Home/styles';
 
 import { Container } from './styles';
 
@@ -26,6 +32,9 @@ const AllProducts: React.FC = () => {
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+    const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
+        false
+    );
 
     const getProducts = useCallback(async () => {
         try {
@@ -71,6 +80,14 @@ const AllProducts: React.FC = () => {
     useEffect(() => {
         setProductsSearch(products);
     }, [products]);
+
+    const handleOnBarCodeReaderOpen = useCallback(() => {
+        setEnableBarCodeReader(true);
+    }, []);
+
+    const handleOnBarCodeReaderClose = useCallback(() => {
+        setEnableBarCodeReader(false);
+    }, []);
 
     const handleSearchChange = useCallback(
         (search: string) => {
@@ -137,25 +154,50 @@ const AllProducts: React.FC = () => {
         [products]
     );
 
+    const handleOnCodeRead = useCallback(
+        (code) => {
+            setSearchString(code);
+            handleSearchChange(code);
+            setEnableBarCodeReader(false);
+        },
+        [handleSearchChange]
+    );
+
     return isLoading ? (
         <Loading />
     ) : (
         <>
-            <Container>
-                <Header title="Todos os produtos" />
+            {enableBarCodeReader ? (
+                <BarCodeReader
+                    onCodeRead={handleOnCodeRead}
+                    onClose={handleOnBarCodeReaderClose}
+                />
+            ) : (
+                <>
+                    <Container>
+                        <Header title="Todos os produtos" />
 
-                {products.length > 0 && (
-                    <InputSearch
-                        placeholder="Pesquisar por um produto"
-                        value={searchString}
-                        onChangeText={handleSearchChange}
-                    />
-                )}
+                        {products.length > 0 && (
+                            <InputTextContainer>
+                                <InputSearch
+                                    placeholder="Pesquisar por um produto"
+                                    value={searchString}
+                                    onChangeText={handleSearchChange}
+                                />
+                                <InputTextIconContainer
+                                    onPress={handleOnBarCodeReaderOpen}
+                                >
+                                    <InputTextIcon name="barcode-outline" />
+                                </InputTextIconContainer>
+                            </InputTextContainer>
+                        )}
 
-                <ListProducts products={productsSearch} />
-            </Container>
+                        <ListProducts products={productsSearch} />
+                    </Container>
 
-            <FABProducts />
+                    <FABProducts />
+                </>
+            )}
         </>
     );
 };
