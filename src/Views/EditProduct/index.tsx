@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Keyboard, Alert } from 'react-native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { useTheme } from 'styled-components';
-
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-
 import Loading from '../../Components/Loading';
+import BackButton from '../../Components/BackButton';
+import BarCodeReader from '../../Components/BarCodeReader';
+
 import { getProductById } from '../../Functions/Product';
-import { getMultipleStores } from '../../Functions/Settings';
+
+import RealmContext from '../../Contexts/RealmContext';
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -18,10 +18,13 @@ import {
     PageContent,
     InputContainer,
     InputText,
+    InputCodeTextContainer,
+    InputCodeTextIcon,
+    InputCodeText,
+    InputTextIconContainer,
 } from '../AddProduct/styles';
 
-import { Camera, ButtonPaper, Icons } from './styles';
-import RealmContext from '../../Contexts/RealmContext';
+import { ButtonPaper, Icons, SaveCancelButtonsContainer } from './styles';
 
 interface RequestParams {
     route: {
@@ -32,27 +35,20 @@ interface RequestParams {
 }
 
 const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
+    const { userPreferences } = useContext(PreferencesContext);
+
     const { Realm } = useContext(RealmContext);
     const { productId } = route.params;
 
     const { reset, goBack } = useNavigation();
-
-    const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [store, setStore] = useState<string>('');
-    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
     const [cameraEnabled, setCameraEnebled] = useState(false);
-
-    useEffect(() => {
-        getMultipleStores().then((data) => {
-            setMultipleStoresState(data);
-        });
-    }, []);
 
     useEffect(() => {
         async function getProductData() {
@@ -100,49 +96,20 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
     }
 
+    const handleOnCodeRead = useCallback((codeRead: string) => {
+        setCode(codeRead);
+        setCameraEnebled(false);
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
         <>
             {cameraEnabled ? (
-                <View
-                    style={{
-                        backgroundColor: theme.colors.background,
-                        flex: 1,
-                    }}
-                >
-                    <View
-                        style={{
-                            justifyContent: 'center',
-                            flex: 1,
-                        }}
-                    >
-                        <Camera
-                            captureAudio={false}
-                            type="back"
-                            autoFocus="on"
-                            flashMode="auto"
-                            googleVisionBarcodeType={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeType.EAN_13
-                            }
-                            googleVisionBarcodeMode={
-                                Camera.Constants.GoogleVisionBarcodeDetection
-                                    .BarcodeMode.ALTERNATE
-                            }
-                            barCodeTypes={[Camera.Constants.BarCodeType.ean13]}
-                            onBarCodeRead={({ data }) => {
-                                setCode(data);
-                                setCameraEnebled(false);
-                            }}
-                        />
-                    </View>
-
-                    <GenericButton
-                        text="Fechar"
-                        onPress={() => setCameraEnebled(false)}
-                    />
-                </View>
+                <BarCodeReader
+                    onCodeRead={handleOnCodeRead}
+                    onClose={() => setCameraEnebled(false)}
+                />
             ) : (
                 <Container>
                     <PageHeader>
@@ -163,44 +130,22 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     setCameraEnebled(false);
                                 }}
                             />
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <InputText
-                                    style={{
-                                        flex: 1,
-                                    }}
+
+                            <InputCodeTextContainer>
+                                <InputCodeText
                                     placeholder="Código do produto"
                                     accessibilityLabel="Campo de texto para código de barras do produto"
                                     value={code}
                                     onChangeText={(value) => setCode(value)}
-                                    onFocus={() => {
-                                        setCameraEnebled(false);
-                                    }}
                                 />
-                                <ButtonPaper
-                                    style={{
-                                        alignSelf: 'center',
-                                        marginBottom: 8,
-                                    }}
-                                    icon={() => (
-                                        <Icons
-                                            name="camera-outline"
-                                            size={42}
-                                        />
-                                    )}
-                                    onPress={() => {
-                                        Keyboard.dismiss();
-                                        setCameraEnebled(!cameraEnabled);
-                                    }}
-                                />
-                            </View>
+                                <InputTextIconContainer
+                                    onPress={() => setCameraEnebled(true)}
+                                >
+                                    <InputCodeTextIcon />
+                                </InputTextIconContainer>
+                            </InputCodeTextContainer>
 
-                            {multipleStoresState && (
+                            {userPreferences.multiplesStores && (
                                 <InputText
                                     placeholder="Loja do produto"
                                     accessibilityLabel="Campo de texto para loja do produto"
@@ -214,19 +159,12 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 />
                             )}
 
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                }}
-                            >
+                            <SaveCancelButtonsContainer>
                                 <ButtonPaper
                                     icon={() => (
                                         <Icons name="save-outline" size={22} />
                                     )}
-                                    onPress={() => {
-                                        updateProduct();
-                                    }}
+                                    onPress={updateProduct}
                                 >
                                     Salvar
                                 </ButtonPaper>
@@ -238,7 +176,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 >
                                     Cancelar
                                 </ButtonPaper>
-                            </View>
+                            </SaveCancelButtonsContainer>
                         </InputContainer>
                     </PageContent>
                 </Container>
