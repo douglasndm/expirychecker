@@ -26,7 +26,6 @@ export const SettingsContent = styled.View`
 export const Category = styled.View`
     margin-top: 20px;
     padding: 15px;
-
     background-color: ${(props) => props.theme.colors.productBackground};
     border-radius: 12px;
 `;
@@ -38,7 +37,6 @@ export const CategoryTitle = styled.Text`
 
 export const CategoryOptions = styled.View<Request>`
     margin-top: 20px;
-
     opacity: ${(props) => (props.notPremium ? 0.2 : 1)};
 `;
 
@@ -61,7 +59,6 @@ export const InputSetting = styled.TextInput.attrs((props) => ({
     border-radius: 12px;
     margin-top: 8px;
     padding: 10px;
-
     color: ${(props) => props.theme.colors.text};
     border-color: ${(props) => props.theme.colors.text};
 `;
@@ -90,12 +87,14 @@ export const ButtonCancel = styled.TouchableOpacity`
     background-color: #999;
     padding: 13px;
     border-radius: 12px;
-
     align-self: center;
 `;
 
 export const ButtonCancelText = styled.Text`
     font-size: 13px;
-
     color: #fff;
+`;
+
+export const Text = styled.Text`
+    color: ${(props) => props.theme.colors.text};
 `;

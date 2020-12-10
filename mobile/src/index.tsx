@@ -12,10 +12,10 @@ import Realm from './Services/Realm';
 import './Services/Admob';
 import './Services/BackgroundJobs';
 
-import { getDaysToBeNextToExp, getMultipleStores } from './Functions/Settings';
-import { CheckIfSubscriptionIsActive, GetPremium } from './Functions/Premium';
+import { getAllUserPreferences } from './Functions/UserPreferences';
+import { CheckIfSubscriptionIsActive } from './Functions/Premium';
 
-import Themes, { getActualAppTheme } from './Themes';
+import Themes from './Themes';
 
 import Routes from './Routes/DrawerContainer';
 
@@ -36,21 +36,14 @@ const App: React.FC = () => {
         isUserPremium: false,
         appTheme: Themes.Light,
         multiplesStores: false,
+        enableNotifications: true,
     });
 
     useEffect(() => {
         async function getData() {
-            const daysToBeNext = await getDaysToBeNextToExp();
-            const isPremium = await GetPremium();
-            const appTheme = await getActualAppTheme();
-            const multiplesStores = await getMultipleStores();
+            const userPreferences = await getAllUserPreferences();
 
-            setPreferences({
-                howManyDaysToBeNextToExpire: daysToBeNext,
-                isUserPremium: isPremium,
-                appTheme,
-                multiplesStores,
-            });
+            setPreferences(userPreferences);
 
             await CheckIfSubscriptionIsActive();
         }
