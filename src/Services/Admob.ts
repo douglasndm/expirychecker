@@ -1,8 +1,8 @@
 import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
-import { GetPremium } from '../Functions/Premium';
+import { getEnableProVersion } from '../Functions/Settings';
 
 async function prepareAds() {
-    if (!(await GetPremium())) {
+    if (!(await getEnableProVersion())) {
         admob()
             .setRequestConfiguration({
                 // Update all future requests suitable for parental guidance
@@ -16,7 +16,7 @@ async function prepareAds() {
                 tagForUnderAgeOfConsent: true,
             })
             .catch((err) => {
-                console.warn(err);
+                throw new Error(err);
             });
     }
 }
