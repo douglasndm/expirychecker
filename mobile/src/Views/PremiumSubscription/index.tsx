@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
-import { useNavigation, StackActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { PurchasesPackage } from 'react-native-purchases';
 
 import {
@@ -10,6 +10,8 @@ import {
 } from '../../Functions/ProMode';
 
 import Loading from '../../Components/Loading';
+
+import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
     Container,
@@ -29,6 +31,10 @@ import {
 const PremiumSubscription: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
+    const { userPreferences, setUserPreferences } = useContext(
+        PreferencesContext
+    );
+
     const [isLoadingMakeSubscription, setIsLoadingMakeSubscription] = useState<
         boolean
     >(false);
@@ -40,7 +46,7 @@ const PremiumSubscription: React.FC = () => {
 
     const [alreadyPremium, setAlreadyPremium] = useState(false);
 
-    const navigation = useNavigation();
+    const { navigate } = useNavigation();
 
     const loadData = useCallback(async () => {
         try {
@@ -63,21 +69,31 @@ const PremiumSubscription: React.FC = () => {
         }
     }, []);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
-
     const handleMakeSubscription = useCallback(async () => {
         try {
             setIsLoadingMakeSubscription(true);
             await makeSubscription();
+
+            setUserPreferences({
+                ...userPreferences,
+                isUserPremium: true,
+            });
+
+            navigate('Home');
         } catch (err) {
             console.log(err);
         } finally {
             setIsLoadingMakeSubscription(false);
         }
-    }, []);
+    }, [setUserPreferences, userPreferences, navigate]);
 
+    const handleNavigateHome = useCallback(() => {
+        navigate('Home');
+    }, [navigate]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
     return isLoading ? (
         <Loading />
     ) : (
@@ -132,11 +148,7 @@ const PremiumSubscription: React.FC = () => {
                     </ButtonSubscription>
                 )}
 
-                <ButtonSubscription
-                    onPress={() => {
-                        navigation.dispatch(StackActions.popToTop());
-                    }}
-                >
+                <ButtonSubscription onPress={handleNavigateHome}>
                     <TextSubscription>Voltar ao início</TextSubscription>
                 </ButtonSubscription>
             </ScrollView>
