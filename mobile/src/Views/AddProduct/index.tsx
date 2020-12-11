@@ -114,7 +114,9 @@ const AddProduct: React.FC = () => {
                 status: 'Não tratado',
             };
 
-            const productCreatedId = await createProduct(newProduct);
+            const productCreatedId = await createProduct({
+                product: newProduct,
+            });
 
             if (productCreatedId) {
                 await createLote({
