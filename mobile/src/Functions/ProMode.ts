@@ -1,6 +1,7 @@
 import Purchases, { PurchasesOffering } from 'react-native-purchases';
 import EnvConfig from 'react-native-config';
 
+import { getUserId } from './User';
 import { setEnableProVersion } from './Settings';
 
 Purchases.setDebugLogsEnabled(true);
@@ -9,10 +10,10 @@ Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 export async function isSubscriptionActive(): Promise<boolean> {
     await Purchases.reset();
     try {
-        const purchaserInfo = await Purchases.getPurchaserInfo();
-        // access latest purchaserInfo
+        const userId = await getUserId();
 
-        console.log(purchaserInfo.activeSubscriptions);
+        const purchaserInfo = await Purchases.identify(userId);
+        // access latest purchaserInfo
 
         if (purchaserInfo.activeSubscriptions.length > 0) {
             await setEnableProVersion(true);
@@ -27,6 +28,9 @@ export async function isSubscriptionActive(): Promise<boolean> {
 
 export async function getSubscriptionDetails(): Promise<PurchasesOffering> {
     try {
+        const userId = await getUserId();
+        await Purchases.identify(userId);
+
         const offerings = await Purchases.getOfferings();
 
         if (
@@ -43,20 +47,20 @@ export async function getSubscriptionDetails(): Promise<PurchasesOffering> {
 
 export async function makeSubscription(): Promise<void> {
     try {
+        const userId = await getUserId();
+        await Purchases.identify(userId);
+
         const offerings = await getSubscriptionDetails();
         const packageSub = offerings.availablePackages[0];
 
         const {
             purchaserInfo,
-            productIdentifier,
+            // productIdentifier,
         } = await Purchases.purchasePackage(packageSub);
 
-        console.log(productIdentifier);
-        console.log(purchaserInfo);
-        if (
-            typeof purchaserInfo.entitlements.active
-                .my_entitlement_identifier !== 'undefined'
-        ) {
+        // console.log(productIdentifier);
+        // console.log(purchaserInfo);
+        if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
             await setEnableProVersion(true);
         }
     } catch (e) {
@@ -66,6 +70,6 @@ export async function makeSubscription(): Promise<void> {
     }
 }
 
-// Chama a função para veirificar se usuário tem inscrição ativa (como o arquivo é importado
+// Chama a função para verificar se usuário tem inscrição ativa (como o arquivo é importado
 // na home ele verifica e já marca nas configurações a resposta)
 isSubscriptionActive();
