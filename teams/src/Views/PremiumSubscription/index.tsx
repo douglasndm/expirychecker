@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/native';
 import { PurchasesPackage } from 'react-native-purchases';
@@ -8,8 +8,6 @@ import {
     makeSubscription,
     isSubscriptionActive,
 } from '../../Functions/ProMode';
-
-import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import Loading from '../../Components/Loading';
 
@@ -31,10 +29,6 @@ import {
 const PremiumSubscription: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
-
     const [isLoadingMakeSubscription, setIsLoadingMakeSubscription] = useState<
         boolean
     >(false);
@@ -45,14 +39,14 @@ const PremiumSubscription: React.FC = () => {
     ] = useState<PurchasesPackage | null>(null);
 
     const [alreadyPremium, setAlreadyPremium] = useState(false);
-    const [playAvailable, setPlayAvailable] = useState(false);
 
     const navigation = useNavigation();
 
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
-            await isSubscriptionActive();
+            const alreadyProUser = await isSubscriptionActive();
+            setAlreadyPremium(alreadyProUser);
 
             const response = await getSubscriptionDetails();
 
@@ -62,10 +56,8 @@ const PremiumSubscription: React.FC = () => {
             }
 
             setPackageSubscription(response.availablePackages[0]);
-            setPlayAvailable(true);
         } catch (err) {
             console.warn(err);
-            setPlayAvailable(false);
         } finally {
             setIsLoading(false);
         }
@@ -124,34 +116,20 @@ const PremiumSubscription: React.FC = () => {
                         <TextSubscription>VOCÊ JÁ É PREMIUM</TextSubscription>
                     </ButtonSubscription>
                 ) : (
-                    <>
-                        {playAvailable ? (
-                            <ButtonSubscription
-                                onPress={handleMakeSubscription}
-                                disabled={isLoadingMakeSubscription}
-                            >
-                                {isLoadingMakeSubscription && (
-                                    <LoadingIndicator />
-                                )}
-                                {!isLoadingMakeSubscription && (
-                                    <>
-                                        <TextSubscription>
-                                            ASSINAR POR
-                                        </TextSubscription>
-                                        <TextSubscription>
-                                            {`${packageSubscription?.product.price_string} TRIMESTRAIS`}
-                                        </TextSubscription>
-                                    </>
-                                )}
-                            </ButtonSubscription>
-                        ) : (
-                            <ButtonSubscription disabled>
+                    <ButtonSubscription
+                        onPress={handleMakeSubscription}
+                        disabled={isLoadingMakeSubscription}
+                    >
+                        {isLoadingMakeSubscription && <LoadingIndicator />}
+                        {!isLoadingMakeSubscription && (
+                            <>
+                                <TextSubscription>ASSINAR POR</TextSubscription>
                                 <TextSubscription>
-                                    A PLAY STORE NÃO ESTÁ DISPONÍVEL NO MOMENTO
+                                    {`${packageSubscription?.product.price_string} TRIMESTRAIS`}
                                 </TextSubscription>
-                            </ButtonSubscription>
+                            </>
                         )}
-                    </>
+                    </ButtonSubscription>
                 )}
 
                 <ButtonSubscription
