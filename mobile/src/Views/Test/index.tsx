@@ -12,7 +12,7 @@ import {
     setNotificationsEnabled,
 } from '../../Functions/Settings';
 import { GetAllProductsWithoutStore } from '../../Functions/Products';
-import * as Premium from '../../Functions/Premium';
+// import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
