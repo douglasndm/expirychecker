@@ -20,6 +20,8 @@ import { getActualAppTheme } from '../../Themes';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
+import { migrateAllDataFromSQLiteToRealm } from '../../typeorm/MigrateTypeormData';
+
 import {
     Container,
     PageHeader,
@@ -140,6 +142,10 @@ const Settings: React.FC = () => {
     const navigateToPremiumView = useCallback(() => {
         navigate('PremiumSubscription');
     }, [navigate]);
+
+    const migrateData = useCallback(async () => {
+        await migrateAllDataFromSQLiteToRealm();
+    }, []);
 
     return (
         <Container>
@@ -317,6 +323,22 @@ const Settings: React.FC = () => {
                                 </ButtonCancelText>
                             </ButtonCancel>
                         )}
+                    </Category>
+
+                    <Category>
+                        <CategoryTitle>Banco de dados de testes</CategoryTitle>
+
+                        <SettingDescription>
+                            Se você atualizou o aplicativo recentemente e não
+                            consegue ver seus dados utilize este botão para
+                            copiar todos os dados antigos para a nova
+                            atualização
+                        </SettingDescription>
+
+                        <GenericButton
+                            text="Migrar dados"
+                            onPress={migrateData}
+                        />
                     </Category>
                 </SettingsContent>
             </ScrollView>

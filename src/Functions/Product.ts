@@ -69,22 +69,27 @@ export async function getProductById(productId: number): Promise<IProduct> {
     }
 }
 
-export async function createProduct(
-    product: Omit<IProduct, 'id'>
-): Promise<void | number> {
+interface createProductProps {
+    product: Omit<IProduct, 'id'>;
+    ignoreDuplicate?: boolean;
+}
+
+export async function createProduct({
+    product,
+    ignoreDuplicate = false,
+}: createProductProps): Promise<void | number> {
     const realm = await Realm();
 
-    try {
-        if (
-            product.code &&
-            (await checkIfProductAlreadyExistsByCode({
-                productCode: product.code,
-                productStore: product?.store,
-            }))
-        ) {
+    if (product.code) {
+        const productExist = await checkIfProductAlreadyExistsByCode({
+            productCode: product.code,
+            productStore: product?.store,
+        });
+
+        if (productExist) {
             const productLotes = product.lotes.slice();
 
-            if (productLotes.length < 1) {
+            if (productLotes.length < 1 && ignoreDuplicate === false) {
                 throw new Error(
                     'Produto já existe. Não há lotes para adicionar'
                 );
@@ -94,35 +99,38 @@ export async function createProduct(
                 await createLote({
                     productCode: product.code,
                     lote: l,
+                    ignoreDuplicate,
                 });
             });
-        } else {
-            // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
-            // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
-            const lastProduct = realm
-                .objects<IProduct>('Product')
-                .sorted('id', true)[0];
-            const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
-
-            realm.write(async () => {
-                realm.create('Product', {
-                    id: nextProductId,
-                    name: product.name,
-                    code: product.code,
-                    store: product.store,
-                    lotes: [],
-                });
-            });
-
-            for (const l of product.lotes) {
-                await createLote({
-                    productId: nextProductId,
-                    lote: l,
-                });
-            }
-
-            return nextProductId;
         }
+    }
+
+    try {
+        // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
+        // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
+        const lastProduct = realm
+            .objects<IProduct>('Product')
+            .sorted('id', true)[0];
+        const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
+
+        realm.write(async () => {
+            realm.create('Product', {
+                id: nextProductId,
+                name: product.name,
+                code: product.code,
+                store: product.store,
+                lotes: [],
+            });
+        });
+
+        for (const l of product.lotes) {
+            await createLote({
+                productId: nextProductId,
+                lote: l,
+            });
+        }
+
+        return nextProductId;
     } catch (err) {
         throw new Error(err);
     }
