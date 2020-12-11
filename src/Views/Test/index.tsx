@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import { View, ScrollView, Text, Alert } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
 
 import { useTheme } from 'styled-components/native';
+
+import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
 
@@ -11,27 +13,12 @@ import {
     getNotificationsEnabled,
     setNotificationsEnabled,
 } from '../../Functions/Settings';
-import { GetAllProductsWithoutStore } from '../../Functions/Products';
 // import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
 import { getAllProductsNextToExp } from '../../Functions/ProductsNotifications';
 import { Category } from '../Settings/styles';
 
 const Test: React.FC = () => {
-    const [adsEnable, setAdsEnable] = useState(false);
-
-    useEffect(() => {
-        async function getAppData() {
-            if (!(await Premium.GetPremium())) {
-                setAdsEnable(true);
-            } else {
-                setAdsEnable(false);
-            }
-        }
-
-        getAppData();
-    }, []);
-
     function setBackgroundJob() {
         const backgroundSchedule = {
             jobKey: 'backgroundNotification',
@@ -89,11 +76,12 @@ const Test: React.FC = () => {
     }
 
     async function deleteProducts() {
+        const realm = await Realm();
         try {
-            Realm.write(() => {
-                const results = Realm.objects('Product');
+            realm.write(() => {
+                const results = realm.objects('Product');
 
-                Realm.delete(results);
+                realm.delete(results);
             });
         } catch (err) {
             console.warn(err);
@@ -128,58 +116,10 @@ const Test: React.FC = () => {
                 <Category
                     style={{ backgroundColor: theme.colors.productBackground }}
                 >
-                    <Text>Is ads enabled: {String(adsEnable)}</Text>
-
-                    <Button
-                        text="All products without stores"
-                        onPress={async () => {
-                            const result = await GetAllProductsWithoutStore();
-
-                            console.log(result);
-                        }}
-                    />
-
                     <Button text="Notification Status" onPress={getNot} />
                     <Button
                         text="Invert Notification Status"
                         onPress={setNot}
-                    />
-
-                    <Button
-                        text="Check play store"
-                        onPress={async () => {
-                            console.log(await Premium.IsPlayStoreIsAvailable());
-                        }}
-                    />
-
-                    <Button
-                        text="Logar detalhes da inscrição"
-                        onPress={async () => {
-                            console.log(await Premium.GetSubscriptionInfo());
-                        }}
-                    />
-
-                    <Button
-                        text="Logar se usuário tem inscrição ativa"
-                        onPress={async () => {
-                            console.log(
-                                await Premium.CheckIfSubscriptionIsActive()
-                            );
-                        }}
-                    />
-
-                    <Button
-                        text="Solicitar compra"
-                        onPress={async () => {
-                            console.log(await Premium.MakeASubscription());
-                        }}
-                    />
-
-                    <Button
-                        text="Clica"
-                        onPress={async () => {
-                            console.log(await Premium.GetPremium());
-                        }}
                     />
 
                     <Button
