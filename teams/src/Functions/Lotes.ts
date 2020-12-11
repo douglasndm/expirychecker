@@ -115,20 +115,24 @@ interface createLoteProps {
     lote: Omit<ILote, 'id'>;
     productCode?: string;
     productId?: number;
+    ignoreDuplicate?: boolean;
 }
 
 export async function createLote({
     lote,
     productCode,
     productId,
+    ignoreDuplicate = false,
 }: createLoteProps): Promise<void> {
     if (
         productCode &&
+        ignoreDuplicate === false &&
         (await checkIfLoteAlreadyExists({ productCode, loteName: lote.lote }))
     ) {
         throw new Error('Já existe o mesmo lote cadastro');
     } else if (
         productId &&
+        ignoreDuplicate === false &&
         (await checkIfLoteAlreadyExists({ productId, loteName: lote.lote }))
     ) {
         throw new Error('Já existe o mesmo lote cadastro');
