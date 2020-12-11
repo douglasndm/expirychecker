@@ -27,6 +27,11 @@ export const ApplicationName = styled.Text`
     color: ${(props) => props.theme.colors.text};
 `;
 
+export const UserId = styled.Text`
+    margin-top: 10px;
+    color: ${(props) => props.theme.colors.text};
+`;
+
 export const ApplicationVersion = styled.Text`
     font-size: 14px;
     color: ${(props) => props.theme.colors.subText};

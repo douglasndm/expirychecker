@@ -1,8 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import BackButton from '../../Components/BackButton';
+
+import { getUserId } from '../../Functions/User';
 
 import {
     Container,
@@ -10,12 +12,14 @@ import {
     PageTitle,
     AboutSection,
     ApplicationName,
+    UserId,
     Text,
     Link,
 } from './styles';
 
 const About: React.FC = () => {
     const { goBack } = useNavigation();
+    const [userId, setUserId] = useState<string>('');
 
     const handleLinkedinPress = useCallback(async () => {
         await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
@@ -24,6 +28,16 @@ const About: React.FC = () => {
     const handleFlatIconPress = useCallback(async () => {
         await Linking.openURL('https://www.flaticon.com/authors/srip');
     }, []);
+
+    const loaddata = useCallback(async () => {
+        const id = await getUserId();
+
+        setUserId(id);
+    }, []);
+
+    useEffect(() => {
+        loaddata();
+    }, [loaddata]);
 
     return (
         <Container>
@@ -34,6 +48,7 @@ const About: React.FC = () => {
 
             <AboutSection>
                 <ApplicationName>Controle de Validade</ApplicationName>
+                <UserId>Usuário: {userId}</UserId>
             </AboutSection>
 
             <AboutSection>
