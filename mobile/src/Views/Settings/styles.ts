@@ -64,16 +64,14 @@ export const InputSetting = styled.TextInput.attrs((props) => ({
 `;
 
 export const PremiumButtonsContainer = styled.View`
-    flex-direction: row;
     justify-content: center;
     margin-top: 10px;
 `;
 
 export const ButtonPremium = styled.TouchableOpacity`
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-bottom: 10px;
     background-color: ${(props) => props.theme.colors.accent};
-    padding: 20px;
+    padding: 25px 15px;
     border-radius: 12px;
 `;
 

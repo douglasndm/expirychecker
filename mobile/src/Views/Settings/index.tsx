@@ -15,6 +15,7 @@ import {
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
 import { ImportBackupFile, ExportBackupFile } from '../../Functions/Backup';
+import { exportToExcel } from '../../Functions/Excel';
 import { isSubscriptionActive } from '../../Functions/ProMode';
 import { getActualAppTheme } from '../../Themes';
 
@@ -142,6 +143,18 @@ const Settings: React.FC = () => {
     const navigateToPremiumView = useCallback(() => {
         navigate('PremiumSubscription');
     }, [navigate]);
+
+    const handleImportBackup = useCallback(async () => {
+        await ImportBackupFile();
+    }, []);
+
+    const handleExportBackup = useCallback(async () => {
+        await ExportBackupFile();
+    }, []);
+
+    const handleExportToExcel = useCallback(async () => {
+        await exportToExcel();
+    }, []);
 
     const migrateData = useCallback(async () => {
         await migrateAllDataFromSQLiteToRealm();
@@ -294,9 +307,7 @@ const Settings: React.FC = () => {
                                 <PremiumButtonsContainer>
                                     <ButtonPremium
                                         disabled={!userIsPremium}
-                                        onPress={async () => {
-                                            await ImportBackupFile();
-                                        }}
+                                        onPress={handleImportBackup}
                                     >
                                         <ButtonPremiumText>
                                             Importar
@@ -304,12 +315,19 @@ const Settings: React.FC = () => {
                                     </ButtonPremium>
                                     <ButtonPremium
                                         disabled={!userIsPremium}
-                                        onPress={async () => {
-                                            await ExportBackupFile();
-                                        }}
+                                        onPress={handleExportBackup}
                                     >
                                         <ButtonPremiumText>
                                             Exportar
+                                        </ButtonPremiumText>
+                                    </ButtonPremium>
+
+                                    <ButtonPremium
+                                        disabled={!userIsPremium}
+                                        onPress={handleExportToExcel}
+                                    >
+                                        <ButtonPremiumText>
+                                            Exportar para Excel (EM TESTES)
                                         </ButtonPremiumText>
                                     </ButtonPremium>
                                 </PremiumButtonsContainer>
