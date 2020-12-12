@@ -1,11 +1,11 @@
 import RNFS from 'react-native-fs';
-import Share from 'react-native-share';
 import DocumentPicker from 'react-native-document-picker';
 import CryptoJS from 'crypto-js';
 import EnvConfig from 'react-native-config';
 
 import { createProduct } from './Product';
 import { GetAllProducts } from './Products';
+import { shareFile } from './Share';
 
 export async function ExportBackupFile(): Promise<void> {
     try {
@@ -34,36 +34,18 @@ export async function ExportBackupFile(): Promise<void> {
             arrayProducts.push(newProduct);
         });
 
-        // Definindo caminho do arquivo "Controle de validade backup file"
-        // Muito legal o nome da extensão né?
-        const path = `${RNFS.DocumentDirectoryPath}/controledevalidade.cvbf`;
-
         const encryptedProducts = CryptoJS.AES.encrypt(
             JSON.stringify(arrayProducts),
             EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT
         ).toString();
 
-        // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
-        // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
-        if (await RNFS.exists(path)) {
-            RNFS.unlink(path);
-        }
-
-        // write the file
-        RNFS.writeFile(path, encryptedProducts, 'utf8')
-            .then(() => {
-                Share.open({
-                    title: 'Salvar arquivo de exportação',
-                    message:
-                        'Escolha um lugar para salvar o arquivo de exportação',
-                    url: `file://${path}`,
-                });
-            })
-            .catch((err) => {
-                throw new Error(err);
-            });
+        await shareFile({
+            fileAsString: encryptedProducts,
+            fileExtesion: 'cvbf',
+            fileName: 'controledevalidade',
+        });
     } catch (err) {
-        console.warn(err);
+        throw new Error(err);
     }
 }
 
