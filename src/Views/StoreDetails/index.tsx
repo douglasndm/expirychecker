@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
-    GetAllProductsByStore,
-    GetAllProductsWithoutStore,
-} from '../../Functions/Products';
+    getAllProductsByStore,
+    getAllProductsWithoutStore,
+} from '../../Functions/Store';
 
 import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
@@ -32,9 +32,9 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             let results: Array<IProduct> = [];
 
             if (storeName === 'Sem loja') {
-                results = await GetAllProductsWithoutStore();
+                results = await getAllProductsWithoutStore();
             } else {
-                results = await GetAllProductsByStore(storeName);
+                results = await getAllProductsByStore({ store: storeName });
             }
 
             setProducts(results);

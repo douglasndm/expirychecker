@@ -1,8 +1,8 @@
 import {
-    GetAllProductsByStore,
-    GetAllProductsWithoutStore,
+    getAllProductsByStore,
+    getAllProductsWithoutStore,
     getAllStores,
-} from './Products';
+} from './Store';
 
 interface RequestProps {
     limit?: number;
@@ -16,9 +16,7 @@ export async function GetAllProductsOrderedByStore({
     const stores = await getAllStores();
 
     stores.forEach(async (store) => {
-        const products = limit
-            ? await GetAllProductsByStore(store, limit)
-            : await GetAllProductsByStore(store);
+        const products = await getAllProductsByStore({ store, limit });
 
         storeGroup.push({
             name: store,
@@ -26,7 +24,7 @@ export async function GetAllProductsOrderedByStore({
         });
     });
 
-    const productsWithoutStore = await GetAllProductsWithoutStore();
+    const productsWithoutStore = await getAllProductsWithoutStore();
 
     storeGroup.push({
         name: 'Sem loja',
