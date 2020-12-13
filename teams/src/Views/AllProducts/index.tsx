@@ -7,9 +7,8 @@ import FABProducts from '../../Components/FABProducts';
 import BarCodeReader from '../../Components/BarCodeReader';
 
 import {
-    sortProductsLotesByLotesExpDate,
-    sortProductsByFisrtLoteExpDate,
-    GetAllProducts,
+    getAllProducts,
+    searchForAProductInAList,
 } from '../../Functions/Products';
 
 import {
@@ -35,23 +34,11 @@ const AllProducts: React.FC = () => {
     const getProducts = useCallback(async () => {
         try {
             setIsLoading(true);
-            const allProducts: Array<IProduct> = await GetAllProducts();
+            const allProducts = await getAllProducts({
+                sortProductsByExpDate: true,
+            });
 
-            // APARENTEMENTE O REALM SO CONSULTA O PRIMEIRO REGISTRO DE ARRAY PARA FAZER O 'WHERE'
-            // ESSA FUNÇÃO REMOVE QUALQUER VESTIGIO DE LOTES TRATADOS
-            // const semTratados = removeAllLotesTratadosFromAllProduts(allProducts);
-
-            // PRIMEIRO PRECISEI PERCORRER TODOS OS RESULTADOS E ORDERNAR CADA LOTE INDIVIDUALMENTE
-            // E COM ISSO RETORNA UM NOVO ARRAY DE OBJETO, PQ NAO ERA POSSIVEL RETORNA O
-            // ANTIGO MODIFICADO
-            const resultsTemp = sortProductsLotesByLotesExpDate(allProducts);
-            // classifica os produtos em geral pelo o mais proximo de vencer
-            // DEPOIS DE TER TODOS OS PRODUTOS COM OS SEUS LOTES ORDENADOS POR VENCIMENTO, SIMPLISMENTE PEGO O
-            // PRIMEIRO LOTE DE CADA PRODUTO(JÁ QUE SEMPRE SERÁ O MAIS PROXIMO A VENCER) E FAÇO A ORDENAÇÃO
-            // DE TODOS OS PRODUTOS BASEADO NESTE PRIMEIRO LOTE
-            const results = sortProductsByFisrtLoteExpDate(resultsTemp);
-
-            setProducts(results);
+            setProducts(allProducts);
         } catch (error) {
             throw new Error(error);
         } finally {
@@ -76,63 +63,17 @@ const AllProducts: React.FC = () => {
     }, []);
 
     const handleSearchChange = useCallback(
-        (search: string) => {
+        async (search: string) => {
             setSearchString(search);
 
             if (search && search !== '') {
-                const query = search.trim().toLowerCase();
-
-                const productsFind = products.filter((product) => {
-                    const searchByName = product.name
-                        .toLowerCase()
-                        .includes(query);
-
-                    if (searchByName) {
-                        return true;
-                    }
-
-                    if (product.code) {
-                        const searchBycode = product.code
-                            .toLowerCase()
-                            .includes(query);
-
-                        if (searchBycode) {
-                            return true;
-                        }
-                    }
-
-                    if (product.store) {
-                        const searchByStore = product.store
-                            .toLowerCase()
-                            .includes(query);
-
-                        if (searchByStore) {
-                            return true;
-                        }
-                    }
-
-                    if (product.lotes.length > 0) {
-                        const lotesFounded = product.lotes.filter((lote) => {
-                            const searchByLoteName = lote.lote
-                                .toLowerCase()
-                                .includes(query);
-
-                            if (searchByLoteName) {
-                                return true;
-                            }
-
-                            return false;
-                        });
-
-                        if (lotesFounded.length > 0) {
-                            return true;
-                        }
-                    }
-
-                    return false;
+                const findProducts = searchForAProductInAList({
+                    products,
+                    searchFor: search,
+                    sortByExpDate: true,
                 });
 
-                setProductsSearch(productsFind);
+                setProductsSearch(findProducts);
             } else {
                 setProductsSearch(products);
             }
