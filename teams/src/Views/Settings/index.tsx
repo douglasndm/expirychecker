@@ -233,7 +233,9 @@ const Settings: React.FC = () => {
                                     }}
                                     mode="dropdown"
                                     selectedValue={selectedTheme}
-                                    onValueChange={handleThemeChange}
+                                    onValueChange={(value) => {
+                                        handleThemeChange(String(value));
+                                    }}
                                 >
                                     <Picker.Item
                                         label="Baseado no sistema (Padrão)"
