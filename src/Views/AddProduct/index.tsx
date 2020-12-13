@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { ScrollView, Text, Alert } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 import { Button as ButtonPaper, Dialog } from 'react-native-paper';
@@ -10,17 +10,18 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
-import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
-import BarCodeReader from '../../Components/BarCodeReader';
-
 import {
     checkIfProductAlreadyExistsByCode,
     getProductByCode,
     createProduct,
 } from '../../Functions/Product';
-
 import { createLote } from '../../Functions/Lotes';
+
+import BackButton from '../../Components/BackButton';
+import GenericButton from '../../Components/Button';
+import BarCodeReader from '../../Components/BarCodeReader';
+import Notification from '../../Components/Notification';
+
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import {
@@ -69,10 +70,11 @@ const AddProduct: React.FC = () => {
 
     const [cameraEnabled, setCameraEnebled] = useState(false);
     const [productAlreadyExists, setProductAlreadyExists] = useState(false);
+    const [erro, setError] = useState<string>('');
 
     async function handleSave() {
         if (!name || name.trim() === '') {
-            Alert.alert('Digite o nome do produto');
+            setError('Digite o nome do produto');
             return;
         }
 
@@ -137,7 +139,7 @@ const AddProduct: React.FC = () => {
                 });
             }
         } catch (error) {
-            console.warn(error);
+            setError(error.message);
         }
     }
 
@@ -183,6 +185,10 @@ const AddProduct: React.FC = () => {
             navigate('ProductDetails', { id: prod.id });
         }
     }, [code, navigate]);
+
+    const handleDimissNotification = useCallback(() => {
+        setError('');
+    }, []);
 
     return (
         <>
@@ -317,6 +323,13 @@ const AddProduct: React.FC = () => {
                             />
                         </PageContent>
                     </ScrollView>
+                    {!!erro && (
+                        <Notification
+                            NotificationType="error"
+                            NotificationMessage={erro}
+                            onPress={handleDimissNotification}
+                        />
+                    )}
                 </Container>
             )}
 
