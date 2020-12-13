@@ -61,43 +61,91 @@ export function removeAllLotesTratadosFromAllProduts(
     return results;
 }
 
+interface getAllProductsProps {
+    removeProductsWithoutBatches?: boolean;
+    sortProductsByExpDate?: boolean;
+    limit?: number;
+}
+
+export async function getAllProducts({
+    removeProductsWithoutBatches,
+    sortProductsByExpDate,
+    limit,
+}: getAllProductsProps): Promise<Array<IProduct>> {
+    const realm = await Realm();
+
+    try {
+        const allProducts = realm.objects<IProduct>('Product').slice();
+
+        if (removeProductsWithoutBatches && sortProductsByExpDate) {
+            const productsWithBatches = allProducts.filter(
+                (p) => p.lotes.length > 0
+            );
+
+            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+            const resultsTemp = sortProductsLotesByLotesExpDate(
+                productsWithBatches
+            );
+
+            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+            // DE QUAL ESTÁ MAIS PRÓXIMO
+            const results = sortProductsByFisrtLoteExpDate(resultsTemp);
+
+            if (limit) {
+                const productsLimited = results.slice(0, limit);
+                return productsLimited;
+            }
+
+            return results;
+        }
+
+        if (removeProductsWithoutBatches) {
+            const prodWithBachesOnly = allProducts.filter(
+                (p) => p.lotes.length > 0
+            );
+
+            if (limit) {
+                const productsLimited = prodWithBachesOnly.slice(0, limit);
+                return productsLimited;
+            }
+
+            return prodWithBachesOnly;
+        }
+
+        if (sortProductsByExpDate) {
+            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+            const resultsTemp = sortProductsLotesByLotesExpDate(allProducts);
+
+            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+            // DE QUAL ESTÁ MAIS PRÓXIMO
+            const sortedProducts = sortProductsByFisrtLoteExpDate(resultsTemp);
+
+            if (limit) {
+                const productsLimited = sortedProducts.slice(0, limit);
+                return productsLimited;
+            }
+
+            return sortedProducts;
+        }
+
+        if (limit) {
+            const productsLimited = allProducts.slice(0, limit);
+            return productsLimited;
+        }
+
+        return allProducts;
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 export async function GetAllProducts(): Promise<Array<IProduct>> {
     const realm = await Realm();
 
     try {
         const results = realm.objects<IProduct>('Product').slice();
-
-        return results;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function GetAllProductsWithLotes(): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
-    try {
-        const results = realm
-            .objects<IProduct>('Product')
-            .filtered('lotes.@count > 0')
-            .slice();
-
-        return results;
-    } catch (err) {
-        throw new Error(err);
-    }
-}
-
-export async function GetAllProductsWithLotesAndNotTratado(): Promise<
-    Array<IProduct>
-> {
-    const realm = await Realm();
-
-    try {
-        const results = realm
-            .objects<IProduct>('Product')
-            .filtered('lotes.@count > 0 AND lotes.status != "Tratado"')
-            .slice();
 
         return results;
     } catch (err) {
