@@ -1,11 +1,12 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import UUIDGenerator from 'react-native-uuid-generator';
 
-export async function generateUserId(): Promise<string> {
+export async function getUserId(): Promise<string> {
     try {
-        const id = await UUIDGenerator.getRandomUUID();
+        const id = await AsyncStorage.getItem('UserId');
 
-        await AsyncStorage.setItem('UserId', id);
+        if (!id) {
+            throw new Error('User ID was not found. Are you signed in?');
+        }
 
         return id;
     } catch (err) {
@@ -13,17 +14,9 @@ export async function generateUserId(): Promise<string> {
     }
 }
 
-export async function getUserId(): Promise<string> {
+export async function setUserId(id: string): Promise<void> {
     try {
-        const id = await AsyncStorage.getItem('UserId');
-
-        if (!id) {
-            const generatedId = await generateUserId();
-
-            return generatedId;
-        }
-
-        return id;
+        await AsyncStorage.setItem('UserId', id);
     } catch (err) {
         throw new Error(err);
     }
