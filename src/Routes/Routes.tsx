@@ -12,8 +12,10 @@ import AllProductsByStore from '../Views/AllProductsByStore';
 import StoreDetails from '../Views/StoreDetails';
 import Settings from '../Views/Settings';
 import About from '../Views/About';
-import PremiumSubscription from '../Views/PremiumSubscription';
+import ProSubscription from '../Views/ProSubscription';
 import Success from '../Views/Success';
+
+import SignIn from '../Views/Auth/SignIn';
 
 import Test from '../Views/Test';
 
@@ -39,9 +41,11 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Test" component={Test} />
             <Stack.Screen
                 name="PremiumSubscription"
-                component={PremiumSubscription}
+                component={ProSubscription}
             />
             <Stack.Screen name="Success" component={Success} />
+
+            <Stack.Screen name="SignIn" component={SignIn} />
         </Stack.Navigator>
     );
 };
