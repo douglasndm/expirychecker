@@ -101,6 +101,10 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
+    const handleDimissNotification = useCallback(() => {
+        setError('');
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -130,10 +134,12 @@ const Home: React.FC = () => {
                     )}
 
                     <ListProducts products={productsSearch} isHome />
-                    {error && (
+
+                    {!!error && (
                         <Notification
                             NotificationMessage={error}
                             NotificationType="error"
+                            onPress={handleDimissNotification}
                         />
                     )}
                     <FABProducts />

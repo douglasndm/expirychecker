@@ -150,6 +150,10 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
         }
     }, []);
 
+    const handleDimissNotification = useCallback(() => {
+        setNotification('');
+    }, []);
+
     return (
         <Container>
             <ScrollView>
@@ -217,6 +221,7 @@ const AddLote: React.FC<AddLoteParams> = ({ route }: AddLoteParams) => {
                 <Notification
                     NotificationMessage={notification}
                     NotificationType="error"
+                    onPress={handleDimissNotification}
                 />
             )}
         </Container>
