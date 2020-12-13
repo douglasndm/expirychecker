@@ -8,6 +8,7 @@ import {
 import Loading from '../../Components/Loading';
 import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
+import Notification from '../../Components/Notification';
 
 import { Container, StoreTitle } from './styles';
 
@@ -21,6 +22,7 @@ interface RequestProps {
 
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
 
     const [products, setProducts] = useState<IProduct[]>([]);
 
@@ -39,7 +41,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 
             setProducts(results);
         } catch (err) {
-            console.log(err);
+            setError(err.message);
         } finally {
             setIsLoading(false);
         }
@@ -48,6 +50,10 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
     useEffect(() => {
         loadData();
     }, [loadData]);
+
+    const handleDimissNotification = useCallback(() => {
+        setError('');
+    }, []);
 
     return isLoading ? (
         <Loading />
@@ -58,6 +64,14 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             <StoreTitle>Todos os produtos da loja {storeName}</StoreTitle>
 
             <ListProducts products={products} />
+
+            {!!error && (
+                <Notification
+                    NotificationMessage={error}
+                    NotificationType="error"
+                    onPress={handleDimissNotification}
+                />
+            )}
         </Container>
     );
 };

@@ -5,6 +5,7 @@ import Header from '../../Components/Header';
 import ListProducts from '../../Components/ListProducts';
 import FABProducts from '../../Components/FABProducts';
 import BarCodeReader from '../../Components/BarCodeReader';
+import Notification from '../../Components/Notification';
 
 import {
     getAllProducts,
@@ -30,6 +31,7 @@ const AllProducts: React.FC = () => {
     const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
         false
     );
+    const [error, setError] = useState<string>('');
 
     const getProducts = useCallback(async () => {
         try {
@@ -39,8 +41,8 @@ const AllProducts: React.FC = () => {
             });
 
             setProducts(allProducts);
-        } catch (error) {
-            throw new Error(error);
+        } catch (err) {
+            setError(err.message);
         } finally {
             setIsLoading(false);
         }
@@ -90,6 +92,10 @@ const AllProducts: React.FC = () => {
         [handleSearchChange]
     );
 
+    const handleDimissNotification = useCallback(() => {
+        setError('');
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -120,6 +126,14 @@ const AllProducts: React.FC = () => {
                         )}
 
                         <ListProducts products={productsSearch} />
+
+                        {!!error && (
+                            <Notification
+                                NotificationMessage={error}
+                                NotificationType="error"
+                                onPress={handleDimissNotification}
+                            />
+                        )}
                     </Container>
 
                     <FABProducts />

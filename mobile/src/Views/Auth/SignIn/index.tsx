@@ -6,6 +6,7 @@ import { signInWithGoogle } from '../../../Functions/Auth/Google';
 
 import Header from '../../../Components/Header';
 import GenericButton from '../../../Components/Button';
+import Notification from '../../../Components/Notification';
 
 import {
     Container,
@@ -19,6 +20,7 @@ import {
 
 const SignIn: React.FC = () => {
     const [completed, setCompleted] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     const { navigate } = useNavigation();
 
@@ -32,13 +34,18 @@ const SignIn: React.FC = () => {
 
             setCompleted(true);
         } catch (err) {
-            console.warn(err);
+            setError(err.message);
         }
     }, []);
 
     const handleToGoProPage = useCallback(() => {
         navigate('PremiumSubscription');
     }, [navigate]);
+
+    const handleDimissNotification = useCallback(() => {
+        setError('');
+    }, []);
+
     return (
         <Container>
             <Header title="Identifique-se" />
@@ -67,6 +74,14 @@ const SignIn: React.FC = () => {
                 <GenericButton
                     text="Continuar para a assinatura"
                     onPress={handleToGoProPage}
+                />
+            )}
+
+            {!!error && (
+                <Notification
+                    NotificationMessage={error}
+                    NotificationType="error"
+                    onPress={handleDimissNotification}
                 />
             )}
         </Container>
