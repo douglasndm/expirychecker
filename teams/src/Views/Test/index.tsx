@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, Text, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { addDays } from 'date-fns';
 import BackgroundJob from 'react-native-background-job';
 
@@ -10,8 +10,8 @@ import Realm from '../../Services/Realm';
 import Button from '../../Components/Button';
 
 import {
-    getNotificationsEnabled,
-    setNotificationsEnabled,
+    getEnableNotifications,
+    setEnableNotifications,
 } from '../../Functions/Settings';
 // import * as Premium from '../../Functions/Premium';
 import { ExportBackupFile, ImportBackupFile } from '../../Functions/Backup';
@@ -38,23 +38,23 @@ const Test: React.FC = () => {
     }
 
     async function sampleData() {
+        const realm = await Realm();
+
         try {
-            Realm.write(() => {
+            realm.write(() => {
                 for (let i = 0; i < 50; i++) {
-                    const lastProduct = Realm.objects('Product').sorted(
-                        'id',
-                        true
-                    )[0];
+                    const lastProduct = realm
+                        .objects<IProduct>('Product')
+                        .sorted('id', true)[0];
                     const nextProductId =
                         lastProduct == null ? 1 : lastProduct.id + 1;
 
-                    const lastLote = Realm.objects('Lote').sorted(
-                        'id',
-                        true
-                    )[0];
+                    const lastLote = realm
+                        .objects<ILote>('Lote')
+                        .sorted('id', true)[0];
                     const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
-                    Realm.create('Product', {
+                    realm.create('Product', {
                         id: nextProductId,
                         name: `Product ${i}`,
                         code: `${i}7841686${i}`,
@@ -93,7 +93,7 @@ const Test: React.FC = () => {
     }
 
     async function getNot() {
-        const noti = await getNotificationsEnabled();
+        const noti = await getEnableNotifications();
 
         if (noti) {
             Alert.alert('Habilitado');
@@ -103,9 +103,9 @@ const Test: React.FC = () => {
     }
 
     async function setNot() {
-        const noti = await getNotificationsEnabled();
+        const noti = await getEnableNotifications();
 
-        await setNotificationsEnabled(!noti);
+        await setEnableNotifications(!noti);
     }
 
     const theme = useTheme();
