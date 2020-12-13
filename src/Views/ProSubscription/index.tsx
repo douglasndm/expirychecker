@@ -8,6 +8,7 @@ import {
     makeSubscription,
     isSubscriptionActive,
 } from '../../Functions/ProMode';
+import { isUserSignedIn } from '../../Functions/Auth/Google';
 
 import Loading from '../../Components/Loading';
 
@@ -30,6 +31,9 @@ import {
 
 const PremiumSubscription: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isUserAlreadySignedIn, setIsUserAlreadySignedIn] = useState<boolean>(
+        false
+    );
 
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
@@ -51,6 +55,10 @@ const PremiumSubscription: React.FC = () => {
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
+            const alreaderSignedIn = await isUserSignedIn();
+
+            setIsUserAlreadySignedIn(alreaderSignedIn);
+
             const alreadyProUser = await isSubscriptionActive();
             setAlreadyPremium(alreadyProUser);
 
@@ -91,6 +99,10 @@ const PremiumSubscription: React.FC = () => {
         navigate('Home');
     }, [navigate]);
 
+    const handleNavigateToSignIn = useCallback(() => {
+        navigate('SignIn');
+    }, [navigate]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -127,25 +139,46 @@ const PremiumSubscription: React.FC = () => {
                     </AdvantageContainer>
                 </AdvantagesGroup>
 
-                {alreadyPremium ? (
-                    <ButtonSubscription>
-                        <TextSubscription>VOCÊ JÁ É PREMIUM</TextSubscription>
-                    </ButtonSubscription>
-                ) : (
-                    <ButtonSubscription
-                        onPress={handleMakeSubscription}
-                        disabled={isLoadingMakeSubscription}
-                    >
-                        {isLoadingMakeSubscription && <LoadingIndicator />}
-                        {!isLoadingMakeSubscription && (
-                            <>
-                                <TextSubscription>ASSINAR POR</TextSubscription>
+                {isUserAlreadySignedIn ? (
+                    <>
+                        {alreadyPremium ? (
+                            <ButtonSubscription>
                                 <TextSubscription>
-                                    {`${packageSubscription?.product.price_string} TRIMESTRAIS`}
+                                    VOCÊ JÁ É PREMIUM
                                 </TextSubscription>
-                            </>
+                            </ButtonSubscription>
+                        ) : (
+                            <ButtonSubscription
+                                onPress={handleMakeSubscription}
+                                disabled={isLoadingMakeSubscription}
+                            >
+                                {isLoadingMakeSubscription && (
+                                    <LoadingIndicator />
+                                )}
+                                {!isLoadingMakeSubscription && (
+                                    <>
+                                        <TextSubscription>
+                                            ASSINAR POR
+                                        </TextSubscription>
+                                        <TextSubscription>
+                                            {`${packageSubscription?.product.price_string} TRIMESTRAIS`}
+                                        </TextSubscription>
+                                    </>
+                                )}
+                            </ButtonSubscription>
                         )}
-                    </ButtonSubscription>
+                    </>
+                ) : (
+                    <>
+                        <ButtonSubscription onPress={handleNavigateToSignIn}>
+                            <TextSubscription>
+                                Você precisar entrar com sua conta primeiro.
+                            </TextSubscription>
+                            <TextSubscription>
+                                Clique aqui para entrar.
+                            </TextSubscription>
+                        </ButtonSubscription>
+                    </>
                 )}
 
                 <ButtonSubscription onPress={handleNavigateHome}>

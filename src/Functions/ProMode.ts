@@ -72,4 +72,4 @@ export async function makeSubscription(): Promise<void> {
 
 // Chama a função para verificar se usuário tem inscrição ativa (como o arquivo é importado
 // na home ele verifica e já marca nas configurações a resposta)
-isSubscriptionActive();
+isSubscriptionActive().then(() => console.log('Subscription checked'));
