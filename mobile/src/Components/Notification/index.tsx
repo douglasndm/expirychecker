@@ -1,34 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { SnackBar } from './styles';
+import { Container, Title, Description } from './styles';
 
 interface NotificationProps {
     NotificationMessage: string;
     NotificationType?: 'normal' | 'error';
+    onPress: () => void;
 }
 
 const Notification: React.FC<NotificationProps> = ({
     NotificationMessage,
     NotificationType = 'normal',
+    onPress,
 }: NotificationProps) => {
-    const [snackBarVisible, setSnackBarVisible] = useState(true);
-
     return (
-        <SnackBar
-            visible={snackBarVisible}
-            duration={7000}
-            onDismiss={() => setSnackBarVisible(false)}
-            NotificationType={NotificationType}
-            // action={{
-            //     label: 'fechar',
-            //     accessibilityLabel: 'Fechar notificação',
-            //     onPress: () => {
-            //         setSnackBarVisible(false);
-            //     },
-            // }}
-        >
-            {NotificationMessage}
-        </SnackBar>
+        <Container NotificationType={NotificationType} onPress={onPress}>
+            <Title>
+                {NotificationType === 'error' ? 'Erro' : 'Notificação'} | Toque
+                para fechar
+            </Title>
+            <Description>{NotificationMessage}</Description>
+        </Container>
     );
 };
 
