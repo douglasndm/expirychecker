@@ -5,6 +5,8 @@ import {
     removeAllLotesTratadosFromAllProduts,
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
+    searchForAProductInAList,
+    GetAllProducts,
 } from '../../Functions/Products';
 
 import Loading from '../../Components/Loading';
@@ -82,63 +84,19 @@ const Home: React.FC = () => {
     }, [products]);
 
     const handleSearchChange = useCallback(
-        (search: string) => {
+        async (search: string) => {
             setSearchString(search);
 
             if (search && search !== '') {
-                const query = search.trim().toLowerCase();
+                const allProducts = await GetAllProducts();
 
-                const productsFind = products.filter((product) => {
-                    const searchByName = product.name
-                        .toLowerCase()
-                        .includes(query);
-
-                    if (searchByName) {
-                        return true;
-                    }
-
-                    if (product.code) {
-                        const searchBycode = product.code
-                            .toLowerCase()
-                            .includes(query);
-
-                        if (searchBycode) {
-                            return true;
-                        }
-                    }
-
-                    if (product.store) {
-                        const searchByStore = product.store
-                            .toLowerCase()
-                            .includes(query);
-
-                        if (searchByStore) {
-                            return true;
-                        }
-                    }
-
-                    if (product.lotes.length > 0) {
-                        const lotesFounded = product.lotes.filter((lote) => {
-                            const searchByLoteName = lote.lote
-                                .toLowerCase()
-                                .includes(query);
-
-                            if (searchByLoteName) {
-                                return true;
-                            }
-
-                            return false;
-                        });
-
-                        if (lotesFounded.length > 0) {
-                            return true;
-                        }
-                    }
-
-                    return false;
+                const findProducts = searchForAProductInAList({
+                    products: allProducts,
+                    searchFor: search,
+                    sortByExpDate: true,
                 });
 
-                setProductsSearch(productsFind);
+                setProductsSearch(findProducts);
             } else {
                 setProductsSearch(products);
             }
