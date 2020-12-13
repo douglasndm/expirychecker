@@ -1,21 +1,39 @@
 import styled, { css } from 'styled-components/native';
-import { Snackbar } from 'react-native-paper';
+import { RectButton } from 'react-native-gesture-handler';
 
-interface SnackBarProps {
+interface NotificationProps {
     NotificationType?: 'normal' | 'error';
 }
 
-export const SnackBar = styled(Snackbar)<SnackBarProps>`
-    background: ${({ theme }) => theme.colors.accent};
+export const Container = styled(RectButton)<NotificationProps>`
+    position: absolute;
+    bottom: 75px;
 
-    border-radius: 12px;
-    margin-bottom: 90px;
-    padding: 5px;
-    opacity: 0.9;
+    width: 350px;
+    height: 75px;
+
+    align-self: center;
+    border-radius: 10px;
+
+    background: ${({ theme }) => theme.colors.accent};
 
     ${(props) =>
         props.NotificationType === 'error' &&
         css`
             background: #c41826;
         `}
+`;
+
+export const Title = styled.Text`
+    font-size: 19px;
+    font-weight: bold;
+    margin: 5px 10px 0;
+
+    color: #fff;
+`;
+
+export const Description = styled.Text`
+    margin: 0 10px;
+
+    color: #fff;
 `;
