@@ -3,7 +3,10 @@ import { addDays, isPast } from 'date-fns';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import { getHowManyDaysToBeNextExp, getEnableNotifications } from './Settings';
-import { GetAllProductsWithLotesAndNotTratado } from './Products';
+import {
+    getAllProducts,
+    removeAllLotesTratadosFromAllProduts,
+} from './Products';
 
 export async function getAllProductsNextToExp(): Promise<void> {
     const isNotifcationEnabled = await getEnableNotifications();
@@ -13,7 +16,10 @@ export async function getAllProductsNextToExp(): Promise<void> {
     const daysToBeNext = await getHowManyDaysToBeNextExp();
 
     try {
-        const products = await GetAllProductsWithLotesAndNotTratado();
+        const prods = await getAllProducts({
+            removeProductsWithoutBatches: true,
+        });
+        const products = removeAllLotesTratadosFromAllProduts(prods);
 
         const productsNextFiltered = products.map((p) => {
             const lotes = p.lotes.slice();
