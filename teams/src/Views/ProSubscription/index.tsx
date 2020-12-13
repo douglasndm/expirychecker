@@ -11,6 +11,7 @@ import {
 import { isUserSignedIn } from '../../Functions/Auth/Google';
 
 import Loading from '../../Components/Loading';
+import Notification from '../../Components/Notification';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -31,6 +32,8 @@ import {
 
 const PremiumSubscription: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
+
     const [isUserAlreadySignedIn, setIsUserAlreadySignedIn] = useState<boolean>(
         false
     );
@@ -71,7 +74,7 @@ const PremiumSubscription: React.FC = () => {
 
             setPackageSubscription(response.availablePackages[0]);
         } catch (err) {
-            console.warn(err);
+            setError(err.message);
         } finally {
             setIsLoading(false);
         }
@@ -89,7 +92,7 @@ const PremiumSubscription: React.FC = () => {
 
             navigate('Home');
         } catch (err) {
-            console.log(err);
+            setError(err.message);
         } finally {
             setIsLoadingMakeSubscription(false);
         }
@@ -106,6 +109,11 @@ const PremiumSubscription: React.FC = () => {
     useEffect(() => {
         loadData();
     }, [loadData]);
+
+    const handleDimissNotification = useCallback(() => {
+        setError('');
+    }, []);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -185,6 +193,14 @@ const PremiumSubscription: React.FC = () => {
                     <TextSubscription>Voltar ao início</TextSubscription>
                 </ButtonSubscription>
             </ScrollView>
+
+            {!!error && (
+                <Notification
+                    NotificationMessage={error}
+                    NotificationType="error"
+                    onPress={handleDimissNotification}
+                />
+            )}
         </Container>
     );
 };

@@ -16,6 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
+import Notification from '../../Components/Notification';
 
 import { getProductById, deleteProduct } from '../../Functions/Product';
 import { sortLoteByExpDate } from '../../Functions/Lotes';
@@ -65,6 +66,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -94,9 +96,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             const lotesSorted = sortLoteByExpDate(result.lotes);
 
             setLotes(lotesSorted);
-        } catch (error) {
-            crashlytics().recordError(error);
-            console.warn(error);
+        } catch (err) {
+            crashlytics().recordError(err);
+            setError(err.message);
         } finally {
             setIsLoading(false);
         }
@@ -122,7 +124,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                 ],
             });
         } catch (err) {
-            console.log(err);
+            setError(err.message);
         }
     }, [productId, reset]);
 
@@ -139,6 +141,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             lotes.filter((lote) => lote.status !== 'Tratado')
         );
     }, [lotes]);
+
+    const handleDimissNotification = useCallback(() => {
+        setError('');
+    }, []);
 
     return isLoading ? (
         <Loading />
@@ -230,6 +236,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         />
                     </PageContent>
                 </ScrollView>
+                {!!error && (
+                    <Notification
+                        NotificationMessage={error}
+                        NotificationType="error"
+                        onPress={handleDimissNotification}
+                    />
+                )}
             </Container>
 
             <FloatButton
