@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import BarCodeReader from '../../Components/BarCodeReader';
+import Notification from '../../Components/Notification';
 
 import { getProductById, updateProduct } from '../../Functions/Product';
 
@@ -41,6 +41,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const { reset, goBack } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -69,7 +70,7 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     async function updateProd() {
         if (!name || name.trim() === '') {
-            Alert.alert('Digite o nome do produto');
+            setError('Digite o nome do produto');
             return;
         }
 
@@ -89,13 +90,17 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 ],
             });
         } catch (err) {
-            console.log(err);
+            setError(err.message);
         }
     }
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
         setCameraEnebled(false);
+    }, []);
+
+    const handleDimissNotification = useCallback(() => {
+        setError('');
     }, []);
 
     return isLoading ? (
@@ -176,6 +181,14 @@ const EditProduct: React.FC<RequestParams> = ({ route }: RequestParams) => {
                             </SaveCancelButtonsContainer>
                         </InputContainer>
                     </PageContent>
+
+                    {!!error && (
+                        <Notification
+                            NotificationMessage={error}
+                            NotificationType="error"
+                            onPress={handleDimissNotification}
+                        />
+                    )}
                 </Container>
             )}
         </>

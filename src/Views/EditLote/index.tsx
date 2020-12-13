@@ -10,6 +10,7 @@ import { getProductById } from '../../Functions/Product';
 import Loading from '../../Components/Loading';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
+import Notification from '../../Components/Notification';
 
 import {
     Container,
@@ -46,6 +47,7 @@ const EditLote: React.FC = () => {
     const routeParams = route.params as EditLoteProps;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
 
     const [product, setProduct] = useState<IProduct | null>(null);
 
@@ -80,7 +82,8 @@ const EditLote: React.FC = () => {
             const loteResult = response.lotes.find((l) => l.id === loteId);
 
             if (!loteResult) {
-                throw new Error('Lote não encontrado!');
+                setError('Lote não encontrado');
+                return;
             }
 
             const loteStatus = loteResult.status === 'Tratado';
@@ -122,7 +125,7 @@ const EditLote: React.FC = () => {
                 ],
             });
         } catch (err) {
-            console.warn(err);
+            setError(err.message);
         }
     }
 
@@ -138,7 +141,7 @@ const EditLote: React.FC = () => {
                 ],
             });
         } catch (err) {
-            throw new Error(err);
+            setError(err.message);
         }
     }, [loteId, reset]);
 
@@ -148,6 +151,10 @@ const EditLote: React.FC = () => {
         if (value === '' || regex.test(value)) {
             setAmount(value);
         }
+    }, []);
+
+    const handleDimissNotification = useCallback(() => {
+        setError('');
     }, []);
 
     return isLoading ? (
@@ -276,6 +283,14 @@ const EditLote: React.FC = () => {
                         <GenericButton text="Salvar" onPress={handleSave} />
                     </PageContent>
                 </ScrollView>
+
+                {!!error && (
+                    <Notification
+                        NotificationMessage={error}
+                        NotificationType="error"
+                        onPress={handleDimissNotification}
+                    />
+                )}
             </Container>
 
             <Dialog
