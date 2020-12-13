@@ -105,17 +105,73 @@ export async function GetAllProductsWithLotesAndNotTratado(): Promise<
     }
 }
 
-export async function GetAllProductsByStore(
-    store: string,
-    limit?: number
-): Promise<Array<IProduct>> {
-    const realm = await Realm();
+interface searchForAProductInAListProps {
+    products: Array<IProduct>;
+    searchFor: string;
+    limit?: number;
+    sortByExpDate?: boolean;
+}
 
-    try {
-        const results = realm
-            .objects<IProduct>('Product')
-            .filtered(`store = '${store}'`)
-            .slice();
+export function searchForAProductInAList({
+    products,
+    searchFor,
+    limit,
+    sortByExpDate,
+}: searchForAProductInAListProps): Array<IProduct> {
+    const query = searchFor.trim().toLowerCase();
+
+    const productsFind = products.filter((product) => {
+        const searchByName = product.name.toLowerCase().includes(query);
+
+        if (searchByName) {
+            return true;
+        }
+
+        if (product.code) {
+            const searchBycode = product.code.toLowerCase().includes(query);
+
+            if (searchBycode) {
+                return true;
+            }
+        }
+
+        if (product.store) {
+            const searchByStore = product.store.toLowerCase().includes(query);
+
+            if (searchByStore) {
+                return true;
+            }
+        }
+
+        if (product.lotes.length > 0) {
+            const lotesFounded = product.lotes.filter((lote) => {
+                const searchByLoteName = lote.lote
+                    .toLowerCase()
+                    .includes(query);
+
+                if (searchByLoteName) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            if (lotesFounded.length > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    });
+
+    if (sortByExpDate) {
+        // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+        const resultsTemp = sortProductsLotesByLotesExpDate(productsFind);
+
+        // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+        // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+        // DE QUAL ESTÁ MAIS PRÓXIMO
+        const results = sortProductsByFisrtLoteExpDate(resultsTemp);
 
         if (limit) {
             const limitedResults = results.slice(0, limit);
@@ -123,46 +179,12 @@ export async function GetAllProductsByStore(
         }
 
         return results;
-    } catch (err) {
-        throw new Error(err);
     }
-}
 
-export async function GetAllProductsWithoutStore(): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
-    try {
-        const results = realm
-            .objects<IProduct>('Product')
-            .filtered(`store == null OR store == ''`)
-            .slice();
-
-        return results;
-    } catch (err) {
-        throw new Error(err);
+    if (limit) {
+        const limitedResults = productsFind.slice(0, limit);
+        return limitedResults;
     }
-}
 
-export async function getAllStores(): Promise<Array<string>> {
-    const realm = await Realm();
-
-    try {
-        const stores: Array<string> = [];
-
-        const results = realm.objects<IProduct>('Product').sorted('store');
-
-        results.forEach((product) => {
-            if (product.store) {
-                const temp = stores.find((store) => store === product.store);
-
-                if (!temp) {
-                    stores.push(product.store);
-                }
-            }
-        });
-
-        return stores;
-    } catch (err) {
-        throw new Error(err);
-    }
+    return productsFind;
 }
