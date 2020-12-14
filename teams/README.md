@@ -19,31 +19,38 @@ npx sentry-wizard -i reactNative -p ios android
 yarn sentry-wizard -i reactNative -p ios android
 ```
 
-3. ## Configurando o Microsoft AppCenter
-Crie uma nova aplicação no [Microsoft AppCenter](http://appcenter.ms/) e depois disso crie um arquivo **appcenter-config.json** na pasta **/android/app/src/main/assets/** conforme exemplo do arquivo **appcenter-config.json.example** e coloque a sua chave gerada no AppCenter dentro do arquivo
-
-4. ## Configurando o Admob
-Crie um novo aplicativo no [Google Admob](https://admob.google.com/home/) e crie 2 blocos de anúcios, o primeiro Intersticial e o segundo banner. Depois crie um arquivo na raiz do projeto chamado **firebase.json** conforme examplo em **firebase.json.example** e coloque a ID do aplicativo do Google Admob.
+3. ## Configurando o Admob
+Crie um novo aplicativo no [Google Admob](https://admob.google.com/home/) e crie as unidades de anúncios necessárias. Depois crie um arquivo na raiz do projeto chamado **firebase.json** conforme examplo em **firebase.json.example** e coloque a ID do aplicativo do Google Admob.
 
 
-5. ## Configurando arquivo .keystore para builds de produção
+4. ## Configurando arquivo .keystore para builds de produção
 É necessário gerar o arquivo .keystore da aplicação conforme [documentação do React Native](https://reactnative.dev/docs/signed-apk-android), nomeando como **controledevalidade.keystore** e colocando-lo na pasta **/android/app**
 
-6. ## Configurando variavéis de ambiente e guardando suas chaves privadas privadamente
+5. ## Configurando variavéis de ambiente e guardando suas chaves privadas privadamente
 Na raiz no projeto crie um arquivo **.env** conforme exemplo no arquivo **.env.example** e adicione suas chaves geradas nos passos anteriores.
 ```
 ANDROID_UPLOAD_STORE_PASSWORD <- Store password do arquivo keystore criado no passo 4
 ANDROID_UPLOAD_KEY_PASSWORD <- Key password do arquivo keystore criado no passo 4
 
-ANDROID_ADMOB_ADUNITID_ADDPRODUCT= <- ID da unidade de anúncio Intersticial criada no passo 3
-ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS= <- ID da unidade de anúncio Banner criada no passo 3
+ANDROID_ADMOB_ADUNITID_ADDPRODUCT= <- Código de unidade de anúncido do admob Interstitial
+ANDROID_ADMOB_ADUNITID_ADDLOTE= <- Código de unidade de anúncido do admob Interstitial
+ANDROID_ADMOB_ADUNITID_BETWEENPRODUCTS= <- Código de unidade de anúncido do admob Banner
+ANDROID_ADMOB_ADUNITID_BETWEENSTOREGROUPS= <- Código de unidade de anúncido do admob Banner
+ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDAPRODUCT= <- Código de unidade de anúncido do admob Banner
+ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERADDABATCH= <- Código de unidade de anúncido do admob Banner
+ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEAPRODUCT= <- Código de unidade de anúncido do admob Banner
+ANDROID_ADMOB_ADUNITID_SUCCESSSCREENAFTERDELETEABATCH= <- Código de unidade de anúncido do admob Banner
 
 APPLICATION_SECRET_BACKUP_CRYPT= <- UMA CHAVE ÚNICA DA SUA APLICAÇÃO USADA PARA CRIPTOGRAFAR E DESCRIPTOGRAFAR OS BACKUPS GERADO PELO APLICATIVO (ATENÇÃO SE VOCÊ MUDAR ESSE VALOR NO FUTURO SEUS BACKUPS ANTERIORES SERÃO INVALIDADOS)
+
+GOOGLE_SIGNIN_CLIENT_ID= <- Client ID encontrado nas configurações do firebase console
+
+REVENUECAT_PUBLIC_APP_ID= <- ID do aplicativo na Revenuecat
 
 SENTRY_DSN= <- SENTRY DSN gerado na realização do passo 2
 ```
 
-## Depois disso é só partir pro abraço e compilar
+## Depois disso é só partir para o abraço e compilar
 ```
-react-native run-android
+npx react-native run-android || yarn android
 ```
