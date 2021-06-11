@@ -1556,39 +1556,39 @@
     invariant "^2.2.4"
 
 "@react-native-firebase/admob@^11.3.2":
-  version "11.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/admob/-/admob-11.3.2.tgz#2b58f3c1c85c0fa81de620ee7ba7dd08ea2eb8af"
-  integrity sha512-aRBgJz/z3HxgnhXUvrJWy7/LV8z8AZAyaIaq7+tnWBvlixuwbqnLfZbaieS8AmSLrAGtirytXzQ+4mARzFWyLw==
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/admob/-/admob-11.5.0.tgz#a392b0997b92b853513e33ba1d0c78a6031a0409"
+  integrity sha512-WmScm8xZC50pdOUm5CMixAD4VtVSitslQNySErLNxWnsKe4a+puTeivpQZGTdQ5lszBLIs3oxoNplqtPAqk27g==
 
 "@react-native-firebase/analytics@^11.3.2":
-  version "11.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-11.3.2.tgz#61dd498af7916f7134d3d680194111bd5520297d"
-  integrity sha512-bK1zveTRigqtkOVm/8HCNyZ+qYTlNfQaShXbubHk8MSSXzNGu9xZ+zyld+bBWDyJxAx6FNBzkrUkC3wUx0VJqw==
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-11.5.0.tgz#7a4388a264ff7799ab3a257906a4fd965a92660a"
+  integrity sha512-54RZBZmnSQRmuyPH2EcLfGJB4dn/VEUyd75xkEC3SKO4A68763myKtc8PAgZxcfsnEApA6LTJN/CqoZwEGG9Bg==
 
 "@react-native-firebase/app@^11.3.2":
-  version "11.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-11.3.2.tgz#43971445306cde2d09ce3022e0efae5549b47095"
-  integrity sha512-6W+Wrnj9X3zCicwWs/fMRMPhdSCNDASeypltmqAGr0jupdB5eV3dd0BoQa10xT6yw8U5QBvZSS0jXHrPWcIIdA==
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-11.5.0.tgz#cc7656d8bd580ddf63676774c5f4e73af3652c9c"
+  integrity sha512-Jz5CBhqkybxHjTFr5V0K+Jq2YivzPbu9exSze61/z1zSaIfBhR4G38wmHk44VWAl+PEX8GaYy9yfT69tLiCERA==
   dependencies:
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
 "@react-native-firebase/auth@^11.3.2":
-  version "11.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-11.3.2.tgz#0bc90672ffd3b8f0ea905cc591ae2c0c09f0f784"
-  integrity sha512-/syhrRJccE0MuWiNYY95AVyNbmc8qZVOH0CY2qJKdwhCAIfc6b6h3RqztoFqv9phdWpdSvhBKscNUx2Ejm17Tg==
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-11.5.0.tgz#b7fd56c249ee1f2992cd297ec734dacbd5b9831b"
+  integrity sha512-kdO+dbGqZluX1zkxGXI+DNn1PU83WcY9jdXSGtKjiHkoduB4lBmfGvewDlIiYtJNmXly/Jf3FrLEwa77ZDuArQ==
 
 "@react-native-firebase/crashlytics@^11.3.2":
-  version "11.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-11.3.2.tgz#76b21311b7fb7ee2573cf8207cab521e65c2884d"
-  integrity sha512-UNwryX+IbQOlVLEAMEccxFlbI75beCxt9Xd0lj7hCWKC0ugw0uyH9XLLBKuSR5oUzOghoOCJc3L3cbmbxxFzaQ==
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-11.5.0.tgz#33b5336002578281f20b39b5c11058c80925f2a7"
+  integrity sha512-bSsAJFhVPx1A3TIwOA//b4Q37/QBIgB4641FSjXo+J3g4UHqIJE80e5A1MWEbIN7npnycsd70cEXLcw95a3GDA==
   dependencies:
     stacktrace-js "^2.0.0"
 
 "@react-native-firebase/messaging@^11.3.2":
-  version "11.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-11.3.2.tgz#9ada09b6f7f34e9612636e05c9813892866832b4"
-  integrity sha512-8P8P328Asxri5/70bZDg7Fd2vPPeN1dAEHuKBKUsXHJVNzNpu6qxkArpWXyn5vJAOYY/Tny5fb2pydiDUdQkEg==
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-11.5.0.tgz#724a65683a23e40fd4a36553198f27227cfe78fd"
+  integrity sha512-bjsoJByiNtikNLCf5RMmUdIj3uH8Uf0eeyM9PdqfNRB1mtVaYrU8AmXnzbSd5SqJ/sxqwyZVuxzWNEJrcOnhZw==
 
 "@react-native-picker/picker@^1.14.0":
   version "1.14.0"
@@ -3348,10 +3348,10 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-fns@^2.14.0:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.15.0.tgz#424de6b3778e4e69d3ff27046ec136af58ae5d5f"
-  integrity sha512-ZCPzAMJZn3rNUvvQIMlXhDr4A+Ar07eLeGsGREoWU19a3Pqf5oYa+ccd+B3F6XVtQY6HANMFdOQ8A+ipFnvJdQ==
+date-fns@^2.22.1:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.22.1.tgz#1e5af959831ebb1d82992bf67b765052d8f0efc4"
+  integrity sha512-yUFPQjrxEmIsMqlHhAhmxkuH769baF21Kk+nZwZGyrMoyLA+LugaQtC0+Tqf9CBUUULWwUJt6Q5ySI3LJDDCGg==
 
 dayjs@^1.8.15:
   version "1.9.7"
@@ -7675,10 +7675,10 @@ react-native-purchases@^4.1.1:
   resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-4.1.1.tgz#a80d6475c382286fd835dc1c3987346b5e324775"
   integrity sha512-ZIgNorxINvNr8SOepmPxITprqZNEzeUBqLPdAgCYHUoRxsKrTiMYHJegu3Yzesms5iVSSb4s84FnS3brj79oBQ==
 
-react-native-push-notification@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-7.0.0.tgz#9c0fe01f087aa0f55885af0f5d140308fd9e529e"
-  integrity sha512-csFXvao1ugQAP5ajwVtIfylom4x0LE7OpKcsXbDuqLDE9RLm0tTxTVF3i0drgGOTGxqwlEDK28eGiUO0J9gUQg==
+react-native-push-notification@^7.3.1:
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-7.3.1.tgz#1495feacd25169b998446dcf7b448a197ae5dca0"
+  integrity sha512-5kSKPvDU23uZRmzgKTsGhbwGNvB2tidu1VnInBHP53ZD0VEPSBl5fbpuTfHH98ED+Gp1SCcT2/e6bJWkIspKvg==
 
 react-native-qrcode-scanner@^1.5.1:
   version "1.5.1"
