@@ -65,6 +65,8 @@
     "View_About_AppVersion": "",
     "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
+    "View_About_NeedHelp": "Need help?",
+    "View_About_HelpTelegram": "Contact on Telegram",
     "View_About_LogoMadeBy": "Logo made by",
 
     "View_AddBatch_AlertTypeBatchName": "Type the batch's name",
@@ -275,6 +277,8 @@
     "View_Export_Explain_Backup": "If you need to restore or change your phone, you'll need this file to restore all your products in your need phone.",
     "View_Export_Button_ExportExcel": "Export to Excel",
     "View_Export_Button_ExportBackup": "Export to backup",
+    "View_Export_Explain_Business": "Export all your products to Expiry Checker Business",
+    "View_Export_Button_Business": "Export",
 
     "View_Permissions_AppleAT_PageTitle": "We need your permission",
     "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to track you in sites and apps that you use to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
