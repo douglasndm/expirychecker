@@ -63,32 +63,38 @@ async function genereteZipImagesFolder(): Promise<string> {
     }
 }
 
+export async function generateBackupFile(): Promise<string> {
+    if (!(await exists(`${backupDir}`))) {
+        await mkdir(`${backupDir}`);
+    }
+
+    const allProducts = await getAllProducts({});
+
+    const encryptedProducts = CryptoJS.AES.encrypt(
+        JSON.stringify(allProducts),
+        EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT
+    ).toString();
+
+    await genereteZipImagesFolder();
+
+    const productsFilePath = `${backupDir}/${translate(
+        'Function_Export_FileName'
+    )}.cvbf`;
+
+    // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
+    // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
+    if (await RNFS.exists(productsFilePath)) {
+        await RNFS.unlink(productsFilePath);
+    }
+
+    await RNFS.writeFile(productsFilePath, encryptedProducts, 'utf8');
+
+    return productsFilePath;
+}
+
 export async function exportBackupFile(): Promise<void> {
     try {
-        if (!(await exists(`${backupDir}`))) {
-            await mkdir(`${backupDir}`);
-        }
-
-        const allProducts = await getAllProducts({});
-
-        const encryptedProducts = CryptoJS.AES.encrypt(
-            JSON.stringify(allProducts),
-            EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT
-        ).toString();
-
-        await genereteZipImagesFolder();
-
-        const productsFilePath = `${backupDir}/${translate(
-            'Function_Export_FileName'
-        )}.cvbf`;
-
-        // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
-        // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
-        if (await RNFS.exists(productsFilePath)) {
-            await RNFS.unlink(productsFilePath);
-        }
-
-        await RNFS.writeFile(productsFilePath, encryptedProducts, 'utf8');
+        await generateBackupFile();
 
         const zipPath = await zip(
             `${backupDir}`,
