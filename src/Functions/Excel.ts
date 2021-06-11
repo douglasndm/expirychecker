@@ -6,6 +6,7 @@ import { translate } from '../Locales';
 
 import { shareFile } from './Share';
 import { getAllProducts } from './Products';
+import { getStore } from './Stores';
 
 interface ExcelRowProps {
     produto: string;
@@ -74,7 +75,9 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
 
         const excelRows: Array<ExcelRowProps> = [];
 
-        sortedProducts.forEach(item => {
+        for (const item of sortedProducts) {
+            const store = await getStore(item.product.store || '');
+
             const row: any = {};
 
             row[translate('Function_Excel_ColumnName_ProductName')] =
@@ -82,7 +85,7 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
             row[translate('Function_Excel_ColumnName_ProductCode')] =
                 item.product.code || '';
             row[translate('Function_Excel_ColumnName_ProductStore')] =
-                item.product.store || '';
+                store?.name;
             row[translate('Function_Excel_ColumnName_BatchName')] =
                 item.batch.lote;
             row[translate('Function_Excel_ColumnName_BatchPrice')] =
@@ -96,7 +99,7 @@ export async function exportToExcel({ sortBy }: exportProps): Promise<void> {
             row.Tratado = item.batch.status === 'Tratado' ? 'Sim' : 'Não';
 
             excelRows.push(row);
-        });
+        }
 
         const worksheet = XLSX.utils.json_to_sheet(excelRows);
 
