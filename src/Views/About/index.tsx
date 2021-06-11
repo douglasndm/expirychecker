@@ -22,6 +22,10 @@ import {
 const About: React.FC = () => {
     const { goBack } = useNavigation();
 
+    const navigateToTelegram = useCallback(async () => {
+        await Linking.openURL('https://t.me/douglasdev');
+    }, []);
+
     const navigateToTerms = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev/terms');
     }, []);
@@ -69,6 +73,13 @@ const About: React.FC = () => {
             <AboutSection>
                 <Text>{translate('View_About_DevelopedBy')}</Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
+            </AboutSection>
+
+            <AboutSection>
+                <Text>{translate('View_About_NeedHelp')}</Text>
+                <Link onPress={navigateToTelegram}>
+                    {translate('View_About_HelpTelegram')}
+                </Link>
             </AboutSection>
 
             <AboutSection>
