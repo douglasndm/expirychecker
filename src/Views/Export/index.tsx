@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
+import Share from 'react-native-share';
 
 import { translate } from '~/Locales';
 
-import { exportBackupFile } from '~/Functions/Backup';
+import { exportBackupFile, generateBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
 
 import Header from '~/Components/Header';
@@ -25,6 +26,7 @@ const Export: React.FC = () => {
 
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
     const [isBackupLoading, setIsBackupLoading] = useState<boolean>(false);
+    const [isBusinessLoading, setIsBusinessLoading] = useState<boolean>(false);
 
     const handleExportBackup = useCallback(async () => {
         try {
@@ -52,6 +54,21 @@ const Export: React.FC = () => {
             setIsExcelLoading(false);
         }
     }, [checked]);
+
+    const handleExportBusiness = useCallback(async () => {
+        try {
+            setIsBusinessLoading(true);
+
+            const path = await generateBackupFile();
+            await Share.open({
+                title: translate('Function_Share_SaveFileTitle'),
+                url: `file://${path}`,
+            });
+        } catch (err) {
+        } finally {
+            setIsBusinessLoading(false);
+        }
+    }, []);
 
     return (
         <Container>
@@ -112,6 +129,17 @@ const Export: React.FC = () => {
                         text={translate('View_Export_Button_ExportBackup')}
                         onPress={handleExportBackup}
                         isLoading={isBackupLoading}
+                    />
+                </ExportOptionContainer>
+
+                <ExportOptionContainer>
+                    <ExportExplain>
+                        {translate('View_Export_Explain_Business')}
+                    </ExportExplain>
+                    <Button
+                        text={translate('View_Export_Button_Business')}
+                        onPress={handleExportBusiness}
+                        isLoading={isBusinessLoading}
                     />
                 </ExportOptionContainer>
             </Content>
