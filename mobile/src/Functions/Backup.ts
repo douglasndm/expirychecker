@@ -146,7 +146,7 @@ export async function generateBackupFile({
 
 export async function exportBackupFile(): Promise<void> {
     try {
-        await generateBackupFile();
+        await generateBackupFile({});
 
         const zipPath = await zip(
             `${backupDir}`,
