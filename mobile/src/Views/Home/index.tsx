@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
@@ -19,7 +20,6 @@ import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
-import Notification from '~/Components/Notification';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -40,7 +40,6 @@ const Home: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
-    const [error, setError] = useState<string>();
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
@@ -92,7 +91,10 @@ const Home: React.FC = () => {
 
             setProducts(allProducts);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -144,10 +146,6 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
-
     return isLoading ? (
         <Loading />
     ) : (
@@ -183,14 +181,6 @@ const Home: React.FC = () => {
                     )}
 
                     <ListProducts products={productsSearch} isHome />
-
-                    {!!error && (
-                        <Notification
-                            NotificationMessage={error}
-                            NotificationType="error"
-                            onPress={handleDimissNotification}
-                        />
-                    )}
                 </Container>
             )}
         </>

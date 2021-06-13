@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -12,7 +13,6 @@ import {
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
-import Notification from '~/Components/Notification';
 import {
     FloatButton,
     Icons as FloatIcon,
@@ -32,7 +32,6 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
     const { navigate } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [storeName, setStoreName] = useState<string>('');
     const [products, setProducts] = useState<IProduct[]>([]);
@@ -71,7 +70,10 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 
             setProducts(sortedProductsFinal);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -84,10 +86,6 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct', { store });
     }, [navigate, store]);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
 
     return isLoading ? (
         <Loading />
@@ -112,14 +110,6 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                 label={translate('View_FloatMenu_AddProduct')}
                 onPress={handleNavigateAddProduct}
             />
-
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
         </Container>
     );
 };
