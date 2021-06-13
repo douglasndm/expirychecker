@@ -17,6 +17,7 @@ import { translate } from '../Locales';
 
 import { createProduct } from './Product';
 import { getAllProducts } from './Products';
+import { getAllCategories } from './Category';
 
 const backupDir = `${DocumentDirectoryPath}/backupDir`;
 
@@ -63,15 +64,66 @@ async function genereteZipImagesFolder(): Promise<string> {
     }
 }
 
-export async function generateBackupFile(): Promise<string> {
+interface generateBackupFileProps {
+    includeCategories?: boolean;
+    store?: string;
+}
+
+export async function generateBackupFile({
+    includeCategories = false,
+    store,
+}: generateBackupFileProps): Promise<string> {
     if (!(await exists(`${backupDir}`))) {
         await mkdir(`${backupDir}`);
     }
 
+    const categories = await getAllCategories();
+
+    let result;
+
     const allProducts = await getAllProducts({});
 
+    if (includeCategories) {
+        result = {
+            categories,
+        };
+    }
+
+    if (store && store !== 'none') {
+        const filtedProducts = allProducts.filter(prod => {
+            if (prod.store?.includes(store)) {
+                return true;
+            }
+
+            return false;
+        });
+
+        result = {
+            ...result,
+            products: filtedProducts,
+        };
+    } else if (store === 'none') {
+        const filtedProducts = allProducts.filter(prod => {
+            if (!prod.store) {
+                return true;
+            }
+
+            return false;
+        });
+
+        result = {
+            ...result,
+            products: filtedProducts,
+        };
+    } else {
+        result = {
+            ...result,
+            products: allProducts,
+        };
+    }
+
     const encryptedProducts = CryptoJS.AES.encrypt(
-        JSON.stringify(allProducts),
+        JSON.stringify(result),
         EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT
     ).toString();
 
