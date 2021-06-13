@@ -5,11 +5,11 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { Alert, ScrollView, Platform } from 'react-native';
+import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import crashlytics from '@react-native-firebase/crashlytics';
 import EnvConfig from 'react-native-config';
+import { showMessage } from 'react-native-flash-message';
 import {
     InterstitialAd,
     AdEventType,
@@ -21,7 +21,6 @@ import { translate } from '~/Locales';
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
-import Notification from '~/Components/Notification';
 
 import { createLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';
@@ -82,8 +81,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [notification, setNotification] = useState<string>();
-
     const [adReady, setAdReady] = useState(false);
 
     const [name, setName] = useState('');
@@ -96,7 +93,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
     const handleSave = useCallback(async () => {
         if (!lote || lote.trim() === '') {
-            Alert.alert(translate('View_AddBatch_AlertTypeBatchName'));
+            showMessage({
+                message: translate('View_AddBatch_AlertTypeBatchName'),
+                type: 'danger',
+            });
             return;
         }
         try {
@@ -126,8 +126,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 ],
             });
         } catch (err) {
-            crashlytics().recordError(err);
-            setNotification(err);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [
         amount,
@@ -181,10 +183,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         if (value === '' || regex.test(value)) {
             setAmount(value);
         }
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setNotification('');
     }, []);
 
     const handlePriceChange = useCallback((value: number) => {
@@ -269,14 +267,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     />
                 </PageContent>
             </ScrollView>
-
-            {!!notification && (
-                <Notification
-                    NotificationMessage={notification}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
         </Container>
     );
 };

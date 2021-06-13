@@ -7,12 +7,12 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import { showMessage } from 'react-native-flash-message';
 import { getLocales } from 'react-native-localize';
 import { format } from 'date-fns';
 import EnvConfig from 'react-native-config';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -21,8 +21,6 @@ import { translate } from '~/Locales';
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
-import Notification from '~/Components/Notification';
-
 import { getProductById } from '~/Functions/Product';
 import { sortLoteByExpDate } from '~/Functions/Lotes';
 import { getStore } from '~/Functions/Stores';
@@ -77,7 +75,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [route.params.id]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const dateFormat = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -142,8 +139,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
             setLotes(lotesSorted);
         } catch (err) {
-            crashlytics().recordError(err);
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -176,10 +175,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             lotes.filter(lote => lote.status !== 'Tratado')
         );
     }, [lotes]);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
 
     const handleOnPhotoPress = useCallback(() => {
         if (product && product.photo) {
@@ -343,13 +338,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         )}
                     </PageContent>
                 </ScrollView>
-                {!!error && (
-                    <Notification
-                        NotificationMessage={error}
-                        NotificationType="error"
-                        onPress={handleDimissNotification}
-                    />
-                )}
             </Container>
 
             <FloatButton

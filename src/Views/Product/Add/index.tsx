@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import EnvConfig from 'react-native-config';
 import { exists, unlink } from 'react-native-fs';
+import { showMessage } from 'react-native-flash-message';
 import {
     InterstitialAd,
     AdEventType,
@@ -33,7 +34,6 @@ import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
-import Notification from '~/Components/Notification';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -152,7 +152,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
-    const [erro, setError] = useState<string>('');
 
     const handleSave = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -225,8 +224,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     ],
                 });
             }
-        } catch (error) {
-            setError(error.message);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [
         adReady,
@@ -319,10 +321,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         if (value === '' || regex.test(value)) {
             setAmount(value);
         }
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
     }, []);
 
     const handleEnableCamera = useCallback(async () => {
@@ -692,13 +690,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     />
                                 </PageContent>
                             </ScrollView>
-                            {!!erro && (
-                                <Notification
-                                    NotificationType="error"
-                                    NotificationMessage={erro}
-                                    onPress={handleDimissNotification}
-                                />
-                            )}
                         </Container>
                     )}
                 </>

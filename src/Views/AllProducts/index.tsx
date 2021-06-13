@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -7,7 +7,6 @@ import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
-import Notification from '~/Components/Notification';
 
 import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';
 
@@ -21,8 +20,6 @@ import {
 import { Container } from './styles';
 
 const AllProducts: React.FC = () => {
-    const { navigate } = useNavigation();
-
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
@@ -32,7 +29,6 @@ const AllProducts: React.FC = () => {
     const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
         false
     );
-    const [error, setError] = useState<string>('');
 
     const getProducts = useCallback(async () => {
         try {
@@ -43,7 +39,10 @@ const AllProducts: React.FC = () => {
 
             setProducts(allProducts);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -65,10 +64,6 @@ const AllProducts: React.FC = () => {
         setEnableBarCodeReader(false);
     }, []);
 
-    const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct');
-    }, [navigate]);
-
     const handleSearchChange = useCallback(
         async (search: string) => {
             setSearchString(search);
@@ -89,17 +84,13 @@ const AllProducts: React.FC = () => {
     );
 
     const handleOnCodeRead = useCallback(
-        (code) => {
+        code => {
             setSearchString(code);
             handleSearchChange(code);
             setEnableBarCodeReader(false);
         },
         [handleSearchChange]
     );
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
 
     return isLoading ? (
         <Loading />
@@ -135,14 +126,6 @@ const AllProducts: React.FC = () => {
                         )}
 
                         <ListProducts products={productsSearch} />
-
-                        {!!error && (
-                            <Notification
-                                NotificationMessage={error}
-                                NotificationType="error"
-                                onPress={handleDimissNotification}
-                            />
-                        )}
                     </Container>
                 </>
             )}

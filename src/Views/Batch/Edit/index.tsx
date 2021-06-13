@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Alert, ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
+import { showMessage } from 'react-native-flash-message';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
@@ -14,7 +15,6 @@ import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
-import Notification from '~/Components/Notification';
 
 import {
     Container,
@@ -52,7 +52,6 @@ const EditBatch: React.FC = () => {
     const routeParams = route.params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [locale] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -101,7 +100,10 @@ const EditBatch: React.FC = () => {
             const loteResult = response.lotes.find(l => l.id === loteId);
 
             if (!loteResult) {
-                setError(translate('View_EditBatch_Error_BatchDidntFound'));
+                showMessage({
+                    message: translate('View_EditBatch_Error_BatchDidntFound'),
+                    type: 'danger',
+                });
                 return;
             }
 
@@ -121,7 +123,10 @@ const EditBatch: React.FC = () => {
 
     async function handleSave() {
         if (!lote || lote.trim() === '') {
-            Alert.alert(translate('View_EditBatch_Error_BatchWithNoName'));
+            showMessage({
+                message: translate('View_EditBatch_Error_BatchWithNoName'),
+                type: 'danger',
+            });
             return;
         }
 
@@ -146,7 +151,10 @@ const EditBatch: React.FC = () => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }
 
@@ -162,7 +170,10 @@ const EditBatch: React.FC = () => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [loteId, reset]);
 
@@ -172,10 +183,6 @@ const EditBatch: React.FC = () => {
         if (value === '' || regex.test(value)) {
             setAmount(value);
         }
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
     }, []);
 
     const handlePriceChange = useCallback((value: number) => {
@@ -330,14 +337,6 @@ const EditBatch: React.FC = () => {
                         />
                     </PageContent>
                 </ScrollView>
-
-                {!!error && (
-                    <Notification
-                        NotificationMessage={error}
-                        NotificationType="error"
-                        onPress={handleDimissNotification}
-                    />
-                )}
             </Container>
 
             <Dialog
