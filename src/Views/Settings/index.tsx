@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
-import { Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
+import { Switch } from 'react-native-paper';
 
 import { translate } from '../../Locales';
 
 import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
-import NotificationError from '../../Components/Notification';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -36,8 +36,6 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
-    const [error, setError] = useState<string>('');
-
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
@@ -114,15 +112,14 @@ const Settings: React.FC = () => {
                 isUserSignedIn: false,
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsOnLogout(false);
         }
     }, [setUserPreferences, userPreferences]);
-
-    const onDimissError = useCallback(() => {
-        setError('');
-    }, []);
 
     return (
         <>
@@ -155,7 +152,7 @@ const Settings: React.FC = () => {
                                     keyboardType="numeric"
                                     placeholder="Quantidade de dias"
                                     value={daysToBeNext}
-                                    onChangeText={(v) => {
+                                    onChangeText={v => {
                                         const regex = /^[0-9\b]+$/;
 
                                         if (v === '' || regex.test(v)) {
@@ -215,13 +212,6 @@ const Settings: React.FC = () => {
                     </SettingsContent>
                 </ScrollView>
             </Container>
-            {!!error && (
-                <NotificationError
-                    NotificationType="error"
-                    NotificationMessage={error}
-                    onPress={onDimissError}
-                />
-            )}
         </>
     );
 };

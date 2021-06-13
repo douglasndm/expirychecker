@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { Linking, Platform, Text, Alert } from 'react-native';
+import { Linking, Platform, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
 import { translate } from '~/Locales';
@@ -13,7 +14,6 @@ import {
 } from '~/Functions/ProMode';
 
 import Loading from '~/Components/Loading';
-import Notification from '~/Components/Notification';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -45,7 +45,6 @@ import {
 const Pro: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isRestoreLoading, setIsRestoreLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
 
     const { userPreferences, setUserPreferences } = useContext(
         PreferencesContext
@@ -94,7 +93,10 @@ const Pro: React.FC = () => {
                 }
             });
         } catch (err) {
-            // setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -108,7 +110,10 @@ const Pro: React.FC = () => {
                 selectedPlan !== 'quarterly' &&
                 selectedPlan !== 'monthly'
             ) {
-                setError('Selecione o plano');
+                showMessage({
+                    message: 'Selecione o plano',
+                    type: 'danger',
+                });
                 return;
             }
 
@@ -137,7 +142,11 @@ const Pro: React.FC = () => {
             if (err.message === 'User cancel payment') {
                 return;
             }
-            setError(err.message);
+
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoadingMakeSubscription(false);
         }
@@ -158,10 +167,6 @@ const Pro: React.FC = () => {
     useEffect(() => {
         loadData();
     }, [loadData]);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
 
     const handleChangePlanMonthly = useCallback(() => {
         setSelectedPlan('monthly');
@@ -195,15 +200,21 @@ const Pro: React.FC = () => {
                 isUserPremium: true,
             });
 
-            Alert.alert(
-                translate('View_PROView_Subscription_Alert_RestoreSuccess')
-            );
+            showMessage({
+                message: translate(
+                    'View_PROView_Subscription_Alert_RestoreSuccess'
+                ),
+                type: 'info',
+            });
 
             handleNavigateHome();
         } else {
-            Alert.alert(
-                translate('View_PROView_Subscription_Alert_NoSubscription')
-            );
+            showMessage({
+                message: translate(
+                    'View_PROView_Subscription_Alert_NoSubscription'
+                ),
+                type: 'info',
+            });
         }
         setIsRestoreLoading(false);
     }, [setUserPreferences, userPreferences, handleNavigateHome]);
@@ -546,13 +557,6 @@ const Pro: React.FC = () => {
                     </TextSubscription>
                 </ButtonSubscription>
             </Container>
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
         </>
     );
 };

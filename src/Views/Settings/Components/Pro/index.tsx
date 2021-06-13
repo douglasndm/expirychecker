@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useContext, useMemo } from 'react';
 import { View, Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import RNPermissions from 'react-native-permissions';
 
 import { translate } from '~/Locales';
@@ -11,7 +12,6 @@ import { isSubscriptionActive } from '~/Functions/ProMode';
 import { importBackupFile } from '~/Functions/Backup';
 
 import Button from '~/Components/Button';
-import Notification from '~/Components/Notification';
 
 import {
     Category,
@@ -34,7 +34,6 @@ const Pro: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
-    const [error, setError] = useState('');
 
     const { navigate, reset } = useNavigation();
 
@@ -79,14 +78,13 @@ const Pro: React.FC = () => {
 
             await importBackupFile();
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsImportLoading(false);
         }
-    }, []);
-
-    const onDimissError = useCallback(() => {
-        setError('');
     }, []);
 
     return (
@@ -149,13 +147,6 @@ const Pro: React.FC = () => {
                     )}
                 </Category>
             </Container>
-            {!!error && (
-                <Notification
-                    NotificationType="error"
-                    NotificationMessage={error}
-                    onPress={onDimissError}
-                />
-            )}
         </>
     );
 };

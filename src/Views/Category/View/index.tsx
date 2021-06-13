@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -15,7 +16,6 @@ import {
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
-import Notification from '~/Components/Notification';
 
 import {
     FloatButton,
@@ -41,15 +41,10 @@ const CategoryView: React.FC = () => {
     const routeParams = params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [categoryName, setCategoryName] = useState<string>('CategoryTitle');
 
     const [products, setProducts] = useState<IProduct[]>([]);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
 
     const loadData = useCallback(async () => {
         try {
@@ -73,7 +68,10 @@ const CategoryView: React.FC = () => {
 
             setProducts(results);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -121,14 +119,6 @@ const CategoryView: React.FC = () => {
                 label={translate('View_FloatMenu_AddProduct')}
                 onPress={handleNavigateAddProduct}
             />
-
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
         </Container>
     );
 };

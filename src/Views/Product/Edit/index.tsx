@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { exists } from 'react-native-fs';
+import { showMessage } from 'react-native-flash-message';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
-import { exists } from 'react-native-fs';
 import { translate } from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
@@ -11,7 +12,6 @@ import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
-import Notification from '~/Components/Notification';
 
 import {
     getProductById,
@@ -89,7 +89,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const [name, setName] = useState('');
@@ -143,9 +142,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             const product = await getProductById(productId);
 
             if (!product) {
-                throw new Error(
-                    translate('View_EditProduct_Error_ProductNotFound')
-                );
+                showMessage({
+                    message: translate(
+                        'View_EditProduct_Error_ProductNotFound'
+                    ),
+                    type: 'danger',
+                });
+                return;
             }
 
             setName(product.name);
@@ -238,7 +241,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [
         code,
@@ -253,10 +259,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
         setIsBarCodeEnabled(false);
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
     }, []);
 
     const handleEnableCamera = useCallback(() => {
@@ -304,7 +306,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [productId, reset]);
 
@@ -506,14 +511,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </ActionsButtonContainer>
                                     </InputContainer>
                                 </PageContent>
-
-                                {!!error && (
-                                    <Notification
-                                        NotificationMessage={error}
-                                        NotificationType="error"
-                                        onPress={handleDimissNotification}
-                                    />
-                                )}
                             </Container>
                             <DialogPaper
                                 visible={deleteComponentVisible}
