@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import Share from 'react-native-share';
+import { showMessage } from 'react-native-flash-message';
 
 import { translate } from '~/Locales';
 
@@ -41,8 +42,8 @@ const Export: React.FC = () => {
     const [isBackupLoading, setIsBackupLoading] = useState<boolean>(false);
     const [isBusinessLoading, setIsBusinessLoading] = useState<boolean>(false);
 
-    const [selectedStore, setSelectedStore] = useState<string | null>(() => {
-        return null;
+    const [selectedStore, setSelectedStore] = useState<string>(() => {
+        return 'none';
     });
 
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
@@ -64,7 +65,7 @@ const Export: React.FC = () => {
 
         storesArray.push({
             key: 'none',
-            label: 'No store',
+            label: translate('View_Export_StorePicker_NoStore'),
             value: 'none',
         });
 
@@ -76,7 +77,10 @@ const Export: React.FC = () => {
             setIsBackupLoading(true);
             await exportBackupFile();
         } catch (err) {
-            console.log(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsBackupLoading(false);
         }
@@ -92,7 +96,10 @@ const Export: React.FC = () => {
                 await exportToExcel({ sortBy: 'expire_date' });
             }
         } catch (err) {
-            console.log(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsExcelLoading(false);
         }
@@ -104,13 +111,17 @@ const Export: React.FC = () => {
 
             const path = await generateBackupFile({
                 includeCategories: true,
-                store: selectedStore || '',
+                store: selectedStore || 'none',
             });
             await Share.open({
                 title: translate('Function_Share_SaveFileTitle'),
                 url: `file://${path}`,
             });
         } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsBusinessLoading(false);
         }
