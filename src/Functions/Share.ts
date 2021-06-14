@@ -74,6 +74,8 @@ export async function ShareProductImageWithText({
             }
         });
     } catch (err) {
-        throw new Error(err.message);
+        if (!err.message.includes('Error: User did not share')) {
+            throw new Error(err.message);
+        }
     }
 }
