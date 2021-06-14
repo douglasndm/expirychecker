@@ -2762,10 +2762,10 @@ bser@2.1.1:
   dependencies:
     node-int64 "^0.4.0"
 
-bson@^4.2.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/bson/-/bson-4.3.0.tgz#b466abeb6555f9b621dc6681b175a634e14356d4"
-  integrity sha512-LkKKeFJx5D6RRCRvLE+fDs40M2ZQNuk7W7tFXmKd7OOcQQ+BHdzCgRdL4XEGjc1UEGtiYuMvIVk91Bv8qsI50A==
+bson@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-4.4.0.tgz#6a4cac7de8c5cc24a9bcc059cd42a9852e2bad4a"
+  integrity sha512-uX9Zqzv2DpFXJgQOWKD8nbf0dTQV57WM8eiXDXVWeJYgiu/zIRz61OGLJKwbfSEEjZJ+AgS+7TUT7Y8EloTaqQ==
   dependencies:
     buffer "^5.6.0"
 
@@ -7938,13 +7938,13 @@ realm-network-transport@^0.7.0:
     abort-controller "^3.0.0"
     node-fetch "^2.6.0"
 
-realm@^10.4.0:
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-10.4.0.tgz#a57aacdbb6708a089ab25f4420b321f074bc6566"
-  integrity sha512-B8DieNdFFRepEWZpMo6qhcZBwvzFejvU9vNQnRwLN8tshVEM/es04XIfIwMKP00IAV3TtuPfUoZk36QKEedlOA==
+realm@^10.4.2:
+  version "10.4.2"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-10.4.2.tgz#99d826a655776ee12708fe8ffaf0c90efa5919b6"
+  integrity sha512-pesozKE4loyFlOvxFeeM6CYLD6u1GZcXy88E2n6r2zzWk4/C8g16C2xPi0yuxh+PdhHUXDs5TsEDw6YnpBrhxg==
   dependencies:
     bindings "^1.5.0"
-    bson "^4.2.0"
+    bson "^4.4.0"
     command-line-args "^4.0.6"
     deepmerge "2.1.0"
     deprecated-react-native-listview "0.0.6"
