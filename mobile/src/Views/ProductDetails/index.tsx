@@ -192,13 +192,25 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         if (product) {
             if (lotesNaoTratados.length > 0) {
                 const expireDate = lotesNaoTratados[0].exp_date;
+                const { amount } = lotesNaoTratados[0];
+
+                let text = '';
+
+                if (!!amount && amount > 0) {
+                    text = translate('View_ShareProduct_MessageWithAmount')
+                        .replace('{PRODUCT}', product.name)
+                        .replace('{AMOUNT}', String(amount))
+                        .replace('{DATE}', format(expireDate, dateFormat));
+                } else {
+                    text = translate('View_ShareProduct_Message')
+                        .replace('{PRODUCT}', product.name)
+                        .replace('{DATE}', format(expireDate, dateFormat));
+                }
 
                 await ShareProductImageWithText({
                     productId,
                     title: translate('View_ShareProduct_Title'),
-                    text: translate('View_ShareProduct_Message')
-                        .replace('{PRODUCT}', product.name)
-                        .replace('{DATE}', format(expireDate, dateFormat)),
+                    text,
                 });
             }
         }
