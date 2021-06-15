@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { View, Linking, Image } from 'react-native';
+import { View, Linking } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
@@ -64,6 +64,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
     const navigateToPRO = useCallback(() => {
         navigation.navigate('Pro');
+    }, [navigation]);
+
+    const handleNavigateToTeams = useCallback(() => {
+        navigation.navigate('Teams');
     }, [navigation]);
 
     const handleNavigateToSite = useCallback(async () => {
@@ -191,6 +195,15 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             </DrawerContentScrollView>
 
             <DrawerSection>
+                <MenuItemContainer onPress={handleNavigateToTeams}>
+                    <MenuContent>
+                        <Icons name="people-outline" />
+                        <MenuItemText>
+                            {translate('Menu_Button_GoToTeams')}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
+
                 <MenuItemContainer
                     onPress={() => navigation.navigate('Settings')}
                 >

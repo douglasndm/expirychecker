@@ -9,6 +9,7 @@
     "Menu_Button_GoToStores": "Stores",
     "Menu_Button_GoToExport": "Export",
     "Menu_Button_GoToProPage": "Become PRO",
+    "Menu_Button_GoToTeams": "Teams",
     "Menu_Button_GoToSettings": "Settings",
     "Menu_Button_GoToAbout": "About",
     "Menu_Button_KnowOthersApps": "Others apps",
@@ -283,7 +284,7 @@
     "View_Export_Explain_Backup": "If you need to restore or change your phone, you'll need this file to restore all your products in your need phone.",
     "View_Export_Button_ExportExcel": "Export to Excel",
     "View_Export_Button_ExportBackup": "Export to backup",
-    "View_Export_Explain_Business": "Export all your products to Expiry Checker Business",
+    "View_Export_Explain_Business": "Export all your products to Expiry Checker Teams",
     "View_Export_Button_Business": "Export",
     "View_Export_StorePicker_NoStore": "No store",
 
@@ -327,5 +328,16 @@
     "BeforeTermsAndPrivacy": "By using this app you are acception our ",
     "BetweenTermsAndPrivacy": " and ",
     "Terms": "Terms of service",
-    "PrivacyPolicy": "Privacy Policy"
+    "PrivacyPolicy": "Privacy Policy",
+
+    "Informations_Teams_PageTitle": "Teams",
+    "Informations_Teams_InformationsTitle": "Introducing Expiry Checker Teams",
+    "Informations_Teams_AdvantagesTitle": "Here the advantages",
+    "Informations_Teams_Advantage1": "Do you have a team? All products will be sync with all devices",
+    "Informations_Teams_Advantage2": "And It has access control",
+    "Informations_Teams_Advantage3": "And all others advantages from this app",
+    "Informations_Teams_Advantage4": "Contact me to enter in the initial tests",
+    "Informations_Teams_AdvantageBackup": "Take all of your products easily",
+    "Informations_Teams_ButtonExport": "Make export file",
+    "Informations_Teams_Contact": "Contact to enter"
 }
