@@ -9,6 +9,7 @@
     "Menu_Button_GoToStores": "Lojas",
     "Menu_Button_GoToExport": "Exportar",
     "Menu_Button_GoToProPage": "SEJA PRO",
+    "Menu_Button_GoToTeams": "Times",
     "Menu_Button_GoToSettings": "Configurações",
     "Menu_Button_GoToAbout": "Sobre",
     "Menu_Button_KnowOthersApps": "Outros apps",
@@ -286,7 +287,7 @@
     "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
     "View_Export_Button_ExportExcel": "Exportar para Excel",
     "View_Export_Button_ExportBackup": "Exportar para backup",
-    "View_Export_Explain_Business": "Aqui você gera o arquivo com todos os seus produtos para enviar para o Controle de Validade Empresas",
+    "View_Export_Explain_Business": "Aqui você gera o arquivo com todos os seus produtos para enviar para o Controle de Validade Times",
     "View_Export_Button_Business": "Exportar",
     "View_Export_StorePicker_NoStore": "Sem loja",
 
@@ -329,6 +330,16 @@
     "BeforeTermsAndPrivacy": "Ao usar este aplicativo você está aceitando nossos ",
     "BetweenTermsAndPrivacy": " e ",
     "Terms": "Termos de uso",
-    "PrivacyPolicy": "Política de Privacidade"
-}
+    "PrivacyPolicy": "Política de Privacidade",
 
+    "Informations_Teams_PageTitle": "Para times",
+    "Informations_Teams_InformationsTitle": "Conheça o Controle de Validades para Times",
+    "Informations_Teams_AdvantagesTitle": "Conheça as vantagens",
+    "Informations_Teams_Advantage1": "Tem um time? quer todos os produtos sincronizados entre todos os dispositvos?",
+    "Informations_Teams_Advantage2": "Com controle de acesso?",
+    "Informations_Teams_Advantage3": "E com mais todas as vantanges desse aplicativo?",
+    "Informations_Teams_Advantage4": "Interessado? Entre em contato para participar dos testes iniciais",
+    "Informations_Teams_AdvantageBackup": "Leve todos seus produtos daqui facilmente",
+    "Informations_Teams_ButtonExport": "Gerar arquivo com produtos",
+    "Informations_Teams_Contact": "Entre em contato e participe dos testes"
+}
