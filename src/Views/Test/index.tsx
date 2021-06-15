@@ -93,9 +93,7 @@ const Test: React.FC = () => {
         const realm = await Realm();
         try {
             realm.write(() => {
-                const results = realm.objects('Product');
-
-                realm.delete(results);
+                realm.deleteAll();
             });
         } catch (err) {
             console.warn(err);
@@ -165,7 +163,7 @@ const Test: React.FC = () => {
                     <Button text="Load with sample data" onPress={sampleData} />
 
                     <Button
-                        text="Delete all products"
+                        text="Delete all realm data"
                         onPress={deleteProducts}
                     />
 
