@@ -237,11 +237,18 @@ export async function importBackupFile(): Promise<void> {
     // converte tudo de novo para json
     const parsedFile = JSON.parse(originalFile);
 
-    const { categories } = parsedFile;
-    const { products } = parsedFile;
+    if (parsedFile.products) {
+        if (parsedFile.categories) {
+            const { categories } = parsedFile;
 
-    await saveManyCategories(categories);
-    await saveMany(products);
+            await saveManyCategories(categories);
+        }
+        const { products } = parsedFile;
+
+        await saveMany(products);
+    } else {
+        await saveMany(parsedFile);
+    }
 
     await unlink(backupDir);
 }
