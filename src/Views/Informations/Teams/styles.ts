@@ -16,17 +16,20 @@ export const Title = styled.Text`
     font-weight: bold;
 
     margin-bottom: 10px;
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 export const Advantage = styled.Text`
     font-size: 20px;
     margin-bottom: 10px;
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 export const Text = styled.Text`
     font-size: 16px;
     margin-bottom: 7px;
     font-family: 'Open Sans';
+    color: ${({ theme }) => theme.colors.text};
 `;
 
 export const PickerContainer = styled.View`
