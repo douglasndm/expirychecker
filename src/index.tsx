@@ -10,6 +10,7 @@ import {
 import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
+import { enableScreens } from 'react-native-screens';
 
 import './Locales';
 
@@ -31,6 +32,8 @@ import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
+
+enableScreens(true);
 
 const App: React.FC = () => {
     const [previousRoute, setPreviousRoute] = useState('Home');
