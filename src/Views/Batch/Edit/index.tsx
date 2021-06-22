@@ -47,7 +47,7 @@ interface Props {
 
 const EditBatch: React.FC = () => {
     const route = useRoute();
-    const { reset, goBack } = useNavigation();
+    const { reset, goBack, navigate } = useNavigation();
 
     const routeParams = route.params as Props;
 
@@ -140,15 +140,9 @@ const EditBatch: React.FC = () => {
                 status: tratado ? 'Tratado' : 'Não tratado',
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: { productId, type: 'edit_batch' },
-                    },
-                ],
+            navigate('Success', {
+                productId,
+                type: 'edit_batch',
             });
         } catch (err) {
             showMessage({
