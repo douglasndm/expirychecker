@@ -85,7 +85,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const { productId } = route.params;
 
-    const { reset, goBack } = useNavigation();
+    const { goBack, navigate } = useNavigation();
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -230,15 +230,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 photo: photoFileName,
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: { productId, type: 'edit_product' },
-                    },
-                ],
+            navigate('Success', {
+                productId,
+                type: 'edit_product',
             });
         } catch (err) {
             showMessage({
@@ -249,9 +243,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     }, [
         code,
         name,
+        navigate,
         photoPath,
         productId,
-        reset,
         selectedCategory,
         selectedStore,
     ]);
@@ -298,12 +292,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         try {
             await deleteProduct(productId);
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    { name: 'Success', params: { type: 'delete_product' } },
-                ],
+            navigate('Success', {
+                type: 'delete_product',
             });
         } catch (err) {
             showMessage({
@@ -311,7 +301,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 type: 'danger',
             });
         }
-    }, [productId, reset]);
+    }, [navigate, productId]);
 
     return isLoading ? (
         <Loading />

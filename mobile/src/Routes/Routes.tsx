@@ -30,7 +30,7 @@ import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RoutesParams>();
 
 const Routes: React.FC = () => {
     return (

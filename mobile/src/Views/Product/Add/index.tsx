@@ -99,7 +99,7 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { goBack, navigate, reset } = useNavigation();
+    const { goBack, navigate } = useNavigation();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -207,21 +207,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     interstitialAd.show();
                 }
 
-                reset({
-                    index: 1,
-                    routes: [
-                        { name: 'Home' },
-                        {
-                            name: 'Success',
-                            params: {
-                                type: 'create_product',
-                                productId: productCreatedId,
+                navigate('Success', {
+                    type: 'create_product',
+                    productId: productCreatedId,
 
-                                category_id: selectedCategory,
-                                store_id: selectedStore,
-                            },
-                        },
-                    ],
+                    category_id: selectedCategory,
+                    store_id: selectedStore,
                 });
             }
         } catch (err) {
@@ -239,9 +230,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         lote,
         name,
         nameFieldError,
+        navigate,
         photoPath,
         price,
-        reset,
         selectedCategory,
         selectedStore,
         userPreferences.isUserPremium,
