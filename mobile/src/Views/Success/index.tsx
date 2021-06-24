@@ -173,13 +173,7 @@ const Success: React.FC = () => {
         <Container>
             <StatusBar />
 
-            <BackButton
-                handleOnPress={handleGoBack}
-                contentStyle={{
-                    marginTop: 10,
-                    marginBottom: -35,
-                }}
-            />
+            <BackButton handleOnPress={handleGoBack} />
 
             <Content>
                 <SuccessMessageContainer>
