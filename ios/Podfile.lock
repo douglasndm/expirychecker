@@ -527,6 +527,8 @@ PODS:
     - React-cxxreact (= 0.64.2)
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
+  - ReactNativeLocalization (2.1.7):
+    - React-Core
   - RealmJS (10.4.2):
     - GCDWebServer
     - React
@@ -690,6 +692,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeLocalization (from `../node_modules/react-native-localization`)
   - RealmJS (from `../node_modules/realm`)
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
@@ -843,6 +846,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeLocalization:
+    :path: "../node_modules/react-native-localization"
   RealmJS:
     :path: "../node_modules/realm"
   RNBackgroundFetch:
@@ -975,6 +980,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 24600e3b1aaa77126989bc58b6747509a1ba14f3
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
+  ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
   RealmJS: 90f2a558fdda19ebb9fcbc0a52c7b1d1b049fb88
   RNBackgroundFetch: 635d82e1e185b235c1fe787f29517507f87450e0
   RNCAsyncStorage: 9924d6b4affe9081f08073f354ec6b09c839ff31

@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { Linking, Platform } from 'react-native';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -85,7 +85,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="home-outline" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToHome')}
+                                {strings.Menu_Button_GoToHome}
                             </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
@@ -94,7 +94,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="add" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToAddProduct')}
+                                {strings.Menu_Button_GoToAddProduct}
                             </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
@@ -103,7 +103,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="apps-outline" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToAllProducts')}
+                                {strings.Menu_Button_GoToAllProducts}
                             </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
@@ -118,13 +118,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="file-tray-full-outline" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToCategories')}
+                                {strings.Menu_Button_GoToCategories}
                             </MenuItemText>
                         </MenuContent>
 
                         <LabelGroup>
                             <LabelContainer>
-                                <Label>{translate('Menu_Label_PRO')}</Label>
+                                <Label>{strings.Menu_Label_PRO}</Label>
                             </LabelContainer>
                         </LabelGroup>
                     </MenuItemContainer>
@@ -140,13 +140,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <MenuContent>
                                 <Icons name="list-outline" />
                                 <MenuItemText>
-                                    {translate('Menu_Button_GoToStores')}
+                                    {strings.Menu_Button_GoToStores}
                                 </MenuItemText>
                             </MenuContent>
 
                             <LabelGroup>
                                 <LabelContainer>
-                                    <Label>{translate('Menu_Label_PRO')}</Label>
+                                    <Label>{strings.Menu_Label_PRO}</Label>
                                 </LabelContainer>
                             </LabelGroup>
                         </MenuItemContainer>
@@ -162,13 +162,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="download-outline" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToExport')}
+                                {strings.Menu_Button_GoToExport}
                             </MenuItemText>
                         </MenuContent>
 
                         <LabelGroup>
                             <LabelContainer>
-                                <Label>{translate('Menu_Label_PRO')}</Label>
+                                <Label>{strings.Menu_Label_PRO}</Label>
                             </LabelContainer>
                         </LabelGroup>
                     </MenuItemContainer>
@@ -180,7 +180,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <MenuContent>
                                 <Icons name="analytics-outline" />
                                 <MenuItemText>
-                                    {translate('Menu_Button_GoToProPage')}
+                                    {strings.Menu_Button_GoToProPage}
                                 </MenuItemText>
                             </MenuContent>
                         </MenuItemContainer>
@@ -194,7 +194,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="people-outline" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToTeams')}
+                                {strings.Menu_Button_GoToTeams}
                             </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
@@ -206,7 +206,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <MenuContent>
                         <Icons name="settings-outline" />
                         <MenuItemText>
-                            {translate('Menu_Button_GoToSettings')}
+                            {strings.Menu_Button_GoToSettings}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
@@ -215,7 +215,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <MenuContent>
                         <Icons name="globe-outline" />
                         <MenuItemText>
-                            {translate('Menu_Button_KnowOthersApps')}
+                            {strings.Menu_Button_KnowOthersApps}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
@@ -224,7 +224,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <MenuContent>
                         <Icons name="help-circle-outline" />
                         <MenuItemText>
-                            {translate('Menu_Button_GoToAbout')}
+                            {strings.Menu_Button_GoToAbout}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
@@ -236,7 +236,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="bug-outline" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToTest')}
+                                {strings.Menu_Button_GoToTest}
                             </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>

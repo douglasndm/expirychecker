@@ -1,6 +1,6 @@
 import { addDays, isPast } from 'date-fns';
 
-import { translate } from '../Locales';
+import strings from '../Locales';
 
 import { getHowManyDaysToBeNextExp } from './Settings';
 import {
@@ -17,10 +17,10 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
         });
         const products = removeAllLotesTratadosFromAllProduts(prods);
 
-        const productsNextFiltered = products.map((p) => {
+        const productsNextFiltered = products.map(p => {
             const lotes = p.lotes.slice();
 
-            const lotesFiltered = lotes.filter((l) => {
+            const lotesFiltered = lotes.filter(l => {
                 if (
                     l.exp_date < addDays(new Date(), daysToBeNext) &&
                     !isPast(l.exp_date) &&
@@ -38,10 +38,10 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
             };
         });
 
-        const productsVencidosFiltered = products.map((p) => {
+        const productsVencidosFiltered = products.map(p => {
             const lotes = p.lotes.slice();
 
-            const lotesFiltered = lotes.filter((l) => {
+            const lotesFiltered = lotes.filter(l => {
                 if (isPast(l.exp_date) && l.status !== 'Tratado') {
                     return true;
                 }
@@ -58,11 +58,11 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
         let productsNextToExpCount = 0;
         let productsVencidosCount = 0;
 
-        productsNextFiltered.forEach((p) => {
+        productsNextFiltered.forEach(p => {
             productsNextToExpCount += p.lotes.length;
         });
 
-        productsVencidosFiltered.forEach((p) => {
+        productsVencidosFiltered.forEach(p => {
             productsVencidosCount += p.lotes.length;
         });
 
@@ -70,26 +70,26 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
         let NotificationMessage;
 
         if (productsNextToExpCount > 0 && productsVencidosCount === 0) {
-            NotificationTitle = translate(
-                'Function_Notification_ItOnlyHasProductsNextToExpTitle'
+            NotificationTitle =
+                strings.Function_Notification_ItOnlyHasProductsNextToExpTitle;
+            NotificationMessage = strings.Function_Notification_ItOnlyHasProductsNextToExpMessage.replace(
+                '{NUMBER}',
+                String(productsNextToExpCount)
             );
-            NotificationMessage = translate(
-                'Function_Notification_ItOnlyHasProductsNextToExpMessage'
-            ).replace('{NUMBER}', String(productsNextToExpCount));
         } else if (productsNextToExpCount === 0 && productsVencidosCount > 0) {
-            NotificationTitle = translate(
-                'Function_Notification_ItOnlyHasExpiredProductsTitle'
+            NotificationTitle =
+                strings.Function_Notification_ItOnlyHasExpiredProductsTitle;
+            NotificationMessage = strings.Function_Notification_ItOnlyHasExpiredProductsMessage.replace(
+                '{NUMBER}',
+                String(productsVencidosCount)
             );
-            NotificationMessage = translate(
-                'Function_Notification_ItOnlyHasExpiredProductsMessage'
-            ).replace('{NUMBER}', String(productsVencidosCount));
         } else if (productsNextToExpCount > 0 && productsVencidosCount > 0) {
-            NotificationTitle = translate(
-                'Function_Notification_ItHasExpiredAndNextToExpireProductsTitle'
+            NotificationTitle =
+                strings.Function_Notification_ItHasExpiredAndNextToExpireProductsTitle;
+            NotificationMessage = strings.Function_Notification_ItHasExpiredAndNextToExpireProductsMessage.replace(
+                '{EXPIREDNUMBER}',
+                String(productsVencidosCount)
             );
-            NotificationMessage = translate(
-                'Function_Notification_ItHasExpiredAndNextToExpireProductsMessage'
-            ).replace('{EXPIREDNUMBER}', String(productsVencidosCount));
         }
 
         if (!!NotificationTitle && !!NotificationMessage) {

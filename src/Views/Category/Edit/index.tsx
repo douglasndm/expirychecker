@@ -4,7 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 import { useTheme } from 'styled-components/native';
 import { Button } from 'react-native-paper';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import {
     getCategory,
@@ -50,7 +50,7 @@ const Edit: React.FC = () => {
             await deleteCategory({ category_id: routeParams.id });
 
             showMessage({
-                message: translate('View_Category_Success_OnDelete'),
+                message: strings.View_Category_Success_OnDelete,
                 type: 'info',
             });
 
@@ -81,7 +81,7 @@ const Edit: React.FC = () => {
 
     const handleUpdate = useCallback(async () => {
         if (!name) {
-            setErrorName(translate('View_Category_Edit_ErrorEmtpyName'));
+            setErrorName(strings.View_Category_Edit_ErrorEmtpyName);
             return;
         }
 
@@ -91,7 +91,7 @@ const Edit: React.FC = () => {
         });
 
         showMessage({
-            message: translate('View_Category_Edit_SuccessText'),
+            message: strings.View_Category_Edit_SuccessText,
             type: 'info',
         });
 
@@ -112,7 +112,7 @@ const Edit: React.FC = () => {
                     <PageTitleContainer>
                         <BackButton handleOnPress={goBack} />
                         <PageTitle>
-                            {translate('View_Category_Edit_PageTitle')}
+                            {strings.View_Category_Edit_PageTitle}
                         </PageTitle>
                     </PageTitleContainer>
                 </PageHeader>
@@ -120,9 +120,9 @@ const Edit: React.FC = () => {
                 <Content>
                     <InputTextContainer hasError={!!errorName}>
                         <InputText
-                            placeholder={translate(
-                                'View_Category_Edit_InputNamePlaceholder'
-                            )}
+                            placeholder={
+                                strings.View_Category_Edit_InputNamePlaceholder
+                            }
                             value={name}
                             onChangeText={onNameChange}
                         />
@@ -134,7 +134,7 @@ const Edit: React.FC = () => {
                             icon={() => <Icons name="save-outline" size={22} />}
                             onPress={handleUpdate}
                         >
-                            {translate('View_Category_Edit_ButtonSave')}
+                            {strings.View_Category_Edit_ButtonSave}
                         </ButtonPaper>
 
                         <ButtonPaper
@@ -145,9 +145,7 @@ const Edit: React.FC = () => {
                                 setDeleteComponentVisible(true);
                             }}
                         >
-                            {translate(
-                                'View_ProductDetails_Button_DeleteProduct'
-                            )}
+                            {strings.View_ProductDetails_Button_DeleteProduct}
                         </ButtonPaper>
                     </ActionsButtonContainer>
                 </Content>
@@ -159,16 +157,16 @@ const Edit: React.FC = () => {
                 }}
             >
                 <DialogPaper.Title style={{ color: theme.colors.text }}>
-                    {translate('View_Category_Edit_DeleteModal_Title')}
+                    {strings.View_Category_Edit_DeleteModal_Title}
                 </DialogPaper.Title>
                 <DialogPaper.Content>
                     <Text>
-                        {translate('View_Category_Edit_DeleteModal_Message')}
+                        {strings.View_Category_Edit_DeleteModal_Message}
                     </Text>
                 </DialogPaper.Content>
                 <DialogPaper.Actions>
                     <Button color="red" onPress={handleDeleteCategory}>
-                        {translate('View_Category_Edit_DeleteModal_Confirm')}
+                        {strings.View_Category_Edit_DeleteModal_Confirm}
                     </Button>
                     <Button
                         color={theme.colors.accent}
@@ -176,7 +174,7 @@ const Edit: React.FC = () => {
                             setDeleteComponentVisible(false);
                         }}
                     >
-                        {translate('View_Category_Edit_DeleteModal_Cancel')}
+                        {strings.View_Category_Edit_DeleteModal_Cancel}
                     </Button>
                 </DialogPaper.Actions>
             </DialogPaper>

@@ -1,7 +1,7 @@
 import { UpdateMode } from 'realm';
 import UUID from 'react-native-uuid-generator';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import Realm from '~/Services/Realm';
 
@@ -93,7 +93,7 @@ export async function createStore(storeName: string): Promise<IStore> {
 
         if (storeAlreadyExists) {
             throw new Error(
-                translate('Function_Category_AddCategory_Error_AlreadyExists')
+                strings.Function_Category_AddCategory_Error_AlreadyExists
             );
         }
 

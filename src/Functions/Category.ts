@@ -1,7 +1,7 @@
 import { UpdateMode } from 'realm';
 import UUID from 'react-native-uuid-generator';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import Realm from '~/Services/Realm';
 
@@ -43,7 +43,7 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
 
         if (categoryAlreadyExists) {
             throw new Error(
-                translate('Function_Category_AddCategory_Error_AlreadyExists')
+                strings.Function_Category_AddCategory_Error_AlreadyExists
             );
         }
 
