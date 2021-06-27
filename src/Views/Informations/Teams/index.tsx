@@ -21,8 +21,8 @@ import {
     Text,
     PickerContainer,
     Picker,
-    ContactContainer,
-    Link,
+    ActionButton,
+    Icons,
 } from './styles';
 
 interface IStoreItem {
@@ -91,8 +91,10 @@ const Teams: React.FC = () => {
         setSelectedStore(value);
     }, []);
 
-    const navigateToTelegram = useCallback(async () => {
-        await Linking.openURL('https://t.me/douglasdev');
+    const handleNavigateGPlay = useCallback(async () => {
+        await Linking.openURL(
+            'market://details?id=dev.douglasndm.expirychecker.business'
+        );
     }, []);
 
     useEffect(() => {
@@ -148,12 +150,14 @@ const Teams: React.FC = () => {
                     onPress={handleExport}
                 />
 
-                <ContactContainer>
-                    <Text>{translate('Informations_Teams_Contact')}</Text>
-                    <Link onPress={navigateToTelegram}>
-                        {translate('View_About_HelpTelegram')}
-                    </Link>
-                </ContactContainer>
+                <ActionButton
+                    icon={() => (
+                        <Icons name="logo-google-playstore" size={22} />
+                    )}
+                    onPress={handleNavigateGPlay}
+                >
+                    Ver na Google Play (EM TESTES)
+                </ActionButton>
             </Content>
         </Container>
     );
