@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import { Switch } from 'react-native-paper';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
@@ -129,24 +129,20 @@ const Settings: React.FC = () => {
                     <PageHeader>
                         <BackButton handleOnPress={goBack} />
 
-                        <PageTitle>
-                            {translate('View_Settings_PageTitle')}
-                        </PageTitle>
+                        <PageTitle>{strings.View_Settings_PageTitle}</PageTitle>
                     </PageHeader>
 
                     <SettingsContent>
                         <Category>
                             <CategoryTitle>
-                                {translate(
-                                    'View_Settings_CategoryName_General'
-                                )}
+                                {strings.View_Settings_CategoryName_General}
                             </CategoryTitle>
 
                             <CategoryOptions>
                                 <SettingDescription>
-                                    {translate(
-                                        'View_Settings_SettingName_HowManyDaysToBeNextToExp'
-                                    )}
+                                    {
+                                        strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
+                                    }
                                 </SettingDescription>
                                 <InputSetting
                                     keyboardType="numeric"
@@ -165,9 +161,9 @@ const Settings: React.FC = () => {
                                 {userPreferences.isUserPremium && (
                                     <SettingContainer>
                                         <SettingDescription>
-                                            {translate(
-                                                'View_Settings_SettingName_EnableMultiplesStores'
-                                            )}
+                                            {
+                                                strings.View_Settings_SettingName_EnableMultiplesStores
+                                            }
                                         </SettingDescription>
                                         <Switch
                                             value={
@@ -189,21 +185,15 @@ const Settings: React.FC = () => {
                         {userSigned && (
                             <Category>
                                 <CategoryTitle>
-                                    {translate(
-                                        'View_Settings_CategoryName_Account'
-                                    )}
+                                    {strings.View_Settings_CategoryName_Account}
                                 </CategoryTitle>
 
                                 <SettingDescription>
-                                    {translate(
-                                        'View_Settings_AccountDescription'
-                                    )}
+                                    {strings.View_Settings_AccountDescription}
                                 </SettingDescription>
 
                                 <GenericButton
-                                    text={translate(
-                                        'View_Settings_Button_SignOut'
-                                    )}
+                                    text={strings.View_Settings_Button_SignOut}
                                     onPress={handleLogout}
                                     isLoading={isOnLogout}
                                 />

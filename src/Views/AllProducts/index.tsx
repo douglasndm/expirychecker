@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -104,16 +104,14 @@ const AllProducts: React.FC = () => {
             ) : (
                 <>
                     <Container>
-                        <Header
-                            title={translate('View_AllProducts_PageTitle')}
-                        />
+                        <Header title={strings.View_AllProducts_PageTitle} />
 
                         {products.length > 0 && (
                             <InputTextContainer>
                                 <InputSearch
-                                    placeholder={translate(
-                                        'View_AllProducts_SearchPlaceholder'
-                                    )}
+                                    placeholder={
+                                        strings.View_AllProducts_SearchPlaceholder
+                                    }
                                     value={searchString}
                                     onChangeText={handleSearchChange}
                                 />

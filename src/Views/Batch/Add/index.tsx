@@ -16,7 +16,7 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -94,7 +94,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const handleSave = useCallback(async () => {
         if (!lote || lote.trim() === '') {
             showMessage({
-                message: translate('View_AddBatch_AlertTypeBatchName'),
+                message: strings.View_AddBatch_AlertTypeBatchName,
                 type: 'danger',
             });
             return;
@@ -195,9 +195,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
             <ScrollView>
                 <PageHeader>
                     <BackButton handleOnPress={goBack} />
-                    <PageTitle>
-                        {translate('View_AddBatch_PageTitle')}
-                    </PageTitle>
+                    <PageTitle>{strings.View_AddBatch_PageTitle}</PageTitle>
                 </PageHeader>
 
                 <PageContent>
@@ -215,9 +213,9 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                                 }}
                             >
                                 <InputText
-                                    placeholder={translate(
-                                        'View_AddBatch_InputPlacehoder_Batch'
-                                    )}
+                                    placeholder={
+                                        strings.View_AddBatch_InputPlacehoder_Batch
+                                    }
                                     value={lote}
                                     onChangeText={value => setLote(value)}
                                 />
@@ -228,9 +226,9 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                                 }}
                             >
                                 <InputText
-                                    placeholder={translate(
-                                        'View_AddBatch_InputPlacehoder_Amount'
-                                    )}
+                                    placeholder={
+                                        strings.View_AddBatch_InputPlacehoder_Amount
+                                    }
                                     keyboardType="numeric"
                                     value={amount}
                                     onChangeText={handleAmountChange}
@@ -242,14 +240,14 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                             value={price}
                             onChangeValue={handlePriceChange}
                             delimiter={currency === 'BRL' ? ',' : '.'}
-                            placeholder={translate(
-                                'View_AddBatch_InputPlacehoder_UnitPrice'
-                            )}
+                            placeholder={
+                                strings.View_AddBatch_InputPlacehoder_UnitPrice
+                            }
                         />
 
                         <ExpDateGroup>
                             <ExpDateLabel>
-                                {translate('View_AddBatch_CalendarTitle')}
+                                {strings.View_AddBatch_CalendarTitle}
                             </ExpDateLabel>
                             <CustomDatePicker
                                 date={expDate}
@@ -262,7 +260,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     </InputContainer>
 
                     <GenericButton
-                        text={translate('View_AddBatch_Button_Save')}
+                        text={strings.View_AddBatch_Button_Save}
                         onPress={handleSave}
                     />
                 </PageContent>

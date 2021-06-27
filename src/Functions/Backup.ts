@@ -13,9 +13,8 @@ import CryptoJS from 'crypto-js';
 import EnvConfig from 'react-native-config';
 import RNGRP from 'react-native-get-real-path';
 
-import { translate } from '../Locales';
+import strings from '../Locales';
 
-import { createProduct } from './Product';
 import { getAllProducts } from './Products';
 import { getAllCategories } from './Category';
 import { saveMany } from './Products/index';
@@ -131,9 +130,7 @@ export async function generateBackupFile({
 
     await genereteZipImagesFolder();
 
-    const productsFilePath = `${backupDir}/${translate(
-        'Function_Export_FileName'
-    )}.cvbf`;
+    const productsFilePath = `${backupDir}/${strings.Function_Export_FileName}.cvbf`;
 
     // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
     // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
@@ -151,11 +148,11 @@ export async function exportBackupFile(): Promise<void> {
 
     const zipPath = await zip(
         `${backupDir}`,
-        `${DocumentDirectoryPath}/${translate('Function_Export_FileName')}.zip`
+        `${DocumentDirectoryPath}/${strings.Function_Export_FileName}.zip`
     );
 
     await Share.open({
-        title: translate('Function_Share_SaveFileTitle'),
+        title: strings.Function_Share_SaveFileTitle,
         url: `file://${zipPath}`,
     });
 
@@ -175,7 +172,7 @@ export async function importBackupFile(): Promise<void> {
 
     // caso a extensão do arquivo não for cvbf lança um erro e sai da função
     if (extension !== 'cvbf' && extension !== 'zip') {
-        throw new Error(translate('Function_Import_Error_InvalidExtesion'));
+        throw new Error(strings.Function_Import_Error_InvalidExtesion);
     }
 
     let backupFilePath = null;

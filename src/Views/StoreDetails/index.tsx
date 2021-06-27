@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
 import {
@@ -44,7 +44,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             let results: Array<IProduct> = [];
 
             if (store === '000') {
-                setStoreName(translate('View_AllProductByStore_NoStore'));
+                setStoreName(strings.View_AllProductByStore_NoStore);
                 results = await getAllProductsByStore(null);
             } else {
                 results = await getAllProductsByStore(store);
@@ -94,7 +94,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             <Header />
 
             <StoreTitle>
-                {translate('View_AllProductByStore_StoreName').replace(
+                {strings.View_AllProductByStore_StoreName.replace(
                     '{STORE}',
                     storeName
                 )}
@@ -107,7 +107,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                     <FloatIcon name="add-outline" color="white" size={22} />
                 )}
                 small
-                label={translate('View_FloatMenu_AddProduct')}
+                label={strings.View_FloatMenu_AddProduct}
                 onPress={handleNavigateAddProduct}
             />
         </Container>

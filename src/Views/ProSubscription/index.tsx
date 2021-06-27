@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import {
     getSubscriptionDetails,
@@ -201,18 +201,14 @@ const Pro: React.FC = () => {
             });
 
             showMessage({
-                message: translate(
-                    'View_PROView_Subscription_Alert_RestoreSuccess'
-                ),
+                message: strings.View_PROView_Subscription_Alert_RestoreSuccess,
                 type: 'info',
             });
 
             handleNavigateHome();
         } else {
             showMessage({
-                message: translate(
-                    'View_PROView_Subscription_Alert_NoSubscription'
-                ),
+                message: strings.View_PROView_Subscription_Alert_NoSubscription,
                 type: 'info',
             });
         }
@@ -227,11 +223,11 @@ const Pro: React.FC = () => {
                 <HeaderContainer>
                     <TitleContainer>
                         <IntroductionText>
-                            {translate('View_ProPage_MeetPRO')}
+                            {strings.View_ProPage_MeetPRO}
                         </IntroductionText>
-                        <AppNameTitle>{translate('AppName')}</AppNameTitle>
+                        <AppNameTitle>{strings.AppName}</AppNameTitle>
                         <PremiumTitle>
-                            {translate('View_ProPage_ProLabel')}
+                            {strings.View_ProPage_ProLabel}
                         </PremiumTitle>
                     </TitleContainer>
                 </HeaderContainer>
@@ -239,40 +235,40 @@ const Pro: React.FC = () => {
                 <AdvantagesGroup>
                     <AdvantageContainer>
                         <AdvantageText>
-                            {translate('View_ProPage_AdvantageOne')}
+                            {strings.View_ProPage_AdvantageOne}
                         </AdvantageText>
                     </AdvantageContainer>
 
                     <AdvantageContainer>
                         <AdvantageText>
-                            {translate('View_ProPage_AdvantageSeven')}
+                            {strings.View_ProPage_AdvantageSeven}
                         </AdvantageText>
                     </AdvantageContainer>
 
                     <AdvantageContainer>
                         <AdvantageText>
-                            {translate('View_ProPage_AdvantageTwo')}
+                            {strings.View_ProPage_AdvantageTwo}
                         </AdvantageText>
                     </AdvantageContainer>
 
                     <AdvantageContainer>
                         <AdvantageText>
-                            {translate('View_ProPage_AdvantageThree')}
+                            {strings.View_ProPage_AdvantageThree}
                         </AdvantageText>
                     </AdvantageContainer>
                     <AdvantageContainer>
                         <AdvantageText>
-                            {translate('View_ProPage_AdvantageFour')}
+                            {strings.View_ProPage_AdvantageFour}
                         </AdvantageText>
                     </AdvantageContainer>
                     <AdvantageContainer>
                         <AdvantageText>
-                            {translate('View_ProPage_AdvantageSix')}
+                            {strings.View_ProPage_AdvantageSix}
                         </AdvantageText>
                     </AdvantageContainer>
                     <AdvantageContainer>
                         <AdvantageText>
-                            {translate('View_ProPage_AdvantageFive')}
+                            {strings.View_ProPage_AdvantageFive}
                         </AdvantageText>
                     </AdvantageContainer>
                 </AdvantagesGroup>
@@ -281,7 +277,7 @@ const Pro: React.FC = () => {
                     {alreadyPremium ? (
                         <ButtonSubscription>
                             <TextSubscription>
-                                {translate('View_ProPage_UserAlreadyPro')}
+                                {strings.View_ProPage_UserAlreadyPro}
                             </TextSubscription>
                         </ButtonSubscription>
                     ) : (
@@ -297,9 +293,9 @@ const Pro: React.FC = () => {
                                     >
                                         <SubscriptionPeriodContainer>
                                             <SubscriptionPeriod>
-                                                {translate(
-                                                    'View_ProPage_SubscribePeriod_Monthly'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_SubscribePeriod_Monthly
+                                                }
                                             </SubscriptionPeriod>
                                         </SubscriptionPeriodContainer>
 
@@ -322,9 +318,9 @@ const Pro: React.FC = () => {
                                                                     .product
                                                                     .intro_price_period_number_of_units
                                                             }
-                                                            {translate(
-                                                                'View_ProPage_AfterDaysFreeTest'
-                                                            )}
+                                                            {
+                                                                strings.View_ProPage_AfterDaysFreeTest
+                                                            }
                                                         </Text>
                                                     )
                                                 ) : (
@@ -342,9 +338,9 @@ const Pro: React.FC = () => {
                                                     </SubscriptionIntroPrice>
                                                 )}
 
-                                                {translate(
-                                                    'View_ProPage_AfterIntroPrice_Monthly'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_AfterIntroPrice_Monthly
+                                                }
                                                 <SubscriptionPrice
                                                     isSelected={
                                                         !!selectedPlan &&
@@ -357,9 +353,9 @@ const Pro: React.FC = () => {
                                                             .price_string
                                                     }
                                                 </SubscriptionPrice>
-                                                {translate(
-                                                    'View_ProPage_AfterPrice_Monthly'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_AfterPrice_Monthly
+                                                }
                                             </SubscriptionDescription>
                                         </DetailsContainer>
                                     </SubscriptionContainer>
@@ -379,9 +375,9 @@ const Pro: React.FC = () => {
                                     >
                                         <SubscriptionPeriodContainer>
                                             <SubscriptionPeriod>
-                                                {translate(
-                                                    'View_ProPage_SubscribePeriod_ThreeMonths'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_SubscribePeriod_ThreeMonths
+                                                }
                                             </SubscriptionPeriod>
                                         </SubscriptionPeriodContainer>
 
@@ -406,9 +402,9 @@ const Pro: React.FC = () => {
                                                                 .product
                                                                 .intro_price_string
                                                         }
-                                                        {translate(
-                                                            'View_ProPage_AfterIntroPrice_ThreeMonths'
-                                                        )}
+                                                        {
+                                                            strings.View_ProPage_AfterIntroPrice_ThreeMonths
+                                                        }
                                                     </SubscriptionIntroPrice>
                                                 )}
                                                 <SubscriptionPrice
@@ -423,9 +419,9 @@ const Pro: React.FC = () => {
                                                             .price_string
                                                     }
                                                 </SubscriptionPrice>
-                                                {translate(
-                                                    'View_ProPage_AfterPrice_ThreeMonths'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_AfterPrice_ThreeMonths
+                                                }
                                             </SubscriptionDescription>
                                         </DetailsContainer>
                                     </SubscriptionContainer>
@@ -441,9 +437,9 @@ const Pro: React.FC = () => {
                                     >
                                         <SubscriptionPeriodContainer isSelected>
                                             <SubscriptionPeriod>
-                                                {translate(
-                                                    'View_ProPage_SubscribePeriod_OneYear'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_SubscribePeriod_OneYear
+                                                }
                                             </SubscriptionPeriod>
                                         </SubscriptionPeriodContainer>
                                         <DetailsContainer>
@@ -460,9 +456,9 @@ const Pro: React.FC = () => {
                                                             annualPlan.product
                                                                 .intro_price_string
                                                         }
-                                                        {translate(
-                                                            'View_ProPage_AfterIntroPrice_OneYear'
-                                                        )}
+                                                        {
+                                                            strings.View_ProPage_AfterIntroPrice_OneYear
+                                                        }
                                                     </SubscriptionIntroPrice>
                                                 )}
 
@@ -478,9 +474,9 @@ const Pro: React.FC = () => {
                                                             .price_string
                                                     }
                                                 </SubscriptionPrice>
-                                                {translate(
-                                                    'View_ProPage_AfterPrice_OneYear'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_AfterPrice_OneYear
+                                                }
                                             </SubscriptionDescription>
                                         </DetailsContainer>
                                     </SubscriptionContainer>
@@ -488,15 +484,15 @@ const Pro: React.FC = () => {
                             </SubscriptionsGroup>
 
                             <TermsPrivacyText>
-                                {translate(
-                                    'View_ProPage_Text_BeforeTermsAndPrivacy'
-                                )}
+                                {
+                                    strings.View_ProPage_Text_BeforeTermsAndPrivacy
+                                }
                                 <TermsPrivacyLink onPress={navigateToTerms}>
-                                    {translate('Terms')}
+                                    {strings.Terms}
                                 </TermsPrivacyLink>
-                                {translate('BetweenTermsAndPrivacy')}
+                                {strings.BetweenTermsAndPrivacy}
                                 <TermsPrivacyLink onPress={navigateToPrivacy}>
-                                    {translate('PrivacyPolicy')}
+                                    {strings.PrivacyPolicy}
                                 </TermsPrivacyLink>
                                 .
                             </TermsPrivacyText>
@@ -514,9 +510,9 @@ const Pro: React.FC = () => {
                                     {!isLoadingMakeSubscription && (
                                         <>
                                             <TextSubscription>
-                                                {translate(
-                                                    'View_ProPage_Button_Subscribe'
-                                                )}
+                                                {
+                                                    strings.View_ProPage_Button_Subscribe
+                                                }
                                             </TextSubscription>
                                         </>
                                     )}
@@ -524,9 +520,9 @@ const Pro: React.FC = () => {
                             ) : (
                                 <ButtonSubscription disabled>
                                     <TextSubscription>
-                                        {translate(
-                                            'View_ProPage_SubscriptionNotAvailable'
-                                        )}
+                                        {
+                                            strings.View_ProPage_SubscriptionNotAvailable
+                                        }
                                     </TextSubscription>
                                 </ButtonSubscription>
                             )}
@@ -541,9 +537,9 @@ const Pro: React.FC = () => {
                                     <LoadingIndicator />
                                 ) : (
                                     <TextSubscription>
-                                        {translate(
-                                            'View_PROView_Subscription_RestoreButton'
-                                        )}
+                                        {
+                                            strings.View_PROView_Subscription_RestoreButton
+                                        }
                                     </TextSubscription>
                                 )}
                             </ButtonSubscription>
@@ -553,7 +549,7 @@ const Pro: React.FC = () => {
 
                 <ButtonSubscription onPress={handleNavigateHome}>
                     <TextSubscription>
-                        {translate('View_ProPage_Button_GoBackToHome')}
+                        {strings.View_ProPage_Button_GoBackToHome}
                     </TextSubscription>
                 </ButtonSubscription>
             </Container>
