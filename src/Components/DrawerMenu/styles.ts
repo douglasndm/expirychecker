@@ -7,9 +7,15 @@ import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import LogoImg from '~/Assets/Logo.png';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView.attrs(() => ({
+    contentContainerStyle: { flexGrow: 1 },
+}))`
     flex: 1;
     background-color: ${({ theme }) => theme.colors.background};
+`;
+
+export const MainMenuContainer = styled.View`
+    flex: 1;
 `;
 
 export const LogoContainer = styled.View`
