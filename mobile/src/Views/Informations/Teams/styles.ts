@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components/native';
 import { Platform } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { Button } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.ScrollView`
     background-color: ${({ theme }) => theme.colors.background};
@@ -62,13 +64,10 @@ export const Picker = styled(RNPickerSelect).attrs(({ theme }) => ({
     },
 }))``;
 
-export const ContactContainer = styled.View`
-    align-items: center;
-    margin-top: 10px;
-`;
+export const ActionButton = styled(Button).attrs(props => ({
+    color: props.theme.colors.accent,
+}))``;
 
-export const Link = styled.Text`
-    color: ${props => props.theme.colors.accent};
-    font-size: 18px;
-    margin-top: 5px;
+export const Icons = styled(Ionicons)`
+    color: ${({ theme }) => theme.colors.text};
 `;
