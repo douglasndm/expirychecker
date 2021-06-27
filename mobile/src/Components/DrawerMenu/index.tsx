@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, Platform } from 'react-native';
 import {
     DrawerContentOptions,
     DrawerContentScrollView,
@@ -195,14 +195,16 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             </DrawerContentScrollView>
 
             <DrawerSection>
-                <MenuItemContainer onPress={handleNavigateToTeams}>
-                    <MenuContent>
-                        <Icons name="people-outline" />
-                        <MenuItemText>
-                            {translate('Menu_Button_GoToTeams')}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
+                {Platform.OS === 'android' && (
+                    <MenuItemContainer onPress={handleNavigateToTeams}>
+                        <MenuContent>
+                            <Icons name="people-outline" />
+                            <MenuItemText>
+                                {translate('Menu_Button_GoToTeams')}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+                )}
 
                 <MenuItemContainer
                     onPress={() => navigation.navigate('Settings')}
