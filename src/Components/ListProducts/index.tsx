@@ -25,12 +25,16 @@ interface RequestProps {
     products: Array<IProduct>;
     isHome?: boolean;
     deactiveFloatButton?: boolean;
+    onRefresh?: () => void;
+    isRefreshing?: boolean;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
     products,
     isHome,
     deactiveFloatButton,
+    onRefresh,
+    isRefreshing = false,
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
@@ -122,6 +126,8 @@ const ListProducts: React.FC<RequestProps> = ({
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
                 initialNumToRender={10}
+                onRefresh={onRefresh}
+                refreshing={isRefreshing}
             />
 
             {!deactiveFloatButton && (
