@@ -174,7 +174,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             const tempStore =
                 selectedStore && selectedStore !== 'null'
                     ? selectedStore
-                    : null;
+                    : undefined;
 
             const newProduct: Omit<IProduct, 'id'> = {
                 name,
@@ -343,7 +343,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     }, []);
 
     const onPhotoTaked = useCallback(
-        async ({ fileName, filePath }: onPhotoTakedProps) => {
+        async ({ filePath }: onPhotoTakedProps) => {
             if (await exists(filePath)) {
                 setPhotoPath(filePath);
             }
