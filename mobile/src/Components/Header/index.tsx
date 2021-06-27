@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -41,8 +41,8 @@ const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
                 ) : (
                     <TextLogo style={{ fontSize: titleFontSize }}>
                         {userPreferences.isUserPremium
-                            ? translate('AppName_ProVersion')
-                            : translate('AppName')}
+                            ? strings.AppName_ProVersion
+                            : strings.AppName}
                     </TextLogo>
                 )}
             </HeaderContainer>

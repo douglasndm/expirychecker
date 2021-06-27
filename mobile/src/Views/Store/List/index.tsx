@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { createStore, getAllStores } from '~/Functions/Stores';
 
@@ -39,7 +39,7 @@ const List: React.FC = () => {
         getAllStores().then(response => {
             const noStore: IStore = {
                 id: '000',
-                name: translate('View_Store_List_NoStore'),
+                name: strings.View_Store_List_NoStore,
             };
 
             setStores([...response, noStore]);
@@ -57,7 +57,7 @@ const List: React.FC = () => {
             if (!newStoreName) {
                 setInputHasError(true);
                 setInputErrorMessage(
-                    translate('View_Store_List_AddNewStore_Error_TextEmpty')
+                    strings.View_Store_List_AddNewStore_Error_TextEmpty
                 );
                 return;
             }
@@ -109,7 +109,7 @@ const List: React.FC = () => {
 
     return (
         <Container>
-            <Header title={translate('View_Store_List_PageTitle')} />
+            <Header title={strings.View_Store_List_PageTitle} />
 
             <AddCategoryContent>
                 <InputContainer>
@@ -117,9 +117,9 @@ const List: React.FC = () => {
                         <InputText
                             value={newStoreName}
                             onChangeText={handleOnTextChange}
-                            placeholder={translate(
-                                'View_Store_List_AddNewStore_Placeholder'
-                            )}
+                            placeholder={
+                                strings.View_Store_List_AddNewStore_Placeholder
+                            }
                         />
                     </InputTextContainer>
 

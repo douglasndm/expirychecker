@@ -5,7 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -143,9 +143,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
             if (!product) {
                 showMessage({
-                    message: translate(
-                        'View_EditProduct_Error_ProductNotFound'
-                    ),
+                    message: strings.View_EditProduct_Error_ProductNotFound,
                     type: 'danger',
                 });
                 return;
@@ -326,9 +324,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 <PageHeader>
                                     <BackButton handleOnPress={goBack} />
                                     <PageTitle>
-                                        {translate(
-                                            'View_EditProduct_PageTitle'
-                                        )}
+                                        {strings.View_EditProduct_PageTitle}
                                     </PageTitle>
                                 </PageHeader>
 
@@ -350,12 +346,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         <InputGroup>
                                             <InputTextContainer>
                                                 <InputText
-                                                    placeholder={translate(
-                                                        'View_EditProduct_InputPlacehoder_Name'
-                                                    )}
-                                                    accessibilityLabel={translate(
-                                                        'View_EditProduct_InputAccessibility_Name'
-                                                    )}
+                                                    placeholder={
+                                                        strings.View_EditProduct_InputPlacehoder_Name
+                                                    }
+                                                    accessibilityLabel={
+                                                        strings.View_EditProduct_InputAccessibility_Name
+                                                    }
                                                     value={name}
                                                     onChangeText={value => {
                                                         setName(value);
@@ -376,20 +372,20 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </InputGroup>
                                         {nameFieldError && (
                                             <InputTextTip>
-                                                {translate(
-                                                    'View_EditProduct_Error_EmptyProductName'
-                                                )}
+                                                {
+                                                    strings.View_EditProduct_Error_EmptyProductName
+                                                }
                                             </InputTextTip>
                                         )}
 
                                         <InputCodeTextContainer>
                                             <InputCodeText
-                                                placeholder={translate(
-                                                    'View_EditProduct_InputPlacehoder_Code'
-                                                )}
-                                                accessibilityLabel={translate(
-                                                    'View_EditProduct_InputAccessibility_Code'
-                                                )}
+                                                placeholder={
+                                                    strings.View_EditProduct_InputPlacehoder_Code
+                                                }
+                                                accessibilityLabel={
+                                                    strings.View_EditProduct_InputAccessibility_Code
+                                                }
                                                 value={code}
                                                 onChangeText={value =>
                                                     setCode(value)
@@ -406,9 +402,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
                                         <MoreInformationsContainer>
                                             <MoreInformationsTitle>
-                                                {translate(
-                                                    'View_AddProduct_MoreInformation_Label'
-                                                )}
+                                                {
+                                                    strings.View_AddProduct_MoreInformation_Label
+                                                }
                                             </MoreInformationsTitle>
 
                                             {userPreferences.isUserPremium && (
@@ -422,9 +418,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         }
                                                         value={selectedCategory}
                                                         placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlaceholder_SelectCategory'
-                                                            ),
+                                                            label:
+                                                                strings.View_AddProduct_InputPlaceholder_SelectCategory,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -444,9 +439,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         }
                                                         value={selectedStore}
                                                         placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlacehoder_Store'
-                                                            ),
+                                                            label:
+                                                                strings.View_AddProduct_InputPlacehoder_Store,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -464,9 +458,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 )}
                                                 onPress={updateProd}
                                             >
-                                                {translate(
-                                                    'View_EditProduct_Button_Save'
-                                                )}
+                                                {
+                                                    strings.View_EditProduct_Button_Save
+                                                }
                                             </ButtonPaper>
                                             <ButtonPaper
                                                 icon={() => (
@@ -481,9 +475,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     );
                                                 }}
                                             >
-                                                {translate(
-                                                    'View_ProductDetails_Button_DeleteProduct'
-                                                )}
+                                                {
+                                                    strings.View_ProductDetails_Button_DeleteProduct
+                                                }
                                             </ButtonPaper>
                                             <ButtonPaper
                                                 icon={() => (
@@ -494,9 +488,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 )}
                                                 onPress={goBack}
                                             >
-                                                {translate(
-                                                    'View_EditProduct_Button_Cancel'
-                                                )}
+                                                {
+                                                    strings.View_EditProduct_Button_Cancel
+                                                }
                                             </ButtonPaper>
                                         </ActionsButtonContainer>
                                     </InputContainer>
@@ -511,15 +505,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 <DialogPaper.Title
                                     style={{ color: theme.colors.text }}
                                 >
-                                    {translate(
-                                        'View_ProductDetails_WarningDelete_Title'
-                                    )}
+                                    {
+                                        strings.View_ProductDetails_WarningDelete_Title
+                                    }
                                 </DialogPaper.Title>
                                 <DialogPaper.Content>
                                     <Text>
-                                        {translate(
-                                            'View_ProductDetails_WarningDelete_Message'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_WarningDelete_Message
+                                        }
                                     </Text>
                                 </DialogPaper.Content>
                                 <DialogPaper.Actions>
@@ -527,9 +521,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         color="red"
                                         onPress={handleDeleteProduct}
                                     >
-                                        {translate(
-                                            'View_ProductDetails_WarningDelete_Button_Confirm'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_WarningDelete_Button_Confirm
+                                        }
                                     </Button>
                                     <Button
                                         color={theme.colors.accent}
@@ -537,9 +531,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                             setDeleteComponentVisible(false);
                                         }}
                                     >
-                                        {translate(
-                                            'View_ProductDetails_WarningDelete_Button_Cancel'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_WarningDelete_Button_Cancel
+                                        }
                                     </Button>
                                 </DialogPaper.Actions>
                             </DialogPaper>

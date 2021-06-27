@@ -3,7 +3,7 @@ import { Linking } from 'react-native';
 import Share from 'react-native-share';
 import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -58,7 +58,7 @@ const Teams: React.FC = () => {
 
         storesArray.push({
             key: 'none',
-            label: translate('View_Export_StorePicker_NoStore'),
+            label: strings.View_Export_StorePicker_NoStore,
             value: 'none',
         });
 
@@ -74,7 +74,7 @@ const Teams: React.FC = () => {
                 store: selectedStore || 'none',
             });
             await Share.open({
-                title: translate('Function_Share_SaveFileTitle'),
+                title: strings.Function_Share_SaveFileTitle,
                 url: `file://${path}`,
             });
         } catch (err) {
@@ -103,25 +103,23 @@ const Teams: React.FC = () => {
 
     return (
         <Container>
-            <Header title={translate('Informations_Teams_PageTitle')} />
+            <Header title={strings.Informations_Teams_PageTitle} />
 
             <Content>
-                <Title>
-                    {translate('Informations_Teams_InformationsTitle')}
-                </Title>
+                <Title>{strings.Informations_Teams_InformationsTitle}</Title>
                 <Advantage>
-                    {translate('Informations_Teams_AdvantagesTitle')}
+                    {strings.Informations_Teams_AdvantagesTitle}
                 </Advantage>
 
-                <Text>{translate('Informations_Teams_Advantage1')}</Text>
+                <Text>{strings.Informations_Teams_Advantage1}</Text>
 
-                <Text>{translate('Informations_Teams_Advantage2')}</Text>
+                <Text>{strings.Informations_Teams_Advantage2}</Text>
 
-                <Text>{translate('Informations_Teams_Advantage3')}</Text>
+                <Text>{strings.Informations_Teams_Advantage3}</Text>
 
-                <Text>{translate('Informations_Teams_Advantage4')}</Text>
+                <Text>{strings.Informations_Teams_Advantage4}</Text>
 
-                <Text>{translate('Informations_Teams_AdvantageBackup')}</Text>
+                <Text>{strings.Informations_Teams_AdvantageBackup}</Text>
 
                 {userPreferences.multiplesStores && (
                     <PickerContainer
@@ -135,9 +133,8 @@ const Teams: React.FC = () => {
                             onValueChange={handleStoreChange}
                             value={selectedStore}
                             placeholder={{
-                                label: translate(
-                                    'View_AddProduct_InputPlacehoder_Store'
-                                ),
+                                label:
+                                    strings.View_AddProduct_InputPlacehoder_Store,
                                 value: 'null',
                             }}
                         />
@@ -145,7 +142,7 @@ const Teams: React.FC = () => {
                 )}
 
                 <Button
-                    text={translate('Informations_Teams_ButtonExport')}
+                    text={strings.Informations_Teams_ButtonExport}
                     isLoading={isExporting}
                     onPress={handleExport}
                 />

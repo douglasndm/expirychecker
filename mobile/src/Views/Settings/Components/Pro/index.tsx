@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import RNPermissions from 'react-native-permissions';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -92,14 +92,14 @@ const Pro: React.FC = () => {
             <Container>
                 <Category>
                     <CategoryTitle>
-                        {translate('View_Settings_CategoryName_Pro')}
+                        {strings.View_Settings_CategoryName_Pro}
                     </CategoryTitle>
 
                     {!userPreferences.isUserPremium && (
                         <Button
-                            text={translate(
-                                'View_Settings_Button_BecobeProToUnlockNewFeatures'
-                            )}
+                            text={
+                                strings.View_Settings_Button_BecobeProToUnlockNewFeatures
+                            }
                             onPress={navigateToPremiumView}
                         />
                     )}
@@ -109,9 +109,9 @@ const Pro: React.FC = () => {
                     >
                         <View>
                             <SettingDescription>
-                                {translate(
-                                    'View_Settings_SettingName_ExportAndInmport'
-                                )}
+                                {
+                                    strings.View_Settings_SettingName_ExportAndInmport
+                                }
                             </SettingDescription>
 
                             <PremiumButtonsContainer>
@@ -126,9 +126,9 @@ const Pro: React.FC = () => {
                                         <Loading />
                                     ) : (
                                         <ButtonPremiumText>
-                                            {translate(
-                                                'View_Settings_Button_ImportFile'
-                                            )}
+                                            {
+                                                strings.View_Settings_Button_ImportFile
+                                            }
                                         </ButtonPremiumText>
                                     )}
                                 </ButtonPremium>
@@ -139,9 +139,7 @@ const Pro: React.FC = () => {
                     {userPreferences.isUserPremium && (
                         <ButtonCancel onPress={handleCancel}>
                             <ButtonCancelText>
-                                {translate(
-                                    'View_Settings_Button_CancelSubscribe'
-                                )}
+                                {strings.View_Settings_Button_CancelSubscribe}
                             </ButtonCancelText>
                         </ButtonCancel>
                     )}

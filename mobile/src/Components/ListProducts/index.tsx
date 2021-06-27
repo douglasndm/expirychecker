@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -53,7 +53,21 @@ const ListProducts: React.FC<RequestProps> = ({
     }, [navigate]);
 
     const choosenAdText = useMemo(() => {
-        return Math.floor(Math.random() * 3) + 1;
+        const result = Math.floor(Math.random() * 3) + 1;
+
+        switch (result) {
+            case 1:
+                return strings.ProBanner_Text1;
+
+            case 2:
+                return strings.ProBanner_Text2;
+
+            case 3:
+                return strings.ProBanner_Text3;
+
+            default:
+                return strings.ProBanner_Text4;
+        }
     }, []);
 
     const ListHeader = useCallback(() => {
@@ -61,11 +75,7 @@ const ListProducts: React.FC<RequestProps> = ({
             <View>
                 {userPreferences.isUserPremium !== true && (
                     <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>
-                            {translate(
-                                `ProBanner_Text${choosenAdText}`
-                            ).toLocaleUpperCase()}
-                        </ProText>
+                        <ProText>{choosenAdText.toLocaleUpperCase()}</ProText>
                     </ProBanner>
                 )}
 
@@ -73,9 +83,9 @@ const ListProducts: React.FC<RequestProps> = ({
                 {products.length > 0 && (
                     <CategoryDetails>
                         <CategoryDetailsText>
-                            {translate(
-                                'ListProductsComponent_Title_ProductsNextToExp'
-                            )}
+                            {
+                                strings.ListProductsComponent_Title_ProductsNextToExp
+                            }
                         </CategoryDetailsText>
                     </CategoryDetails>
                 )}
@@ -91,7 +101,7 @@ const ListProducts: React.FC<RequestProps> = ({
     const EmptyList = useCallback(() => {
         return (
             <EmptyListText>
-                {translate('ListProductsComponent_Title_NoProductsInList')}
+                {strings.ListProductsComponent_Title_NoProductsInList}
             </EmptyListText>
         );
     }, []);
@@ -100,9 +110,7 @@ const ListProducts: React.FC<RequestProps> = ({
         if (products.length > 5 && isHome) {
             return (
                 <GenericButton
-                    text={translate(
-                        'ListProductsComponent_Button_ShowAllProducts'
-                    )}
+                    text={strings.ListProductsComponent_Button_ShowAllProducts}
                     onPress={handleNavigateToAllProducts}
                     contentStyle={{ marginBottom: 100 }}
                 />
@@ -136,7 +144,7 @@ const ListProducts: React.FC<RequestProps> = ({
                         <Icons name="add-outline" color="white" size={22} />
                     )}
                     small
-                    label={translate('View_FloatMenu_AddProduct')}
+                    label={strings.View_FloatMenu_AddProduct}
                     onPress={handleNavigateAddProduct}
                 />
             )}

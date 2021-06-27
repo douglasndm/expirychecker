@@ -11,7 +11,7 @@ import { showMessage } from 'react-native-flash-message';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -186,7 +186,7 @@ const Home: React.FC = () => {
                     {products.length > 0 && (
                         <InputTextContainer>
                             <InputSearch
-                                placeholder={translate('View_Home_SearchText')}
+                                placeholder={strings.View_Home_SearchText}
                                 value={searchString}
                                 onChangeText={handleSearchChange}
                             />

@@ -17,7 +17,7 @@ import {
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getAllStores } from '~/Functions/Stores';
 import {
@@ -424,7 +424,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                 <PageHeader>
                                     <BackButton handleOnPress={goBack} />
                                     <PageTitle>
-                                        {translate('View_AddProduct_PageTitle')}
+                                        {strings.View_AddProduct_PageTitle}
                                     </PageTitle>
                                 </PageHeader>
 
@@ -448,9 +448,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                 onPress={handleNavigateToPro}
                                             >
                                                 <BannerText>
-                                                    {translate(
-                                                        'View_AddProduct_Banner_UnlockCamera'
-                                                    )}
+                                                    {
+                                                        strings.View_AddProduct_Banner_UnlockCamera
+                                                    }
                                                 </BannerText>
 
                                                 <Icons name="arrow-down-outline" />
@@ -462,12 +462,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                 hasError={nameFieldError}
                                             >
                                                 <InputText
-                                                    placeholder={translate(
-                                                        'View_AddProduct_InputPlacehoder_Name'
-                                                    )}
-                                                    accessibilityLabel={translate(
-                                                        'View_AddProduct_InputAccessibility_Name'
-                                                    )}
+                                                    placeholder={
+                                                        strings.View_AddProduct_InputPlacehoder_Name
+                                                    }
+                                                    accessibilityLabel={
+                                                        strings.View_AddProduct_InputAccessibility_Name
+                                                    }
                                                     value={name}
                                                     onChangeText={value => {
                                                         setName(value);
@@ -491,9 +491,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                         </InputGroup>
                                         {nameFieldError && (
                                             <InputTextTip>
-                                                {translate(
-                                                    'View_AddProduct_AlertTypeProductName'
-                                                )}
+                                                {
+                                                    strings.View_AddProduct_AlertTypeProductName
+                                                }
                                             </InputTextTip>
                                         )}
 
@@ -501,12 +501,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             hasError={codeFieldError}
                                         >
                                             <InputCodeText
-                                                placeholder={translate(
-                                                    'View_AddProduct_InputPlacehoder_Code'
-                                                )}
-                                                accessibilityLabel={translate(
-                                                    'View_AddProduct_InputAccessibility_Code'
-                                                )}
+                                                placeholder={
+                                                    strings.View_AddProduct_InputPlacehoder_Code
+                                                }
+                                                accessibilityLabel={
+                                                    strings.View_AddProduct_InputAccessibility_Code
+                                                }
                                                 value={code}
                                                 onChangeText={value => {
                                                     setCode(value);
@@ -529,17 +529,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                     handleNavigateToExistProduct
                                                 }
                                             >
-                                                {translate(
-                                                    'View_AddProduct_Tip_DuplicateProduct'
-                                                )}
+                                                {
+                                                    strings.View_AddProduct_Tip_DuplicateProduct
+                                                }
                                             </InputTextTip>
                                         )}
 
                                         <MoreInformationsContainer>
                                             <MoreInformationsTitle>
-                                                {translate(
-                                                    'View_AddProduct_MoreInformation_Label'
-                                                )}
+                                                {
+                                                    strings.View_AddProduct_MoreInformation_Label
+                                                }
                                             </MoreInformationsTitle>
 
                                             <InputGroup>
@@ -550,12 +550,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                     }}
                                                 >
                                                     <InputText
-                                                        placeholder={translate(
-                                                            'View_AddProduct_InputPlacehoder_Batch'
-                                                        )}
-                                                        accessibilityLabel={translate(
-                                                            'View_AddProduct_InputAccessibility_Batch'
-                                                        )}
+                                                        placeholder={
+                                                            strings.View_AddProduct_InputPlacehoder_Batch
+                                                        }
+                                                        accessibilityLabel={
+                                                            strings.View_AddProduct_InputAccessibility_Batch
+                                                        }
                                                         value={lote}
                                                         onChangeText={value =>
                                                             setLote(value)
@@ -572,12 +572,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         style={{
                                                             flex: 4,
                                                         }}
-                                                        placeholder={translate(
-                                                            'View_AddProduct_InputPlacehoder_Amount'
-                                                        )}
-                                                        accessibilityLabel={translate(
-                                                            'View_AddProduct_InputAccessibility_Amount'
-                                                        )}
+                                                        placeholder={
+                                                            strings.View_AddProduct_InputPlacehoder_Amount
+                                                        }
+                                                        accessibilityLabel={
+                                                            strings.View_AddProduct_InputAccessibility_Amount
+                                                        }
                                                         keyboardType="numeric"
                                                         value={String(amount)}
                                                         onChangeText={
@@ -602,9 +602,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         ? ','
                                                         : '.'
                                                 }
-                                                placeholder={translate(
-                                                    'View_AddProduct_InputPlacehoder_UnitPrice'
-                                                )}
+                                                placeholder={
+                                                    strings.View_AddProduct_InputPlacehoder_UnitPrice
+                                                }
                                             />
 
                                             {userPreferences.isUserPremium && (
@@ -618,9 +618,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         }
                                                         value={selectedCategory}
                                                         placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlaceholder_SelectCategory'
-                                                            ),
+                                                            label:
+                                                                strings.View_AddProduct_InputPlaceholder_SelectCategory,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -640,9 +639,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         }
                                                         value={selectedStore}
                                                         placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlacehoder_Store'
-                                                            ),
+                                                            label:
+                                                                strings.View_AddProduct_InputPlacehoder_Store,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -652,15 +650,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
                                         <ExpDateGroup>
                                             <ExpDateLabel>
-                                                {translate(
-                                                    'View_AddProduct_CalendarTitle'
-                                                )}
+                                                {
+                                                    strings.View_AddProduct_CalendarTitle
+                                                }
                                             </ExpDateLabel>
 
                                             <CustomDatePicker
-                                                accessibilityLabel={translate(
-                                                    'View_AddProduct_CalendarAccessibilityDescription'
-                                                )}
+                                                accessibilityLabel={
+                                                    strings.View_AddProduct_CalendarAccessibilityDescription
+                                                }
                                                 date={expDate}
                                                 onDateChange={value => {
                                                     setExpDate(value);
@@ -671,12 +669,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     </InputContainer>
 
                                     <GenericButton
-                                        text={translate(
-                                            'View_AddProduct_Button_Save'
-                                        )}
-                                        accessibilityLabel={translate(
-                                            'View_AddProduct_Button_Save_AccessibilityDescription'
-                                        )}
+                                        text={
+                                            strings.View_AddProduct_Button_Save
+                                        }
+                                        accessibilityLabel={
+                                            strings.View_AddProduct_Button_Save_AccessibilityDescription
+                                        }
                                         onPress={handleSave}
                                     />
                                 </PageContent>

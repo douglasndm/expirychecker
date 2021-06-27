@@ -4,7 +4,7 @@ import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import { useNavigation } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import ProductItem from '~/Components/ListProducts/ProductContainer';
 
@@ -52,15 +52,15 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
         <StoreGroupContainer>
             <StoreTitle onPress={handleStoreDetails}>{storeName}</StoreTitle>
 
-            {results.map((product) => (
+            {results.map(product => (
                 <ProductItem key={product.id} product={product} disableAds />
             ))}
 
             {products.length >= 5 && (
                 <Button
-                    text={translate(
-                        'StoreGroupComponent_Button_ShowAllProductFromStore'
-                    )}
+                    text={
+                        strings.StoreGroupComponent_Button_ShowAllProductFromStore
+                    }
                     onPress={handleStoreDetails}
                 />
             )}

@@ -16,7 +16,7 @@ import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
@@ -106,7 +106,21 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
 
     const choosenAdText = useMemo(() => {
-        return Math.floor(Math.random() * 3) + 1;
+        const result = Math.floor(Math.random() * 3) + 1;
+
+        switch (result) {
+            case 1:
+                return strings.ProBanner_Text1;
+
+            case 2:
+                return strings.ProBanner_Text2;
+
+            case 3:
+                return strings.ProBanner_Text3;
+
+            default:
+                return strings.ProBanner_Text4;
+        }
     }, []);
 
     const getProduct = useCallback(async () => {
@@ -197,19 +211,22 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                 let text = '';
 
                 if (!!amount && amount > 0) {
-                    text = translate('View_ShareProduct_MessageWithAmount')
-                        .replace('{PRODUCT}', product.name)
+                    text = strings.View_ShareProduct_MessageWithAmount.replace(
+                        '{PRODUCT}',
+                        product.name
+                    )
                         .replace('{AMOUNT}', String(amount))
                         .replace('{DATE}', format(expireDate, dateFormat));
                 } else {
-                    text = translate('View_ShareProduct_Message')
-                        .replace('{PRODUCT}', product.name)
-                        .replace('{DATE}', format(expireDate, dateFormat));
+                    text = strings.View_ShareProduct_Message.replace(
+                        '{PRODUCT}',
+                        product.name
+                    ).replace('{DATE}', format(expireDate, dateFormat));
                 }
 
                 await ShareProductImageWithText({
                     productId,
-                    title: translate('View_ShareProduct_Title'),
+                    title: strings.View_ShareProduct_Title,
                     text,
                 });
             }
@@ -227,7 +244,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         <PageTitleContent>
                             <BackButton handleOnPress={goBack} />
                             <PageTitle>
-                                {translate('View_ProductDetails_PageTitle')}
+                                {strings.View_ProductDetails_PageTitle}
                             </PageTitle>
                         </PageTitleContent>
 
@@ -247,17 +264,15 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 <ProductName>{name}</ProductName>
                                 {!!code && (
                                     <ProductCode>
-                                        {translate('View_ProductDetails_Code')}:{' '}
+                                        {strings.View_ProductDetails_Code}:{' '}
                                         {code}
                                     </ProductCode>
                                 )}
                                 {userPreferences.multiplesStores &&
                                     !!storeName && (
                                         <ProductStore>
-                                            {translate(
-                                                'View_ProductDetails_Store'
-                                            )}
-                                            : {storeName}
+                                            {strings.View_ProductDetails_Store}:{' '}
+                                            {storeName}
                                         </ProductStore>
                                     )}
 
@@ -271,9 +286,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                         )}
                                         onPress={handleEdit}
                                     >
-                                        {translate(
-                                            'View_ProductDetails_Button_UpdateProduct'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_Button_UpdateProduct
+                                        }
                                     </ActionButton>
 
                                     {userPreferences.isUserPremium &&
@@ -287,9 +302,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                                 )}
                                                 onPress={handleShare}
                                             >
-                                                {translate(
-                                                    'View_ProductDetails_Button_ShareProduct'
-                                                )}
+                                                {
+                                                    strings.View_ProductDetails_Button_ShareProduct
+                                                }
                                             </ActionButton>
                                         )}
                                 </ActionsButtonContainer>
@@ -302,9 +317,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <TableContainer>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        {translate(
-                                            'View_ProductDetails_TableTitle_NotTreatedBatches'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_TableTitle_NotTreatedBatches
+                                        }
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
@@ -323,11 +338,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 />
 
                                 <ProBanner onPress={handleNavigateToPro}>
-                                    <ProText>
-                                        {translate(
-                                            `ProBanner_Text${choosenAdText}`
-                                        )}
-                                    </ProText>
+                                    <ProText>{choosenAdText}</ProText>
                                 </ProBanner>
                             </AdContainer>
                         )}
@@ -336,9 +347,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        {translate(
-                                            'View_ProductDetails_TableTitle_TreatedBatches'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_TableTitle_TreatedBatches
+                                        }
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
@@ -357,7 +368,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     <Ionicons name="add-outline" color="white" size={22} />
                 )}
                 small
-                label={translate('View_ProductDetails_FloatButton_AddNewBatch')}
+                label={strings.View_ProductDetails_FloatButton_AddNewBatch}
                 onPress={addNewLote}
             />
         </>
