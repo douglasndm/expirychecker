@@ -126,7 +126,7 @@ const List: React.FC = () => {
 
             <ListCategories
                 data={categories}
-                keyExtractor={item => item.id}
+                keyExtractor={(item, index) => String(index)}
                 renderItem={renderCategory}
             />
         </Container>
