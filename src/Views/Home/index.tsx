@@ -38,6 +38,7 @@ const Home: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
@@ -146,6 +147,23 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
+    const handleReload = useCallback(async () => {
+        try {
+            setIsRefreshing(true);
+
+            // await new Promise(f => setTimeout(f, 5000));
+
+            await getProduts();
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsRefreshing(false);
+        }
+    }, [getProduts]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -180,7 +198,12 @@ const Home: React.FC = () => {
                         </InputTextContainer>
                     )}
 
-                    <ListProducts products={productsSearch} isHome />
+                    <ListProducts
+                        products={productsSearch}
+                        isHome
+                        onRefresh={handleReload}
+                        isRefreshing={isRefreshing}
+                    />
                 </Container>
             )}
         </>
