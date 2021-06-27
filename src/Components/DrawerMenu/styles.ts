@@ -27,8 +27,8 @@ export const LogoContainer = styled.View`
 
     ${isIphoneX() &&
     css`
-        padding-top: 65px;
-        margin-top: -65px;
+        padding-top: 80px;
+        margin-top: -45px;
     `};
 
     ${Platform.OS === 'ios' &&
