@@ -180,15 +180,14 @@
     "View_ProPage_SubscribePeriod_OneYear": "Annual",
 
 
-    "View_ProPage_AfterDaysFreeTest": " days free",
-    "View_ProPage_AfterIntroPrice_Monthly": " on the first month, then ",
-    "View_ProPage_AfterPrice_Monthly": " monthly",
+    "View_Subscription_Monthly_WithIntroText": "{INTRO_PRICE} on the first month, then {PRICE} monthly",
+    "View_Subscription_Monthly_Text": "{PRICE} monthly",
 
-    "View_ProPage_AfterIntroPrice_ThreeMonths": " for 3 months, then ",
-    "View_ProPage_AfterPrice_ThreeMonths": " every three months",
+    "View_Subscription_3Months_WithIntroText": "{INTRO_PRICE} on first payment for 3 months, then {PRICE} every three months",
+    "View_Subscription_3Months_Text": "{PRICE} every three months",
 
-    "View_ProPage_AfterIntroPrice_OneYear": " in the first year, then ",
-    "View_ProPage_AfterPrice_OneYear": " yearly",
+    "View_Subscription_AYear_WithIntroText": "{INTRO_PRICE} on the first year, then {PRICE} every year",
+    "View_Subscription_AYear_Text": "{PRICE} every year",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
     "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
