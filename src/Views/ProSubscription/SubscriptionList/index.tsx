@@ -281,7 +281,11 @@ const SubscriptionList: React.FC = () => {
                                                 selectedPlan === 'monthly'
                                             }
                                         >
-                                            <SubscriptionPeriodContainer>
+                                            <SubscriptionPeriodContainer
+                                                isSelected={
+                                                    selectedPlan === 'monthly'
+                                                }
+                                            >
                                                 <SubscriptionPeriod>
                                                     {
                                                         strings.View_ProPage_SubscribePeriod_Monthly
@@ -289,14 +293,20 @@ const SubscriptionList: React.FC = () => {
                                                 </SubscriptionPeriod>
                                             </SubscriptionPeriodContainer>
 
-                                            <DetailsContainer>
+                                            <DetailsContainer
+                                                isSelected={
+                                                    selectedPlan === 'monthly'
+                                                }
+                                            >
                                                 <SubscriptionDescription
                                                     isSelected={
                                                         selectedPlan ===
                                                         'monthly'
                                                     }
                                                 >
-                                                    {monthlyString}
+                                                    <TextSubscription>
+                                                        {monthlyString}
+                                                    </TextSubscription>
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
                                         </SubscriptionContainer>
@@ -313,7 +323,11 @@ const SubscriptionList: React.FC = () => {
                                                 marginRight: 10,
                                             }}
                                         >
-                                            <SubscriptionPeriodContainer>
+                                            <SubscriptionPeriodContainer
+                                                isSelected={
+                                                    selectedPlan === 'quarterly'
+                                                }
+                                            >
                                                 <SubscriptionPeriod>
                                                     {
                                                         strings.View_ProPage_SubscribePeriod_ThreeMonths
@@ -329,7 +343,9 @@ const SubscriptionList: React.FC = () => {
                                                             'quarterly'
                                                     }
                                                 >
-                                                    {quarterlyString}
+                                                    <TextSubscription>
+                                                        {quarterlyString}
+                                                    </TextSubscription>
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
                                         </SubscriptionContainer>
@@ -343,7 +359,9 @@ const SubscriptionList: React.FC = () => {
                                             }
                                         >
                                             <SubscriptionPeriodContainer
-                                                isSelected
+                                                isSelected={
+                                                    selectedPlan === 'annual'
+                                                }
                                             >
                                                 <SubscriptionPeriod>
                                                     {
@@ -359,7 +377,9 @@ const SubscriptionList: React.FC = () => {
                                                             'annual'
                                                     }
                                                 >
-                                                    {annualString}
+                                                    <TextSubscription>
+                                                        {annualString}
+                                                    </TextSubscription>
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
                                         </SubscriptionContainer>
@@ -395,7 +415,9 @@ const SubscriptionList: React.FC = () => {
                                             {isRestoreLoading ? (
                                                 <LoadingIndicator />
                                             ) : (
-                                                <TextSubscription>
+                                                <TextSubscription
+                                                    style={{ color: '#fff' }}
+                                                >
                                                     {
                                                         strings.View_PROView_Subscription_RestoreButton
                                                     }
