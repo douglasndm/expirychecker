@@ -95,18 +95,18 @@ export const ButtonSubscription = styled.TouchableOpacity`
 `;
 
 export const TextSubscription = styled.Text<Offer>`
-    color: '#fff';
+    color: #ffffff;
     text-align: center;
     font-size: 17px;
 `;
 
 export const ButtonText = styled.Text`
     text-align: center;
-    color: '#fff';
+    color: #ffffff;
     font-size: 17px;
 `;
 
 export const LoadingIndicator = styled.ActivityIndicator.attrs(() => ({
-    color: '#fff',
+    color: '#ffffff',
     size: 36,
 }))``;
