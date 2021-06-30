@@ -180,15 +180,15 @@
     "View_ProPage_SubscribePeriod_ThreeMonths": "3 meses",
     "View_ProPage_SubscribePeriod_OneYear": "Anual",
 
-    "View_ProPage_AfterDaysFreeTest": " dias grátis",
-    "View_ProPage_AfterIntroPrice_Monthly": " no primeiro mês, depois ",
-    "View_ProPage_AfterPrice_Monthly": " mensais",
 
-    "View_ProPage_AfterIntroPrice_ThreeMonths": " por três meses, depois ",
-    "View_ProPage_AfterPrice_ThreeMonths": " a cada três meses",
+    "View_Subscription_Monthly_WithIntroText": "{INTRO_PRICE} no primeiro mês e depois {PRICE} mensais",
+    "View_Subscription_Monthly_Text": "{PRICE} mensais",
 
-    "View_ProPage_AfterIntroPrice_OneYear": " no primeiro ano, depois ",
-    "View_ProPage_AfterPrice_OneYear": " anualmente",
+    "View_Subscription_3Months_WithIntroText": "{INTRO_PRICE} no primeiro pagando por 3 meses, e depois {PRICE} a cada 3 meses",
+    "View_Subscription_3Months_Text": "{PRICE} a cada 3 meses",
+
+    "View_Subscription_AYear_WithIntroText": "{INTRO_PRICE} no primeiro ano e depois {PRICE} a cada ano",
+    "View_Subscription_AYear_Text": "{PRICE} a cada ano",
 
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
