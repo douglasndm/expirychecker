@@ -5,9 +5,9 @@ import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
-import strings from '../../../../Locales';
+import strings from '~/Locales';
 
-import PreferencesContext from '../../../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Table,
@@ -19,17 +19,17 @@ import {
 } from './styles';
 
 interface BatchesTableProps {
-    productId: number;
+    product: string;
     batches: Array<ILote>;
 }
 
 const BatchesTable: React.FC<BatchesTableProps> = ({
-    productId,
+    product,
     batches,
 }: BatchesTableProps) => {
-    const { userPreferences } = useContext(PreferencesContext);
-
     const { navigate } = useNavigation();
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -44,6 +44,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
         }
         return 'dd/MM/yyyy';
     }, []);
+
     const currencyPrefix = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
             return '$';
@@ -94,9 +95,9 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         nextToExp={nextToExp}
                         treated={treated}
                         onPress={() => {
-                            navigate('EditLote', {
-                                productId,
-                                loteId: batch.id,
+                            navigate('BatchView', {
+                                product,
+                                batch: JSON.stringify(batch),
                             });
                         }}
                     >

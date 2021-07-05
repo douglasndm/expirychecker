@@ -23,6 +23,10 @@ type RoutesParams = {
         productId: number;
         batchId: number;
     };
+    BatchView: {
+        product: string;
+        batch: string;
+    };
     Pro;
     Success: {
         type:

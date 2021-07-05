@@ -9,8 +9,6 @@ import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
-import { getLocales } from 'react-native-localize';
-import { format } from 'date-fns';
 import EnvConfig from 'react-native-config';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
@@ -24,7 +22,6 @@ import BackButton from '~/Components/BackButton';
 import { getProductById } from '~/Functions/Product';
 import { sortLoteByExpDate } from '~/Functions/Lotes';
 import { getStore } from '~/Functions/Stores';
-import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -75,13 +72,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [route.params.id]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const dateFormat = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'MM/dd/yyyy';
-        }
-        return 'dd/MM/yyyy';
-    }, []);
 
     const adUnit = useMemo(() => {
         if (__DEV__) {
@@ -202,37 +192,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         navigate('Pro');
     }, [navigate]);
 
-    const handleShare = useCallback(async () => {
-        if (product) {
-            if (lotesNaoTratados.length > 0) {
-                const expireDate = lotesNaoTratados[0].exp_date;
-                const { amount } = lotesNaoTratados[0];
-
-                let text = '';
-
-                if (!!amount && amount > 0) {
-                    text = strings.View_ShareProduct_MessageWithAmount.replace(
-                        '{PRODUCT}',
-                        product.name
-                    )
-                        .replace('{AMOUNT}', String(amount))
-                        .replace('{DATE}', format(expireDate, dateFormat));
-                } else {
-                    text = strings.View_ShareProduct_Message.replace(
-                        '{PRODUCT}',
-                        product.name
-                    ).replace('{DATE}', format(expireDate, dateFormat));
-                }
-
-                await ShareProductImageWithText({
-                    productId,
-                    title: strings.View_ShareProduct_Title,
-                    text,
-                });
-            }
-        }
-    }, [productId, product, lotesNaoTratados, dateFormat]);
-
     return isLoading ? (
         <Loading />
     ) : (
@@ -290,23 +249,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             strings.View_ProductDetails_Button_UpdateProduct
                                         }
                                     </ActionButton>
-
-                                    {userPreferences.isUserPremium &&
-                                        lotesNaoTratados.length > 0 && (
-                                            <ActionButton
-                                                icon={() => (
-                                                    <Icons
-                                                        name="share-social-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={handleShare}
-                                            >
-                                                {
-                                                    strings.View_ProductDetails_Button_ShareProduct
-                                                }
-                                            </ActionButton>
-                                        )}
                                 </ActionsButtonContainer>
                             </ProductInformationContent>
                         </ProductContainer>
@@ -325,7 +267,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                                 <BatchTable
                                     batches={lotesNaoTratados}
-                                    productId={productId}
+                                    product={JSON.stringify(product)}
                                 />
                             </TableContainer>
                         )}
@@ -355,7 +297,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                                 <BatchTable
                                     batches={lotesTratados}
-                                    productId={productId}
+                                    product={JSON.stringify(product)}
                                 />
                             </>
                         )}
