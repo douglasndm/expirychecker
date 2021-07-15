@@ -215,12 +215,16 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
-                    <Button
-                        text={strings.View_Batch_Button_ShareWithAnotherApps}
-                        onPress={handleShare}
-                        isLoading={isSharing}
-                        contentStyle={{ width: 250 }}
-                    />
+                    {userPreferences.isUserPremium && (
+                        <Button
+                            text={
+                                strings.View_Batch_Button_ShareWithAnotherApps
+                            }
+                            onPress={handleShare}
+                            isLoading={isSharing}
+                            contentStyle={{ width: 250 }}
+                        />
+                    )}
                 </BatchContainer>
             )}
         </Container>
