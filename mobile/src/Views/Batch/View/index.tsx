@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, useContext } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
@@ -8,7 +8,9 @@ import NumberFormat from 'react-number-format';
 
 import strings from '~/Locales';
 
-import { ShareProductImageWithText } from '~/Functions/Share';
+import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import { ShareProductImageWithText, shareText } from '~/Functions/Share';
 
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
@@ -39,6 +41,8 @@ interface Props {
 const View: React.FC = () => {
     const { params } = useRoute();
     const { goBack, navigate } = useNavigation();
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const routeParams = params as Props;
 
@@ -111,11 +115,18 @@ const View: React.FC = () => {
                 ).replace('{DATE}', exp_date);
             }
 
-            await ShareProductImageWithText({
-                productId: prod.id,
-                title: strings.View_ShareProduct_Title,
-                text,
-            });
+            if (userPreferences.isUserPremium) {
+                await ShareProductImageWithText({
+                    productId: prod.id,
+                    title: strings.View_ShareProduct_Title,
+                    text,
+                });
+            } else {
+                await shareText({
+                    title: strings.View_ShareProduct_Title,
+                    text,
+                });
+            }
         } catch (err) {
             if (err.message !== 'User did not share') {
                 showMessage({
@@ -126,7 +137,13 @@ const View: React.FC = () => {
         } finally {
             setIsSharing(false);
         }
-    }, [batch.amount, prod.id, prod.name, exp_date]);
+    }, [
+        batch.amount,
+        userPreferences.isUserPremium,
+        prod.name,
+        prod.id,
+        exp_date,
+    ]);
 
     return (
         <Container>
