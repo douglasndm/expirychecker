@@ -46,11 +46,13 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
     }, []);
 
     const currencyPrefix = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return '$';
+        if (getLocales()[0].countryCode === 'BR') {
+            return 'R$';
         }
-
-        return 'R$';
+        if (getLocales()[0].countryCode === 'PT') {
+            return '€';
+        }
+        return '$';
     }, []);
 
     return (

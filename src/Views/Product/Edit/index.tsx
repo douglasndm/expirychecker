@@ -479,19 +479,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     strings.View_ProductDetails_Button_DeleteProduct
                                                 }
                                             </ButtonPaper>
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="exit-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={goBack}
-                                            >
-                                                {
-                                                    strings.View_EditProduct_Button_Cancel
-                                                }
-                                            </ButtonPaper>
                                         </ActionsButtonContainer>
                                     </InputContainer>
                                 </PageContent>

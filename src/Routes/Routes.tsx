@@ -7,7 +7,7 @@ import AddProduct from '~/Views/Product/Add';
 import AddLote from '~/Views/Batch/Add';
 import EditProduct from '~/Views/Product/Edit';
 import EditLote from '~/Views/Batch/Edit';
-import ProductDetails from '~/Views/ProductDetails';
+import ProductDetails from '~/Views/Product/Details';
 import AllProducts from '~/Views/AllProducts';
 import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
