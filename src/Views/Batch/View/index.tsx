@@ -3,7 +3,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import {  format, parseISO } from 'date-fns';//eslint-disable-line
-import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
+import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
 import strings from '~/Locales';
@@ -45,10 +45,10 @@ const View: React.FC = () => {
     const [isSharing, setIsSharing] = useState<boolean>(false);
 
     const languageCode = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return enUS;
+        if (getLocales()[0].languageCode === 'BR') {
+            return ptBR;
         }
-        return ptBR;
+        return enUS;
     }, []);
 
     const dateFormat = useMemo(() => {
@@ -59,11 +59,13 @@ const View: React.FC = () => {
     }, []);
 
     const currencyPrefix = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return '$';
+        if (getLocales()[0].countryCode === 'BR') {
+            return 'R$';
         }
-
-        return 'R$';
+        if (getLocales()[0].countryCode === 'PT') {
+            return '€';
+        }
+        return '$';
     }, []);
 
     const prod = useMemo(() => {
