@@ -161,7 +161,7 @@ const View: React.FC = () => {
             <PageHeader>
                 <PageTitleContainer>
                     <BackButton handleOnPress={goBack} />
-                    <PageTitle>Lote</PageTitle>
+                    <PageTitle>{strings.View_Batch_PageTitle}</PageTitle>
                 </PageTitleContainer>
 
                 <ActionsButtonContainer>
@@ -169,7 +169,7 @@ const View: React.FC = () => {
                         icon={() => <Icons name="create-outline" size={22} />}
                         onPress={handleNaviEdit}
                     >
-                        Editar
+                        {strings.View_Batch_Button_Edit}
                     </ButtonPaper>
                 </ActionsButtonContainer>
             </PageHeader>
@@ -198,12 +198,12 @@ const View: React.FC = () => {
                     </BatchExpDate>
 
                     {!!batch.amount && (
-                        <BatchAmount>Quantidade {batch.amount}</BatchAmount>
+                        <BatchAmount>{`${strings.View_Batch_Amount}: ${batch.amount}`}</BatchAmount>
                     )}
 
                     {!!batch.price && (
                         <BatchPrice>
-                            {`Preço unitário `}
+                            {`${strings.View_Batch_UnitPrice} `}
                             <NumberFormat
                                 value={batch.price}
                                 displayType="text"
@@ -216,7 +216,7 @@ const View: React.FC = () => {
                     )}
 
                     <Button
-                        text="Compartilhar com outros apps"
+                        text={strings.View_Batch_Button_ShareWithAnotherApps}
                         onPress={handleShare}
                         isLoading={isSharing}
                         contentStyle={{ width: 250 }}
