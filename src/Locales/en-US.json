@@ -137,6 +137,12 @@
     "View_EditProduct_Button_Save": "Save",
     "View_EditProduct_Button_Cancel": "Cancel",
 
+    "View_Batch_PageTitle": "Batch",
+    "View_Batch_Button_Edit": "Edit",
+    "View_Batch_Amount": "Amount",
+    "View_Batch_UnitPrice": "Unit price",
+    "View_Batch_Button_ShareWithAnotherApps": "Share with anothers apps",
+
     "View_Home_SearchText": "Search for a product",
     "View_FloatMenu_AddProduct": "New product",
 
