@@ -2,19 +2,27 @@ import React, { useCallback, useContext } from 'react';
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import StatusBar from '../StatusBar';
+import BackButton from '../BackButton';
 
-import { HeaderContainer, TextLogo, MenuIcon, MenuButton } from './styles';
+import {
+    HeaderContainerNoDrawner,
+    HeaderContainer,
+    TextLogo,
+    MenuIcon,
+    MenuButton,
+} from './styles';
 
 interface RequestProps {
     title?: string;
+    noDrawer?: boolean;
 }
 
-const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
+const Header: React.FC<RequestProps> = ({ title, noDrawer }: RequestProps) => {
     const navigation = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
@@ -25,7 +33,19 @@ const Header: React.FC<RequestProps> = ({ title }: RequestProps) => {
         navigation.toggleDrawer();
     }, [navigation]);
 
-    return (
+    const handleGoBack = useCallback(() => {
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        }
+    }, [navigation]);
+
+    return noDrawer ? (
+        <HeaderContainerNoDrawner>
+            <BackButton handleOnPress={handleGoBack} />
+
+            <TextLogo noDrawer={noDrawer}>{title}</TextLogo>
+        </HeaderContainerNoDrawner>
+    ) : (
         <>
             <StatusBar forceWhiteTextIOS />
 
