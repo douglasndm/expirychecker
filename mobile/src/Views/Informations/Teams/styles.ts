@@ -10,7 +10,7 @@ export const Container = styled.ScrollView`
 `;
 
 export const Content = styled.View`
-    margin: 10px 15px;
+    margin: 15px 15px 0;
 `;
 
 export const Title = styled.Text`
