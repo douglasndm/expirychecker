@@ -22,6 +22,7 @@ import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
+import TeamsBanner from '~/Components/Banners/Teams';
 
 import {
     Container,
@@ -176,6 +177,8 @@ const Home: React.FC = () => {
             ) : (
                 <Container>
                     <Header />
+
+                    {Platform.OS === 'android' && <TeamsBanner />}
 
                     {!userPreferences.isUserPremium && (
                         <AdContainer>
