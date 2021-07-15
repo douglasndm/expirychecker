@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState, useContext } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import {  format, parseISO } from 'date-fns';//eslint-disable-line
+import { format, formatDistanceToNow, isPast, parseISO } from 'date-fns';//eslint-disable-line
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
@@ -52,6 +52,9 @@ const View: React.FC = () => {
         if (getLocales()[0].languageCode === 'BR') {
             return ptBR;
         }
+        if (getLocales()[0].languageCode === 'pt') {
+            return pt;
+        }
         return enUS;
     }, []);
 
@@ -80,11 +83,19 @@ const View: React.FC = () => {
         return JSON.parse(routeParams.batch) as ILote;
     }, [routeParams.batch]);
 
+    const date = useMemo(() => {
+        return parseISO(String(batch.exp_date));
+    }, [batch.exp_date]);
+
+    const expired = useMemo(() => {
+        return isPast(date);
+    }, [date]);
+
     const exp_date = useMemo(() => {
-        return format(parseISO(String(batch.exp_date)), dateFormat, {
+        return format(date, dateFormat, {
             locale: languageCode,
         });
-    }, [batch.exp_date, dateFormat, languageCode]);
+    }, [date, dateFormat, languageCode]);
 
     const handleNaviEdit = useCallback(() => {
         if (batch) {
@@ -167,7 +178,24 @@ const View: React.FC = () => {
                 <BatchContainer>
                     <BatchTitle>{batch.lote}</BatchTitle>
 
-                    <BatchExpDate>{`Vence em ${exp_date}`}</BatchExpDate>
+                    <BatchExpDate>
+                        {expired
+                            ? strings.ProductCardComponent_ProductExpiredIn
+                            : strings.ProductCardComponent_ProductExpireIn}
+
+                        {` ${formatDistanceToNow(date, {
+                            addSuffix: true,
+                            locale: languageCode,
+                        })}`}
+
+                        {`${format(
+                            parseISO(String(batch.exp_date)),
+                            `, EEEE, ${dateFormat}`,
+                            {
+                                locale: languageCode,
+                            }
+                        )}`}
+                    </BatchExpDate>
 
                     {!!batch.amount && (
                         <BatchAmount>Quantidade {batch.amount}</BatchAmount>
