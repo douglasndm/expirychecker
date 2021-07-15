@@ -338,5 +338,8 @@
     "Informations_Teams_Advantage4": "Contact me to enter in the initial tests",
     "Informations_Teams_AdvantageBackup": "Take all of your products easily",
     "Informations_Teams_ButtonExport": "Make export file",
-    "Informations_Teams_Contact": "Contact to enter"
+    "Informations_Teams_Contact": "Contact to enter",
+
+    "Informations_Teams_ViewOnGooglePlay": "Go to Google Play",
+    "Informations_Teams_ViewOnAppStore": "Go to App Store"
 }

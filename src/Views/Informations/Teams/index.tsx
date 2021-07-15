@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useContext, useState } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import Share from 'react-native-share';
 import { showMessage } from 'react-native-flash-message';
 
@@ -96,6 +96,11 @@ const Teams: React.FC = () => {
             'market://details?id=dev.douglasndm.expirychecker.business'
         );
     }, []);
+    const handleNavigateAppStore = useCallback(async () => {
+        await Linking.openURL(
+            'https://apps.apple.com/us/app/validades-para-times/id1568936353'
+        );
+    }, []);
 
     useEffect(() => {
         loadata();
@@ -103,7 +108,7 @@ const Teams: React.FC = () => {
 
     return (
         <Container>
-            <Header title={strings.Informations_Teams_PageTitle} />
+            <Header title={strings.Informations_Teams_PageTitle} noDrawer />
 
             <Content>
                 <Title>{strings.Informations_Teams_InformationsTitle}</Title>
@@ -147,14 +152,25 @@ const Teams: React.FC = () => {
                     onPress={handleExport}
                 />
 
-                <ActionButton
-                    icon={() => (
-                        <Icons name="logo-google-playstore" size={22} />
-                    )}
-                    onPress={handleNavigateGPlay}
-                >
-                    Ver na Google Play (EM TESTES)
-                </ActionButton>
+                {Platform.OS === 'android' ? (
+                    <ActionButton
+                        icon={() => (
+                            <Icons name="logo-google-playstore" size={22} />
+                        )}
+                        onPress={handleNavigateGPlay}
+                    >
+                        {strings.Informations_Teams_ViewOnGooglePlay}
+                    </ActionButton>
+                ) : (
+                    <ActionButton
+                        icon={() => (
+                            <Icons name="logo-apple-appstore" size={22} />
+                        )}
+                        onPress={handleNavigateAppStore}
+                    >
+                        {strings.Informations_Teams_ViewOnAppStore}
+                    </ActionButton>
+                )}
             </Content>
         </Container>
     );

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { Linking, Platform } from 'react-native';
+import { Linking } from 'react-native';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
@@ -189,16 +189,14 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
             </MainMenuContainer>
 
             <DrawerSection>
-                {Platform.OS === 'android' && (
-                    <MenuItemContainer onPress={handleNavigateToTeams}>
-                        <MenuContent>
-                            <Icons name="people-outline" />
-                            <MenuItemText>
-                                {strings.Menu_Button_GoToTeams}
-                            </MenuItemText>
-                        </MenuContent>
-                    </MenuItemContainer>
-                )}
+                <MenuItemContainer onPress={handleNavigateToTeams}>
+                    <MenuContent>
+                        <Icons name="people-outline" />
+                        <MenuItemText>
+                            {strings.Menu_Button_GoToTeams}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
 
                 <MenuItemContainer
                     onPress={() => navigation.navigate('Settings')}
