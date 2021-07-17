@@ -35,7 +35,7 @@ interface RequestProps {
 }
 
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
-    const { navigate } = useNavigation();
+    const { navigate, addListener } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -85,10 +85,6 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
         }
     }, [store]);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
-
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct', { store });
     }, [navigate, store]);
@@ -96,6 +92,14 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
     const handleNavigateEditStore = useCallback(() => {
         navigate('StoreEdit', { store_id: store });
     }, [navigate, store]);
+
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            loadData();
+        });
+
+        return unsubscribe;
+    }, [addListener, loadData]);
 
     return isLoading ? (
         <Loading />

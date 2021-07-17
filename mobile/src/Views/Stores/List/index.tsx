@@ -26,7 +26,7 @@ import {
 } from './styles';
 
 const List: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate, addListener } = useNavigation();
 
     const [newStoreName, setNewStoreName] = useState<string | undefined>();
     const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -34,17 +34,6 @@ const List: React.FC = () => {
     const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
 
     const [stores, setStores] = useState<Array<IStore>>([]);
-
-    useEffect(() => {
-        getAllStores().then(response => {
-            const noStore: IStore = {
-                id: '000',
-                name: strings.View_Store_List_NoStore,
-            };
-
-            setStores([...response, noStore]);
-        });
-    }, []);
 
     const handleOnTextChange = useCallback(value => {
         setInputHasError(false);
@@ -106,6 +95,21 @@ const List: React.FC = () => {
         },
         [handleNavigateToStore]
     );
+
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            getAllStores().then(response => {
+                const noStore: IStore = {
+                    id: '000',
+                    name: strings.View_Store_List_NoStore,
+                };
+
+                setStores([...response, noStore]);
+            });
+        });
+
+        return unsubscribe;
+    }, [addListener]);
 
     return (
         <Container>
