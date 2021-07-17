@@ -36,7 +36,6 @@ const AllProducts: React.FC = () => {
             const allProducts = await getAllProducts({
                 sortProductsByExpDate: true,
             });
-
             setProducts(allProducts);
         } catch (err) {
             showMessage({

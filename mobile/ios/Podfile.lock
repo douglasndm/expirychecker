@@ -233,19 +233,19 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - OpenSSL-Universal (1.1.180)
-  - Permission-AppTrackingTransparency (3.0.1):
+  - Permission-AppTrackingTransparency (3.0.5):
     - RNPermissions
-  - Permission-Camera (3.0.1):
+  - Permission-Camera (3.0.5):
     - RNPermissions
-  - Permission-Notifications (3.0.1):
+  - Permission-Notifications (3.0.5):
     - RNPermissions
   - PersonalizedAdConsent (1.0.5)
   - PromisesObjC (1.2.12)
-  - Purchases (3.10.7):
-    - PurchasesCoreSwift (= 3.10.7)
-  - PurchasesCoreSwift (3.10.7)
-  - PurchasesHybridCommon (1.6.2):
-    - Purchases (= 3.10.7)
+  - Purchases (3.11.1):
+    - PurchasesCoreSwift (= 3.11.1)
+  - PurchasesCoreSwift (3.11.1)
+  - PurchasesHybridCommon (1.7.1):
+    - Purchases (= 3.11.1)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -455,7 +455,7 @@ PODS:
     - React
   - react-native-document-picker (5.1.0):
     - React-Core
-  - react-native-in-app-review (2.1.7):
+  - react-native-in-app-review (3.2.2):
     - React
   - react-native-safe-area-context (3.2.0):
     - React-Core
@@ -534,7 +534,7 @@ PODS:
     - React
   - RNBackgroundFetch (4.0.2):
     - React-Core
-  - RNCAsyncStorage (1.15.3):
+  - RNCAsyncStorage (1.15.5):
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
@@ -542,7 +542,7 @@ PODS:
     - React-Core
   - RNCPushNotificationIOS (1.8.0):
     - React-Core
-  - RNDeviceInfo (8.1.2):
+  - RNDeviceInfo (8.1.3):
     - React-Core
   - RNFBAdMob (11.5.0):
     - Firebase/AdMob (= 7.11.0)
@@ -577,10 +577,10 @@ PODS:
     - React-Core
   - RNLocalize (2.0.3):
     - React-Core
-  - RNPermissions (3.0.1):
+  - RNPermissions (3.0.5):
     - React-Core
-  - RNPurchases (4.1.1):
-    - PurchasesHybridCommon (= 1.6.2)
+  - RNPurchases (4.2.0):
+    - PurchasesHybridCommon (= 1.7.1)
     - React-Core
   - RNReanimated (2.1.0):
     - DoubleConversion
@@ -613,7 +613,7 @@ PODS:
     - Yoga
   - RNScreens (3.1.1):
     - React-Core
-  - RNShare (6.2.1):
+  - RNShare (6.3.0):
     - React-Core
   - RNVectorIcons (8.1.0):
     - React-Core
@@ -941,14 +941,14 @@ SPEC CHECKSUMS:
   lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  Permission-AppTrackingTransparency: b529454e0fa560f0dcb7c4fd74399417cc1e674b
-  Permission-Camera: b2e50546c095139bb1264be9c34c796332340d32
-  Permission-Notifications: 504dcbc12f929b72cdab0c89a4245816d53d1452
+  Permission-AppTrackingTransparency: ed3a54759541929d0a81a75b04a3559af5b2a738
+  Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
+  Permission-Notifications: 16ccd862111103378a7bab9fb1c5c71addffc348
   PersonalizedAdConsent: dbecabb3467df967c16d9cebc2ef4a8890e4bbd8
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Purchases: b8b8fb6e856ac8166e217f6e014df894d821dda1
-  PurchasesCoreSwift: 8ae0f08e020f0bc97c1befa4e38a0dbc8e9732e0
-  PurchasesHybridCommon: 5f5c1c245b12fc5e8760af7d11cb10f888109a9b
+  Purchases: 6351f9ff6bd514e5ec5aa0f989ea181effa94bf5
+  PurchasesCoreSwift: ee857e4c21e6254b09d7e303a756fcf2b9164408
+  PurchasesHybridCommon: e3b25475328b58169e811135a3476ed0e5a4243a
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
   RCTTypeSafety: c1f31d19349c6b53085766359caac425926fafaa
@@ -964,7 +964,7 @@ SPEC CHECKSUMS:
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-date-picker: e3793bde600b937ea6bcf66266278a8a0b0cb4d5
   react-native-document-picker: f2f73db94328c84e22144e369fb4a3ede47bc1f5
-  react-native-in-app-review: 2b0126af72d8c0056a8c6e8d653782817bf4d7ab
+  react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-uuid-generator: 82ffa2a1cac94242ebed52c4dedc5044d3412717
@@ -983,11 +983,11 @@ SPEC CHECKSUMS:
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
   RealmJS: 90f2a558fdda19ebb9fcbc0a52c7b1d1b049fb88
   RNBackgroundFetch: 635d82e1e185b235c1fe787f29517507f87450e0
-  RNCAsyncStorage: 9924d6b4affe9081f08073f354ec6b09c839ff31
+  RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
-  RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326
+  RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
   RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
   RNFBAnalytics: 3e250066a98d6ea0a7816c52de75f2633f726580
   RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d
@@ -998,11 +998,11 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
   RNLocalize: 99e59cad311ca1b6872b1764514009416ccba03d
-  RNPermissions: 4c8a37b4dde50f1f152bf8cd08c4a43d2355829e
-  RNPurchases: ffe3b7fd393642f35695907947f2cdb84b282ebb
+  RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
+  RNPurchases: de0ff23450a6a264e4309ffce1530efb6510201d
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
   RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
-  RNShare: 5ac8f6532ca4cd80fc71caef1cfbba1854a6a045
+  RNShare: 8ff5f3819c8f2b4f76cd31fa1287315754afee01
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   RNZipArchive: 3dd2de5b7f590d79e83270508b78870bf5a54f36
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
