@@ -83,7 +83,7 @@ const EditBatch: React.FC = () => {
 
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState(0);
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
     const [tratado, setTratado] = useState(false);
@@ -136,7 +136,7 @@ const EditBatch: React.FC = () => {
                 lote,
                 amount: Number(amount),
                 exp_date: expDate,
-                price,
+                price: price || undefined,
                 status: tratado ? 'Tratado' : 'Não tratado',
             });
 
@@ -180,6 +180,10 @@ const EditBatch: React.FC = () => {
     }, []);
 
     const handlePriceChange = useCallback((value: number) => {
+        if (value <= 0) {
+            setPrice(null);
+            return;
+        }
         setPrice(value);
     }, []);
 
