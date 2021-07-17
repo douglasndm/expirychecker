@@ -2,9 +2,11 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import TeamsBanner from '~/Components/Banners/Teams';
 
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
@@ -74,9 +76,14 @@ const ListProducts: React.FC<RequestProps> = ({
         return (
             <View>
                 {userPreferences.isUserPremium !== true && (
-                    <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>{choosenAdText.toLocaleUpperCase()}</ProText>
-                    </ProBanner>
+                    <>
+                        <TeamsBanner />
+                        {/* <ProBanner onPress={handleNavigateProPage}>
+                            <ProText>
+                                {choosenAdText.toLocaleUpperCase()}
+                            </ProText>
+                        </ProBanner> */}
+                    </>
                 )}
 
                 {/* Verificar se há items antes de criar o titulo */}
