@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import RNPermissions from 'react-native-permissions';
 
+import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -35,7 +36,9 @@ const Pro: React.FC = () => {
 
     const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
 
-    const { navigate, reset } = useNavigation();
+    const { navigate, reset, pop } = useNavigation<
+        StackNavigationProp<RoutesParams>
+    >();
 
     const cancelSubscriptionLink = useMemo(() => {
         return Platform.OS === 'ios'
@@ -77,6 +80,12 @@ const Pro: React.FC = () => {
             }
 
             await importBackupFile();
+
+            showMessage({
+                message: strings.View_Settings_Backup_Import_Alert_Sucess,
+                type: 'info',
+            });
+            pop();
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -85,7 +94,7 @@ const Pro: React.FC = () => {
         } finally {
             setIsImportLoading(false);
         }
-    }, []);
+    }, [pop]);
 
     return (
         <>
