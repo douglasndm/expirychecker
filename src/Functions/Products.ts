@@ -1,5 +1,7 @@
 import Realm from '../Services/Realm';
-import { sortLoteByExpDate, removeLotesTratados } from './Lotes';
+
+import { removeLotesTratados } from './Lotes';
+import { sortBatches } from './Batches';
 
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
 // POR DATA DE VENCIMENTO, OU SEJA CADA PRODUTO DA LISTA VAI TER UM ARRAY DE LOTE JÁ ORDERNADO POR DATA DE VENCIMENTO
@@ -7,7 +9,7 @@ export function sortProductsLotesByLotesExpDate(
     listProducts: Array<IProduct>
 ): Array<IProduct> {
     const productsLotesSorted = listProducts.map(prod => {
-        const prodLotesSorted = sortLoteByExpDate(prod.lotes);
+        const prodLotesSorted = sortBatches(prod.lotes);
 
         const product: IProduct = {
             id: prod.id,

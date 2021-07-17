@@ -20,7 +20,7 @@ import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import { getProductById } from '~/Functions/Product';
-import { sortLoteByExpDate } from '~/Functions/Lotes';
+import { sortBatches } from '~/Functions/Batches';
 import { getStore } from '~/Functions/Stores';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
@@ -139,7 +139,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             setName(result.name);
             if (result.code) setCode(result.code);
 
-            const lotesSorted = sortLoteByExpDate(result.lotes);
+            const lotesSorted = sortBatches(result.lotes);
 
             setLotes(lotesSorted);
         } catch (err) {
