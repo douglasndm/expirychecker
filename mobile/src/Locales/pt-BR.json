@@ -243,8 +243,13 @@
     "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",
 
     "View_AllProductByStore_BeforeStoreName": "Todos os produtos por loja",
-    "View_AllProductByStore_StoreName": "Produtos da loja {STORE}",
     "View_AllProductByStore_NoStore": "sem loja",
+
+    "View_Store_View_Button_EditStore": "Editar loja",
+
+    "View_Store_Edit_PageTitle": "Editar {STORE}",
+    "View_Store_Edit_Placeholder_StoreName": "Nome da loja",
+    "View_Store_Edit_Alert_Success_UpdateStore": "A loja foi atualizada",
 
     "View_Success_BatchCreated": "Lote criado",
     "View_Success_ProductCreated": "Produto criado",

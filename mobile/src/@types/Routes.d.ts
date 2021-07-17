@@ -55,6 +55,9 @@ type RoutesParams = {
     };
 
     StoreList;
+    StoreEdit: {
+        store_id: string;
+    };
 
     Export;
     Teams;

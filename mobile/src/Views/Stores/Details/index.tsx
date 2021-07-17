@@ -18,7 +18,13 @@ import {
     Icons as FloatIcon,
 } from '~/Components/ListProducts/styles';
 
-import { Container, StoreTitle } from './styles';
+import {
+    Container,
+    HeaderContainer,
+    ActionsButtonContainer,
+    ButtonPaper,
+    Icons,
+} from './styles';
 
 interface RequestProps {
     route: {
@@ -87,18 +93,26 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
         navigate('AddProduct', { store });
     }, [navigate, store]);
 
+    const handleNavigateEditStore = useCallback(() => {
+        navigate('StoreEdit', { store_id: store });
+    }, [navigate, store]);
+
     return isLoading ? (
         <Loading />
     ) : (
         <Container>
-            <Header />
+            <HeaderContainer>
+                <Header title={storeName} noDrawer />
 
-            <StoreTitle>
-                {strings.View_AllProductByStore_StoreName.replace(
-                    '{STORE}',
-                    storeName
-                )}
-            </StoreTitle>
+                <ActionsButtonContainer>
+                    <ButtonPaper
+                        icon={() => <Icons name="create-outline" size={22} />}
+                        onPress={handleNavigateEditStore}
+                    >
+                        {strings.View_Store_View_Button_EditStore}
+                    </ButtonPaper>
+                </ActionsButtonContainer>
+            </HeaderContainer>
 
             <ListProducts products={products} deactiveFloatButton />
 
