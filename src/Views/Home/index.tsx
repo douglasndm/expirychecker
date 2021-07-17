@@ -33,7 +33,7 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset, addListener } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
 
@@ -102,10 +102,6 @@ const Home: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        getProduts();
-    }, [getProduts]);
-
-    useEffect(() => {
         setProductsSearch(products);
     }, [products]);
 
@@ -129,6 +125,14 @@ const Home: React.FC = () => {
         },
         [products]
     );
+
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            getProduts();
+        });
+
+        return unsubscribe;
+    }, [addListener, getProduts]);
 
     const handleOnBarCodeReaderOpen = useCallback(() => {
         setEnableBarCodeReader(true);
