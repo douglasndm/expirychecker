@@ -104,14 +104,18 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             <HeaderContainer>
                 <Header title={storeName} noDrawer />
 
-                <ActionsButtonContainer>
-                    <ButtonPaper
-                        icon={() => <Icons name="create-outline" size={22} />}
-                        onPress={handleNavigateEditStore}
-                    >
-                        {strings.View_Store_View_Button_EditStore}
-                    </ButtonPaper>
-                </ActionsButtonContainer>
+                {store !== '000' && (
+                    <ActionsButtonContainer>
+                        <ButtonPaper
+                            icon={() => (
+                                <Icons name="create-outline" size={22} />
+                            )}
+                            onPress={handleNavigateEditStore}
+                        >
+                            {strings.View_Store_View_Button_EditStore}
+                        </ButtonPaper>
+                    </ActionsButtonContainer>
+                )}
             </HeaderContainer>
 
             <ListProducts products={products} deactiveFloatButton />
