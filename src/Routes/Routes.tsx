@@ -18,6 +18,7 @@ import BatchView from '~/Views/Batch/View';
 
 import StoreList from '~/Views/Stores/List';
 import StoreDetails from '~/Views/Stores/Details';
+import StoreEdit from '~/Views/Stores/Edit';
 
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
@@ -59,6 +60,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
             <Stack.Screen name="StoreList" component={StoreList} />
+            <Stack.Screen name="StoreEdit" component={StoreEdit} />
 
             <Stack.Screen name="Export" component={Export} />
             <Stack.Screen name="Teams" component={Teams} />
