@@ -9,7 +9,6 @@ import EditProduct from '~/Views/Product/Edit';
 import EditLote from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/Product/Details';
 import AllProducts from '~/Views/AllProducts';
-import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import ProSubscription from '~/Views/ProSubscription';
@@ -17,7 +16,8 @@ import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 import BatchView from '~/Views/Batch/View';
 
-import StoreList from '~/Views/Store/List';
+import StoreList from '~/Views/Stores/List';
+import StoreDetails from '~/Views/Stores/Details';
 
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
