@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { addDays, isPast } from 'date-fns';
 
 import strings from '~/Locales';
 
@@ -23,18 +22,6 @@ const ProductContainer: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { userPreferences } = useContext(PreferencesContext);
     const { navigate } = useNavigation();
-
-    const expired = useMemo(() => {
-        return product.lotes[0] && isPast(product.lotes[0].exp_date);
-    }, [product.lotes]);
-
-    const nextToExp = useMemo(() => {
-        return (
-            product.lotes[0] &&
-            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
-                product.lotes[0].exp_date
-        );
-    }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
 
     const showAd = useMemo(() => {
         if (disableAds) return false;
@@ -76,11 +63,7 @@ const ProductContainer: React.FC<RequestProps> = ({
                 </AdView>
             )}
 
-            <ProductCard
-                product={product}
-                expired={expired}
-                nextToExp={nextToExp}
-            />
+            <ProductCard product={product} />
         </Container>
     );
 };
