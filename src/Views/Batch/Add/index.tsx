@@ -87,7 +87,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState<string>('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
 
@@ -106,7 +106,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     lote,
                     amount: Number(amount),
                     exp_date: expDate,
-                    price,
+                    price: price || undefined,
                     status: 'Não tratado',
                 },
             });
@@ -186,6 +186,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
     }, []);
 
     const handlePriceChange = useCallback((value: number) => {
+        if (value <= 0) {
+            setPrice(null);
+            return;
+        }
         setPrice(value);
     }, []);
 

@@ -124,7 +124,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [photoPath, setPhotoPath] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
     const [expDate, setExpDate] = useState(new Date());
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
@@ -189,7 +189,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 lote,
                 exp_date: expDate,
                 amount: Number(amount),
-                price,
+                price: price || undefined,
                 status: 'Não tratado',
             };
 
@@ -403,6 +403,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     );
 
     const handlePriceChange = useCallback((value: number) => {
+        if (value <= 0) {
+            setPrice(null);
+            return;
+        }
         setPrice(value);
     }, []);
 
