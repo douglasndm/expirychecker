@@ -240,8 +240,13 @@
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
 
     "View_AllProductByStore_BeforeStoreName": "All products by store ",
-    "View_AllProductByStore_StoreName": "Products by store {STORE}",
     "View_AllProductByStore_NoStore": "no store",
+
+    "View_Store_View_Button_EditStore": "Edit store",
+    "View_Store_Edit_Placeholder_StoreName": "Store's name",
+    "View_Store_Edit_Alert_Success_UpdateStore": "Store updated",
+
+    "View_Store_Edit_PageTitle": "Edit {STORE}",
 
     "View_Success_BatchCreated": "Batch created",
     "View_Success_ProductCreated": "Product created",
