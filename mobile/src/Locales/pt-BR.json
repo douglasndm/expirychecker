@@ -238,6 +238,8 @@
     "View_Settings_Notifications_Cadency_Month": "Mensalmente",
     "View_Settings_Notifications_Cadency_Never": "Nunca",
 
+    "View_Settings_Backup_Import_Alert_Sucess": "Arquivo importado",
+
     "View_PROView_Subscription_RestoreButton": "Já tem uma assinatura? Restaurar assinatura",
     "View_PROView_Subscription_Alert_NoSubscription": "Você não tem nenhuma assinatura ativa no momento.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",

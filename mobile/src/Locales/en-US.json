@@ -235,6 +235,8 @@
     "View_Settings_Notifications_Cadency_Month": "Monthly",
     "View_Settings_Notifications_Cadency_Never": "Never",
 
+    "View_Settings_Backup_Import_Alert_Sucess": "File imported",
+
     "View_PROView_Subscription_RestoreButton": "Already a PRO? Restore subscription",
     "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
