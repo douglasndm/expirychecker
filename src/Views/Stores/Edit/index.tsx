@@ -141,7 +141,10 @@ const Edit: React.FC = () => {
                     {strings.View_Store_Edit_Delete_title}
                 </Dialog.Title>
                 <Dialog.Description>
-                    {strings.View_Store_Edit_Delete_Description}
+                    {strings.View_Store_Edit_Delete_Description.replace(
+                        '{STORE}',
+                        storeName
+                    )}
                 </Dialog.Description>
                 <Dialog.Button
                     label={strings.View_Store_Edit_Delete_Button_Cancel}
