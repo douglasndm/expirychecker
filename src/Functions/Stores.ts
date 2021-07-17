@@ -128,6 +128,23 @@ export async function updateStore(store: IStore): Promise<void> {
     }
 }
 
+export async function deleteStore(store_id: string): Promise<void> {
+    const realm = await Realm();
+
+    const allProductsByStore = realm
+        .objects<IProduct[]>('Product')
+        .filtered(`store = "${store_id}"`);
+
+    const realmResponse = realm
+        .objects<IStore>('Store')
+        .filtered(`id = "${store_id}"`);
+
+    realm.write(() => {
+        realm.delete(allProductsByStore);
+        realm.delete(realmResponse);
+    });
+}
+
 export async function getAllProductsByStore(
     storeUUID: string | null
 ): Promise<Array<IProduct>> {

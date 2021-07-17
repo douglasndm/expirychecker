@@ -245,6 +245,11 @@
     "View_Store_View_Button_EditStore": "Edit store",
     "View_Store_Edit_Placeholder_StoreName": "Store's name",
     "View_Store_Edit_Alert_Success_UpdateStore": "Store updated",
+    "View_Store_Edit_Delete_title": "ARE YOU SURE? ⚠️",
+    "View_Store_Edit_Delete_Description": "Deleting {STORE}, you are also deleting all of it's products, this action cannot be undo, are you sure?",
+    "View_Store_Edit_Delete_Button_Cancel": "Keep store",
+    "View_Store_Edit_Delete_Button_Confirm": "Delete store and it's products",
+    "View_Store_Edit_Alert_Success_StoreDeleted": "The store and it's products were deleted",
 
     "View_Store_Edit_PageTitle": "Edit {STORE}",
 
