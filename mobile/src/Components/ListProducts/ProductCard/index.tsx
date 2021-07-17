@@ -7,9 +7,8 @@ import React, {
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import { format, formatDistanceToNow } from 'date-fns'; // eslint-disable-line
+import { addDays, format, formatDistanceToNow, isPast } from 'date-fns'; // eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
-
 
 import strings from '~/Locales';
 
@@ -31,11 +30,8 @@ import {
 
 interface Request {
     product: IProduct;
-
-    expired: boolean;
-    nextToExp: boolean;
 }
-const Product = ({ product, expired, nextToExp }: Request) => {
+const Product = ({ product }: Request) => {
     const { navigate } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
@@ -63,10 +59,6 @@ const Product = ({ product, expired, nextToExp }: Request) => {
         return null;
     }, [product.lotes]);
 
-    const expiredOrNext = useMemo(() => {
-        return !!(expired || nextToExp);
-    }, [expired, nextToExp]);
-
     const batch = useMemo(() => {
         if (product.lotes[0]) {
             return product.lotes[0];
@@ -74,6 +66,22 @@ const Product = ({ product, expired, nextToExp }: Request) => {
 
         return null;
     }, [product.lotes]);
+
+    const expired = useMemo(() => {
+        return product.lotes[0] && isPast(product.lotes[0].exp_date);
+    }, [product.lotes]);
+
+    const nextToExp = useMemo(() => {
+        return (
+            product.lotes[0] &&
+            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
+                product.lotes[0].exp_date
+        );
+    }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
+
+    const expiredOrNext = useMemo(() => {
+        return !!(expired || nextToExp);
+    }, [expired, nextToExp]);
 
     useEffect(() => {
         getProductImagePath(product.id).then(path => {
