@@ -76,6 +76,9 @@ export async function generateBackupFile({
 }: generateBackupFileProps): Promise<string> {
     if (!(await exists(`${backupDir}`))) {
         await mkdir(`${backupDir}`);
+    } else {
+        await unlink(`${backupDir}`);
+        await mkdir(`${backupDir}`);
     }
 
     const categories = await getAllCategories();
@@ -177,17 +180,17 @@ export async function importBackupFile(): Promise<void> {
 
     let backupFilePath = null;
 
-    if (extension === 'zip') {
-        if (!(await exists(backupDir))) {
-            await mkdir(backupDir);
-        }
+    if (!(await exists(backupDir))) {
+        await mkdir(backupDir);
+    }
 
+    if (extension === 'zip') {
         let filePath = null;
 
         if (Platform.OS === 'android') {
             filePath = await RNGRP.getRealPathFromURI(filePicked.uri);
         } else {
-            filePath = filePicked.fileCopyUri;
+            filePath = decodeURI(filePicked.fileCopyUri);
         }
 
         await unzip(filePath, backupDir);
