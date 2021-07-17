@@ -453,7 +453,7 @@ PODS:
     - React-Core
   - react-native-date-picker (3.0.3):
     - React
-  - react-native-document-picker (5.1.0):
+  - react-native-document-picker (5.2.0):
     - React-Core
   - react-native-in-app-review (3.2.2):
     - React
@@ -529,10 +529,10 @@ PODS:
     - React-perflogger (= 0.64.2)
   - ReactNativeLocalization (2.1.7):
     - React-Core
-  - RealmJS (10.4.2):
+  - RealmJS (10.6.0):
     - GCDWebServer
     - React
-  - RNBackgroundFetch (4.0.2):
+  - RNBackgroundFetch (4.0.3):
     - React-Core
   - RNCAsyncStorage (1.15.5):
     - React-Core
@@ -568,14 +568,14 @@ PODS:
     - Firebase/Messaging (= 7.11.0)
     - React-Core
     - RNFBApp
-  - RNFS (2.16.6):
+  - RNFS (2.18.0):
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNGoogleSignin (5.0.0):
     - GoogleSignIn (~> 5.0.0)
     - React-Core
-  - RNLocalize (2.0.3):
+  - RNLocalize (2.1.1):
     - React-Core
   - RNPermissions (3.0.5):
     - React-Core
@@ -611,17 +611,18 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.1.1):
+  - RNScreens (3.4.0):
     - React-Core
+    - React-RCTImage
   - RNShare (6.3.0):
     - React-Core
   - RNVectorIcons (8.1.0):
     - React-Core
-  - RNZipArchive (6.0.2):
+  - RNZipArchive (6.0.3):
     - React-Core
-    - RNZipArchive/Core (= 6.0.2)
+    - RNZipArchive/Core (= 6.0.3)
     - SSZipArchive (= 2.2.3)
-  - RNZipArchive/Core (6.0.2):
+  - RNZipArchive/Core (6.0.3):
     - React-Core
     - SSZipArchive (= 2.2.3)
   - SSZipArchive (2.2.3)
@@ -963,7 +964,7 @@ SPEC CHECKSUMS:
   react-native-camera: cf8a153d33138dcc457172fc3c33fdf4e5d288d2
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-date-picker: e3793bde600b937ea6bcf66266278a8a0b0cb4d5
-  react-native-document-picker: f2f73db94328c84e22144e369fb4a3ede47bc1f5
+  react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
   react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -981,8 +982,8 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: a9904c6d0218fb9f8b19d6dd88607225927668f9
   ReactCommon: 149906e01aa51142707a10665185db879898e966
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
-  RealmJS: 90f2a558fdda19ebb9fcbc0a52c7b1d1b049fb88
-  RNBackgroundFetch: 635d82e1e185b235c1fe787f29517507f87450e0
+  RealmJS: c903034b0d767fcef11dc8207e91b6f07e60d7b8
+  RNBackgroundFetch: 182d0ff90747bacbb3d4e168ecc2194442d0a2d3
   RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNCPicker: 1a266981fc99330c252f5f98b3f09a377a35d88c
@@ -994,17 +995,17 @@ SPEC CHECKSUMS:
   RNFBAuth: 99fdbce04ff3d39e57a7a3956d632ee69145685b
   RNFBCrashlytics: 8eafacfe3dc4aeb7733c3c3d65228f4e75861e72
   RNFBMessaging: c873e6c37f69d22de22cab134413030a9c6330a9
-  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
+  RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
-  RNLocalize: 99e59cad311ca1b6872b1764514009416ccba03d
+  RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
   RNPurchases: de0ff23450a6a264e4309ffce1530efb6510201d
   RNReanimated: b8c8004b43446e3c2709fe64b2b41072f87428ad
-  RNScreens: bd1523c3bde7069b8e958e5a16e1fc7722ad0bdd
+  RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNShare: 8ff5f3819c8f2b4f76cd31fa1287315754afee01
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  RNZipArchive: 3dd2de5b7f590d79e83270508b78870bf5a54f36
+  RNZipArchive: 924d63f15f2838837f8379ee6e9955d8ff4736c4
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
