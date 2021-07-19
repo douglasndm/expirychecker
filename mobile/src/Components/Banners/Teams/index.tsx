@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 
 import strings from '~/Locales';
 
@@ -13,7 +13,11 @@ const Banners: React.FC = () => {
     }, []);
     return (
         <TeamsContainer onPress={handleNavigateToTeams}>
-            <TeamsText>{strings.Banners_Teams_Button_GoToApp}</TeamsText>
+            <TeamsText>
+                {Platform.OS === 'ios'
+                    ? strings.Banners_Teams_Button_GoToApp_IOS
+                    : strings.Banners_Teams_Button_GoToApp}
+            </TeamsText>
         </TeamsContainer>
     );
 };
