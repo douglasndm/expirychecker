@@ -127,12 +127,16 @@ const Home: React.FC = () => {
     );
 
     useEffect(() => {
-        const unsubscribe = addListener('focus', () => {
-            getProduts();
-        });
+        getProduts();
+    }, [getProduts]);
 
-        return unsubscribe;
-    }, [addListener, getProduts]);
+    // useEffect(() => {
+    //     const unsubscribe = addListener('focus', () => {
+    //         getProduts();
+    //     });
+
+    //     return unsubscribe;
+    // }, [addListener, getProduts]);
 
     const handleOnBarCodeReaderOpen = useCallback(() => {
         setEnableBarCodeReader(true);
