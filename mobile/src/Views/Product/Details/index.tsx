@@ -65,7 +65,7 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    const { navigate, goBack } = useNavigation();
+    const { navigate, goBack, addListener } = useNavigation();
 
     const productId = useMemo(() => {
         return route.params.id;
@@ -169,10 +169,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [navigate, productId]);
 
     useEffect(() => {
-        getProduct();
-    }, [getProduct]);
-
-    useEffect(() => {
         setLotesTratados(() => lotes.filter(lote => lote.status === 'Tratado'));
 
         setLotesNaoTratados(() =>
@@ -191,6 +187,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const handleNavigateToPro = useCallback(() => {
         navigate('Pro');
     }, [navigate]);
+
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            getProduct();
+        });
+
+        return unsubscribe;
+    }, [addListener, getProduct]);
 
     return isLoading ? (
         <Loading />
