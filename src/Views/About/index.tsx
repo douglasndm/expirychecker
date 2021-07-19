@@ -1,9 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getVersion } from 'react-native-device-info';
+import messaging from '@react-native-firebase/messaging';
 
 import strings from '~/Locales';
+
+import { shareText } from '~/Functions/Share';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
@@ -21,6 +24,8 @@ import {
 
 const About: React.FC = () => {
     const { goBack } = useNavigation();
+
+    const [tapsCount, setTapsCount] = useState<number>(0);
 
     const navigateToTelegram = useCallback(async () => {
         await Linking.openURL('https://t.me/douglasdev');
@@ -41,6 +46,18 @@ const About: React.FC = () => {
     const handleFlatIconPress = useCallback(async () => {
         await Linking.openURL('https://www.flaticon.com/authors/srip');
     }, []);
+
+    const handleClickDev = useCallback(async () => {
+        setTapsCount(tapsCount + 1);
+
+        if (tapsCount > 10) {
+            const token = await messaging().getToken();
+            shareText({
+                title: 'token',
+                text: token,
+            });
+        }
+    }, [tapsCount]);
 
     return (
         <Container>
@@ -71,7 +88,9 @@ const About: React.FC = () => {
             </AboutSection>
 
             <AboutSection>
-                <Text>{strings.View_About_DevelopedBy}</Text>
+                <Text onPress={handleClickDev}>
+                    {strings.View_About_DevelopedBy}
+                </Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
             </AboutSection>
 
