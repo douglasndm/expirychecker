@@ -85,7 +85,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const { productId } = route.params;
 
-    const { goBack, navigate } = useNavigation();
+    const { goBack, navigate, addListener } = useNavigation();
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -97,6 +97,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
+    const [productString, setProductString] = useState<string | null>(null);
+
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
@@ -107,88 +109,77 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
-    useEffect(() => {
-        async function getProductData() {
-            setIsLoading(true);
+    const loadData = useCallback(async () => {
+        setIsLoading(true);
 
-            const allCategories = await getAllCategories();
-            const categoriesArray: Array<ICategoryItem> = [];
+        const allCategories = await getAllCategories();
+        const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach(cat =>
-                categoriesArray.push({
-                    key: cat.id,
-                    label: cat.name,
-                    value: cat.id,
-                })
-            );
-            setCategories(categoriesArray);
+        allCategories.forEach(cat =>
+            categoriesArray.push({
+                key: cat.id,
+                label: cat.name,
+                value: cat.id,
+            })
+        );
+        setCategories(categoriesArray);
 
-            getAllStores().then(allStores => {
-                const storesArray: Array<IStoreItem> = [];
+        getAllStores().then(allStores => {
+            const storesArray: Array<IStoreItem> = [];
 
-                allStores.forEach(sto => {
-                    if (sto.id) {
-                        storesArray.push({
-                            key: sto.id,
-                            label: sto.name,
-                            value: sto.id,
-                        });
-                    }
-                });
-
-                setStores(storesArray);
+            allStores.forEach(sto => {
+                if (sto.id) {
+                    storesArray.push({
+                        key: sto.id,
+                        label: sto.name,
+                        value: sto.id,
+                    });
+                }
             });
 
-            const product = await getProductById(productId);
+            setStores(storesArray);
+        });
 
-            if (!product) {
-                showMessage({
-                    message: strings.View_EditProduct_Error_ProductNotFound,
-                    type: 'danger',
-                });
-                return;
-            }
+        const product = await getProductById(productId);
 
-            setName(product.name);
-            if (product.code) setCode(product.code);
-
-            const path = await getProductImagePath(productId);
-            if (path) {
-                setPhotoPath(`${path}`);
-            }
-
-            if (product.categories.length > 0) {
-                setSelectedCategory(product.categories[0]);
-            }
-
-            if (product.store) {
-                const store = await getStore(product.store);
-
-                if (store) {
-                    setSelectedStore(store?.id);
-                }
-            }
-
-            setIsLoading(false);
+        if (!product) {
+            showMessage({
+                message: strings.View_EditProduct_Error_ProductNotFound,
+                type: 'danger',
+            });
+            return;
         }
-        getProductData();
+
+        setName(product.name);
+        if (product.code) setCode(product.code);
+
+        const path = await getProductImagePath(productId);
+        if (path) {
+            setPhotoPath(`${path}`);
+        }
+
+        if (product.categories.length > 0) {
+            setSelectedCategory(product.categories[0]);
+        }
+
+        if (product.store) {
+            const store = await getStore(product.store);
+
+            if (store) {
+                setSelectedStore(store?.id);
+            }
+        }
+
+        setIsLoading(false);
     }, [productId]);
 
     useEffect(() => {
-        getAllCategories().then(allCategories => {
-            const categoriesArray: Array<ICategoryItem> = [];
-
-            allCategories.forEach(cat =>
-                categoriesArray.push({
-                    key: cat.id,
-                    label: cat.name,
-                    value: cat.id,
-                })
-            );
-
-            setCategories(categoriesArray);
+        const unsubscribe = addListener('focus', () => {
+            loadData();
         });
-    }, []);
+
+        return unsubscribe;
+    }, [addListener, loadData]);
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
@@ -418,8 +409,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         }
                                                         value={selectedCategory}
                                                         placeholder={{
-                                                            label:
-                                                                strings.View_AddProduct_InputPlaceholder_SelectCategory,
+                                                            label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -439,8 +429,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         }
                                                         value={selectedStore}
                                                         placeholder={{
-                                                            label:
-                                                                strings.View_AddProduct_InputPlacehoder_Store,
+                                                            label: strings.View_AddProduct_InputPlacehoder_Store,
                                                             value: 'null',
                                                         }}
                                                     />

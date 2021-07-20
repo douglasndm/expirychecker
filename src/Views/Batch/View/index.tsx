@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useState, useContext } from 'react';
+import React, {
+    useCallback,
+    useMemo,
+    useState,
+    useContext,
+    useEffect,
+} from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
@@ -33,18 +39,22 @@ import {
     BatchPrice,
 } from './styles';
 
+import { getProductById } from '~/Functions/Product';
+
 interface Props {
-    product: string;
+    product_id: number;
     batch: string;
 }
 
 const View: React.FC = () => {
     const { params } = useRoute();
-    const { goBack, navigate } = useNavigation();
+    const { goBack, navigate, addListener } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
 
     const routeParams = params as Props;
+
+    const [product, setProduct] = useState<IProduct | null>(null);
 
     const [isSharing, setIsSharing] = useState<boolean>(false);
 
@@ -75,9 +85,9 @@ const View: React.FC = () => {
         return '$';
     }, []);
 
-    const prod = useMemo(() => {
-        return JSON.parse(routeParams.product) as IProduct;
-    }, [routeParams.product]);
+    const productId = useMemo(() => {
+        return routeParams.product_id;
+    }, [routeParams.product_id]);
 
     const batch = useMemo(() => {
         return JSON.parse(routeParams.batch) as ILote;
@@ -100,13 +110,16 @@ const View: React.FC = () => {
     const handleNaviEdit = useCallback(() => {
         if (batch) {
             navigate('EditLote', {
-                productId: prod.id,
+                productId,
                 loteId: batch.id,
             });
         }
-    }, [batch, navigate, prod.id]);
+    }, [batch, navigate, productId]);
 
     const handleShare = useCallback(async () => {
+        if (!product) {
+            return;
+        }
         try {
             setIsSharing(true);
 
@@ -115,20 +128,20 @@ const View: React.FC = () => {
             if (!!batch.amount && batch.amount > 0) {
                 text = strings.View_ShareProduct_MessageWithAmount.replace(
                     '{PRODUCT}',
-                    prod.name
+                    product.name
                 )
                     .replace('{AMOUNT}', String(batch.amount))
                     .replace('{DATE}', exp_date);
             } else {
                 text = strings.View_ShareProduct_Message.replace(
                     '{PRODUCT}',
-                    prod.name
+                    product.name
                 ).replace('{DATE}', exp_date);
             }
 
             if (userPreferences.isUserPremium) {
                 await ShareProductImageWithText({
-                    productId: prod.id,
+                    productId,
                     title: strings.View_ShareProduct_Title,
                     text,
                 });
@@ -149,12 +162,33 @@ const View: React.FC = () => {
             setIsSharing(false);
         }
     }, [
+        product,
         batch.amount,
         userPreferences.isUserPremium,
-        prod.name,
-        prod.id,
         exp_date,
+        productId,
     ]);
+
+    const loadData = useCallback(async () => {
+        try {
+            const prod = await getProductById(productId);
+
+            setProduct(prod);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        }
+    }, [productId]);
+
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            loadData();
+        });
+
+        return unsubscribe;
+    }, [addListener, loadData]);
 
     return (
         <Container>

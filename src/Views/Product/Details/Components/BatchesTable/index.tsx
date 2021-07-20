@@ -19,12 +19,12 @@ import {
 } from './styles';
 
 interface BatchesTableProps {
-    product: string;
+    product_id: number;
     batches: Array<ILote>;
 }
 
 const BatchesTable: React.FC<BatchesTableProps> = ({
-    product,
+    product_id,
     batches,
 }: BatchesTableProps) => {
     const { navigate } = useNavigation();
@@ -98,7 +98,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         treated={treated}
                         onPress={() => {
                             navigate('BatchView', {
-                                product,
+                                product_id,
                                 batch: JSON.stringify(batch),
                             });
                         }}
