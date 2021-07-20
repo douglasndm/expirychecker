@@ -91,7 +91,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [product, setProduct] = useState<IProduct>();
     const [storeName, setStoreName] = useState<string | null>();
 
-    const [lotes, setLotes] = useState<Array<ILote>>([]);
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
 
@@ -141,7 +140,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
             const lotesSorted = sortBatches(result.lotes);
 
-            setLotes(lotesSorted);
+            setLotesTratados(() =>
+                lotesSorted.filter(lote => lote.status === 'Tratado')
+            );
+
+            setLotesNaoTratados(() =>
+                lotesSorted.filter(lote => lote.status !== 'Tratado')
+            );
         } catch (err) {
             showMessage({
                 message: err.message,
@@ -167,14 +172,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const handleEdit = useCallback(() => {
         navigate('EditProduct', { productId });
     }, [navigate, productId]);
-
-    useEffect(() => {
-        setLotesTratados(() => lotes.filter(lote => lote.status === 'Tratado'));
-
-        setLotesNaoTratados(() =>
-            lotes.filter(lote => lote.status !== 'Tratado')
-        );
-    }, [lotes]);
 
     const handleOnPhotoPress = useCallback(() => {
         if (product && product.photo) {
@@ -271,7 +268,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                                 <BatchTable
                                     batches={lotesNaoTratados}
-                                    product={JSON.stringify(product)}
+                                    product_id={productId}
                                 />
                             </TableContainer>
                         )}
@@ -301,7 +298,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
                                 <BatchTable
                                     batches={lotesTratados}
-                                    product={JSON.stringify(product)}
+                                    product_id={productId}
                                 />
                             </>
                         )}
