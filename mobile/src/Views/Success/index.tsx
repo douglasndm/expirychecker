@@ -45,9 +45,8 @@ interface Props {
 
 const Success: React.FC = () => {
     const route = useRoute();
-    const { reset, dispatch } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { reset, replace, dispatch } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { userPreferences } = useContext(PreferencesContext);
 
@@ -149,25 +148,23 @@ const Success: React.FC = () => {
                 type === 'edit_batch' ||
                 type === 'edit_product'
             ) {
-                reset({
-                    routes: [
-                        { name: 'Home' },
-                        {
-                            name: 'ProductDetails',
-                            params: {
-                                id: routeParams.productId,
-                            },
-                        },
-                    ],
+                replace('ProductDetails', {
+                    id: routeParams.productId,
                 });
             }
         }
-    }, [reset, routeParams.productId, type]);
+    }, [replace, routeParams.productId, type]);
 
     const handleGoBack = useCallback(() => {
-        const popAction = StackActions.pop(2);
+        let popAction;
+
+        if (type === 'delete_product') {
+            popAction = StackActions.pop(3);
+        } else {
+            popAction = StackActions.pop(2);
+        }
         dispatch(popAction);
-    }, [dispatch]);
+    }, [dispatch, type]);
 
     return (
         <Container>

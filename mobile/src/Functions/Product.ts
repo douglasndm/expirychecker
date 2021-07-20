@@ -71,15 +71,11 @@ export async function getProductByCode(
 export async function getProductById(productId: number): Promise<IProduct> {
     const realm = await Realm();
 
-    try {
-        const result = realm
-            .objects<IProduct>('Product')
-            .filtered(`id = "${productId}"`)[0];
+    const result = realm
+        .objects<IProduct>('Product')
+        .filtered(`id = "${productId}"`)[0];
 
-        return result;
-    } catch (err) {
-        throw new Error(err);
-    }
+    return result;
 }
 
 interface createProductProps {
