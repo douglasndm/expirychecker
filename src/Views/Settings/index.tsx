@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
-import { Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
+import { Switch } from 'react-native-paper';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
 import GenericButton from '../../Components/Button';
-import NotificationError from '../../Components/Notification';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -36,8 +36,6 @@ import {
 } from './styles';
 
 const Settings: React.FC = () => {
-    const [error, setError] = useState<string>('');
-
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
@@ -114,15 +112,14 @@ const Settings: React.FC = () => {
                 isUserSignedIn: false,
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsOnLogout(false);
         }
     }, [setUserPreferences, userPreferences]);
-
-    const onDimissError = useCallback(() => {
-        setError('');
-    }, []);
 
     return (
         <>
@@ -132,30 +129,26 @@ const Settings: React.FC = () => {
                     <PageHeader>
                         <BackButton handleOnPress={goBack} />
 
-                        <PageTitle>
-                            {translate('View_Settings_PageTitle')}
-                        </PageTitle>
+                        <PageTitle>{strings.View_Settings_PageTitle}</PageTitle>
                     </PageHeader>
 
                     <SettingsContent>
                         <Category>
                             <CategoryTitle>
-                                {translate(
-                                    'View_Settings_CategoryName_General'
-                                )}
+                                {strings.View_Settings_CategoryName_General}
                             </CategoryTitle>
 
                             <CategoryOptions>
                                 <SettingDescription>
-                                    {translate(
-                                        'View_Settings_SettingName_HowManyDaysToBeNextToExp'
-                                    )}
+                                    {
+                                        strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
+                                    }
                                 </SettingDescription>
                                 <InputSetting
                                     keyboardType="numeric"
                                     placeholder="Quantidade de dias"
                                     value={daysToBeNext}
-                                    onChangeText={(v) => {
+                                    onChangeText={v => {
                                         const regex = /^[0-9\b]+$/;
 
                                         if (v === '' || regex.test(v)) {
@@ -168,9 +161,9 @@ const Settings: React.FC = () => {
                                 {userPreferences.isUserPremium && (
                                     <SettingContainer>
                                         <SettingDescription>
-                                            {translate(
-                                                'View_Settings_SettingName_EnableMultiplesStores'
-                                            )}
+                                            {
+                                                strings.View_Settings_SettingName_EnableMultiplesStores
+                                            }
                                         </SettingDescription>
                                         <Switch
                                             value={
@@ -192,21 +185,15 @@ const Settings: React.FC = () => {
                         {userSigned && (
                             <Category>
                                 <CategoryTitle>
-                                    {translate(
-                                        'View_Settings_CategoryName_Account'
-                                    )}
+                                    {strings.View_Settings_CategoryName_Account}
                                 </CategoryTitle>
 
                                 <SettingDescription>
-                                    {translate(
-                                        'View_Settings_AccountDescription'
-                                    )}
+                                    {strings.View_Settings_AccountDescription}
                                 </SettingDescription>
 
                                 <GenericButton
-                                    text={translate(
-                                        'View_Settings_Button_SignOut'
-                                    )}
+                                    text={strings.View_Settings_Button_SignOut}
                                     onPress={handleLogout}
                                     isLoading={isOnLogout}
                                 />
@@ -215,13 +202,6 @@ const Settings: React.FC = () => {
                     </SettingsContent>
                 </ScrollView>
             </Container>
-            {!!error && (
-                <NotificationError
-                    NotificationType="error"
-                    NotificationMessage={error}
-                    onPress={onDimissError}
-                />
-            )}
         </>
     );
 };

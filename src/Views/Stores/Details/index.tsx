@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
 import {
@@ -12,13 +13,18 @@ import {
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
-import Notification from '~/Components/Notification';
 import {
     FloatButton,
     Icons as FloatIcon,
 } from '~/Components/ListProducts/styles';
 
-import { Container, StoreTitle } from './styles';
+import {
+    Container,
+    HeaderContainer,
+    ActionsButtonContainer,
+    ButtonPaper,
+    Icons,
+} from './styles';
 
 interface RequestProps {
     route: {
@@ -29,10 +35,9 @@ interface RequestProps {
 }
 
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
-    const { navigate } = useNavigation();
+    const { navigate, addListener } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [storeName, setStoreName] = useState<string>('');
     const [products, setProducts] = useState<IProduct[]>([]);
@@ -45,7 +50,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             let results: Array<IProduct> = [];
 
             if (store === '000') {
-                setStoreName(translate('View_AllProductByStore_NoStore'));
+                setStoreName(strings.View_AllProductByStore_NoStore);
                 results = await getAllProductsByStore(null);
             } else {
                 results = await getAllProductsByStore(store);
@@ -71,36 +76,51 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 
             setProducts(sortedProductsFinal);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
     }, [store]);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
-
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct', { store });
     }, [navigate, store]);
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
+    const handleNavigateEditStore = useCallback(() => {
+        navigate('StoreEdit', { store_id: store });
+    }, [navigate, store]);
+
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            loadData();
+        });
+
+        return unsubscribe;
+    }, [addListener, loadData]);
 
     return isLoading ? (
         <Loading />
     ) : (
         <Container>
-            <Header />
+            <HeaderContainer>
+                <Header title={storeName} noDrawer />
 
-            <StoreTitle>
-                {translate('View_AllProductByStore_StoreName').replace(
-                    '{STORE}',
-                    storeName
+                {store !== '000' && (
+                    <ActionsButtonContainer>
+                        <ButtonPaper
+                            icon={() => (
+                                <Icons name="create-outline" size={22} />
+                            )}
+                            onPress={handleNavigateEditStore}
+                        >
+                            {strings.View_Store_View_Button_EditStore}
+                        </ButtonPaper>
+                    </ActionsButtonContainer>
                 )}
-            </StoreTitle>
+            </HeaderContainer>
 
             <ListProducts products={products} deactiveFloatButton />
 
@@ -109,17 +129,9 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                     <FloatIcon name="add-outline" color="white" size={22} />
                 )}
                 small
-                label={translate('View_FloatMenu_AddProduct')}
+                label={strings.View_FloatMenu_AddProduct}
                 onPress={handleNavigateAddProduct}
             />
-
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
         </Container>
     );
 };

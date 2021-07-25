@@ -7,10 +7,11 @@ import React, {
 } from 'react';
 import { Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -19,7 +20,6 @@ import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
-import Notification from '~/Components/Notification';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -33,14 +33,14 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset, addListener } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
-    const [error, setError] = useState<string>();
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
@@ -92,15 +92,14 @@ const Home: React.FC = () => {
 
             setProducts(allProducts);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
     }, []);
-
-    useEffect(() => {
-        getProduts();
-    }, [getProduts]);
 
     useEffect(() => {
         setProductsSearch(products);
@@ -127,6 +126,18 @@ const Home: React.FC = () => {
         [products]
     );
 
+    useEffect(() => {
+        getProduts();
+    }, [getProduts]);
+
+    // useEffect(() => {
+    //     const unsubscribe = addListener('focus', () => {
+    //         getProduts();
+    //     });
+
+    //     return unsubscribe;
+    // }, [addListener, getProduts]);
+
     const handleOnBarCodeReaderOpen = useCallback(() => {
         setEnableBarCodeReader(true);
     }, []);
@@ -144,9 +155,22 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
+    const handleReload = useCallback(async () => {
+        try {
+            setIsRefreshing(true);
+
+            // await new Promise(f => setTimeout(f, 5000));
+
+            await getProduts();
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsRefreshing(false);
+        }
+    }, [getProduts]);
 
     return isLoading ? (
         <Loading />
@@ -170,7 +194,7 @@ const Home: React.FC = () => {
                     {products.length > 0 && (
                         <InputTextContainer>
                             <InputSearch
-                                placeholder={translate('View_Home_SearchText')}
+                                placeholder={strings.View_Home_SearchText}
                                 value={searchString}
                                 onChangeText={handleSearchChange}
                             />
@@ -182,15 +206,12 @@ const Home: React.FC = () => {
                         </InputTextContainer>
                     )}
 
-                    <ListProducts products={productsSearch} isHome />
-
-                    {!!error && (
-                        <Notification
-                            NotificationMessage={error}
-                            NotificationType="error"
-                            onPress={handleDimissNotification}
-                        />
-                    )}
+                    <ListProducts
+                        products={productsSearch}
+                        isHome
+                        onRefresh={handleReload}
+                        isRefreshing={isRefreshing}
+                    />
                 </Container>
             )}
         </>

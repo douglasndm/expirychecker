@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { request, check, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import GenericButton from '../Button';
-import Notification from '../Notification';
 
 import {
     Container,
@@ -25,8 +25,6 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
     const [cameraAllowed, setCameraAllowed] = useState<boolean>(false);
     const [isCameraBlocked, setIsCameraBlocked] = useState<boolean>(false);
 
-    const [error, setError] = useState<string>('');
-
     const checkIfCameraIsAllow = useCallback(async () => {
         let permissionResult;
 
@@ -38,7 +36,10 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
 
         switch (permissionResult) {
             case RESULTS.UNAVAILABLE:
-                setError('Camera is not available on this device');
+                showMessage({
+                    message: 'Camera is not available on this device',
+                    type: 'danger',
+                });
                 setCameraAllowed(false);
                 break;
             case RESULTS.DENIED:
@@ -81,7 +82,7 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
 
     return (
         <Container>
-            <BarCodeTitle>{translate('BarCodeReader_PageTitle')}</BarCodeTitle>
+            <BarCodeTitle>{strings.BarCodeReader_PageTitle}</BarCodeTitle>
             {cameraAllowed ? (
                 <CameraContainer>
                     <Camera onRead={handleCodeRead} />
@@ -90,19 +91,19 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
                 <AuthorizationCameraContainer>
                     {isCameraBlocked ? (
                         <AuthorizationCameraText>
-                            {translate('BarCodeReader_PermissionBlocked')}
+                            {strings.BarCodeReader_PermissionBlocked}
                         </AuthorizationCameraText>
                     ) : (
                         <AuthorizationCameraText>
-                            {translate('BarCodeReader_PermissionRequired')}
+                            {strings.BarCodeReader_PermissionRequired}
                         </AuthorizationCameraText>
                     )}
 
                     {!isCameraBlocked && (
                         <GenericButton
-                            text={translate(
-                                'BarCodeReader_Button_RequestPermission'
-                            )}
+                            text={
+                                strings.BarCodeReader_Button_RequestPermission
+                            }
                             onPress={() => requestCameraAuthorization()}
                         />
                     )}
@@ -110,17 +111,9 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
             )}
 
             <GenericButton
-                text={translate('BarCodeReader_CloseButton')}
+                text={strings.BarCodeReader_CloseButton}
                 onPress={onClose}
             />
-
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={() => setError('')}
-                />
-            )}
         </Container>
     );
 };

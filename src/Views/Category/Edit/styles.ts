@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components/native';
+import { Button, Dialog } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
     flex: 1;
-    background: ${(props) => props.theme.colors.background};
+    background: ${props => props.theme.colors.background};
 `;
 
 export const Content = styled.View`
@@ -12,11 +14,27 @@ export const Content = styled.View`
 export const PageTitleContainer = styled.View`
     flex-direction: row;
     align-items: center;
+    flex: 1;
 
     ${isIphoneX() &&
     css`
         padding-top: ${getStatusBarHeight() + 20}px;
     `}
+`;
+
+export const ButtonPaper = styled(Button).attrs(props => ({
+    color: props.theme.colors.textAccent,
+}))``;
+
+export const Icons = styled(Ionicons)`
+    color: ${({ theme }) => theme.colors.text};
+`;
+
+export const ActionsButtonContainer = styled.View`
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+    justify-content: center;
 `;
 
 interface InputTextContainerProps {
@@ -30,22 +48,30 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
     background-color: ${({ theme }) => theme.colors.inputBackground};
     color: ${({ theme }) => theme.colors.inputText};
 
-    ${(props) =>
+    ${props =>
         props.hasError &&
         css`
             border: 2px solid red;
         `}
 `;
 
-export const InputText = styled.TextInput.attrs((props) => ({
+export const InputText = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
 `;
 
 export const InputTextTip = styled.Text`
     color: red;
     margin: 5px 10px 5px;
+`;
+
+export const DialogPaper = styled(Dialog)`
+    background: ${props => props.theme.colors.productBackground};
+`;
+
+export const Text = styled.Text`
+    color: ${props => props.theme.colors.text};
 `;
