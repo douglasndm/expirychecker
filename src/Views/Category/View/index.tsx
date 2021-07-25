@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import {
     getAllCategories,
@@ -15,7 +16,6 @@ import {
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
-import Notification from '~/Components/Notification';
 
 import {
     FloatButton,
@@ -41,15 +41,10 @@ const CategoryView: React.FC = () => {
     const routeParams = params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [categoryName, setCategoryName] = useState<string>('CategoryTitle');
 
     const [products, setProducts] = useState<IProduct[]>([]);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
 
     const loadData = useCallback(async () => {
         try {
@@ -73,7 +68,10 @@ const CategoryView: React.FC = () => {
 
             setProducts(results);
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -98,7 +96,7 @@ const CategoryView: React.FC = () => {
             <Header />
 
             <CategoryTitle>
-                {translate('View_Category_List_View_BeforeCategoryName')}
+                {strings.View_Category_List_View_BeforeCategoryName}
                 {categoryName}
             </CategoryTitle>
 
@@ -107,7 +105,7 @@ const CategoryView: React.FC = () => {
                     icon={() => <Icons name="create-outline" size={22} />}
                     onPress={handleEdit}
                 >
-                    {translate('View_ProductDetails_Button_UpdateProduct')}
+                    {strings.View_ProductDetails_Button_UpdateProduct}
                 </ActionButton>
             </ActionsButtonContainer>
 
@@ -118,17 +116,9 @@ const CategoryView: React.FC = () => {
                     <FloatIcon name="add-outline" color="white" size={22} />
                 )}
                 small
-                label={translate('View_FloatMenu_AddProduct')}
+                label={strings.View_FloatMenu_AddProduct}
                 onPress={handleNavigateAddProduct}
             />
-
-            {!!error && (
-                <Notification
-                    NotificationMessage={error}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
         </Container>
     );
 };

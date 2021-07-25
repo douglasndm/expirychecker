@@ -5,23 +5,22 @@ import React, {
     useContext,
     useMemo,
 } from 'react';
-import { Alert, ScrollView, Platform } from 'react-native';
+import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import crashlytics from '@react-native-firebase/crashlytics';
 import EnvConfig from 'react-native-config';
+import { showMessage } from 'react-native-flash-message';
 import {
     InterstitialAd,
     AdEventType,
     TestIds,
 } from '@react-native-firebase/admob';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
-import Notification from '~/Components/Notification';
 
 import { createLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';
@@ -82,21 +81,22 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [notification, setNotification] = useState<string>();
-
     const [adReady, setAdReady] = useState(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState<string>('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
 
     const handleSave = useCallback(async () => {
         if (!lote || lote.trim() === '') {
-            Alert.alert(translate('View_AddBatch_AlertTypeBatchName'));
+            showMessage({
+                message: strings.View_AddBatch_AlertTypeBatchName,
+                type: 'danger',
+            });
             return;
         }
         try {
@@ -106,7 +106,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     lote,
                     amount: Number(amount),
                     exp_date: expDate,
-                    price,
+                    price: price || undefined,
                     status: 'Não tratado',
                 },
             });
@@ -126,8 +126,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 ],
             });
         } catch (err) {
-            crashlytics().recordError(err);
-            setNotification(err);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [
         amount,
@@ -183,11 +185,11 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         }
     }, []);
 
-    const handleDimissNotification = useCallback(() => {
-        setNotification('');
-    }, []);
-
     const handlePriceChange = useCallback((value: number) => {
+        if (value <= 0) {
+            setPrice(null);
+            return;
+        }
         setPrice(value);
     }, []);
 
@@ -197,9 +199,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
             <ScrollView>
                 <PageHeader>
                     <BackButton handleOnPress={goBack} />
-                    <PageTitle>
-                        {translate('View_AddBatch_PageTitle')}
-                    </PageTitle>
+                    <PageTitle>{strings.View_AddBatch_PageTitle}</PageTitle>
                 </PageHeader>
 
                 <PageContent>
@@ -217,9 +217,9 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                                 }}
                             >
                                 <InputText
-                                    placeholder={translate(
-                                        'View_AddBatch_InputPlacehoder_Batch'
-                                    )}
+                                    placeholder={
+                                        strings.View_AddBatch_InputPlacehoder_Batch
+                                    }
                                     value={lote}
                                     onChangeText={value => setLote(value)}
                                 />
@@ -230,9 +230,9 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                                 }}
                             >
                                 <InputText
-                                    placeholder={translate(
-                                        'View_AddBatch_InputPlacehoder_Amount'
-                                    )}
+                                    placeholder={
+                                        strings.View_AddBatch_InputPlacehoder_Amount
+                                    }
                                     keyboardType="numeric"
                                     value={amount}
                                     onChangeText={handleAmountChange}
@@ -244,14 +244,14 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                             value={price}
                             onChangeValue={handlePriceChange}
                             delimiter={currency === 'BRL' ? ',' : '.'}
-                            placeholder={translate(
-                                'View_AddBatch_InputPlacehoder_UnitPrice'
-                            )}
+                            placeholder={
+                                strings.View_AddBatch_InputPlacehoder_UnitPrice
+                            }
                         />
 
                         <ExpDateGroup>
                             <ExpDateLabel>
-                                {translate('View_AddBatch_CalendarTitle')}
+                                {strings.View_AddBatch_CalendarTitle}
                             </ExpDateLabel>
                             <CustomDatePicker
                                 date={expDate}
@@ -264,19 +264,11 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                     </InputContainer>
 
                     <GenericButton
-                        text={translate('View_AddBatch_Button_Save')}
+                        text={strings.View_AddBatch_Button_Save}
                         onPress={handleSave}
                     />
                 </PageContent>
             </ScrollView>
-
-            {!!notification && (
-                <Notification
-                    NotificationMessage={notification}
-                    NotificationType="error"
-                    onPress={handleDimissNotification}
-                />
-            )}
         </Container>
     );
 };

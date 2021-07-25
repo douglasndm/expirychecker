@@ -1,13 +1,15 @@
 import Realm from '../Services/Realm';
-import { sortLoteByExpDate, removeLotesTratados } from './Lotes';
+
+import { removeLotesTratados } from './Lotes';
+import { sortBatches } from './Batches';
 
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
 // POR DATA DE VENCIMENTO, OU SEJA CADA PRODUTO DA LISTA VAI TER UM ARRAY DE LOTE JÁ ORDERNADO POR DATA DE VENCIMENTO
 export function sortProductsLotesByLotesExpDate(
     listProducts: Array<IProduct>
 ): Array<IProduct> {
-    const productsLotesSorted = listProducts.map((prod) => {
-        const prodLotesSorted = sortLoteByExpDate(prod.lotes);
+    const productsLotesSorted = listProducts.map(prod => {
+        const prodLotesSorted = sortBatches(prod.lotes);
 
         const product: IProduct = {
             id: prod.id,
@@ -32,6 +34,13 @@ export function sortProductsByFisrtLoteExpDate(
     listProducts: Array<IProduct>
 ): Array<IProduct> {
     const results = listProducts.sort((item1, item2) => {
+        if (item1.lotes.length === 0 && item2.lotes.length > 0) {
+            return 1;
+        }
+        if (item1.lotes.length > 0 && item2.lotes.length === 0) {
+            return -1;
+        }
+
         if (item1.lotes !== null && item1.lotes.length > 0) {
             if (item2.lotes !== null && item2.lotes.length > 0) {
                 if (item1.lotes[0].exp_date > item2.lotes[0].exp_date) return 1;
@@ -52,7 +61,7 @@ export function sortProductsByFisrtLoteExpDate(
 export function removeAllLotesTratadosFromAllProduts(
     listProducts: Array<IProduct>
 ): Array<IProduct> {
-    const results = listProducts.map((prod) => {
+    const results = listProducts.map(prod => {
         const product: IProduct = {
             id: prod.id,
             name: prod.name,
@@ -76,9 +85,9 @@ interface getAllProductsProps {
 }
 
 export async function getAllProducts({
-    removeProductsWithoutBatches,
-    removeTreatedBatch,
-    sortProductsByExpDate,
+    removeProductsWithoutBatches = false,
+    removeTreatedBatch = false,
+    sortProductsByExpDate = false,
     limit,
 }: getAllProductsProps): Promise<Array<IProduct>> {
     try {
@@ -89,7 +98,7 @@ export async function getAllProducts({
 
         if (removeProductsWithoutBatches) {
             const prodWithBachesOnly = filtertedProducts.filter(
-                (p) => p.lotes.length > 0
+                p => p.lotes.length > 0
             );
 
             filtertedProducts = prodWithBachesOnly;
@@ -97,9 +106,9 @@ export async function getAllProducts({
 
         if (removeTreatedBatch) {
             const prodsWithNonThreatedBatches = filtertedProducts.map(
-                (product) => {
+                product => {
                     const batches = product.lotes.filter(
-                        (batch) => batch.status !== 'Tratado'
+                        batch => batch.status !== 'Tratado'
                     );
 
                     const prod: IProduct = {
@@ -120,13 +129,9 @@ export async function getAllProducts({
         }
 
         if (sortProductsByExpDate) {
-            const productsWithBatches = filtertedProducts.filter(
-                (p) => p.lotes.length > 0
-            );
-
             // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
             const resultsTemp = sortProductsLotesByLotesExpDate(
-                productsWithBatches
+                filtertedProducts
             );
 
             // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
@@ -163,7 +168,7 @@ export function searchForAProductInAList({
 }: searchForAProductInAListProps): Array<IProduct> {
     const query = searchFor.trim().toLowerCase();
 
-    const productsFind = products.filter((product) => {
+    const productsFind = products.filter(product => {
         const searchByName = product.name.toLowerCase().includes(query);
 
         if (searchByName) {
@@ -187,7 +192,7 @@ export function searchForAProductInAList({
         }
 
         if (product.lotes.length > 0) {
-            const lotesFounded = product.lotes.filter((lote) => {
+            const lotesFounded = product.lotes.filter(lote => {
                 const searchByLoteName = lote.lote
                     .toLowerCase()
                     .includes(query);

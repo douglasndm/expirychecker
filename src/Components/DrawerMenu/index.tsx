@@ -1,16 +1,14 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { View, Linking, Image } from 'react-native';
-import {
-    DrawerContentOptions,
-    DrawerContentScrollView,
-} from '@react-navigation/drawer';
+import { Linking } from 'react-native';
+import { DrawerContentOptions } from '@react-navigation/drawer';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
+    MainMenuContainer,
     LogoContainer,
     Logo,
     MenuItemContainer,
@@ -66,138 +64,147 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('Pro');
     }, [navigation]);
 
+    const handleNavigateToTeams = useCallback(() => {
+        navigation.navigate('Teams');
+    }, [navigation]);
+
     const handleNavigateToSite = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev');
     }, []);
 
     return (
         <Container>
-            <DrawerContentScrollView {...props}>
-                <View>
-                    <LogoContainer>
-                        <Logo />
-                    </LogoContainer>
-                    <DrawerSection>
-                        <MenuItemContainer
-                            onPress={() => navigation.navigate('Home')}
-                        >
-                            <MenuContent>
-                                <Icons name="home-outline" />
-                                <MenuItemText>
-                                    {translate('Menu_Button_GoToHome')}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
+            <MainMenuContainer>
+                <LogoContainer>
+                    <Logo />
+                </LogoContainer>
+                <DrawerSection>
+                    <MenuItemContainer
+                        onPress={() => navigation.navigate('Home')}
+                    >
+                        <MenuContent>
+                            <Icons name="home-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToHome}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
 
-                        <MenuItemContainer onPress={navigateToAddProduct}>
-                            <MenuContent>
-                                <Icons name="add" />
-                                <MenuItemText>
-                                    {translate('Menu_Button_GoToAddProduct')}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
+                    <MenuItemContainer onPress={navigateToAddProduct}>
+                        <MenuContent>
+                            <Icons name="add" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToAddProduct}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
 
-                        <MenuItemContainer onPress={navigateToAllProducts}>
-                            <MenuContent>
-                                <Icons name="apps-outline" />
-                                <MenuItemText>
-                                    {translate('Menu_Button_GoToAllProducts')}
-                                </MenuItemText>
-                            </MenuContent>
-                        </MenuItemContainer>
+                    <MenuItemContainer onPress={navigateToAllProducts}>
+                        <MenuContent>
+                            <Icons name="apps-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToAllProducts}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
 
+                    <MenuItemContainer
+                        onPress={
+                            userPreferences.isUserPremium
+                                ? navigateToCategories
+                                : navigateToPRO
+                        }
+                    >
+                        <MenuContent>
+                            <Icons name="file-tray-full-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToCategories}
+                            </MenuItemText>
+                        </MenuContent>
+
+                        <LabelGroup>
+                            <LabelContainer>
+                                <Label>{strings.Menu_Label_PRO}</Label>
+                            </LabelContainer>
+                        </LabelGroup>
+                    </MenuItemContainer>
+
+                    {shouldShowMultiplesStores && (
                         <MenuItemContainer
                             onPress={
                                 userPreferences.isUserPremium
-                                    ? navigateToCategories
+                                    ? navigateToAllProductsByStore
                                     : navigateToPRO
                             }
                         >
                             <MenuContent>
-                                <Icons name="file-tray-full-outline" />
+                                <Icons name="list-outline" />
                                 <MenuItemText>
-                                    {translate('Menu_Button_GoToCategories')}
+                                    {strings.Menu_Button_GoToStores}
                                 </MenuItemText>
                             </MenuContent>
 
                             <LabelGroup>
                                 <LabelContainer>
-                                    <Label>{translate('Menu_Label_PRO')}</Label>
+                                    <Label>{strings.Menu_Label_PRO}</Label>
                                 </LabelContainer>
                             </LabelGroup>
                         </MenuItemContainer>
+                    )}
 
-                        {shouldShowMultiplesStores && (
-                            <MenuItemContainer
-                                onPress={
-                                    userPreferences.isUserPremium
-                                        ? navigateToAllProductsByStore
-                                        : navigateToPRO
-                                }
-                            >
-                                <MenuContent>
-                                    <Icons name="list-outline" />
-                                    <MenuItemText>
-                                        {translate('Menu_Button_GoToStores')}
-                                    </MenuItemText>
-                                </MenuContent>
+                    <MenuItemContainer
+                        onPress={
+                            userPreferences.isUserPremium
+                                ? navigateToExport
+                                : navigateToPRO
+                        }
+                    >
+                        <MenuContent>
+                            <Icons name="download-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToExport}
+                            </MenuItemText>
+                        </MenuContent>
 
-                                <LabelGroup>
-                                    <LabelContainer>
-                                        <Label>
-                                            {translate('Menu_Label_PRO')}
-                                        </Label>
-                                    </LabelContainer>
-                                </LabelGroup>
-                            </MenuItemContainer>
-                        )}
+                        <LabelGroup>
+                            <LabelContainer>
+                                <Label>{strings.Menu_Label_PRO}</Label>
+                            </LabelContainer>
+                        </LabelGroup>
+                    </MenuItemContainer>
 
+                    {!userPreferences.isUserPremium && (
                         <MenuItemContainer
-                            onPress={
-                                userPreferences.isUserPremium
-                                    ? navigateToExport
-                                    : navigateToPRO
-                            }
+                            onPress={() => navigation.navigate('Pro')}
                         >
                             <MenuContent>
-                                <Icons name="download-outline" />
+                                <Icons name="analytics-outline" />
                                 <MenuItemText>
-                                    {translate('Menu_Button_GoToExport')}
+                                    {strings.Menu_Button_GoToProPage}
                                 </MenuItemText>
                             </MenuContent>
-
-                            <LabelGroup>
-                                <LabelContainer>
-                                    <Label>{translate('Menu_Label_PRO')}</Label>
-                                </LabelContainer>
-                            </LabelGroup>
                         </MenuItemContainer>
-
-                        {!userPreferences.isUserPremium && (
-                            <MenuItemContainer
-                                onPress={() => navigation.navigate('Pro')}
-                            >
-                                <MenuContent>
-                                    <Icons name="analytics-outline" />
-                                    <MenuItemText>
-                                        {translate('Menu_Button_GoToProPage')}
-                                    </MenuItemText>
-                                </MenuContent>
-                            </MenuItemContainer>
-                        )}
-                    </DrawerSection>
-                </View>
-            </DrawerContentScrollView>
+                    )}
+                </DrawerSection>
+            </MainMenuContainer>
 
             <DrawerSection>
+                <MenuItemContainer onPress={handleNavigateToTeams}>
+                    <MenuContent>
+                        <Icons name="people-outline" />
+                        <MenuItemText>
+                            {strings.Menu_Button_GoToTeams}
+                        </MenuItemText>
+                    </MenuContent>
+                </MenuItemContainer>
+
                 <MenuItemContainer
                     onPress={() => navigation.navigate('Settings')}
                 >
                     <MenuContent>
                         <Icons name="settings-outline" />
                         <MenuItemText>
-                            {translate('Menu_Button_GoToSettings')}
+                            {strings.Menu_Button_GoToSettings}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
@@ -206,7 +213,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <MenuContent>
                         <Icons name="globe-outline" />
                         <MenuItemText>
-                            {translate('Menu_Button_KnowOthersApps')}
+                            {strings.Menu_Button_KnowOthersApps}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
@@ -215,7 +222,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <MenuContent>
                         <Icons name="help-circle-outline" />
                         <MenuItemText>
-                            {translate('Menu_Button_GoToAbout')}
+                            {strings.Menu_Button_GoToAbout}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
@@ -227,7 +234,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <MenuContent>
                             <Icons name="bug-outline" />
                             <MenuItemText>
-                                {translate('Menu_Button_GoToTest')}
+                                {strings.Menu_Button_GoToTest}
                             </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>

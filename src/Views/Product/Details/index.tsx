@@ -7,26 +7,21 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import crashlytics from '@react-native-firebase/crashlytics';
 import { exists } from 'react-native-fs';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
-import { getLocales } from 'react-native-localize';
-import { format } from 'date-fns';
+import { showMessage } from 'react-native-flash-message';
 import EnvConfig from 'react-native-config';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
-import Notification from '~/Components/Notification';
-
 import { getProductById } from '~/Functions/Product';
-import { sortLoteByExpDate } from '~/Functions/Lotes';
+import { sortBatches } from '~/Functions/Batches';
 import { getStore } from '~/Functions/Stores';
-import { ShareProductImageWithText } from '~/Functions/Share';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -70,21 +65,13 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    const { navigate, goBack } = useNavigation();
+    const { navigate, goBack, addListener } = useNavigation();
 
     const productId = useMemo(() => {
         return route.params.id;
     }, [route.params.id]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
-
-    const dateFormat = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'MM/dd/yyyy';
-        }
-        return 'dd/MM/yyyy';
-    }, []);
 
     const adUnit = useMemo(() => {
         if (__DEV__) {
@@ -104,12 +91,25 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const [product, setProduct] = useState<IProduct>();
     const [storeName, setStoreName] = useState<string | null>();
 
-    const [lotes, setLotes] = useState<Array<ILote>>([]);
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
 
     const choosenAdText = useMemo(() => {
-        return Math.floor(Math.random() * 3) + 1;
+        const result = Math.floor(Math.random() * 3) + 1;
+
+        switch (result) {
+            case 1:
+                return strings.ProBanner_Text1;
+
+            case 2:
+                return strings.ProBanner_Text2;
+
+            case 3:
+                return strings.ProBanner_Text3;
+
+            default:
+                return strings.ProBanner_Text4;
+        }
     }, []);
 
     const getProduct = useCallback(async () => {
@@ -138,12 +138,20 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             setName(result.name);
             if (result.code) setCode(result.code);
 
-            const lotesSorted = sortLoteByExpDate(result.lotes);
+            const lotesSorted = sortBatches(result.lotes);
 
-            setLotes(lotesSorted);
+            setLotesTratados(() =>
+                lotesSorted.filter(lote => lote.status === 'Tratado')
+            );
+
+            setLotesNaoTratados(() =>
+                lotesSorted.filter(lote => lote.status !== 'Tratado')
+            );
         } catch (err) {
-            crashlytics().recordError(err);
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsLoading(false);
         }
@@ -165,22 +173,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         navigate('EditProduct', { productId });
     }, [navigate, productId]);
 
-    useEffect(() => {
-        getProduct();
-    }, [getProduct]);
-
-    useEffect(() => {
-        setLotesTratados(() => lotes.filter(lote => lote.status === 'Tratado'));
-
-        setLotesNaoTratados(() =>
-            lotes.filter(lote => lote.status !== 'Tratado')
-        );
-    }, [lotes]);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
-
     const handleOnPhotoPress = useCallback(() => {
         if (product && product.photo) {
             navigate('PhotoView', {
@@ -193,21 +185,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         navigate('Pro');
     }, [navigate]);
 
-    const handleShare = useCallback(async () => {
-        if (product) {
-            if (lotesNaoTratados.length > 0) {
-                const expireDate = lotesNaoTratados[0].exp_date;
+    useEffect(() => {
+        const unsubscribe = addListener('focus', () => {
+            getProduct();
+        });
 
-                await ShareProductImageWithText({
-                    productId,
-                    title: translate('View_ShareProduct_Title'),
-                    text: translate('View_ShareProduct_Message')
-                        .replace('{PRODUCT}', product.name)
-                        .replace('{DATE}', format(expireDate, dateFormat)),
-                });
-            }
-        }
-    }, [productId, product, lotesNaoTratados, dateFormat]);
+        return unsubscribe;
+    }, [addListener, getProduct]);
 
     return isLoading ? (
         <Loading />
@@ -220,7 +204,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         <PageTitleContent>
                             <BackButton handleOnPress={goBack} />
                             <PageTitle>
-                                {translate('View_ProductDetails_PageTitle')}
+                                {strings.View_ProductDetails_PageTitle}
                             </PageTitle>
                         </PageTitleContent>
 
@@ -240,17 +224,15 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 <ProductName>{name}</ProductName>
                                 {!!code && (
                                     <ProductCode>
-                                        {translate('View_ProductDetails_Code')}:{' '}
+                                        {strings.View_ProductDetails_Code}:{' '}
                                         {code}
                                     </ProductCode>
                                 )}
                                 {userPreferences.multiplesStores &&
                                     !!storeName && (
                                         <ProductStore>
-                                            {translate(
-                                                'View_ProductDetails_Store'
-                                            )}
-                                            : {storeName}
+                                            {strings.View_ProductDetails_Store}:{' '}
+                                            {storeName}
                                         </ProductStore>
                                     )}
 
@@ -264,27 +246,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                         )}
                                         onPress={handleEdit}
                                     >
-                                        {translate(
-                                            'View_ProductDetails_Button_UpdateProduct'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_Button_UpdateProduct
+                                        }
                                     </ActionButton>
-
-                                    {userPreferences.isUserPremium &&
-                                        lotesNaoTratados.length > 0 && (
-                                            <ActionButton
-                                                icon={() => (
-                                                    <Icons
-                                                        name="share-social-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={handleShare}
-                                            >
-                                                {translate(
-                                                    'View_ProductDetails_Button_ShareProduct'
-                                                )}
-                                            </ActionButton>
-                                        )}
                                 </ActionsButtonContainer>
                             </ProductInformationContent>
                         </ProductContainer>
@@ -295,15 +260,15 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <TableContainer>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        {translate(
-                                            'View_ProductDetails_TableTitle_NotTreatedBatches'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_TableTitle_NotTreatedBatches
+                                        }
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
                                 <BatchTable
                                     batches={lotesNaoTratados}
-                                    productId={productId}
+                                    product_id={productId}
                                 />
                             </TableContainer>
                         )}
@@ -316,11 +281,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                 />
 
                                 <ProBanner onPress={handleNavigateToPro}>
-                                    <ProText>
-                                        {translate(
-                                            `ProBanner_Text${choosenAdText}`
-                                        )}
-                                    </ProText>
+                                    <ProText>{choosenAdText}</ProText>
                                 </ProBanner>
                             </AdContainer>
                         )}
@@ -329,27 +290,20 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             <>
                                 <CategoryDetails>
                                     <CategoryDetailsText>
-                                        {translate(
-                                            'View_ProductDetails_TableTitle_TreatedBatches'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_TableTitle_TreatedBatches
+                                        }
                                     </CategoryDetailsText>
                                 </CategoryDetails>
 
                                 <BatchTable
                                     batches={lotesTratados}
-                                    productId={productId}
+                                    product_id={productId}
                                 />
                             </>
                         )}
                     </PageContent>
                 </ScrollView>
-                {!!error && (
-                    <Notification
-                        NotificationMessage={error}
-                        NotificationType="error"
-                        onPress={handleDimissNotification}
-                    />
-                )}
             </Container>
 
             <FloatButton
@@ -357,7 +311,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                     <Ionicons name="add-outline" color="white" size={22} />
                 )}
                 small
-                label={translate('View_ProductDetails_FloatButton_AddNewBatch')}
+                label={strings.View_ProductDetails_FloatButton_AddNewBatch}
                 onPress={addNewLote}
             />
         </>

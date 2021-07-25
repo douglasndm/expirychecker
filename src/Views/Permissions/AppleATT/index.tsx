@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import RNPermissions, { request } from 'react-native-permissions';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { setAllowedToReadIDFA } from '~/Functions/Privacy';
 
@@ -35,14 +35,12 @@ const AppleATT: React.FC = () => {
         <Container>
             <Content>
                 <PageTitle>
-                    {translate('View_Permissions_AppleAT_PageTitle')}
+                    {strings.View_Permissions_AppleAT_PageTitle}
                 </PageTitle>
-                <Message>
-                    {translate('View_Permissions_AppleAT_Message')}
-                </Message>
+                <Message>{strings.View_Permissions_AppleAT_Message}</Message>
 
                 <Button
-                    text={translate('View_Permissions_AppleAT_Button_Continue')}
+                    text={strings.View_Permissions_AppleAT_Button_Continue}
                     onPress={handleContinue}
                 />
             </Content>

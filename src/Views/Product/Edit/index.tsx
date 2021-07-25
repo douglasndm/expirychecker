@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { exists } from 'react-native-fs';
+import { showMessage } from 'react-native-flash-message';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
-import { exists } from 'react-native-fs';
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
-import Notification from '~/Components/Notification';
 
 import {
     getProductById,
@@ -85,11 +85,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const { productId } = route.params;
 
-    const { reset, goBack } = useNavigation();
+    const { goBack, navigate, addListener } = useNavigation();
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
     const [name, setName] = useState('');
@@ -97,6 +96,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [photoPath, setPhotoPath] = useState<string>('');
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
+
+    const [productString, setProductString] = useState<string | null>(null);
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
@@ -108,86 +109,77 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
-    useEffect(() => {
-        async function getProductData() {
-            setIsLoading(true);
+    const loadData = useCallback(async () => {
+        setIsLoading(true);
 
-            const allCategories = await getAllCategories();
-            const categoriesArray: Array<ICategoryItem> = [];
+        const allCategories = await getAllCategories();
+        const categoriesArray: Array<ICategoryItem> = [];
 
-            allCategories.forEach(cat =>
-                categoriesArray.push({
-                    key: cat.id,
-                    label: cat.name,
-                    value: cat.id,
-                })
-            );
-            setCategories(categoriesArray);
+        allCategories.forEach(cat =>
+            categoriesArray.push({
+                key: cat.id,
+                label: cat.name,
+                value: cat.id,
+            })
+        );
+        setCategories(categoriesArray);
 
-            getAllStores().then(allStores => {
-                const storesArray: Array<IStoreItem> = [];
+        getAllStores().then(allStores => {
+            const storesArray: Array<IStoreItem> = [];
 
-                allStores.forEach(sto => {
-                    if (sto.id) {
-                        storesArray.push({
-                            key: sto.id,
-                            label: sto.name,
-                            value: sto.id,
-                        });
-                    }
-                });
-
-                setStores(storesArray);
+            allStores.forEach(sto => {
+                if (sto.id) {
+                    storesArray.push({
+                        key: sto.id,
+                        label: sto.name,
+                        value: sto.id,
+                    });
+                }
             });
 
-            const product = await getProductById(productId);
+            setStores(storesArray);
+        });
 
-            if (!product) {
-                throw new Error(
-                    translate('View_EditProduct_Error_ProductNotFound')
-                );
-            }
+        const product = await getProductById(productId);
 
-            setName(product.name);
-            if (product.code) setCode(product.code);
-
-            const path = await getProductImagePath(productId);
-            if (path) {
-                setPhotoPath(`${path}`);
-            }
-
-            if (product.categories.length > 0) {
-                setSelectedCategory(product.categories[0]);
-            }
-
-            if (product.store) {
-                const store = await getStore(product.store);
-
-                if (store) {
-                    setSelectedStore(store?.id);
-                }
-            }
-
-            setIsLoading(false);
+        if (!product) {
+            showMessage({
+                message: strings.View_EditProduct_Error_ProductNotFound,
+                type: 'danger',
+            });
+            return;
         }
-        getProductData();
+
+        setName(product.name);
+        if (product.code) setCode(product.code);
+
+        const path = await getProductImagePath(productId);
+        if (path) {
+            setPhotoPath(`${path}`);
+        }
+
+        if (product.categories.length > 0) {
+            setSelectedCategory(product.categories[0]);
+        }
+
+        if (product.store) {
+            const store = await getStore(product.store);
+
+            if (store) {
+                setSelectedStore(store?.id);
+            }
+        }
+
+        setIsLoading(false);
     }, [productId]);
 
     useEffect(() => {
-        getAllCategories().then(allCategories => {
-            const categoriesArray: Array<ICategoryItem> = [];
-
-            allCategories.forEach(cat =>
-                categoriesArray.push({
-                    key: cat.id,
-                    label: cat.name,
-                    value: cat.id,
-                })
-            );
-
-            setCategories(categoriesArray);
+        const unsubscribe = addListener('focus', () => {
+            loadData();
         });
-    }, []);
+
+        return unsubscribe;
+    }, [addListener, loadData]);
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
@@ -227,25 +219,22 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 photo: photoFileName,
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: { productId, type: 'edit_product' },
-                    },
-                ],
+            navigate('Success', {
+                productId,
+                type: 'edit_product',
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [
         code,
         name,
+        navigate,
         photoPath,
         productId,
-        reset,
         selectedCategory,
         selectedStore,
     ]);
@@ -253,10 +242,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const handleOnCodeRead = useCallback((codeRead: string) => {
         setCode(codeRead);
         setIsBarCodeEnabled(false);
-    }, []);
-
-    const handleDimissNotification = useCallback(() => {
-        setError('');
     }, []);
 
     const handleEnableCamera = useCallback(() => {
@@ -296,17 +281,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         try {
             await deleteProduct(productId);
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    { name: 'Success', params: { type: 'delete_product' } },
-                ],
+            navigate('Success', {
+                type: 'delete_product',
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
-    }, [productId, reset]);
+    }, [navigate, productId]);
 
     return isLoading ? (
         <Loading />
@@ -331,9 +315,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 <PageHeader>
                                     <BackButton handleOnPress={goBack} />
                                     <PageTitle>
-                                        {translate(
-                                            'View_EditProduct_PageTitle'
-                                        )}
+                                        {strings.View_EditProduct_PageTitle}
                                     </PageTitle>
                                 </PageHeader>
 
@@ -355,12 +337,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         <InputGroup>
                                             <InputTextContainer>
                                                 <InputText
-                                                    placeholder={translate(
-                                                        'View_EditProduct_InputPlacehoder_Name'
-                                                    )}
-                                                    accessibilityLabel={translate(
-                                                        'View_EditProduct_InputAccessibility_Name'
-                                                    )}
+                                                    placeholder={
+                                                        strings.View_EditProduct_InputPlacehoder_Name
+                                                    }
+                                                    accessibilityLabel={
+                                                        strings.View_EditProduct_InputAccessibility_Name
+                                                    }
                                                     value={name}
                                                     onChangeText={value => {
                                                         setName(value);
@@ -381,20 +363,20 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </InputGroup>
                                         {nameFieldError && (
                                             <InputTextTip>
-                                                {translate(
-                                                    'View_EditProduct_Error_EmptyProductName'
-                                                )}
+                                                {
+                                                    strings.View_EditProduct_Error_EmptyProductName
+                                                }
                                             </InputTextTip>
                                         )}
 
                                         <InputCodeTextContainer>
                                             <InputCodeText
-                                                placeholder={translate(
-                                                    'View_EditProduct_InputPlacehoder_Code'
-                                                )}
-                                                accessibilityLabel={translate(
-                                                    'View_EditProduct_InputAccessibility_Code'
-                                                )}
+                                                placeholder={
+                                                    strings.View_EditProduct_InputPlacehoder_Code
+                                                }
+                                                accessibilityLabel={
+                                                    strings.View_EditProduct_InputAccessibility_Code
+                                                }
                                                 value={code}
                                                 onChangeText={value =>
                                                     setCode(value)
@@ -411,9 +393,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
                                         <MoreInformationsContainer>
                                             <MoreInformationsTitle>
-                                                {translate(
-                                                    'View_AddProduct_MoreInformation_Label'
-                                                )}
+                                                {
+                                                    strings.View_AddProduct_MoreInformation_Label
+                                                }
                                             </MoreInformationsTitle>
 
                                             {userPreferences.isUserPremium && (
@@ -427,9 +409,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         }
                                                         value={selectedCategory}
                                                         placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlaceholder_SelectCategory'
-                                                            ),
+                                                            label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -449,9 +429,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         }
                                                         value={selectedStore}
                                                         placeholder={{
-                                                            label: translate(
-                                                                'View_AddProduct_InputPlacehoder_Store'
-                                                            ),
+                                                            label: strings.View_AddProduct_InputPlacehoder_Store,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -469,9 +447,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 )}
                                                 onPress={updateProd}
                                             >
-                                                {translate(
-                                                    'View_EditProduct_Button_Save'
-                                                )}
+                                                {
+                                                    strings.View_EditProduct_Button_Save
+                                                }
                                             </ButtonPaper>
                                             <ButtonPaper
                                                 icon={() => (
@@ -486,34 +464,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     );
                                                 }}
                                             >
-                                                {translate(
-                                                    'View_ProductDetails_Button_DeleteProduct'
-                                                )}
-                                            </ButtonPaper>
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="exit-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={goBack}
-                                            >
-                                                {translate(
-                                                    'View_EditProduct_Button_Cancel'
-                                                )}
+                                                {
+                                                    strings.View_ProductDetails_Button_DeleteProduct
+                                                }
                                             </ButtonPaper>
                                         </ActionsButtonContainer>
                                     </InputContainer>
                                 </PageContent>
-
-                                {!!error && (
-                                    <Notification
-                                        NotificationMessage={error}
-                                        NotificationType="error"
-                                        onPress={handleDimissNotification}
-                                    />
-                                )}
                             </Container>
                             <DialogPaper
                                 visible={deleteComponentVisible}
@@ -524,15 +481,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                 <DialogPaper.Title
                                     style={{ color: theme.colors.text }}
                                 >
-                                    {translate(
-                                        'View_ProductDetails_WarningDelete_Title'
-                                    )}
+                                    {
+                                        strings.View_ProductDetails_WarningDelete_Title
+                                    }
                                 </DialogPaper.Title>
                                 <DialogPaper.Content>
                                     <Text>
-                                        {translate(
-                                            'View_ProductDetails_WarningDelete_Message'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_WarningDelete_Message
+                                        }
                                     </Text>
                                 </DialogPaper.Content>
                                 <DialogPaper.Actions>
@@ -540,9 +497,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         color="red"
                                         onPress={handleDeleteProduct}
                                     >
-                                        {translate(
-                                            'View_ProductDetails_WarningDelete_Button_Confirm'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_WarningDelete_Button_Confirm
+                                        }
                                     </Button>
                                     <Button
                                         color={theme.colors.accent}
@@ -550,9 +507,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                             setDeleteComponentVisible(false);
                                         }}
                                     >
-                                        {translate(
-                                            'View_ProductDetails_WarningDelete_Button_Cancel'
-                                        )}
+                                        {
+                                            strings.View_ProductDetails_WarningDelete_Button_Cancel
+                                        }
                                     </Button>
                                 </DialogPaper.Actions>
                             </DialogPaper>

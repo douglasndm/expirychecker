@@ -1,5 +1,5 @@
 {
-    "AppName": "Controle de Validade",
+    "AppName": "Controle de Validades",
     "AppName_ProVersion": "Modo PRO",
 
     "Menu_Button_GoToHome": "Início",
@@ -9,6 +9,7 @@
     "Menu_Button_GoToStores": "Lojas",
     "Menu_Button_GoToExport": "Exportar",
     "Menu_Button_GoToProPage": "SEJA PRO",
+    "Menu_Button_GoToTeams": "Times",
     "Menu_Button_GoToSettings": "Configurações",
     "Menu_Button_GoToAbout": "Sobre",
     "Menu_Button_KnowOthersApps": "Outros apps",
@@ -136,6 +137,12 @@
     "View_EditProduct_Button_Save": "Salvar",
     "View_EditProduct_Button_Cancel": "Cancelar",
 
+    "View_Batch_PageTitle": "Lote",
+    "View_Batch_Button_Edit": "Editar",
+    "View_Batch_Amount": "Quantidade",
+    "View_Batch_UnitPrice": "Preço unitário",
+    "View_Batch_Button_ShareWithAnotherApps": "Compartilhar com outros apps",
+
     "View_Home_SearchText": "Procurar por um produto",
     "View_FloatMenu_AddProduct": "Novo produto",
 
@@ -159,6 +166,7 @@
 
     "View_ShareProduct_Title": "Favor checar o produto",
     "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
+    "View_ShareProduct_MessageWithAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE}",
 
     "View_ProPage_MeetPRO": "Conheça o",
     "View_ProPage_ProLabel": "PRO",
@@ -178,15 +186,15 @@
     "View_ProPage_SubscribePeriod_ThreeMonths": "3 meses",
     "View_ProPage_SubscribePeriod_OneYear": "Anual",
 
-    "View_ProPage_AfterDaysFreeTest": " dias grátis",
-    "View_ProPage_AfterIntroPrice_Monthly": " no primeiro mês, depois ",
-    "View_ProPage_AfterPrice_Monthly": " mensais",
 
-    "View_ProPage_AfterIntroPrice_ThreeMonths": " por três meses, depois ",
-    "View_ProPage_AfterPrice_ThreeMonths": " a cada três meses",
+    "View_Subscription_Monthly_WithIntroText": "{INTRO_PRICE} no primeiro mês e depois {PRICE} mensais",
+    "View_Subscription_Monthly_Text": "{PRICE} mensais",
 
-    "View_ProPage_AfterIntroPrice_OneYear": " no primeiro ano, depois ",
-    "View_ProPage_AfterPrice_OneYear": " anualmente",
+    "View_Subscription_3Months_WithIntroText": "{INTRO_PRICE} no primeiro pagando por 3 meses, e depois {PRICE} a cada 3 meses",
+    "View_Subscription_3Months_Text": "{PRICE} a cada 3 meses",
+
+    "View_Subscription_AYear_WithIntroText": "{INTRO_PRICE} no primeiro ano e depois {PRICE} a cada ano",
+    "View_Subscription_AYear_Text": "{PRICE} a cada ano",
 
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
@@ -230,13 +238,26 @@
     "View_Settings_Notifications_Cadency_Month": "Mensalmente",
     "View_Settings_Notifications_Cadency_Never": "Nunca",
 
+    "View_Settings_Backup_Import_Alert_Sucess": "Arquivo importado",
+
     "View_PROView_Subscription_RestoreButton": "Já tem uma assinatura? Restaurar assinatura",
     "View_PROView_Subscription_Alert_NoSubscription": "Você não tem nenhuma assinatura ativa no momento.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",
 
     "View_AllProductByStore_BeforeStoreName": "Todos os produtos por loja",
-    "View_AllProductByStore_StoreName": "Produtos da loja {STORE}",
     "View_AllProductByStore_NoStore": "sem loja",
+
+    "View_Store_View_Button_EditStore": "Editar loja",
+
+    "View_Store_Edit_PageTitle": "Editar {STORE}",
+    "View_Store_Edit_Placeholder_StoreName": "Nome da loja",
+    "View_Store_Edit_Alert_Success_UpdateStore": "A loja foi atualizada",
+    "View_Store_Edit_Delete_title": "Atenção ⚠️",
+    "View_Store_Edit_Delete_Description": "Apagando a loja {STORE}, você também vai está apagando PERMANENTEMENTE TODOS OS SEUS PRODUTOS, ESSA AÇÃO NÃO PODE SER DESFEITA. VOCÊ TEM CERTEZA?",
+    "View_Store_Edit_Delete_Button_Cancel": "Manter loja",
+    "View_Store_Edit_Delete_Button_Confirm": "Apagar loja e produtos",
+    "View_Store_Edit_Alert_Success_StoreDeleted": "A loja e seus produtos foram apagados",
+
 
     "View_Success_BatchCreated": "Lote criado",
     "View_Success_ProductCreated": "Produto criado",
@@ -271,6 +292,11 @@
     "View_Category_Edit_ButtonSave": "Salvar",
     "View_Category_Edit_SuccessText": "Atualizado",
     "View_Category_Edit_ErrorEmtpyName": "Digite o nome da categoria",
+    "View_Category_Success_OnDelete": "A cateogria foi apagada",
+    "View_Category_Edit_DeleteModal_Title": "Você tem certeza?",
+    "View_Category_Edit_DeleteModal_Message": "Continuando você irá apagar a categoria. Todos os produtos referenciados a categoria deixará de exibir a categoria.",
+    "View_Category_Edit_DeleteModal_Confirm": "Tenho certeza",
+    "View_Category_Edit_DeleteModal_Cancel": "Manter categoria",
 
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
@@ -280,8 +306,9 @@
     "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
     "View_Export_Button_ExportExcel": "Exportar para Excel",
     "View_Export_Button_ExportBackup": "Exportar para backup",
-    "View_Export_Explain_Business": "Aqui você gera o arquivo com todos os seus produtos para enviar para o Controle de Validade Empresas",
+    "View_Export_Explain_Business": "Aqui você gera o arquivo com todos os seus produtos para enviar para o Controle de Validade Times",
     "View_Export_Button_Business": "Exportar",
+    "View_Export_StorePicker_NoStore": "Sem loja",
 
     "View_Permissions_AppleAT_PageTitle": "Precisamos da sua permissão",
     "View_Permissions_AppleAT_Message": "Precisamos da sua autorização para usar o identificador único do seu dispositivo afim de entender e analisar sites e aplicativos parceiros que você frêquenta afim de mostra-lo anúncios mais relevantes e fazer análises de quais parte do aplicativo precisam melhorar. Por favor note que desativando estas opções não removeram os anúncios caso não seja usuário PRO, só fala que os anúncios não sejam tão interessantes para você como poderiam ser. Os anúncios no aplicativo são umas das poucas formas de renda deste aplicativo e com anúncios mais relevantes você estaria contribuindo para o desenvolvimento e manutenção do aplicativo.",
@@ -322,6 +349,22 @@
     "BeforeTermsAndPrivacy": "Ao usar este aplicativo você está aceitando nossos ",
     "BetweenTermsAndPrivacy": " e ",
     "Terms": "Termos de uso",
-    "PrivacyPolicy": "Política de Privacidade"
-}
+    "PrivacyPolicy": "Política de Privacidade",
 
+    "Informations_Teams_PageTitle": "Para times",
+    "Informations_Teams_InformationsTitle": "Conheça o Controle de Validades para Times",
+    "Informations_Teams_AdvantagesTitle": "Conheça as vantagens",
+    "Informations_Teams_Advantage1": "Tem um time? quer todos os produtos sincronizados entre todos os dispositvos?",
+    "Informations_Teams_Advantage2": "Com controle de acesso?",
+    "Informations_Teams_Advantage3": "E com mais todas as vantanges desse aplicativo?",
+    "Informations_Teams_Advantage4": "Interessado? Entre em contato para participar dos testes iniciais",
+    "Informations_Teams_AdvantageBackup": "Leve todos seus produtos daqui facilmente",
+    "Informations_Teams_ButtonExport": "Gerar arquivo com produtos",
+    "Informations_Teams_Contact": "Entre em contato e participe dos testes",
+
+    "Informations_Teams_ViewOnGooglePlay": "Ir para a Google Play",
+    "Informations_Teams_ViewOnAppStore": "Ir para a App Store",
+
+    "Banners_Teams_Button_GoToApp": "Conheça o Validades para times! Várias contas, vários dispositivos, um time, todos os produtos atualizados para todos. 3 dias grátis!",
+    "Banners_Teams_Button_GoToApp_IOS": "Conheça o Validades para times! Várias contas, vários dispositivos, um time, todos os produtos atualizados para todos."
+}

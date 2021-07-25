@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Alert, ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
+import { showMessage } from 'react-native-flash-message';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { updateLote, deleteLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';
@@ -14,7 +15,6 @@ import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import GenericButton from '~/Components/Button';
-import Notification from '~/Components/Notification';
 
 import {
     Container,
@@ -47,12 +47,11 @@ interface Props {
 
 const EditBatch: React.FC = () => {
     const route = useRoute();
-    const { reset, goBack } = useNavigation();
+    const { reset, goBack, navigate } = useNavigation();
 
     const routeParams = route.params as Props;
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
 
     const [locale] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -84,7 +83,7 @@ const EditBatch: React.FC = () => {
 
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState(0);
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState<number | null>(null);
 
     const [expDate, setExpDate] = useState(new Date());
     const [tratado, setTratado] = useState(false);
@@ -101,7 +100,10 @@ const EditBatch: React.FC = () => {
             const loteResult = response.lotes.find(l => l.id === loteId);
 
             if (!loteResult) {
-                setError(translate('View_EditBatch_Error_BatchDidntFound'));
+                showMessage({
+                    message: strings.View_EditBatch_Error_BatchDidntFound,
+                    type: 'danger',
+                });
                 return;
             }
 
@@ -121,7 +123,10 @@ const EditBatch: React.FC = () => {
 
     async function handleSave() {
         if (!lote || lote.trim() === '') {
-            Alert.alert(translate('View_EditBatch_Error_BatchWithNoName'));
+            showMessage({
+                message: strings.View_EditBatch_Error_BatchWithNoName,
+                type: 'danger',
+            });
             return;
         }
 
@@ -131,22 +136,19 @@ const EditBatch: React.FC = () => {
                 lote,
                 amount: Number(amount),
                 exp_date: expDate,
-                price,
+                price: price || undefined,
                 status: tratado ? 'Tratado' : 'Não tratado',
             });
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    {
-                        name: 'Success',
-                        params: { productId, type: 'edit_batch' },
-                    },
-                ],
+            navigate('Success', {
+                productId,
+                type: 'edit_batch',
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }
 
@@ -162,7 +164,10 @@ const EditBatch: React.FC = () => {
                 ],
             });
         } catch (err) {
-            setError(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         }
     }, [loteId, reset]);
 
@@ -174,11 +179,11 @@ const EditBatch: React.FC = () => {
         }
     }, []);
 
-    const handleDimissNotification = useCallback(() => {
-        setError('');
-    }, []);
-
     const handlePriceChange = useCallback((value: number) => {
+        if (value <= 0) {
+            setPrice(null);
+            return;
+        }
         setPrice(value);
     }, []);
 
@@ -193,7 +198,7 @@ const EditBatch: React.FC = () => {
                         <PageTitleContainer>
                             <BackButton handleOnPress={goBack} />
                             <PageTitle>
-                                {translate('View_EditBatch_PageTitle')}
+                                {strings.View_EditBatch_PageTitle}
                             </PageTitle>
                         </PageTitleContainer>
 
@@ -205,7 +210,7 @@ const EditBatch: React.FC = () => {
                                 setDeleteComponentVisible(true);
                             }}
                         >
-                            {translate('View_EditBatch_Button_DeleteBatch')}
+                            {strings.View_EditBatch_Button_DeleteBatch}
                         </Button>
                     </PageHeader>
 
@@ -228,9 +233,9 @@ const EditBatch: React.FC = () => {
                                     }}
                                 >
                                     <InputText
-                                        placeholder={translate(
-                                            'View_EditBatch_InputPlacehoder_Batch'
-                                        )}
+                                        placeholder={
+                                            strings.View_EditBatch_InputPlacehoder_Batch
+                                        }
                                         value={lote}
                                         onChangeText={value => setLote(value)}
                                     />
@@ -241,9 +246,9 @@ const EditBatch: React.FC = () => {
                                     }}
                                 >
                                     <InputText
-                                        placeholder={translate(
-                                            'View_EditBatch_InputPlacehoder_Amount'
-                                        )}
+                                        placeholder={
+                                            strings.View_EditBatch_InputPlacehoder_Amount
+                                        }
                                         keyboardType="numeric"
                                         value={String(amount)}
                                         onChangeText={handleAmountChange}
@@ -255,9 +260,9 @@ const EditBatch: React.FC = () => {
                                 value={price}
                                 onChangeValue={handlePriceChange}
                                 delimiter={currency === 'BRL' ? ',' : '.'}
-                                placeholder={translate(
-                                    'View_EditBatch_InputPlacehoder_UnitPrice'
-                                )}
+                                placeholder={
+                                    strings.View_EditBatch_InputPlacehoder_UnitPrice
+                                }
                             />
 
                             <View
@@ -282,9 +287,9 @@ const EditBatch: React.FC = () => {
                                         onPress={() => setTratado(true)}
                                     />
                                     <RadioButtonText>
-                                        {translate(
-                                            'View_EditBatch_RadioButton_Treated'
-                                        )}
+                                        {
+                                            strings.View_EditBatch_RadioButton_Treated
+                                        }
                                     </RadioButtonText>
                                 </View>
                                 <View
@@ -303,16 +308,16 @@ const EditBatch: React.FC = () => {
                                         onPress={() => setTratado(false)}
                                     />
                                     <RadioButtonText>
-                                        {translate(
-                                            'View_EditBatch_RadioButton_NotTreated'
-                                        )}
+                                        {
+                                            strings.View_EditBatch_RadioButton_NotTreated
+                                        }
                                     </RadioButtonText>
                                 </View>
                             </View>
 
                             <ExpDateGroup>
                                 <ExpDateLabel>
-                                    {translate('View_EditBatch_CalendarTitle')}
+                                    {strings.View_EditBatch_CalendarTitle}
                                 </ExpDateLabel>
                                 <CustomDatePicker
                                     date={expDate}
@@ -325,19 +330,11 @@ const EditBatch: React.FC = () => {
                         </InputContainer>
 
                         <GenericButton
-                            text={translate('View_EditBatch_Button_Save')}
+                            text={strings.View_EditBatch_Button_Save}
                             onPress={handleSave}
                         />
                     </PageContent>
                 </ScrollView>
-
-                {!!error && (
-                    <Notification
-                        NotificationMessage={error}
-                        NotificationType="error"
-                        onPress={handleDimissNotification}
-                    />
-                )}
             </Container>
 
             <Dialog
@@ -348,18 +345,16 @@ const EditBatch: React.FC = () => {
                 style={{ backgroundColor: theme.colors.productBackground }}
             >
                 <Dialog.Title>
-                    {translate('View_EditBatch_WarningDelete_Title')}
+                    {strings.View_EditBatch_WarningDelete_Title}
                 </Dialog.Title>
                 <Dialog.Content>
                     <Text style={{ color: theme.colors.text }}>
-                        {translate('View_EditBatch_WarningDelete_Message')}
+                        {strings.View_EditBatch_WarningDelete_Message}
                     </Text>
                 </Dialog.Content>
                 <Dialog.Actions>
                     <Button color="red" onPress={handleDelete}>
-                        {translate(
-                            'View_EditBatch_WarningDelete_Button_Confirm'
-                        )}
+                        {strings.View_EditBatch_WarningDelete_Button_Confirm}
                     </Button>
                     <Button
                         color={theme.colors.accent}
@@ -367,9 +362,7 @@ const EditBatch: React.FC = () => {
                             setDeleteComponentVisible(false);
                         }}
                     >
-                        {translate(
-                            'View_EditBatch_WarningDelete_Button_Cancel'
-                        )}
+                        {strings.View_EditBatch_WarningDelete_Button_Cancel}
                     </Button>
                 </Dialog.Actions>
             </Dialog>

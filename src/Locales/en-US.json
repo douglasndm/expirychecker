@@ -9,6 +9,7 @@
     "Menu_Button_GoToStores": "Stores",
     "Menu_Button_GoToExport": "Export",
     "Menu_Button_GoToProPage": "Become PRO",
+    "Menu_Button_GoToTeams": "Teams",
     "Menu_Button_GoToSettings": "Settings",
     "Menu_Button_GoToAbout": "About",
     "Menu_Button_KnowOthersApps": "Others apps",
@@ -136,6 +137,12 @@
     "View_EditProduct_Button_Save": "Save",
     "View_EditProduct_Button_Cancel": "Cancel",
 
+    "View_Batch_PageTitle": "Batch",
+    "View_Batch_Button_Edit": "Edit",
+    "View_Batch_Amount": "Amount",
+    "View_Batch_UnitPrice": "Unit price",
+    "View_Batch_Button_ShareWithAnotherApps": "Share with anothers apps",
+
     "View_Home_SearchText": "Search for a product",
     "View_FloatMenu_AddProduct": "New product",
 
@@ -159,6 +166,7 @@
 
     "View_ShareProduct_Title": "Check this product",
     "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
+    "View_ShareProduct_MessageWithAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}",
 
     "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",
@@ -178,15 +186,14 @@
     "View_ProPage_SubscribePeriod_OneYear": "Annual",
 
 
-    "View_ProPage_AfterDaysFreeTest": " days free",
-    "View_ProPage_AfterIntroPrice_Monthly": " on the first month, then ",
-    "View_ProPage_AfterPrice_Monthly": " monthly",
+    "View_Subscription_Monthly_WithIntroText": "{INTRO_PRICE} on the first month, then {PRICE} monthly",
+    "View_Subscription_Monthly_Text": "{PRICE} monthly",
 
-    "View_ProPage_AfterIntroPrice_ThreeMonths": " for 3 months, then ",
-    "View_ProPage_AfterPrice_ThreeMonths": " every three months",
+    "View_Subscription_3Months_WithIntroText": "{INTRO_PRICE} on first payment for 3 months, then {PRICE} every three months",
+    "View_Subscription_3Months_Text": "{PRICE} every three months",
 
-    "View_ProPage_AfterIntroPrice_OneYear": " in the first year, then ",
-    "View_ProPage_AfterPrice_OneYear": " yearly",
+    "View_Subscription_AYear_WithIntroText": "{INTRO_PRICE} on the first year, then {PRICE} every year",
+    "View_Subscription_AYear_Text": "{PRICE} every year",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
     "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
@@ -228,13 +235,25 @@
     "View_Settings_Notifications_Cadency_Month": "Monthly",
     "View_Settings_Notifications_Cadency_Never": "Never",
 
+    "View_Settings_Backup_Import_Alert_Sucess": "File imported",
+
     "View_PROView_Subscription_RestoreButton": "Already a PRO? Restore subscription",
     "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
 
     "View_AllProductByStore_BeforeStoreName": "All products by store ",
-    "View_AllProductByStore_StoreName": "Products by store {STORE}",
     "View_AllProductByStore_NoStore": "no store",
+
+    "View_Store_View_Button_EditStore": "Edit store",
+    "View_Store_Edit_Placeholder_StoreName": "Store's name",
+    "View_Store_Edit_Alert_Success_UpdateStore": "Store updated",
+    "View_Store_Edit_Delete_title": "ARE YOU SURE? ⚠️",
+    "View_Store_Edit_Delete_Description": "Deleting {STORE}, you are also deleting all of it's products, this action cannot be undo, are you sure?",
+    "View_Store_Edit_Delete_Button_Cancel": "Keep store",
+    "View_Store_Edit_Delete_Button_Confirm": "Delete store and it's products",
+    "View_Store_Edit_Alert_Success_StoreDeleted": "The store and it's products were deleted",
+
+    "View_Store_Edit_PageTitle": "Edit {STORE}",
 
     "View_Success_BatchCreated": "Batch created",
     "View_Success_ProductCreated": "Product created",
@@ -268,6 +287,11 @@
     "View_Category_Edit_ButtonSave": "Save",
     "View_Category_Edit_SuccessText": "Success",
     "View_Category_Edit_ErrorEmtpyName": "Type the category name",
+    "View_Category_Success_OnDelete": "Category deleted",
+    "View_Category_Edit_DeleteModal_Title": "Are you sure?",
+    "View_Category_Edit_DeleteModal_Message": "All products in category will be set as no category.",
+    "View_Category_Edit_DeleteModal_Confirm": "I'm sure",
+    "View_Category_Edit_DeleteModal_Cancel": "Keep category",
 
     "View_Export_PageTitle": "Export",
     "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",
@@ -277,8 +301,9 @@
     "View_Export_Explain_Backup": "If you need to restore or change your phone, you'll need this file to restore all your products in your need phone.",
     "View_Export_Button_ExportExcel": "Export to Excel",
     "View_Export_Button_ExportBackup": "Export to backup",
-    "View_Export_Explain_Business": "Export all your products to Expiry Checker Business",
+    "View_Export_Explain_Business": "Export all your products to Expiry Checker Teams",
     "View_Export_Button_Business": "Export",
+    "View_Export_StorePicker_NoStore": "No store",
 
     "View_Permissions_AppleAT_PageTitle": "We need your permission",
     "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to track you in sites and apps that you use to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
@@ -320,5 +345,22 @@
     "BeforeTermsAndPrivacy": "By using this app you are acception our ",
     "BetweenTermsAndPrivacy": " and ",
     "Terms": "Terms of service",
-    "PrivacyPolicy": "Privacy Policy"
+    "PrivacyPolicy": "Privacy Policy",
+
+    "Informations_Teams_PageTitle": "Teams",
+    "Informations_Teams_InformationsTitle": "Introducing Expiry Checker Teams",
+    "Informations_Teams_AdvantagesTitle": "Here the advantages",
+    "Informations_Teams_Advantage1": "Do you have a team? All products will be sync with all devices",
+    "Informations_Teams_Advantage2": "And It has access control",
+    "Informations_Teams_Advantage3": "And all others advantages from this app",
+    "Informations_Teams_Advantage4": "Contact me to enter in the initial tests",
+    "Informations_Teams_AdvantageBackup": "Take all of your products easily",
+    "Informations_Teams_ButtonExport": "Make export file",
+    "Informations_Teams_Contact": "Contact to enter",
+
+    "Informations_Teams_ViewOnGooglePlay": "Go to Google Play",
+    "Informations_Teams_ViewOnAppStore": "Go to App Store",
+
+    "Banners_Teams_Button_GoToApp": "Introducing Expiry Checker Teams! Multiple accounts, multiple devices, one team, all products updated for everyone. 3 days free!",
+    "Banners_Teams_Button_GoToApp_IOS": "Introducing Expiry Checker Teams! Multiple accounts, multiple devices, one team, all products updated for everyone."
 }
