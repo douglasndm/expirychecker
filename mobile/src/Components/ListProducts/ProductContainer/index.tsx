@@ -1,8 +1,7 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { addDays, isPast } from 'date-fns';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import ProductCard from '~/Components/ListProducts/ProductCard';
 
@@ -24,18 +23,6 @@ const ProductContainer: React.FC<RequestProps> = ({
     const { userPreferences } = useContext(PreferencesContext);
     const { navigate } = useNavigation();
 
-    const expired = useMemo(() => {
-        return product.lotes[0] && isPast(product.lotes[0].exp_date);
-    }, [product.lotes]);
-
-    const nextToExp = useMemo(() => {
-        return (
-            product.lotes[0] &&
-            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
-                product.lotes[0].exp_date
-        );
-    }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
-
     const showAd = useMemo(() => {
         if (disableAds) return false;
         if (userPreferences.isUserPremium) return false;
@@ -49,7 +36,21 @@ const ProductContainer: React.FC<RequestProps> = ({
     }, [navigate]);
 
     const choosenAdText = useMemo(() => {
-        return Math.floor(Math.random() * 3) + 1;
+        const result = Math.floor(Math.random() * 3) + 1;
+
+        switch (result) {
+            case 1:
+                return strings.ProBanner_Text1;
+
+            case 2:
+                return strings.ProBanner_Text2;
+
+            case 3:
+                return strings.ProBanner_Text3;
+
+            default:
+                return strings.ProBanner_Text4;
+        }
     }, []);
 
     return (
@@ -57,18 +58,12 @@ const ProductContainer: React.FC<RequestProps> = ({
             {showAd && (
                 <AdView>
                     <ButtonPro onPress={handleNavigateToProPage}>
-                        <ButtonProText>
-                            {translate(`ProBanner_Text${choosenAdText}`)}
-                        </ButtonProText>
+                        <ButtonProText>{choosenAdText}</ButtonProText>
                     </ButtonPro>
                 </AdView>
             )}
 
-            <ProductCard
-                product={product}
-                expired={expired}
-                nextToExp={nextToExp}
-            />
+            <ProductCard product={product} />
         </Container>
     );
 };

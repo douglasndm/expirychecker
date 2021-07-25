@@ -1,7 +1,7 @@
 import { UpdateMode } from 'realm';
 import UUID from 'react-native-uuid-generator';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import Realm from '~/Services/Realm';
 
@@ -37,13 +37,13 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
         const categories = await getAllCategories();
 
         const categoryAlreadyExists = categories.find(
-            (category) =>
+            category =>
                 category.name.toLowerCase() === categoryName.toLowerCase()
         );
 
         if (categoryAlreadyExists) {
             throw new Error(
-                translate('Function_Category_AddCategory_Error_AlreadyExists')
+                strings.Function_Category_AddCategory_Error_AlreadyExists
             );
         }
 
@@ -86,8 +86,8 @@ export async function getAllProductsByCategory(
 
         const products = realm.objects<IProduct>('Product').slice();
 
-        const filtedProducts = products.filter((p) => {
-            const isInCategory = p.categories.find((c) => c === categoryUuid);
+        const filtedProducts = products.filter(p => {
+            const isInCategory = p.categories.find(c => c === categoryUuid);
 
             if (isInCategory) return true;
             return false;
@@ -97,4 +97,39 @@ export async function getAllProductsByCategory(
     } catch (err) {
         throw new Error(err.message);
     }
+}
+
+interface deleteCategoryProps {
+    category_id: string;
+}
+
+export async function deleteCategory({
+    category_id,
+}: deleteCategoryProps): Promise<void> {
+    const realm = await Realm();
+
+    realm.write(() => {
+        const products = realm.objects<IProduct>('Product');
+
+        const prodsToDelete = products.filter(prod => {
+            const inc = prod.categories.find(cat => cat === category_id);
+
+            if (inc && inc.length > 0) {
+                return true;
+            }
+            return false;
+        });
+
+        prodsToDelete.forEach(prod => {
+            prod.categories = [];
+        });
+    });
+
+    const product = realm
+        .objects<ICategory>('Category')
+        .filtered(`id == "${category_id}"`)[0];
+
+    realm.write(async () => {
+        realm.delete(product);
+    });
 }

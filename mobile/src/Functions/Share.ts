@@ -2,7 +2,7 @@ import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 import Analytics from '@react-native-firebase/analytics';
 
-import { translate } from '../Locales';
+import strings from '../Locales';
 
 import { getProductImagePath } from './Products/Image';
 
@@ -31,7 +31,7 @@ export async function shareFile({
         await RNFS.writeFile(path, fileAsString, encoding);
 
         await Share.open({
-            title: translate('Function_Share_SaveFileTitle'),
+            title: strings.Function_Share_SaveFileTitle,
             url: `file://${path}`,
         });
     } catch (err) {
@@ -74,6 +74,29 @@ export async function ShareProductImageWithText({
             }
         });
     } catch (err) {
-        throw new Error(err.message);
+        if (err.message !== 'User did not share') {
+            throw new Error(err.message);
+        }
+    }
+}
+
+interface shareTextProps {
+    title: string;
+    text?: string;
+}
+
+export async function shareText({
+    text,
+    title,
+}: shareTextProps): Promise<void> {
+    try {
+        await Share.open({
+            title,
+            message: text,
+        });
+    } catch (err) {
+        if (err.message !== 'User did not share') {
+            throw new Error(err.message);
+        }
     }
 }

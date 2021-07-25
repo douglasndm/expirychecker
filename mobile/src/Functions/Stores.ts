@@ -1,7 +1,7 @@
 import { UpdateMode } from 'realm';
 import UUID from 'react-native-uuid-generator';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import Realm from '~/Services/Realm';
 
@@ -93,7 +93,7 @@ export async function createStore(storeName: string): Promise<IStore> {
 
         if (storeAlreadyExists) {
             throw new Error(
-                translate('Function_Category_AddCategory_Error_AlreadyExists')
+                strings.Function_Category_AddCategory_Error_AlreadyExists
             );
         }
 
@@ -126,6 +126,23 @@ export async function updateStore(store: IStore): Promise<void> {
     } catch (err) {
         throw new Error(err);
     }
+}
+
+export async function deleteStore(store_id: string): Promise<void> {
+    const realm = await Realm();
+
+    const allProductsByStore = realm
+        .objects<IProduct[]>('Product')
+        .filtered(`store = "${store_id}"`);
+
+    const realmResponse = realm
+        .objects<IStore>('Store')
+        .filtered(`id = "${store_id}"`);
+
+    realm.write(() => {
+        realm.delete(allProductsByStore);
+        realm.delete(realmResponse);
+    });
 }
 
 export async function getAllProductsByStore(

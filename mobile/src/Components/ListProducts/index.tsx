@@ -2,9 +2,11 @@ import React, { useCallback, useContext, useMemo } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '../../Locales';
+import strings from '~/Locales';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import TeamsBanner from '~/Components/Banners/Teams';
 
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
@@ -25,12 +27,16 @@ interface RequestProps {
     products: Array<IProduct>;
     isHome?: boolean;
     deactiveFloatButton?: boolean;
+    onRefresh?: () => void;
+    isRefreshing?: boolean;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
     products,
     isHome,
     deactiveFloatButton,
+    onRefresh,
+    isRefreshing = false,
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
@@ -49,45 +55,55 @@ const ListProducts: React.FC<RequestProps> = ({
     }, [navigate]);
 
     const choosenAdText = useMemo(() => {
-        return Math.floor(Math.random() * 3) + 1;
+        const result = Math.floor(Math.random() * 3) + 1;
+
+        switch (result) {
+            case 1:
+                return strings.ProBanner_Text1;
+
+            case 2:
+                return strings.ProBanner_Text2;
+
+            case 3:
+                return strings.ProBanner_Text3;
+
+            default:
+                return strings.ProBanner_Text4;
+        }
     }, []);
 
     const ListHeader = useCallback(() => {
         return (
             <View>
                 {userPreferences.isUserPremium !== true && (
-                    <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>
-                            {translate(
-                                `ProBanner_Text${choosenAdText}`
-                            ).toLocaleUpperCase()}
-                        </ProText>
-                    </ProBanner>
+                    <>
+                        <TeamsBanner />
+                        {/* <ProBanner onPress={handleNavigateProPage}>
+                            <ProText>
+                                {choosenAdText.toLocaleUpperCase()}
+                            </ProText>
+                        </ProBanner> */}
+                    </>
                 )}
 
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
                     <CategoryDetails>
                         <CategoryDetailsText>
-                            {translate(
-                                'ListProductsComponent_Title_ProductsNextToExp'
-                            )}
+                            {
+                                strings.ListProductsComponent_Title_ProductsNextToExp
+                            }
                         </CategoryDetailsText>
                     </CategoryDetails>
                 )}
             </View>
         );
-    }, [
-        products,
-        handleNavigateProPage,
-        userPreferences.isUserPremium,
-        choosenAdText,
-    ]);
+    }, [products, userPreferences.isUserPremium]);
 
     const EmptyList = useCallback(() => {
         return (
             <EmptyListText>
-                {translate('ListProductsComponent_Title_NoProductsInList')}
+                {strings.ListProductsComponent_Title_NoProductsInList}
             </EmptyListText>
         );
     }, []);
@@ -96,9 +112,7 @@ const ListProducts: React.FC<RequestProps> = ({
         if (products.length > 5 && isHome) {
             return (
                 <GenericButton
-                    text={translate(
-                        'ListProductsComponent_Button_ShowAllProducts'
-                    )}
+                    text={strings.ListProductsComponent_Button_ShowAllProducts}
                     onPress={handleNavigateToAllProducts}
                     contentStyle={{ marginBottom: 100 }}
                 />
@@ -122,6 +136,8 @@ const ListProducts: React.FC<RequestProps> = ({
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
                 initialNumToRender={10}
+                onRefresh={onRefresh}
+                refreshing={isRefreshing}
             />
 
             {!deactiveFloatButton && (
@@ -130,7 +146,7 @@ const ListProducts: React.FC<RequestProps> = ({
                         <Icons name="add-outline" color="white" size={22} />
                     )}
                     small
-                    label={translate('View_FloatMenu_AddProduct')}
+                    label={strings.View_FloatMenu_AddProduct}
                     onPress={handleNavigateAddProduct}
                 />
             )}

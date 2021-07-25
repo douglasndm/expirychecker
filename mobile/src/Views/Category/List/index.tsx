@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
 import { getAllCategories, createCategory } from '~/Functions/Category';
 
@@ -36,10 +36,10 @@ const List: React.FC = () => {
     const [categories, setCategories] = useState<Array<ICategory>>([]);
 
     useEffect(() => {
-        getAllCategories().then((response) => setCategories(response));
+        getAllCategories().then(response => setCategories(response));
     }, []);
 
-    const handleOnTextChange = useCallback((value) => {
+    const handleOnTextChange = useCallback(value => {
         setInputHasError(false);
         setInputErrorMessage('');
         setNewCategoryName(value);
@@ -89,7 +89,7 @@ const List: React.FC = () => {
     );
     return (
         <Container>
-            <Header title={translate('View_Category_List_PageTitle')} />
+            <Header title={strings.View_Category_List_PageTitle} />
 
             <AddCategoryContent>
                 <InputContainer>
@@ -97,9 +97,9 @@ const List: React.FC = () => {
                         <InputText
                             value={newCategoryName}
                             onChangeText={handleOnTextChange}
-                            placeholder={translate(
-                                'View_Category_List_InputAdd_Placeholder'
-                            )}
+                            placeholder={
+                                strings.View_Category_List_InputAdd_Placeholder
+                            }
                         />
                     </InputTextContainer>
 
@@ -121,12 +121,12 @@ const List: React.FC = () => {
             </AddCategoryContent>
 
             <ListTitle>
-                {translate('View_Category_List_AllCategories_Label')}
+                {strings.View_Category_List_AllCategories_Label}
             </ListTitle>
 
             <ListCategories
                 data={categories}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item, index) => String(index)}
                 renderItem={renderCategory}
             />
         </Container>

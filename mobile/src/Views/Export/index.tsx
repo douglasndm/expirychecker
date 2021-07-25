@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import Share from 'react-native-share';
+import { showMessage } from 'react-native-flash-message';
 
-import { translate } from '~/Locales';
+import strings from '~/Locales';
 
-import { exportBackupFile, generateBackupFile } from '~/Functions/Backup';
+import { exportBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
 
 import Header from '~/Components/Header';
@@ -26,14 +26,16 @@ const Export: React.FC = () => {
 
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
     const [isBackupLoading, setIsBackupLoading] = useState<boolean>(false);
-    const [isBusinessLoading, setIsBusinessLoading] = useState<boolean>(false);
 
     const handleExportBackup = useCallback(async () => {
         try {
             setIsBackupLoading(true);
             await exportBackupFile();
         } catch (err) {
-            console.log(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsBackupLoading(false);
         }
@@ -49,43 +51,29 @@ const Export: React.FC = () => {
                 await exportToExcel({ sortBy: 'expire_date' });
             }
         } catch (err) {
-            console.log(err.message);
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
         } finally {
             setIsExcelLoading(false);
         }
     }, [checked]);
 
-    const handleExportBusiness = useCallback(async () => {
-        try {
-            setIsBusinessLoading(true);
-
-            const path = await generateBackupFile();
-            await Share.open({
-                title: translate('Function_Share_SaveFileTitle'),
-                url: `file://${path}`,
-            });
-        } catch (err) {
-        } finally {
-            setIsBusinessLoading(false);
-        }
-    }, []);
-
     return (
         <Container>
-            <Header title={translate('View_Export_PageTitle')} />
+            <Header title={strings.View_Export_PageTitle} />
 
             <Content>
                 <ExportOptionContainer>
                     <ExportExplain>
-                        {translate('View_Export_Explain_Excel')}
+                        {strings.View_Export_Explain_Excel}
                     </ExportExplain>
                     <RadioButtonGroupContainer>
-                        <SortTitle>
-                            {translate('View_Export_SortTitle')}
-                        </SortTitle>
+                        <SortTitle>{strings.View_Export_SortTitle}</SortTitle>
                         <RadioButtonContainer>
                             <RadioButtonText>
-                                {translate('View_Export_SortByCreatedDate')}
+                                {strings.View_Export_SortByCreatedDate}
                             </RadioButtonText>
                             <RadioButton
                                 value="created_at"
@@ -100,7 +88,7 @@ const Export: React.FC = () => {
 
                         <RadioButtonContainer>
                             <RadioButtonText>
-                                {translate('View_Export_SortByExpireDate')}
+                                {strings.View_Export_SortByExpireDate}
                             </RadioButtonText>
                             <RadioButton
                                 value="expire_in"
@@ -115,7 +103,7 @@ const Export: React.FC = () => {
                     </RadioButtonGroupContainer>
 
                     <Button
-                        text={translate('View_Export_Button_ExportExcel')}
+                        text={strings.View_Export_Button_ExportExcel}
                         onPress={handleExportToExcel}
                         isLoading={isExcelLoading}
                     />
@@ -123,23 +111,12 @@ const Export: React.FC = () => {
 
                 <ExportOptionContainer>
                     <ExportExplain>
-                        {translate('View_Export_Explain_Backup')}
+                        {strings.View_Export_Explain_Backup}
                     </ExportExplain>
                     <Button
-                        text={translate('View_Export_Button_ExportBackup')}
+                        text={strings.View_Export_Button_ExportBackup}
                         onPress={handleExportBackup}
                         isLoading={isBackupLoading}
-                    />
-                </ExportOptionContainer>
-
-                <ExportOptionContainer>
-                    <ExportExplain>
-                        {translate('View_Export_Explain_Business')}
-                    </ExportExplain>
-                    <Button
-                        text={translate('View_Export_Button_Business')}
-                        onPress={handleExportBusiness}
-                        isLoading={isBusinessLoading}
                     />
                 </ExportOptionContainer>
             </Content>

@@ -1,19 +1,26 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import { Platform } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+    useNavigation,
+    useRoute,
+    StackActions,
+} from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import LottieView from 'lottie-react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
-import { translate } from '../../Locales';
+import strings from '../../Locales';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
 import StatusBar from '../../Components/StatusBar';
+import BackButton from '~/Components/BackButton';
 import FloatButton from '~/Components/FloatButton';
 
 import {
     Container,
+    Content,
     SuccessMessageContainer,
     Title,
     Description,
@@ -38,7 +45,8 @@ interface Props {
 
 const Success: React.FC = () => {
     const route = useRoute();
-    const { reset } = useNavigation();
+    const { reset, replace, dispatch } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { userPreferences } = useContext(PreferencesContext);
 
@@ -140,125 +148,132 @@ const Success: React.FC = () => {
                 type === 'edit_batch' ||
                 type === 'edit_product'
             ) {
-                reset({
-                    routes: [
-                        { name: 'Home' },
-                        {
-                            name: 'ProductDetails',
-                            params: {
-                                id: routeParams.productId,
-                            },
-                        },
-                    ],
+                replace('ProductDetails', {
+                    id: routeParams.productId,
                 });
             }
         }
-    }, [reset, routeParams.productId, type]);
+    }, [replace, routeParams.productId, type]);
+
+    const handleGoBack = useCallback(() => {
+        let popAction;
+
+        if (type === 'delete_product') {
+            popAction = StackActions.pop(3);
+        } else {
+            popAction = StackActions.pop(2);
+        }
+        dispatch(popAction);
+    }, [dispatch, type]);
 
     return (
         <Container>
             <StatusBar />
 
-            <SuccessMessageContainer>
-                <LottieView
-                    source={animation}
-                    autoPlay
-                    loop={false}
-                    style={{ width: 180, height: 180 }}
-                />
+            <BackButton handleOnPress={handleGoBack} />
 
-                {type === 'create_batch' && (
-                    <Title>{translate('View_Success_BatchCreated')}</Title>
-                )}
-                {type === 'create_product' && (
-                    <Title>{translate('View_Success_ProductCreated')}</Title>
-                )}
-                {type === 'edit_batch' && (
-                    <Title>{translate('View_Success_BatchUpdated')}</Title>
-                )}
-                {type === 'edit_product' && (
-                    <Title>{translate('View_Success_ProductUpdated')}</Title>
-                )}
-                {type === 'delete_batch' && (
-                    <Title>{translate('View_Success_BatchDeleted')}</Title>
-                )}
-                {type === 'delete_product' && (
-                    <Title>{translate('View_Success_ProductDeleted')}</Title>
-                )}
+            <Content>
+                <SuccessMessageContainer>
+                    <LottieView
+                        source={animation}
+                        autoPlay
+                        loop={false}
+                        style={{ width: 180, height: 180 }}
+                    />
 
-                {type === 'create_batch' && (
-                    <Description>
-                        {translate('View_Success_BatchCreatedDescription')}
-                    </Description>
-                )}
-                {type === 'create_product' && (
-                    <Description>
-                        {translate('View_Success_ProductCreatedDescription')}
-                    </Description>
-                )}
-                {type === 'edit_batch' && (
-                    <Description>
-                        {translate('View_Success_BatchUpdatedDescription')}
-                    </Description>
-                )}
-                {type === 'edit_product' && (
-                    <Description>
-                        {translate('View_Success_ProductUpdatedDescription')}
-                    </Description>
-                )}
-                {type === 'delete_batch' && (
-                    <Description>
-                        {translate('View_Success_BatchDeletedDescription')}
-                    </Description>
-                )}
-                {type === 'delete_product' && (
-                    <Description>
-                        {translate('View_Success_ProductDeletedDescription')}
-                    </Description>
-                )}
-
-                <ButtonContainer>
-                    {userPreferences.isUserPremium && category_id && (
-                        <Button onPress={handleNavigateToCategory}>
-                            <ButtonText>
-                                {translate('View_Success_Button_GoToCategory')}
-                            </ButtonText>
-                        </Button>
+                    {type === 'create_batch' && (
+                        <Title>{strings.View_Success_BatchCreated}</Title>
+                    )}
+                    {type === 'create_product' && (
+                        <Title>{strings.View_Success_ProductCreated}</Title>
+                    )}
+                    {type === 'edit_batch' && (
+                        <Title>{strings.View_Success_BatchUpdated}</Title>
+                    )}
+                    {type === 'edit_product' && (
+                        <Title>{strings.View_Success_ProductUpdated}</Title>
+                    )}
+                    {type === 'delete_batch' && (
+                        <Title>{strings.View_Success_BatchDeleted}</Title>
+                    )}
+                    {type === 'delete_product' && (
+                        <Title>{strings.View_Success_ProductDeleted}</Title>
                     )}
 
-                    {userPreferences.isUserPremium && store_id && (
-                        <Button onPress={handleNavigateToStore}>
-                            <ButtonText>
-                                {translate('View_Success_Button_GoToStore')}
-                            </ButtonText>
-                        </Button>
+                    {type === 'create_batch' && (
+                        <Description>
+                            {strings.View_Success_BatchCreatedDescription}
+                        </Description>
+                    )}
+                    {type === 'create_product' && (
+                        <Description>
+                            {strings.View_Success_ProductCreatedDescription}
+                        </Description>
+                    )}
+                    {type === 'edit_batch' && (
+                        <Description>
+                            {strings.View_Success_BatchUpdatedDescription}
+                        </Description>
+                    )}
+                    {type === 'edit_product' && (
+                        <Description>
+                            {strings.View_Success_ProductUpdatedDescription}
+                        </Description>
+                    )}
+                    {type === 'delete_batch' && (
+                        <Description>
+                            {strings.View_Success_BatchDeletedDescription}
+                        </Description>
+                    )}
+                    {type === 'delete_product' && (
+                        <Description>
+                            {strings.View_Success_ProductDeletedDescription}
+                        </Description>
                     )}
 
-                    <Button onPress={handleNavigateHome}>
-                        <ButtonText>
-                            {translate('View_Success_Button_GoToHome')}
-                        </ButtonText>
-                    </Button>
-
-                    {(type === 'create_batch' ||
-                        type === 'create_product' ||
-                        type === 'edit_batch' ||
-                        type === 'edit_product') &&
-                        !!routeParams.productId && (
-                            <Button onPress={handleNavigateToProduct}>
+                    <ButtonContainer>
+                        {userPreferences.isUserPremium && category_id && (
+                            <Button onPress={handleNavigateToCategory}>
                                 <ButtonText>
-                                    {translate(
-                                        'View_Success_Button_NavigateToProduct'
-                                    )}
+                                    {strings.View_Success_Button_GoToCategory}
                                 </ButtonText>
                             </Button>
                         )}
-                </ButtonContainer>
 
-                {!userPreferences.isUserPremium && (
-                    <BannerAd size={bannerSize} unitId={adUnitId} />
-                )}
-            </SuccessMessageContainer>
+                        {userPreferences.isUserPremium && store_id && (
+                            <Button onPress={handleNavigateToStore}>
+                                <ButtonText>
+                                    {strings.View_Success_Button_GoToStore}
+                                </ButtonText>
+                            </Button>
+                        )}
+
+                        <Button onPress={handleNavigateHome}>
+                            <ButtonText>
+                                {strings.View_Success_Button_GoToHome}
+                            </ButtonText>
+                        </Button>
+
+                        {(type === 'create_batch' ||
+                            type === 'create_product' ||
+                            type === 'edit_batch' ||
+                            type === 'edit_product') &&
+                            !!routeParams.productId && (
+                                <Button onPress={handleNavigateToProduct}>
+                                    <ButtonText>
+                                        {
+                                            strings.View_Success_Button_NavigateToProduct
+                                        }
+                                    </ButtonText>
+                                </Button>
+                            )}
+                    </ButtonContainer>
+
+                    {!userPreferences.isUserPremium && (
+                        <BannerAd size={bannerSize} unitId={adUnitId} />
+                    )}
+                </SuccessMessageContainer>
+            </Content>
 
             {type === 'create_product' && userPreferences.isUserPremium && (
                 <FloatButton navigateTo="AddProduct" />

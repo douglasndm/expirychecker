@@ -1,22 +1,24 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
 import AddLote from '~/Views/Batch/Add';
 import EditProduct from '~/Views/Product/Edit';
 import EditLote from '~/Views/Batch/Edit';
-import ProductDetails from '~/Views/ProductDetails';
+import ProductDetails from '~/Views/Product/Details';
 import AllProducts from '~/Views/AllProducts';
-import StoreDetails from '~/Views/StoreDetails';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import ProSubscription from '~/Views/ProSubscription';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
+import BatchView from '~/Views/Batch/View';
 
-import StoreList from '~/Views/Store/List';
+import StoreList from '~/Views/Stores/List';
+import StoreDetails from '~/Views/Stores/Details';
+import StoreEdit from '~/Views/Stores/Edit';
 
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
@@ -24,15 +26,17 @@ import CategoryEdit from '~/Views/Category/Edit';
 
 import Export from '~/Views/Export';
 
+import Teams from '~/Views/Informations/Teams';
+
 import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator<RoutesParams>();
 
 const Routes: React.FC = () => {
     return (
-        <Stack.Navigator headerMode="none">
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
@@ -49,13 +53,17 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Success" component={Success} />
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
+            <Stack.Screen name="BatchView" component={BatchView} />
+
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />
             <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
 
             <Stack.Screen name="StoreList" component={StoreList} />
+            <Stack.Screen name="StoreEdit" component={StoreEdit} />
 
             <Stack.Screen name="Export" component={Export} />
+            <Stack.Screen name="Teams" component={Teams} />
 
             {Platform.OS === 'ios' && (
                 <Stack.Screen
