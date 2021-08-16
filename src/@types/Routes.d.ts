@@ -27,6 +27,9 @@ type RoutesParams = {
         product: string;
         batch: string;
     };
+    BatchDiscount: {
+        batch_id: number;
+    };
     Pro;
     Success: {
         type:

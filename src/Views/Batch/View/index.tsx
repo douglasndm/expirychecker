@@ -169,6 +169,12 @@ const View: React.FC = () => {
         productId,
     ]);
 
+    const handleNavigateToDiscount = useCallback(() => {
+        navigate('BatchDiscount', {
+            batch_id: batch.id,
+        });
+    }, [batch.id, navigate]);
+
     const loadData = useCallback(async () => {
         try {
             const prod = await getProductById(productId);
@@ -249,15 +255,39 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
+                    {!!batch.price_tmp && (
+                        <BatchPrice>
+                            {`Preço temporário `}
+                            <NumberFormat
+                                value={batch.price_tmp}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
+
                     {userPreferences.isUserPremium && (
-                        <Button
-                            text={
-                                strings.View_Batch_Button_ShareWithAnotherApps
-                            }
-                            onPress={handleShare}
-                            isLoading={isSharing}
-                            contentStyle={{ width: 250 }}
-                        />
+                        <>
+                            <Button
+                                text={
+                                    strings.View_Batch_Button_ShareWithAnotherApps
+                                }
+                                onPress={handleShare}
+                                isLoading={isSharing}
+                                contentStyle={{ width: 250 }}
+                            />
+
+                            {!!batch.price && (
+                                <Button
+                                    text="Adicionar desconto"
+                                    onPress={handleNavigateToDiscount}
+                                    contentStyle={{ marginTop: -5, width: 250 }}
+                                />
+                            )}
+                        </>
                     )}
                 </BatchContainer>
             )}
