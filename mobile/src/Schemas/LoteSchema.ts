@@ -8,6 +8,7 @@ const LoteSchema = {
         amount: 'int?',
         price: 'float?',
         status: 'string?',
+        price_tmp: 'float?',
     },
 };
 

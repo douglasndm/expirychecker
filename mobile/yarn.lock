@@ -1157,6 +1157,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-community/slider@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-3.0.3.tgz#830167fd757ba70ac638747ba3169b2dbae60330"
+  integrity sha512-8IeHfDwJ9/CTUwFs6x90VlobV3BfuPgNLjTgC6dRZovfCWigaZwVNIFFJnHBakK3pW2xErAPwhdvNR4JeNoYbw==
+
 "@react-native-firebase/admob@11.5.0":
   version "11.5.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/admob/-/admob-11.5.0.tgz#a392b0997b92b853513e33ba1d0c78a6031a0409"

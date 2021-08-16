@@ -15,6 +15,7 @@
     "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/push-notification-ios": "^1.8.0",
+    "@react-native-community/slider": "^3.0.3",
     "@react-native-firebase/admob": "11.5.0",
     "@react-native-firebase/analytics": "11.5.0",
     "@react-native-firebase/app": "11.5.0",

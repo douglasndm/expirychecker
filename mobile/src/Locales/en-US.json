@@ -143,6 +143,14 @@
     "View_Batch_UnitPrice": "Unit price",
     "View_Batch_Button_ShareWithAnotherApps": "Share with anothers apps",
 
+    "View_Batch_Discount_PageTitle": "Discount",
+    "View_Batch_Discount_Alert_Success": "Discount applyed",
+    "View_Batch_Discount_Batch_Name": "Batch:",
+    "View_Batch_Discount_Batch_Price": "Currectly price:",
+    "View_Batch_Discount_Batch_DiscountedPrice": "Price with discount:",
+    "View_Batch_Discount_Batch_DiscountPercentage": "Discount of {PERCENTAGE}%",
+    "View_Batch_Discount_Button_Apply": "Apply discount",
+
     "View_Home_SearchText": "Search for a product",
     "View_FloatMenu_AddProduct": "New product",
 
