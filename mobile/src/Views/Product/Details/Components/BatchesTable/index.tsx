@@ -99,7 +99,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         onPress={() => {
                             navigate('BatchView', {
                                 product_id,
-                                batch: JSON.stringify(batch),
+                                batch_id: batch.id,
                             });
                         }}
                     >

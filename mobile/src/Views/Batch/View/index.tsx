@@ -16,10 +16,11 @@ import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { ShareProductImageWithText, shareText } from '~/Functions/Share';
+import { ShareProductImageWithText } from '~/Functions/Share';
 
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
+import Loading from '~/Components/Loading';
 
 import { PageTitle } from '~/Views/Product/Add/styles';
 
@@ -43,18 +44,21 @@ import { getProductById } from '~/Functions/Product';
 
 interface Props {
     product_id: number;
-    batch: string;
+    batch_id: number;
 }
 
 const View: React.FC = () => {
     const { params } = useRoute();
     const { goBack, navigate, addListener } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
-
     const routeParams = params as Props;
 
+    const { userPreferences } = useContext(PreferencesContext);
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [product, setProduct] = useState<IProduct | null>(null);
+    const [batch, setBatch] = useState<ILote | null>(null);
 
     const [isSharing, setIsSharing] = useState<boolean>(false);
 
@@ -89,13 +93,12 @@ const View: React.FC = () => {
         return routeParams.product_id;
     }, [routeParams.product_id]);
 
-    const batch = useMemo(() => {
-        return JSON.parse(routeParams.batch) as ILote;
-    }, [routeParams.batch]);
-
     const date = useMemo(() => {
-        return parseISO(String(batch.exp_date));
-    }, [batch.exp_date]);
+        if (batch) {
+            return batch.exp_date;
+        }
+        return new Date();
+    }, [batch]);
 
     const expired = useMemo(() => {
         return isPast(date);
@@ -108,16 +111,14 @@ const View: React.FC = () => {
     }, [date, dateFormat, languageCode]);
 
     const handleNaviEdit = useCallback(() => {
-        if (batch) {
-            navigate('EditLote', {
-                productId,
-                loteId: batch.id,
-            });
-        }
-    }, [batch, navigate, productId]);
+        navigate('EditLote', {
+            productId,
+            loteId: routeParams.batch_id,
+        });
+    }, [navigate, productId, routeParams.batch_id]);
 
     const handleShare = useCallback(async () => {
-        if (!product) {
+        if (!product || !batch) {
             return;
         }
         try {
@@ -179,26 +180,32 @@ const View: React.FC = () => {
         } finally {
             setIsSharing(false);
         }
-    }, [product, batch.amount, batch.price_tmp, exp_date, productId]);
+    }, [product, batch, exp_date, productId, currencyPrefix]);
 
     const handleNavigateToDiscount = useCallback(() => {
         navigate('BatchDiscount', {
-            batch_id: batch.id,
+            batch_id: routeParams.batch_id,
         });
-    }, [batch.id, navigate]);
+    }, [navigate, routeParams.batch_id]);
 
     const loadData = useCallback(async () => {
         try {
+            setIsLoading(true);
             const prod = await getProductById(productId);
 
+            const b = prod.lotes.find(l => l.id === routeParams.batch_id);
+
             setProduct(prod);
+            if (b) setBatch(b);
         } catch (err) {
             showMessage({
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsLoading(false);
         }
-    }, [productId]);
+    }, [productId, routeParams.batch_id]);
 
     useEffect(() => {
         const unsubscribe = addListener('focus', () => {
@@ -208,7 +215,9 @@ const View: React.FC = () => {
         return unsubscribe;
     }, [addListener, loadData]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <PageHeader>
                 <PageTitleContainer>
@@ -240,13 +249,9 @@ const View: React.FC = () => {
                             locale: languageCode,
                         })}`}
 
-                        {`${format(
-                            parseISO(String(batch.exp_date)),
-                            `, EEEE, ${dateFormat}`,
-                            {
-                                locale: languageCode,
-                            }
-                        )}`}
+                        {`${format(date, `, EEEE, ${dateFormat}`, {
+                            locale: languageCode,
+                        })}`}
                     </BatchExpDate>
 
                     {!!batch.amount && (
@@ -322,7 +327,9 @@ const View: React.FC = () => {
 
                             {!!batch.price && (
                                 <Button
-                                    text="Adicionar desconto"
+                                    text={
+                                        strings.View_Batch_Discount_Button_Apply
+                                    }
                                     onPress={handleNavigateToDiscount}
                                     contentStyle={{ marginTop: -5, width: 250 }}
                                 />
