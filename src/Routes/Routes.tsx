@@ -14,7 +14,9 @@ import About from '~/Views/About';
 import ProSubscription from '~/Views/ProSubscription';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
+
 import BatchView from '~/Views/Batch/View';
+import BatchDiscount from '~/Views/Batch/Discount';
 
 import StoreList from '~/Views/Stores/List';
 import StoreDetails from '~/Views/Stores/Details';
@@ -54,6 +56,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
             <Stack.Screen name="BatchView" component={BatchView} />
+            <Stack.Screen name="BatchDiscount" component={BatchDiscount} />
 
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />
