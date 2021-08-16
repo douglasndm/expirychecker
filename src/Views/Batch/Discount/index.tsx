@@ -9,6 +9,7 @@ import strings from '~/Locales';
 
 import Header from '~/Components/Header';
 import Button from '~/Components/Button';
+import Loading from '~/Components/Loading';
 
 import {
     Container,
@@ -33,6 +34,8 @@ const Discount: React.FC = () => {
         useNavigation<StackNavigationProp<RoutesParams>>();
 
     const routeParams = route.params as Params;
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [batch, setBatch] = useState<ILote | null>(null);
 
@@ -95,18 +98,33 @@ const Discount: React.FC = () => {
         [batch]
     );
 
+    const loadData = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            const b = await getLoteById(routeParams.batch_id);
+
+            setBatch(b);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [routeParams.batch_id]);
+
     useEffect(() => {
         const unsubscribe = addListener('focus', () => {
-            getLoteById(routeParams.batch_id).then(response => {
-                if (response) setBatch(response);
-                return null;
-            });
+            loadData();
         });
 
         return unsubscribe;
-    }, [addListener, routeParams.batch_id]);
+    }, [addListener, loadData, routeParams.batch_id]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Header title={strings.View_Batch_Discount_PageTitle} noDrawer />
 
