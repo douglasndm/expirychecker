@@ -175,6 +175,9 @@
     "View_ShareProduct_Title": "Check this product",
     "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
     "View_ShareProduct_MessageWithAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}",
+    "View_ShareProduct_MessageWithPrice": "{PRODUCT} has a batch with unit price of {PRICE} that expire in {DATE}",
+    "View_ShareProduct_MessageWithDiscount": "{PRODUCT} has a batch that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item",
+    "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item. Total price with discount {TOTAL_DISCOUNT_PRICE}",
 
     "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",
