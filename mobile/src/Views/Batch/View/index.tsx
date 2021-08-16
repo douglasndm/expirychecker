@@ -123,34 +123,52 @@ const View: React.FC = () => {
         try {
             setIsSharing(true);
 
-            let text = '';
+            let text = strings.View_ShareProduct_Message;
 
             if (!!batch.amount && batch.amount > 0) {
-                text = strings.View_ShareProduct_MessageWithAmount.replace(
-                    '{PRODUCT}',
-                    product.name
-                )
-                    .replace('{AMOUNT}', String(batch.amount))
-                    .replace('{DATE}', exp_date);
-            } else {
-                text = strings.View_ShareProduct_Message.replace(
-                    '{PRODUCT}',
-                    product.name
-                ).replace('{DATE}', exp_date);
+                if (!!batch.price_tmp) {
+                    text =
+                        strings.View_ShareProduct_MessageWithDiscountAndAmount;
+
+                    text = text.replace(
+                        '{TMP_PRICE}',
+                        `${currencyPrefix}${batch.price_tmp.toFixed(2)}`
+                    );
+                    text = text.replace(
+                        '{TOTAL_DISCOUNT_PRICE}',
+                        `${currencyPrefix}${(
+                            batch.price_tmp * batch.amount
+                        ).toFixed(2)}`
+                    );
+                } else {
+                    text = strings.View_ShareProduct_MessageWithAmount;
+                }
+                text = text.replace('{AMOUNT}', String(batch.amount));
+            } else if (!!batch.price) {
+                text = strings.View_ShareProduct_MessageWithPrice;
+
+                if (!!batch.price_tmp) {
+                    text = strings.View_ShareProduct_MessageWithDiscount;
+                    text = text.replace(
+                        '{TMP_PRICE}',
+                        batch.price_tmp.toString()
+                    );
+                }
+
+                text = text.replace(
+                    '{PRICE}',
+                    `${currencyPrefix}${batch.price.toFixed(2)}`
+                );
             }
 
-            if (userPreferences.isUserPremium) {
-                await ShareProductImageWithText({
-                    productId,
-                    title: strings.View_ShareProduct_Title,
-                    text,
-                });
-            } else {
-                await shareText({
-                    title: strings.View_ShareProduct_Title,
-                    text,
-                });
-            }
+            text = text.replace('{PRODUCT}', product.name);
+            text = text.replace('{DATE}', exp_date);
+
+            await ShareProductImageWithText({
+                productId,
+                title: strings.View_ShareProduct_Title,
+                text,
+            });
         } catch (err) {
             if (err.message !== 'User did not share') {
                 showMessage({
@@ -161,13 +179,7 @@ const View: React.FC = () => {
         } finally {
             setIsSharing(false);
         }
-    }, [
-        product,
-        batch.amount,
-        userPreferences.isUserPremium,
-        exp_date,
-        productId,
-    ]);
+    }, [product, batch.amount, batch.price_tmp, exp_date, productId]);
 
     const handleNavigateToDiscount = useCallback(() => {
         navigate('BatchDiscount', {
@@ -260,6 +272,34 @@ const View: React.FC = () => {
                             {`Preço temporário `}
                             <NumberFormat
                                 value={batch.price_tmp}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
+
+                    {!!batch.price && !!batch.amount && (
+                        <BatchPrice>
+                            {`Preço total do lote sem desconto `}
+                            <NumberFormat
+                                value={batch.price * batch.amount}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
+
+                    {!!batch.price_tmp && !!batch.amount && (
+                        <BatchPrice>
+                            {`Preço total do lote com desconto `}
+                            <NumberFormat
+                                value={batch.price_tmp * batch.amount}
                                 displayType="text"
                                 thousandSeparator
                                 prefix={currencyPrefix}

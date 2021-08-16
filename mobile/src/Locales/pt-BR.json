@@ -175,6 +175,9 @@
     "View_ShareProduct_Title": "Favor checar o produto",
     "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
     "View_ShareProduct_MessageWithAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE}",
+    "View_ShareProduct_MessageWithPrice": "{PRODUCT} tem um lote com preço unitário {PRICE} que expira em {DATE}",
+    "View_ShareProduct_MessageWithDiscount": "{PRODUCT} tem um lote que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item",
+    "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item. Totalizando {TOTAL_DISCOUNT_PRICE}",
 
     "View_ProPage_MeetPRO": "Conheça o",
     "View_ProPage_ProLabel": "PRO",
