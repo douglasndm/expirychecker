@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { showMessage } from 'react-native-flash-message';
 import { Switch } from 'react-native-paper';
 
 import strings from '../../Locales';
 
 import StatusBar from '../../Components/StatusBar';
 import BackButton from '../../Components/BackButton';
-import GenericButton from '../../Components/Button';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -18,7 +16,6 @@ import {
     setHowManyDaysToBeNextExp,
     setEnableMultipleStoresMode,
 } from '../../Functions/Settings';
-import { isUserSignedIn, signOut } from '~/Functions/Auth';
 
 import PreferencesContext from '../../Contexts/PreferencesContext';
 
@@ -39,11 +36,8 @@ const Settings: React.FC = () => {
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
 
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
-    const [userSigned, setUserSigned] = useState<boolean>(false);
-    const [isOnLogout, setIsOnLogout] = useState<boolean>(false);
+    const { userPreferences, setUserPreferences } =
+        useContext(PreferencesContext);
 
     const { goBack } = useNavigation();
 
@@ -68,17 +62,10 @@ const Settings: React.FC = () => {
         });
     }, [multipleStoresState, setUserPreferences, userPreferences]);
 
-    const loadData = useCallback(async () => {
-        const isSigned = await isUserSignedIn();
-        setUserSigned(isSigned);
-    }, []);
-
     useEffect(() => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
         setMultipleStoresState(userPreferences.multiplesStores);
-
-        loadData();
-    }, [userPreferences, loadData]);
+    }, [userPreferences]);
 
     useEffect(() => {
         async function SetNewDays() {
@@ -101,25 +88,6 @@ const Settings: React.FC = () => {
         setSettingDaysToBeNext,
         userPreferences.howManyDaysToBeNextToExpire,
     ]);
-
-    const handleLogout = useCallback(async () => {
-        try {
-            setIsOnLogout(true);
-            await signOut();
-
-            setUserPreferences({
-                ...userPreferences,
-                isUserSignedIn: false,
-            });
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
-        } finally {
-            setIsOnLogout(false);
-        }
-    }, [setUserPreferences, userPreferences]);
 
     return (
         <>
@@ -181,24 +149,6 @@ const Settings: React.FC = () => {
                         <Appearance />
 
                         <Pro />
-
-                        {userSigned && (
-                            <Category>
-                                <CategoryTitle>
-                                    {strings.View_Settings_CategoryName_Account}
-                                </CategoryTitle>
-
-                                <SettingDescription>
-                                    {strings.View_Settings_AccountDescription}
-                                </SettingDescription>
-
-                                <GenericButton
-                                    text={strings.View_Settings_Button_SignOut}
-                                    onPress={handleLogout}
-                                    isLoading={isOnLogout}
-                                />
-                            </Category>
-                        )}
                     </SettingsContent>
                 </ScrollView>
             </Container>
