@@ -40,3 +40,8 @@ export const BatchPrice = styled.Text`
     font-size: 16px;
     color: ${props => props.theme.colors.text};
 `;
+
+export const BannerContainer = styled.View`
+    align-items: center;
+    margin-top: 25px;
+`;
