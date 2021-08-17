@@ -44,9 +44,8 @@ const Home: React.FC = () => {
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
-    const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
-        false
-    );
+    const [enableBarCodeReader, setEnableBarCodeReader] =
+        useState<boolean>(false);
 
     useEffect(() => {
         if (Platform.OS === 'ios') {
