@@ -45,7 +45,6 @@ const App: React.FC = () => {
         multiplesStores: false,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
-        isUserSignedIn: false,
     });
 
     const loadInitialData = useCallback(async () => {
