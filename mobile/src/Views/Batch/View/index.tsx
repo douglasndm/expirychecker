@@ -5,7 +5,10 @@ import React, {
     useContext,
     useEffect,
 } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import EnvConfig from 'react-native-config';
+import { TestIds, BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast, parseISO } from 'date-fns';//eslint-disable-line
@@ -38,6 +41,7 @@ import {
     BatchExpDate,
     BatchAmount,
     BatchPrice,
+    BannerContainer,
 } from './styles';
 
 import { getProductById } from '~/Functions/Product';
@@ -61,6 +65,18 @@ const View: React.FC = () => {
     const [batch, setBatch] = useState<ILote | null>(null);
 
     const [isSharing, setIsSharing] = useState<boolean>(false);
+
+    const adUnit = useMemo(() => {
+        if (__DEV__) {
+            return TestIds.BANNER;
+        }
+
+        if (Platform.OS === 'ios') {
+            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+        }
+
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+    }, []);
 
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'BR') {
@@ -274,7 +290,7 @@ const View: React.FC = () => {
 
                     {!!batch.price_tmp && (
                         <BatchPrice>
-                            {`Preço temporário `}
+                            {`${strings.View_Batch_UnitTempPrice} `}
                             <NumberFormat
                                 value={batch.price_tmp}
                                 displayType="text"
@@ -288,7 +304,7 @@ const View: React.FC = () => {
 
                     {!!batch.price && !!batch.amount && (
                         <BatchPrice>
-                            {`Preço total do lote sem desconto `}
+                            {`${strings.View_Batch_TotalPrice} `}
                             <NumberFormat
                                 value={batch.price * batch.amount}
                                 displayType="text"
@@ -302,7 +318,7 @@ const View: React.FC = () => {
 
                     {!!batch.price_tmp && !!batch.amount && (
                         <BatchPrice>
-                            {`Preço total do lote com desconto `}
+                            {`${strings.View_Batch_TotalPriceDiscount} `}
                             <NumberFormat
                                 value={batch.price_tmp * batch.amount}
                                 displayType="text"
@@ -314,7 +330,7 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
-                    {userPreferences.isUserPremium && (
+                    {userPreferences.isUserPremium ? (
                         <>
                             <Button
                                 text={
@@ -335,6 +351,13 @@ const View: React.FC = () => {
                                 />
                             )}
                         </>
+                    ) : (
+                        <BannerContainer>
+                            <BannerAd
+                                unitId={adUnit}
+                                size={BannerAdSize.LARGE_BANNER}
+                            />
+                        </BannerContainer>
                     )}
                 </BatchContainer>
             )}

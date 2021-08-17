@@ -141,6 +141,9 @@
     "View_Batch_Button_Edit": "Editar",
     "View_Batch_Amount": "Quantidade",
     "View_Batch_UnitPrice": "Preço unitário",
+    "View_Batch_UnitTempPrice": "Preço unitário temporário",
+    "View_Batch_TotalPrice": "Preço total",
+    "View_Batch_TotalPriceDiscount": "Preço total com desconto",
     "View_Batch_Button_ShareWithAnotherApps": "Compartilhar com outros apps",
 
     "View_Batch_Discount_PageTitle": "Desconto",
