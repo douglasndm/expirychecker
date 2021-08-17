@@ -52,32 +52,40 @@ const Product = ({ product }: Request) => {
         return 'dd/MM/yyyy';
     });
 
-    const exp_date = useMemo(() => {
-        if (product.lotes[0]) {
-            return product.lotes[0].exp_date;
-        }
-        return null;
-    }, [product.lotes]);
-
     const batch = useMemo(() => {
-        if (product.lotes[0]) {
-            return product.lotes[0];
+        let bat: ILote | null = null;
+
+        product.lotes.forEach(l => {
+            if (!bat && l.status !== 'tratado') {
+                bat = l;
+            }
+        });
+
+        if (!bat && !!product.lotes[0]) {
+            bat = product.lotes[0]; // eslint-disable-line
         }
 
-        return null;
+        return bat;
     }, [product.lotes]);
+
+    const exp_date = useMemo(() => {
+        if (batch) {
+            return batch.exp_date;
+        }
+        return null;
+    }, [batch]);
 
     const expired = useMemo(() => {
-        return product.lotes[0] && isPast(product.lotes[0].exp_date);
-    }, [product.lotes]);
+        return batch && isPast(batch.exp_date);
+    }, [batch]);
 
     const nextToExp = useMemo(() => {
         return (
-            product.lotes[0] &&
+            batch &&
             addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
-                product.lotes[0].exp_date
+                batch.exp_date
         );
-    }, [userPreferences.howManyDaysToBeNextToExpire, product.lotes]);
+    }, [batch, userPreferences.howManyDaysToBeNextToExpire]);
 
     const expiredOrNext = useMemo(() => {
         return !!(expired || nextToExp);
