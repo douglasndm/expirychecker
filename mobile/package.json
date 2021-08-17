@@ -63,7 +63,7 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-zip-archive": "^6.0.3",
     "react-number-format": "^4.4.1",
-    "realm": "^10.6.0",
+    "realm": "^10.6.1",
     "styled-components": "^5.2.0",
     "xlsx": "^0.17.0"
   },
