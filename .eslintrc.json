@@ -27,6 +27,7 @@
         "react-hooks"
     ],
     "rules": {
+        "no-extra-boolean-cast": 0,
         "react/require-default-props": "off",
         "react/jsx-indent" : ["error", 4],
         "prettier/prettier": "error",

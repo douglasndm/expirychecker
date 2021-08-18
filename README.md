@@ -40,6 +40,9 @@ GOOGLE_SIGNIN_CLIENT_ID= <- Client ID encontrado nas configurações do firebase
 REVENUECAT_PUBLIC_APP_ID= <- ID do aplicativo na Revenuecat
 ```
 
+## Adicionado SDK do android
+Crie um arquivo local.properties na pasta "android" e adicione o caminho do seu SDK do Android. Por exemplo: sdk.dir=C:\\Users\\User\\AppData\\Local\\Android\\sdk
+
 ## Depois disso é só partir para o abraço e compilar
 ```
 npx react-native run-android || yarn android

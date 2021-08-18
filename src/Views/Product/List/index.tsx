@@ -15,26 +15,26 @@ import {
     InputTextContainer,
     InputTextIconContainer,
     InputTextIcon,
-} from '../Home/styles';
+} from '~/Views/Home/styles';
 
 import { Container } from './styles';
 
-const AllProducts: React.FC = () => {
+const List: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
-    const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
-        false
-    );
+    const [enableBarCodeReader, setEnableBarCodeReader] =
+        useState<boolean>(false);
 
     const getProducts = useCallback(async () => {
         try {
             setIsLoading(true);
             const allProducts = await getAllProducts({
                 sortProductsByExpDate: true,
+                removeTreatedBatch: true,
             });
             setProducts(allProducts);
         } catch (err) {
@@ -130,4 +130,4 @@ const AllProducts: React.FC = () => {
     );
 };
 
-export default AllProducts;
+export default List;
