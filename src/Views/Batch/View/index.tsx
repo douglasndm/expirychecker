@@ -5,7 +5,10 @@ import React, {
     useContext,
     useEffect,
 } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import EnvConfig from 'react-native-config';
+import { TestIds, BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast, parseISO } from 'date-fns';//eslint-disable-line
@@ -16,10 +19,11 @@ import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { ShareProductImageWithText, shareText } from '~/Functions/Share';
+import { ShareProductImageWithText } from '~/Functions/Share';
 
 import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
+import Loading from '~/Components/Loading';
 
 import { PageTitle } from '~/Views/Product/Add/styles';
 
@@ -37,26 +41,42 @@ import {
     BatchExpDate,
     BatchAmount,
     BatchPrice,
+    BannerContainer,
 } from './styles';
 
 import { getProductById } from '~/Functions/Product';
 
 interface Props {
     product_id: number;
-    batch: string;
+    batch_id: number;
 }
 
 const View: React.FC = () => {
     const { params } = useRoute();
     const { goBack, navigate, addListener } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
-
     const routeParams = params as Props;
 
+    const { userPreferences } = useContext(PreferencesContext);
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [product, setProduct] = useState<IProduct | null>(null);
+    const [batch, setBatch] = useState<ILote | null>(null);
 
     const [isSharing, setIsSharing] = useState<boolean>(false);
+
+    const adUnit = useMemo(() => {
+        if (__DEV__) {
+            return TestIds.BANNER;
+        }
+
+        if (Platform.OS === 'ios') {
+            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+        }
+
+        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+    }, []);
 
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'BR') {
@@ -89,13 +109,12 @@ const View: React.FC = () => {
         return routeParams.product_id;
     }, [routeParams.product_id]);
 
-    const batch = useMemo(() => {
-        return JSON.parse(routeParams.batch) as ILote;
-    }, [routeParams.batch]);
-
     const date = useMemo(() => {
-        return parseISO(String(batch.exp_date));
-    }, [batch.exp_date]);
+        if (batch) {
+            return batch.exp_date;
+        }
+        return new Date();
+    }, [batch]);
 
     const expired = useMemo(() => {
         return isPast(date);
@@ -108,49 +127,65 @@ const View: React.FC = () => {
     }, [date, dateFormat, languageCode]);
 
     const handleNaviEdit = useCallback(() => {
-        if (batch) {
-            navigate('EditLote', {
-                productId,
-                loteId: batch.id,
-            });
-        }
-    }, [batch, navigate, productId]);
+        navigate('EditLote', {
+            productId,
+            loteId: routeParams.batch_id,
+        });
+    }, [navigate, productId, routeParams.batch_id]);
 
     const handleShare = useCallback(async () => {
-        if (!product) {
+        if (!product || !batch) {
             return;
         }
         try {
             setIsSharing(true);
 
-            let text = '';
+            let text = strings.View_ShareProduct_Message;
 
             if (!!batch.amount && batch.amount > 0) {
-                text = strings.View_ShareProduct_MessageWithAmount.replace(
-                    '{PRODUCT}',
-                    product.name
-                )
-                    .replace('{AMOUNT}', String(batch.amount))
-                    .replace('{DATE}', exp_date);
-            } else {
-                text = strings.View_ShareProduct_Message.replace(
-                    '{PRODUCT}',
-                    product.name
-                ).replace('{DATE}', exp_date);
+                if (!!batch.price_tmp) {
+                    text =
+                        strings.View_ShareProduct_MessageWithDiscountAndAmount;
+
+                    text = text.replace(
+                        '{TMP_PRICE}',
+                        `${currencyPrefix}${batch.price_tmp.toFixed(2)}`
+                    );
+                    text = text.replace(
+                        '{TOTAL_DISCOUNT_PRICE}',
+                        `${currencyPrefix}${(
+                            batch.price_tmp * batch.amount
+                        ).toFixed(2)}`
+                    );
+                } else {
+                    text = strings.View_ShareProduct_MessageWithAmount;
+                }
+                text = text.replace('{AMOUNT}', String(batch.amount));
+            } else if (!!batch.price) {
+                text = strings.View_ShareProduct_MessageWithPrice;
+
+                if (!!batch.price_tmp) {
+                    text = strings.View_ShareProduct_MessageWithDiscount;
+                    text = text.replace(
+                        '{TMP_PRICE}',
+                        batch.price_tmp.toString()
+                    );
+                }
+
+                text = text.replace(
+                    '{PRICE}',
+                    `${currencyPrefix}${batch.price.toFixed(2)}`
+                );
             }
 
-            if (userPreferences.isUserPremium) {
-                await ShareProductImageWithText({
-                    productId,
-                    title: strings.View_ShareProduct_Title,
-                    text,
-                });
-            } else {
-                await shareText({
-                    title: strings.View_ShareProduct_Title,
-                    text,
-                });
-            }
+            text = text.replace('{PRODUCT}', product.name);
+            text = text.replace('{DATE}', exp_date);
+
+            await ShareProductImageWithText({
+                productId,
+                title: strings.View_ShareProduct_Title,
+                text,
+            });
         } catch (err) {
             if (err.message !== 'User did not share') {
                 showMessage({
@@ -161,26 +196,32 @@ const View: React.FC = () => {
         } finally {
             setIsSharing(false);
         }
-    }, [
-        product,
-        batch.amount,
-        userPreferences.isUserPremium,
-        exp_date,
-        productId,
-    ]);
+    }, [product, batch, exp_date, productId, currencyPrefix]);
+
+    const handleNavigateToDiscount = useCallback(() => {
+        navigate('BatchDiscount', {
+            batch_id: routeParams.batch_id,
+        });
+    }, [navigate, routeParams.batch_id]);
 
     const loadData = useCallback(async () => {
         try {
+            setIsLoading(true);
             const prod = await getProductById(productId);
 
+            const b = prod.lotes.find(l => l.id === routeParams.batch_id);
+
             setProduct(prod);
+            if (b) setBatch(b);
         } catch (err) {
             showMessage({
                 message: err.message,
                 type: 'danger',
             });
+        } finally {
+            setIsLoading(false);
         }
-    }, [productId]);
+    }, [productId, routeParams.batch_id]);
 
     useEffect(() => {
         const unsubscribe = addListener('focus', () => {
@@ -190,7 +231,9 @@ const View: React.FC = () => {
         return unsubscribe;
     }, [addListener, loadData]);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <PageHeader>
                 <PageTitleContainer>
@@ -222,13 +265,9 @@ const View: React.FC = () => {
                             locale: languageCode,
                         })}`}
 
-                        {`${format(
-                            parseISO(String(batch.exp_date)),
-                            `, EEEE, ${dateFormat}`,
-                            {
-                                locale: languageCode,
-                            }
-                        )}`}
+                        {`${format(date, `, EEEE, ${dateFormat}`, {
+                            locale: languageCode,
+                        })}`}
                     </BatchExpDate>
 
                     {!!batch.amount && (
@@ -249,15 +288,76 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
-                    {userPreferences.isUserPremium && (
-                        <Button
-                            text={
-                                strings.View_Batch_Button_ShareWithAnotherApps
-                            }
-                            onPress={handleShare}
-                            isLoading={isSharing}
-                            contentStyle={{ width: 250 }}
-                        />
+                    {!!batch.price_tmp && (
+                        <BatchPrice>
+                            {`${strings.View_Batch_UnitTempPrice} `}
+                            <NumberFormat
+                                value={batch.price_tmp}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
+
+                    {!!batch.price && !!batch.amount && (
+                        <BatchPrice>
+                            {`${strings.View_Batch_TotalPrice} `}
+                            <NumberFormat
+                                value={batch.price * batch.amount}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
+
+                    {!!batch.price_tmp && !!batch.amount && (
+                        <BatchPrice>
+                            {`${strings.View_Batch_TotalPriceDiscount} `}
+                            <NumberFormat
+                                value={batch.price_tmp * batch.amount}
+                                displayType="text"
+                                thousandSeparator
+                                prefix={currencyPrefix}
+                                renderText={value => value}
+                                decimalScale={2}
+                            />
+                        </BatchPrice>
+                    )}
+
+                    {userPreferences.isUserPremium ? (
+                        <>
+                            <Button
+                                text={
+                                    strings.View_Batch_Button_ShareWithAnotherApps
+                                }
+                                onPress={handleShare}
+                                isLoading={isSharing}
+                                contentStyle={{ width: 250 }}
+                            />
+
+                            {!!batch.price && (
+                                <Button
+                                    text={
+                                        strings.View_Batch_Discount_Button_Apply
+                                    }
+                                    onPress={handleNavigateToDiscount}
+                                    contentStyle={{ marginTop: -5, width: 250 }}
+                                />
+                            )}
+                        </>
+                    ) : (
+                        <BannerContainer>
+                            <BannerAd
+                                unitId={adUnit}
+                                size={BannerAdSize.LARGE_BANNER}
+                            />
+                        </BannerContainer>
                     )}
                 </BatchContainer>
             )}

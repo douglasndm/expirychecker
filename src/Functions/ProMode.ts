@@ -2,7 +2,6 @@ import Purchases, { PurchasesPackage } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
 
-import { isUserSignedIn } from './Auth';
 import { getUserId } from './User';
 import { setEnableProVersion } from './Settings';
 
@@ -10,42 +9,26 @@ Purchases.setDebugLogsEnabled(true);
 Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 
 export async function isSubscriptionActive(): Promise<boolean> {
-    const userSigned = await isUserSignedIn();
+    const localUserId = await getUserId();
 
-    try {
-        if (userSigned) {
-            const localUserId = await getUserId();
-
-            if (!localUserId) {
-                throw new Error('User is not signed');
-            }
-
-            Purchases.identify(localUserId);
-        }
-
-        const purchaserInfo = await Purchases.getPurchaserInfo();
-
-        if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
-            await setEnableProVersion(true);
-            return true;
-        }
-        await setEnableProVersion(false);
-        return false;
-    } catch (e) {
-        throw new Error(e);
+    if (!!localUserId) {
+        Purchases.logIn(localUserId);
     }
+
+    const purchaserInfo = await Purchases.getPurchaserInfo();
+
+    if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
+        await setEnableProVersion(true);
+        return true;
+    }
+    await setEnableProVersion(false);
+    return false;
 }
 
 export async function getSubscriptionDetails(): Promise<
     Array<PurchasesPackage>
 > {
-    const userSigned = await isUserSignedIn();
-
     try {
-        if (userSigned) {
-            const userId = await getUserId();
-            await Purchases.identify(userId);
-        }
         const offerings = await Purchases.getOfferings();
 
         const packages: Array<PurchasesPackage> = [];
@@ -75,15 +58,7 @@ export async function makeSubscription(
         await Analytics().logEvent('started_susbscription_process');
     }
 
-    const userSigned = await isUserSignedIn();
-
     try {
-        if (userSigned) {
-            const userId = await getUserId();
-
-            await Purchases.identify(userId);
-        }
-
         const {
             purchaserInfo,
             // productIdentifier,
@@ -99,7 +74,6 @@ export async function makeSubscription(
     } catch (e) {
         if (e.userCancelled) {
             await Analytics().logEvent('user_cancel_subscribe_process');
-            throw new Error('User cancel payment');
         }
         if (!e.userCancelled) {
             await Analytics().logEvent('error_in_subscribe_process');
@@ -109,15 +83,11 @@ export async function makeSubscription(
 }
 
 export async function RestorePurchasers(): Promise<void> {
-    try {
-        const restore = await Purchases.restoreTransactions();
-        // ... check restored purchaserInfo to see if entitlement is now active
+    const restore = await Purchases.restoreTransactions();
+    // ... check restored purchaserInfo to see if entitlement is now active
 
-        if (restore.activeSubscriptions.length > 0) {
-            await setEnableProVersion(true);
-        }
-    } catch (e) {
-        throw new Error(e.message);
+    if (restore.activeSubscriptions.length > 0) {
+        await setEnableProVersion(true);
     }
 }
 

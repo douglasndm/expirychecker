@@ -7,5 +7,4 @@ interface IUserPreferences {
     multiplesStores: boolean;
     enableNotifications: boolean;
     notificationCadency: NotificationCadency;
-    isUserSignedIn: boolean;
 }

@@ -5,4 +5,5 @@ interface ILote {
     amount?: number;
     price?: number;
     status?: string;
+    price_tmp?: number;
 }

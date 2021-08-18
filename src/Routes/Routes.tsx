@@ -8,13 +8,16 @@ import AddLote from '~/Views/Batch/Add';
 import EditProduct from '~/Views/Product/Edit';
 import EditLote from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/Product/Details';
-import AllProducts from '~/Views/AllProducts';
 import Settings from '~/Views/Settings';
 import About from '~/Views/About';
 import ProSubscription from '~/Views/ProSubscription';
 import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
+
+import AllProducts from '~/Views/Product/List';
+
 import BatchView from '~/Views/Batch/View';
+import BatchDiscount from '~/Views/Batch/Discount';
 
 import StoreList from '~/Views/Stores/List';
 import StoreDetails from '~/Views/Stores/Details';
@@ -54,6 +57,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="PhotoView" component={PhotoView} />
 
             <Stack.Screen name="BatchView" component={BatchView} />
+            <Stack.Screen name="BatchDiscount" component={BatchDiscount} />
 
             <Stack.Screen name="ListCategory" component={ListCategory} />
             <Stack.Screen name="CategoryView" component={CategoryView} />

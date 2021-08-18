@@ -141,7 +141,18 @@
     "View_Batch_Button_Edit": "Edit",
     "View_Batch_Amount": "Amount",
     "View_Batch_UnitPrice": "Unit price",
+    "View_Batch_UnitTempPrice": "Temp unit price",
+    "View_Batch_TotalPrice": "Total price",
+    "View_Batch_TotalPriceDiscount": "Total price with discount",
     "View_Batch_Button_ShareWithAnotherApps": "Share with anothers apps",
+
+    "View_Batch_Discount_PageTitle": "Discount",
+    "View_Batch_Discount_Alert_Success": "Discount applyed",
+    "View_Batch_Discount_Batch_Name": "Batch:",
+    "View_Batch_Discount_Batch_Price": "Currectly price:",
+    "View_Batch_Discount_Batch_DiscountedPrice": "Price with discount:",
+    "View_Batch_Discount_Batch_DiscountPercentage": "Discount of {PERCENTAGE}%",
+    "View_Batch_Discount_Button_Apply": "Apply discount",
 
     "View_Home_SearchText": "Search for a product",
     "View_FloatMenu_AddProduct": "New product",
@@ -167,6 +178,9 @@
     "View_ShareProduct_Title": "Check this product",
     "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
     "View_ShareProduct_MessageWithAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}",
+    "View_ShareProduct_MessageWithPrice": "{PRODUCT} has a batch with unit price of {PRICE} that expire in {DATE}",
+    "View_ShareProduct_MessageWithDiscount": "{PRODUCT} has a batch that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item",
+    "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item. Total price with discount {TOTAL_DISCOUNT_PRICE}",
 
     "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",
