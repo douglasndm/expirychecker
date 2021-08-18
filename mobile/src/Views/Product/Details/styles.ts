@@ -84,7 +84,7 @@ export const ActionsButtonContainer = styled.View`
     flex-direction: row;
 `;
 
-export const ActionButton = styled(Button).attrs((props) => ({
+export const ActionButton = styled(Button).attrs(props => ({
     color: props.theme.colors.accent,
 }))``;
 
@@ -104,12 +104,12 @@ export const CategoryDetails = styled.View`
 `;
 
 export const CategoryDetailsText = styled.Text`
-    color: ${(props) => props.theme.colors.accent};
+    color: ${props => props.theme.colors.accent};
     font-size: 18px;
 `;
 
 export const AdContainer = styled.View`
-    align-self: center;
+    align-items: center;
     margin: 20px 0px;
 `;
 

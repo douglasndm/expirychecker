@@ -25,7 +25,10 @@ type RoutesParams = {
     };
     BatchView: {
         product: string;
-        batch: string;
+        batch_id: number;
+    };
+    BatchDiscount: {
+        batch_id: number;
     };
     Pro;
     Success: {
