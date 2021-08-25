@@ -6,8 +6,6 @@ import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import TeamsBanner from '~/Components/Banners/Teams';
-
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
 
@@ -77,12 +75,11 @@ const ListProducts: React.FC<RequestProps> = ({
             <View>
                 {userPreferences.isUserPremium !== true && (
                     <>
-                        <TeamsBanner />
-                        {/* <ProBanner onPress={handleNavigateProPage}>
+                        <ProBanner onPress={handleNavigateProPage}>
                             <ProText>
                                 {choosenAdText.toLocaleUpperCase()}
                             </ProText>
-                        </ProBanner> */}
+                        </ProBanner>
                     </>
                 )}
 
