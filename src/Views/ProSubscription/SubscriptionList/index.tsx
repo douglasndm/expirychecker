@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 import { showMessage } from 'react-native-flash-message';
 
@@ -36,13 +37,14 @@ import {
     TextSubscription,
     LoadingIndicator,
 } from './styles';
+import { getEnableProVersion } from '~/Functions/Settings';
 
 const SubscriptionList: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset, replace } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
+    const { userPreferences, setUserPreferences } =
+        useContext(PreferencesContext);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isPurchasing, setIsPurchasing] = useState<boolean>(false);
@@ -72,10 +74,11 @@ const SubscriptionList: React.FC = () => {
 
             if (Platform.OS === 'android') {
                 if (introPrice) {
-                    string = strings.View_Subscription_Monthly_WithIntroText.replace(
-                        '{INTRO_PRICE}',
-                        introPrice.priceString
-                    ).replace('{PRICE}', price_string);
+                    string =
+                        strings.View_Subscription_Monthly_WithIntroText.replace(
+                            '{INTRO_PRICE}',
+                            introPrice.priceString
+                        ).replace('{PRICE}', price_string);
                 }
             }
 
@@ -94,10 +97,11 @@ const SubscriptionList: React.FC = () => {
 
             if (Platform.OS === 'android') {
                 if (introPrice) {
-                    string = strings.View_Subscription_3Months_WithIntroText.replace(
-                        '{INTRO_PRICE}',
-                        introPrice.priceString
-                    ).replace('{PRICE}', price_string);
+                    string =
+                        strings.View_Subscription_3Months_WithIntroText.replace(
+                            '{INTRO_PRICE}',
+                            introPrice.priceString
+                        ).replace('{PRICE}', price_string);
                 }
             }
 
@@ -116,10 +120,11 @@ const SubscriptionList: React.FC = () => {
 
             if (Platform.OS === 'android') {
                 if (introPrice) {
-                    string = strings.View_Subscription_AYear_WithIntroText.replace(
-                        '{INTRO_PRICE}',
-                        introPrice.priceString
-                    ).replace('{PRICE}', price_string);
+                    string =
+                        strings.View_Subscription_AYear_WithIntroText.replace(
+                            '{INTRO_PRICE}',
+                            introPrice.priceString
+                        ).replace('{PRICE}', price_string);
                 }
             }
 
@@ -183,19 +188,17 @@ const SubscriptionList: React.FC = () => {
 
             await makeSubscription(plan);
 
+            const enablePro = await getEnableProVersion();
+
             setUserPreferences({
                 ...userPreferences,
-                isUserPremium: true,
+                isUserPremium: enablePro,
             });
 
-            reset({
-                routes: [{ name: 'Home' }],
-            });
-        } catch (err) {
-            if (err.message === 'User cancel payment') {
-                return;
+            if (enablePro) {
+                replace('Home');
             }
-
+        } catch (err) {
             showMessage({
                 message: err.message,
                 type: 'danger',
@@ -207,10 +210,10 @@ const SubscriptionList: React.FC = () => {
         selectedPlan,
         setUserPreferences,
         userPreferences,
-        reset,
         annualPlan,
         quarterlyPlan,
         monthlyPlan,
+        replace,
     ]);
 
     const handleRestore = useCallback(async () => {
