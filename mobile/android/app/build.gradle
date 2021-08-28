@@ -144,7 +144,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 125
+        versionCode 126
         versionName "1.9.2"
 
         // FOR REACT NATIVE CAMERA
@@ -274,6 +274,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.7.0'
     implementation 'com.google.ads.mediation:inmobi:9.1.1.0'
     implementation 'com.google.ads.mediation:vungle:6.8.1.1'
+    implementation 'com.google.ads.mediation:facebook:6.5.1.1'
     // Mediation Test Suite
     implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
 }
