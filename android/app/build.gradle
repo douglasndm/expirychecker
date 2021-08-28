@@ -231,10 +231,6 @@ tasks.whenTaskAdded { task -> if (task.name.startsWith('assemble') && task.name.
 
 repositories {
     jcenter()
-
-    maven {
-      url  "https://adcolony.bintray.com/AdColony"
-    }
 }
 
 dependencies {
@@ -278,7 +274,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.7.0'
     implementation 'com.google.ads.mediation:inmobi:9.1.1.0'
     implementation 'com.google.ads.mediation:vungle:6.8.1.1'
-    implementation 'com.google.ads.mediation:adcolony:4.3.0.0'
     // Mediation Test Suite
     implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
 }
