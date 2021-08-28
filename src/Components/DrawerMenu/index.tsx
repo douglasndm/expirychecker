@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { Linking } from 'react-native';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
@@ -67,10 +66,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const handleNavigateToTeams = useCallback(() => {
         navigation.navigate('Teams');
     }, [navigation]);
-
-    const handleNavigateToSite = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev');
-    }, []);
 
     return (
         <Container>
@@ -205,15 +200,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <Icons name="settings-outline" />
                         <MenuItemText>
                             {strings.Menu_Button_GoToSettings}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
-
-                <MenuItemContainer onPress={handleNavigateToSite}>
-                    <MenuContent>
-                        <Icons name="globe-outline" />
-                        <MenuItemText>
-                            {strings.Menu_Button_KnowOthersApps}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>
