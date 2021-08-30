@@ -42,6 +42,8 @@ import {
     BatchAmount,
     BatchPrice,
     BannerContainer,
+    ProFeaturesContainer,
+    ProFeaturesText,
 } from './styles';
 
 import { getProductById } from '~/Functions/Product';
@@ -330,28 +332,7 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
-                    {userPreferences.isUserPremium ? (
-                        <>
-                            <Button
-                                text={
-                                    strings.View_Batch_Button_ShareWithAnotherApps
-                                }
-                                onPress={handleShare}
-                                isLoading={isSharing}
-                                contentStyle={{ width: 250 }}
-                            />
-
-                            {!!batch.price && (
-                                <Button
-                                    text={
-                                        strings.View_Batch_Discount_Button_Apply
-                                    }
-                                    onPress={handleNavigateToDiscount}
-                                    contentStyle={{ marginTop: -5, width: 250 }}
-                                />
-                            )}
-                        </>
-                    ) : (
+                    {!userPreferences.isUserPremium && (
                         <BannerContainer>
                             <BannerAd
                                 unitId={adUnit}
@@ -359,6 +340,32 @@ const View: React.FC = () => {
                             />
                         </BannerContainer>
                     )}
+
+                    <ProFeaturesContainer>
+                        {!userPreferences.isUserPremium && (
+                            <ProFeaturesText>
+                                Seja PRO e desbloqueie novas funções
+                            </ProFeaturesText>
+                        )}
+                        <Button
+                            text={
+                                strings.View_Batch_Button_ShareWithAnotherApps
+                            }
+                            onPress={handleShare}
+                            isLoading={isSharing}
+                            contentStyle={{ width: 250 }}
+                            enable={userPreferences.isUserPremium}
+                        />
+
+                        {!!batch.price && (
+                            <Button
+                                text={strings.View_Batch_Discount_Button_Apply}
+                                onPress={handleNavigateToDiscount}
+                                contentStyle={{ marginTop: -5, width: 250 }}
+                                enable={userPreferences.isUserPremium}
+                            />
+                        )}
+                    </ProFeaturesContainer>
                 </BatchContainer>
             )}
         </Container>
