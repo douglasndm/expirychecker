@@ -622,8 +622,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         }
                                                         value={selectedCategory}
                                                         placeholder={{
-                                                            label:
-                                                                strings.View_AddProduct_InputPlaceholder_SelectCategory,
+                                                            label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -643,8 +642,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         }
                                                         value={selectedStore}
                                                         placeholder={{
-                                                            label:
-                                                                strings.View_AddProduct_InputPlacehoder_Store,
+                                                            label: strings.View_AddProduct_InputPlacehoder_Store,
                                                             value: 'null',
                                                         }}
                                                     />
@@ -675,9 +673,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     <GenericButton
                                         text={
                                             strings.View_AddProduct_Button_Save
-                                        }
-                                        accessibilityLabel={
-                                            strings.View_AddProduct_Button_Save_AccessibilityDescription
                                         }
                                         onPress={handleSave}
                                     />
