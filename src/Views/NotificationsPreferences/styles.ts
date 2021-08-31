@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import Phone from 'react-native-phone-number-input';
 
 export const Container = styled.View`
     flex: 1;
@@ -10,8 +9,8 @@ export const Content = styled.View`
     padding: 15px;
 `;
 
-export const InputContainer = styled.View`
-    align-items: center;
+export const NotificationDescription = styled.Text`
+    font-family: 'Open Sans';
+    font-size: 18px;
+    margin-bottom: 15px;
 `;
-
-export const PhoneInput = styled(Phone)``;
