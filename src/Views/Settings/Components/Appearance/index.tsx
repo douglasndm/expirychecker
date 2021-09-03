@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import strings from '~/Locales';
+
 import { getActualAppTheme, Themes } from '~/Themes';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -37,16 +38,28 @@ const Appearance: React.FC = () => {
             key: 'system',
         });
 
-        Themes.forEach(theme => {
-            availableThemes.push({
-                label: theme.name,
-                key: theme.key,
-                value: theme.key,
+        if (userPreferences.isUserPremium) {
+            Themes.forEach(theme => {
+                availableThemes.push({
+                    label: theme.name,
+                    key: theme.key,
+                    value: theme.key,
+                });
             });
-        });
+        } else {
+            Themes.forEach(theme => {
+                if (!theme.isPro) {
+                    availableThemes.push({
+                        label: theme.name,
+                        key: theme.key,
+                        value: theme.key,
+                    });
+                }
+            });
+        }
 
         return availableThemes;
-    }, []);
+    }, [userPreferences.isUserPremium]);
 
     useEffect(() => {
         getAppTheme().then(response => setSelectedTheme(response));
@@ -84,7 +97,7 @@ const Appearance: React.FC = () => {
                         onValueChange={handleThemeChange}
                         value={selectedTheme}
                         placeholder={{
-                            label: 'Selecione um item',
+                            label: strings.View_Settings_Appearance_Theme_SelectOne,
                             value: 'null',
                         }}
                     />
