@@ -3,6 +3,8 @@ import 'styled-components';
 declare module 'styled-components/native' {
     export interface DefaultTheme {
         name: string;
+        key: string;
+        isPro: boolean;
 
         colors: {
             primary: string;
@@ -13,6 +15,7 @@ declare module 'styled-components/native' {
             textAccent: string;
 
             inputText: string;
+            placeholderColor: string;
             inputBackground: string;
 
             productBackground: string;

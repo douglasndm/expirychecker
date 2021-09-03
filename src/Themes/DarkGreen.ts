@@ -1,8 +1,11 @@
 import { darken } from 'polished';
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components/native';
+import strings from '~/Locales';
 
 const DarkGreen: DefaultTheme = {
-    name: 'Dark Green',
+    name: strings.View_Settings_Appearance_Theme_DarkGreen,
+    key: 'darkgreen',
+    isPro: true,
 
     colors: {
         primary: darken(0.1, '#33e860'),
@@ -13,6 +16,7 @@ const DarkGreen: DefaultTheme = {
         textAccent: '#33e860',
 
         inputText: '#ffffff',
+        placeholderColor: '#EAEAEA',
         inputBackground: '#373737',
 
         productBackground: '#373737',
