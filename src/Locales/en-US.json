@@ -231,10 +231,12 @@
     "View_Settings_AccountDescription": "Manage your account linked to the app",
     "View_Settings_Button_SignOut": "Sign out",
 
+    "View_Settings_Appearance_Theme_SelectOne": "Choose a theme",
     "View_Settings_Appearance_Theme_System": "System (Default)",
     "View_Settings_Appearance_Theme_Light": "Light",
     "View_Settings_Appearance_Theme_Dark": "Dark",
     "View_Settings_Appearance_Theme_UltraViolet": "Ultra violet (PRO)",
+    "View_Settings_Appearance_Theme_JustBlue": "Just Blue (PRO)",
     "View_Settings_Appearance_Theme_DarkGreen": "Dark Green (PRO)",
     "View_Settings_Appearance_Theme_HappyPink": "Happy Pink (PRO)",
     "View_Settings_Appearance_Theme_OceanBlue": "Ocean Blue (PRO)",
