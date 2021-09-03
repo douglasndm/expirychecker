@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native-paper';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
-import StatusBar from '../../Components/StatusBar';
-import BackButton from '../../Components/BackButton';
+import StatusBar from '~/Components/StatusBar';
+import Header from '~/Components/Header';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -15,14 +14,12 @@ import Pro from './Components/Pro';
 import {
     setHowManyDaysToBeNextExp,
     setEnableMultipleStoresMode,
-} from '../../Functions/Settings';
+} from '~/Functions/Settings';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     SettingsContent,
     Category,
     CategoryTitle,
@@ -38,8 +35,6 @@ const Settings: React.FC = () => {
 
     const { userPreferences, setUserPreferences } =
         useContext(PreferencesContext);
-
-    const { goBack } = useNavigation();
 
     const setSettingDaysToBeNext = useCallback(
         async (days: number) => {
@@ -94,11 +89,7 @@ const Settings: React.FC = () => {
             <Container>
                 <StatusBar />
                 <ScrollView>
-                    <PageHeader>
-                        <BackButton handleOnPress={goBack} />
-
-                        <PageTitle>{strings.View_Settings_PageTitle}</PageTitle>
-                    </PageHeader>
+                    <Header title={strings.View_Settings_PageTitle} noDrawer />
 
                     <SettingsContent>
                         <Category>
