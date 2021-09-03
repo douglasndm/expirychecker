@@ -30,7 +30,8 @@ import { getAllCategories } from '~/Functions/Category';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
 import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
+import Input from '~/Components/InputText';
 import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
@@ -39,14 +40,11 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     PageContent,
     ProductImageContainer,
     ProductImage,
     InputContainer,
     InputTextContainer,
-    InputText,
     InputTextTip,
     CameraButtonContainer,
     CameraButtonIcon,
@@ -59,13 +57,12 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-    InputCodeTextContainer,
     InputCodeTextIcon,
-    InputCodeText,
     InputTextIconContainer,
     BannerContainer,
     BannerText,
     Icons,
+    InputText,
 } from './styles';
 
 let adUnit = TestIds.INTERSTITIAL;
@@ -99,7 +96,7 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { goBack, navigate } = useNavigation();
+    const { navigate } = useNavigation();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -423,15 +420,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         />
                     ) : (
                         <Container>
-                            <StatusBar />
                             <ScrollView>
-                                <PageHeader>
-                                    <BackButton handleOnPress={goBack} />
-                                    <PageTitle>
-                                        {strings.View_AddProduct_PageTitle}
-                                    </PageTitle>
-                                </PageHeader>
-
+                                <Header
+                                    title={strings.View_AddProduct_PageTitle}
+                                    noDrawer
+                                />
+                                <StatusBar />
                                 <PageContent>
                                     {userPreferences.isUserPremium &&
                                         !!photoPath && (
@@ -465,22 +459,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             <InputTextContainer
                                                 hasError={nameFieldError}
                                             >
-                                                <InputText
+                                                <Input
                                                     placeholder={
                                                         strings.View_AddProduct_InputPlacehoder_Name
                                                     }
-                                                    accessibilityLabel={
-                                                        strings.View_AddProduct_InputAccessibility_Name
-                                                    }
                                                     value={name}
-                                                    onChangeText={value => {
+                                                    onChange={(
+                                                        value: string
+                                                    ) => {
                                                         setName(value);
                                                         setNameFieldError(
-                                                            false
-                                                        );
-                                                    }}
-                                                    onFocus={() => {
-                                                        setIsBarCodeEnabled(
                                                             false
                                                         );
                                                     }}
@@ -501,23 +489,26 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             </InputTextTip>
                                         )}
 
-                                        <InputCodeTextContainer
+                                        <InputTextContainer
                                             hasError={codeFieldError}
+                                            style={{
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                paddingRight: 10,
+                                            }}
                                         >
-                                            <InputCodeText
+                                            <InputText
                                                 placeholder={
                                                     strings.View_AddProduct_InputPlacehoder_Code
-                                                }
-                                                accessibilityLabel={
-                                                    strings.View_AddProduct_InputAccessibility_Code
                                                 }
                                                 value={code}
                                                 onChangeText={value => {
                                                     setCode(value);
                                                     setCodeFieldError(false);
                                                 }}
-                                                onBlur={handleCheckProductCode}
                                             />
+
                                             <InputTextIconContainer
                                                 onPress={
                                                     handleEnableBarCodeReader
@@ -525,7 +516,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             >
                                                 <InputCodeTextIcon />
                                             </InputTextIconContainer>
-                                        </InputCodeTextContainer>
+                                        </InputTextContainer>
 
                                         {codeFieldError && (
                                             <InputTextTip
@@ -547,53 +538,33 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             </MoreInformationsTitle>
 
                                             <InputGroup>
-                                                <InputTextContainer
-                                                    style={{
+                                                <Input
+                                                    contentStyle={{
                                                         flex: 5,
                                                         marginRight: 10,
                                                     }}
-                                                >
-                                                    <InputText
-                                                        placeholder={
-                                                            strings.View_AddProduct_InputPlacehoder_Batch
-                                                        }
-                                                        accessibilityLabel={
-                                                            strings.View_AddProduct_InputAccessibility_Batch
-                                                        }
-                                                        value={lote}
-                                                        onChangeText={value =>
-                                                            setLote(value)
-                                                        }
-                                                        onFocus={() => {
-                                                            setIsBarCodeEnabled(
-                                                                false
-                                                            );
-                                                        }}
-                                                    />
-                                                </InputTextContainer>
-                                                <InputTextContainer>
-                                                    <InputText
-                                                        style={{
-                                                            flex: 4,
-                                                        }}
-                                                        placeholder={
-                                                            strings.View_AddProduct_InputPlacehoder_Amount
-                                                        }
-                                                        accessibilityLabel={
-                                                            strings.View_AddProduct_InputAccessibility_Amount
-                                                        }
-                                                        keyboardType="numeric"
-                                                        value={String(amount)}
-                                                        onChangeText={
-                                                            handleAmountChange
-                                                        }
-                                                        onFocus={() => {
-                                                            setIsBarCodeEnabled(
-                                                                false
-                                                            );
-                                                        }}
-                                                    />
-                                                </InputTextContainer>
+                                                    placeholder={
+                                                        strings.View_AddProduct_InputPlacehoder_Batch
+                                                    }
+                                                    value={lote}
+                                                    onChange={value =>
+                                                        setLote(value)
+                                                    }
+                                                />
+
+                                                <Input
+                                                    contentStyle={{
+                                                        flex: 4,
+                                                    }}
+                                                    placeholder={
+                                                        strings.View_AddProduct_InputPlacehoder_Amount
+                                                    }
+                                                    keyboardType="numeric"
+                                                    value={String(amount)}
+                                                    onChange={
+                                                        handleAmountChange
+                                                    }
+                                                />
                                             </InputGroup>
 
                                             <Currency

@@ -13,12 +13,11 @@ import { getProductById } from '~/Functions/Product';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 
 import {
     Container,
-    PageTitle,
     PageContent,
     InputContainer,
     InputTextContainer,
@@ -33,7 +32,6 @@ import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
     PageHeader,
-    PageTitleContainer,
     Button,
     Icons,
     RadioButton,
@@ -195,12 +193,10 @@ const EditBatch: React.FC = () => {
                 <StatusBar />
                 <ScrollView>
                     <PageHeader>
-                        <PageTitleContainer>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {strings.View_EditBatch_PageTitle}
-                            </PageTitle>
-                        </PageTitleContainer>
+                        <Header
+                            title={strings.View_EditBatch_PageTitle}
+                            noDrawer
+                        />
 
                         <Button
                             icon={() => (

@@ -19,7 +19,7 @@ import {
 import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 
 import { createLote } from '~/Functions/Lotes';
@@ -29,8 +29,6 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     PageContent,
     InputContainer,
     InputTextContainer,
@@ -197,10 +195,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         <Container>
             <StatusBar />
             <ScrollView>
-                <PageHeader>
-                    <BackButton handleOnPress={goBack} />
-                    <PageTitle>{strings.View_AddBatch_PageTitle}</PageTitle>
-                </PageHeader>
+                <Header title={strings.View_AddBatch_PageTitle} noDrawer />
 
                 <PageContent>
                     <InputContainer>
