@@ -9,7 +9,8 @@ import strings from '~/Locales';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
+import Input from '~/Components/InputText';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -30,17 +31,13 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     PageContent,
     InputGroup,
     InputContainer,
     InputTextContainer,
     InputText,
     InputTextTip,
-    InputCodeTextContainer,
     InputCodeTextIcon,
-    InputCodeText,
     InputTextIconContainer,
     ProductImage,
     CameraButtonContainer,
@@ -85,7 +82,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const { productId } = route.params;
 
-    const { goBack, navigate, addListener } = useNavigation();
+    const { navigate, addListener } = useNavigation();
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -312,12 +309,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                         <>
                             <Container>
                                 <StatusBar />
-                                <PageHeader>
-                                    <BackButton handleOnPress={goBack} />
-                                    <PageTitle>
-                                        {strings.View_EditProduct_PageTitle}
-                                    </PageTitle>
-                                </PageHeader>
+                                <Header
+                                    title={strings.View_EditProduct_PageTitle}
+                                    noDrawer
+                                />
 
                                 <PageContent>
                                     {userPreferences.isUserPremium &&
@@ -369,27 +364,37 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                             </InputTextTip>
                                         )}
 
-                                        <InputCodeTextContainer>
-                                            <InputCodeText
-                                                placeholder={
-                                                    strings.View_EditProduct_InputPlacehoder_Code
-                                                }
-                                                accessibilityLabel={
-                                                    strings.View_EditProduct_InputAccessibility_Code
-                                                }
-                                                value={code}
-                                                onChangeText={value =>
-                                                    setCode(value)
-                                                }
-                                            />
-                                            <InputTextIconContainer
-                                                onPress={
-                                                    handleEnableBarCodeReader
-                                                }
+                                        <InputGroup>
+                                            <InputTextContainer
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    justifyContent:
+                                                        'space-between',
+                                                    alignItems: 'center',
+                                                    paddingRight: 10,
+                                                }}
                                             >
-                                                <InputCodeTextIcon />
-                                            </InputTextIconContainer>
-                                        </InputCodeTextContainer>
+                                                <InputText
+                                                    placeholder={
+                                                        strings.View_EditProduct_InputPlacehoder_Code
+                                                    }
+                                                    value={code}
+                                                    onChange={(
+                                                        value: string
+                                                    ) => {
+                                                        setCode(value);
+                                                    }}
+                                                />
+
+                                                <InputTextIconContainer
+                                                    onPress={
+                                                        handleEnableBarCodeReader
+                                                    }
+                                                >
+                                                    <InputCodeTextIcon />
+                                                </InputTextIconContainer>
+                                            </InputTextContainer>
+                                        </InputGroup>
 
                                         <MoreInformationsContainer>
                                             <MoreInformationsTitle>
