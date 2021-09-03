@@ -224,6 +224,7 @@
     "View_Settings_CategoryName_Pro": "Pro",
     "View_Settings_CategoryName_Account": "Conta",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "Quantos dias para produto está próximo ao vencimento?",
+    "View_Settings_SettingName_DaysToExpPlaceholder": "Dias para está próximo ao vencimento",
     "View_Settings_SettingName_EnableNotification": "Ativar notificações?",
     "View_Settings_SettingName_EnableMultiplesStores": "Ativar modo de múltiplas lojas?",
     "View_Settings_SettingName_AppTheme": "Tema do aplicativo",
