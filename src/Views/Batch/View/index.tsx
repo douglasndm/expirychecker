@@ -21,18 +21,16 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { ShareProductImageWithText } from '~/Functions/Share';
 
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
-
-import { PageTitle } from '~/Views/Product/Add/styles';
 
 import {
     ActionsButtonContainer,
     ButtonPaper,
 } from '~/Views/Product/Edit/styles';
 
-import { PageHeader, PageTitleContainer, Icons } from '../Edit/styles';
+import { PageHeader, Icons } from '../Edit/styles';
 
 import {
     Container,
@@ -238,10 +236,7 @@ const View: React.FC = () => {
     ) : (
         <Container>
             <PageHeader>
-                <PageTitleContainer>
-                    <BackButton handleOnPress={goBack} />
-                    <PageTitle>{strings.View_Batch_PageTitle}</PageTitle>
-                </PageTitleContainer>
+                <Header title={strings.View_Batch_PageTitle} noDrawer />
 
                 <ActionsButtonContainer>
                     <ButtonPaper
