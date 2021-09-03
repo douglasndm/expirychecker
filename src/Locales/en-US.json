@@ -221,6 +221,7 @@
     "View_Settings_CategoryName_Pro": "Pro",
     "View_Settings_CategoryName_Account": "Account",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "How many days to product be next to expire",
+    "View_Settings_SettingName_DaysToExpPlaceholder": "Days to be close to expiration",
     "View_Settings_SettingName_EnableNotification": "Enable notifications?",
     "View_Settings_SettingName_EnableMultiplesStores": "Enable multiples stores mode?",
     "View_Settings_SettingName_AppTheme": "Application theme",
