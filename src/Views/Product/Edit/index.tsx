@@ -331,15 +331,12 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     <InputContainer>
                                         <InputGroup>
                                             <InputTextContainer>
-                                                <InputText
+                                                <Input
                                                     placeholder={
                                                         strings.View_EditProduct_InputPlacehoder_Name
                                                     }
-                                                    accessibilityLabel={
-                                                        strings.View_EditProduct_InputAccessibility_Name
-                                                    }
                                                     value={name}
-                                                    onChangeText={value => {
+                                                    onChange={value => {
                                                         setName(value);
                                                         setNameFieldError(
                                                             false

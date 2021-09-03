@@ -50,7 +50,7 @@ export const InputText = styled.TextInput.attrs(props => ({
 }))`
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${props => props.theme.colors.text};
+    color: ${props => props.theme.colors.inputText};
 `;
 
 export const InputTextTip = styled.Text`
