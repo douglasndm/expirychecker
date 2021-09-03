@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const Text = styled.Text`
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.productCardText};
 `;
 
 export const PickerContainer = styled.View`

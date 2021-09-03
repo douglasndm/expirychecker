@@ -18,6 +18,7 @@ import {
 
 import strings from '~/Locales';
 
+import Loading from '~/Components/Loading';
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
@@ -61,7 +62,9 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
-    const { reset, goBack } = useNavigation();
+    const { reset } = useNavigation();
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -162,8 +165,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         };
     }, []);
 
-    useEffect(() => {
-        async function getProduct() {
+    const loadData = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
             const prod = await getProductById(productId);
 
             if (prod) {
@@ -171,9 +176,19 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
                 if (prod.code) setCode(prod.code);
             }
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
         }
-        getProduct();
     }, [productId]);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
@@ -191,7 +206,9 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         setPrice(value);
     }, []);
 
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <StatusBar />
             <ScrollView>
