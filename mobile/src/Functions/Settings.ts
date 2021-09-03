@@ -154,9 +154,9 @@ export async function getNotificationCadency(): Promise<NotificationCadency> {
 }
 
 export async function getEnableProVersion(): Promise<boolean> {
-    if (__DEV__) {
-        return true;
-    }
+    // if (__DEV__) {
+    //     return true;
+    // }
     const code = await getProCode();
 
     if (code) {
