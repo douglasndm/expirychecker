@@ -59,9 +59,6 @@ import {
     CustomDatePicker,
     InputCodeTextIcon,
     InputTextIconContainer,
-    BannerContainer,
-    BannerText,
-    Icons,
     InputText,
 } from './styles';
 
@@ -386,10 +383,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         }
     }, [existentProduct, navigate]);
 
-    const handleNavigateToPro = useCallback(() => {
-        navigate('Pro');
-    }, [navigate]);
-
     const handleOnCodeRead = useCallback(
         async (codeRead: string) => {
             setCode(codeRead);
@@ -398,6 +391,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         },
         [handleCheckProductCode]
     );
+
+    const handleNameChange = useCallback((value: string) => {
+        setName(value);
+        setNameFieldError(false);
+    }, []);
 
     const handlePriceChange = useCallback((value: number) => {
         if (value <= 0) {
@@ -441,20 +439,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                         )}
 
                                     <InputContainer>
-                                        {!userPreferences.isUserPremium && (
-                                            <BannerContainer
-                                                onPress={handleNavigateToPro}
-                                            >
-                                                <BannerText>
-                                                    {
-                                                        strings.View_AddProduct_Banner_UnlockCamera
-                                                    }
-                                                </BannerText>
-
-                                                <Icons name="arrow-down-outline" />
-                                            </BannerContainer>
-                                        )}
-
                                         <InputGroup>
                                             <InputTextContainer
                                                 hasError={nameFieldError}
@@ -464,14 +448,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         strings.View_AddProduct_InputPlacehoder_Name
                                                     }
                                                     value={name}
-                                                    onChange={(
-                                                        value: string
-                                                    ) => {
-                                                        setName(value);
-                                                        setNameFieldError(
-                                                            false
-                                                        );
-                                                    }}
+                                                    onChange={handleNameChange}
                                                 />
                                             </InputTextContainer>
 
