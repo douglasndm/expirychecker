@@ -376,7 +376,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         strings.View_EditProduct_InputPlacehoder_Code
                                                     }
                                                     value={code}
-                                                    onChange={(
+                                                    onChangeText={(
                                                         value: string
                                                     ) => {
                                                         setCode(value);
