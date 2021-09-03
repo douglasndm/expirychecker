@@ -20,6 +20,7 @@ const HappyPink: DefaultTheme = {
         inputBackground: '#FFF',
 
         productBackground: '#FFF',
+        productCardText: '#000000',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',

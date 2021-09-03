@@ -21,6 +21,7 @@ const Dark: DefaultTheme = {
         inputBackground: '#565657',
 
         productBackground: '#565657',
+        productCardText: '#fff',
 
         productExpiredBackground: darken(0.1, '#CC4B4B'),
         productNextToExpBackground: darken(0.1, '#DDE053'),
