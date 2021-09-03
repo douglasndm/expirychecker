@@ -11,7 +11,7 @@ import EnvConfig from 'react-native-config';
 import { TestIds, BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import { format, formatDistanceToNow, isPast, parseISO } from 'date-fns';//eslint-disable-line
+import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
@@ -53,7 +53,7 @@ interface Props {
 
 const View: React.FC = () => {
     const { params } = useRoute();
-    const { goBack, navigate, addListener } = useNavigation();
+    const { navigate, addListener } = useNavigation();
 
     const routeParams = params as Props;
 
