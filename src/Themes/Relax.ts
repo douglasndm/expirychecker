@@ -20,6 +20,7 @@ const Relax: DefaultTheme = {
         inputBackground: '#FFF',
 
         productBackground: '#FFF',
+        productCardText: '#32292f',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',

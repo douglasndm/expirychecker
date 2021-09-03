@@ -17,7 +17,8 @@ const JustBlue: DefaultTheme = {
         placeholderColor: '#5e5e5e',
         inputBackground: '#ffffff',
 
-        productBackground: '#306BAC',
+        productBackground: '#ffffff',
+        productCardText: '#000000',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',

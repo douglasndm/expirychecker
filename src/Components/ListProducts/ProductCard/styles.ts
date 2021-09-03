@@ -61,7 +61,7 @@ export const ProductName = styled.Text<IProductInfo>`
     color: ${props =>
         props.expiredOrNext
             ? props.theme.colors.productNextOrExpiredText
-            : props.theme.colors.text};
+            : props.theme.colors.productCardText};
 `;
 
 export const ProductInfoItem = styled.Text<IProductInfo>`
@@ -75,7 +75,7 @@ export const ProductInfoItem = styled.Text<IProductInfo>`
     color: ${props =>
         props.expiredOrNext
             ? props.theme.colors.productNextOrExpiredText
-            : props.theme.colors.text};
+            : props.theme.colors.productCardText};
 `;
 
 export const ProductImage = styled.Image`
@@ -93,5 +93,5 @@ export const ProductExpDate = styled.Text<IProductInfo>`
     color: ${props =>
         props.expiredOrNext
             ? props.theme.colors.productNextOrExpiredText
-            : props.theme.colors.text};
+            : props.theme.colors.productCardText};
 `;

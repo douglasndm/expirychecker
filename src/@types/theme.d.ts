@@ -19,6 +19,7 @@ declare module 'styled-components/native' {
             inputBackground: string;
 
             productBackground: string;
+            productCardText: string;
 
             productExpiredBackground: string;
             productNextToExpBackground: string;
@@ -43,6 +44,7 @@ interface ITheme {
         inputBackground: string;
 
         productBackground: string;
+        productCardText: string;
 
         productExpiredBackground: string;
         productNextToExpBackground: string;

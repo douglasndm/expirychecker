@@ -21,6 +21,7 @@ const UltraViolet: DefaultTheme = {
         inputBackground: '#373737',
 
         productBackground: '#373737',
+        productCardText: '#fff',
 
         productExpiredBackground: darken(0.1, '#e01010'),
         productNextToExpBackground: darken(0.1, '#eded1f'),

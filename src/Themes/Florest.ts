@@ -19,6 +19,7 @@ const Florest: DefaultTheme = {
         inputBackground: '#FFF',
 
         productBackground: '#FFF',
+        productCardText: '#7c7287',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',
