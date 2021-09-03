@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { Button, Dialog } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
     flex: 1;
@@ -10,16 +9,6 @@ export const Container = styled.View`
 
 export const Content = styled.View`
     margin: 10px;
-`;
-export const PageTitleContainer = styled.View`
-    flex-direction: row;
-    align-items: center;
-    flex: 1;
-
-    ${isIphoneX() &&
-    css`
-        padding-top: ${getStatusBarHeight() + 20}px;
-    `}
 `;
 
 export const ButtonPaper = styled(Button).attrs(props => ({

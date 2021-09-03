@@ -6,20 +6,17 @@ import { Button } from 'react-native-paper';
 
 import strings from '~/Locales';
 
+import Header from '~/Components/Header';
+
 import {
     getCategory,
     updateCategory,
     deleteCategory,
 } from '~/Functions/Category';
 
-import BackButton from '~/Components/BackButton';
-
-import { PageHeader, PageTitle } from '~/Views/Product/Add/styles';
-
 import {
     Container,
     Content,
-    PageTitleContainer,
     ActionsButtonContainer,
     ButtonPaper,
     InputTextContainer,
@@ -35,7 +32,7 @@ interface Props {
 }
 const Edit: React.FC = () => {
     const { params } = useRoute();
-    const { reset, goBack } = useNavigation();
+    const { reset } = useNavigation();
     const theme = useTheme();
 
     const [name, setName] = useState<string | undefined>(undefined);
@@ -108,14 +105,7 @@ const Edit: React.FC = () => {
     return (
         <>
             <Container>
-                <PageHeader>
-                    <PageTitleContainer>
-                        <BackButton handleOnPress={goBack} />
-                        <PageTitle>
-                            {strings.View_Category_Edit_PageTitle}
-                        </PageTitle>
-                    </PageTitleContainer>
-                </PageHeader>
+                <Header title={strings.View_Category_Edit_PageTitle} noDrawer />
 
                 <Content>
                     <InputTextContainer hasError={!!errorName}>
