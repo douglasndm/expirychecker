@@ -1,7 +1,9 @@
 import { DefaultTheme } from 'styled-components';
 
+import strings from '~/Locales';
+
 const JustBlue: DefaultTheme = {
-    name: 'Just Blue',
+    name: strings.View_Settings_Appearance_Theme_JustBlue,
     key: 'justblue',
     isPro: true,
 

@@ -234,10 +234,13 @@
     "View_Settings_AccountDescription": "Gerencie sua conta associada ao aplicativo.",
     "View_Settings_Button_SignOut": "Sair",
 
+
+    "View_Settings_Appearance_Theme_SelectOne": "Selecione um tema",
     "View_Settings_Appearance_Theme_System": "Baseado no sistema (padrão)",
     "View_Settings_Appearance_Theme_Light": "Claro",
     "View_Settings_Appearance_Theme_Dark": "Escuro",
     "View_Settings_Appearance_Theme_UltraViolet": "Ultra violeta (PRO)",
+    "View_Settings_Appearance_Theme_JustBlue": "Ultra azul (PRO)",
     "View_Settings_Appearance_Theme_DarkGreen": "Verde escuro (PRO)",
     "View_Settings_Appearance_Theme_HappyPink": "Rosa claro (PRO)",
     "View_Settings_Appearance_Theme_OceanBlue": "Azul oceano (PRO)",
