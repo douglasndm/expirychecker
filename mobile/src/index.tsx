@@ -19,6 +19,7 @@ import './Services/BackgroundJobs';
 import './Services/Admob';
 import './Services/Analytics';
 import './Services/OneSignal';
+import './Services/AppsFlyer';
 
 import './Functions/ProMode';
 import './Functions/Stores'; // This is just a "hack" do call a method to migrate old stores model
