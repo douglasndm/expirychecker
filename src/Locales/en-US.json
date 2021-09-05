@@ -99,7 +99,6 @@
     "View_AddProduct_Button_Save": "Save",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Button to save the new product",
     "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
-    "View_AddProduct_Banner_UnlockCamera": "Become PRO and unlock the camera",
 
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
@@ -222,6 +221,7 @@
     "View_Settings_CategoryName_Pro": "Pro",
     "View_Settings_CategoryName_Account": "Account",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "How many days to product be next to expire",
+    "View_Settings_SettingName_DaysToExpPlaceholder": "Days to be close to expiration",
     "View_Settings_SettingName_EnableNotification": "Enable notifications?",
     "View_Settings_SettingName_EnableMultiplesStores": "Enable multiples stores mode?",
     "View_Settings_SettingName_AppTheme": "Application theme",
@@ -232,10 +232,12 @@
     "View_Settings_AccountDescription": "Manage your account linked to the app",
     "View_Settings_Button_SignOut": "Sign out",
 
+    "View_Settings_Appearance_Theme_SelectOne": "Choose a theme",
     "View_Settings_Appearance_Theme_System": "System (Default)",
     "View_Settings_Appearance_Theme_Light": "Light",
     "View_Settings_Appearance_Theme_Dark": "Dark",
     "View_Settings_Appearance_Theme_UltraViolet": "Ultra violet (PRO)",
+    "View_Settings_Appearance_Theme_JustBlue": "Just Blue (PRO)",
     "View_Settings_Appearance_Theme_DarkGreen": "Dark Green (PRO)",
     "View_Settings_Appearance_Theme_HappyPink": "Happy Pink (PRO)",
     "View_Settings_Appearance_Theme_OceanBlue": "Ocean Blue (PRO)",

@@ -99,7 +99,6 @@
     "View_AddProduct_Button_Save": "Salvar",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Botão para salvar o novo produto",
     "View_AddProduct_Tip_DuplicateProduct": "Já existe um produto cadastrado com o mesmo código. Clique aqui para adicionar um lote ao produto existente",
-    "View_AddProduct_Banner_UnlockCamera": "Se torne PRO e desbloqueie a câmera",
 
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
@@ -225,6 +224,7 @@
     "View_Settings_CategoryName_Pro": "Pro",
     "View_Settings_CategoryName_Account": "Conta",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "Quantos dias para produto está próximo ao vencimento?",
+    "View_Settings_SettingName_DaysToExpPlaceholder": "Dias para está próximo ao vencimento",
     "View_Settings_SettingName_EnableNotification": "Ativar notificações?",
     "View_Settings_SettingName_EnableMultiplesStores": "Ativar modo de múltiplas lojas?",
     "View_Settings_SettingName_AppTheme": "Tema do aplicativo",
@@ -235,10 +235,13 @@
     "View_Settings_AccountDescription": "Gerencie sua conta associada ao aplicativo.",
     "View_Settings_Button_SignOut": "Sair",
 
+
+    "View_Settings_Appearance_Theme_SelectOne": "Selecione um tema",
     "View_Settings_Appearance_Theme_System": "Baseado no sistema (padrão)",
     "View_Settings_Appearance_Theme_Light": "Claro",
     "View_Settings_Appearance_Theme_Dark": "Escuro",
     "View_Settings_Appearance_Theme_UltraViolet": "Ultra violeta (PRO)",
+    "View_Settings_Appearance_Theme_JustBlue": "Ultra azul (PRO)",
     "View_Settings_Appearance_Theme_DarkGreen": "Verde escuro (PRO)",
     "View_Settings_Appearance_Theme_HappyPink": "Rosa claro (PRO)",
     "View_Settings_Appearance_Theme_OceanBlue": "Azul oceano (PRO)",

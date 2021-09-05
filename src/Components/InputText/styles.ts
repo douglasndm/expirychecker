@@ -26,11 +26,11 @@ export const Content = styled.View`
 `;
 
 export const Input = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
+    placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${props => props.theme.colors.text};
+    color: ${props => props.theme.colors.inputText};
     flex: 1;
 `;
 

@@ -1,8 +1,10 @@
 import 'styled-components';
 
-declare module 'styled-components' {
+declare module 'styled-components/native' {
     export interface DefaultTheme {
         name: string;
+        key: string;
+        isPro: boolean;
 
         colors: {
             primary: string;
@@ -13,9 +15,11 @@ declare module 'styled-components' {
             textAccent: string;
 
             inputText: string;
+            placeholderColor: string;
             inputBackground: string;
 
             productBackground: string;
+            productCardText: string;
 
             productExpiredBackground: string;
             productNextToExpBackground: string;
@@ -40,6 +44,7 @@ interface ITheme {
         inputBackground: string;
 
         productBackground: string;
+        productCardText: string;
 
         productExpiredBackground: string;
         productNextToExpBackground: string;

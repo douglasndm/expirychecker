@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { Linking } from 'react-native';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
@@ -64,13 +63,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('Pro');
     }, [navigation]);
 
+    const navigateToNotifications = useCallback(() => {
+        navigation.navigate('NotificationsPreferences');
+    }, [navigation]);
+
     const handleNavigateToTeams = useCallback(() => {
         navigation.navigate('Teams');
     }, [navigation]);
-
-    const handleNavigateToSite = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev');
-    }, []);
 
     return (
         <Container>
@@ -173,6 +172,27 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </LabelGroup>
                     </MenuItemContainer>
 
+                    {__DEV__ && (
+                        <MenuItemContainer
+                            onPress={
+                                userPreferences.isUserPremium
+                                    ? navigateToNotifications
+                                    : navigateToPRO
+                            }
+                        >
+                            <MenuContent>
+                                <Icons name="notifications-outline" />
+                                <MenuItemText>Notificações</MenuItemText>
+                            </MenuContent>
+
+                            <LabelGroup>
+                                <LabelContainer>
+                                    <Label>{strings.Menu_Label_PRO}</Label>
+                                </LabelContainer>
+                            </LabelGroup>
+                        </MenuItemContainer>
+                    )}
+
                     {!userPreferences.isUserPremium && (
                         <MenuItemContainer
                             onPress={() => navigation.navigate('Pro')}
@@ -205,15 +225,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         <Icons name="settings-outline" />
                         <MenuItemText>
                             {strings.Menu_Button_GoToSettings}
-                        </MenuItemText>
-                    </MenuContent>
-                </MenuItemContainer>
-
-                <MenuItemContainer onPress={handleNavigateToSite}>
-                    <MenuContent>
-                        <Icons name="globe-outline" />
-                        <MenuItemText>
-                            {strings.Menu_Button_KnowOthersApps}
                         </MenuItemText>
                     </MenuContent>
                 </MenuItemContainer>

@@ -12,17 +12,6 @@ export const Container = styled.SafeAreaView`
     background: ${({ theme }) => theme.colors.background};
 `;
 
-export const PageHeader = styled.View`
-    flex-direction: row;
-    margin-top: ${Platform.OS === 'ios' ? 0 : 15}px;
-`;
-
-export const PageTitle = styled.Text`
-    font-size: 28px;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.text};
-`;
-
 export const PageContent = styled.View`
     padding: 0 16px 16px 16px;
 `;
@@ -49,7 +38,6 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
     font-size: 18px;
     background-color: ${({ theme }) => theme.colors.inputBackground};
     color: ${({ theme }) => theme.colors.inputText};
-
     ${props =>
         props.hasError &&
         css`
@@ -58,11 +46,11 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
 `;
 
 export const InputText = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
+    placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${props => props.theme.colors.text};
+    color: ${props => props.theme.colors.inputText};
 `;
 
 export const InputTextTip = styled.Text`
@@ -94,7 +82,7 @@ export const ProductImage = styled.Image`
 `;
 
 export const Currency = styled(CurrencyInput).attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
+    placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
@@ -105,39 +93,13 @@ export const Currency = styled(CurrencyInput).attrs(props => ({
     color: ${({ theme }) => theme.colors.inputText};
 `;
 
-export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    border-radius: 12px;
-    background-color: ${({ theme }) => theme.colors.inputBackground};
-    padding-right: 10px;
-
-    ${props =>
-        props.hasError &&
-        css`
-            border: 2px solid red;
-        `}
-`;
-
 export const InputTextIconContainer = styled(RectButton)``;
 
 export const InputCodeTextIcon = styled(Ionicons).attrs(props => ({
     name: 'barcode-outline',
     size: 36,
-    color: props.theme.colors.text,
+    color: props.theme.colors.inputText,
 }))``;
-
-export const InputCodeText = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
-}))`
-    flex: 1;
-    padding: 15px 5px 15px 15px;
-    font-size: 18px;
-    color: ${props => props.theme.colors.text};
-`;
 
 export const MoreInformationsContainer = styled.View``;
 
@@ -193,27 +155,6 @@ export const CustomDatePicker = styled(DatePicker).attrs(props => ({
     fadeToColor: 'none',
     mode: 'date',
 }))`
-    background: ${({ theme }) => theme.colors.productBackground};
+    background: ${({ theme }) => theme.colors.inputBackground};
     z-index: 1;
 `;
-
-export const BannerContainer = styled(RectButton)`
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: ${({ theme }) => theme.colors.accent};
-    padding: 15px 10px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-`;
-
-export const BannerText = styled.Text`
-    font-size: 18px;
-    font-weight: bold;
-
-    color: #fff;
-`;
-
-export const Icons = styled(Ionicons).attrs(() => ({
-    size: 22,
-    color: '#fff',
-}))``;

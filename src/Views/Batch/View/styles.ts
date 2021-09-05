@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -44,4 +44,23 @@ export const BatchPrice = styled.Text`
 export const BannerContainer = styled.View`
     align-items: center;
     margin-top: 25px;
+`;
+
+interface ProFeaturesContainerProps {
+    disabled?: boolean;
+}
+
+export const ProFeaturesText = styled.Text`
+    font-family: 'Open Sans';
+    font-size: 16px;
+    text-align: center;
+    margin-top: 20px;
+`;
+
+export const ProFeaturesContainer = styled.View<ProFeaturesContainerProps>`
+    ${props =>
+        props.disabled &&
+        css`
+            opacity: 0.5;
+        `}
 `;

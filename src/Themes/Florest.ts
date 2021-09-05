@@ -1,7 +1,10 @@
 import { DefaultTheme } from 'styled-components';
+import strings from '~/Locales';
 
 const Florest: DefaultTheme = {
-    name: 'Floresta',
+    name: strings.View_Settings_Appearance_Theme_Florest,
+    key: 'florest',
+    isPro: true,
 
     colors: {
         primary: '#B2EDC5',
@@ -12,9 +15,11 @@ const Florest: DefaultTheme = {
         textAccent: '#B2EDC5',
 
         inputText: '#050505',
+        placeholderColor: '#9DC0BC',
         inputBackground: '#FFF',
 
         productBackground: '#FFF',
+        productCardText: '#7c7287',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',

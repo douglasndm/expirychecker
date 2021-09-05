@@ -9,6 +9,6 @@ export const SettingNotificationContainer = styled.View`
 
 export const SettingNotificationDescription = styled.Text`
     font-size: 14px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.productCardText};
     margin-bottom: 10px;
 `;

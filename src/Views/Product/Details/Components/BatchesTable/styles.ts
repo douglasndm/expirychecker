@@ -8,17 +8,20 @@ interface IProductProps {
 }
 
 export const Table = styled(DataTable)`
-    background-color: ${(props) => props.theme.colors.productBackground};
+    background-color: ${props => props.theme.colors.productBackground};
     border-radius: 12px;
 `;
 
 export const TableHeader = styled(DataTable.Header)``;
 
-export const TableTitle = styled(DataTable.Title).attrs((props) => ({
-    theme: props.theme,
-}))`
-    color: rgba(255, 255, 255, 1);
-`;
+export const TableTitle = styled(DataTable.Title).attrs(props => ({
+    theme: {
+        ...props.theme,
+        colors: {
+            text: props.theme.colors.productCardText,
+        },
+    },
+}))``;
 
 interface TableRowProps {
     expired?: boolean;
@@ -29,20 +32,20 @@ interface TableRowProps {
 export const TableRow = styled(DataTable.Row)<TableRowProps>`
     background: ${({ theme }) => theme.colors.productBackground};
 
-    ${(props) =>
+    ${props =>
         props.nextToExp &&
         css`
             background: ${({ theme }) =>
                 theme.colors.productNextToExpBackground};
         `};
 
-    ${(props) =>
+    ${props =>
         props.expired &&
         css`
             background: ${({ theme }) => theme.colors.productExpiredBackground};
         `};
 
-    ${(props) =>
+    ${props =>
         props.treated &&
         css`
             background-color: #47c914;
@@ -52,9 +55,9 @@ export const TableRow = styled(DataTable.Row)<TableRowProps>`
 export const TableCell = styled(DataTable.Cell)``;
 
 export const Text = styled.Text<IProductProps>`
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.productCardText};
 
-    ${(props) =>
+    ${props =>
         (props.expired || props.nextToExp || props.treated) &&
         css`
             color: white;
