@@ -76,14 +76,17 @@ const Product = ({ product }: Request) => {
     }, [batch]);
 
     const expired = useMemo(() => {
-        return batch && isPast(batch.exp_date);
+        return (batch && isPast(batch.exp_date)) || undefined;
     }, [batch]);
 
     const nextToExp = useMemo(() => {
         return (
-            batch &&
-            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
-                batch.exp_date
+            (batch &&
+                addDays(
+                    new Date(),
+                    userPreferences.howManyDaysToBeNextToExpire
+                ) >= batch.exp_date) ||
+            undefined
         );
     }, [batch, userPreferences.howManyDaysToBeNextToExpire]);
 

@@ -11,7 +11,6 @@ const PreferencesContext = createContext({
         multiplesStores: false,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
-        isUserSignedIn: false,
     },
     setUserPreferences: ({
         howManyDaysToBeNextToExpire,
@@ -20,7 +19,6 @@ const PreferencesContext = createContext({
         multiplesStores,
         enableNotifications,
         notificationCadency,
-        isUserSignedIn,
     }: IUserPreferences) => {},
 });
 

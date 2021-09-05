@@ -11,7 +11,7 @@ import EnvConfig from 'react-native-config';
 import { TestIds, BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import { format, formatDistanceToNow, isPast, parseISO } from 'date-fns';//eslint-disable-line
+import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
@@ -21,18 +21,16 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { ShareProductImageWithText } from '~/Functions/Share';
 
-import BackButton from '~/Components/BackButton';
+import Header from '~/Components/Header';
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
-
-import { PageTitle } from '~/Views/Product/Add/styles';
 
 import {
     ActionsButtonContainer,
     ButtonPaper,
 } from '~/Views/Product/Edit/styles';
 
-import { PageHeader, PageTitleContainer, Icons } from '../Edit/styles';
+import { PageHeader, Icons } from '../Edit/styles';
 
 import {
     Container,
@@ -42,6 +40,8 @@ import {
     BatchAmount,
     BatchPrice,
     BannerContainer,
+    ProFeaturesContainer,
+    ProFeaturesText,
 } from './styles';
 
 import { getProductById } from '~/Functions/Product';
@@ -53,7 +53,7 @@ interface Props {
 
 const View: React.FC = () => {
     const { params } = useRoute();
-    const { goBack, navigate, addListener } = useNavigation();
+    const { navigate, addListener } = useNavigation();
 
     const routeParams = params as Props;
 
@@ -236,10 +236,7 @@ const View: React.FC = () => {
     ) : (
         <Container>
             <PageHeader>
-                <PageTitleContainer>
-                    <BackButton handleOnPress={goBack} />
-                    <PageTitle>{strings.View_Batch_PageTitle}</PageTitle>
-                </PageTitleContainer>
+                <Header title={strings.View_Batch_PageTitle} noDrawer />
 
                 <ActionsButtonContainer>
                     <ButtonPaper
@@ -330,28 +327,7 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
-                    {userPreferences.isUserPremium ? (
-                        <>
-                            <Button
-                                text={
-                                    strings.View_Batch_Button_ShareWithAnotherApps
-                                }
-                                onPress={handleShare}
-                                isLoading={isSharing}
-                                contentStyle={{ width: 250 }}
-                            />
-
-                            {!!batch.price && (
-                                <Button
-                                    text={
-                                        strings.View_Batch_Discount_Button_Apply
-                                    }
-                                    onPress={handleNavigateToDiscount}
-                                    contentStyle={{ marginTop: -5, width: 250 }}
-                                />
-                            )}
-                        </>
-                    ) : (
+                    {!userPreferences.isUserPremium && (
                         <BannerContainer>
                             <BannerAd
                                 unitId={adUnit}
@@ -359,6 +335,32 @@ const View: React.FC = () => {
                             />
                         </BannerContainer>
                     )}
+
+                    <ProFeaturesContainer>
+                        {!userPreferences.isUserPremium && (
+                            <ProFeaturesText>
+                                Seja PRO e desbloqueie novas funções
+                            </ProFeaturesText>
+                        )}
+                        <Button
+                            text={
+                                strings.View_Batch_Button_ShareWithAnotherApps
+                            }
+                            onPress={handleShare}
+                            isLoading={isSharing}
+                            contentStyle={{ width: 250 }}
+                            enable={userPreferences.isUserPremium}
+                        />
+
+                        {!!batch.price && (
+                            <Button
+                                text={strings.View_Batch_Discount_Button_Apply}
+                                onPress={handleNavigateToDiscount}
+                                contentStyle={{ marginTop: -5, width: 250 }}
+                                enable={userPreferences.isUserPremium}
+                            />
+                        )}
+                    </ProFeaturesContainer>
                 </BatchContainer>
             )}
         </Container>

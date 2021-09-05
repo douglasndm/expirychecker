@@ -9,6 +9,7 @@ import HappyPink from './HappyPink';
 import OceanBlue from './OceanBlue';
 import Relax from './Relax';
 import Florest from './Florest';
+import JustBlue from './JustBlue';
 
 import { getAppTheme } from '../Functions/Themes';
 
@@ -21,7 +22,20 @@ export default {
     OceanBlue,
     Relax,
     Florest,
+    JustBlue,
 };
+
+export const Themes = [
+    Light,
+    Dark,
+    UltraViolet,
+    DarkGreen,
+    HappyPink,
+    OceanBlue,
+    Relax,
+    Florest,
+    JustBlue,
+];
 
 export function getThemeByName(themeName: string): DefaultTheme {
     if (themeName === 'system') {
@@ -50,6 +64,8 @@ export function getThemeByName(themeName: string): DefaultTheme {
             return Relax;
         case 'florest':
             return Florest;
+        case 'justblue':
+            return JustBlue;
         default:
             return Light;
     }
@@ -78,6 +94,12 @@ export const getActualAppTheme = async (): Promise<DefaultTheme> => {
     }
     if (theme === 'relax') {
         return Relax;
+    }
+    if (theme === 'florest') {
+        return Florest;
+    }
+    if (theme === 'justblue') {
+        return JustBlue;
     }
     if (theme === 'system') {
         const systemTheme = Appearance.getColorScheme();

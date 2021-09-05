@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { ViewStyle } from 'react-native';
+import { KeyboardTypeOptions, ViewStyle } from 'react-native';
 
 import { Container, Content, Input, Icon } from './styles';
 
@@ -10,6 +10,7 @@ interface Props {
     hasError?: boolean;
     isPassword?: boolean;
     autoCorrect?: boolean;
+    keyboardType?: KeyboardTypeOptions;
     autoCapitalize?: 'none' | 'characters' | 'sentences' | 'words';
     contentStyle?: ViewStyle;
 }
@@ -21,6 +22,7 @@ const InputText: React.FC<Props> = ({
     hasError,
     isPassword,
     autoCorrect,
+    keyboardType,
     autoCapitalize,
     contentStyle,
 }: Props) => {
@@ -40,6 +42,7 @@ const InputText: React.FC<Props> = ({
                     secureTextEntry={isPassword && !showPassword}
                     autoCapitalize={autoCapitalize}
                     autoCorrect={autoCorrect}
+                    keyboardType={keyboardType}
                 />
                 {isPassword && (
                     <Icon

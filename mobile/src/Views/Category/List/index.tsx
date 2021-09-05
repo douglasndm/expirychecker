@@ -1,11 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
 import { getAllCategories, createCategory } from '~/Functions/Category';
 
 import Header from '~/Components/Header';
+import Loading from '~/Components/Loading';
 
 import {
     Container,
@@ -26,6 +28,8 @@ import {
 const List: React.FC = () => {
     const { navigate } = useNavigation();
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [newCategoryName, setNewCategoryName] = useState<
         string | undefined
     >();
@@ -35,9 +39,26 @@ const List: React.FC = () => {
 
     const [categories, setCategories] = useState<Array<ICategory>>([]);
 
-    useEffect(() => {
-        getAllCategories().then(response => setCategories(response));
+    const loadData = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            const cats = await getAllCategories();
+
+            setCategories(cats);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
+
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
 
     const handleOnTextChange = useCallback(value => {
         setInputHasError(false);
@@ -87,7 +108,9 @@ const List: React.FC = () => {
         },
         [handleNavigateToCategory]
     );
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <Container>
             <Header title={strings.View_Category_List_PageTitle} />
 

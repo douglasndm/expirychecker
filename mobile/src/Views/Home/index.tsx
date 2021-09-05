@@ -20,6 +20,7 @@ import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
+import Input from '~/Components/InputText';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -42,7 +43,7 @@ const Home: React.FC = () => {
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
-    const [searchString, setSearchString] = useState<string>();
+    const [searchString, setSearchString] = useState<string>('');
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
     const [enableBarCodeReader, setEnableBarCodeReader] =
         useState<boolean>(false);

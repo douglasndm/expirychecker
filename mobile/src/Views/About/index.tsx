@@ -27,6 +27,10 @@ const About: React.FC = () => {
 
     const [tapsCount, setTapsCount] = useState<number>(0);
 
+    const handleNavigateToSite = useCallback(async () => {
+        await Linking.openURL('https://douglasndm.dev');
+    }, []);
+
     const navigateToTelegram = useCallback(async () => {
         await Linking.openURL('https://t.me/douglasdev');
     }, []);
@@ -73,6 +77,12 @@ const About: React.FC = () => {
                 <ApplicationVersion>
                     {strings.View_About_AppVersion + getVersion()}
                 </ApplicationVersion>
+            </AboutSection>
+
+            <AboutSection>
+                <Link onPress={handleNavigateToSite}>
+                    {strings.Menu_Button_KnowOthersApps}
+                </Link>
             </AboutSection>
 
             <AboutSection>

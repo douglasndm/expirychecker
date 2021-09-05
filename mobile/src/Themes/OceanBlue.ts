@@ -1,7 +1,10 @@
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components/native';
+import strings from '~/Locales';
 
 const OceanBlue: DefaultTheme = {
-    name: 'Ocean Blue',
+    name: strings.View_Settings_Appearance_Theme_OceanBlue,
+    key: 'oceanblue',
+    isPro: true,
 
     colors: {
         primary: '#69dafa',
@@ -12,9 +15,11 @@ const OceanBlue: DefaultTheme = {
         textAccent: '#69dafa',
 
         inputText: '#050505',
+        placeholderColor: '#999999',
         inputBackground: '#FFF',
 
         productBackground: '#FFF',
+        productCardText: '#000000',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',
