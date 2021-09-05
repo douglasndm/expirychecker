@@ -34,7 +34,7 @@ const Camera: React.FC<CameraProps> = ({
 }: CameraProps) => {
     const { goBack } = useNavigation();
 
-    const cameraRef = useRef(null);
+    const cameraRef = useRef<RNCamera>(null);
 
     const [image, setImage] = useState<string | null>(null);
     const [photoTaked, setPhotoTalked] = useState<boolean>(false);

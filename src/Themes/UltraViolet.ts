@@ -1,8 +1,12 @@
 import { darken } from 'polished';
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components/native';
+
+import strings from '~/Locales';
 
 const UltraViolet: DefaultTheme = {
-    name: 'Ultra violeta',
+    name: strings.View_Settings_Appearance_Theme_UltraViolet,
+    key: 'ultraviolet',
+    isPro: true,
 
     colors: {
         primary: darken(0.1, '#7b00ba'),
@@ -13,9 +17,11 @@ const UltraViolet: DefaultTheme = {
         textAccent: '#7b00ba',
 
         inputText: '#ffffff',
+        placeholderColor: '#EAEAEA',
         inputBackground: '#373737',
 
         productBackground: '#373737',
+        productCardText: '#fff',
 
         productExpiredBackground: darken(0.1, '#e01010'),
         productNextToExpBackground: darken(0.1, '#eded1f'),

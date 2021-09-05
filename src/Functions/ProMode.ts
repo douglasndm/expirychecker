@@ -28,27 +28,23 @@ export async function isSubscriptionActive(): Promise<boolean> {
 export async function getSubscriptionDetails(): Promise<
     Array<PurchasesPackage>
 > {
-    try {
-        const offerings = await Purchases.getOfferings();
+    const offerings = await Purchases.getOfferings();
 
-        const packages: Array<PurchasesPackage> = [];
+    const packages: Array<PurchasesPackage> = [];
 
-        if (offerings.current && offerings.current.monthly !== null) {
-            packages.push(offerings.current.monthly);
-        }
-
-        if (offerings.current && offerings.current.threeMonth !== null) {
-            packages.push(offerings.current.threeMonth);
-        }
-
-        if (offerings.current && offerings.current.annual !== null) {
-            packages.push(offerings.current.annual);
-        }
-
-        return packages;
-    } catch (err) {
-        throw new Error(err);
+    if (offerings.current && offerings.current.monthly !== null) {
+        packages.push(offerings.current.monthly);
     }
+
+    if (offerings.current && offerings.current.threeMonth !== null) {
+        packages.push(offerings.current.threeMonth);
+    }
+
+    if (offerings.current && offerings.current.annual !== null) {
+        packages.push(offerings.current.annual);
+    }
+
+    return packages;
 }
 
 export async function makeSubscription(

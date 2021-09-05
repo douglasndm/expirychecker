@@ -27,6 +27,7 @@ import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
 
+import NotificationsPreferences from '~/Views/NotificationsPreferences';
 import Export from '~/Views/Export';
 
 import Teams from '~/Views/Informations/Teams';
@@ -66,6 +67,10 @@ const Routes: React.FC = () => {
             <Stack.Screen name="StoreList" component={StoreList} />
             <Stack.Screen name="StoreEdit" component={StoreEdit} />
 
+            <Stack.Screen
+                name="NotificationsPreferences"
+                component={NotificationsPreferences}
+            />
             <Stack.Screen name="Export" component={Export} />
             <Stack.Screen name="Teams" component={Teams} />
 

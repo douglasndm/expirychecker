@@ -1,7 +1,11 @@
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components/native';
+
+import strings from '~/Locales';
 
 const Light: DefaultTheme = {
-    name: 'Claro',
+    name: strings.View_Settings_Appearance_Theme_Light,
+    key: 'light',
+    isPro: false,
 
     colors: {
         primary: '#14d48f',
@@ -12,9 +16,11 @@ const Light: DefaultTheme = {
         textAccent: '#14d48f',
 
         inputText: '#050505',
+        placeholderColor: '#999999',
         inputBackground: '#FFF',
 
         productBackground: '#FFF',
+        productCardText: '#000000',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',

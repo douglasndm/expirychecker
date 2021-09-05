@@ -7,7 +7,8 @@ import React, {
 } from 'react';
 
 import strings from '~/Locales';
-import { getActualAppTheme } from '~/Themes';
+
+import { getActualAppTheme, Themes } from '~/Themes';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -23,9 +24,8 @@ interface IThemeItem {
 }
 
 const Appearance: React.FC = () => {
-    const { userPreferences, setUserPreferences } = useContext(
-        PreferencesContext
-    );
+    const { userPreferences, setUserPreferences } =
+        useContext(PreferencesContext);
 
     const [selectedTheme, setSelectedTheme] = useState<string>('system');
 
@@ -37,42 +37,24 @@ const Appearance: React.FC = () => {
             value: 'system',
             key: 'system',
         });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_Light,
-            value: 'light',
-            key: 'light',
-        });
-        availableThemes.push({
-            label: strings.View_Settings_Appearance_Theme_Dark,
-            value: 'dark',
-            key: 'dark',
-        });
 
         if (userPreferences.isUserPremium) {
-            availableThemes.push({
-                label: strings.View_Settings_Appearance_Theme_UltraViolet,
-                value: 'ultraviolet',
-                key: 'ultraviolet',
+            Themes.forEach(theme => {
+                availableThemes.push({
+                    label: theme.name,
+                    key: theme.key,
+                    value: theme.key,
+                });
             });
-            availableThemes.push({
-                label: strings.View_Settings_Appearance_Theme_DarkGreen,
-                value: 'darkgreen',
-                key: 'darkgreen',
-            });
-            availableThemes.push({
-                label: strings.View_Settings_Appearance_Theme_HappyPink,
-                value: 'happypink',
-                key: 'happypink',
-            });
-            availableThemes.push({
-                label: strings.View_Settings_Appearance_Theme_OceanBlue,
-                value: 'oceanblue',
-                key: 'oceanblue',
-            });
-            availableThemes.push({
-                label: strings.View_Settings_Appearance_Theme_Relax,
-                value: 'relax',
-                key: 'relax',
+        } else {
+            Themes.forEach(theme => {
+                if (!theme.isPro) {
+                    availableThemes.push({
+                        label: theme.name,
+                        key: theme.key,
+                        value: theme.key,
+                    });
+                }
             });
         }
 
@@ -115,7 +97,7 @@ const Appearance: React.FC = () => {
                         onValueChange={handleThemeChange}
                         value={selectedTheme}
                         placeholder={{
-                            label: 'Selecione um item',
+                            label: strings.View_Settings_Appearance_Theme_SelectOne,
                             value: 'null',
                         }}
                     />

@@ -29,14 +29,13 @@ export const InputTextIconContainer = styled(RectButton)``;
 export const InputTextIcon = styled(Ionicons).attrs(props => ({
     name: 'barcode-outline',
     size: 36,
-    color: props.theme.colors.text,
+    color: props.theme.colors.productCardText,
 }))``;
 
 export const InputSearch = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
+    placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
+    padding: 15px 5px 15px 15px;
+    font-size: 18px;
     color: ${props => props.theme.colors.inputText};
-    flex: 1;
-    padding: 12px;
-    font-size: 16px;
 `;

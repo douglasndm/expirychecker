@@ -61,7 +61,7 @@ type RoutesParams = {
     StoreEdit: {
         store_id: string;
     };
-
+    NotificationsPreferences;
     Export;
     Teams;
     Test;

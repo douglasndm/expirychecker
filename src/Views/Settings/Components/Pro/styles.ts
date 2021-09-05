@@ -10,7 +10,7 @@ export const PremiumButtonsContainer = styled.View`
 
 export const ButtonPremium = styled(RectButton)`
     margin-bottom: 10px;
-    background-color: ${(props) => props.theme.colors.accent};
+    background-color: ${props => props.theme.colors.accent};
     padding: 25px 15px;
     border-radius: 12px;
 `;

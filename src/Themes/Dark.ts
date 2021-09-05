@@ -1,8 +1,12 @@
 import { darken } from 'polished';
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components/native';
+
+import strings from '~/Locales';
 
 const Dark: DefaultTheme = {
-    name: 'Escuro',
+    name: strings.View_Settings_Appearance_Theme_Dark,
+    key: 'dark',
+    isPro: false,
 
     colors: {
         primary: darken(0.1, '#14d48f'),
@@ -13,9 +17,11 @@ const Dark: DefaultTheme = {
         textAccent: '#14d48f',
 
         inputText: '#ffffff',
+        placeholderColor: '#EAEAEA',
         inputBackground: '#565657',
 
         productBackground: '#565657',
+        productCardText: '#fff',
 
         productExpiredBackground: darken(0.1, '#CC4B4B'),
         productNextToExpBackground: darken(0.1, '#DDE053'),

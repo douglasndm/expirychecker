@@ -1,7 +1,11 @@
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme } from 'styled-components/native';
+
+import strings from '~/Locales';
 
 const HappyPink: DefaultTheme = {
-    name: 'Happy Pink',
+    name: strings.View_Settings_Appearance_Theme_HappyPink,
+    key: 'happypink',
+    isPro: true,
 
     colors: {
         primary: '#f772b7',
@@ -12,9 +16,11 @@ const HappyPink: DefaultTheme = {
         textAccent: '#f772b7',
 
         inputText: '#050505',
+        placeholderColor: '#999999',
         inputBackground: '#FFF',
 
         productBackground: '#FFF',
+        productCardText: '#000000',
 
         productExpiredBackground: '#CC4B4B',
         productNextToExpBackground: '#DDE053',
