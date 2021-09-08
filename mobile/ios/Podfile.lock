@@ -608,6 +608,9 @@ PODS:
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
+  - RNSentry (3.0.3):
+    - React-Core
+    - Sentry (= 7.2.6)
   - RNShare (6.3.0):
     - React-Core
   - RNVectorIcons (8.1.0):
@@ -619,6 +622,9 @@ PODS:
   - RNZipArchive/Core (6.0.3):
     - React-Core
     - SSZipArchive (= 2.2.3)
+  - Sentry (7.2.6):
+    - Sentry/Core (= 7.2.6)
+  - Sentry/Core (7.2.6)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -712,6 +718,7 @@ DEPENDENCIES:
   - RNPurchases (from `../node_modules/react-native-purchases`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../node_modules/react-native-share`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RNZipArchive (from `../node_modules/react-native-zip-archive`)
@@ -758,6 +765,7 @@ SPEC REPOS:
     - Purchases
     - PurchasesCoreSwift
     - PurchasesHybridCommon
+    - Sentry
     - SSZipArchive
     - YogaKit
 
@@ -892,6 +900,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNShare:
     :path: "../node_modules/react-native-share"
   RNVectorIcons:
@@ -1006,9 +1016,11 @@ SPEC CHECKSUMS:
   RNPurchases: e067a4eb18561125d119de8148f27aa0bae2f9db
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
+  RNSentry: bb7db0d29123fa7e1848f4fe91cc8407aabb2195
   RNShare: 8ff5f3819c8f2b4f76cd31fa1287315754afee01
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   RNZipArchive: 924d63f15f2838837f8379ee6e9955d8ff4736c4
+  Sentry: be2f8f7a63e5274cc83d0813e40c1680119c0153
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
