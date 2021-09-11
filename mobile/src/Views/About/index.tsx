@@ -1,8 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getVersion } from 'react-native-device-info';
+import {
+    getVersion,
+    getBuildNumber,
+    getSystemName,
+    getSystemVersion,
+} from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
+import Purchases from 'react-native-purchases';
 
 import strings from '~/Locales';
 
@@ -51,14 +57,19 @@ const About: React.FC = () => {
         await Linking.openURL('https://www.flaticon.com/authors/srip');
     }, []);
 
-    const handleClickDev = useCallback(async () => {
+    const handleShareIdInfo = useCallback(async () => {
         setTapsCount(tapsCount + 1);
-
-        if (tapsCount > 10) {
+        if (tapsCount > 15) {
+            const revenueCatId = await Purchases.getAppUserID();
             const token = await messaging().getToken();
+
+            const userInfo = {
+                purchase_idetinfy: revenueCatId,
+                firebase_messaging: token,
+            };
             shareText({
-                title: 'token',
-                text: token,
+                title: 'User informations',
+                text: JSON.stringify(userInfo),
             });
         }
     }, [tapsCount]);
@@ -75,8 +86,11 @@ const About: React.FC = () => {
                 <ApplicationName>{strings.AppName}</ApplicationName>
 
                 <ApplicationVersion>
-                    {strings.View_About_AppVersion + getVersion()}
+                    {`${
+                        strings.View_About_AppVersion
+                    } ${getVersion()} (Build: ${getBuildNumber()})`}
                 </ApplicationVersion>
+                <ApplicationVersion>{`${getSystemName()} ${getSystemVersion()}`}</ApplicationVersion>
             </AboutSection>
 
             <AboutSection>
@@ -98,7 +112,7 @@ const About: React.FC = () => {
             </AboutSection>
 
             <AboutSection>
-                <Text onPress={handleClickDev}>
+                <Text onPress={handleShareIdInfo}>
                     {strings.View_About_DevelopedBy}
                 </Text>
                 <Link onPress={handleLinkedinPress}>Linkedin</Link>
