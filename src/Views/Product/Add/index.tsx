@@ -366,10 +366,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 if (prodExist) {
                     setCodeFieldError(true);
 
-                    const existProd = await getProductByCode(
-                        theCode,
-                        selectedStore || undefined
-                    );
+                    const existProd = await getProductByCode({
+                        productCode: theCode,
+                        store: selectedStore || undefined,
+                    });
                     setExistentProduct(existProd.id);
                 }
             }
