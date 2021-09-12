@@ -2,6 +2,8 @@ import { Platform } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 
+import Sentry from '~/Services/Sentry';
+
 // Must be outside of any component LifeCycle (such as `componentDidMount`).
 PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
@@ -29,7 +31,7 @@ PushNotification.configure({
 
     // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
     onRegistrationError(err) {
-        console.error(err.message, err);
+        if (!__DEV__) Sentry.captureException(err);
     },
 
     // IOS ONLY (optional): default: all - Permissions to register.
