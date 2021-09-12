@@ -1,4 +1,4 @@
 interface getProductByCodeProps {
     productCode: string;
-    store?: boolean;
+    store?: string;
 }

@@ -40,7 +40,9 @@ export async function checkIfLoteAlreadyExists({
     let product: IProduct;
 
     if (productCode) {
-        const prod = await getProductByCode(productCode);
+        const prod = await getProductByCode({
+            productCode,
+        });
 
         if (!prod) {
             throw new Error('Não foi possível encontrar o produto');
