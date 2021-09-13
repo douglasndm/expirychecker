@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
+import { Linking } from 'react-native';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -71,6 +72,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('Teams');
     }, [navigation]);
 
+    const handleOpenResearch = useCallback(async () => {
+        await Linking.openURL('https://forms.office.com/r/VAJ6wEzvU2');
+    }, []);
+
     return (
         <Container>
             <MainMenuContainer>
@@ -103,6 +108,15 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <Icons name="apps-outline" />
                             <MenuItemText>
                                 {strings.Menu_Button_GoToAllProducts}
+                            </MenuItemText>
+                        </MenuContent>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer onPress={handleOpenResearch}>
+                        <MenuContent>
+                            <Icons name="information-circle-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_Research}
                             </MenuItemText>
                         </MenuContent>
                     </MenuItemContainer>
