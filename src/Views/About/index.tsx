@@ -26,6 +26,8 @@ import {
     ApplicationName,
     Text,
     Link,
+    SocialContainer,
+    SocialIcon,
 } from './styles';
 
 const About: React.FC = () => {
@@ -35,10 +37,6 @@ const About: React.FC = () => {
 
     const handleNavigateToSite = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev');
-    }, []);
-
-    const navigateToTelegram = useCallback(async () => {
-        await Linking.openURL('https://t.me/douglasdev');
     }, []);
 
     const navigateToTerms = useCallback(async () => {
@@ -51,6 +49,18 @@ const About: React.FC = () => {
 
     const handleLinkedinPress = useCallback(async () => {
         await Linking.openURL('https://www.linkedin.com/in/douglasndm/');
+    }, []);
+
+    const handleNaviTwitter = useCallback(async () => {
+        await Linking.openURL('https://www.twitter.com/douglasndmdev/');
+    }, []);
+
+    const handleNaviFB = useCallback(async () => {
+        await Linking.openURL('https://www.facebook.com/douglasndmdev/');
+    }, []);
+
+    const handleNaviMail = useCallback(async () => {
+        await Linking.openURL('mailto:suporte@douglasndm.dev');
     }, []);
 
     const handleFlatIconPress = useCallback(async () => {
@@ -112,20 +122,6 @@ const About: React.FC = () => {
             </AboutSection>
 
             <AboutSection>
-                <Text onPress={handleShareIdInfo}>
-                    {strings.View_About_DevelopedBy}
-                </Text>
-                <Link onPress={handleLinkedinPress}>Linkedin</Link>
-            </AboutSection>
-
-            <AboutSection>
-                <Text>{strings.View_About_NeedHelp}</Text>
-                <Link onPress={navigateToTelegram}>
-                    {strings.View_About_HelpTelegram}
-                </Link>
-            </AboutSection>
-
-            <AboutSection>
                 <Text>{strings.View_About_LogoMadeBy}</Text>
 
                 <View>
@@ -134,6 +130,22 @@ const About: React.FC = () => {
                     </Link>
                 </View>
             </AboutSection>
+
+            <AboutSection>
+                <Text onPress={handleShareIdInfo}>
+                    {strings.View_About_DevelopedBy}
+                </Text>
+            </AboutSection>
+
+            <SocialContainer>
+                <SocialIcon
+                    name="logo-linkedin"
+                    onPress={handleLinkedinPress}
+                />
+                <SocialIcon name="logo-twitter" onPress={handleNaviTwitter} />
+                <SocialIcon name="logo-facebook" onPress={handleNaviFB} />
+                <SocialIcon name="mail-outline" onPress={handleNaviMail} />
+            </SocialContainer>
         </Container>
     );
 };
