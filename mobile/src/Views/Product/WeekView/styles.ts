@@ -39,15 +39,39 @@ export const WeekContainer = styled(RectButton)<WeekProps>`
         `}
 `;
 
-export const WeekText = styled.Text`
+export const WeekText = styled.Text<WeekProps>`
     color: ${props => props.theme.colors.productCardText};
     font-family: 'Open Sans';
     font-size: 18px;
     font-weight: bold;
+
+    ${props =>
+        props.isNext &&
+        css`
+            color: #fff;
+        `}
+
+    ${props =>
+        props.isPast &&
+        css`
+            color: #fff;
+        `}
 `;
 
-export const ProductCount = styled.Text`
+export const ProductCount = styled.Text<WeekProps>`
     color: ${props => props.theme.colors.productCardText};
     font-family: 'Open Sans';
     font-size: 18px;
+
+    ${props =>
+        props.isNext &&
+        css`
+            color: #fff;
+        `}
+
+    ${props =>
+        props.isPast &&
+        css`
+            color: #fff;
+        `}
 `;

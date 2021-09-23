@@ -114,24 +114,37 @@ const WeekView: React.FC = () => {
         loadData();
     }, []);
 
-    const renderSectionTitle = useCallback((week: WeekProps, index: number) => {
-        const onPress = () => {
-            setActiveSection([index]);
-        };
+    const renderSectionTitle = useCallback(
+        (week: WeekProps, index: number) => {
+            const onPress = () => {
+                setActiveSection([index]);
+            };
 
-        const dateFormatted = format(week.date, 'dd/MM/yyyy');
-        const isExpired = isPast(week.date);
-        const isNext =
-            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
-            week.date;
+            const dateFormatted = format(week.date, 'dd/MM/yyyy');
+            const isExpired = isPast(week.date);
+            const isNext =
+                addDays(
+                    new Date(),
+                    userPreferences.howManyDaysToBeNextToExpire
+                ) >= week.date;
 
-        return (
-            <WeekContainer onPress={onPress} isPast={isExpired} isNext={isNext}>
-                <WeekText>A partir de {dateFormatted}</WeekText>
-                <ProductCount>{week.products.length} Produtos</ProductCount>
-            </WeekContainer>
-        );
-    }, []);
+            return (
+                <WeekContainer
+                    onPress={onPress}
+                    isPast={isExpired}
+                    isNext={isNext}
+                >
+                    <WeekText isPast={isExpired} isNext={isNext}>
+                        A partir de {dateFormatted}
+                    </WeekText>
+                    <ProductCount isPast={isExpired} isNext={isNext}>
+                        {week.products.length} Produtos
+                    </ProductCount>
+                </WeekContainer>
+            );
+        },
+        [userPreferences.howManyDaysToBeNextToExpire]
+    );
 
     const renderContent = useCallback((week: WeekProps) => {
         return week.products.map(prod => (
