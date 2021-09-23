@@ -39,7 +39,7 @@ const WeekView: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [weeks, setWeeks] = useState<WeekProps[]>([]);
-    const [activeSection, setActiveSection] = useState([0]);
+    const [activeSection, setActiveSection] = useState<number[]>([]);
 
     const loadData = useCallback(async () => {
         try {
@@ -117,6 +117,8 @@ const WeekView: React.FC = () => {
     const renderSectionTitle = useCallback(
         (week: WeekProps, index: number) => {
             const onPress = () => {
+                setActiveSection([]);
+
                 setActiveSection([index]);
             };
 
