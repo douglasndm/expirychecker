@@ -39,6 +39,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         return false;
     }, [userPreferences]);
 
+    const navigateToPRO = useCallback(() => {
+        navigation.navigate('Pro');
+    }, [navigation]);
+
     const navigateToAddProduct = useCallback(() => {
         navigation.navigate('AddProduct');
     }, [navigation]);
@@ -46,6 +50,14 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const navigateToAllProducts = useCallback(() => {
         navigation.navigate('AllProducts');
     }, [navigation]);
+
+    const navigateToWeekProds = useCallback(() => {
+        if (!userPreferences.isUserPremium) {
+            navigateToPRO();
+            return;
+        }
+        navigation.navigate('WeekView');
+    }, [navigateToPRO, navigation, userPreferences.isUserPremium]);
 
     const navigateToCategories = useCallback(() => {
         navigation.navigate('ListCategory');
@@ -57,10 +69,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
     const navigateToExport = useCallback(() => {
         navigation.navigate('Export');
-    }, [navigation]);
-
-    const navigateToPRO = useCallback(() => {
-        navigation.navigate('Pro');
     }, [navigation]);
 
     const navigateToNotifications = useCallback(() => {
@@ -105,6 +113,19 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                                 {strings.Menu_Button_GoToAllProducts}
                             </MenuItemText>
                         </MenuContent>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer onPress={navigateToWeekProds}>
+                        <MenuContent>
+                            <Icons name="funnel-outline" />
+                            <MenuItemText>Produtos por semana</MenuItemText>
+                        </MenuContent>
+
+                        <LabelGroup>
+                            <LabelContainer>
+                                <Label>{strings.Menu_Label_PRO}</Label>
+                            </LabelContainer>
+                        </LabelGroup>
                     </MenuItemContainer>
 
                     <MenuItemContainer

@@ -74,13 +74,9 @@ const ListProducts: React.FC<RequestProps> = ({
         return (
             <View>
                 {userPreferences.isUserPremium !== true && (
-                    <>
-                        <ProBanner onPress={handleNavigateProPage}>
-                            <ProText>
-                                {choosenAdText.toLocaleUpperCase()}
-                            </ProText>
-                        </ProBanner>
-                    </>
+                    <ProBanner onPress={handleNavigateProPage}>
+                        <ProText>{choosenAdText.toLocaleUpperCase()}</ProText>
+                    </ProBanner>
                 )}
 
                 {/* Verificar se há items antes de criar o titulo */}
@@ -95,7 +91,12 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [products, userPreferences.isUserPremium]);
+    }, [
+        choosenAdText,
+        handleNavigateProPage,
+        products.length,
+        userPreferences.isUserPremium,
+    ]);
 
     const EmptyList = useCallback(() => {
         return (

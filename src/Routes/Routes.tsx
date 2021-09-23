@@ -15,6 +15,7 @@ import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 
 import AllProducts from '~/Views/Product/List';
+import WeekView from '~/Views/Product/WeekView';
 
 import BatchView from '~/Views/Batch/View';
 import BatchDiscount from '~/Views/Batch/Discount';
@@ -44,6 +45,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
+            <Stack.Screen name="WeekView" component={WeekView} />
 
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="About" component={About} />

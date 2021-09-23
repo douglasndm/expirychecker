@@ -37,6 +37,7 @@
     "react-native-background-fetch": "^4.0.3",
     "react-native-camera": "^3.40.0",
     "react-native-code-push": "^7.0.1",
+    "react-native-collapsible": "^1.6.0",
     "react-native-config": "^1.4.2",
     "react-native-currency-input": "^1.0.0",
     "react-native-date-picker": "3.0.3",
