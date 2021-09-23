@@ -6,7 +6,7 @@ export const Container = styled.View`
     background-color: ${props => props.theme.colors.background};
 `;
 
-export const PageContent = styled.View`
+export const PageContent = styled.ScrollView`
     margin-top: 15px;
 `;
 
