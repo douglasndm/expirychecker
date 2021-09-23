@@ -1,9 +1,23 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { addDays, compareAsc, eachWeekOfInterval, format } from 'date-fns';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    useContext,
+} from 'react';
+import {
+    addDays,
+    compareAsc,
+    eachWeekOfInterval,
+    format,
+    isPast,
+} from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
 import Accordion from 'react-native-collapsible/Accordion';
 
 import strings from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -20,6 +34,8 @@ import {
 } from './styles';
 
 const WeekView: React.FC = () => {
+    const { userPreferences } = useContext(PreferencesContext);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [weeks, setWeeks] = useState<WeekProps[]>([]);
@@ -103,9 +119,15 @@ const WeekView: React.FC = () => {
             setActiveSection([index]);
         };
 
+        const dateFormatted = format(week.date, 'dd/MM/yyyy');
+        const isExpired = isPast(week.date);
+        const isNext =
+            addDays(new Date(), userPreferences.howManyDaysToBeNextToExpire) >=
+            week.date;
+
         return (
-            <WeekContainer onPress={onPress}>
-                <WeekText>A partir de {week.date}</WeekText>
+            <WeekContainer onPress={onPress} isPast={isExpired} isNext={isNext}>
+                <WeekText>A partir de {dateFormatted}</WeekText>
                 <ProductCount>{week.products.length} Produtos</ProductCount>
             </WeekContainer>
         );
@@ -119,10 +141,8 @@ const WeekView: React.FC = () => {
 
     const sections = useMemo(() => {
         return weeks.map(week => {
-            const dateFormatted = format(week.date, 'dd/MM/yyyy');
-
             return {
-                date: dateFormatted,
+                date: week.date,
                 products: week.products,
             };
         });
