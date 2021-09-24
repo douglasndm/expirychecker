@@ -118,7 +118,9 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     <MenuItemContainer onPress={navigateToWeekProds}>
                         <MenuContent>
                             <Icons name="funnel-outline" />
-                            <MenuItemText>Produtos por semana</MenuItemText>
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToByWeeks}
+                            </MenuItemText>
                         </MenuContent>
 
                         <LabelGroup>

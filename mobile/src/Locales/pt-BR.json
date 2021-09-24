@@ -5,6 +5,7 @@
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
+    "Menu_Button_GoToByWeeks": "Produtos por semana",
     "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToStores": "Lojas",
     "Menu_Button_GoToExport": "Exportar",
@@ -172,6 +173,10 @@
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Vence em",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
+
+    "View_ProductsByWeeks_Title": "Por semanas",
+    "View_ProductsByWeeks_WeekTitle": "A partir de",
+    "View_ProductsByWeeks_ProductsCount": "{COUNT} produtos",
 
     "View_ShareProduct_Title": "Favor checar o produto",
     "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
