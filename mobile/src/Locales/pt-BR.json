@@ -112,6 +112,7 @@
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",
     "View_EditBatch_PageTitle": "Atualizar lote",
     "View_EditBatch_Button_DeleteBatch": "Apagar",
+    "View_EditBatch_Button_MoreInfo": "Detalhes",
     "View_EditBatch_InputPlacehoder_Batch": "Lote",
     "View_EditBatch_InputPlacehoder_Amount": "Quantidade",
     "View_EditBatch_InputPlacehoder_UnitPrice": "Preço unitário",

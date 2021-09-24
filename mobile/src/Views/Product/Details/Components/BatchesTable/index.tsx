@@ -97,9 +97,9 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         nextToExp={nextToExp}
                         treated={treated}
                         onPress={() => {
-                            navigate('BatchView', {
-                                product_id,
-                                batch_id: batch.id,
+                            navigate('EditLote', {
+                                productId: product_id,
+                                loteId: batch.id,
                             });
                         }}
                     >

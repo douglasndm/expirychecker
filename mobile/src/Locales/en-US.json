@@ -112,6 +112,7 @@
     "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
     "View_EditBatch_PageTitle": "Update batch",
     "View_EditBatch_Button_DeleteBatch": "Delete",
+    "View_EditBatch_Button_MoreInfo": "More info",
     "View_EditBatch_InputPlacehoder_Batch": "Batch",
     "View_EditBatch_InputPlacehoder_Amount": "Amount",
     "View_EditBatch_InputPlacehoder_UnitPrice": "Unit price",
