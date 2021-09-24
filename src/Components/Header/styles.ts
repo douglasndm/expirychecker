@@ -7,6 +7,7 @@ import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 export const HeaderContainerNoDrawner = styled.SafeAreaView`
     margin-top: 15px;
     flex-direction: row;
+    align-items: center;
 `;
 
 export const HeaderContainer = styled.View`
