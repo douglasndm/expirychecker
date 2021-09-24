@@ -1,13 +1,11 @@
-import React, { useCallback, useContext, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
-
-import strings from '~/Locales';
+import React, { useContext, useMemo } from 'react';
 
 import ProductCard from '~/Components/ListProducts/ProductCard';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { Container, AdView, ButtonPro, ButtonProText } from './styles';
+import { Container } from './styles';
+import FastSubscription from '~/Components/FastSubscription';
 
 interface RequestProps {
     product: IProduct;
@@ -21,7 +19,6 @@ const ProductContainer: React.FC<RequestProps> = ({
     disableAds,
 }: RequestProps) => {
     const { userPreferences } = useContext(PreferencesContext);
-    const { navigate } = useNavigation();
 
     const showAd = useMemo(() => {
         if (disableAds) return false;
@@ -31,37 +28,9 @@ const ProductContainer: React.FC<RequestProps> = ({
         return false;
     }, [disableAds, userPreferences.isUserPremium, index]);
 
-    const handleNavigateToProPage = useCallback(() => {
-        navigate('Pro');
-    }, [navigate]);
-
-    const choosenAdText = useMemo(() => {
-        const result = Math.floor(Math.random() * 3) + 1;
-
-        switch (result) {
-            case 1:
-                return strings.ProBanner_Text1;
-
-            case 2:
-                return strings.ProBanner_Text2;
-
-            case 3:
-                return strings.ProBanner_Text3;
-
-            default:
-                return strings.ProBanner_Text4;
-        }
-    }, []);
-
     return (
         <Container>
-            {showAd && (
-                <AdView>
-                    <ButtonPro onPress={handleNavigateToProPage}>
-                        <ButtonProText>{choosenAdText}</ButtonProText>
-                    </ButtonPro>
-                </AdView>
-            )}
+            {showAd && <FastSubscription />}
 
             <ProductCard product={product} />
         </Container>
