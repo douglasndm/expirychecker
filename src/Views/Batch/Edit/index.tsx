@@ -36,6 +36,7 @@ import {
     Icons,
     RadioButton,
     RadioButtonText,
+    ActionButtonsContainer,
 } from './styles';
 
 interface Props {
@@ -45,7 +46,7 @@ interface Props {
 
 const EditBatch: React.FC = () => {
     const route = useRoute();
-    const { reset, goBack, navigate } = useNavigation();
+    const { reset, navigate } = useNavigation();
 
     const routeParams = route.params as Props;
 
@@ -185,6 +186,10 @@ const EditBatch: React.FC = () => {
         setPrice(value);
     }, []);
 
+    const navigateToBatchDetails = useCallback(() => {
+        navigate('BatchView', { product_id: productId, batch_id: loteId });
+    }, [loteId, navigate, productId]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -198,16 +203,29 @@ const EditBatch: React.FC = () => {
                             noDrawer
                         />
 
-                        <Button
-                            icon={() => (
-                                <Icons name="trash-outline" size={22} />
-                            )}
-                            onPress={() => {
-                                setDeleteComponentVisible(true);
-                            }}
-                        >
-                            {strings.View_EditBatch_Button_DeleteBatch}
-                        </Button>
+                        <ActionButtonsContainer>
+                            <Button
+                                icon={() => (
+                                    <Icons name="trash-outline" size={22} />
+                                )}
+                                onPress={() => {
+                                    setDeleteComponentVisible(true);
+                                }}
+                            >
+                                {strings.View_EditBatch_Button_DeleteBatch}
+                            </Button>
+                            <Button
+                                icon={() => (
+                                    <Icons
+                                        name="information-circle-outline"
+                                        size={22}
+                                    />
+                                )}
+                                onPress={navigateToBatchDetails}
+                            >
+                                {strings.View_EditBatch_Button_MoreInfo}
+                            </Button>
+                        </ActionButtonsContainer>
                     </PageHeader>
 
                     <PageContent>
