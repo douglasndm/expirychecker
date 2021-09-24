@@ -23,6 +23,7 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ProductCard from '~/Components/ListProducts/ProductCard';
+import FloatButton from '~/Components/FloatButton';
 
 import { getAllProducts } from '~/Functions/Products';
 
@@ -191,6 +192,8 @@ const WeekView: React.FC = () => {
                     renderContent={renderContent}
                 />
             </PageContent>
+
+            <FloatButton navigateTo="AddProduct" />
         </Container>
     );
 };
