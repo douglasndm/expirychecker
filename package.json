@@ -19,7 +19,6 @@
     "@react-native-firebase/analytics": "11.5.0",
     "@react-native-firebase/app": "11.5.0",
     "@react-native-firebase/auth": "11.5.0",
-    "@react-native-firebase/crashlytics": "11.5.0",
     "@react-native-firebase/messaging": "11.5.0",
     "@react-native-picker/picker": "^1.14.0",
     "@react-navigation/drawer": "^5.12.5",
