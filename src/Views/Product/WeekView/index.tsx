@@ -139,10 +139,13 @@ const WeekView: React.FC = () => {
                     isNext={isNext}
                 >
                     <WeekText isPast={isExpired} isNext={isNext}>
-                        A partir de {dateFormatted}
+                        {`${strings.View_ProductsByWeeks_WeekTitle} ${dateFormatted}`}
                     </WeekText>
                     <ProductCount isPast={isExpired} isNext={isNext}>
-                        {week.products.length} Produtos
+                        {`${strings.View_ProductsByWeeks_ProductsCount.replace(
+                            '{COUNT}',
+                            week.products.length
+                        )}`}
                     </ProductCount>
                 </WeekContainer>
             );
@@ -169,7 +172,7 @@ const WeekView: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header title="Por semanas" />
+            <Header title={strings.View_ProductsByWeeks_Title} />
 
             <PageContent>
                 <Accordion

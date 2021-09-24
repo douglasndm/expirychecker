@@ -5,6 +5,7 @@
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
     "Menu_Button_GoToAllProducts": "All products",
+    "Menu_Button_GoToByWeeks": "Products by weeks",
     "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToStores": "Stores",
     "Menu_Button_GoToExport": "Export",
@@ -172,6 +173,10 @@
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Expire in",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Amount",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Total price",
+
+    "View_ProductsByWeeks_Title": "By weeks",
+    "View_ProductsByWeeks_WeekTitle": "From",
+    "View_ProductsByWeeks_ProductsCount": "{COUNT} products",
 
     "View_ShareProduct_Title": "Check this product",
     "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
