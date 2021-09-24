@@ -117,8 +117,10 @@ const WeekView: React.FC = () => {
     const renderSectionTitle = useCallback(
         (week: WeekProps, index: number) => {
             const onPress = () => {
-                setActiveSection([]);
-
+                if (activeSection[0] === index) {
+                    setActiveSection([]);
+                    return;
+                }
                 setActiveSection([index]);
             };
 
@@ -145,7 +147,7 @@ const WeekView: React.FC = () => {
                 </WeekContainer>
             );
         },
-        [userPreferences.howManyDaysToBeNextToExpire]
+        [activeSection, userPreferences.howManyDaysToBeNextToExpire]
     );
 
     const renderContent = useCallback((week: WeekProps) => {
