@@ -12,6 +12,7 @@ import {
     format,
     isPast,
 } from 'date-fns';
+import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import Accordion from 'react-native-collapsible/Accordion';
 
@@ -40,6 +41,13 @@ const WeekView: React.FC = () => {
 
     const [weeks, setWeeks] = useState<WeekProps[]>([]);
     const [activeSection, setActiveSection] = useState<number[]>([]);
+
+    const dateFormat = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    }, []);
 
     const loadData = useCallback(async () => {
         try {
@@ -124,7 +132,7 @@ const WeekView: React.FC = () => {
                 setActiveSection([index]);
             };
 
-            const dateFormatted = format(week.date, 'dd/MM/yyyy');
+            const dateFormatted = format(week.date, dateFormat);
             const isExpired = isPast(week.date);
             const isNext =
                 addDays(
@@ -150,7 +158,7 @@ const WeekView: React.FC = () => {
                 </WeekContainer>
             );
         },
-        [activeSection, userPreferences.howManyDaysToBeNextToExpire]
+        [activeSection, dateFormat, userPreferences.howManyDaysToBeNextToExpire]
     );
 
     const renderContent = useCallback((week: WeekProps) => {
