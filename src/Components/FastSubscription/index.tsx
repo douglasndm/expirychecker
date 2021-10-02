@@ -29,6 +29,7 @@ import {
     SubCardContainer,
     SubCardText,
     SubscriptionText,
+    SubscriptionTextContainer,
 } from './styles';
 
 const FastSubscription: React.FC = () => {
@@ -128,9 +129,11 @@ const FastSubscription: React.FC = () => {
                     <SubCardText>{monthlyString}</SubCardText>
                 </SubCardContainer>
 
-                <SubscriptionText>
-                    {strings.Component_FastSub_Text}
-                </SubscriptionText>
+                <SubscriptionTextContainer>
+                    <SubscriptionText>
+                        {strings.Component_FastSub_Text}
+                    </SubscriptionText>
+                </SubscriptionTextContainer>
 
                 <Button
                     text={strings.View_ProPage_Button_Subscribe}
