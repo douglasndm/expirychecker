@@ -10,12 +10,17 @@ export const Container = styled.View`
     border-radius: 12px;
 `;
 
-export const SubscriptionText = styled.Text`
+export const SubscriptionTextContainer = styled.View`
     flex: 1;
+    justify-content: center;
+`;
+
+export const SubscriptionText = styled.Text`
     margin: 5px 10px;
     font-family: 'Open Sans';
     font-size: 16px;
     text-align: center;
+    color: ${props => props.theme.colors.productCardText};
 `;
 
 export const SubCardContainer = styled.View`
