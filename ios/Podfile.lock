@@ -1,7 +1,7 @@
 PODS:
-  - AppsFlyerFramework (6.3.5):
-    - AppsFlyerFramework/Main (= 6.3.5)
-  - AppsFlyerFramework/Main (6.3.5)
+  - AppsFlyerFramework (6.4.0):
+    - AppsFlyerFramework/Main (= 6.4.0)
+  - AppsFlyerFramework/Main (6.4.0)
   - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.5.6):
@@ -419,8 +419,8 @@ PODS:
     - React-jsi (= 0.64.2)
     - React-perflogger (= 0.64.2)
   - React-jsinspector (0.64.2)
-  - react-native-appsflyer (6.3.50):
-    - AppsFlyerFramework (= 6.3.5)
+  - react-native-appsflyer (6.4.0):
+    - AppsFlyerFramework (= 6.4.0)
     - React
   - react-native-camera (3.44.3):
     - React-Core
@@ -618,6 +618,7 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - AppsFlyerFramework
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -895,7 +896,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppsFlyerFramework: fa7e2e8234e6d285256bcb948eb2b77aee84ba81
+  AppsFlyerFramework: 9c37252d3edce38257afc065ad48a48c0f004000
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
@@ -954,7 +955,7 @@ SPEC CHECKSUMS:
   React-jsi: 67747b9722f6dab2ffe15b011bcf6b3f2c3f1427
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
-  react-native-appsflyer: becd1233abeb7ecfbade87b17aca152033554f83
+  react-native-appsflyer: 2ee2d2afdffbaa7cb67a87a1d576e09161c90c56
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-date-picker: e3793bde600b937ea6bcf66266278a8a0b0cb4d5
@@ -1006,6 +1007,6 @@ SPEC CHECKSUMS:
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 0a36a297f3b15e6cd2a45529f9c63b8b4a43a877
+PODFILE CHECKSUM: 3244688fc8b1ae126ea2db1162d6601cb028a9c9
 
 COCOAPODS: 1.10.2
