@@ -72,17 +72,6 @@ if (Platform.OS === 'ios' && !__DEV__) {
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
-interface ICategoryItem {
-    label: string;
-    value: string;
-    key: string;
-}
-interface IStoreItem {
-    label: string;
-    value: string;
-    key: string;
-}
-
 interface Request {
     route: {
         params: {
