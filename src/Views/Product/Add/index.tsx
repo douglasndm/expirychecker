@@ -186,7 +186,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     productId: productCreatedId,
                 });
 
-                if (!userPreferences.isUserPremium && adReady) {
+                if (!userPreferences.disableAds && adReady) {
                     interstitialAd.show();
                 }
 
@@ -218,7 +218,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         price,
         selectedCategory,
         selectedStore,
-        userPreferences.isUserPremium,
+        userPreferences.disableAds,
     ]);
 
     useEffect(() => {

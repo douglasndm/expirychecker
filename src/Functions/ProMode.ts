@@ -3,7 +3,7 @@ import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
 
 import { getUserId } from './User';
-import { setEnableProVersion } from './Settings';
+import { setDisableAds, setEnableProVersion } from './Settings';
 
 Purchases.setDebugLogsEnabled(true);
 Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
@@ -20,6 +20,9 @@ export async function isSubscriptionActive(): Promise<boolean> {
     if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
         await setEnableProVersion(true);
         return true;
+    }
+    if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
+        await setDisableAds(true);
     }
     await setEnableProVersion(false);
     return false;
@@ -47,6 +50,18 @@ export async function getSubscriptionDetails(): Promise<
     return packages;
 }
 
+export async function getOnlyNoAdsSubscriptions(): Promise<
+    Array<PurchasesPackage>
+> {
+    const offerings = await Purchases.getOfferings();
+
+    if (offerings.all.no_ads.availablePackages.length !== 0) {
+        return offerings.all.no_ads.availablePackages;
+    }
+
+    return [];
+}
+
 export async function makeSubscription(
     purchasePackage: PurchasesPackage
 ): Promise<void> {
@@ -66,6 +81,10 @@ export async function makeSubscription(
             await Analytics().logEvent('user_subscribed_successfully');
 
             await setEnableProVersion(true);
+        }
+
+        if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
+            await setDisableAds(true);
         }
     } catch (e) {
         if (e.userCancelled) {

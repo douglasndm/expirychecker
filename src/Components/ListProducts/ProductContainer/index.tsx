@@ -22,11 +22,11 @@ const ProductContainer: React.FC<RequestProps> = ({
 
     const showAd = useMemo(() => {
         if (disableAds) return false;
-        if (userPreferences.isUserPremium) return false;
+        if (userPreferences.disableAds) return false;
         if (index === 0) return false;
         if (index && index % 5 === 0) return true;
         return false;
-    }, [disableAds, userPreferences.isUserPremium, index]);
+    }, [disableAds, userPreferences.disableAds, index]);
 
     return (
         <Container>
