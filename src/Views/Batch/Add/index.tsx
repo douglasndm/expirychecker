@@ -62,7 +62,7 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
-    const { reset } = useNavigation();
+    const { navigate } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -112,19 +112,13 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 },
             });
 
-            if (!userPreferences.isUserPremium && adReady) {
+            if (!userPreferences.disableAds && adReady) {
                 await interstitialAd.show();
             }
 
-            reset({
-                routes: [
-                    { name: 'Home' },
-                    { name: 'ProductDetails', params: { id: productId } },
-                    {
-                        name: 'Success',
-                        params: { type: 'create_batch', productId },
-                    },
-                ],
+            navigate('Success', {
+                type: 'create_batch',
+                productId,
             });
         } catch (err) {
             showMessage({
@@ -133,14 +127,14 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
             });
         }
     }, [
-        amount,
-        productId,
-        expDate,
         lote,
-        reset,
+        productId,
+        amount,
+        expDate,
         price,
+        userPreferences.disableAds,
         adReady,
-        userPreferences.isUserPremium,
+        navigate,
     ]);
 
     useEffect(() => {

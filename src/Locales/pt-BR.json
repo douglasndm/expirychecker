@@ -36,7 +36,8 @@
 
     "Component_FastSub_Text": "Assine e aproveite todos os recursos",
 
-    "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
+    "Banner_NoAds": "Não precisa do PRO mas quer remover os anúncios? Acabe com os anúncios por {PRICE} mensais", "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
+    "Banner_SubscriptionSuccess_Alert": "Você removeu os anúncios",
     "ProBanner_Text2": "Conheça as vantagens do PRO",
     "ProBanner_Text3": "O PRO não tem anúncios, conheça essa e outras vantagens",
     "ProBanner_Text4": "Teste o PRO mensal de graça por 7 dias!",
