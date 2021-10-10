@@ -28,13 +28,13 @@ export const SubCardContainer = styled.View`
     border-radius: 12px;
     justify-content: center;
     align-items: center;
-    flex: 1;
+    padding: 5px 20px;
+    max-width: 120px;
 `;
 
 export const SubCardText = styled.Text`
     color: #fff;
     font-family: 'Open Sans';
-    margin: 5px;
-    font-size: 16px;
+    font-size: 15px;
     text-align: center;
 `;
