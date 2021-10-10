@@ -273,7 +273,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                             </TableContainer>
                         )}
 
-                        {!userPreferences.isUserPremium && (
+                        {!userPreferences.disableAds && (
                             <AdContainer>
                                 <BannerAd
                                     unitId={adUnit}

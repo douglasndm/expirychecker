@@ -1,10 +1,17 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { PurchasesPackage } from 'react-native-purchases';
 
+import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import {
+    getOnlyNoAdsSubscriptions,
+    makeSubscription,
+} from '~/Functions/ProMode';
 
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
@@ -20,6 +27,7 @@ import {
     FloatButton,
     Icons,
 } from './styles';
+import { getDisableAds } from '~/Functions/Settings';
 
 interface RequestProps {
     products: Array<IProduct>;
@@ -38,44 +46,61 @@ const ListProducts: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const [noAdsPackage, setNoAdsPackages] = useState<PurchasesPackage | null>(
+        null
+    );
+
+    const { userPreferences, setUserPreferences } =
+        useContext(PreferencesContext);
 
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
-    }, [navigate]);
-
-    const handleNavigateProPage = useCallback(() => {
-        navigate('Pro');
     }, [navigate]);
 
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
     }, [navigate]);
 
-    const choosenAdText = useMemo(() => {
-        const result = Math.floor(Math.random() * 3) + 1;
+    const loadRemoveAdsData = useCallback(async () => {
+        const response = await getOnlyNoAdsSubscriptions();
 
-        switch (result) {
-            case 1:
-                return strings.ProBanner_Text1;
+        setNoAdsPackages(response[0]);
+    }, []);
 
-            case 2:
-                return strings.ProBanner_Text2;
+    const handleMakePurchaseNoAds = useCallback(async () => {
+        if (noAdsPackage) {
+            await makeSubscription(noAdsPackage);
+            const ads = await getDisableAds();
 
-            case 3:
-                return strings.ProBanner_Text3;
+            setUserPreferences({
+                ...userPreferences,
+                disableAds: ads,
+            });
 
-            default:
-                return strings.ProBanner_Text4;
+            if (ads) {
+                showMessage({
+                    message: strings.Banner_SubscriptionSuccess_Alert,
+                    type: 'info',
+                });
+            }
         }
+    }, [noAdsPackage, setUserPreferences, userPreferences]);
+
+    useEffect(() => {
+        loadRemoveAdsData();
     }, []);
 
     const ListHeader = useCallback(() => {
         return (
             <View>
-                {userPreferences.isUserPremium !== true && (
-                    <ProBanner onPress={handleNavigateProPage}>
-                        <ProText>{choosenAdText.toLocaleUpperCase()}</ProText>
+                {userPreferences.disableAds === false && noAdsPackage && (
+                    <ProBanner onPress={handleMakePurchaseNoAds}>
+                        <ProText>
+                            {strings.Banner_NoAds.replace(
+                                '{PRICE}',
+                                noAdsPackage.product.price_string
+                            )}
+                        </ProText>
                     </ProBanner>
                 )}
 
@@ -92,10 +117,10 @@ const ListProducts: React.FC<RequestProps> = ({
             </View>
         );
     }, [
-        choosenAdText,
-        handleNavigateProPage,
+        handleMakePurchaseNoAds,
+        noAdsPackage,
         products.length,
-        userPreferences.isUserPremium,
+        userPreferences.disableAds,
     ]);
 
     const EmptyList = useCallback(() => {

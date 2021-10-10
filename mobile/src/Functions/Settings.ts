@@ -10,7 +10,8 @@ interface ISetSettingProps {
         | 'EnableMultipleStores'
         | 'EnableProVersion'
         | 'NotificationCadency'
-        | 'HowManyTimesAppWasOpen';
+        | 'HowManyTimesAppWasOpen'
+        | 'DisableAds';
     value: string;
 }
 
@@ -147,9 +148,9 @@ export async function getNotificationCadency(): Promise<NotificationCadency> {
 }
 
 export async function getEnableProVersion(): Promise<boolean> {
-    if (__DEV__) {
-        return true;
-    }
+    // if (__DEV__) {
+    //    return true;
+    // }
     const code = await getProCode();
 
     if (code) {
@@ -212,4 +213,20 @@ export async function getHowManyTimesAppWasOpen(): Promise<number | null> {
     }
 
     return null;
+}
+
+export async function setDisableAds(disable: boolean): Promise<void> {
+    await setSetting({
+        type: 'DisableAds',
+        value: String(disable),
+    });
+}
+
+export async function getDisableAds(): Promise<boolean> {
+    const setting = await getSetting({
+        type: 'DisableAds',
+    });
+
+    if (setting === 'true') return true;
+    return false;
 }
