@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { lighten } from 'polished';
 
+export const FastSubContainer = styled.View``;
+
 export const Container = styled.View`
     flex-direction: row;
     margin: 5px 10px;

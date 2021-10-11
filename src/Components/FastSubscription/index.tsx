@@ -25,6 +25,7 @@ import {
 } from '~/Views/ProSubscription/styles';
 
 import {
+    FastSubContainer,
     Container,
     SubCardContainer,
     SubCardText,
@@ -124,34 +125,38 @@ const FastSubscription: React.FC = () => {
         <Loading />
     ) : (
         <>
-            <Container>
-                <SubCardContainer>
-                    <SubCardText>{monthlyString}</SubCardText>
-                </SubCardContainer>
+            {monthlyPlan && (
+                <FastSubContainer>
+                    <Container>
+                        <SubCardContainer>
+                            <SubCardText>{monthlyString}</SubCardText>
+                        </SubCardContainer>
 
-                <SubscriptionTextContainer>
-                    <SubscriptionText>
-                        {strings.Component_FastSub_Text}
-                    </SubscriptionText>
-                </SubscriptionTextContainer>
+                        <SubscriptionTextContainer>
+                            <SubscriptionText>
+                                {strings.Component_FastSub_Text}
+                            </SubscriptionText>
+                        </SubscriptionTextContainer>
 
-                <Button
-                    text={strings.View_ProPage_Button_Subscribe}
-                    onPress={subscribe}
-                    isLoading={isLoading}
-                />
-            </Container>
-            <TermsPrivacyText>
-                {strings.View_ProPage_Text_BeforeTermsAndPrivacy}
-                <TermsPrivacyLink onPress={navigateToTerms}>
-                    {strings.Terms}
-                </TermsPrivacyLink>
-                {strings.BetweenTermsAndPrivacy}
-                <TermsPrivacyLink onPress={navigateToPrivacy}>
-                    {strings.PrivacyPolicy}
-                </TermsPrivacyLink>
-                .
-            </TermsPrivacyText>
+                        <Button
+                            text={strings.View_ProPage_Button_Subscribe}
+                            onPress={subscribe}
+                            isLoading={isLoading}
+                        />
+                    </Container>
+                    <TermsPrivacyText>
+                        {strings.View_ProPage_Text_BeforeTermsAndPrivacy}
+                        <TermsPrivacyLink onPress={navigateToTerms}>
+                            {strings.Terms}
+                        </TermsPrivacyLink>
+                        {strings.BetweenTermsAndPrivacy}
+                        <TermsPrivacyLink onPress={navigateToPrivacy}>
+                            {strings.PrivacyPolicy}
+                        </TermsPrivacyLink>
+                        .
+                    </TermsPrivacyText>
+                </FastSubContainer>
+            )}
         </>
     );
 };
