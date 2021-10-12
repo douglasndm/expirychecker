@@ -13,6 +13,7 @@ import {
     makeSubscription,
 } from '~/Functions/ProMode';
 
+import Loading from '../Loading';
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
 
@@ -49,6 +50,7 @@ const ListProducts: React.FC<RequestProps> = ({
     const [noAdsPackage, setNoAdsPackages] = useState<PurchasesPackage | null>(
         null
     );
+    const [isPurchasing, setIsPurchasing] = useState(false);
 
     const { userPreferences, setUserPreferences } =
         useContext(PreferencesContext);
@@ -69,19 +71,29 @@ const ListProducts: React.FC<RequestProps> = ({
 
     const handleMakePurchaseNoAds = useCallback(async () => {
         if (noAdsPackage) {
-            await makeSubscription(noAdsPackage);
-            const ads = await getDisableAds();
+            try {
+                setIsPurchasing(true);
+                await makeSubscription(noAdsPackage);
+                const ads = await getDisableAds();
 
-            setUserPreferences({
-                ...userPreferences,
-                disableAds: ads,
-            });
-
-            if (ads) {
-                showMessage({
-                    message: strings.Banner_SubscriptionSuccess_Alert,
-                    type: 'info',
+                setUserPreferences({
+                    ...userPreferences,
+                    disableAds: ads,
                 });
+
+                if (ads) {
+                    showMessage({
+                        message: strings.Banner_SubscriptionSuccess_Alert,
+                        type: 'info',
+                    });
+                }
+            } catch (err) {
+                showMessage({
+                    message: err.message,
+                    type: 'warning',
+                });
+            } finally {
+                setIsPurchasing(false);
             }
         }
     }, [noAdsPackage, setUserPreferences, userPreferences]);
@@ -93,16 +105,20 @@ const ListProducts: React.FC<RequestProps> = ({
     const ListHeader = useCallback(() => {
         return (
             <View>
-                {userPreferences.disableAds === false && noAdsPackage && (
-                    <ProBanner onPress={handleMakePurchaseNoAds}>
-                        <ProText>
-                            {strings.Banner_NoAds.replace(
-                                '{PRICE}',
-                                noAdsPackage.product.price_string
-                            )}
-                        </ProText>
-                    </ProBanner>
-                )}
+                {userPreferences.disableAds === false &&
+                    noAdsPackage &&
+                    (isPurchasing ? (
+                        <Loading />
+                    ) : (
+                        <ProBanner onPress={handleMakePurchaseNoAds}>
+                            <ProText>
+                                {strings.Banner_NoAds.replace(
+                                    '{PRICE}',
+                                    noAdsPackage.product.price_string
+                                )}
+                            </ProText>
+                        </ProBanner>
+                    ))}
 
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
@@ -118,6 +134,7 @@ const ListProducts: React.FC<RequestProps> = ({
         );
     }, [
         handleMakePurchaseNoAds,
+        isPurchasing,
         noAdsPackage,
         products.length,
         userPreferences.disableAds,
