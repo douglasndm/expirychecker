@@ -28,6 +28,8 @@ import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
 
+import BrandList from '~/Views/Brand/List';
+
 import NotificationsPreferences from '~/Views/NotificationsPreferences';
 import Export from '~/Views/Export';
 
@@ -68,6 +70,8 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="StoreList" component={StoreList} />
             <Stack.Screen name="StoreEdit" component={StoreEdit} />
+
+            <Stack.Screen name="BrandList" component={BrandList} />
 
             <Stack.Screen
                 name="NotificationsPreferences"

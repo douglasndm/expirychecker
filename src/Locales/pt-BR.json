@@ -7,6 +7,7 @@
     "Menu_Button_GoToAllProducts": "Todos os produtos",
     "Menu_Button_GoToByWeeks": "Produtos por semana",
     "Menu_Button_GoToCategories": "Categorias",
+    "Menu_Button_GoToBrands": "Marcas",
     "Menu_Button_GoToStores": "Lojas",
     "Menu_Button_GoToExport": "Exportar",
     "Menu_Button_GoToProPage": "SEJA PRO",
@@ -309,7 +310,6 @@
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
     "View_Category_List_AllCategories_Label": "Todas as categorias",
-
     "View_Category_List_View_BeforeCategoryName": "Categoria ",
 
     "View_Category_Edit_PageTitle": "Editar categoria",
@@ -322,6 +322,25 @@
     "View_Category_Edit_DeleteModal_Message": "Continuando você irá apagar a categoria. Todos os produtos referenciados a categoria deixará de exibir a categoria.",
     "View_Category_Edit_DeleteModal_Confirm": "Tenho certeza",
     "View_Category_Edit_DeleteModal_Cancel": "Manter categoria",
+
+    "View_Brand_List_PageTitle": "Marcas",
+    "View_Brand_List_InputAdd_Placeholder": "Nome da nova marca",
+    "View_Brand_List_InputAdd_Error_EmptyTextField": "Digite o nome da nova marca",
+    "View_Brand_List_AllCategories_Label": "Todas as marcas",
+    "View_Brand_List_View_BeforeCategoryName": "Marca ",
+
+    "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Esta marca já existe",
+
+    "View_Brand_Edit_PageTitle": "Editar marca",
+    "View_Brand_Edit_InputNamePlaceholder": "Digite o nome da marca",
+    "View_Brand_Edit_ButtonSave": "Salvar",
+    "View_Brand_Edit_SuccessText": "Atualizado",
+    "View_Brand_Edit_ErrorEmtpyName": "Digite o nome da marca",
+    "View_Brand_Success_OnDelete": "A marca foi apagada",
+    "View_Brand_Edit_DeleteModal_Title": "Você tem certeza?",
+    "View_Brand_Edit_DeleteModal_Message": "Continuando você irá apagar a marca. Todos os produtos referenciados a marca deixará de exibir a marca.",
+    "View_Brand_Edit_DeleteModal_Confirm": "Tenho certeza",
+    "View_Brand_Edit_DeleteModal_Cancel": "Manter marca",
 
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",

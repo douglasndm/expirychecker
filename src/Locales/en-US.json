@@ -7,6 +7,7 @@
     "Menu_Button_GoToAllProducts": "All products",
     "Menu_Button_GoToByWeeks": "Products by weeks",
     "Menu_Button_GoToCategories": "Categories",
+    "Menu_Button_GoToBrands": "Brands",
     "Menu_Button_GoToStores": "Stores",
     "Menu_Button_GoToExport": "Export",
     "Menu_Button_GoToProPage": "Become PRO",
@@ -302,8 +303,14 @@
     "View_Category_List_PageTitle": "Categories",
     "View_Category_List_InputAdd_Placeholder": "New category name",
     "View_Category_List_AllCategories_Label": "All categories",
-
     "View_Category_List_View_BeforeCategoryName": "Category ",
+
+    "View_Brand_List_PageTitle": "Brands",
+    "View_Brand_List_InputAdd_Placeholder": "New brand name",
+    "View_Brand_List_InputAdd_Error_EmptyTextField": "Type the brand name",
+    "View_Brand_List_AllCategories_Label": "All brands",
+    "View_Brand_List_View_BeforeCategoryName": "Brand ",
+    "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Brand already exists",
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
 
@@ -317,6 +324,17 @@
     "View_Category_Edit_DeleteModal_Message": "All products in category will be set as no category.",
     "View_Category_Edit_DeleteModal_Confirm": "I'm sure",
     "View_Category_Edit_DeleteModal_Cancel": "Keep category",
+
+    "View_Brand_Edit_PageTitle": "Edit brand",
+    "View_Brand_Edit_InputNamePlaceholder": "Brand name",
+    "View_Brand_Edit_ButtonSave": "Save",
+    "View_Brand_Edit_SuccessText": "Success",
+    "View_Brand_Edit_ErrorEmtpyName": "Type the brand name",
+    "View_Brand_Success_OnDelete": "Brand deleted",
+    "View_Brand_Edit_DeleteModal_Title": "Are you sure?",
+    "View_Brand_Edit_DeleteModal_Message": "All products in brand will be set as no brand.",
+    "View_Brand_Edit_DeleteModal_Confirm": "I'm sure",
+    "View_Brand_Edit_DeleteModal_Cancel": "Keep brand",
 
     "View_Export_PageTitle": "Export",
     "View_Export_Explain_Excel": "Here is where you will generate an Excel file with all products.",

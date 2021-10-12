@@ -67,6 +67,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('StoreList');
     }, [navigation]);
 
+    const navigateToBrands = useCallback(() => {
+        navigation.navigate('BrandList');
+    }, [navigation]);
+
     const navigateToExport = useCallback(() => {
         navigation.navigate('Export');
     }, [navigation]);
@@ -141,6 +145,27 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <Icons name="file-tray-full-outline" />
                             <MenuItemText>
                                 {strings.Menu_Button_GoToCategories}
+                            </MenuItemText>
+                        </MenuContent>
+
+                        <LabelGroup>
+                            <LabelContainer>
+                                <Label>{strings.Menu_Label_PRO}</Label>
+                            </LabelContainer>
+                        </LabelGroup>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer
+                        onPress={
+                            userPreferences.isUserPremium
+                                ? navigateToBrands
+                                : navigateToPRO
+                        }
+                    >
+                        <MenuContent>
+                            <Icons name="ribbon-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToBrands}
                             </MenuItemText>
                         </MenuContent>
 

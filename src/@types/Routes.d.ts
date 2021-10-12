@@ -62,6 +62,9 @@ type RoutesParams = {
     StoreEdit: {
         store_id: string;
     };
+
+    BrandList;
+
     NotificationsPreferences;
     Export;
     Teams;
