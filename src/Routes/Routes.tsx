@@ -29,6 +29,7 @@ import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
 
 import BrandList from '~/Views/Brand/List';
+import BrandView from '~/Views/Brand/View';
 
 import NotificationsPreferences from '~/Views/NotificationsPreferences';
 import Export from '~/Views/Export';
@@ -72,6 +73,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="StoreEdit" component={StoreEdit} />
 
             <Stack.Screen name="BrandList" component={BrandList} />
+            <Stack.Screen name="BrandView" component={BrandView} />
 
             <Stack.Screen
                 name="NotificationsPreferences"
