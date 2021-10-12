@@ -5,6 +5,7 @@ const ProductSchema = {
         id: { type: 'int', indexed: true },
         name: 'string',
         code: 'string?', // ? no final diz ao Realm que o campo pode ficar vazio
+        brand: 'string?',
         photo: 'string?',
         store: 'string?',
         categories: 'string[]', // uuid
