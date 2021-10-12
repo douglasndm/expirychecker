@@ -1,4 +1,7 @@
-import Purchases, { PurchasesPackage } from 'react-native-purchases';
+import Purchases, {
+    PurchasesPackage,
+    UpgradeInfo,
+} from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import EnvConfig from 'react-native-config';
 
@@ -23,6 +26,8 @@ export async function isSubscriptionActive(): Promise<boolean> {
     }
     if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
         await setDisableAds(true);
+    } else {
+        await setDisableAds(false);
     }
     await setEnableProVersion(false);
     return false;
@@ -70,10 +75,19 @@ export async function makeSubscription(
     }
 
     try {
+        const prevPurchases = await Purchases.getPurchaserInfo();
+
+        const upgrade: UpgradeInfo | null =
+            prevPurchases.activeSubscriptions.length > 0
+                ? {
+                      oldSKU: prevPurchases.activeSubscriptions[0],
+                  }
+                : null;
+
         const {
             purchaserInfo,
             // productIdentifier,
-        } = await Purchases.purchasePackage(purchasePackage);
+        } = await Purchases.purchasePackage(purchasePackage, upgrade);
 
         // console.log(productIdentifier);
         // console.log(purchaserInfo);
