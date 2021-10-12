@@ -87,9 +87,9 @@ const ListView: React.FC = () => {
     }, [brands, newBrandName]);
 
     const handleNavigateToCategory = useCallback(
-        (categoryId: string) => {
-            navigate('CategoryView', {
-                id: categoryId,
+        (brand_id: string) => {
+            navigate('BrandView', {
+                brand_id,
             });
         },
         [navigate]

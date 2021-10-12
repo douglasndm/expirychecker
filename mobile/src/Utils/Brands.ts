@@ -41,3 +41,62 @@ export async function createBrand(brandName: string): Promise<IBrand> {
 
     return brand;
 }
+
+/// /// A
+
+export async function updateCategory(category: ICategory): Promise<void> {
+    const realm = await Realm();
+
+    realm.write(() => {
+        realm.create('Category', category, UpdateMode.Modified);
+    });
+}
+
+export async function getAllProductsByBrand(
+    brand_id: string
+): Promise<Array<IProduct>> {
+    const realm = await Realm();
+
+    const products = realm.objects<IProduct>('Product').slice();
+
+    const filtedProducts = products.filter(p => {
+        return p.brand === brand_id;
+    });
+
+    return filtedProducts;
+}
+
+interface deleteCategoryProps {
+    category_id: string;
+}
+
+export async function deleteCategory({
+    category_id,
+}: deleteCategoryProps): Promise<void> {
+    const realm = await Realm();
+
+    realm.write(() => {
+        const products = realm.objects<IProduct>('Product');
+
+        const prodsToDelete = products.filter(prod => {
+            const inc = prod.categories.find(cat => cat === category_id);
+
+            if (inc && inc.length > 0) {
+                return true;
+            }
+            return false;
+        });
+
+        prodsToDelete.forEach(prod => {
+            prod.categories = [];
+        });
+    });
+
+    const product = realm
+        .objects<ICategory>('Category')
+        .filtered(`id == "${category_id}"`)[0];
+
+    realm.write(async () => {
+        realm.delete(product);
+    });
+}

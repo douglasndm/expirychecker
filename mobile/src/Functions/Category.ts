@@ -54,36 +54,28 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
 }
 
 export async function updateCategory(category: ICategory): Promise<void> {
-    try {
-        const realm = await Realm();
+    const realm = await Realm();
 
-        realm.write(() => {
-            realm.create('Category', category, UpdateMode.Modified);
-        });
-    } catch (err) {
-        throw new Error(err);
-    }
+    realm.write(() => {
+        realm.create('Category', category, UpdateMode.Modified);
+    });
 }
 
 export async function getAllProductsByCategory(
     categoryUuid: string
 ): Promise<Array<IProduct>> {
-    try {
-        const realm = await Realm();
+    const realm = await Realm();
 
-        const products = realm.objects<IProduct>('Product').slice();
+    const products = realm.objects<IProduct>('Product').slice();
 
-        const filtedProducts = products.filter(p => {
-            const isInCategory = p.categories.find(c => c === categoryUuid);
+    const filtedProducts = products.filter(p => {
+        const isInCategory = p.categories.find(c => c === categoryUuid);
 
-            if (isInCategory) return true;
-            return false;
-        });
+        if (isInCategory) return true;
+        return false;
+    });
 
-        return filtedProducts;
-    } catch (err) {
-        throw new Error(err.message);
-    }
+    return filtedProducts;
 }
 
 interface deleteCategoryProps {
