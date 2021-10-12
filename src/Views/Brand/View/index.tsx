@@ -5,16 +5,14 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import {
-    getAllCategories,
-    getAllProductsByCategory,
-} from '~/Functions/Category';
-import {
     sortProductsByFisrtLoteExpDate,
     sortProductsLotesByLotesExpDate,
 } from '~/Functions/Products';
 
-import Loading from '~/Components/Loading';
+import { getAllBrands, getAllProductsByBrand } from '~/Utils/Brands';
+
 import Header from '~/Components/Header';
+import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 
 import {
@@ -31,10 +29,10 @@ import {
 } from '~/Styles/Views/GenericViewPage';
 
 interface Props {
-    id: string;
+    brand_id: string;
 }
 
-const CategoryView: React.FC = () => {
+const View: React.FC = () => {
     const { params } = useRoute();
     const { navigate } = useNavigation();
 
@@ -49,14 +47,14 @@ const CategoryView: React.FC = () => {
     const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
-            const categories = await getAllCategories();
-            const findCat = categories.find(c => c.id === routeParams.id);
+            const brands = await getAllBrands();
+            const findCat = brands.find(c => c.id === routeParams.brand_id);
 
             if (findCat) {
                 setCategoryName(findCat.name);
             }
 
-            const prods = await getAllProductsByCategory(routeParams.id);
+            const prods = await getAllProductsByBrand(routeParams.brand_id);
 
             // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
             const sortedProds = sortProductsLotesByLotesExpDate(prods);
@@ -75,15 +73,15 @@ const CategoryView: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [routeParams.id]);
+    }, [routeParams.brand_id]);
 
     const handleEdit = useCallback(() => {
-        navigate('CategoryEdit', { id: routeParams.id });
-    }, [navigate, routeParams.id]);
+        navigate('BrandEdit', { id: routeParams.brand_id });
+    }, [navigate, routeParams.brand_id]);
 
     const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct', { category: routeParams.id });
-    }, [navigate, routeParams.id]);
+        navigate('AddProduct', { brand: routeParams.brand_id });
+    }, [navigate, routeParams.brand_id]);
 
     useEffect(() => {
         loadData();
@@ -93,12 +91,9 @@ const CategoryView: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header />
+            <Header title={strings.View_Brand_View_PageTitle} noDrawer />
 
-            <ItemTitle>
-                {strings.View_Category_List_View_BeforeCategoryName}
-                {categoryName}
-            </ItemTitle>
+            <ItemTitle>{categoryName}</ItemTitle>
 
             <ActionsButtonContainer>
                 <ActionButton
@@ -123,4 +118,4 @@ const CategoryView: React.FC = () => {
     );
 };
 
-export default CategoryView;
+export default View;

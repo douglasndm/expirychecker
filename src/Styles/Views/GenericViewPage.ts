@@ -4,14 +4,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
     flex: 1;
-    background: ${(props) => props.theme.colors.background};
+    background: ${props => props.theme.colors.background};
 `;
 
-export const CategoryTitle = styled.Text`
+export const ItemTitle = styled.Text`
     font-size: 22px;
     font-weight: bold;
     margin: 5px 10px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
 `;
 
 export const ActionsButtonContainer = styled.View`
@@ -19,7 +19,7 @@ export const ActionsButtonContainer = styled.View`
     margin-bottom: 15px;
 `;
 
-export const ActionButton = styled(Button).attrs((props) => ({
+export const ActionButton = styled(Button).attrs(props => ({
     color: props.theme.colors.accent,
 }))``;
 
