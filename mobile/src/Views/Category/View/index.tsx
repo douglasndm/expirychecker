@@ -25,10 +25,13 @@ import {
 import {
     Container,
     ItemTitle,
-    ActionsButtonContainer,
-    ActionButton,
+    ActionsContainer,
+    ActionButtonsContainer,
     Icons,
+    TitleContainer,
+    ActionText,
 } from '~/Styles/Views/GenericViewPage';
+import { exportToExcel } from '~/Functions/Excel';
 
 interface Props {
     id: string;
@@ -85,6 +88,29 @@ const CategoryView: React.FC = () => {
         navigate('AddProduct', { category: routeParams.id });
     }, [navigate, routeParams.id]);
 
+    const handleExportExcel = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            await exportToExcel({
+                sortBy: 'expire_date',
+                category: routeParams.id,
+            });
+
+            showMessage({
+                message: strings.View_Category_View_ExcelExportedSuccess,
+                type: 'info',
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [routeParams.id]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -95,19 +121,26 @@ const CategoryView: React.FC = () => {
         <Container>
             <Header />
 
-            <ItemTitle>
-                {strings.View_Category_List_View_BeforeCategoryName}
-                {categoryName}
-            </ItemTitle>
+            <TitleContainer>
+                <ItemTitle>
+                    {strings.View_Category_List_View_BeforeCategoryName}
+                    {categoryName}
+                </ItemTitle>
 
-            <ActionsButtonContainer>
-                <ActionButton
-                    icon={() => <Icons name="create-outline" size={22} />}
-                    onPress={handleEdit}
-                >
-                    {strings.View_ProductDetails_Button_UpdateProduct}
-                </ActionButton>
-            </ActionsButtonContainer>
+                <ActionsContainer>
+                    <ActionButtonsContainer onPress={handleEdit}>
+                        <ActionText>
+                            {strings.View_ProductDetails_Button_UpdateProduct}
+                        </ActionText>
+                        <Icons name="create-outline" size={22} />
+                    </ActionButtonsContainer>
+
+                    <ActionButtonsContainer onPress={handleExportExcel}>
+                        <ActionText>Gerar Excel</ActionText>
+                        <Icons name="stats-chart-outline" size={22} />
+                    </ActionButtonsContainer>
+                </ActionsContainer>
+            </TitleContainer>
 
             <ListProducts products={products} deactiveFloatButton />
 
