@@ -76,7 +76,7 @@ const View: React.FC = () => {
     }, [routeParams.brand_id]);
 
     const handleEdit = useCallback(() => {
-        navigate('BrandEdit', { id: routeParams.brand_id });
+        navigate('BrandEdit', { brand_id: routeParams.brand_id });
     }, [navigate, routeParams.brand_id]);
 
     const handleNavigateAddProduct = useCallback(() => {

@@ -67,6 +67,9 @@ type RoutesParams = {
     BrandView: {
         brand_id: string;
     };
+    BrandEdit: {
+        brand_id: string;
+    };
 
     NotificationsPreferences;
     Export;
