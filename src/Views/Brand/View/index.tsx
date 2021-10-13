@@ -23,9 +23,11 @@ import {
 import {
     Container,
     ItemTitle,
-    ActionsButtonContainer,
-    ActionButton,
+    ActionsContainer,
+    ActionButtonsContainer,
     Icons,
+    TitleContainer,
+    ActionText,
 } from '~/Styles/Views/GenericViewPage';
 
 interface Props {
@@ -40,7 +42,7 @@ const View: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [categoryName, setCategoryName] = useState<string>('CategoryTitle');
+    const [brandName, setBrandName] = useState<string>('Brand Name');
 
     const [products, setProducts] = useState<IProduct[]>([]);
 
@@ -51,7 +53,7 @@ const View: React.FC = () => {
             const findCat = brands.find(c => c.id === routeParams.brand_id);
 
             if (findCat) {
-                setCategoryName(findCat.name);
+                setBrandName(findCat.name);
             }
 
             const prods = await getAllProductsByBrand(routeParams.brand_id);
@@ -93,16 +95,23 @@ const View: React.FC = () => {
         <Container>
             <Header title={strings.View_Brand_View_PageTitle} noDrawer />
 
-            <ItemTitle>{categoryName}</ItemTitle>
+            <TitleContainer>
+                <ItemTitle>{brandName}</ItemTitle>
 
-            <ActionsButtonContainer>
-                <ActionButton
-                    icon={() => <Icons name="create-outline" size={22} />}
-                    onPress={handleEdit}
-                >
-                    {strings.View_ProductDetails_Button_UpdateProduct}
-                </ActionButton>
-            </ActionsButtonContainer>
+                <ActionsContainer>
+                    <ActionButtonsContainer onPress={handleEdit}>
+                        <ActionText>
+                            {strings.View_ProductDetails_Button_UpdateProduct}
+                        </ActionText>
+                        <Icons name="create-outline" size={22} />
+                    </ActionButtonsContainer>
+
+                    <ActionButtonsContainer>
+                        <ActionText>Gerar Excel</ActionText>
+                        <Icons name="stats-chart-outline" size={22} />
+                    </ActionButtonsContainer>
+                </ActionsContainer>
+            </TitleContainer>
 
             <ListProducts products={products} deactiveFloatButton />
 
