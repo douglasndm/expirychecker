@@ -1,18 +1,14 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
-import { useTheme } from 'styled-components/native';
-import { Button } from 'react-native-paper';
+import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
-import Header from '~/Components/Header';
+import { deleteBrand, getBrand, updateBrand } from '~/Utils/Brands';
 
-import {
-    getCategory,
-    updateCategory,
-    deleteCategory,
-} from '~/Functions/Category';
+import Loading from '~/Components/Loading';
+import Header from '~/Components/Header';
 
 import {
     Container,
@@ -22,18 +18,17 @@ import {
     InputTextContainer,
     InputText,
     InputTextTip,
-    DialogPaper,
     Icons,
-    Text,
 } from './styles';
 
 interface Props {
-    id: string;
+    brand_id: string;
 }
 const Edit: React.FC = () => {
     const { params } = useRoute();
     const { reset } = useNavigation();
-    const theme = useTheme();
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [name, setName] = useState<string | undefined>(undefined);
     const [errorName, setErrorName] = useState<string>('');
@@ -42,12 +37,66 @@ const Edit: React.FC = () => {
 
     const routeParams = params as Props;
 
-    const handleDeleteCategory = useCallback(async () => {
+    const loadData = useCallback(async () => {
         try {
-            await deleteCategory({ category_id: routeParams.id });
+            setIsLoading(true);
+
+            const brand = await getBrand(routeParams.brand_id);
+
+            setName(brand.name);
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [routeParams.brand_id]);
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    const onNameChange = useCallback(value => {
+        setErrorName('');
+        setName(value);
+    }, []);
+
+    const handleUpdate = useCallback(async () => {
+        if (!name) {
+            setErrorName('Digite o nome da marca');
+            return;
+        }
+
+        await updateBrand({
+            id: routeParams.brand_id,
+            name,
+        });
+
+        showMessage({
+            message: strings.View_Brand_Edit_SuccessText,
+            type: 'info',
+        });
+
+        reset({
+            routes: [
+                { name: 'Home' },
+                {
+                    name: 'BrandList',
+                },
+            ],
+        });
+    }, [name, routeParams.brand_id, reset]);
+
+    const handleDeleteBrand = useCallback(async () => {
+        try {
+            await deleteBrand({
+                brand_id: routeParams.brand_id,
+            });
 
             showMessage({
-                message: strings.View_Category_Success_OnDelete,
+                message: strings.View_Brand_Success_OnDelete,
                 type: 'info',
             });
 
@@ -55,7 +104,7 @@ const Edit: React.FC = () => {
                 routes: [
                     { name: 'Home' },
                     {
-                        name: 'ListCategory',
+                        name: 'BrandList',
                     },
                 ],
             });
@@ -65,53 +114,24 @@ const Edit: React.FC = () => {
                 type: 'danger',
             });
         }
-    }, [reset, routeParams.id]);
+    }, [reset, routeParams.brand_id]);
 
-    useEffect(() => {
-        getCategory(routeParams.id).then(response => setName(response.name));
-    }, [routeParams.id]);
+    const handleSwitchDeleteVisible = useCallback(() => {
+        setDeleteComponentVisible(!deleteComponentVisible);
+    }, [deleteComponentVisible]);
 
-    const onNameChange = useCallback(value => {
-        setErrorName('');
-        setName(value);
-    }, []);
-
-    const handleUpdate = useCallback(async () => {
-        if (!name) {
-            setErrorName(strings.View_Category_Edit_ErrorEmtpyName);
-            return;
-        }
-
-        await updateCategory({
-            id: routeParams.id,
-            name,
-        });
-
-        showMessage({
-            message: strings.View_Category_Edit_SuccessText,
-            type: 'info',
-        });
-
-        reset({
-            routes: [
-                { name: 'Home' },
-                {
-                    name: 'ListCategory',
-                },
-            ],
-        });
-    }, [routeParams.id, name, reset]);
-
-    return (
+    return isLoading ? (
+        <Loading />
+    ) : (
         <>
             <Container>
-                <Header title={strings.View_Category_Edit_PageTitle} noDrawer />
+                <Header title={strings.View_Brand_Edit_PageTitle} noDrawer />
 
                 <Content>
                     <InputTextContainer hasError={!!errorName}>
                         <InputText
                             placeholder={
-                                strings.View_Category_Edit_InputNamePlaceholder
+                                strings.View_Brand_Edit_InputNamePlaceholder
                             }
                             value={name}
                             onChangeText={onNameChange}
@@ -124,7 +144,7 @@ const Edit: React.FC = () => {
                             icon={() => <Icons name="save-outline" size={22} />}
                             onPress={handleUpdate}
                         >
-                            {strings.View_Category_Edit_ButtonSave}
+                            {strings.View_Brand_Edit_ButtonSave}
                         </ButtonPaper>
 
                         <ButtonPaper
@@ -140,34 +160,26 @@ const Edit: React.FC = () => {
                     </ActionsButtonContainer>
                 </Content>
             </Container>
-            <DialogPaper
+            <Dialog.Container
                 visible={deleteComponentVisible}
-                onDismiss={() => {
-                    setDeleteComponentVisible(false);
-                }}
+                onBackdropPress={handleSwitchDeleteVisible}
             >
-                <DialogPaper.Title style={{ color: theme.colors.text }}>
-                    {strings.View_Category_Edit_DeleteModal_Title}
-                </DialogPaper.Title>
-                <DialogPaper.Content>
-                    <Text>
-                        {strings.View_Category_Edit_DeleteModal_Message}
-                    </Text>
-                </DialogPaper.Content>
-                <DialogPaper.Actions>
-                    <Button color="red" onPress={handleDeleteCategory}>
-                        {strings.View_Category_Edit_DeleteModal_Confirm}
-                    </Button>
-                    <Button
-                        color={theme.colors.accent}
-                        onPress={() => {
-                            setDeleteComponentVisible(false);
-                        }}
-                    >
-                        {strings.View_Category_Edit_DeleteModal_Cancel}
-                    </Button>
-                </DialogPaper.Actions>
-            </DialogPaper>
+                <Dialog.Title>
+                    {strings.View_Brand_Edit_DeleteModal_Title}
+                </Dialog.Title>
+                <Dialog.Description>
+                    {strings.View_Brand_Edit_DeleteModal_Message}
+                </Dialog.Description>
+                <Dialog.Button
+                    label={strings.View_Brand_Edit_DeleteModal_Cancel}
+                    onPress={handleSwitchDeleteVisible}
+                />
+                <Dialog.Button
+                    label={strings.View_Brand_Edit_DeleteModal_Confirm}
+                    color="red"
+                    onPress={handleDeleteBrand}
+                />
+            </Dialog.Container>
         </>
     );
 };

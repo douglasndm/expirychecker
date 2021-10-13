@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/native';
-import { Button, Dialog } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
@@ -55,12 +55,4 @@ export const InputText = styled.TextInput.attrs(props => ({
 export const InputTextTip = styled.Text`
     color: red;
     margin: 5px 10px 5px;
-`;
-
-export const DialogPaper = styled(Dialog)`
-    background: ${props => props.theme.colors.productBackground};
-`;
-
-export const Text = styled.Text`
-    color: ${props => props.theme.colors.text};
 `;

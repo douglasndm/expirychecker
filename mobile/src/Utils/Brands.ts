@@ -5,6 +5,16 @@ import Realm from '~/Services/Realm';
 
 import strings from '~/Locales';
 
+export async function getBrand(id: string): Promise<IBrand> {
+    const realm = await Realm();
+
+    const realmResponse = realm
+        .objects<IBrand>('Brand')
+        .filtered(`id = "${id}"`)[0];
+
+    return realmResponse;
+}
+
 export async function getAllBrands(): Promise<Array<IBrand>> {
     const realm = await Realm();
 
@@ -42,13 +52,11 @@ export async function createBrand(brandName: string): Promise<IBrand> {
     return brand;
 }
 
-/// /// A
-
-export async function updateCategory(category: ICategory): Promise<void> {
+export async function updateBrand(brand: IBrand): Promise<void> {
     const realm = await Realm();
 
     realm.write(() => {
-        realm.create('Category', category, UpdateMode.Modified);
+        realm.create('Brand', brand, UpdateMode.Modified);
     });
 }
 
@@ -66,37 +74,29 @@ export async function getAllProductsByBrand(
     return filtedProducts;
 }
 
-interface deleteCategoryProps {
-    category_id: string;
-}
-
-export async function deleteCategory({
-    category_id,
-}: deleteCategoryProps): Promise<void> {
+export async function deleteBrand({
+    brand_id,
+}: deleteBrandProps): Promise<void> {
     const realm = await Realm();
 
     realm.write(() => {
         const products = realm.objects<IProduct>('Product');
 
         const prodsToDelete = products.filter(prod => {
-            const inc = prod.categories.find(cat => cat === category_id);
-
-            if (inc && inc.length > 0) {
-                return true;
-            }
+            if (prod.brand === brand_id) return true;
             return false;
         });
 
         prodsToDelete.forEach(prod => {
-            prod.categories = [];
+            prod.brand = undefined;
         });
     });
 
-    const product = realm
-        .objects<ICategory>('Category')
-        .filtered(`id == "${category_id}"`)[0];
+    const brand = realm
+        .objects<IBrand>('Brand')
+        .filtered(`id == "${brand_id}"`)[0];
 
     realm.write(async () => {
-        realm.delete(product);
+        realm.delete(brand);
     });
 }
