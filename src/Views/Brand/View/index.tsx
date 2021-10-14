@@ -92,7 +92,8 @@ const View: React.FC = () => {
                 brand: routeParams.brand_id,
             });
 
-            Analytics().logEvent('Exported_To_Excel_From_BrandView');
+            if (!__DEV__)
+                Analytics().logEvent('Exported_To_Excel_From_BrandView');
 
             showMessage({
                 message: strings.View_Brand_View_SuccessExportExcel,
