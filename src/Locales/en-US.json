@@ -381,11 +381,15 @@
 
     "Function_Excel_ColumnName_ProductName": "Product",
     "Function_Excel_ColumnName_ProductCode": "Code",
+    "Function_Excel_ColumnName_ProductBrand": "Brand",
     "Function_Excel_ColumnName_ProductStore": "Store",
     "Function_Excel_ColumnName_BatchName": "Batch",
     "Function_Excel_ColumnName_BatchPrice": "Price",
     "Function_Excel_ColumnName_BatchAmount": "Amount",
     "Function_Excel_ColumnName_BatchExpDate": "Expire in",
+    "Function_Excel_ColumnName_Status": "Status",
+    "Function_Excel_ColumnName_Status_Checked": "Checked",
+    "Function_Excel_ColumnName_Status_Unchecked": "Unchecked",
     "Function_Excel_Workbook_Name": "Expiration checker",
     "Function_Excel_filename": "expirationcheck",
 

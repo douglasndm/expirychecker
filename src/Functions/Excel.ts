@@ -2,7 +2,9 @@ import XLSX from 'xlsx';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 
-import strings from '../Locales';
+import strings from '~/Locales';
+
+import { getAllBrands } from '~/Utils/Brands';
 
 import { shareFile } from './Share';
 import { getAllProducts } from './Products';
@@ -79,16 +81,21 @@ export async function exportToExcel({
         });
     }
 
+    const allBrands = await getAllBrands();
+
     const excelRows: Array<ExcelRowProps> = [];
 
     for (const item of sortedProducts) {
         const store = await getStore(item.product.store || '');
+
+        const brand = allBrands.find(b => b.id === item.product.brand);
 
         const row: any = {};
 
         row[strings.Function_Excel_ColumnName_ProductName] = item.product.name;
         row[strings.Function_Excel_ColumnName_ProductCode] =
             item.product.code || '';
+        row[strings.Function_Excel_ColumnName_ProductBrand] = brand?.name || '';
         row[strings.Function_Excel_ColumnName_ProductStore] = store?.name;
         row[strings.Function_Excel_ColumnName_BatchName] = item.batch.lote;
         row[strings.Function_Excel_ColumnName_BatchPrice] =
@@ -99,7 +106,10 @@ export async function exportToExcel({
             item.batch.exp_date,
             dateFormat
         );
-        row.Tratado = item.batch.status === 'Tratado' ? 'Sim' : 'Não';
+        row[strings.Function_Excel_ColumnName_Status] =
+            item.batch.status === 'Tratado'
+                ? strings.Function_Excel_ColumnName_Status_Checked
+                : strings.Function_Excel_ColumnName_Status_Unchecked;
 
         excelRows.push(row);
     }
