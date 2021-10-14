@@ -78,6 +78,7 @@ export const TextSubscription = styled.Text`
 `;
 
 export const TermsPrivacyText = styled.Text`
+    font-size: 12px;
     margin: 10px;
     text-align: center;
     color: ${props => props.theme.colors.text};

@@ -1,10 +1,11 @@
 import { DefaultTheme } from 'styled-components';
 
-interface IUserPreferences {
+export interface IUserPreferences {
     howManyDaysToBeNextToExpire: number;
     isUserPremium: boolean;
     appTheme: DefaultTheme;
     multiplesStores: boolean;
     enableNotifications: boolean;
     notificationCadency: NotificationCadency;
+    disableAds: boolean;
 }

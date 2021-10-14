@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 import com.android.build.OutputFile
@@ -86,6 +85,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
@@ -145,8 +145,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 126
-        versionName "1.9.2"
+        versionCode 138
+        versionName "1.11.0"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -192,16 +192,6 @@ android {
         }
         release {
             resValue "string", "CodePushDeploymentKey", codePushProductionDeploymentKey
-
-            /* Add the firebaseCrashlytics extension (by default,
-            * it's disabled to improve build speeds) and set
-            * nativeSymbolUploadEnabled to true. */
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-
-                unstrippedNativeLibsDir "build/intermediates/merged_native_libs/release/out/lib/"
-                strippedNativeLibsDir "build/intermediates/stripped_native_libs/release/out/lib/"
-            }
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             minifyEnabled enableProguardInReleaseBuilds
@@ -222,13 +212,9 @@ android {
                 output.versionCodeOverride =
                         defaultConfig.versionCode * 1000 + versionCodes.get(abi)
             }
-
         }
     }
 }
-
-// Upload Crashlytics NDK symbols
-tasks.whenTaskAdded { task -> if (task.name.startsWith('assemble') && task.name.endsWith("Release")) task.finalizedBy "uploadCrashlyticsSymbolFile" + task.name.substring('assemble'.length()) }
 
 repositories {
     jcenter()
@@ -271,6 +257,10 @@ dependencies {
             implementation 'org.webkit:android-jsc:+'
         }
     }
+
+    implementation 'com.appsflyer:af-android-sdk:6.3.2'
+
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
 
     implementation 'com.google.android.gms:play-services-ads:19.7.0'
     implementation 'com.google.ads.mediation:inmobi:9.1.1.0'

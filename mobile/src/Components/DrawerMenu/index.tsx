@@ -39,6 +39,10 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         return false;
     }, [userPreferences]);
 
+    const navigateToPRO = useCallback(() => {
+        navigation.navigate('Pro');
+    }, [navigation]);
+
     const navigateToAddProduct = useCallback(() => {
         navigation.navigate('AddProduct');
     }, [navigation]);
@@ -46,6 +50,14 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const navigateToAllProducts = useCallback(() => {
         navigation.navigate('AllProducts');
     }, [navigation]);
+
+    const navigateToWeekProds = useCallback(() => {
+        if (!userPreferences.isUserPremium) {
+            navigateToPRO();
+            return;
+        }
+        navigation.navigate('WeekView');
+    }, [navigateToPRO, navigation, userPreferences.isUserPremium]);
 
     const navigateToCategories = useCallback(() => {
         navigation.navigate('ListCategory');
@@ -55,12 +67,12 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('StoreList');
     }, [navigation]);
 
-    const navigateToExport = useCallback(() => {
-        navigation.navigate('Export');
+    const navigateToBrands = useCallback(() => {
+        navigation.navigate('BrandList');
     }, [navigation]);
 
-    const navigateToPRO = useCallback(() => {
-        navigation.navigate('Pro');
+    const navigateToExport = useCallback(() => {
+        navigation.navigate('Export');
     }, [navigation]);
 
     const navigateToNotifications = useCallback(() => {
@@ -107,6 +119,21 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </MenuContent>
                     </MenuItemContainer>
 
+                    <MenuItemContainer onPress={navigateToWeekProds}>
+                        <MenuContent>
+                            <Icons name="funnel-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToByWeeks}
+                            </MenuItemText>
+                        </MenuContent>
+
+                        <LabelGroup>
+                            <LabelContainer>
+                                <Label>{strings.Menu_Label_PRO}</Label>
+                            </LabelContainer>
+                        </LabelGroup>
+                    </MenuItemContainer>
+
                     <MenuItemContainer
                         onPress={
                             userPreferences.isUserPremium
@@ -118,6 +145,27 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             <Icons name="file-tray-full-outline" />
                             <MenuItemText>
                                 {strings.Menu_Button_GoToCategories}
+                            </MenuItemText>
+                        </MenuContent>
+
+                        <LabelGroup>
+                            <LabelContainer>
+                                <Label>{strings.Menu_Label_PRO}</Label>
+                            </LabelContainer>
+                        </LabelGroup>
+                    </MenuItemContainer>
+
+                    <MenuItemContainer
+                        onPress={
+                            userPreferences.isUserPremium
+                                ? navigateToBrands
+                                : navigateToPRO
+                        }
+                    >
+                        <MenuContent>
+                            <Icons name="ribbon-outline" />
+                            <MenuItemText>
+                                {strings.Menu_Button_GoToBrands}
                             </MenuItemText>
                         </MenuContent>
 

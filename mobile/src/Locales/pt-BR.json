@@ -5,7 +5,9 @@
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
+    "Menu_Button_GoToByWeeks": "Produtos por semana",
     "Menu_Button_GoToCategories": "Categorias",
+    "Menu_Button_GoToBrands": "Marcas",
     "Menu_Button_GoToStores": "Lojas",
     "Menu_Button_GoToExport": "Exportar",
     "Menu_Button_GoToProPage": "SEJA PRO",
@@ -14,6 +16,7 @@
     "Menu_Button_GoToAbout": "Sobre",
     "Menu_Button_KnowOthersApps": "Outros apps",
     "Menu_Button_GoToTest": "Teste",
+    "Menu_Button_Research": "Pesquisa",
 
     "Menu_UserProfile_Button_login": "Entrar",
     "Menu_UserProfile_Label": "USUÁRIO PRO",
@@ -32,7 +35,10 @@
     "Component_Camera_Button_TakeAnotherPicture": "Tirar outra foto",
     "Component_Camera_Button_SavePicture": "Ficou boa",
 
-    "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
+    "Component_FastSub_Text": "Assine e aproveite todos os recursos",
+
+    "Banner_NoAds": "Não precisa do PRO mas quer remover os anúncios? Acabe com os anúncios por {PRICE} mensais", "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
+    "Banner_SubscriptionSuccess_Alert": "Você removeu os anúncios",
     "ProBanner_Text2": "Conheça as vantagens do PRO",
     "ProBanner_Text3": "O PRO não tem anúncios, conheça essa e outras vantagens",
     "ProBanner_Text4": "Teste o PRO mensal de graça por 7 dias!",
@@ -63,11 +69,9 @@
     "StoreGroupComponent_Button_ShowAllProductFromStore": "Mostrar todos os produtos da loja",
 
     "View_About_PageTitle": "Sobre",
-    "View_About_AppVersion": "",
+    "View_About_AppVersion": "Versão:",
     "View_About_UID": "UID:",
     "View_About_DevelopedBy": "Criado por Douglas Nunes de Mattos",
-    "View_About_NeedHelp": "Precisa de ajuda",
-    "View_About_HelpTelegram": "Entre em contato no Telegram",
     "View_About_LogoMadeBy": "Logo feito por",
 
     "View_AddBatch_AlertTypeBatchName": "Digite o nome do lote",
@@ -87,6 +91,7 @@
     "View_AddProduct_InputPlacehoder_UnitPrice": "Preço unitário",
     "View_AddProduct_InputPlacehoder_Store": "Selecione a loja",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Selecione a categoria",
+    "View_AddProduct_InputPlaceholder_SelectBrand": "Selecione a marca",
     "View_AddProduct_InputAccessibility_Name": "Campo para digitar o nome do produto",
     "View_AddProduct_InputAccessibility_Code": "Campo para digitar o código do produto",
     "View_AddProduct_InputAccessibility_Batch": "Campo para digitar o lote do produto",
@@ -112,6 +117,7 @@
     "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",
     "View_EditBatch_PageTitle": "Atualizar lote",
     "View_EditBatch_Button_DeleteBatch": "Apagar",
+    "View_EditBatch_Button_MoreInfo": "Detalhes",
     "View_EditBatch_InputPlacehoder_Batch": "Lote",
     "View_EditBatch_InputPlacehoder_Amount": "Quantidade",
     "View_EditBatch_InputPlacehoder_UnitPrice": "Preço unitário",
@@ -173,6 +179,10 @@
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Vence em",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
+
+    "View_ProductsByWeeks_Title": "Por semanas",
+    "View_ProductsByWeeks_WeekTitle": "A partir de",
+    "View_ProductsByWeeks_ProductsCount": "{COUNT} produtos",
 
     "View_ShareProduct_Title": "Favor checar o produto",
     "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
@@ -301,8 +311,8 @@
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
     "View_Category_List_AllCategories_Label": "Todas as categorias",
-
     "View_Category_List_View_BeforeCategoryName": "Categoria ",
+    "View_Category_View_ExcelExportedSuccess": "Arquivo excel gerado",
 
     "View_Category_Edit_PageTitle": "Editar categoria",
     "View_Category_Edit_InputNamePlaceholder": "Digite o nome da categoria",
@@ -315,6 +325,28 @@
     "View_Category_Edit_DeleteModal_Confirm": "Tenho certeza",
     "View_Category_Edit_DeleteModal_Cancel": "Manter categoria",
 
+    "View_Brand_List_PageTitle": "Marcas",
+    "View_Brand_List_InputAdd_Placeholder": "Nome da nova marca",
+    "View_Brand_List_InputAdd_Error_EmptyTextField": "Digite o nome da nova marca",
+    "View_Brand_List_AllCategories_Label": "Todas as marcas",
+    "View_Brand_List_View_BeforeCategoryName": "Marca ",
+    "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Esta marca já existe",
+
+    "View_Brand_View_PageTitle": "Marca",
+    "View_Brand_View_ActionButton_GenereteExcel": "Gerar Excel",
+    "View_Brand_View_SuccessExportExcel": "Arquivo Excel gerado",
+
+    "View_Brand_Edit_PageTitle": "Editar marca",
+    "View_Brand_Edit_InputNamePlaceholder": "Digite o nome da marca",
+    "View_Brand_Edit_ButtonSave": "Salvar",
+    "View_Brand_Edit_SuccessText": "Atualizado",
+    "View_Brand_Edit_ErrorEmtpyName": "Digite o nome da marca",
+    "View_Brand_Success_OnDelete": "A marca foi apagada",
+    "View_Brand_Edit_DeleteModal_Title": "Você tem certeza?",
+    "View_Brand_Edit_DeleteModal_Message": "Continuando você irá apagar a marca. Todos os produtos referenciados a marca deixará de exibir a marca.",
+    "View_Brand_Edit_DeleteModal_Confirm": "Tenho certeza",
+    "View_Brand_Edit_DeleteModal_Cancel": "Manter marca",
+
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
     "View_Export_SortTitle": "Escolha como organizar o arquivo",
@@ -323,6 +355,7 @@
     "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
     "View_Export_Button_ExportExcel": "Exportar para Excel",
     "View_Export_Button_ExportBackup": "Exportar para backup",
+    "View_Export_Excel_SuccessMessage": "Arquivo gerado com sucesso",
     "View_Export_Explain_Business": "Aqui você gera o arquivo com todos os seus produtos para enviar para o Controle de Validade Times",
     "View_Export_Button_Business": "Exportar",
     "View_Export_StorePicker_NoStore": "Sem loja",
@@ -350,11 +383,15 @@
 
     "Function_Excel_ColumnName_ProductName": "Produto",
     "Function_Excel_ColumnName_ProductCode": "Código",
+    "Function_Excel_ColumnName_ProductBrand": "Marca",
     "Function_Excel_ColumnName_ProductStore": "Loja",
     "Function_Excel_ColumnName_BatchName": "Lote",
     "Function_Excel_ColumnName_BatchPrice": "Preço",
     "Function_Excel_ColumnName_BatchAmount": "Quantidade",
     "Function_Excel_ColumnName_BatchExpDate": "Vencimento em",
+    "Function_Excel_ColumnName_Status": "Status",
+    "Function_Excel_ColumnName_Status_Checked": "Já verificado",
+    "Function_Excel_ColumnName_Status_Unchecked": "Não verificado",
     "Function_Excel_Workbook_Name": "Controle de validade",
     "Function_Excel_filename": "controledevalidade",
 

@@ -5,6 +5,7 @@ type RoutesParams = {
         category?: string;
     };
     AllProducts;
+    WeekView;
     Settings;
     About;
     ProductDetails: {
@@ -61,6 +62,15 @@ type RoutesParams = {
     StoreEdit: {
         store_id: string;
     };
+
+    BrandList;
+    BrandView: {
+        brand_id: string;
+    };
+    BrandEdit: {
+        brand_id: string;
+    };
+
     NotificationsPreferences;
     Export;
     Teams;

@@ -327,7 +327,7 @@ const View: React.FC = () => {
                         </BatchPrice>
                     )}
 
-                    {!userPreferences.isUserPremium && (
+                    {!userPreferences.disableAds && (
                         <BannerContainer>
                             <BannerAd
                                 unitId={adUnit}
