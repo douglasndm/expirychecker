@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -96,6 +97,8 @@ const CategoryView: React.FC = () => {
                 sortBy: 'expire_date',
                 category: routeParams.id,
             });
+
+            Analytics().logEvent('Exported_To_Excel_From_CategoryView');
 
             showMessage({
                 message: strings.View_Category_View_ExcelExportedSuccess,
