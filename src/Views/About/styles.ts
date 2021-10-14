@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
     flex: 1;
@@ -41,4 +42,17 @@ export const Text = styled.Text`
 export const Link = styled.Text`
     color: ${props => props.theme.colors.accent};
     font-size: 14px;
+`;
+
+export const SocialContainer = styled.View`
+    margin-top: 25px;
+    justify-content: center;
+    flex-direction: row;
+`;
+
+export const SocialIcon = styled(Ionicons).attrs(props => ({
+    size: 36,
+    color: props.theme.colors.text,
+}))`
+    margin-right: 15px;
 `;

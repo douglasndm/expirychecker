@@ -14,18 +14,18 @@ import {
     InputContainer,
     InputTextContainer,
     InputText,
-    ListCategories,
+    List,
     ListTitle,
-    CategoryItemContainer,
-    CategoryItemTitle,
-    AddCategoryContent,
-    AddCategoryButtonContainer,
     Icons,
     LoadingIcon,
     InputTextTip,
-} from './styles';
+    ListItemContainer,
+    ListItemTitle,
+    AddButtonContainer,
+    AddNewItemContent,
+} from '~/Styles/Views/GenericListPage';
 
-const List: React.FC = () => {
+const ListView: React.FC = () => {
     const { navigate } = useNavigation();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -99,11 +99,11 @@ const List: React.FC = () => {
     const renderCategory = useCallback(
         ({ item }) => {
             return (
-                <CategoryItemContainer
+                <ListItemContainer
                     onPress={() => handleNavigateToCategory(item.id)}
                 >
-                    <CategoryItemTitle>{item.name}</CategoryItemTitle>
-                </CategoryItemContainer>
+                    <ListItemTitle>{item.name}</ListItemTitle>
+                </ListItemContainer>
             );
         },
         [handleNavigateToCategory]
@@ -114,7 +114,7 @@ const List: React.FC = () => {
         <Container>
             <Header title={strings.View_Category_List_PageTitle} />
 
-            <AddCategoryContent>
+            <AddNewItemContent>
                 <InputContainer>
                     <InputTextContainer hasError={inputHasError}>
                         <InputText
@@ -126,7 +126,7 @@ const List: React.FC = () => {
                         />
                     </InputTextContainer>
 
-                    <AddCategoryButtonContainer
+                    <AddButtonContainer
                         onPress={handleSaveCategory}
                         enabled={!isAdding}
                     >
@@ -135,19 +135,19 @@ const List: React.FC = () => {
                         ) : (
                             <Icons name="add-circle-outline" />
                         )}
-                    </AddCategoryButtonContainer>
+                    </AddButtonContainer>
                 </InputContainer>
 
                 {!!inputErrorMessage && (
                     <InputTextTip>{inputErrorMessage}</InputTextTip>
                 )}
-            </AddCategoryContent>
+            </AddNewItemContent>
 
             <ListTitle>
                 {strings.View_Category_List_AllCategories_Label}
             </ListTitle>
 
-            <ListCategories
+            <List
                 data={categories}
                 keyExtractor={(item, index) => String(index)}
                 renderItem={renderCategory}
@@ -156,4 +156,4 @@ const List: React.FC = () => {
     );
 };
 
-export default List;
+export default ListView;

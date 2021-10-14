@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -24,11 +25,14 @@ import {
 
 import {
     Container,
-    CategoryTitle,
-    ActionsButtonContainer,
-    ActionButton,
+    ItemTitle,
+    ActionsContainer,
+    ActionButtonsContainer,
     Icons,
-} from './styles';
+    TitleContainer,
+    ActionText,
+} from '~/Styles/Views/GenericViewPage';
+import { exportToExcel } from '~/Functions/Excel';
 
 interface Props {
     id: string;
@@ -85,6 +89,32 @@ const CategoryView: React.FC = () => {
         navigate('AddProduct', { category: routeParams.id });
     }, [navigate, routeParams.id]);
 
+    const handleExportExcel = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            await exportToExcel({
+                sortBy: 'expire_date',
+                category: routeParams.id,
+            });
+
+            if (!__DEV__)
+                Analytics().logEvent('Exported_To_Excel_From_CategoryView');
+
+            showMessage({
+                message: strings.View_Category_View_ExcelExportedSuccess,
+                type: 'info',
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [routeParams.id]);
+
     useEffect(() => {
         loadData();
     }, [loadData]);
@@ -95,19 +125,26 @@ const CategoryView: React.FC = () => {
         <Container>
             <Header />
 
-            <CategoryTitle>
-                {strings.View_Category_List_View_BeforeCategoryName}
-                {categoryName}
-            </CategoryTitle>
+            <TitleContainer>
+                <ItemTitle>
+                    {strings.View_Category_List_View_BeforeCategoryName}
+                    {categoryName}
+                </ItemTitle>
 
-            <ActionsButtonContainer>
-                <ActionButton
-                    icon={() => <Icons name="create-outline" size={22} />}
-                    onPress={handleEdit}
-                >
-                    {strings.View_ProductDetails_Button_UpdateProduct}
-                </ActionButton>
-            </ActionsButtonContainer>
+                <ActionsContainer>
+                    <ActionButtonsContainer onPress={handleEdit}>
+                        <ActionText>
+                            {strings.View_ProductDetails_Button_UpdateProduct}
+                        </ActionText>
+                        <Icons name="create-outline" size={22} />
+                    </ActionButtonsContainer>
+
+                    <ActionButtonsContainer onPress={handleExportExcel}>
+                        <ActionText>Gerar Excel</ActionText>
+                        <Icons name="stats-chart-outline" size={22} />
+                    </ActionButtonsContainer>
+                </ActionsContainer>
+            </TitleContainer>
 
             <ListProducts products={products} deactiveFloatButton />
 

@@ -4,10 +4,10 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
     flex: 1;
-    background-color: ${(props) => props.theme.colors.background};
+    background-color: ${props => props.theme.colors.background};
 `;
 
-export const AddCategoryContent = styled.View`
+export const AddNewItemContent = styled.View`
     flex-direction: column;
 `;
 
@@ -30,38 +30,38 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
     border-radius: 12px;
     background-color: ${({ theme }) => theme.colors.inputBackground};
 
-    ${(props) =>
+    ${props =>
         props.hasError &&
         css`
             border: 2px solid red;
         `}
 `;
 
-export const InputText = styled.TextInput.attrs((props) => ({
+export const InputText = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.subText,
 }))`
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
 `;
 
-export const AddCategoryButtonContainer = styled(RectButton)`
-    background-color: ${(props) => props.theme.colors.accent};
+export const AddButtonContainer = styled(RectButton)`
+    background-color: ${props => props.theme.colors.accent};
     padding: 13px 15px;
     border-radius: 12px;
 `;
 export const ListTitle = styled.Text`
     margin: 10px 15px 10px;
     font-size: 20px;
-    color: ${(props) => props.theme.colors.accent};
+    color: ${props => props.theme.colors.accent};
 `;
 
-export const ListCategories = styled.FlatList`
+export const List = styled.FlatList`
     margin: 0 10px;
 `;
 
-export const CategoryItemContainer = styled(RectButton)`
-    background-color: ${(props) => props.theme.colors.inputBackground};
+export const ListItemContainer = styled(RectButton)`
+    background-color: ${props => props.theme.colors.inputBackground};
     padding: 20px;
     margin-bottom: 10px;
     border-radius: 12px;
@@ -70,8 +70,8 @@ export const CategoryItemContainer = styled(RectButton)`
     justify-content: space-between;
 `;
 
-export const CategoryItemTitle = styled.Text`
-    color: ${(props) => props.theme.colors.text};
+export const ListItemTitle = styled.Text`
+    color: ${props => props.theme.colors.text};
     font-size: 18px;
 `;
 
