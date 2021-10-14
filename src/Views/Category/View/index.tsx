@@ -98,7 +98,8 @@ const CategoryView: React.FC = () => {
                 category: routeParams.id,
             });
 
-            Analytics().logEvent('Exported_To_Excel_From_CategoryView');
+            if (!__DEV__)
+                Analytics().logEvent('Exported_To_Excel_From_CategoryView');
 
             showMessage({
                 message: strings.View_Category_View_ExcelExportedSuccess,

@@ -43,7 +43,7 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
 
     const category: ICategory = {
         id: categoryUuid,
-        name: categoryName,
+        name: categoryName.trim(),
     };
 
     realm.write(() => {

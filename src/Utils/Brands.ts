@@ -42,7 +42,7 @@ export async function createBrand(brandName: string): Promise<IBrand> {
 
     const brand: IBrand = {
         id: brandUuid,
-        name: brandName,
+        name: brandName.trim(),
     };
 
     realm.write(() => {
