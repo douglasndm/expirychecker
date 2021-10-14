@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -90,6 +91,8 @@ const View: React.FC = () => {
                 sortBy: 'expire_date',
                 brand: routeParams.brand_id,
             });
+
+            Analytics().logEvent('Exported_To_Excel_From_BrandView');
 
             showMessage({
                 message: strings.View_Brand_View_SuccessExportExcel,
