@@ -1,7 +1,5 @@
-import styled, { css } from 'styled-components/native';
-import { Platform } from 'react-native';
+import styled from 'styled-components/native';
 import { RadioButton as Radio } from 'react-native-paper';
-import RNPickerSelect from 'react-native-picker-select';
 
 export const Container = styled.View`
     flex: 1;
@@ -46,40 +44,3 @@ export const RadioButtonText = styled.Text`
 `;
 
 export const RadioButton = styled(Radio)``;
-
-export const CategoryTitle = styled.Text`
-    font-size: 18px;
-    font-weight: bold;
-    font-family: 'Open Sans';
-    margin: 10px 0;
-`;
-
-export const PickerContainer = styled.View`
-    justify-content: space-between;
-
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-
-    background-color: ${({ theme }) => theme.colors.inputBackground};
-
-    padding: 5px;
-    font-size: 18px;
-
-    ${Platform.OS === 'ios' &&
-    css`
-        padding: 17px 10px;
-    `}
-`;
-
-export const Picker = styled(RNPickerSelect).attrs(({ theme }) => ({
-    pickerProps: {
-        style: {
-            color: theme.colors.text,
-        },
-    },
-    textInputProps: {
-        style: {
-            color: theme.colors.text,
-        },
-    },
-}))``;

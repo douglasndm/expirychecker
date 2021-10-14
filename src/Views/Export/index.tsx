@@ -1,11 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
 import { exportBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
-import { getAllCategories } from '~/Functions/Category';
 
 import Header from '~/Components/Header';
 import Button from '~/Components/Button';
@@ -20,18 +19,10 @@ import {
     RadioButtonContainer,
     RadioButton,
     RadioButtonText,
-    CategoryTitle,
-    PickerContainer,
-    Picker,
 } from './styles';
 
 const Export: React.FC = () => {
     const [checked, setChecked] = React.useState('created_at');
-
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(
-        null
-    );
 
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
     const [isBackupLoading, setIsBackupLoading] = useState<boolean>(false);
@@ -57,12 +48,10 @@ const Export: React.FC = () => {
             if (checked === 'created_at') {
                 await exportToExcel({
                     sortBy: 'created_date',
-                    category: selectedCategory,
                 });
             } else {
                 await exportToExcel({
                     sortBy: 'expire_date',
-                    category: selectedCategory,
                 });
             }
 
@@ -78,31 +67,7 @@ const Export: React.FC = () => {
         } finally {
             setIsExcelLoading(false);
         }
-    }, [checked, selectedCategory]);
-
-    const loadData = useCallback(async () => {
-        const cats = await getAllCategories();
-
-        const categoriesArray: Array<ICategoryItem> = [];
-
-        cats.forEach(cat =>
-            categoriesArray.push({
-                key: cat.id,
-                label: cat.name,
-                value: cat.id,
-            })
-        );
-
-        setCategories(categoriesArray);
-    }, []);
-
-    useEffect(() => {
-        loadData();
-    }, []);
-
-    const handleCategoryChange = useCallback(value => {
-        setSelectedCategory(value);
-    }, []);
+    }, [checked]);
 
     return (
         <Container>
@@ -145,22 +110,6 @@ const Export: React.FC = () => {
                             />
                         </RadioButtonContainer>
                     </RadioButtonGroupContainer>
-
-                    <CategoryTitle>
-                        {strings.View_Export_Excel_CategoriesTitle}
-                    </CategoryTitle>
-
-                    <PickerContainer style={{ marginBottom: 10 }}>
-                        <Picker
-                            items={categories}
-                            onValueChange={handleCategoryChange}
-                            value={selectedCategory}
-                            placeholder={{
-                                label: strings.View_Export_Excel_Categorias_All,
-                                value: 'null',
-                            }}
-                        />
-                    </PickerContainer>
 
                     <Button
                         text={strings.View_Export_Button_ExportExcel}

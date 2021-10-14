@@ -353,8 +353,6 @@
     "View_Export_SortByCreatedDate": "Por ordem de cadastro",
     "View_Export_SortByExpireDate": "Por ordem de validade",
     "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
-    "View_Export_Excel_CategoriesTitle": "Categorias",
-    "View_Export_Excel_Categorias_All": "Todas",
     "View_Export_Button_ExportExcel": "Exportar para Excel",
     "View_Export_Button_ExportBackup": "Exportar para backup",
     "View_Export_Excel_SuccessMessage": "Arquivo gerado com sucesso",
