@@ -46,10 +46,19 @@ const Export: React.FC = () => {
             setIsExcelLoading(true);
 
             if (checked === 'created_at') {
-                await exportToExcel({ sortBy: 'created_date' });
+                await exportToExcel({
+                    sortBy: 'created_date',
+                });
             } else {
-                await exportToExcel({ sortBy: 'expire_date' });
+                await exportToExcel({
+                    sortBy: 'expire_date',
+                });
             }
+
+            showMessage({
+                message: strings.View_Export_Excel_SuccessMessage,
+                type: 'info',
+            });
         } catch (err) {
             showMessage({
                 message: err.message,

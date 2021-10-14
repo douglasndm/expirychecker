@@ -8,24 +8,22 @@ import { createStore, getAllStores } from '~/Functions/Stores';
 import Header from '~/Components/Header';
 
 import {
-    AddCategoryContent,
+    Container,
     InputContainer,
     InputTextContainer,
     InputText,
-    InputTextTip,
-    AddCategoryButtonContainer,
-    LoadingIcon,
+    List,
+    ListTitle,
     Icons,
-} from '~/Views/Category/List/styles';
+    LoadingIcon,
+    InputTextTip,
+    ListItemContainer,
+    ListItemTitle,
+    AddButtonContainer,
+    AddNewItemContent,
+} from '~/Styles/Views/GenericListPage';
 
-import {
-    Container,
-    ListCategories,
-    CategoryItemContainer,
-    CategoryItemTitle,
-} from './styles';
-
-const List: React.FC = () => {
+const ListView: React.FC = () => {
     const { navigate, addListener } = useNavigation();
 
     const [newStoreName, setNewStoreName] = useState<string | undefined>();
@@ -86,11 +84,11 @@ const List: React.FC = () => {
             }
 
             return (
-                <CategoryItemContainer
+                <ListItemContainer
                     onPress={() => handleNavigateToStore(storeToNavigate)}
                 >
-                    <CategoryItemTitle>{item.name}</CategoryItemTitle>
-                </CategoryItemContainer>
+                    <ListItemTitle>{item.name}</ListItemTitle>
+                </ListItemContainer>
             );
         },
         [handleNavigateToStore]
@@ -115,7 +113,7 @@ const List: React.FC = () => {
         <Container>
             <Header title={strings.View_Store_List_PageTitle} />
 
-            <AddCategoryContent>
+            <AddNewItemContent>
                 <InputContainer>
                     <InputTextContainer hasError={inputHasError}>
                         <InputText
@@ -127,7 +125,7 @@ const List: React.FC = () => {
                         />
                     </InputTextContainer>
 
-                    <AddCategoryButtonContainer
+                    <AddButtonContainer
                         onPress={handleSaveStore}
                         enabled={!isAdding}
                     >
@@ -136,15 +134,15 @@ const List: React.FC = () => {
                         ) : (
                             <Icons name="add-circle-outline" />
                         )}
-                    </AddCategoryButtonContainer>
+                    </AddButtonContainer>
                 </InputContainer>
 
                 {!!inputErrorMessage && (
                     <InputTextTip>{inputErrorMessage}</InputTextTip>
                 )}
-            </AddCategoryContent>
+            </AddNewItemContent>
 
-            <ListCategories
+            <List
                 data={stores}
                 keyExtractor={(item, index) => String(index)}
                 renderItem={renderCategory}
@@ -153,4 +151,4 @@ const List: React.FC = () => {
     );
 };
 
-export default List;
+export default ListView;

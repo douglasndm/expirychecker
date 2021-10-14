@@ -15,6 +15,7 @@ import Success from '~/Views/Success';
 import PhotoView from '~/Views/PhotoView';
 
 import AllProducts from '~/Views/Product/List';
+import WeekView from '~/Views/Product/WeekView';
 
 import BatchView from '~/Views/Batch/View';
 import BatchDiscount from '~/Views/Batch/Discount';
@@ -26,6 +27,10 @@ import StoreEdit from '~/Views/Stores/Edit';
 import ListCategory from '~/Views/Category/List';
 import CategoryView from '~/Views/Category/View';
 import CategoryEdit from '~/Views/Category/Edit';
+
+import BrandList from '~/Views/Brand/List';
+import BrandView from '~/Views/Brand/View';
+import BrandEdit from '~/Views/Brand/Edit';
 
 import NotificationsPreferences from '~/Views/NotificationsPreferences';
 import Export from '~/Views/Export';
@@ -44,6 +49,7 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AddProduct" component={AddProduct} />
             <Stack.Screen name="AllProducts" component={AllProducts} />
+            <Stack.Screen name="WeekView" component={WeekView} />
 
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="About" component={About} />
@@ -66,6 +72,10 @@ const Routes: React.FC = () => {
 
             <Stack.Screen name="StoreList" component={StoreList} />
             <Stack.Screen name="StoreEdit" component={StoreEdit} />
+
+            <Stack.Screen name="BrandList" component={BrandList} />
+            <Stack.Screen name="BrandView" component={BrandView} />
+            <Stack.Screen name="BrandEdit" component={BrandEdit} />
 
             <Stack.Screen
                 name="NotificationsPreferences"

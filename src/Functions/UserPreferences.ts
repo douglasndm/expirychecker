@@ -7,6 +7,7 @@ import {
     getNotificationCadency,
     getEnableProVersion,
     getHowManyDaysToBeNextExp,
+    getDisableAds,
 } from './Settings';
 import { getAppTheme } from './Themes';
 
@@ -17,6 +18,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
     const settingMultipleStores = await getEnableMultipleStoresMode();
     const settingNotificationCadency = await getNotificationCadency();
     const settingProMode = await getEnableProVersion();
+    const disableAds = await getDisableAds();
 
     const settings: IUserPreferences = {
         howManyDaysToBeNextToExpire: settingDay,
@@ -25,6 +27,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
         notificationCadency: settingNotificationCadency,
         isUserPremium: settingProMode,
         multiplesStores: settingMultipleStores,
+        disableAds: disableAds || settingProMode,
     };
 
     return settings;

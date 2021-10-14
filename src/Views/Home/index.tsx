@@ -34,7 +34,7 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset, addListener } = useNavigation();
+    const { reset } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
 
@@ -185,7 +185,7 @@ const Home: React.FC = () => {
                 <Container>
                     <Header />
 
-                    {!userPreferences.isUserPremium && (
+                    {!userPreferences.disableAds && (
                         <AdContainer>
                             <BannerAd unitId={adUnit} size={bannerSize} />
                         </AdContainer>

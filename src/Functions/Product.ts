@@ -4,6 +4,7 @@ import { exists, unlink } from 'react-native-fs';
 import Realm from '../Services/Realm';
 import { createLote } from './Lotes';
 import { getProductImagePath } from './Products/Image';
+import { saveManyBatches } from './Batches';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
     productCode: string;
@@ -16,56 +17,46 @@ export async function checkIfProductAlreadyExistsByCode({
 }: ICheckIfProductAlreadyExistsByCodeProps): Promise<boolean> {
     const realm = await Realm();
 
-    try {
-        if (productStore) {
-            const results = realm
-                .objects('Product')
-                .filtered(
-                    `code = "${productCode}" AND store = "${productStore}"`
-                )
-                .slice();
-
-            if (results.length > 0) {
-                return true;
-            }
-            return false;
-        }
-
+    if (productStore) {
         const results = realm
             .objects('Product')
-            .filtered(`code = "${productCode}"`)
+            .filtered(`code = "${productCode}" AND store = "${productStore}"`)
             .slice();
 
         if (results.length > 0) {
             return true;
         }
         return false;
-    } catch (err) {
-        throw new Error(err);
     }
+
+    const results = realm
+        .objects('Product')
+        .filtered(`code = "${productCode}"`)
+        .slice();
+
+    if (results.length > 0) {
+        return true;
+    }
+    return false;
 }
 
-export async function getProductByCode(
-    productCode: string,
-    store?: string
-): Promise<IProduct> {
+export async function getProductByCode({
+    productCode,
+    store,
+}: getProductByCodeProps): Promise<IProduct> {
     const realm = await Realm();
 
-    try {
-        let result = realm
+    let result = realm
+        .objects<IProduct>('Product')
+        .filtered(`code = "${productCode}"`)[0];
+
+    if (store) {
+        result = realm // eslint-disable-line
             .objects<IProduct>('Product')
-            .filtered(`code = "${productCode}"`)[0];
-
-        if (store) {
-            result = realm
-                .objects<IProduct>('Product')
-                .filtered(`code = "${productCode}" AND store = "${store}"`)[0];
-        }
-
-        return result;
-    } catch (err) {
-        throw new Error(err);
+            .filtered(`code = "${productCode}" AND store = "${store}"`)[0];
     }
+
+    return result;
 }
 
 export async function getProductById(productId: number): Promise<IProduct> {
@@ -114,37 +105,29 @@ export async function createProduct({
         }
     }
 
-    try {
-        // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
-        // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
-        const lastProduct = realm
-            .objects<IProduct>('Product')
-            .sorted('id', true)[0];
-        const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
+    // BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
+    // UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
+    const lastProduct = realm
+        .objects<IProduct>('Product')
+        .sorted('id', true)[0];
+    const nextProductId = lastProduct == null ? 1 : lastProduct.id + 1;
 
-        realm.write(async () => {
-            realm.create('Product', {
-                id: nextProductId,
-                name: product.name,
-                code: product.code,
-                photo: product.photo,
-                store: product.store,
-                categories: product.categories,
-                lotes: [],
-            });
+    realm.write(async () => {
+        realm.create('Product', {
+            id: nextProductId,
+            name: product.name,
+            code: product.code,
+            photo: product.photo,
+            brand: product.brand,
+            store: product.store,
+            categories: product.categories,
+            lotes: [],
         });
+    });
 
-        for (const l of product.lotes) {
-            await createLote({
-                productId: nextProductId,
-                lote: l,
-            });
-        }
+    await saveManyBatches(product.lotes);
 
-        return nextProductId;
-    } catch (err) {
-        throw new Error(err);
-    }
+    return nextProductId;
 }
 
 interface updateProductProps {
@@ -152,6 +135,7 @@ interface updateProductProps {
     name?: string;
     code?: string;
     store?: string | null;
+    brand?: string | null;
     photo?: string;
     categories?: Array<string>;
     lotes?: Array<ILote>;
@@ -162,35 +146,27 @@ export async function updateProduct(
 ): Promise<void> {
     const realm = await Realm();
 
-    try {
-        realm.write(() => {
-            realm.create('Product', product, UpdateMode.Modified);
-        });
-    } catch (err) {
-        throw new Error(err);
-    }
+    realm.write(() => {
+        realm.create('Product', product, UpdateMode.Modified);
+    });
 }
 
 export async function deleteProduct(productId: number): Promise<void> {
     const realm = await Realm();
 
-    try {
-        const product = realm
-            .objects<IProduct>('Product')
-            .filtered(`id == ${productId}`)[0];
+    const product = realm
+        .objects<IProduct>('Product')
+        .filtered(`id == ${productId}`)[0];
 
-        const photoPath = await getProductImagePath(productId);
+    const photoPath = await getProductImagePath(productId);
 
-        if (photoPath) {
-            if (await exists(photoPath)) {
-                await unlink(photoPath);
-            }
+    if (photoPath) {
+        if (await exists(photoPath)) {
+            await unlink(photoPath);
         }
-
-        realm.write(async () => {
-            realm.delete(product);
-        });
-    } catch (err) {
-        throw new Error(err);
     }
+
+    realm.write(async () => {
+        realm.delete(product);
+    });
 }

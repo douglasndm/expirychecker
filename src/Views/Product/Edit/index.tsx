@@ -56,6 +56,7 @@ import {
     DialogPaper,
     Text,
 } from './styles';
+import { getAllBrands } from '~/Utils/Brands';
 
 interface RequestParams {
     route: {
@@ -63,18 +64,6 @@ interface RequestParams {
             productId: number;
         };
     };
-}
-
-interface ICategoryItem {
-    label: string;
-    value: string;
-    key: string;
-}
-
-interface IStoreItem {
-    label: string;
-    value: string;
-    key: string;
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
@@ -91,14 +80,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState<string>('');
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
-    const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
-    const [productString, setProductString] = useState<string | null>(null);
+    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+    const [brands, setBrands] = useState<Array<IBrandItem>>([]);
+    const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
     );
+    const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
     const [selectedStore, setSelectedStore] = useState<string | null>(null);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
@@ -120,6 +110,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             })
         );
         setCategories(categoriesArray);
+
+        const allBrands = await getAllBrands();
+        const brandsArray: Array<IBrandItem> = [];
+
+        allBrands.forEach(brand =>
+            brandsArray.push({
+                key: brand.id,
+                label: brand.name,
+                value: brand.id,
+            })
+        );
+        setBrands(brandsArray);
 
         getAllStores().then(allStores => {
             const storesArray: Array<IStoreItem> = [];
@@ -167,6 +169,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             }
         }
 
+        if (product.brand) {
+            setSelectedBrand(product.brand);
+        }
+
         setIsLoading(false);
     }, [productId]);
 
@@ -180,6 +186,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const handleCategoryChange = useCallback(value => {
         setSelectedCategory(value);
+    }, []);
+
+    const handleBrandChange = useCallback(value => {
+        setSelectedBrand(value);
     }, []);
 
     const handleStoreChange = useCallback(value => {
@@ -201,6 +211,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 prodCategories.push(selectedCategory);
             }
 
+            const tempBrand =
+                selectedBrand && selectedBrand !== 'null'
+                    ? selectedBrand
+                    : null;
+
             const tempStore =
                 selectedStore && selectedStore !== 'null'
                     ? selectedStore
@@ -210,6 +225,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 id: productId,
                 name,
                 code,
+                brand: tempBrand,
                 store: tempStore,
 
                 categories: prodCategories,
@@ -232,6 +248,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         navigate,
         photoPath,
         productId,
+        selectedBrand,
         selectedCategory,
         selectedStore,
     ]);
@@ -401,21 +418,46 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                             </MoreInformationsTitle>
 
                                             {userPreferences.isUserPremium && (
-                                                <PickerContainer
-                                                    style={{ marginBottom: 10 }}
-                                                >
-                                                    <Picker
-                                                        items={categories}
-                                                        onValueChange={
-                                                            handleCategoryChange
-                                                        }
-                                                        value={selectedCategory}
-                                                        placeholder={{
-                                                            label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                                                            value: 'null',
+                                                <>
+                                                    <PickerContainer
+                                                        style={{
+                                                            marginBottom: 10,
                                                         }}
-                                                    />
-                                                </PickerContainer>
+                                                    >
+                                                        <Picker
+                                                            items={categories}
+                                                            onValueChange={
+                                                                handleCategoryChange
+                                                            }
+                                                            value={
+                                                                selectedCategory
+                                                            }
+                                                            placeholder={{
+                                                                label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
+                                                                value: 'null',
+                                                            }}
+                                                        />
+                                                    </PickerContainer>
+                                                    <PickerContainer
+                                                        style={{
+                                                            marginBottom: 10,
+                                                        }}
+                                                    >
+                                                        <Picker
+                                                            items={brands}
+                                                            onValueChange={
+                                                                handleBrandChange
+                                                            }
+                                                            value={
+                                                                selectedBrand
+                                                            }
+                                                            placeholder={{
+                                                                label: strings.View_AddProduct_InputPlaceholder_SelectBrand,
+                                                                value: 'null',
+                                                            }}
+                                                        />
+                                                    </PickerContainer>
+                                                </>
                                             )}
 
                                             {userPreferences.multiplesStores && (
