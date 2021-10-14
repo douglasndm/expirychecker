@@ -315,6 +315,8 @@
     "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Brand already exists",
 
     "View_Brand_View_PageTitle": "Brand",
+    "View_Brand_View_ActionButton_GenereteExcel": "Generate Excel",
+    "View_Brand_View_SuccessExportExcel": "Excel file generated",
 
     "Function_Category_AddCategory_Error_AlreadyExists": "Category already exists",
 

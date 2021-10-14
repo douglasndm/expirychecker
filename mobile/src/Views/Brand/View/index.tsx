@@ -8,6 +8,7 @@ import {
     sortProductsByFisrtLoteExpDate,
     sortProductsLotesByLotesExpDate,
 } from '~/Functions/Products';
+import { exportToExcel } from '~/Functions/Excel';
 
 import { getAllBrands, getAllProductsByBrand } from '~/Utils/Brands';
 
@@ -81,6 +82,29 @@ const View: React.FC = () => {
         navigate('BrandEdit', { brand_id: routeParams.brand_id });
     }, [navigate, routeParams.brand_id]);
 
+    const handleGenereteExcel = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            await exportToExcel({
+                sortBy: 'expire_date',
+                brand: routeParams.brand_id,
+            });
+
+            showMessage({
+                message: strings.View_Brand_View_SuccessExportExcel,
+                type: 'info',
+            });
+        } catch (err) {
+            showMessage({
+                message: err.message,
+                type: 'danger',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [routeParams.brand_id]);
+
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct', { brand: routeParams.brand_id });
     }, [navigate, routeParams.brand_id]);
@@ -106,8 +130,10 @@ const View: React.FC = () => {
                         <Icons name="create-outline" size={22} />
                     </ActionButtonsContainer>
 
-                    <ActionButtonsContainer>
-                        <ActionText>Gerar Excel</ActionText>
+                    <ActionButtonsContainer onPress={handleGenereteExcel}>
+                        <ActionText>
+                            {strings.View_Brand_View_ActionButton_GenereteExcel}
+                        </ActionText>
                         <Icons name="stats-chart-outline" size={22} />
                     </ActionButtonsContainer>
                 </ActionsContainer>

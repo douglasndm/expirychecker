@@ -333,6 +333,8 @@
     "View_Brand_List_InputAdd_Error_BrandAlreadyExists": "Esta marca já existe",
 
     "View_Brand_View_PageTitle": "Marca",
+    "View_Brand_View_ActionButton_GenereteExcel": "Gerar Excel",
+    "View_Brand_View_SuccessExportExcel": "Arquivo Excel gerado",
 
     "View_Brand_Edit_PageTitle": "Editar marca",
     "View_Brand_Edit_InputNamePlaceholder": "Digite o nome da marca",
