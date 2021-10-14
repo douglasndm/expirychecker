@@ -385,11 +385,15 @@
 
     "Function_Excel_ColumnName_ProductName": "Produto",
     "Function_Excel_ColumnName_ProductCode": "Código",
+    "Function_Excel_ColumnName_ProductBrand": "Marca",
     "Function_Excel_ColumnName_ProductStore": "Loja",
     "Function_Excel_ColumnName_BatchName": "Lote",
     "Function_Excel_ColumnName_BatchPrice": "Preço",
     "Function_Excel_ColumnName_BatchAmount": "Quantidade",
     "Function_Excel_ColumnName_BatchExpDate": "Vencimento em",
+    "Function_Excel_ColumnName_Status": "Status",
+    "Function_Excel_ColumnName_Status_Checked": "Já verificado",
+    "Function_Excel_ColumnName_Status_Unchecked": "Não verificado",
     "Function_Excel_Workbook_Name": "Controle de validade",
     "Function_Excel_filename": "controledevalidade",
 
