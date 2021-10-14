@@ -11,18 +11,13 @@ import { getAllProducts } from './Products';
 import { getStore } from './Stores';
 
 function sortProducts(products: Array<exportModel>): Array<exportModel> {
-    const sorted: Array<exportModel> = [];
+    const lotesSorted = products.sort((p1, p2) => {
+        if (p1.batch.exp_date > p2.batch.exp_date) return 1;
+        if (p1.batch.exp_date < p2.batch.exp_date) return -1;
+        return 0;
+    });
 
-    if (products.length > 2) {
-        const lotesSorted = products.sort((p1, p2) => {
-            if (p1.batch.exp_date > p2.batch.exp_date) return 1;
-            if (p1.batch.exp_date < p2.batch.exp_date) return -1;
-            return 0;
-        });
-
-        return lotesSorted;
-    }
-    return sorted;
+    return lotesSorted;
 }
 
 export async function exportToExcel({
@@ -126,6 +121,8 @@ export async function exportToExcel({
         type: 'base64',
         bookType: 'xlsx',
     });
+
+    return;
 
     await shareFile({
         fileAsString: wbout,
