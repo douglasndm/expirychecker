@@ -122,8 +122,6 @@ export async function exportToExcel({
         bookType: 'xlsx',
     });
 
-    return;
-
     await shareFile({
         fileAsString: wbout,
         fileName: strings.Function_Excel_filename,
