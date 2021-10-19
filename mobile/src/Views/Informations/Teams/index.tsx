@@ -70,7 +70,6 @@ const Teams: React.FC = () => {
             setIsExporting(true);
 
             const path = await generateBackupFile({
-                includeCategories: true,
                 store: selectedStore || 'none',
             });
             await Share.open({
@@ -138,8 +137,7 @@ const Teams: React.FC = () => {
                             onValueChange={handleStoreChange}
                             value={selectedStore}
                             placeholder={{
-                                label:
-                                    strings.View_AddProduct_InputPlacehoder_Store,
+                                label: strings.View_AddProduct_InputPlacehoder_Store,
                                 value: 'null',
                             }}
                         />

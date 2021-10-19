@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import RNFS, {
     DocumentDirectoryPath,
     exists,
@@ -11,9 +10,10 @@ import DocumentPicker from 'react-native-document-picker';
 import Share from 'react-native-share';
 import CryptoJS from 'crypto-js';
 import EnvConfig from 'react-native-config';
-import RNGRP from 'react-native-get-real-path';
 
 import strings from '../Locales';
+
+import { getAllBrands, saveManyBrands } from '~/Utils/Brands';
 
 import { getAllProducts } from './Products';
 import { getAllCategories } from './Category';
@@ -23,55 +23,45 @@ import { saveManyCategories } from './Categories';
 const backupDir = `${DocumentDirectoryPath}/backupDir`;
 
 async function genereteZipImagesFolder(): Promise<string> {
-    try {
-        const allProducts = await getAllProducts({});
+    const allProducts = await getAllProducts({});
 
-        const productsWithPics = allProducts.filter(p => p.photo);
-        const dir = await readDir(DocumentDirectoryPath);
+    const productsWithPics = allProducts.filter(p => p.photo);
+    const dir = await readDir(DocumentDirectoryPath);
 
-        const files: Array<IProductImage> = [];
+    const files: Array<IProductImage> = [];
 
-        productsWithPics.forEach(p => {
-            const findedPic = dir.find(
-                file => file.name === p.photo || file.path === p.photo
-            );
+    productsWithPics.forEach(p => {
+        const findedPic = dir.find(
+            file => file.name === p.photo || file.path === p.photo
+        );
 
-            if (findedPic) {
-                files.push({
-                    productId: p.id,
-                    imageName: findedPic.name,
-                    imagePath: findedPic.path,
-                });
-            }
-        });
-
-        const targetPath = `${backupDir}/backupImages.zip`;
-        const sourcePath = `${DocumentDirectoryPath}/images`;
-
-        if (await exists(targetPath)) {
-            await unlink(targetPath);
+        if (findedPic) {
+            files.push({
+                productId: p.id,
+                imageName: findedPic.name,
+                imagePath: findedPic.path,
+            });
         }
+    });
 
-        // this will force the creation of images folder if it has been created, to avoid more verifications
-        if (!(await exists(sourcePath))) {
-            await mkdir(sourcePath);
-        }
+    const targetPath = `${backupDir}/backupImages.zip`;
+    const sourcePath = `${DocumentDirectoryPath}/images`;
 
-        const zipPath = await zip(sourcePath, targetPath);
-
-        return zipPath;
-    } catch (err) {
-        throw new Error(err.message);
+    if (await exists(targetPath)) {
+        await unlink(targetPath);
     }
-}
 
-interface generateBackupFileProps {
-    includeCategories?: boolean;
-    store?: string;
+    // this will force the creation of images folder if it has been created, to avoid more verifications
+    if (!(await exists(sourcePath))) {
+        await mkdir(sourcePath);
+    }
+
+    const zipPath = await zip(sourcePath, targetPath);
+
+    return zipPath;
 }
 
 export async function generateBackupFile({
-    includeCategories = true,
     store,
 }: generateBackupFileProps): Promise<string> {
     if (!(await exists(`${backupDir}`))) {
@@ -81,17 +71,16 @@ export async function generateBackupFile({
         await mkdir(`${backupDir}`);
     }
 
+    const allProducts = await getAllProducts({});
+    const brands = await getAllBrands();
     const categories = await getAllCategories();
 
     let result;
 
-    const allProducts = await getAllProducts({});
-
-    if (includeCategories) {
-        result = {
-            categories,
-        };
-    }
+    result = {
+        categories,
+        brands,
+    };
 
     if (store && store !== 'none') {
         const filtedProducts = allProducts.filter(prod => {
@@ -154,21 +143,22 @@ export async function exportBackupFile(): Promise<void> {
         `${DocumentDirectoryPath}/${strings.Function_Export_FileName}.zip`
     );
 
+    console.log('to aqui');
+
     await Share.open({
         title: strings.Function_Share_SaveFileTitle,
         url: `file://${zipPath}`,
     });
 
+    console.log('cheguei aqui');
+
     await unlink(`${backupDir}`);
 }
 
 export async function importBackupFile(): Promise<void> {
-    const options = {
-        type: Platform.OS === 'ios' ? 'public.item' : '*/*',
+    const filePicked = await DocumentPicker.pickSingle({
         copyTo: 'documentDirectory',
-    };
-
-    const filePicked = await DocumentPicker.pick(options);
+    });
 
     // Separa o nome do arquivo da extensão para fazer a validação da extensão do arquivo
     const [, extension] = filePicked.name.split('.');
@@ -187,31 +177,29 @@ export async function importBackupFile(): Promise<void> {
     if (extension === 'zip') {
         let filePath = null;
 
-        if (Platform.OS === 'android') {
-            filePath = await RNGRP.getRealPathFromURI(filePicked.uri);
-        } else {
-            filePath = decodeURI(filePicked.fileCopyUri);
-        }
+        filePath = filePicked.fileCopyUri;
 
-        await unzip(filePath, backupDir);
+        if (filePath) {
+            await unzip(filePath, backupDir);
 
-        if (await exists(`${backupDir}/backupImages.zip`)) {
-            await unzip(
-                `${backupDir}/backupImages.zip`,
-                `${DocumentDirectoryPath}/images`
-            );
-        }
+            if (await exists(`${backupDir}/backupImages.zip`)) {
+                await unzip(
+                    `${backupDir}/backupImages.zip`,
+                    `${DocumentDirectoryPath}/images`
+                );
+            }
 
-        const dir = await readDir(backupDir);
-        const backupFile = dir.find(item => {
-            const [, ext] = item.name.split('.');
+            const dir = await readDir(backupDir);
+            const backupFile = dir.find(item => {
+                const [, ext] = item.name.split('.');
 
-            if (ext === 'cvbf') return true;
-            return false;
-        });
+                if (ext === 'cvbf') return true;
+                return false;
+            });
 
-        if (backupFile?.name) {
-            backupFilePath = `${backupDir}/${backupFile.name}`;
+            if (backupFile?.name) {
+                backupFilePath = `${backupDir}/${backupFile.name}`;
+            }
         }
     }
     if (extension === 'cvbf') {
@@ -243,6 +231,11 @@ export async function importBackupFile(): Promise<void> {
 
             await saveManyCategories(categories);
         }
+        if (parsedFile.brands) {
+            const { brands } = parsedFile;
+
+            await saveManyBrands(brands);
+        }
         const { products } = parsedFile;
 
         await saveMany(products);
@@ -251,9 +244,4 @@ export async function importBackupFile(): Promise<void> {
     }
 
     await unlink(backupDir);
-}
-interface IProductImage {
-    productId: number;
-    imagePath: string;
-    imageName: string;
 }

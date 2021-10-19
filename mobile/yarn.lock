@@ -2292,11 +2292,6 @@ bl@^4.0.3:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-bluebird@^2.9.25:
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
-  integrity sha1-U0uQM8AiyVecVro7Plpcqvu2UOE=
-
 bplist-creator@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/bplist-creator/-/bplist-creator-0.0.8.tgz#56b2a6e79e9aec3fc33bf831d09347d73794e79c"
@@ -7108,10 +7103,12 @@ react-native-dialog@^9.1.2:
   resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-9.1.2.tgz#15ba668f6b6937160cf4332399cce34ca6b4df1d"
   integrity sha512-J3TfhvUIfBobSl4LF2sCa2pgXXvk7Ql0OKoBXwbJKAuiPa63WWSg4s0w1Zd3WhUQu/BbizwEXYrWLmizW2tizA==
 
-react-native-document-picker@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-5.2.0.tgz#1fb2185a56ba6b2509acdc418a8a75906c31e58e"
-  integrity sha512-zXK34hW6fM0gXoo6v7edZZxKvLT7DyjOdBXi7WrxbKqZchDokTEQ/tNTeZxky+7oI8sVz8T3uXBBEW0sp+VfXQ==
+react-native-document-picker@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-7.1.0.tgz#3b08f8a1a296617f4677e8e834427f63ef28e0d3"
+  integrity sha512-pdGlOYh7YM9X0GCrDJIGNHrwCV/l7QCYGvLya8w4YnJAE3NmM/39lk+pPrbxnkEygifwPqG9R3IBt7ydmPLi/w==
+  dependencies:
+    invariant "^2.2.4"
 
 react-native-flash-message@^0.1.23:
   version "0.1.23"
@@ -7139,12 +7136,6 @@ react-native-gesture-handler@^1.10.3:
     hoist-non-react-statics "^3.3.0"
     invariant "^2.2.4"
     prop-types "^15.7.2"
-
-"react-native-get-real-path@https://github.com/Wraptime/react-native-get-real-path.git":
-  version "1.0.0"
-  resolved "https://github.com/Wraptime/react-native-get-real-path.git#77ecc74f3e28838abfcd9546a91cf262c2c5a1a4"
-  dependencies:
-    bluebird "^2.9.25"
 
 react-native-in-app-review@^3.2.2:
   version "3.2.2"
@@ -7263,10 +7254,10 @@ react-native-screens@^3.4.0:
   dependencies:
     warn-once "^0.1.0"
 
-react-native-share@^6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-6.3.0.tgz#5422f871055033adbf2084cddb729368f890bd8a"
-  integrity sha512-8DqJPwSk4bMPHRGUfpbvSBQlFr6cMLAtw4eJIDphPObZ23o5Klr4TBFQouCJhUI0y2BdobNOQ2D/Q2FMYPFOCw==
+react-native-share@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.2.0.tgz#235f6c10c26fc7aee0ac17a20f1e54e532fa293c"
+  integrity sha512-BLuAspWBQZwBBoR6jebG/c+kSwNEgDsH2++X2yk/7xNDjbVewXbdGHjYThez8xwGcJg4zWv2jVfFKt2mYnKW+Q==
 
 react-native-splash-screen@^3.2.0:
   version "3.2.0"
