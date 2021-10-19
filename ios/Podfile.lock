@@ -436,7 +436,7 @@ PODS:
     - React-Core
   - react-native-date-picker (3.0.3):
     - React
-  - react-native-document-picker (5.2.0):
+  - react-native-document-picker (7.1.0):
     - React-Core
   - react-native-in-app-review (3.2.2):
     - React
@@ -598,7 +598,7 @@ PODS:
   - RNSentry (3.0.3):
     - React-Core
     - Sentry (= 7.2.6)
-  - RNShare (6.3.0):
+  - RNShare (7.2.0):
     - React-Core
   - RNVectorIcons (8.1.0):
     - React-Core
@@ -959,7 +959,7 @@ SPEC CHECKSUMS:
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-date-picker: e3793bde600b937ea6bcf66266278a8a0b0cb4d5
-  react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
+  react-native-document-picker: bf12b9ca87790f9b723106ffde0eff239928e515
   react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
   react-native-onesignal: f829833463ec574cad5e83d1a3e3eed607a3bc3c
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
@@ -999,7 +999,7 @@ SPEC CHECKSUMS:
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: bb7db0d29123fa7e1848f4fe91cc8407aabb2195
-  RNShare: 8ff5f3819c8f2b4f76cd31fa1287315754afee01
+  RNShare: 70356a1bb406bc46ae03196a5d3048c702bb71a7
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   RNZipArchive: 924d63f15f2838837f8379ee6e9955d8ff4736c4
   Sentry: be2f8f7a63e5274cc83d0813e40c1680119c0153
