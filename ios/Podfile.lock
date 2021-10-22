@@ -4,8 +4,6 @@ PODS:
   - AppsFlyerFramework/Main (6.4.0)
   - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
-  - BVLinearGradient (2.5.6):
-    - React
   - CocoaAsyncSocket (7.6.5)
   - CodePush (7.0.1):
     - Base64 (~> 1.1)
@@ -522,10 +520,10 @@ PODS:
     - React
   - RNBackgroundFetch (4.0.3):
     - React-Core
-  - RNCAsyncStorage (1.15.5):
+  - RNCAsyncStorage (1.15.9):
     - React-Core
-  - RNCMaskedView (0.1.11):
-    - React
+  - RNCMaskedView (0.2.6):
+    - React-Core
   - RNCPicker (1.16.3):
     - React-Core
   - RNCPushNotificationIOS (1.10.1):
@@ -619,7 +617,6 @@ PODS:
 
 DEPENDENCIES:
   - AppsFlyerFramework
-  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -689,7 +686,7 @@ DEPENDENCIES:
   - RealmJS (from `../node_modules/realm`)
   - RNBackgroundFetch (from `../node_modules/react-native-background-fetch`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
-  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -756,8 +753,6 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  BVLinearGradient:
-    :path: "../node_modules/react-native-linear-gradient"
   CodePush:
     :path: "../node_modules/react-native-code-push"
   DoubleConversion:
@@ -853,7 +848,7 @@ EXTERNAL SOURCES:
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
-    :path: "../node_modules/@react-native-community/masked-view"
+    :path: "../node_modules/@react-native-masked-view/masked-view"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
   RNCPushNotificationIOS:
@@ -899,7 +894,6 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: 9c37252d3edce38257afc065ad48a48c0f004000
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CodePush: 9bb93f52a44ee80b72739d89dead9c7e86c3bd3a
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
@@ -981,8 +975,8 @@ SPEC CHECKSUMS:
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
   RealmJS: 550ecbe8a0d55bd0e2abb79a63313d4da08bcf25
   RNBackgroundFetch: 182d0ff90747bacbb3d4e168ecc2194442d0a2d3
-  RNCAsyncStorage: 56a3355a10b5d660c48c6e37325ac85ebfd09885
-  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNCAsyncStorage: 26f25150da507524a7815f2ada06ca0967f65633
+  RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
   RNCPicker: 6724ab5fcca83c34fe1f18a89baa13e9885f0393
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
