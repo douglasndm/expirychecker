@@ -20,6 +20,7 @@ import './Services/Admob';
 import './Services/Analytics';
 import './Services/OneSignal';
 import './Services/AppsFlyer';
+import DeepLinking from './Services/DeepLinking';
 
 import './Functions/ProMode';
 import './Functions/Stores'; // This is just a "hack" do call a method to migrate old stores model
@@ -95,6 +96,7 @@ const App: React.FC = () => {
                 <PaperProvider>
                     <Portal>
                         <NavigationContainer
+                            linking={DeepLinking}
                             onStateChange={handleOnScreenChange}
                         >
                             <StatusBar />
