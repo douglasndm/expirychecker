@@ -1,15 +1,11 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { DocumentDirectoryPath, readDir } from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { zip } from 'react-native-zip-archive';
 import { addDays } from 'date-fns';
-import {
-    RewardedAd,
-    TestIds,
-    RewardedAdEventType,
-} from '@react-native-firebase/admob';
 import messaging from '@react-native-firebase/messaging';
+import OneSignal from 'react-native-onesignal';
 
 import Realm from '../../Services/Realm';
 
@@ -25,32 +21,7 @@ import {
 import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
 import { sendNotification } from '~/Services/Notifications';
 
-const rewardedAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
-
 const Test: React.FC = () => {
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        const eventListener = rewardedAd.onAdEvent((type, error, reward) => {
-            if (type === RewardedAdEventType.LOADED) {
-                setLoaded(true);
-            }
-
-            if (type === RewardedAdEventType.EARNED_REWARD) {
-                console.log('User earned reward of ', reward);
-                setLoaded(false);
-            }
-        });
-
-        // Start loading the rewarded ad straight away
-        rewardedAd.load();
-
-        // Unsubscribe from events on unmount
-        return () => {
-            eventListener();
-        };
-    }, []);
-
     async function sampleData() {
         const realm = await Realm();
 
@@ -146,10 +117,16 @@ const Test: React.FC = () => {
         }
     }, []);
 
+    const tokens = useCallback(async () => {
+        const messaing = await messaging().getToken();
+        const oneSignal = await OneSignal.getDeviceState();
+
+        console.log(`Firebase -> ${messaing}`);
+        console.log(`One Signal -> ${oneSignal.userId}`);
+    }, []);
+
     useEffect(() => {
-        messaging()
-            .getToken()
-            .then(response => console.log(response));
+        tokens();
     }, []);
 
     const handleDeletePrivacySetting = useCallback(async () => {
