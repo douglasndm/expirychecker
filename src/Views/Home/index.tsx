@@ -10,6 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
+import DatePicker from 'react-native-date-picker';
+import { format } from 'date-fns';
+import { getLocales } from 'react-native-localize';
 
 import strings from '~/Locales';
 
@@ -43,9 +46,11 @@ const Home: React.FC = () => {
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
     const [searchString, setSearchString] = useState<string>('');
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
     const [enableBarCodeReader, setEnableBarCodeReader] =
         useState<boolean>(false);
+    const [enableDatePicker, setEnableDatePicker] = useState(false);
 
     useEffect(() => {
         if (Platform.OS === 'ios') {
@@ -144,6 +149,26 @@ const Home: React.FC = () => {
         setEnableBarCodeReader(false);
     }, []);
 
+    const enableCalendarModal = useCallback(() => {
+        setEnableDatePicker(true);
+    }, []);
+
+    const handleSelectDateChange = useCallback(
+        (date: Date) => {
+            setEnableDatePicker(false);
+
+            let dateFormat = 'dd/MM/yyyy';
+            if (getLocales()[0].languageCode === 'en') {
+                dateFormat = 'MM/dd/yyyy';
+            }
+            const d = format(date, dateFormat);
+            setSearchString(d);
+            setSelectedDate(date);
+            handleSearchChange(d);
+        },
+        [handleSearchChange]
+    );
+
     const handleOnCodeRead = useCallback(
         code => {
             setSearchString(code);
@@ -199,11 +224,29 @@ const Home: React.FC = () => {
                             />
                             <InputTextIconContainer
                                 onPress={handleOnBarCodeReaderOpen}
+                                style={{ marginRight: -15 }}
                             >
                                 <InputTextIcon name="barcode-outline" />
                             </InputTextIconContainer>
+
+                            <InputTextIconContainer
+                                onPress={enableCalendarModal}
+                            >
+                                <InputTextIcon name="calendar-outline" />
+                            </InputTextIconContainer>
                         </InputTextContainer>
                     )}
+
+                    <DatePicker
+                        modal
+                        mode="date"
+                        open={enableDatePicker}
+                        date={selectedDate}
+                        onConfirm={handleSelectDateChange}
+                        onCancel={() => {
+                            setEnableDatePicker(false);
+                        }}
+                    />
 
                     <ListProducts
                         products={productsSearch}
