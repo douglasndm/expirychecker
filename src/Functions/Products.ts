@@ -1,4 +1,6 @@
-import Realm from '../Services/Realm';
+import { compareAsc, startOfDay } from 'date-fns';
+
+import Realm from '~/Services/Realm';
 
 import { removeLotesTratados } from './Lotes';
 import { sortBatches } from './Batches';
@@ -90,67 +92,59 @@ export async function getAllProducts({
     sortProductsByExpDate = false,
     limit,
 }: getAllProductsProps): Promise<Array<IProduct>> {
-    try {
-        const realm = await Realm();
+    const realm = await Realm();
 
-        const allProducts = realm.objects<IProduct>('Product').slice();
-        let filtertedProducts: Array<IProduct> = allProducts;
+    const allProducts = realm.objects<IProduct>('Product').slice();
+    let filtertedProducts: Array<IProduct> = allProducts;
 
-        if (removeProductsWithoutBatches) {
-            const prodWithBachesOnly = filtertedProducts.filter(
-                p => p.lotes.length > 0
-            );
+    if (removeProductsWithoutBatches) {
+        const prodWithBachesOnly = filtertedProducts.filter(
+            p => p.lotes.length > 0
+        );
 
-            filtertedProducts = prodWithBachesOnly;
-        }
-
-        if (removeTreatedBatch) {
-            const prodsWithNonThreatedBatches = filtertedProducts.map(
-                product => {
-                    const batches = product.lotes.filter(
-                        batch => batch.status !== 'Tratado'
-                    );
-
-                    const prod: IProduct = {
-                        id: product.id,
-                        name: product.name,
-                        code: product.code,
-                        store: product.store,
-                        photo: product.photo,
-                        categories: product.categories,
-                        lotes: batches,
-                    };
-
-                    return prod;
-                }
-            );
-
-            filtertedProducts = prodsWithNonThreatedBatches;
-        }
-
-        if (sortProductsByExpDate) {
-            // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-            const resultsTemp = sortProductsLotesByLotesExpDate(
-                filtertedProducts
-            );
-
-            // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
-            // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
-            // DE QUAL ESTÁ MAIS PRÓXIMO
-            const results = sortProductsByFisrtLoteExpDate(resultsTemp);
-
-            filtertedProducts = results;
-        }
-
-        if (limit) {
-            const productsLimited = filtertedProducts.slice(0, limit);
-            filtertedProducts = productsLimited;
-        }
-
-        return filtertedProducts;
-    } catch (err) {
-        throw new Error(err);
+        filtertedProducts = prodWithBachesOnly;
     }
+
+    if (removeTreatedBatch) {
+        const prodsWithNonThreatedBatches = filtertedProducts.map(product => {
+            const batches = product.lotes.filter(
+                batch => batch.status !== 'Tratado'
+            );
+
+            const prod: IProduct = {
+                id: product.id,
+                name: product.name,
+                code: product.code,
+                store: product.store,
+                photo: product.photo,
+                categories: product.categories,
+                lotes: batches,
+            };
+
+            return prod;
+        });
+
+        filtertedProducts = prodsWithNonThreatedBatches;
+    }
+
+    if (sortProductsByExpDate) {
+        // ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+        const resultsTemp = sortProductsLotesByLotesExpDate(filtertedProducts);
+
+        // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+        // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+        // DE QUAL ESTÁ MAIS PRÓXIMO
+        const results = sortProductsByFisrtLoteExpDate(resultsTemp);
+
+        filtertedProducts = results;
+    }
+
+    if (limit) {
+        const productsLimited = filtertedProducts.slice(0, limit);
+        filtertedProducts = productsLimited;
+    }
+
+    return filtertedProducts;
 }
 
 interface searchForAProductInAListProps {
@@ -199,6 +193,21 @@ export function searchForAProductInAList({
 
                 if (searchByLoteName) {
                     return true;
+                }
+
+                const slitedDate = query.split('/');
+
+                if (slitedDate.length > 2) {
+                    const date = startOfDay(
+                        new Date(
+                            Number(slitedDate[2]),
+                            Number(slitedDate[1]) - 1,
+                            Number(slitedDate[0])
+                        )
+                    );
+
+                    if (compareAsc(startOfDay(lote.exp_date), date) === 0)
+                        return true;
                 }
 
                 return false;
