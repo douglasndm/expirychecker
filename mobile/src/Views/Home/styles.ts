@@ -26,11 +26,15 @@ export const InputTextContainer = styled.View`
 
 export const InputTextIconContainer = styled(RectButton)``;
 
+interface InputTextIconProps {
+    name: string;
+}
+
 export const InputTextIcon = styled(Ionicons).attrs(props => ({
-    name: 'barcode-outline',
-    size: 36,
+    name: props.name,
+    size: 33,
     color: props.theme.colors.productCardText,
-}))``;
+}))<InputTextIconProps>``;
 
 export const InputSearch = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.placeholderColor,
