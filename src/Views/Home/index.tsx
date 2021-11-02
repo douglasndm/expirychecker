@@ -20,7 +20,6 @@ import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
-import Input from '~/Components/InputText';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -83,8 +82,8 @@ const Home: React.FC = () => {
     const getProduts = useCallback(async () => {
         try {
             setIsLoading(true);
+
             const allProducts = await getAllProducts({
-                limit: 20,
                 removeProductsWithoutBatches: true,
                 removeTreatedBatch: true,
                 sortProductsByExpDate: true,
@@ -92,10 +91,11 @@ const Home: React.FC = () => {
 
             setProducts(allProducts);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -110,10 +110,8 @@ const Home: React.FC = () => {
             setSearchString(search);
 
             if (search && search !== '') {
-                const allProducts = await getAllProducts({});
-
                 const findProducts = searchForAProductInAList({
-                    products: allProducts,
+                    products,
                     searchFor: search,
                     sortByExpDate: true,
                 });
@@ -163,10 +161,11 @@ const Home: React.FC = () => {
 
             await getProduts();
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsRefreshing(false);
         }
