@@ -229,11 +229,13 @@ const Home: React.FC = () => {
                                 <InputTextIcon name="barcode-outline" />
                             </InputTextIconContainer>
 
-                            <InputTextIconContainer
-                                onPress={enableCalendarModal}
-                            >
-                                <InputTextIcon name="calendar-outline" />
-                            </InputTextIconContainer>
+                            {userPreferences.isUserPremium && (
+                                <InputTextIconContainer
+                                    onPress={enableCalendarModal}
+                                >
+                                    <InputTextIcon name="calendar-outline" />
+                                </InputTextIconContainer>
+                            )}
                         </InputTextContainer>
                     )}
 
