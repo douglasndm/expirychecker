@@ -4,16 +4,16 @@ import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import { useNavigation } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
 import ProductItem from '~/Components/ListProducts/ProductContainer';
 
 import {
     sortProductsLotesByLotesExpDate,
     sortProductsByFisrtLoteExpDate,
-} from '../../Functions/Products';
+} from '~/Functions/Products';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Button from '../Button';
 
@@ -65,7 +65,7 @@ const StoreGroup: React.FC<IRequest> = ({ storeName, products }: IRequest) => {
                 />
             )}
 
-            {!userPreferences.isUserPremium && (
+            {!userPreferences.disableAds && (
                 <AdView>
                     <BannerAd
                         unitId={unitId}
