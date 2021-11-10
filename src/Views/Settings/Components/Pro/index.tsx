@@ -192,21 +192,30 @@ const Pro: React.FC = () => {
                             onPress={navigateToPremiumView}
                         />
 
-                        <SettingDescription>
-                            Tem um código de ativação? É aqui que você digita
-                            ele
-                        </SettingDescription>
-                        <InputText
-                            placeholder="Seu código de ativação"
-                            value={code}
-                            onChange={handleCodeChange}
-                            contentStyle={{ marginTop: 15 }}
-                        />
-                        <Button
-                            text="Adicionar código"
-                            onPress={handleCheckCode}
-                            isLoading={isChecking}
-                        />
+                        {Platform.OS !== 'ios' && (
+                            <>
+                                <SettingDescription>
+                                    {
+                                        strings.View_Settings_UnlockCode_Description
+                                    }
+                                </SettingDescription>
+                                <InputText
+                                    placeholder={
+                                        strings.View_Settings_UnlockCode_Placeholder
+                                    }
+                                    value={code}
+                                    onChange={handleCodeChange}
+                                    contentStyle={{ marginTop: 15 }}
+                                />
+                                <Button
+                                    text={
+                                        strings.View_Settings_UnlockCode_ButtonSubmit
+                                    }
+                                    onPress={handleCheckCode}
+                                    isLoading={isChecking}
+                                />
+                            </>
+                        )}
                     </>
                 )}
 

@@ -246,6 +246,10 @@
     "View_Settings_Button_SignOut": "Sair",
 
 
+    "View_Settings_UnlockCode_Description": "Tem um código de ativação? É aqui que você digita ele",
+    "View_Settings_UnlockCode_Placeholder": "Seu código de ativação",
+    "View_Settings_UnlockCode_ButtonSubmit": "Adicionar código",
+
     "View_Settings_Appearance_Theme_SelectOne": "Selecione um tema",
     "View_Settings_Appearance_Theme_System": "Baseado no sistema (padrão)",
     "View_Settings_Appearance_Theme_Light": "Claro",
