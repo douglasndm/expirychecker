@@ -33,6 +33,7 @@ import {
     InputTextContainer,
     InputTextIcon,
     InputTextIconContainer,
+    ActionButtonsContainer,
 } from './styles';
 
 const Home: React.FC = () => {
@@ -222,20 +223,23 @@ const Home: React.FC = () => {
                                 value={searchString}
                                 onChangeText={handleSearchChange}
                             />
-                            <InputTextIconContainer
-                                onPress={handleOnBarCodeReaderOpen}
-                                style={{ marginRight: -15 }}
-                            >
-                                <InputTextIcon name="barcode-outline" />
-                            </InputTextIconContainer>
 
-                            {userPreferences.isUserPremium && (
+                            <ActionButtonsContainer>
                                 <InputTextIconContainer
-                                    onPress={enableCalendarModal}
+                                    onPress={handleOnBarCodeReaderOpen}
                                 >
-                                    <InputTextIcon name="calendar-outline" />
+                                    <InputTextIcon name="barcode-outline" />
                                 </InputTextIconContainer>
-                            )}
+
+                                {userPreferences.isUserPremium && (
+                                    <InputTextIconContainer
+                                        onPress={enableCalendarModal}
+                                        style={{ marginLeft: 5 }}
+                                    >
+                                        <InputTextIcon name="calendar-outline" />
+                                    </InputTextIconContainer>
+                                )}
+                            </ActionButtonsContainer>
                         </InputTextContainer>
                     )}
 
