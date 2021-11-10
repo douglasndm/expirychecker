@@ -24,6 +24,10 @@ export const InputTextContainer = styled.View`
     padding-right: 10px;
 `;
 
+export const ActionButtonsContainer = styled.View`
+    flex-direction: row;
+`;
+
 export const InputTextIconContainer = styled(RectButton)``;
 
 interface InputTextIconProps {
@@ -39,6 +43,7 @@ export const InputTextIcon = styled(Ionicons).attrs(props => ({
 export const InputSearch = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
+    flex: 1;
     padding: 15px 5px 15px 15px;
     font-size: 18px;
     color: ${props => props.theme.colors.inputText};
