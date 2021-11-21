@@ -71,7 +71,6 @@ type RoutesParams = {
         brand_id: string;
     };
 
-    NotificationsPreferences;
     Export;
     Teams;
     Test;
