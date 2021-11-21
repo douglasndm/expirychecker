@@ -30,8 +30,9 @@ import {
 
 interface Request {
     product: IProduct;
+    onLongPress: () => void;
 }
-const Product = ({ product }: Request) => {
+const Product = ({ product, onLongPress }: Request) => {
     const { navigate } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
@@ -122,6 +123,7 @@ const Product = ({ product }: Request) => {
             nextToExp={nextToExp}
             threated={batch?.status === 'Tratado'}
             onPress={handleNavigateToProduct}
+            onLongPress={onLongPress}
         >
             <Content>
                 {userPreferences.isUserPremium && !!imagePath && (
