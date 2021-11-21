@@ -32,7 +32,6 @@ import BrandList from '~/Views/Brand/List';
 import BrandView from '~/Views/Brand/View';
 import BrandEdit from '~/Views/Brand/Edit';
 
-import NotificationsPreferences from '~/Views/NotificationsPreferences';
 import Export from '~/Views/Export';
 
 import Teams from '~/Views/Informations/Teams';
@@ -77,10 +76,6 @@ const Routes: React.FC = () => {
             <Stack.Screen name="BrandView" component={BrandView} />
             <Stack.Screen name="BrandEdit" component={BrandEdit} />
 
-            <Stack.Screen
-                name="NotificationsPreferences"
-                component={NotificationsPreferences}
-            />
             <Stack.Screen name="Export" component={Export} />
             <Stack.Screen name="Teams" component={Teams} />
 
