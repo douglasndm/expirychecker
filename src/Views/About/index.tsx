@@ -60,7 +60,8 @@ const About: React.FC = () => {
     }, []);
 
     const handleNaviMail = useCallback(async () => {
-        await Linking.openURL('mailto:suporte@douglasndm.dev');
+        if (await Linking.canOpenURL('mailto:suporte@douglasndm.dev'))
+            await Linking.openURL('mailto:suporte@douglasndm.dev');
     }, []);
 
     const handleFlatIconPress = useCallback(async () => {
