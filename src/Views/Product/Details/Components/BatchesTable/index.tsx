@@ -4,6 +4,7 @@ import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
+
 import { deleteManyBatches } from '~/Utils/Batches';
 
 import ItemRow from './ItemRow';
@@ -91,7 +92,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
 
             showMessage({
                 message:
-                    strings.ListProductsComponent_ProductsDeleted_Notification,
+                    strings.View_ProductDetails_Notification_DeleteManyBatches_Success,
                 type: 'info',
             });
         } catch (err) {
@@ -111,16 +112,14 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                         icon={() => <Icons name="trash-outline" />}
                         onPress={handleSwitchDeleteModal}
                     >
-                        Apagar
+                        {strings.View_ProductDetails_ActionBar_Confirm}
                     </ButtonPaper>
 
                     <ButtonPaper
                         icon={() => <Icons name="exit-outline" />}
                         onPress={handleDisableSelectMode}
                     >
-                        {
-                            strings.ListProductsComponent_DeleteProducts_ActionBar_Cancel
-                        }
+                        {strings.View_ProductDetails_ActionBar_Cancel}
                     </ButtonPaper>
                 </ActionButtonsContainer>
             )}
@@ -182,22 +181,22 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                 onBackdropPress={handleSwitchDeleteModal}
             >
                 <Dialog.Title>
-                    {strings.ListProductsComponent_DeleteProducts_Modal_Title}
+                    {strings.View_ProductDetails_DeleteManyBatches_Modal_Title}
                 </Dialog.Title>
                 <Dialog.Description>
                     {
-                        strings.ListProductsComponent_DeleteProducts_Modal_Description
+                        strings.View_ProductDetails_DeleteManyBatches_Modal_Description
                     }
                 </Dialog.Description>
                 <Dialog.Button
                     label={
-                        strings.ListProductsComponent_DeleteProducts_Modal_Button_Keep
+                        strings.View_ProductDetails_DeleteManyBatches_Modal_Cancel
                     }
                     onPress={handleSwitchDeleteModal}
                 />
                 <Dialog.Button
                     label={
-                        strings.ListProductsComponent_DeleteProducts_Modal_Button_Delete
+                        strings.View_ProductDetails_DeleteManyBatches_Modal_Confirm
                     }
                     color="red"
                     onPress={handleDeleteMany}

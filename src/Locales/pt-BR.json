@@ -187,6 +187,14 @@
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
 
+    "View_ProductDetails_Notification_DeleteManyBatches_Success": "Os lotes selecionandos foram apagados.",
+    "View_ProductDetails_ActionBar_Cancel": "Cancelar seleção",
+    "View_ProductDetails_ActionBar_Confirm": "Apagar",
+    "View_ProductDetails_DeleteManyBatches_Modal_Title": "Você tem certeza?",
+    "View_ProductDetails_DeleteManyBatches_Modal_Description": "Você está preste a apagar VÁRIOS LOTES, essa ação não pode ser desfeita.",
+    "View_ProductDetails_DeleteManyBatches_Modal_Confirm": "Apagar selecionados",
+    "View_ProductDetails_DeleteManyBatches_Modal_Cancel": "Manter lotes",
+
     "View_ProductsByWeeks_Title": "Por semanas",
     "View_ProductsByWeeks_WeekTitle": "A partir de",
     "View_ProductsByWeeks_ProductsCount": "{COUNT} produtos",
