@@ -188,6 +188,14 @@
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Amount",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Total price",
 
+    "View_ProductDetails_Notification_DeleteManyBatches_Success": "The selected batches were deleted",
+    "View_ProductDetails_ActionBar_Cancel": "Cancel selection",
+    "View_ProductDetails_ActionBar_Confirm": "Delete",
+    "View_ProductDetails_DeleteManyBatches_Modal_Title": "Are you sure?",
+    "View_ProductDetails_DeleteManyBatches_Modal_Description": "You're going to delete MANY BATCHES, this action can not be undone",
+    "View_ProductDetails_DeleteManyBatches_Modal_Confirm": "Delete selected",
+    "View_ProductDetails_DeleteManyBatches_Modal_Cancel": "Keep Batches",
+
     "View_ProductsByWeeks_Title": "By weeks",
     "View_ProductsByWeeks_WeekTitle": "From",
     "View_ProductsByWeeks_ProductsCount": "{COUNT} products",
