@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { PurchasesPackage } from 'react-native-purchases';
 import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
@@ -9,12 +8,8 @@ import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import {
-    getOnlyNoAdsSubscriptions,
-    makeSubscription,
-} from '~/Functions/ProMode';
+import { deleteManyProducts } from '~/Utils/Products';
 
-import Loading from '../Loading';
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
 
@@ -35,8 +30,6 @@ import {
     FloatButton,
     Icons,
 } from './styles';
-import { getDisableAds } from '~/Functions/Settings';
-import { deleteManyProducts } from '~/Utils/Products';
 
 interface RequestProps {
     products: Array<IProduct>;
@@ -59,13 +52,7 @@ const ListProducts: React.FC<RequestProps> = ({
     const [selectMode, setSelectMode] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
 
-    const [noAdsPackage, setNoAdsPackages] = useState<PurchasesPackage | null>(
-        null
-    );
-    const [isPurchasing, setIsPurchasing] = useState(false);
-
-    const { userPreferences, setUserPreferences } =
-        useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
@@ -74,42 +61,6 @@ const ListProducts: React.FC<RequestProps> = ({
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
     }, [navigate]);
-
-    const loadRemoveAdsData = useCallback(async () => {
-        const response = await getOnlyNoAdsSubscriptions();
-
-        setNoAdsPackages(response[0]);
-    }, []);
-
-    const handleMakePurchaseNoAds = useCallback(async () => {
-        if (noAdsPackage) {
-            try {
-                setIsPurchasing(true);
-                await makeSubscription(noAdsPackage);
-                const ads = await getDisableAds();
-
-                setUserPreferences({
-                    ...userPreferences,
-                    disableAds: ads,
-                });
-
-                if (ads) {
-                    showMessage({
-                        message: strings.Banner_SubscriptionSuccess_Alert,
-                        type: 'info',
-                    });
-                }
-            } catch (err) {
-                if (err instanceof Error)
-                    showMessage({
-                        message: err.message,
-                        type: 'warning',
-                    });
-            } finally {
-                setIsPurchasing(false);
-            }
-        }
-    }, [noAdsPackage, setUserPreferences, userPreferences]);
 
     const switchSelectedItem = useCallback(
         (productId: number) => {
@@ -136,28 +87,9 @@ const ListProducts: React.FC<RequestProps> = ({
         setSelectMode(false);
     }, []);
 
-    useEffect(() => {
-        loadRemoveAdsData();
-    }, []);
-
     const ListHeader = useCallback(() => {
         return (
             <View>
-                {userPreferences.disableAds === false &&
-                    noAdsPackage &&
-                    (isPurchasing ? (
-                        <Loading />
-                    ) : (
-                        <ProBanner onPress={handleMakePurchaseNoAds}>
-                            <ProText>
-                                {strings.Banner_NoAds.replace(
-                                    '{PRICE}',
-                                    noAdsPackage.product.price_string
-                                )}
-                            </ProText>
-                        </ProBanner>
-                    ))}
-
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
                     <CategoryDetails>
@@ -170,13 +102,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [
-        handleMakePurchaseNoAds,
-        isPurchasing,
-        noAdsPackage,
-        products.length,
-        userPreferences.disableAds,
-    ]);
+    }, [products.length]);
 
     const EmptyList = useCallback(() => {
         return (
@@ -201,7 +127,7 @@ const ListProducts: React.FC<RequestProps> = ({
     }, [products.length, isHome, handleNavigateToAllProducts]);
 
     const renderComponent = useCallback(
-        ({ item, index }) => {
+        ({ item }) => {
             const product: IProduct = item as IProduct;
 
             const isChecked = selectedProds.find(id => id === product.id);
