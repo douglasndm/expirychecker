@@ -151,7 +151,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                 const isChecked = selectedBatches.find(id => id === batch.id);
 
                 return (
-                    <Container>
+                    <Container key={batch.id}>
                         {selectMode && (
                             <SelectButtonContainer>
                                 <SelectButton
