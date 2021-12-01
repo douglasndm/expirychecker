@@ -138,20 +138,23 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             setName(result.name);
             if (result.code) setCode(result.code);
 
-            const lotesSorted = sortBatches(result.lotes);
+            if (result.lotes.length > 0) {
+                const lotesSorted = sortBatches(result.lotes);
 
-            setLotesTratados(() =>
-                lotesSorted.filter(lote => lote.status === 'Tratado')
-            );
+                setLotesTratados(() =>
+                    lotesSorted.filter(lote => lote.status === 'Tratado')
+                );
 
-            setLotesNaoTratados(() =>
-                lotesSorted.filter(lote => lote.status !== 'Tratado')
-            );
+                setLotesNaoTratados(() =>
+                    lotesSorted.filter(lote => lote.status !== 'Tratado')
+                );
+            }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }

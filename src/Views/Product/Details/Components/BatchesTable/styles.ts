@@ -1,11 +1,21 @@
-import styled, { css } from 'styled-components/native';
-import { DataTable } from 'react-native-paper';
+import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
+import { Button, DataTable } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-interface IProductProps {
-    expired?: boolean;
-    nextToExp?: boolean;
-    treated?: boolean;
-}
+export const Container = styled.View`
+    flex-direction: row;
+`;
+
+export const ActionButtonsContainer = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px 10px;
+`;
+
+export const ButtonPaper = styled(Button).attrs(props => ({
+    color: props.theme.colors.textAccent,
+}))``;
 
 export const Table = styled(DataTable)`
     background-color: ${props => props.theme.colors.productBackground};
@@ -23,43 +33,20 @@ export const TableTitle = styled(DataTable.Title).attrs(props => ({
     },
 }))``;
 
-interface TableRowProps {
-    expired?: boolean;
-    nextToExp?: boolean;
-    treated?: boolean;
-}
+export const Icons = styled(Ionicons).attrs(props => ({
+    size: 22,
+    color: props.theme.colors.text,
+}))``;
 
-export const TableRow = styled(DataTable.Row)<TableRowProps>`
-    background: ${({ theme }) => theme.colors.productBackground};
-
-    ${props =>
-        props.nextToExp &&
-        css`
-            background: ${({ theme }) =>
-                theme.colors.productNextToExpBackground};
-        `};
-
-    ${props =>
-        props.expired &&
-        css`
-            background: ${({ theme }) => theme.colors.productExpiredBackground};
-        `};
-
-    ${props =>
-        props.treated &&
-        css`
-            background-color: #47c914;
-        `};
+export const SelectButtonContainer = styled.View`
+    justify-content: center;
 `;
 
-export const TableCell = styled(DataTable.Cell)``;
-
-export const Text = styled.Text<IProductProps>`
-    color: ${props => props.theme.colors.productCardText};
-
-    ${props =>
-        (props.expired || props.nextToExp || props.treated) &&
-        css`
-            color: white;
-        `};
+export const SelectButton = styled(RectButton)`
+    margin-left: 7px;
 `;
+
+export const SelectIcon = styled(Ionicons).attrs(props => ({
+    size: 28,
+    color: props.theme.colors.text,
+}))``;
