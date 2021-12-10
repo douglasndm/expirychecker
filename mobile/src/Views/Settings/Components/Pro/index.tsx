@@ -44,7 +44,7 @@ const Pro: React.FC = () => {
     const [isChecking, setIsChecking] = useState<boolean>(false);
     const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
 
-    const { navigate, reset, pop } =
+    const { navigate, reset } =
         useNavigation<StackNavigationProp<RoutesParams>>();
 
     const cancelSubscriptionLink = useMemo(() => {
@@ -92,16 +92,20 @@ const Pro: React.FC = () => {
                 message: strings.View_Settings_Backup_Import_Alert_Sucess,
                 type: 'info',
             });
-            pop();
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
+            reset({
+                routes: [{ name: 'Home' }],
             });
+        } catch (err) {
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
         } finally {
             setIsImportLoading(false);
         }
-    }, [pop]);
+    }, [reset]);
 
     const handleCodeChange = useCallback((value: string) => {
         setCode(value.trim());
@@ -115,10 +119,12 @@ const Pro: React.FC = () => {
 
             await schema.validate({ code });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'warning',
-            });
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'warning',
+                });
+            }
             return;
         }
 
@@ -153,98 +159,103 @@ const Pro: React.FC = () => {
             }
         } catch (err) {
             if (err.response.data.message) {
+                if (err.response.data.message) {
+                    showMessage({
+                        message: err.response.data.message,
+                        type: 'danger',
+                    });
+                }
+            } else if (err instanceof Error) {
                 showMessage({
-                    message: err.response.data.message,
+                    message: err.message,
                     type: 'danger',
                 });
-                return;
             }
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
         } finally {
             setIsChecking(false);
         }
     }, [code, reset, setUserPreferences, userPreferences]);
 
     return (
-        <>
-            <Container>
-                <Category>
-                    <CategoryTitle>
-                        {strings.View_Settings_CategoryName_Pro}
-                    </CategoryTitle>
+        <Container>
+            <Category>
+                <CategoryTitle>
+                    {strings.View_Settings_CategoryName_Pro}
+                </CategoryTitle>
 
-                    {!userPreferences.isUserPremium && (
-                        <>
-                            <Button
-                                text={
-                                    strings.View_Settings_Button_BecobeProToUnlockNewFeatures
-                                }
-                                onPress={navigateToPremiumView}
-                            />
+                {!userPreferences.isUserPremium && (
+                    <>
+                        <Button
+                            text={
+                                strings.View_Settings_Button_BecobeProToUnlockNewFeatures
+                            }
+                            onPress={navigateToPremiumView}
+                        />
 
-                            <SettingDescription>
-                                Tem um código de ativação? É aqui que você
-                                digita ele
-                            </SettingDescription>
-                            <InputText
-                                placeholder="Seu código de ativação"
-                                value={code}
-                                onChange={handleCodeChange}
-                                contentStyle={{ marginTop: 15 }}
-                            />
-                            <Button
-                                text="Adicionar código"
-                                onPress={handleCheckCode}
-                                isLoading={isChecking}
-                            />
-                        </>
-                    )}
-
-                    <CategoryOptions
-                        notPremium={!userPreferences.isUserPremium}
-                    >
-                        <View>
-                            <SettingDescription>
-                                {
-                                    strings.View_Settings_SettingName_ExportAndInmport
-                                }
-                            </SettingDescription>
-
-                            <PremiumButtonsContainer>
-                                <ButtonPremium
-                                    enabled={
-                                        userPreferences.isUserPremium &&
-                                        !isImportLoading
+                        {Platform.OS !== 'ios' && (
+                            <>
+                                <SettingDescription>
+                                    {
+                                        strings.View_Settings_UnlockCode_Description
                                     }
-                                    onPress={handleImportBackup}
-                                >
-                                    {isImportLoading ? (
-                                        <Loading />
-                                    ) : (
-                                        <ButtonPremiumText>
-                                            {
-                                                strings.View_Settings_Button_ImportFile
-                                            }
-                                        </ButtonPremiumText>
-                                    )}
-                                </ButtonPremium>
-                            </PremiumButtonsContainer>
-                        </View>
-                    </CategoryOptions>
+                                </SettingDescription>
+                                <InputText
+                                    placeholder={
+                                        strings.View_Settings_UnlockCode_Placeholder
+                                    }
+                                    value={code}
+                                    onChange={handleCodeChange}
+                                    contentStyle={{ marginTop: 15 }}
+                                />
+                                <Button
+                                    text={
+                                        strings.View_Settings_UnlockCode_ButtonSubmit
+                                    }
+                                    onPress={handleCheckCode}
+                                    isLoading={isChecking}
+                                />
+                            </>
+                        )}
+                    </>
+                )}
 
-                    {userPreferences.isUserPremium && (
-                        <ButtonCancel onPress={handleCancel}>
-                            <ButtonCancelText>
-                                {strings.View_Settings_Button_CancelSubscribe}
-                            </ButtonCancelText>
-                        </ButtonCancel>
-                    )}
-                </Category>
-            </Container>
-        </>
+                <CategoryOptions notPremium={!userPreferences.isUserPremium}>
+                    <View>
+                        <SettingDescription>
+                            {strings.View_Settings_SettingName_ExportAndInmport}
+                        </SettingDescription>
+
+                        <PremiumButtonsContainer>
+                            <ButtonPremium
+                                enabled={
+                                    userPreferences.isUserPremium &&
+                                    !isImportLoading
+                                }
+                                onPress={handleImportBackup}
+                            >
+                                {isImportLoading ? (
+                                    <Loading />
+                                ) : (
+                                    <ButtonPremiumText>
+                                        {
+                                            strings.View_Settings_Button_ImportFile
+                                        }
+                                    </ButtonPremiumText>
+                                )}
+                            </ButtonPremium>
+                        </PremiumButtonsContainer>
+                    </View>
+                </CategoryOptions>
+
+                {userPreferences.isUserPremium && (
+                    <ButtonCancel onPress={handleCancel}>
+                        <ButtonCancelText>
+                            {strings.View_Settings_Button_CancelSubscribe}
+                        </ButtonCancelText>
+                    </ButtonCancel>
+                )}
+            </Category>
+        </Container>
     );
 };
 

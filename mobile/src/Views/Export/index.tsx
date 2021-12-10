@@ -31,11 +31,15 @@ const Export: React.FC = () => {
         try {
             setIsBackupLoading(true);
             await exportBackupFile();
+
+            console.log('exported');
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
         } finally {
             setIsBackupLoading(false);
         }

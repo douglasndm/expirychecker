@@ -24,17 +24,26 @@ export const InputTextContainer = styled.View`
     padding-right: 10px;
 `;
 
+export const ActionButtonsContainer = styled.View`
+    flex-direction: row;
+`;
+
 export const InputTextIconContainer = styled(RectButton)``;
 
+interface InputTextIconProps {
+    name: string;
+}
+
 export const InputTextIcon = styled(Ionicons).attrs(props => ({
-    name: 'barcode-outline',
-    size: 36,
+    name: props.name,
+    size: 33,
     color: props.theme.colors.productCardText,
-}))``;
+}))<InputTextIconProps>``;
 
 export const InputSearch = styled.TextInput.attrs(props => ({
     placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
+    flex: 1;
     padding: 15px 5px 15px 15px;
     font-size: 18px;
     color: ${props => props.theme.colors.inputText};

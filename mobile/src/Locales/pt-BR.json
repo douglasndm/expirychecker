@@ -1,6 +1,6 @@
 {
     "AppName": "Controle de Validades",
-    "AppName_ProVersion": "Modo PRO",
+    "AppName_ProVersion": "PRO",
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Adicionar produto",
@@ -47,6 +47,13 @@
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
     "ListProductsComponent_Button_AddNewProduct": "Adicionar novo produto",
+    "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Apagar selecionados",
+    "ListProductsComponent_DeleteProducts_ActionBar_Cancel": "Cancelar seleção",
+    "ListProductsComponent_DeleteProducts_Modal_Title": "Apagar vários produtos",
+    "ListProductsComponent_DeleteProducts_Modal_Description": "Você está preste a apagar VÁRIOS PRODUTOS, essa ação não pode ser revertida",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Keep": "Manter produtos",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Delete": "Apagar selecionados",
+    "ListProductsComponent_ProductsDeleted_Notification": "Os produtos selecionandos foram apagados",
 
     "LoadingComponent_Text": "Carregando...",
 
@@ -180,6 +187,14 @@
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
 
+    "View_ProductDetails_Notification_DeleteManyBatches_Success": "Os lotes selecionandos foram apagados.",
+    "View_ProductDetails_ActionBar_Cancel": "Cancelar seleção",
+    "View_ProductDetails_ActionBar_Confirm": "Apagar",
+    "View_ProductDetails_DeleteManyBatches_Modal_Title": "Você tem certeza?",
+    "View_ProductDetails_DeleteManyBatches_Modal_Description": "Você está preste a apagar VÁRIOS LOTES, essa ação não pode ser desfeita.",
+    "View_ProductDetails_DeleteManyBatches_Modal_Confirm": "Apagar selecionados",
+    "View_ProductDetails_DeleteManyBatches_Modal_Cancel": "Manter lotes",
+
     "View_ProductsByWeeks_Title": "Por semanas",
     "View_ProductsByWeeks_WeekTitle": "A partir de",
     "View_ProductsByWeeks_ProductsCount": "{COUNT} produtos",
@@ -245,6 +260,10 @@
     "View_Settings_AccountDescription": "Gerencie sua conta associada ao aplicativo.",
     "View_Settings_Button_SignOut": "Sair",
 
+
+    "View_Settings_UnlockCode_Description": "Tem um código de ativação? É aqui que você digita ele",
+    "View_Settings_UnlockCode_Placeholder": "Seu código de ativação",
+    "View_Settings_UnlockCode_ButtonSubmit": "Adicionar código",
 
     "View_Settings_Appearance_Theme_SelectOne": "Selecione um tema",
     "View_Settings_Appearance_Theme_System": "Baseado no sistema (padrão)",
