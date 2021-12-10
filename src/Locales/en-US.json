@@ -1,6 +1,6 @@
 {
     "AppName": "Expiry Checker",
-    "AppName_ProVersion": "PRO Mode",
+    "AppName_ProVersion": "PRO",
 
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add new product",
@@ -48,6 +48,13 @@
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_ShowAllProducts": "Show all products",
     "ListProductsComponent_Button_AddNewProduct": "Add new product",
+    "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Delete selected",
+    "ListProductsComponent_DeleteProducts_ActionBar_Cancel": "Cancel selection",
+    "ListProductsComponent_DeleteProducts_Modal_Title": "Delete many products",
+    "ListProductsComponent_DeleteProducts_Modal_Description": "Are you going to delete SEVERAL products, this action cannot be undone!",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Keep": "Keep products",
+    "ListProductsComponent_DeleteProducts_Modal_Button_Delete": "Delete selected",
+    "ListProductsComponent_ProductsDeleted_Notification": "The products were deleted",
 
     "LoadingComponent_Text": "Loading...",
 
@@ -181,6 +188,14 @@
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Amount",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Total price",
 
+    "View_ProductDetails_Notification_DeleteManyBatches_Success": "The selected batches were deleted",
+    "View_ProductDetails_ActionBar_Cancel": "Cancel selection",
+    "View_ProductDetails_ActionBar_Confirm": "Delete",
+    "View_ProductDetails_DeleteManyBatches_Modal_Title": "Are you sure?",
+    "View_ProductDetails_DeleteManyBatches_Modal_Description": "You're going to delete MANY BATCHES, this action can not be undone",
+    "View_ProductDetails_DeleteManyBatches_Modal_Confirm": "Delete selected",
+    "View_ProductDetails_DeleteManyBatches_Modal_Cancel": "Keep Batches",
+
     "View_ProductsByWeeks_Title": "By weeks",
     "View_ProductsByWeeks_WeekTitle": "From",
     "View_ProductsByWeeks_ProductsCount": "{COUNT} products",
@@ -239,9 +254,13 @@
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
     "View_Settings_Button_BecobeProToUnlockNewFeatures": "BECOME A PRO USER TO UNLOCK NEW FEATURES",
-    "View_Settings_Button_CancelSubscribe": "Cancel subscribe",
+    "View_Settings_Button_CancelSubscribe": "Cancel subscription",
     "View_Settings_AccountDescription": "Manage your account linked to the app",
     "View_Settings_Button_SignOut": "Sign out",
+
+    "View_Settings_UnlockCode_Description": "Do you have an unlock code? Here is where you'll put it",
+    "View_Settings_UnlockCode_Placeholder": "Your unlocker code",
+    "View_Settings_UnlockCode_ButtonSubmit": "Check code",
 
     "View_Settings_Appearance_Theme_SelectOne": "Choose a theme",
     "View_Settings_Appearance_Theme_System": "System (Default)",

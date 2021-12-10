@@ -10,11 +10,11 @@ import LottieView from 'lottie-react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
-import PreferencesContext from '../../Contexts/PreferencesContext';
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import StatusBar from '../../Components/StatusBar';
+import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
 import FloatButton from '~/Components/FloatButton';
 
@@ -269,7 +269,7 @@ const Success: React.FC = () => {
                             )}
                     </ButtonContainer>
 
-                    {!userPreferences.isUserPremium && (
+                    {!userPreferences.disableAds && (
                         <BannerAd size={bannerSize} unitId={adUnitId} />
                     )}
                 </SuccessMessageContainer>

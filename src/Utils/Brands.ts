@@ -100,3 +100,13 @@ export async function deleteBrand({
         realm.delete(brand);
     });
 }
+
+export async function saveManyBrands(brands: Array<IBrand>): Promise<void> {
+    const realm = await Realm();
+
+    realm.write(() => {
+        brands.forEach(brand => {
+            realm.create('Brand', brand);
+        });
+    });
+}

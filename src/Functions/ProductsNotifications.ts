@@ -11,99 +11,98 @@ import {
 export async function getNotificationForAllProductsCloseToExp(): Promise<INotification | null> {
     const daysToBeNext = await getHowManyDaysToBeNextExp();
 
-    try {
-        const prods = await getAllProducts({
-            removeProductsWithoutBatches: true,
-        });
-        const products = removeAllLotesTratadosFromAllProduts(prods);
+    const prods = await getAllProducts({
+        removeProductsWithoutBatches: true,
+    });
+    const products = removeAllLotesTratadosFromAllProduts(prods);
 
-        const productsNextFiltered = products.map(p => {
-            const lotes = p.lotes.slice();
+    const productsNextFiltered = products.map(p => {
+        const lotes = p.lotes.slice();
 
-            const lotesFiltered = lotes.filter(l => {
-                if (
-                    l.exp_date < addDays(new Date(), daysToBeNext) &&
-                    !isPast(l.exp_date) &&
-                    l.status !== 'Tratado'
-                ) {
-                    return true;
-                }
+        const lotesFiltered = lotes.filter(l => {
+            if (
+                l.exp_date < addDays(new Date(), daysToBeNext) &&
+                !isPast(l.exp_date) &&
+                l.status !== 'Tratado'
+            ) {
+                return true;
+            }
 
-                return false;
-            });
-
-            return {
-                ...p,
-                lotes: lotesFiltered,
-            };
+            return false;
         });
 
-        const productsVencidosFiltered = products.map(p => {
-            const lotes = p.lotes.slice();
+        return {
+            ...p,
+            lotes: lotesFiltered,
+        };
+    });
 
-            const lotesFiltered = lotes.filter(l => {
-                if (isPast(l.exp_date) && l.status !== 'Tratado') {
-                    return true;
-                }
+    const productsVencidosFiltered = products.map(p => {
+        const lotes = p.lotes.slice();
 
-                return false;
-            });
+        const lotesFiltered = lotes.filter(l => {
+            if (isPast(l.exp_date) && l.status !== 'Tratado') {
+                return true;
+            }
 
-            return {
-                ...p,
-                lotes: lotesFiltered,
-            };
+            return false;
         });
 
-        let productsNextToExpCount = 0;
-        let productsVencidosCount = 0;
+        return {
+            ...p,
+            lotes: lotesFiltered,
+        };
+    });
 
-        productsNextFiltered.forEach(p => {
-            productsNextToExpCount += p.lotes.length;
-        });
+    let productsNextToExpCount = 0;
+    let productsVencidosCount = 0;
 
-        productsVencidosFiltered.forEach(p => {
-            productsVencidosCount += p.lotes.length;
-        });
+    productsNextFiltered.forEach(p => {
+        productsNextToExpCount += p.lotes.length;
+    });
 
-        let NotificationTitle;
-        let NotificationMessage;
+    productsVencidosFiltered.forEach(p => {
+        productsVencidosCount += p.lotes.length;
+    });
 
-        if (productsNextToExpCount > 0 && productsVencidosCount === 0) {
-            NotificationTitle =
-                strings.Function_Notification_ItOnlyHasProductsNextToExpTitle;
-            NotificationMessage = strings.Function_Notification_ItOnlyHasProductsNextToExpMessage.replace(
+    let NotificationTitle;
+    let NotificationMessage;
+
+    if (productsNextToExpCount > 0 && productsVencidosCount === 0) {
+        NotificationTitle =
+            strings.Function_Notification_ItOnlyHasProductsNextToExpTitle;
+        NotificationMessage =
+            strings.Function_Notification_ItOnlyHasProductsNextToExpMessage.replace(
                 '{NUMBER}',
                 String(productsNextToExpCount)
             );
-        } else if (productsNextToExpCount === 0 && productsVencidosCount > 0) {
-            NotificationTitle =
-                strings.Function_Notification_ItOnlyHasExpiredProductsTitle;
-            NotificationMessage = strings.Function_Notification_ItOnlyHasExpiredProductsMessage.replace(
+    } else if (productsNextToExpCount === 0 && productsVencidosCount > 0) {
+        NotificationTitle =
+            strings.Function_Notification_ItOnlyHasExpiredProductsTitle;
+        NotificationMessage =
+            strings.Function_Notification_ItOnlyHasExpiredProductsMessage.replace(
                 '{NUMBER}',
                 String(productsVencidosCount)
             );
-        } else if (productsNextToExpCount > 0 && productsVencidosCount > 0) {
-            NotificationTitle =
-                strings.Function_Notification_ItHasExpiredAndNextToExpireProductsTitle;
-            NotificationMessage = strings.Function_Notification_ItHasExpiredAndNextToExpireProductsMessage.replace(
+    } else if (productsNextToExpCount > 0 && productsVencidosCount > 0) {
+        NotificationTitle =
+            strings.Function_Notification_ItHasExpiredAndNextToExpireProductsTitle;
+        NotificationMessage =
+            strings.Function_Notification_ItHasExpiredAndNextToExpireProductsMessage.replace(
                 '{EXPIREDNUMBER}',
                 String(productsVencidosCount)
             );
-        }
-
-        if (!!NotificationTitle && !!NotificationMessage) {
-            const notification: INotification = {
-                title: NotificationTitle,
-                message: NotificationMessage,
-                amount: productsVencidosCount + productsNextToExpCount,
-            };
-
-            return notification;
-        }
-
-        return null;
-    } catch (err) {
-        throw new Error(err);
     }
+
+    if (!!NotificationTitle && !!NotificationMessage) {
+        const notification: INotification = {
+            title: NotificationTitle,
+            message: NotificationMessage,
+            amount: productsVencidosCount + productsNextToExpCount,
+        };
+
+        return notification;
+    }
+
+    return null;
 }

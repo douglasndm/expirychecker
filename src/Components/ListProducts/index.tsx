@@ -1,24 +1,26 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { PurchasesPackage } from 'react-native-purchases';
-
+import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
+
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import {
-    getOnlyNoAdsSubscriptions,
-    makeSubscription,
-} from '~/Functions/ProMode';
+import { deleteManyProducts } from '~/Utils/Products';
 
-import Loading from '../Loading';
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
 
 import {
     Container,
+    ActionButtonsContainer,
+    ProductContainer,
+    SelectButtonContainer,
+    SelectButton,
+    SelectIcon,
+    ButtonPaper,
     ProBanner,
     ProText,
     CategoryDetails,
@@ -28,7 +30,6 @@ import {
     FloatButton,
     Icons,
 } from './styles';
-import { getDisableAds } from '~/Functions/Settings';
 
 interface RequestProps {
     products: Array<IProduct>;
@@ -47,13 +48,11 @@ const ListProducts: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
-    const [noAdsPackage, setNoAdsPackages] = useState<PurchasesPackage | null>(
-        null
-    );
-    const [isPurchasing, setIsPurchasing] = useState(false);
+    const [selectedProds, setSelectedProds] = useState<Array<number>>([]);
+    const [selectMode, setSelectMode] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
 
-    const { userPreferences, setUserPreferences } =
-        useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
@@ -63,63 +62,34 @@ const ListProducts: React.FC<RequestProps> = ({
         navigate('AddProduct');
     }, [navigate]);
 
-    const loadRemoveAdsData = useCallback(async () => {
-        const response = await getOnlyNoAdsSubscriptions();
+    const switchSelectedItem = useCallback(
+        (productId: number) => {
+            const isChecked = selectedProds.find(id => id === productId);
 
-        setNoAdsPackages(response[0]);
-    }, []);
+            if (!isChecked) {
+                const prodsIds = [...selectedProds, productId];
 
-    const handleMakePurchaseNoAds = useCallback(async () => {
-        if (noAdsPackage) {
-            try {
-                setIsPurchasing(true);
-                await makeSubscription(noAdsPackage);
-                const ads = await getDisableAds();
-
-                setUserPreferences({
-                    ...userPreferences,
-                    disableAds: ads,
-                });
-
-                if (ads) {
-                    showMessage({
-                        message: strings.Banner_SubscriptionSuccess_Alert,
-                        type: 'info',
-                    });
-                }
-            } catch (err) {
-                showMessage({
-                    message: err.message,
-                    type: 'warning',
-                });
-            } finally {
-                setIsPurchasing(false);
+                setSelectedProds(prodsIds);
+                return;
             }
-        }
-    }, [noAdsPackage, setUserPreferences, userPreferences]);
 
-    useEffect(() => {
-        loadRemoveAdsData();
+            const newSelected = selectedProds.filter(id => id !== productId);
+            setSelectedProds(newSelected);
+        },
+        [selectedProds]
+    );
+
+    const handleEnableSelectMode = useCallback(() => {
+        if (userPreferences.isUserPremium) setSelectMode(true);
+    }, [userPreferences.isUserPremium]);
+
+    const handleDisableSelectMode = useCallback(() => {
+        setSelectMode(false);
     }, []);
 
     const ListHeader = useCallback(() => {
         return (
             <View>
-                {userPreferences.disableAds === false &&
-                    noAdsPackage &&
-                    (isPurchasing ? (
-                        <Loading />
-                    ) : (
-                        <ProBanner onPress={handleMakePurchaseNoAds}>
-                            <ProText>
-                                {strings.Banner_NoAds.replace(
-                                    '{PRICE}',
-                                    noAdsPackage.product.price_string
-                                )}
-                            </ProText>
-                        </ProBanner>
-                    ))}
-
                 {/* Verificar se há items antes de criar o titulo */}
                 {products.length > 0 && (
                     <CategoryDetails>
@@ -132,13 +102,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 )}
             </View>
         );
-    }, [
-        handleMakePurchaseNoAds,
-        isPurchasing,
-        noAdsPackage,
-        products.length,
-        userPreferences.disableAds,
-    ]);
+    }, [products.length]);
 
     const EmptyList = useCallback(() => {
         return (
@@ -162,12 +126,89 @@ const ListProducts: React.FC<RequestProps> = ({
         return <InvisibleComponent />;
     }, [products.length, isHome, handleNavigateToAllProducts]);
 
-    const renderComponent = useCallback(({ item, index }) => {
-        return <ProductItem product={item} index={index} />;
-    }, []);
+    const renderComponent = useCallback(
+        ({ item }) => {
+            const product: IProduct = item as IProduct;
+
+            const isChecked = selectedProds.find(id => id === product.id);
+
+            return (
+                <ProductContainer onLongPress={handleEnableSelectMode}>
+                    {selectMode && (
+                        <SelectButtonContainer>
+                            <SelectButton
+                                onPress={() => switchSelectedItem(product.id)}
+                            >
+                                {isChecked ? (
+                                    <SelectIcon name="checkmark-circle-outline" />
+                                ) : (
+                                    <SelectIcon name="ellipse-outline" />
+                                )}
+                            </SelectButton>
+                        </SelectButtonContainer>
+                    )}
+                    <ProductItem
+                        product={product}
+                        handleEnableSelect={handleEnableSelectMode}
+                    />
+                </ProductContainer>
+            );
+        },
+        [handleEnableSelectMode, selectMode, selectedProds, switchSelectedItem]
+    );
+
+    const handleSwitchDeleteModal = useCallback(() => {
+        setDeleteModal(!deleteModal);
+    }, [deleteModal]);
+
+    const handleDeleteMany = useCallback(async () => {
+        if (selectedProds.length <= 0) {
+            handleDisableSelectMode();
+            setDeleteModal(false);
+            return;
+        }
+        try {
+            await deleteManyProducts({ productsIds: selectedProds });
+
+            if (onRefresh) onRefresh();
+
+            showMessage({
+                message:
+                    strings.ListProductsComponent_ProductsDeleted_Notification,
+                type: 'info',
+            });
+        } catch (err) {
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+        }
+    }, [handleDisableSelectMode, onRefresh, selectedProds]);
 
     return (
         <Container>
+            {selectMode && userPreferences.isUserPremium && (
+                <ActionButtonsContainer>
+                    <ButtonPaper
+                        icon={() => <Icons name="trash-outline" />}
+                        onPress={handleSwitchDeleteModal}
+                    >
+                        {
+                            strings.ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected
+                        }
+                    </ButtonPaper>
+
+                    <ButtonPaper
+                        icon={() => <Icons name="exit-outline" />}
+                        onPress={handleDisableSelectMode}
+                    >
+                        {
+                            strings.ListProductsComponent_DeleteProducts_ActionBar_Cancel
+                        }
+                    </ButtonPaper>
+                </ActionButtonsContainer>
+            )}
             <FlatList
                 data={products}
                 keyExtractor={item => String(item.id)}
@@ -190,6 +231,33 @@ const ListProducts: React.FC<RequestProps> = ({
                     onPress={handleNavigateAddProduct}
                 />
             )}
+
+            <Dialog.Container
+                visible={deleteModal}
+                onBackdropPress={handleSwitchDeleteModal}
+            >
+                <Dialog.Title>
+                    {strings.ListProductsComponent_DeleteProducts_Modal_Title}
+                </Dialog.Title>
+                <Dialog.Description>
+                    {
+                        strings.ListProductsComponent_DeleteProducts_Modal_Description
+                    }
+                </Dialog.Description>
+                <Dialog.Button
+                    label={
+                        strings.ListProductsComponent_DeleteProducts_Modal_Button_Keep
+                    }
+                    onPress={handleSwitchDeleteModal}
+                />
+                <Dialog.Button
+                    label={
+                        strings.ListProductsComponent_DeleteProducts_Modal_Button_Delete
+                    }
+                    color="red"
+                    onPress={handleDeleteMany}
+                />
+            </Dialog.Container>
         </Container>
     );
 };
