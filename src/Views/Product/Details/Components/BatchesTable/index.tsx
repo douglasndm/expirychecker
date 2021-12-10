@@ -1,21 +1,25 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { getLocales } from 'react-native-localize';
-import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
-import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
-import NumberFormat from 'react-number-format';
+import Dialog from 'react-native-dialog';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { deleteManyBatches } from '~/Utils/Batches';
+
+import ItemRow from './ItemRow';
 
 import {
+    Container,
+    ActionButtonsContainer,
+    ButtonPaper,
     Table,
     TableHeader,
     TableTitle,
-    TableRow,
-    TableCell,
-    Text,
+    SelectButtonContainer,
+    SelectButton,
+    SelectIcon,
+    Icons,
 } from './styles';
 
 interface BatchesTableProps {
@@ -27,36 +31,99 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
     product_id,
     batches,
 }: BatchesTableProps) => {
-    const { navigate } = useNavigation();
+    const { reset } = useNavigation();
+    const lotes = useMemo(() => batches, [batches]);
 
-    const { userPreferences } = useContext(PreferencesContext);
+    const [selectedBatches, setSelectedBatches] = useState<Array<number>>([]);
+    const [selectMode, setSelectMode] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
 
-    const languageCode = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return enUS;
-        }
-        return ptBR;
+    const switchSelectedItem = useCallback(
+        (batch_id: number) => {
+            const isChecked = selectedBatches.find(id => id === batch_id);
+
+            if (!isChecked) {
+                const prodsIds = [...selectedBatches, batch_id];
+
+                setSelectedBatches(prodsIds);
+                return;
+            }
+
+            const newSelected = selectedBatches.filter(id => id !== batch_id);
+            setSelectedBatches(newSelected);
+        },
+        [selectedBatches]
+    );
+
+    const handleEnableSelectMode = useCallback(() => {
+        setSelectMode(true);
     }, []);
 
-    const dateFormat = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'MM/dd/yyyy';
-        }
-        return 'dd/MM/yyyy';
+    const handleDisableSelectMode = useCallback(() => {
+        setSelectMode(false);
     }, []);
 
-    const currencyPrefix = useMemo(() => {
-        if (getLocales()[0].countryCode === 'BR') {
-            return 'R$';
+    const handleSwitchDeleteModal = useCallback(() => {
+        setDeleteModal(!deleteModal);
+    }, [deleteModal]);
+
+    const handleDeleteMany = useCallback(async () => {
+        if (selectedBatches.length <= 0) {
+            handleDisableSelectMode();
+            setDeleteModal(false);
+            return;
         }
-        if (getLocales()[0].countryCode === 'PT') {
-            return '€';
+        try {
+            await deleteManyBatches({ batchesIds: selectedBatches });
+
+            reset({
+                routes: [
+                    { name: 'Home' },
+                    {
+                        name: 'ProductDetails',
+                        params: {
+                            id: product_id,
+                        },
+                    },
+                ],
+            });
+
+            setDeleteModal(false);
+
+            showMessage({
+                message:
+                    strings.View_ProductDetails_Notification_DeleteManyBatches_Success,
+                type: 'info',
+            });
+        } catch (err) {
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
-        return '$';
-    }, []);
+    }, [handleDisableSelectMode, product_id, reset, selectedBatches]);
 
     return (
         <Table>
+            {selectMode && (
+                <ActionButtonsContainer>
+                    <ButtonPaper
+                        icon={() => <Icons name="trash-outline" />}
+                        onPress={handleSwitchDeleteModal}
+                    >
+                        {strings.View_ProductDetails_ActionBar_Confirm}
+                    </ButtonPaper>
+
+                    <ButtonPaper
+                        icon={() => <Icons name="exit-outline" />}
+                        onPress={handleDisableSelectMode}
+                    >
+                        {strings.View_ProductDetails_ActionBar_Cancel}
+                    </ButtonPaper>
+                </ActionButtonsContainer>
+            )}
+
             <TableHeader>
                 <TableTitle>
                     {
@@ -80,79 +147,61 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
                 </TableTitle>
             </TableHeader>
 
-            {batches.map(batch => {
-                const expired = isPast(batch.exp_date);
-                const nextToExp =
-                    addDays(
-                        new Date(),
-                        userPreferences.howManyDaysToBeNextToExpire
-                    ) > batch.exp_date;
-
-                const treated = batch.status === 'Tratado';
+            {lotes.map(batch => {
+                const isChecked = selectedBatches.find(id => id === batch.id);
 
                 return (
-                    <TableRow
-                        key={batch.id}
-                        expired={expired}
-                        nextToExp={nextToExp}
-                        treated={treated}
-                        onPress={() => {
-                            navigate('EditLote', {
-                                productId: product_id,
-                                loteId: batch.id,
-                            });
-                        }}
-                    >
-                        <TableCell>
-                            <Text
-                                expired={expired}
-                                nextToExp={nextToExp}
-                                treated={treated}
-                            >
-                                {batch.lote}
-                            </Text>
-                        </TableCell>
-                        <TableCell>
-                            <Text
-                                expired={expired}
-                                nextToExp={nextToExp}
-                                treated={treated}
-                            >
-                                {format(batch.exp_date, dateFormat, {
-                                    locale: languageCode,
-                                })}
-                            </Text>
-                        </TableCell>
-                        <TableCell>
-                            <Text
-                                expired={expired}
-                                nextToExp={nextToExp}
-                                treated={treated}
-                            >
-                                {batch.amount}
-                            </Text>
-                        </TableCell>
-                        {!!batch.amount && !!batch.price && batch.price > 0 && (
-                            <TableCell>
-                                <Text
-                                    expired={expired}
-                                    nextToExp={nextToExp}
-                                    treated={treated}
+                    <Container key={batch.id}>
+                        {selectMode && (
+                            <SelectButtonContainer>
+                                <SelectButton
+                                    onPress={() => switchSelectedItem(batch.id)}
                                 >
-                                    <NumberFormat
-                                        value={batch.amount * batch.price}
-                                        displayType="text"
-                                        thousandSeparator
-                                        prefix={currencyPrefix}
-                                        renderText={value => value}
-                                        decimalScale={2}
-                                    />
-                                </Text>
-                            </TableCell>
+                                    {isChecked ? (
+                                        <SelectIcon name="checkmark-circle-outline" />
+                                    ) : (
+                                        <SelectIcon name="ellipse-outline" />
+                                    )}
+                                </SelectButton>
+                            </SelectButtonContainer>
                         )}
-                    </TableRow>
+
+                        <ItemRow
+                            key={batch.id}
+                            batch={batch}
+                            productId={product_id}
+                            onLongPress={handleEnableSelectMode}
+                        />
+                    </Container>
                 );
             })}
+
+            <Dialog.Container
+                visible={deleteModal}
+                onBackdropPress={handleSwitchDeleteModal}
+            >
+                <Dialog.Title>
+                    {strings.View_ProductDetails_DeleteManyBatches_Modal_Title}
+                </Dialog.Title>
+                <Dialog.Description>
+                    {
+                        strings.View_ProductDetails_DeleteManyBatches_Modal_Description
+                    }
+                </Dialog.Description>
+                <Dialog.Button
+                    label={
+                        strings.View_ProductDetails_DeleteManyBatches_Modal_Cancel
+                    }
+                    onPress={handleSwitchDeleteModal}
+                />
+                <Dialog.Button
+                    label={
+                        strings.View_ProductDetails_DeleteManyBatches_Modal_Confirm
+                    }
+                    color="red"
+                    onPress={handleDeleteMany}
+                />
+            </Dialog.Container>
         </Table>
     );
 };

@@ -132,7 +132,7 @@ const Settings: React.FC = () => {
                                     }
                                 }}
                             />
-                            <Notifications />
+                            {/* <Notifications /> */}
 
                             {userPreferences.isUserPremium && (
                                 <SettingContainer>

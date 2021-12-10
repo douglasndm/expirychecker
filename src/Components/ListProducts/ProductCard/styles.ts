@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 
 interface ICard {
     expired?: boolean;
@@ -11,9 +10,8 @@ interface IProductInfo {
     expiredOrNext?: boolean;
 }
 
-export const Card = styled(RectButton)<ICard>`
+export const Card = styled.Pressable<ICard>`
     flex-direction: column;
-
     margin: 3px 6px;
     padding: 15px;
     border-radius: 12px;

@@ -10,6 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
+import DatePicker from 'react-native-date-picker';
+import { format } from 'date-fns';
+import { getLocales } from 'react-native-localize';
 
 import strings from '~/Locales';
 
@@ -20,7 +23,6 @@ import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
-import Input from '~/Components/InputText';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -31,6 +33,7 @@ import {
     InputTextContainer,
     InputTextIcon,
     InputTextIconContainer,
+    ActionButtonsContainer,
 } from './styles';
 
 const Home: React.FC = () => {
@@ -44,9 +47,11 @@ const Home: React.FC = () => {
     const [products, setProducts] = useState<Array<IProduct>>([]);
 
     const [searchString, setSearchString] = useState<string>('');
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
     const [enableBarCodeReader, setEnableBarCodeReader] =
         useState<boolean>(false);
+    const [enableDatePicker, setEnableDatePicker] = useState(false);
 
     useEffect(() => {
         if (Platform.OS === 'ios') {
@@ -83,8 +88,8 @@ const Home: React.FC = () => {
     const getProduts = useCallback(async () => {
         try {
             setIsLoading(true);
+
             const allProducts = await getAllProducts({
-                limit: 20,
                 removeProductsWithoutBatches: true,
                 removeTreatedBatch: true,
                 sortProductsByExpDate: true,
@@ -92,10 +97,11 @@ const Home: React.FC = () => {
 
             setProducts(allProducts);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -110,10 +116,8 @@ const Home: React.FC = () => {
             setSearchString(search);
 
             if (search && search !== '') {
-                const allProducts = await getAllProducts({});
-
                 const findProducts = searchForAProductInAList({
-                    products: allProducts,
+                    products,
                     searchFor: search,
                     sortByExpDate: true,
                 });
@@ -146,6 +150,26 @@ const Home: React.FC = () => {
         setEnableBarCodeReader(false);
     }, []);
 
+    const enableCalendarModal = useCallback(() => {
+        setEnableDatePicker(true);
+    }, []);
+
+    const handleSelectDateChange = useCallback(
+        (date: Date) => {
+            setEnableDatePicker(false);
+
+            let dateFormat = 'dd/MM/yyyy';
+            if (getLocales()[0].languageCode === 'en') {
+                dateFormat = 'MM/dd/yyyy';
+            }
+            const d = format(date, dateFormat);
+            setSearchString(d);
+            setSelectedDate(date);
+            handleSearchChange(d);
+        },
+        [handleSearchChange]
+    );
+
     const handleOnCodeRead = useCallback(
         code => {
             setSearchString(code);
@@ -163,10 +187,11 @@ const Home: React.FC = () => {
 
             await getProduts();
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsRefreshing(false);
         }
@@ -198,13 +223,36 @@ const Home: React.FC = () => {
                                 value={searchString}
                                 onChangeText={handleSearchChange}
                             />
-                            <InputTextIconContainer
-                                onPress={handleOnBarCodeReaderOpen}
-                            >
-                                <InputTextIcon name="barcode-outline" />
-                            </InputTextIconContainer>
+
+                            <ActionButtonsContainer>
+                                <InputTextIconContainer
+                                    onPress={handleOnBarCodeReaderOpen}
+                                >
+                                    <InputTextIcon name="barcode-outline" />
+                                </InputTextIconContainer>
+
+                                {userPreferences.isUserPremium && (
+                                    <InputTextIconContainer
+                                        onPress={enableCalendarModal}
+                                        style={{ marginLeft: 5 }}
+                                    >
+                                        <InputTextIcon name="calendar-outline" />
+                                    </InputTextIconContainer>
+                                )}
+                            </ActionButtonsContainer>
                         </InputTextContainer>
                     )}
+
+                    <DatePicker
+                        modal
+                        mode="date"
+                        open={enableDatePicker}
+                        date={selectedDate}
+                        onConfirm={handleSelectDateChange}
+                        onCancel={() => {
+                            setEnableDatePicker(false);
+                        }}
+                    />
 
                     <ListProducts
                         products={productsSearch}

@@ -75,10 +75,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         navigation.navigate('Export');
     }, [navigation]);
 
-    const navigateToNotifications = useCallback(() => {
-        navigation.navigate('NotificationsPreferences');
-    }, [navigation]);
-
     const handleNavigateToTeams = useCallback(() => {
         navigation.navigate('Teams');
     }, [navigation]);
@@ -219,27 +215,6 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                             </LabelContainer>
                         </LabelGroup>
                     </MenuItemContainer>
-
-                    {__DEV__ && (
-                        <MenuItemContainer
-                            onPress={
-                                userPreferences.isUserPremium
-                                    ? navigateToNotifications
-                                    : navigateToPRO
-                            }
-                        >
-                            <MenuContent>
-                                <Icons name="notifications-outline" />
-                                <MenuItemText>Notificações</MenuItemText>
-                            </MenuContent>
-
-                            <LabelGroup>
-                                <LabelContainer>
-                                    <Label>{strings.Menu_Label_PRO}</Label>
-                                </LabelContainer>
-                            </LabelGroup>
-                        </MenuItemContainer>
-                    )}
 
                     {!userPreferences.isUserPremium && (
                         <MenuItemContainer
