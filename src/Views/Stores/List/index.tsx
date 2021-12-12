@@ -56,7 +56,7 @@ const ListView: React.FC = () => {
             setStores([...stores, newStore]);
             setNewStoreName('');
         } catch (err) {
-            setInputErrorMessage(err.message);
+            if (err instanceof Error) setInputErrorMessage(err.message);
         } finally {
             setIsAdding(false);
         }

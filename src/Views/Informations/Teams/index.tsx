@@ -77,10 +77,11 @@ const Teams: React.FC = () => {
                 url: `file://${path}`,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsExporting(false);
         }

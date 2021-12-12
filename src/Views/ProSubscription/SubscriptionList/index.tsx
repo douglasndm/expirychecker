@@ -5,7 +5,6 @@ import React, {
     useMemo,
     useContext,
 } from 'react';
-import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
@@ -38,6 +37,7 @@ import {
     LoadingIndicator,
 } from './styles';
 import { getEnableProVersion } from '~/Functions/Settings';
+import { getPlansString } from '~/Utils/Purchases/Plans';
 
 const SubscriptionList: React.FC = () => {
     const { reset, replace } =
@@ -66,75 +66,13 @@ const SubscriptionList: React.FC = () => {
         PurchasesPackage | undefined
     >();
 
-    const monthlyString = useMemo(() => {
-        let string = '';
-
-        if (monthlyPlan) {
-            const { price_string, introPrice } = monthlyPlan.product;
-
-            if (Platform.OS === 'android') {
-                if (introPrice) {
-                    string =
-                        strings.View_Subscription_Monthly_WithIntroText.replace(
-                            '{INTRO_PRICE}',
-                            introPrice.priceString
-                        ).replace('{PRICE}', price_string);
-                }
-            }
-
-            string = strings.View_Subscription_Monthly_Text.replace(
-                '{PRICE}',
-                price_string
-            );
-        }
-        return string;
-    }, [monthlyPlan]);
-
-    const quarterlyString = useMemo(() => {
-        let string = '';
-        if (quarterlyPlan) {
-            const { price_string, introPrice } = quarterlyPlan.product;
-
-            if (Platform.OS === 'android') {
-                if (introPrice) {
-                    string =
-                        strings.View_Subscription_3Months_WithIntroText.replace(
-                            '{INTRO_PRICE}',
-                            introPrice.priceString
-                        ).replace('{PRICE}', price_string);
-                }
-            }
-
-            string = strings.View_Subscription_3Months_Text.replace(
-                '{PRICE}',
-                price_string
-            );
-        }
-        return string;
-    }, [quarterlyPlan]);
-
-    const annualString = useMemo(() => {
-        let string = '';
-        if (annualPlan) {
-            const { price_string, introPrice } = annualPlan.product;
-
-            if (Platform.OS === 'android') {
-                if (introPrice) {
-                    string =
-                        strings.View_Subscription_AYear_WithIntroText.replace(
-                            '{INTRO_PRICE}',
-                            introPrice.priceString
-                        ).replace('{PRICE}', price_string);
-                }
-            }
-
-            string = strings.View_Subscription_AYear_Text.replace(
-                '{PRICE}',
-                price_string
-            );
-        }
-        return string;
-    }, [annualPlan]);
+    const plansText = useMemo(() => {
+        return getPlansString({
+            monthly: monthlyPlan,
+            quarterly: quarterlyPlan,
+            annual: annualPlan,
+        });
+    }, [annualPlan, monthlyPlan, quarterlyPlan]);
 
     const loadData = useCallback(async () => {
         try {
@@ -160,10 +98,11 @@ const SubscriptionList: React.FC = () => {
                 }
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -193,16 +132,18 @@ const SubscriptionList: React.FC = () => {
             setUserPreferences({
                 ...userPreferences,
                 isUserPremium: enablePro,
+                disableAds: enablePro,
             });
 
             if (enablePro) {
                 replace('Home');
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsPurchasing(false);
         }
@@ -308,7 +249,7 @@ const SubscriptionList: React.FC = () => {
                                                     }
                                                 >
                                                     <TextSubscription>
-                                                        {monthlyString}
+                                                        {plansText.monthly}
                                                     </TextSubscription>
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
@@ -347,7 +288,7 @@ const SubscriptionList: React.FC = () => {
                                                     }
                                                 >
                                                     <TextSubscription>
-                                                        {quarterlyString}
+                                                        {plansText.quarterly}
                                                     </TextSubscription>
                                                 </SubscriptionDescription>
                                             </DetailsContainer>
@@ -381,7 +322,7 @@ const SubscriptionList: React.FC = () => {
                                                     }
                                                 >
                                                     <TextSubscription>
-                                                        {annualString}
+                                                        {plansText.annual}
                                                     </TextSubscription>
                                                 </SubscriptionDescription>
                                             </DetailsContainer>

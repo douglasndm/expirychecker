@@ -237,10 +237,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 type: 'edit_product',
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [
         code,
@@ -299,10 +300,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 type: 'delete_product',
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [navigate, productId]);
 

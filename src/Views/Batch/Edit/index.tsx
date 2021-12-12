@@ -144,10 +144,11 @@ const EditBatch: React.FC = () => {
                 type: 'edit_batch',
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }
 
@@ -163,10 +164,11 @@ const EditBatch: React.FC = () => {
                 ],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [loteId, reset]);
 
