@@ -44,10 +44,11 @@ const ListView: React.FC = () => {
 
             setBrands(response);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -80,7 +81,7 @@ const ListView: React.FC = () => {
             setBrands([...brands, newBrand]);
             setNewBrandName('');
         } catch (err) {
-            setInputErrorMessage(err.message);
+            if (err instanceof Error) setInputErrorMessage(err.message);
         } finally {
             setIsAdding(false);
         }

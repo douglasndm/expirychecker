@@ -1,26 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function setAllowedToReadIDFA(allow: boolean): Promise<void> {
-    try {
-        await AsyncStorage.setItem('Privacy/canUseIDFA', String(allow));
-    } catch (err) {
-        throw new Error(err.message);
-    }
+    await AsyncStorage.setItem('Privacy/canUseIDFA', String(allow));
 }
 
 export async function getAllowedToReadIDFA(): Promise<boolean | null> {
-    try {
-        const response = await AsyncStorage.getItem('Privacy/canUseIDFA');
+    const response = await AsyncStorage.getItem('Privacy/canUseIDFA');
 
-        if (response) {
-            if (response === 'false') {
-                return false;
-            }
-
-            return true;
+    if (response) {
+        if (response === 'false') {
+            return false;
         }
-        return null;
-    } catch (err) {
-        throw new Error(err.message);
+
+        return true;
     }
+    return null;
 }

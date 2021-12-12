@@ -45,10 +45,11 @@ const Edit: React.FC = () => {
 
             setName(brand.name);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -109,10 +110,11 @@ const Edit: React.FC = () => {
                 ],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [reset, routeParams.brand_id]);
 

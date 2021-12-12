@@ -19,24 +19,20 @@ export async function shareFile({
     fileExtesion,
     encoding = 'utf8',
 }: shareFileProps): Promise<void> {
-    try {
-        const path = `${RNFS.DocumentDirectoryPath}/${fileName}.${fileExtesion}`;
+    const path = `${RNFS.DocumentDirectoryPath}/${fileName}.${fileExtesion}`;
 
-        // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
-        // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
-        if (await RNFS.exists(path)) {
-            await RNFS.unlink(path);
-        }
-
-        await RNFS.writeFile(path, fileAsString, encoding);
-
-        await Share.open({
-            title: strings.Function_Share_SaveFileTitle,
-            url: `file://${path}`,
-        });
-    } catch (err) {
-        throw new Error(err);
+    // VERIFICA SE O ARQUIVO EXISTE E CASO EXISTA APAGUE ELE
+    // POR ALGUM MOTIVO A LIB FAZ APPEND AUTOMATICO
+    if (await RNFS.exists(path)) {
+        await RNFS.unlink(path);
     }
+
+    await RNFS.writeFile(path, fileAsString, encoding);
+
+    await Share.open({
+        title: strings.Function_Share_SaveFileTitle,
+        url: `file://${path}`,
+    });
 }
 
 interface ShareProductImageWithTextProps {
@@ -74,9 +70,10 @@ export async function ShareProductImageWithText({
             }
         });
     } catch (err) {
-        if (err.message !== 'User did not share') {
-            throw new Error(err.message);
-        }
+        if (err instanceof Error)
+            if (err.message !== 'User did not share') {
+                throw new Error(err.message);
+            }
     }
 }
 
@@ -95,8 +92,9 @@ export async function shareText({
             message: text,
         });
     } catch (err) {
-        if (err.message !== 'User did not share') {
-            throw new Error(err.message);
-        }
+        if (err instanceof Error)
+            if (err.message !== 'User did not share') {
+                throw new Error(err.message);
+            }
     }
 }

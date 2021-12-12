@@ -60,10 +60,11 @@ const Edit: React.FC = () => {
                 ],
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [reset, routeParams.id]);
 

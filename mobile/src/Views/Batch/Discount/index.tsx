@@ -72,10 +72,11 @@ const Discount: React.FC = () => {
 
             pop();
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setApplyingDiscount(false);
         }
@@ -105,10 +106,11 @@ const Discount: React.FC = () => {
 
             setBatch(b);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }

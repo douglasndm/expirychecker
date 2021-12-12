@@ -121,10 +121,11 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 productId,
             });
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [
         lote,
@@ -171,10 +172,11 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 if (prod.code) setCode(prod.code);
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }

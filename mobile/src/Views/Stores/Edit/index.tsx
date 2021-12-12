@@ -27,9 +27,8 @@ const Edit: React.FC = () => {
     const [storeName, setStoreName] = useState<string>('');
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
-    const { pop, popToTop } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { pop, popToTop } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const route = useRoute();
     const params = route.params as Props;
@@ -42,10 +41,11 @@ const Edit: React.FC = () => {
                 setStoreName(store.name);
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [params.store_id]);
 
@@ -63,10 +63,11 @@ const Edit: React.FC = () => {
 
             pop();
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [params.store_id, pop, storeName]);
 
@@ -81,10 +82,11 @@ const Edit: React.FC = () => {
 
             popToTop();
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [params.store_id, popToTop]);
 
