@@ -70,16 +70,16 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
             // DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
             // CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
             // DE QUAL ESTÁ MAIS PRÓXIMO
-            const sortedProductsFinal = sortProductsByFisrtLoteExpDate(
-                sortedProds
-            );
+            const sortedProductsFinal =
+                sortProductsByFisrtLoteExpDate(sortedProds);
 
             setProducts(sortedProductsFinal);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }

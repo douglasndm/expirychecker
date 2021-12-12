@@ -187,12 +187,13 @@ const View: React.FC = () => {
                 text,
             });
         } catch (err) {
-            if (err.message !== 'User did not share') {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-            }
+            if (err instanceof Error)
+                if (err.message !== 'User did not share') {
+                    showMessage({
+                        message: err.message,
+                        type: 'danger',
+                    });
+                }
         } finally {
             setIsSharing(false);
         }
@@ -214,10 +215,11 @@ const View: React.FC = () => {
             setProduct(prod);
             if (b) setBatch(b);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }

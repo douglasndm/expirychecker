@@ -55,10 +55,11 @@ const Camera: React.FC<CameraProps> = ({
                 setPhotoTalked(true);
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsTakingPhoto(false);
         }

@@ -216,10 +216,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 });
             }
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         }
     }, [
         adReady,

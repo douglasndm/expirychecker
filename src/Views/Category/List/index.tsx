@@ -47,10 +47,11 @@ const ListView: React.FC = () => {
 
             setCategories(cats);
         } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
-            });
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
         } finally {
             setIsLoading(false);
         }
@@ -81,7 +82,7 @@ const ListView: React.FC = () => {
             setCategories([...categories, newCategory]);
             setNewCategoryName('');
         } catch (err) {
-            setInputErrorMessage(err.message);
+            if (err instanceof Error) setInputErrorMessage(err.message);
         } finally {
             setIsAdding(false);
         }
