@@ -9,6 +9,7 @@ import {
 } from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
 import Purchases from 'react-native-purchases';
+import OneSignal from 'react-native-onesignal';
 
 import strings from '~/Locales';
 
@@ -71,12 +72,21 @@ const About: React.FC = () => {
     const handleShareIdInfo = useCallback(async () => {
         setTapsCount(tapsCount + 1);
         if (tapsCount > 15) {
+            let firebase_messaging = null;
+
+            try {
+                firebase_messaging = await messaging().getToken();
+            } catch {
+                firebase_messaging = null;
+            }
+
             const revenueCatId = await Purchases.getAppUserID();
-            const token = await messaging().getToken();
+            const oneSignal = await OneSignal.getDeviceState();
 
             const userInfo = {
                 purchase_idetinfy: revenueCatId,
-                firebase_messaging: token,
+                firebase_messaging,
+                oneSignal,
             };
             shareText({
                 title: 'User informations',
