@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { ScrollView } from 'react-native';
-import { DocumentDirectoryPath, readDir } from 'react-native-fs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { zip } from 'react-native-zip-archive';
 import { addDays } from 'date-fns';
 import messaging from '@react-native-firebase/messaging';
 import OneSignal from 'react-native-onesignal';
@@ -12,7 +10,6 @@ import Realm from '../../Services/Realm';
 import Button from '../../Components/Button';
 
 import { Container, Category } from '../Settings/styles';
-import { getAllProducts } from '~/Functions/Products';
 import {
     isTimeForANotification,
     setTimeForNextNotification,
@@ -71,42 +68,6 @@ const Test: React.FC = () => {
         }
     }
 
-    interface IProductImage {
-        productId: number;
-        imagePath: string;
-        imageName: string;
-    }
-
-    const logFiles = useCallback(async () => {
-        const allProducts = await getAllProducts({});
-
-        const productsWithPics = allProducts.filter(p => p.photo);
-        const dir = await readDir(DocumentDirectoryPath);
-
-        const files: Array<IProductImage> = [];
-
-        productsWithPics.forEach(p => {
-            const findedPic = dir.find(
-                file => file.name === p.photo || file.path === p.photo
-            );
-
-            if (findedPic) {
-                files.push({
-                    productId: p.id,
-                    imageName: findedPic.name,
-                    imagePath: findedPic.path,
-                });
-            }
-        });
-
-        const targetPath = `${DocumentDirectoryPath}/backupfile.zip`;
-        const sourcePath = `${DocumentDirectoryPath}/images`;
-
-        const zipPath = await zip(sourcePath, targetPath);
-
-        console.log(zipPath);
-    }, []);
-
     const handleNotification = useCallback(async () => {
         await setTimeForNextNotification();
 
@@ -143,8 +104,6 @@ const Test: React.FC = () => {
                         text="Delete all realm data"
                         onPress={deleteProducts}
                     />
-
-                    <Button text="Log files" onPress={logFiles} />
 
                     <Button
                         text="Log is time to notificaiton"
