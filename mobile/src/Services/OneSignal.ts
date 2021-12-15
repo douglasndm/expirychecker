@@ -1,8 +1,14 @@
 import OneSignal from 'react-native-onesignal';
+import Purchases from 'react-native-purchases';
 import dotenv from 'react-native-config';
 
 OneSignal.setLogLevel(6, 0);
 OneSignal.setAppId(dotenv.ONESIGNAL_APP_ID);
+
+async function OneSignalInit() {
+    const user_id = (await OneSignal.getDeviceState()).userId;
+    Purchases.setOnesignalID(user_id);
+}
 
 // Prompt for push on iOS
 OneSignal.promptForPushNotificationsWithUserResponse(response => {
@@ -31,3 +37,5 @@ OneSignal.setNotificationWillShowInForegroundHandler(
 OneSignal.setNotificationOpenedHandler(notification => {
     console.log('OneSignal: notification opened:', notification);
 });
+
+OneSignalInit();
