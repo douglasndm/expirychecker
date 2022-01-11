@@ -10,7 +10,11 @@ import { useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 import EnvConfig from 'react-native-config';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import {
+    BannerAd,
+    BannerAdSize,
+    TestIds,
+} from '@invertase/react-native-google-ads';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
