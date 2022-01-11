@@ -1,4 +1,4 @@
-import admob, { MaxAdContentRating } from '@react-native-firebase/admob';
+import admob, { MaxAdContentRating } from '@invertase/react-native-google-ads';
 import { getEnableProVersion } from '../Functions/Settings';
 
 async function prepareAds() {
@@ -15,6 +15,13 @@ async function prepareAds() {
             tagForUnderAgeOfConsent: true,
         });
     }
+
+    admob()
+        .initialize()
+        .then(adapterStatuses => {
+            console.log('AdMob was initiated');
+            console.log(adapterStatuses);
+        });
 }
 
 prepareAds();
