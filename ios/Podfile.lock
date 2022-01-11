@@ -19,9 +19,6 @@ PODS:
     - React-Core (= 0.66.1)
     - React-jsi (= 0.66.1)
     - ReactCommon/turbomodule/core (= 0.66.1)
-  - Firebase/AdMob (7.11.0):
-    - Firebase/CoreOnly
-    - Google-Mobile-Ads-SDK (~> 7.66)
   - Firebase/Analytics (7.11.0):
     - Firebase/Core
   - Firebase/Core (7.11.0):
@@ -151,9 +148,9 @@ PODS:
     - GCDWebServer/Core (= 3.5.4)
   - GCDWebServer/Core (3.5.4)
   - glog (0.3.5)
-  - Google-Mobile-Ads-SDK (7.69.0):
-    - GoogleAppMeasurement (~> 7.0)
-    - GoogleUserMessagingPlatform (~> 1.1)
+  - Google-Mobile-Ads-SDK (8.13.0):
+    - GoogleAppMeasurement (< 9.0, >= 7.0)
+    - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleAppMeasurement (7.11.0):
     - GoogleAppMeasurement/AdIdSupport (= 7.11.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
@@ -171,7 +168,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
-  - GoogleUserMessagingPlatform (1.4.0)
+  - GoogleUserMessagingPlatform (2.0.0)
   - GoogleUtilities/AppDelegateSwizzler (7.6.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -214,11 +211,11 @@ PODS:
     - RNPermissions
   - PersonalizedAdConsent (1.0.5)
   - PromisesObjC (1.2.12)
-  - Purchases (3.12.2):
-    - PurchasesCoreSwift (= 3.12.2)
-  - PurchasesCoreSwift (3.12.2)
-  - PurchasesHybridCommon (1.8.0):
-    - Purchases (= 3.12.2)
+  - Purchases (3.13.1):
+    - PurchasesCoreSwift (= 3.13.1)
+  - PurchasesCoreSwift (3.13.1)
+  - PurchasesHybridCommon (1.11.1):
+    - Purchases (= 3.13.1)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -531,11 +528,6 @@ PODS:
     - React-Core
   - RNDeviceInfo (8.1.3):
     - React-Core
-  - RNFBAdMob (11.5.0):
-    - Firebase/AdMob (= 7.11.0)
-    - PersonalizedAdConsent (~> 1.0.5)
-    - React-Core
-    - RNFBApp
   - RNFBAnalytics (11.5.0):
     - Firebase/Analytics (= 7.11.0)
     - React-Core
@@ -551,12 +543,16 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNGoogleAds (3.4.0):
+    - Google-Mobile-Ads-SDK (= 8.13.0)
+    - PersonalizedAdConsent (~> 1.0.5)
+    - React-Core
   - RNLocalize (2.1.1):
     - React-Core
   - RNPermissions (3.0.5):
     - React-Core
-  - RNPurchases (4.3.0):
-    - PurchasesHybridCommon (= 1.8.0)
+  - RNPurchases (4.5.0):
+    - PurchasesHybridCommon (= 1.11.1)
     - React-Core
   - RNReanimated (2.2.3):
     - DoubleConversion
@@ -691,12 +687,12 @@ DEPENDENCIES:
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - "RNFBAdMob (from `../node_modules/@react-native-firebase/admob`)"
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - "RNGoogleAds (from `../node_modules/@invertase/react-native-google-ads`)"
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
@@ -859,8 +855,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
-  RNFBAdMob:
-    :path: "../node_modules/@react-native-firebase/admob"
   RNFBAnalytics:
     :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
@@ -871,6 +865,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleAds:
+    :path: "../node_modules/@invertase/react-native-google-ads"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNPermissions:
@@ -920,10 +916,10 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  Google-Mobile-Ads-SDK: 2f288748a42920d1c744946a460896a95b0e9110
+  Google-Mobile-Ads-SDK: 05e5d68bb42a61b2e5bef336a52789785605aa22
   GoogleAppMeasurement: fd19169c3034975cb934e865e5667bfdce59df7f
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
-  GoogleUserMessagingPlatform: b168e8c46cd8f92aa3e34b584c4ca78a411ce367
+  GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -938,9 +934,9 @@ SPEC CHECKSUMS:
   Permission-Notifications: 16ccd862111103378a7bab9fb1c5c71addffc348
   PersonalizedAdConsent: dbecabb3467df967c16d9cebc2ef4a8890e4bbd8
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Purchases: 3e20881892483ab6ca17cb86a89af4c6d1731562
-  PurchasesCoreSwift: e614645840af49d465dee1918011f784365d79a6
-  PurchasesHybridCommon: f87cfd2fb1a55df8daa2a996a1d19d48e5bfbf4f
+  Purchases: 2693d6444609de044ab25fcda9561bef038f24da
+  PurchasesCoreSwift: ca55f9ef671f89abed133775dd9e53f55007828d
+  PurchasesHybridCommon: a0313de4f31fbaf137518b2686ccdca4c91dd2b4
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 3cc065b52aa18db729268b9bd78a2feffb4d0f91
   RCTTypeSafety: 3c4fc37d5dea452d2ef17324db5504ec2f05083a
@@ -984,15 +980,15 @@ SPEC CHECKSUMS:
   RNCPicker: 6724ab5fcca83c34fe1f18a89baa13e9885f0393
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
   RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
-  RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
   RNFBAnalytics: 3e250066a98d6ea0a7816c52de75f2633f726580
   RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d
   RNFBMessaging: c873e6c37f69d22de22cab134413030a9c6330a9
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNGoogleAds: f18bb05542ba813ddff9319e903b8745d9fb73e4
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
-  RNPurchases: e067a4eb18561125d119de8148f27aa0bae2f9db
+  RNPurchases: aa1b4dff749eb760c6de50f1d987aa45455e58a8
   RNReanimated: b04ef2a4f0cb61b062bbcf033f84a9e470f4f60b
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
   RNSentry: 0a525a8bf2fd8928496c312c5964eb5889733c1a
