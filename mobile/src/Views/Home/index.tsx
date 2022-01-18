@@ -8,7 +8,7 @@ import React, {
 import { Platform, PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
-import { BannerAd, BannerAdSize, TestIds } from '@invertase/react-native-google-ads';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';

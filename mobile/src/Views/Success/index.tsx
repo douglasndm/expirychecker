@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import LottieView from 'lottie-react-native';
-import { BannerAd, BannerAdSize, TestIds } from '@invertase/react-native-google-ads';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import EnvConfig from 'react-native-config';
 
 import strings from '~/Locales';

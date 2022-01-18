@@ -15,7 +15,7 @@ import {
     InterstitialAd,
     AdEventType,
     TestIds,
-} from '@invertase/react-native-google-ads';
+} from '@react-native-firebase/admob';
 
 import strings from '~/Locales';
 

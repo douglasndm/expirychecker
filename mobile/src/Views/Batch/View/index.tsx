@@ -8,11 +8,7 @@ import React, {
 import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
-import {
-    TestIds,
-    BannerAd,
-    BannerAdSize,
-} from '@invertase/react-native-google-ads';
+import { TestIds, BannerAd, BannerAdSize } from '@react-native-firebase/admob';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
