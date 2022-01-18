@@ -1182,11 +1182,6 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@invertase/react-native-google-ads@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@invertase/react-native-google-ads/-/react-native-google-ads-3.4.0.tgz#92ee78811622a8bbf957ba7328831853c831a948"
-  integrity sha512-Z1k6oxr5kc4g63V2kdfSpAcEGHPzQ12s82jMv7NYhHrg4JOrUVMM+LrvpYLTg15qon5ReU8L2dPc1q2s0O5+ZQ==
-
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -1601,6 +1596,11 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-3.0.3.tgz#830167fd757ba70ac638747ba3169b2dbae60330"
   integrity sha512-8IeHfDwJ9/CTUwFs6x90VlobV3BfuPgNLjTgC6dRZovfCWigaZwVNIFFJnHBakK3pW2xErAPwhdvNR4JeNoYbw==
+
+"@react-native-firebase/admob@11.5.0":
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/admob/-/admob-11.5.0.tgz#a392b0997b92b853513e33ba1d0c78a6031a0409"
+  integrity sha512-WmScm8xZC50pdOUm5CMixAD4VtVSitslQNySErLNxWnsKe4a+puTeivpQZGTdQ5lszBLIs3oxoNplqtPAqk27g==
 
 "@react-native-firebase/analytics@11.5.0":
   version "11.5.0"

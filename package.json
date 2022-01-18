@@ -11,10 +11,10 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@invertase/react-native-google-ads": "^3.4.0",
     "@react-native-async-storage/async-storage": "^1.15.8",
     "@react-native-community/push-notification-ios": "^1.10.1",
     "@react-native-community/slider": "^3.0.3",
+    "@react-native-firebase/admob": "11.5.0",
     "@react-native-firebase/analytics": "11.5.0",
     "@react-native-firebase/app": "11.5.0",
     "@react-native-firebase/messaging": "11.5.0",
