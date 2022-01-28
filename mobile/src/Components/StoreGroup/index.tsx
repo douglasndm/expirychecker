@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import { Platform } from 'react-native';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import { BannerAd, BannerAdSize, TestIds } from '@invertase/react-native-google-ads';
 import { useNavigation } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
 
