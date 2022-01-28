@@ -95,6 +95,7 @@ export async function getAllProducts({
     const realm = await Realm();
 
     const allProducts = realm.objects<IProduct>('Product').slice();
+
     let filtertedProducts: Array<IProduct> = allProducts;
 
     if (removeProductsWithoutBatches) {
