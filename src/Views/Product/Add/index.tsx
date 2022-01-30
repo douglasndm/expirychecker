@@ -430,7 +430,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     return (
         <>
             {isCameraEnabled ? (
-                <Camera onPhotoTaked={onPhotoTaked} />
+                <Camera
+                    onPhotoTaked={onPhotoTaked}
+                    onBackButtonPressed={handleDisableCamera}
+                />
             ) : (
                 <>
                     {isBarCodeEnabled ? (
