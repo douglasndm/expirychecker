@@ -20,9 +20,14 @@ import {
 interface RequestProps {
     title?: string;
     noDrawer?: boolean;
+    onBackPressed?: () => void;
 }
 
-const Header: React.FC<RequestProps> = ({ title, noDrawer }: RequestProps) => {
+const Header: React.FC<RequestProps> = ({
+    title,
+    noDrawer,
+    onBackPressed,
+}: RequestProps) => {
     const navigation = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
@@ -41,7 +46,7 @@ const Header: React.FC<RequestProps> = ({ title, noDrawer }: RequestProps) => {
 
     return noDrawer ? (
         <HeaderContainerNoDrawner>
-            <BackButton handleOnPress={handleGoBack} />
+            <BackButton handleOnPress={onBackPressed || handleGoBack} />
 
             <TextLogo noDrawer={noDrawer}>{title}</TextLogo>
         </HeaderContainerNoDrawner>

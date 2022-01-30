@@ -1,23 +1,25 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { unlink } from 'react-native-fs';
+import { unlink, exists } from 'react-native-fs';
 import { RNCamera } from 'react-native-camera';
 import { showMessage } from 'react-native-flash-message';
+import Picker, { pickSingle } from 'react-native-document-picker';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
-import BackButton from '../BackButton';
-import Button from '../Button';
+import { copyImageFromTempDirToDefinitiveDir } from '~/Functions/Products/Image';
+
+import Header from '../Header';
 
 import {
     Container,
-    PageHeader,
-    PageTitle,
     CameraContainer,
     CameraComponent,
     ButtonsContainer,
+    ShotButtonContainer,
+    Icons,
+    PicPreview,
+    PreviewContainer,
 } from './styles';
-import { copyImageFromTempDirToDefinitiveDir } from '~/Functions/Products/Image';
 
 export interface onPhotoTakedProps {
     fileName: string;
@@ -32,13 +34,68 @@ const Camera: React.FC<CameraProps> = ({
     onPhotoTaked,
     onBackButtonPressed,
 }: CameraProps) => {
-    const { goBack } = useNavigation();
-
     const cameraRef = useRef<RNCamera>(null);
 
-    const [image, setImage] = useState<string | null>(null);
-    const [photoTaked, setPhotoTalked] = useState<boolean>(false);
-    const [takingPhoto, setIsTakingPhoto] = useState<boolean>(false);
+    const [imagePath, setImagePath] = useState<string | null>(null);
+    const [imageName, setImageName] = useState<string | null>(null);
+
+    const [photoImported, setPhotoImported] = useState<boolean>(false);
+
+    const handleTakeAnotherPhoto = useCallback(async () => {
+        try {
+            if (imagePath && (await exists(imagePath))) {
+                await unlink(imagePath);
+            }
+
+            if (!photoImported) {
+                if (cameraRef && cameraRef.current) {
+                    await cameraRef.current.resumePreview();
+                }
+            }
+
+            setImagePath(null);
+            setImageName(null);
+            setPhotoImported(false);
+        } catch (err) {
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+        }
+    }, [imagePath, photoImported]);
+
+    const handleSavePhoto = useCallback(async (temp_path: string) => {
+        const path = await copyImageFromTempDirToDefinitiveDir(temp_path);
+
+        setImagePath(path.filePath);
+        setImageName(path.fileName);
+
+        return path;
+    }, []);
+
+    const hanleOpenPhotoFromLib = useCallback(async () => {
+        try {
+            const response = await pickSingle({
+                mode: 'import',
+                type: Picker.types.images,
+                presentationStyle: 'formSheet',
+                copyTo: 'documentDirectory',
+            });
+
+            if (response.fileCopyUri) {
+                await handleSavePhoto(response.fileCopyUri);
+
+                setPhotoImported(true);
+            }
+        } catch (err) {
+            if (!Picker.isCancel && err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+        }
+    }, [handleSavePhoto]);
 
     const handleCapturePicture = useCallback(async () => {
         try {
@@ -51,8 +108,11 @@ const Camera: React.FC<CameraProps> = ({
                 };
                 const data = await cameraRef.current.takePictureAsync(options);
 
-                setImage(data.uri);
-                setPhotoTalked(true);
+                console.log(data);
+
+                setImagePath(data.uri);
+
+                await handleSavePhoto();
             }
         } catch (err) {
             if (err instanceof Error)
@@ -60,76 +120,67 @@ const Camera: React.FC<CameraProps> = ({
                     message: err.message,
                     type: 'danger',
                 });
-        } finally {
-            setIsTakingPhoto(false);
         }
     }, []);
 
-    const handleTakeAnotherPhoto = useCallback(async () => {
-        try {
-            if (image) {
-                await unlink(image);
-            }
-
-            setImage(null);
-            setPhotoTalked(false);
-
-            if (cameraRef && cameraRef.current) {
-                await cameraRef.current.resumePreview();
-            }
-        } catch (err) {
-            showMessage({
-                message: err.message,
-                type: 'danger',
+    const handleOnPhotoTaked = useCallback(async () => {
+        if (imageName && imagePath)
+            onPhotoTaked({
+                fileName: imageName,
+                filePath: imagePath,
             });
-        }
-    }, [image]);
-
-    const handleSavePhoto = useCallback(async () => {
-        if (image) {
-            const path = await copyImageFromTempDirToDefinitiveDir(image);
-
-            onPhotoTaked(path);
-        }
-    }, [image, onPhotoTaked]);
+    }, [imageName, imagePath, onPhotoTaked]);
 
     return (
         <Container>
-            <PageHeader>
-                <BackButton handleOnPress={onBackButtonPressed || goBack} />
-                <PageTitle>
-                    {!image
+            <Header
+                title={
+                    !imagePath
                         ? strings.Component_Camera_PageTitle
-                        : strings.Component_Camera_PageTitle_OnPreview}
-                </PageTitle>
-            </PageHeader>
+                        : strings.Component_Camera_PageTitle_OnPreview
+                }
+                onBackPressed={onBackButtonPressed}
+                noDrawer
+            />
 
-            <CameraContainer>
-                <CameraComponent ref={cameraRef} />
-            </CameraContainer>
+            {photoImported && imagePath ? (
+                <PreviewContainer>
+                    <PicPreview source={{ uri: `file://${imagePath}` }} />
+                </PreviewContainer>
+            ) : (
+                <CameraContainer>
+                    <CameraComponent ref={cameraRef} />
+                </CameraContainer>
+            )}
 
             <ButtonsContainer>
-                {!photoTaked ? (
-                    <Button
-                        text={strings.Component_Camera_Button_TakePicture}
-                        onPress={handleCapturePicture}
-                        isLoading={takingPhoto}
-                    />
-                ) : (
-                    <>
-                        <Button
-                            text={
-                                strings.Component_Camera_Button_TakeAnotherPicture
-                            }
-                            onPress={handleTakeAnotherPhoto}
-                            contentStyle={{ marginRight: 10 }}
-                        />
-                        <Button
-                            text={strings.Component_Camera_Button_SavePicture}
-                            onPress={handleSavePhoto}
-                        />
-                    </>
-                )}
+                <ShotButtonContainer>
+                    {imagePath ? (
+                        <>
+                            <Icons
+                                name="checkmark-outline"
+                                onPress={handleOnPhotoTaked}
+                            />
+                            <Icons
+                                name="close-outline"
+                                onPress={handleTakeAnotherPhoto}
+                                isSelected
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Icons
+                                name="camera-outline"
+                                onPress={handleCapturePicture}
+                            />
+                            <Icons
+                                name="documents-outline"
+                                onPress={hanleOpenPhotoFromLib}
+                                isSelected
+                            />
+                        </>
+                    )}
+                </ShotButtonContainer>
             </ButtonsContainer>
         </Container>
     );
