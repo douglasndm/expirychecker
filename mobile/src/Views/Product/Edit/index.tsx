@@ -39,6 +39,7 @@ import {
     InputTextTip,
     InputCodeTextIcon,
     InputTextIconContainer,
+    ImageContainer,
     ProductImage,
     CameraButtonContainer,
     CameraButtonIcon,
@@ -333,20 +334,21 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                     noDrawer
                                 />
 
-                                <PageContent>
-                                    {userPreferences.isUserPremium &&
-                                        !!photoPath && (
-                                            <ProductImageContainer
-                                                onPress={handleEnableCamera}
-                                            >
-                                                <ProductImage
-                                                    source={{
-                                                        uri: `file://${photoPath}`,
-                                                    }}
-                                                />
-                                            </ProductImageContainer>
-                                        )}
+                                {userPreferences.isUserPremium && !!photoPath && (
+                                    <ImageContainer>
+                                        <ProductImageContainer
+                                            onPress={handleEnableCamera}
+                                        >
+                                            <ProductImage
+                                                source={{
+                                                    uri: `file://${photoPath}`,
+                                                }}
+                                            />
+                                        </ProductImageContainer>
+                                    </ImageContainer>
+                                )}
 
+                                <PageContent>
                                     <InputContainer>
                                         <InputGroup>
                                             <InputTextContainer>

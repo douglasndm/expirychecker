@@ -68,13 +68,16 @@ export const CameraButtonIcon = styled(Ionicons).attrs(props => ({
     color: props.theme.colors.text,
 }))``;
 
-export const ProductImageContainer = styled(RectButton)`
+export const ImageContainer = styled.View`
+    justify-content: center;
     align-items: center;
-    margin-top: 10px;
 `;
+
+export const ProductImageContainer = styled(RectButton)``;
 
 export const ProductImage = styled.Image`
     margin-top: 15px;
+    margin-bottom: 15px;
     border-radius: 75px;
 
     width: 150px;

@@ -424,6 +424,8 @@ PODS:
     - React-Core
   - react-native-document-picker (7.1.0):
     - React-Core
+  - react-native-image-picker (4.7.3):
+    - React-Core
   - react-native-in-app-review (3.2.2):
     - React
   - react-native-onesignal (4.3.3):
@@ -651,6 +653,7 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -791,6 +794,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-in-app-review:
     :path: "../node_modules/react-native-in-app-review"
   react-native-onesignal:
@@ -940,6 +945,7 @@ SPEC CHECKSUMS:
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-date-picker: 414fe8f73392bae030dc4efec39d743b5c5de283
   react-native-document-picker: bf12b9ca87790f9b723106ffde0eff239928e515
+  react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
   react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
   react-native-onesignal: 9a543af01c2359b7567919cd3b1490051c553e21
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
