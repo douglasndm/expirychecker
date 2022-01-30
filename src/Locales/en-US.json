@@ -23,6 +23,8 @@
 
     "Menu_Label_PRO": "PRO",
 
+    "OutdatedApp_Message": "Your app is outdated. Click here and update it now",
+
     "BarCodeReader_PageTitle": "Barcode reader",
     "BarCodeReader_CloseButton": "Close reader",
     "BarCodeReader_PermissionRequired": "We need your permission to access the device's camera to user barcode reader.",
