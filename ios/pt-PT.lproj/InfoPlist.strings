@@ -13,3 +13,7 @@ NSCameraUsageDescription = "Precisamos da sua autorização para usar a câmera 
 
 // Asking permission for app tracking
 NSUserTrackingUsageDescription = "Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recursos e mostrar anúncios mais relevantes.";
+
+NSPhotoLibraryUsageDescription  = "Precisamos de acesso a sua biblioteca de fotos para o aplicativo conseguir importar as fotos do produtos para o aplicativo (para usuários PRO).";
+
+NSLocationWhenInUseUsageDescription = "Nós usamos a localização do seu dispositivo para análises e entender onde o aplicativo é mais usado e com isso fazer melhorias e melhores traduções";
