@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { unlink, exists } from 'react-native-fs';
 import { RNCamera } from 'react-native-camera';
 import { showMessage } from 'react-native-flash-message';
-import Picker, { pickSingle } from 'react-native-document-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import strings from '~/Locales';
 
@@ -76,20 +76,21 @@ const Camera: React.FC<CameraProps> = ({
 
     const hanleOpenPhotoFromLib = useCallback(async () => {
         try {
-            const response = await pickSingle({
-                mode: 'import',
-                type: Picker.types.images,
-                presentationStyle: 'formSheet',
-                copyTo: 'documentDirectory',
+            const result = await launchImageLibrary({
+                mediaType: 'photo',
+                selectionLimit: 1,
             });
 
-            if (response.fileCopyUri) {
-                await handleSavePhoto(response.fileCopyUri);
+            if (result.assets) {
+                const file = result.assets[0];
 
-                setPhotoImported(true);
+                if (file.uri) {
+                    await handleSavePhoto(file.uri);
+                    setPhotoImported(true);
+                }
             }
         } catch (err) {
-            if (!Picker.isCancel && err instanceof Error)
+            if (err instanceof Error)
                 showMessage({
                     message: err.message,
                     type: 'danger',
@@ -108,11 +109,9 @@ const Camera: React.FC<CameraProps> = ({
                 };
                 const data = await cameraRef.current.takePictureAsync(options);
 
-                console.log(data);
-
                 setImagePath(data.uri);
 
-                await handleSavePhoto();
+                await handleSavePhoto(data.uri);
             }
         } catch (err) {
             if (err instanceof Error)

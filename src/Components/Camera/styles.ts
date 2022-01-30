@@ -50,7 +50,7 @@ interface IconsProps {
 }
 
 export const Icons = styled(Ionicons).attrs(props => ({
-    size: 50,
+    size: 34,
     color: props.isSelected ? props.theme.colors.inputText : '#fff',
 }))<IconsProps>`
     padding: 10px 30px;

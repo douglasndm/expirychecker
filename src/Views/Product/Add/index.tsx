@@ -60,6 +60,7 @@ import {
     InputCodeTextIcon,
     InputTextIconContainer,
     InputText,
+    ImageContainer,
 } from './styles';
 import { getAllBrands } from '~/Utils/Brands';
 
@@ -339,6 +340,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         if (photoPath) {
             if (await exists(photoPath)) {
                 await unlink(photoPath);
+                setPhotoPath('');
             }
         }
         setIsBarCodeEnabled(false);
@@ -452,15 +454,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                 <PageContent>
                                     {userPreferences.isUserPremium &&
                                         !!photoPath && (
-                                            <ProductImageContainer
-                                                onPress={handleEnableCamera}
-                                            >
-                                                <ProductImage
-                                                    source={{
-                                                        uri: `file://${photoPath}`,
-                                                    }}
-                                                />
-                                            </ProductImageContainer>
+                                            <ImageContainer>
+                                                <ProductImageContainer
+                                                    onPress={handleEnableCamera}
+                                                >
+                                                    <ProductImage
+                                                        source={{
+                                                            uri: `file://${photoPath}`,
+                                                        }}
+                                                    />
+                                                </ProductImageContainer>
+                                            </ImageContainer>
                                         )}
 
                                     <InputContainer>
