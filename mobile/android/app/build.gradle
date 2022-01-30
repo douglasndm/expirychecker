@@ -145,8 +145,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 145
-        versionName "1.11.5"
+        versionCode 147
+        versionName "1.11.7"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -274,6 +274,10 @@ dependencies {
     implementation 'com.google.ads.mediation:facebook:6.5.1.1'
     // Mediation Test Suite
     implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
+
+    // this 2 implementaions fix crash on some android devices
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
 
     api(group: "androidx.work", name: "work-runtime") {
     version {
