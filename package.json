@@ -31,7 +31,6 @@
     "polished": "^4.1.1",
     "react": "17.0.2",
     "react-native": "^0.67.1",
-    "react-native-appsflyer": "^6.4.0",
     "react-native-background-fetch": "^4.0.3",
     "react-native-camera": "^3.40.0",
     "react-native-code-push": "^7.0.4",
