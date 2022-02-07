@@ -12,4 +12,5 @@
 # [react-native-background-fetch]
 -keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
 
--keep class com.appsflyer.** { *; }
+-keep class com.swmansion.reanimated.** { *; }
+-keep class com.facebook.react.turbomodule.** { *; }
