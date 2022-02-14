@@ -1,4 +1,4 @@
-import { addDays, isPast } from 'date-fns';
+import { addDays, isPast, startOfDay } from 'date-fns';
 
 import strings from '../Locales';
 
@@ -20,12 +20,21 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
         const lotes = p.lotes.slice();
 
         const lotesFiltered = lotes.filter(l => {
-            if (
-                l.exp_date < addDays(new Date(), daysToBeNext) &&
-                !isPast(l.exp_date) &&
-                l.status !== 'Tratado'
-            ) {
-                return true;
+            if (l.status && l.status.toLowerCase() !== 'tratado') {
+                if (p.daysToBeNext && p.daysToBeNext > 0) {
+                    const dateToCheck = startOfDay(
+                        addDays(new Date(), p.daysToBeNext)
+                    );
+
+                    if (l.exp_date <= dateToCheck) {
+                        return true;
+                    }
+                } else if (
+                    l.exp_date < addDays(new Date(), daysToBeNext) &&
+                    !isPast(l.exp_date)
+                ) {
+                    return true;
+                }
             }
 
             return false;
