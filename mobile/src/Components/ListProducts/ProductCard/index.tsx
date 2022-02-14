@@ -81,15 +81,28 @@ const Product = ({ product, onLongPress }: Request) => {
     }, [batch]);
 
     const nextToExp = useMemo(() => {
-        return (
-            (batch &&
-                addDays(
-                    new Date(),
-                    userPreferences.howManyDaysToBeNextToExpire
-                ) >= batch.exp_date) ||
-            undefined
-        );
-    }, [batch, userPreferences.howManyDaysToBeNextToExpire]);
+        if (batch) {
+            if (product.daysToBeNext && product.daysToBeNext > 0) {
+                const dateToCheck = addDays(new Date(), product.daysToBeNext);
+
+                if (dateToCheck >= batch.exp_date) {
+                    return true;
+                }
+            }
+
+            const { howManyDaysToBeNextToExpire } = userPreferences;
+            const dateToCheck = addDays(
+                new Date(),
+                howManyDaysToBeNextToExpire
+            );
+
+            if (dateToCheck >= batch.exp_date) {
+                return true;
+            }
+        }
+
+        return false;
+    }, [batch, product.daysToBeNext, userPreferences]);
 
     const expiredOrNext = useMemo(() => {
         return !!(expired || nextToExp);

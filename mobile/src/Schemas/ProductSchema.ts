@@ -7,6 +7,7 @@ const ProductSchema = {
         code: 'string?', // ? no final diz ao Realm que o campo pode ficar vazio
         brand: 'string?',
         photo: 'string?',
+        daysToBeNext: 'int?',
         store: 'string?',
         categories: 'string[]', // uuid
         lotes: 'Lote[]',

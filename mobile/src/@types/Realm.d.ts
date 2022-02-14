@@ -5,6 +5,7 @@ interface IProduct {
     brand?: string;
     store?: string;
     photo?: string;
+    daysToBeNext?: number;
     categories: Array<string>;
     lotes: Array<ILote>;
 }

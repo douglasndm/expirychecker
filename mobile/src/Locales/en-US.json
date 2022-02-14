@@ -105,7 +105,7 @@
     "View_AddProduct_InputAccessibility_Amount": "Field to type the Amount",
     "View_AddProduct_InputAccessibility_UnitPrice": "Field to type the Unit price",
     "View_AddProduct_InputAccessibility_Store": "Field to type the Store",
-    "View_AddProduct_MoreInformation_Label": "More informations",
+    "View_AddProduct_MoreInformation_Label": "PRO informations",
     "View_AddProduct_CalendarTitle": "Expiration date",
     "View_AddProduct_CalendarAccessibilityDescription": "Calendar to select the expiration date",
     "View_AddProduct_Button_Save": "Save",
