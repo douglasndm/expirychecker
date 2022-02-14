@@ -118,6 +118,7 @@ export async function createProduct({
             name: product.name,
             code: product.code,
             photo: product.photo,
+            daysToBeNext: product.daysToBeNext,
             brand: product.brand,
             store: product.store,
             categories: product.categories,
@@ -137,6 +138,7 @@ interface updateProductProps {
     store?: string | null;
     brand?: string | null;
     photo?: string;
+    daysToBeNext?: number | undefined;
     categories?: Array<string>;
     lotes?: Array<ILote>;
 }
