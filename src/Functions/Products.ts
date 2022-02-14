@@ -20,6 +20,7 @@ export function sortProductsLotesByLotesExpDate(
             store: prod.store,
             photo: prod.photo,
             categories: prod.categories,
+            daysToBeNext: prod.daysToBeNext,
             lotes: prodLotesSorted,
         };
 
@@ -71,6 +72,7 @@ export function removeAllLotesTratadosFromAllProduts(
             store: prod.store,
             photo: prod.photo,
             categories: prod.categories,
+            daysToBeNext: prod.daysToBeNext,
             lotes: removeLotesTratados(prod.lotes),
         };
         return product;
@@ -118,6 +120,7 @@ export async function getAllProducts({
                 code: product.code,
                 store: product.store,
                 photo: product.photo,
+                daysToBeNext: product.daysToBeNext,
                 categories: product.categories,
                 lotes: batches,
             };

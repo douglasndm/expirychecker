@@ -35,6 +35,7 @@ import Input from '~/Components/InputText';
 import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
+import DaysToBeNext from '~/Components/Product/DaysToBeNext';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -140,6 +141,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [brands, setBrands] = useState<Array<IBrandItem>>([]);
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
+    const [daysNext, setDaysNext] = useState<number | undefined>();
+
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
 
@@ -182,6 +185,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 brand: tempBrand,
                 store: tempStore,
                 photo: picFileName,
+                daysToBeNext: daysNext,
                 categories: prodCategories,
                 lotes: [],
             };
@@ -228,6 +232,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         amount,
         code,
         codeFieldError,
+        daysNext,
         expDate,
         lote,
         name,
@@ -590,6 +595,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
                                             {userPreferences.isUserPremium && (
                                                 <>
+                                                    <DaysToBeNext
+                                                        onChange={setDaysNext}
+                                                    />
+
                                                     <PickerContainer
                                                         style={{
                                                             marginBottom: 10,

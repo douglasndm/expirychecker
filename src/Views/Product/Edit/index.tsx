@@ -58,6 +58,7 @@ import {
     Text,
 } from './styles';
 import { getAllBrands } from '~/Utils/Brands';
+import DaysToBeNext from '~/Components/Product/DaysToBeNext';
 
 interface RequestParams {
     route: {
@@ -85,6 +86,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
     const [brands, setBrands] = useState<Array<IBrandItem>>([]);
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
+
+    const [daysNext, setDaysNext] = useState<number | undefined>();
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         null
@@ -174,6 +177,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
             setSelectedBrand(product.brand);
         }
 
+        if (product.daysToBeNext) {
+            setDaysNext(product.daysToBeNext);
+        }
+
         setIsLoading(false);
     }, [productId]);
 
@@ -228,6 +235,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 code,
                 brand: tempBrand,
                 store: tempStore,
+                daysToBeNext: daysNext,
 
                 categories: prodCategories,
                 photo: photoFileName,
@@ -246,6 +254,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         }
     }, [
         code,
+        daysNext,
         name,
         navigate,
         photoPath,
@@ -423,6 +432,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
                                             {userPreferences.isUserPremium && (
                                                 <>
+                                                    <DaysToBeNext
+                                                        onChange={setDaysNext}
+                                                    />
+
                                                     <PickerContainer
                                                         style={{
                                                             marginBottom: 10,

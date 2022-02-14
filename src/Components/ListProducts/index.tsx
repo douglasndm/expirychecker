@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Dialog from 'react-native-dialog';
@@ -7,6 +7,8 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
+
+import { sortByBatchesExpType } from '~/Functions/Products/SortBatches';
 
 import { deleteManyProducts } from '~/Utils/Products';
 
@@ -48,11 +50,29 @@ const ListProducts: React.FC<RequestProps> = ({
 }: RequestProps) => {
     const { navigate } = useNavigation();
 
+    const [sortedProducts, setSortedProducts] = useState<IProduct[]>([]);
+
     const [selectedProds, setSelectedProds] = useState<Array<number>>([]);
     const [selectMode, setSelectMode] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
 
     const { userPreferences } = useContext(PreferencesContext);
+
+    const handleSortProducts = useCallback(async () => {
+        const temp = await sortByBatchesExpType(products);
+
+        const tempArray: IProduct[] = [];
+
+        temp.expired.forEach(item => tempArray.push(item));
+        temp.nextToExp.forEach(item => tempArray.push(item));
+        temp.normal.forEach(item => tempArray.push(item));
+
+        setSortedProducts(tempArray);
+    }, [products]);
+
+    useEffect(() => {
+        handleSortProducts();
+    }, []);
 
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
@@ -210,7 +230,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 </ActionButtonsContainer>
             )}
             <FlatList
-                data={products}
+                data={sortedProducts}
                 keyExtractor={item => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
