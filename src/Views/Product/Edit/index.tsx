@@ -424,14 +424,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </InputGroup>
 
                                         <MoreInformationsContainer>
-                                            <MoreInformationsTitle>
-                                                {
-                                                    strings.View_AddProduct_MoreInformation_Label
-                                                }
-                                            </MoreInformationsTitle>
-
                                             {userPreferences.isUserPremium && (
                                                 <>
+                                                    <MoreInformationsTitle>
+                                                        {
+                                                            strings.View_EditProduct_MoreInformation_Label
+                                                        }
+                                                    </MoreInformationsTitle>
+
                                                     <DaysToBeNext
                                                         onChange={setDaysNext}
                                                     />
