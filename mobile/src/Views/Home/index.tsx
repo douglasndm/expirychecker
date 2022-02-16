@@ -99,7 +99,6 @@ const Home: React.FC = () => {
                 removeTreatedBatch: true,
                 sortProductsByExpDate: true,
             });
-            console.log(allProducts);
             setProducts(allProducts);
         } catch (err) {
             if (err instanceof Error)

@@ -31,8 +31,6 @@ const Export: React.FC = () => {
         try {
             setIsBackupLoading(true);
             await exportBackupFile();
-
-            console.log('exported');
         } catch (err) {
             if (err instanceof Error) {
                 showMessage({

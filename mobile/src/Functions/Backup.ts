@@ -143,14 +143,10 @@ export async function exportBackupFile(): Promise<void> {
         `${DocumentDirectoryPath}/${strings.Function_Export_FileName}.zip`
     );
 
-    console.log('to aqui');
-
     await Share.open({
         title: strings.Function_Share_SaveFileTitle,
         url: `file://${zipPath}`,
     });
-
-    console.log('cheguei aqui');
 
     await unlink(`${backupDir}`);
 }
