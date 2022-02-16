@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
+import strings from '~/Locales';
+
 import {
     Container,
     TextDescription,
@@ -29,13 +31,12 @@ const DaysToBeNext: React.FC<Props> = ({ onChange }: Props) => {
     return (
         <>
             <TextDescription>
-                Quantos dias do vencimento do produto o aplicativo deve
-                considerar-lo como próximo a vencer?
+                {strings.Component_DaysToBeNext_Description}
             </TextDescription>
             <Container>
                 <InputTextContainer>
                     <InputText
-                        placeholder="Dias do vencimento"
+                        placeholder={strings.Component_DaysToBeNext_Placeholder}
                         value={days}
                         onChangeText={onTextChange}
                     />
