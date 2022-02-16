@@ -29,6 +29,7 @@ import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
+import NotificationsDenny from '~/Components/NotificationsDenny';
 import OutdateApp from '~/Components/OutdateApp';
 
 import {
@@ -213,6 +214,8 @@ const Home: React.FC = () => {
             ) : (
                 <Container>
                     <Header />
+
+                    <NotificationsDenny />
 
                     <OutdateApp />
 
