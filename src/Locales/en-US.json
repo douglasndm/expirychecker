@@ -34,6 +34,9 @@
     "Component_Camera_PageTitle": "Take a product photo",
     "Component_Camera_PageTitle_OnPreview": "Did you like the photo?",
 
+    "Component_DaysToBeNext_Placeholder": "Days to be next to expire",
+    "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
+
     "Component_FastSub_Text": "Subscribe and enjoy all features",
 
     "Banner_NoAds": "You don't care about PRO but want to remove ads? Do it for just {PRICE} monthly",
@@ -105,7 +108,7 @@
     "View_AddProduct_InputAccessibility_Amount": "Field to type the Amount",
     "View_AddProduct_InputAccessibility_UnitPrice": "Field to type the Unit price",
     "View_AddProduct_InputAccessibility_Store": "Field to type the Store",
-    "View_AddProduct_MoreInformation_Label": "PRO informations",
+    "View_AddProduct_MoreInformation_Label": "More informations",
     "View_AddProduct_CalendarTitle": "Expiration date",
     "View_AddProduct_CalendarAccessibilityDescription": "Calendar to select the expiration date",
     "View_AddProduct_Button_Save": "Save",
@@ -146,6 +149,7 @@
     "View_EditProduct_InputAccessibility_Name": "Field to type the product's name",
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
+    "View_EditProduct_MoreInformation_Label": "PRO informations",
     "View_EditProduct_Button_Save": "Save",
     "View_EditProduct_Button_Cancel": "Cancel",
 

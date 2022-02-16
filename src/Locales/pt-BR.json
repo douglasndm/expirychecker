@@ -34,6 +34,9 @@
     "Component_Camera_PageTitle": "Tirar foto do produto",
     "Component_Camera_PageTitle_OnPreview": "Gostou da foto?",
 
+    "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
+    "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
+
     "Component_FastSub_Text": "Assine e aproveite todos os recursos",
 
     "Banner_NoAds": "Não precisa do PRO mas quer remover os anúncios? Acabe com os anúncios por {PRICE} mensais", "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
@@ -68,6 +71,8 @@
     "ProductCardComponent_ProductPrice": "Preço total",
     "ProductCardComponent_ProductExpireIn": "Vence",
     "ProductCardComponent_ProductExpiredIn": "Venceu",
+
+
 
     "Component_FloatButton_AddProduct": "Novo produto",
     "Component_FloatButton_AddBatch": "Novo lote",
@@ -104,7 +109,7 @@
     "View_AddProduct_InputAccessibility_Amount": "Campo para digitar a quantidade do produto",
     "View_AddProduct_InputAccessibility_UnitPrice": "Campo para digitar o preço unitário do produto",
     "View_AddProduct_InputAccessibility_Store": "Campo para digitar a loja do produto",
-    "View_AddProduct_MoreInformation_Label": "Recursos PRO",
+    "View_AddProduct_MoreInformation_Label": "Mais informações",
     "View_AddProduct_CalendarTitle": "Data de vencimento",
     "View_AddProduct_CalendarAccessibilityDescription": "Calendário para selecionar a data de vencimento do produto",
     "View_AddProduct_Button_Save": "Salvar",
@@ -145,6 +150,7 @@
     "View_EditProduct_InputAccessibility_Name": "Campo de texto para digitar o nome do produto",
     "View_EditProduct_InputAccessibility_Code": "Campo de texto para digitar o código do produto",
     "View_EditProduct_InputAccessibility_Store": "Campo de texto para digitar a loja do produto",
+    "View_EditProduct_MoreInformation_Label": "Recursos PRO",
     "View_EditProduct_Button_Save": "Salvar",
     "View_EditProduct_Button_Cancel": "Cancelar",
 
