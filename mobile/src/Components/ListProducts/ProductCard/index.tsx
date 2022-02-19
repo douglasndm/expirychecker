@@ -30,7 +30,7 @@ import {
 
 interface Request {
     product: IProduct;
-    onLongPress: () => void;
+    onLongPress?: () => void;
 }
 const Product = ({ product, onLongPress }: Request) => {
     const { navigate } = useNavigation();
