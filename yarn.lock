@@ -8092,10 +8092,10 @@ react-localization@^1.0.17:
   dependencies:
     localized-strings "^0.2.0"
 
-react-native-background-fetch@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.0.3.tgz#b9a8a918f90e8df8486ff6ec04607406e1cb57cc"
-  integrity sha512-Rh/xmlLJwt7dtbXBm2jv0WS+KNBG9di/Vd1qut7Mi88Ap2C+8Yv3UOcEacs3VUSauw3moWtnMtDBaoK9ZgYOIQ==
+react-native-background-fetch@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.0.5.tgz#cf59466440d66585313d7fcb718a30ba1461a7be"
+  integrity sha512-RZx51NRtGX+BFQXW026HUbXzOvCsQX76uBjU2QbikrtE0BefDbhpUPkM8VwufYod0aN5IQ480UF+D9bwUpsxmg==
 
 react-native-camera@^3.40.0:
   version "3.44.3"
@@ -8365,10 +8365,10 @@ react-native-zip-archive@^6.0.3:
   resolved "https://registry.yarnpkg.com/react-native-zip-archive/-/react-native-zip-archive-6.0.3.tgz#19dad30565b068b352c55048c8c535a6195f0b46"
   integrity sha512-EBJJV+owqD8ibBwYvEuvtBWlstHQUaN7QOJbc7shWwtJEgxayRbyVv5gGtUGTnMO2wX+dav+3egHX3s7GacRyA==
 
-react-native@^0.67.1:
-  version "0.67.1"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.67.1.tgz#a9cc13f1a691e9bb23f146f001e11fc0157af51c"
-  integrity sha512-doKN9qhtjilF+6p8603OVzqGKL4fq8EDAH5u00KPmZbL5ampHDQX9y8/uwlUvJggvHwZXlnvhW63u8Y1LA8rxw==
+react-native@^0.67.2:
+  version "0.67.2"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.67.2.tgz#312224bc2271c3cecd374d4bc425619cff4ea5dc"
+  integrity sha512-grEtpOLLvtSg8Bivg0ffVRCjTkresqMt7Jdog/geF6VAYhb4RnLaaUCWvyrfyB9buf135FKnqg5BIuve/XQNXA==
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^6.0.0"
