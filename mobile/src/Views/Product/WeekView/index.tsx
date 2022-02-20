@@ -154,7 +154,7 @@ const WeekView: React.FC = () => {
                     <ProductCount isPast={isExpired} isNext={isNext}>
                         {`${strings.View_ProductsByWeeks_ProductsCount.replace(
                             '{COUNT}',
-                            week.products.length
+                            String(week.products.length)
                         )}`}
                     </ProductCount>
                 </WeekContainer>
