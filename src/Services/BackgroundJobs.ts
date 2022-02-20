@@ -35,7 +35,7 @@ async function configureBackgroundJob() {
         period = 60;
     }
 
-    BackgroundJob.configure(
+    await BackgroundJob.configure(
         {
             minimumFetchInterval: period, // <-- minutes (15 is minimum allowed)
             // Android options
@@ -55,7 +55,7 @@ async function configureBackgroundJob() {
             );
             await handleSetNotification();
 
-            await Analytics().logEvent('Notification_sent');
+            if (!__DEV__) await Analytics().logEvent('Notification_sent');
 
             // Required: Signal completion of your task to native code
             // If you fail to do this, the OS can terminate your app
@@ -65,9 +65,10 @@ async function configureBackgroundJob() {
         async error => {
             console.log(`[js] RNBackgroundFetch failed to start: ${error}`);
 
-            await Analytics().logEvent('Error_while_send_Notification', {
-                error,
-            });
+            if (!__DEV__)
+                await Analytics().logEvent('Error_while_send_Notification', {
+                    error,
+                });
         }
     );
 
