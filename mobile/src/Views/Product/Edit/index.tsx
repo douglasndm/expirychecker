@@ -7,6 +7,8 @@ import { useTheme } from 'styled-components/native';
 
 import strings from '~/Locales';
 
+import PreferencesContext from '~/Contexts/PreferencesContext';
+
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -19,7 +21,6 @@ import {
     updateProduct,
     deleteProduct,
 } from '~/Functions/Product';
-import { getAllCategories } from '~/Functions/Category';
 import { getAllStores, getStore } from '~/Functions/Stores';
 import {
     saveProductImage,
@@ -27,7 +28,9 @@ import {
     getImageFileNameFromPath,
 } from '~/Functions/Products/Image';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { getAllBrands } from '~/Utils/Brands';
+
+import DaysToBeNext from '~/Components/Product/DaysToBeNext';
 
 import {
     Container,
@@ -57,8 +60,7 @@ import {
     DialogPaper,
     Text,
 } from './styles';
-import { getAllBrands } from '~/Utils/Brands';
-import DaysToBeNext from '~/Components/Product/DaysToBeNext';
+import CategorySelect from '~/Components/Product/CategorySelect';
 
 interface RequestParams {
     route: {
@@ -83,7 +85,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState<string>('');
 
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
     const [brands, setBrands] = useState<Array<IBrandItem>>([]);
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
@@ -102,18 +103,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const loadData = useCallback(async () => {
         setIsLoading(true);
-
-        const allCategories = await getAllCategories();
-        const categoriesArray: Array<ICategoryItem> = [];
-
-        allCategories.forEach(cat =>
-            categoriesArray.push({
-                key: cat.id,
-                label: cat.name,
-                value: cat.id,
-            })
-        );
-        setCategories(categoriesArray);
 
         const allBrands = await getAllBrands();
         const brandsArray: Array<IBrandItem> = [];
@@ -191,10 +180,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
         return unsubscribe;
     }, [addListener, loadData]);
-
-    const handleCategoryChange = useCallback(value => {
-        setSelectedCategory(value);
-    }, []);
 
     const handleBrandChange = useCallback(value => {
         setSelectedBrand(value);
@@ -436,25 +421,18 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         onChange={setDaysNext}
                                                     />
 
-                                                    <PickerContainer
-                                                        style={{
+                                                    <CategorySelect
+                                                        defaultValue={
+                                                            selectedCategory
+                                                        }
+                                                        onChange={
+                                                            setSelectedCategory
+                                                        }
+                                                        containerStyle={{
                                                             marginBottom: 10,
                                                         }}
-                                                    >
-                                                        <Picker
-                                                            items={categories}
-                                                            onValueChange={
-                                                                handleCategoryChange
-                                                            }
-                                                            value={
-                                                                selectedCategory
-                                                            }
-                                                            placeholder={{
-                                                                label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                                                                value: 'null',
-                                                            }}
-                                                        />
-                                                    </PickerContainer>
+                                                    />
+
                                                     <PickerContainer
                                                         style={{
                                                             marginBottom: 10,

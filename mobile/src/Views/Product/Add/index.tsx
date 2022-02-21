@@ -26,8 +26,9 @@ import {
     createProduct,
 } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
-import { getAllCategories } from '~/Functions/Category';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
+
+import { getAllBrands } from '~/Utils/Brands';
 
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
@@ -36,6 +37,7 @@ import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
 import DaysToBeNext from '~/Components/Product/DaysToBeNext';
+import CategorySelect from '~/Components/Product/CategorySelect';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -63,7 +65,6 @@ import {
     InputText,
     ImageContainer,
 } from './styles';
-import { getAllBrands } from '~/Utils/Brands';
 
 let adUnit = TestIds.INTERSTITIAL;
 
@@ -137,7 +138,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         return null;
     });
 
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
     const [brands, setBrands] = useState<Array<IBrandItem>>([]);
     const [stores, setStores] = useState<Array<IStoreItem>>([]);
 
@@ -249,18 +249,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const loadData = useCallback(async () => {
         setIsLoading(true);
 
-        const allCategories = await getAllCategories();
-        const categoriesArray: Array<ICategoryItem> = [];
-
-        allCategories.forEach(cat =>
-            categoriesArray.push({
-                key: cat.id,
-                label: cat.name,
-                value: cat.id,
-            })
-        );
-        setCategories(categoriesArray);
-
         const allBrands = await getAllBrands();
         const brandsArray: Array<IBrandItem> = [];
 
@@ -314,10 +302,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         return () => {
             eventListener();
         };
-    }, []);
-
-    const handleCategoryChange = useCallback(value => {
-        setSelectedCategory(value);
     }, []);
 
     const handleBrandChange = useCallback(value => {
@@ -599,25 +583,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                         onChange={setDaysNext}
                                                     />
 
-                                                    <PickerContainer
-                                                        style={{
+                                                    <CategorySelect
+                                                        onChange={
+                                                            setSelectedCategory
+                                                        }
+                                                        defaultValue={
+                                                            selectedCategory
+                                                        }
+                                                        containerStyle={{
                                                             marginBottom: 10,
                                                         }}
-                                                    >
-                                                        <Picker
-                                                            items={categories}
-                                                            onValueChange={
-                                                                handleCategoryChange
-                                                            }
-                                                            value={
-                                                                selectedCategory
-                                                            }
-                                                            placeholder={{
-                                                                label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                                                                value: 'null',
-                                                            }}
-                                                        />
-                                                    </PickerContainer>
+                                                    />
 
                                                     <PickerContainer
                                                         style={{
