@@ -19,7 +19,7 @@
     "@react-native-firebase/app": "^14.3.0",
     "@react-native-firebase/messaging": "^14.3.0",
     "@react-native-masked-view/masked-view": "^0.2.6",
-    "@react-native-picker/picker": "^1.14.0",
+    "@react-native-picker/picker": "^2.3.0",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.8",
     "@react-navigation/stack": "^5.14.9",
