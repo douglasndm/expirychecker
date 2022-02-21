@@ -7,10 +7,15 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 import EnvConfig from 'react-native-config';
-import { BannerAd, BannerAdSize, TestIds } from '@invertase/react-native-google-ads';
+import {
+    BannerAd,
+    BannerAdSize,
+    TestIds,
+} from '@invertase/react-native-google-ads';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -65,7 +70,8 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    const { navigate, goBack, addListener } = useNavigation();
+    const { navigate, push, goBack, addListener } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const productId = useMemo(() => {
         return route.params.id;
@@ -169,8 +175,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     }, [product]);
 
     const addNewLote = useCallback(() => {
-        navigate('AddLote', { productId });
-    }, [navigate, productId]);
+        push('AddLote', { productId });
+    }, [productId, push]);
 
     const handleEdit = useCallback(() => {
         navigate('EditProduct', { productId });
