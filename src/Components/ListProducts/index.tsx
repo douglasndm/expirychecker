@@ -72,7 +72,7 @@ const ListProducts: React.FC<RequestProps> = ({
 
     useEffect(() => {
         handleSortProducts();
-    }, []);
+    }, [handleSortProducts]);
 
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
