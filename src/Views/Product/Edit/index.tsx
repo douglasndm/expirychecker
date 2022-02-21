@@ -9,6 +9,18 @@ import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
+import {
+    getProductById,
+    updateProduct,
+    deleteProduct,
+} from '~/Functions/Product';
+import { getStore } from '~/Functions/Stores';
+import {
+    saveProductImage,
+    getProductImagePath,
+    getImageFileNameFromPath,
+} from '~/Functions/Products/Image';
+
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -16,21 +28,10 @@ import Input from '~/Components/InputText';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';
 
-import {
-    getProductById,
-    updateProduct,
-    deleteProduct,
-} from '~/Functions/Product';
-import { getAllStores, getStore } from '~/Functions/Stores';
-import {
-    saveProductImage,
-    getProductImagePath,
-    getImageFileNameFromPath,
-} from '~/Functions/Products/Image';
-
-import { getAllBrands } from '~/Utils/Brands';
-
-import DaysToBeNext from '~/Components/Product/DaysToBeNext';
+import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
 import {
     Container,
@@ -49,8 +50,6 @@ import {
     ProductImageContainer,
     MoreInformationsContainer,
     MoreInformationsTitle,
-    PickerContainer,
-    Picker,
 } from '../Add/styles';
 
 import {
@@ -60,7 +59,6 @@ import {
     DialogPaper,
     Text,
 } from './styles';
-import CategorySelect from '~/Components/Product/CategorySelect';
 
 interface RequestParams {
     route: {
@@ -85,9 +83,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
     const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState<string>('');
 
-    const [brands, setBrands] = useState<Array<IBrandItem>>([]);
-    const [stores, setStores] = useState<Array<IStoreItem>>([]);
-
     const [daysNext, setDaysNext] = useState<number | undefined>();
 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
@@ -103,34 +98,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const loadData = useCallback(async () => {
         setIsLoading(true);
-
-        const allBrands = await getAllBrands();
-        const brandsArray: Array<IBrandItem> = [];
-
-        allBrands.forEach(brand =>
-            brandsArray.push({
-                key: brand.id,
-                label: brand.name,
-                value: brand.id,
-            })
-        );
-        setBrands(brandsArray);
-
-        getAllStores().then(allStores => {
-            const storesArray: Array<IStoreItem> = [];
-
-            allStores.forEach(sto => {
-                if (sto.id) {
-                    storesArray.push({
-                        key: sto.id,
-                        label: sto.name,
-                        value: sto.id,
-                    });
-                }
-            });
-
-            setStores(storesArray);
-        });
 
         const product = await getProductById(productId);
 
@@ -180,14 +147,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
         return unsubscribe;
     }, [addListener, loadData]);
-
-    const handleBrandChange = useCallback(value => {
-        setSelectedBrand(value);
-    }, []);
-
-    const handleStoreChange = useCallback(value => {
-        setSelectedStore(value);
-    }, []);
 
     const updateProd = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -433,46 +392,25 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                         }}
                                                     />
 
-                                                    <PickerContainer
-                                                        style={{
+                                                    <BrandSelect
+                                                        defaultValue={
+                                                            selectedBrand
+                                                        }
+                                                        onChange={
+                                                            setSelectedBrand
+                                                        }
+                                                        containerStyle={{
                                                             marginBottom: 10,
                                                         }}
-                                                    >
-                                                        <Picker
-                                                            items={brands}
-                                                            onValueChange={
-                                                                handleBrandChange
-                                                            }
-                                                            value={
-                                                                selectedBrand
-                                                            }
-                                                            placeholder={{
-                                                                label: strings.View_AddProduct_InputPlaceholder_SelectBrand,
-                                                                value: 'null',
-                                                            }}
-                                                        />
-                                                    </PickerContainer>
+                                                    />
                                                 </>
                                             )}
 
                                             {userPreferences.multiplesStores && (
-                                                <PickerContainer
-                                                    style={{
-                                                        marginBottom: 10,
-                                                    }}
-                                                >
-                                                    <Picker
-                                                        items={stores}
-                                                        onValueChange={
-                                                            handleStoreChange
-                                                        }
-                                                        value={selectedStore}
-                                                        placeholder={{
-                                                            label: strings.View_AddProduct_InputPlacehoder_Store,
-                                                            value: 'null',
-                                                        }}
-                                                    />
-                                                </PickerContainer>
+                                                <StoreSelect
+                                                    defaultValue={selectedStore}
+                                                    onChange={setSelectedStore}
+                                                />
                                             )}
                                         </MoreInformationsContainer>
 
