@@ -5,7 +5,7 @@ import strings from '~/Locales';
 
 import { getAllCategories } from '~/Functions/Category';
 
-import { PickerContainer, Picker } from './styles';
+import { PickerContainer, Picker } from '../styles';
 
 interface Props {
     onChange: (value: string) => void;
