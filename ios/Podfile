@@ -17,8 +17,6 @@ target 'controledevalidade' do
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
   pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
 
-  pod 'AppsFlyerFramework'
-
   target 'controledevalidadeTests' do
     inherit! :complete
     # Pods for testing
