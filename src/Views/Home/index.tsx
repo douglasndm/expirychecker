@@ -4,8 +4,9 @@ import React, {
     useCallback,
     useMemo,
     useContext,
+    useRef,
 } from 'react';
-import { Platform, PixelRatio } from 'react-native';
+import { Platform, PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import {
@@ -46,6 +47,8 @@ const Home: React.FC = () => {
     const { reset } = useNavigation();
 
     const { userPreferences } = useContext(PreferencesContext);
+
+    const listRef = useRef<FlatList<IProduct>>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -205,7 +208,7 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <Container>
-                    <Header />
+                    <Header listRef={listRef} />
 
                     <NotificationsDenny />
 
@@ -260,6 +263,7 @@ const Home: React.FC = () => {
                         isHome
                         onRefresh={handleReload}
                         isRefreshing={isRefreshing}
+                        listRef={listRef}
                     />
                 </Container>
             )}

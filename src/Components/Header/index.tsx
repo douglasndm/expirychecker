@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { PixelRatio } from 'react-native';
+import { PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import strings from '~/Locales';
@@ -21,12 +21,14 @@ interface RequestProps {
     title?: string;
     noDrawer?: boolean;
     onBackPressed?: () => void;
+    listRef?: React.RefObject<FlatList<IProduct>>;
 }
 
 const Header: React.FC<RequestProps> = ({
     title,
     noDrawer,
     onBackPressed,
+    listRef,
 }: RequestProps) => {
     const navigation = useNavigation();
 
@@ -44,6 +46,26 @@ const Header: React.FC<RequestProps> = ({
         }
     }, [navigation]);
 
+    let lastPress = 0;
+
+    const onDoublePress = useCallback(() => {
+        const time = new Date().getTime();
+        const delta = time - lastPress;
+
+        const DOUBLE_PRESS_DELAY = 400;
+        if (delta < DOUBLE_PRESS_DELAY) {
+            // Success double press
+
+            if (listRef && listRef.current) {
+                listRef.current.scrollToIndex({
+                    animated: true,
+                    index: 0,
+                });
+            }
+        }
+        lastPress = time;
+    }, []);
+
     return noDrawer ? (
         <HeaderContainerNoDrawner>
             <BackButton handleOnPress={onBackPressed || handleGoBack} />
@@ -54,22 +76,24 @@ const Header: React.FC<RequestProps> = ({
         <>
             <StatusBar forceWhiteTextIOS />
 
-            <HeaderContainer>
-                <MenuButton onPress={handleOpenMenu}>
-                    <MenuIcon />
-                </MenuButton>
+            <HeaderContainer onPress={onDoublePress}>
+                <>
+                    <MenuButton onPress={handleOpenMenu}>
+                        <MenuIcon />
+                    </MenuButton>
 
-                {title ? (
-                    <TextLogo style={{ fontSize: titleFontSize }}>
-                        {title}
-                    </TextLogo>
-                ) : (
-                    <TextLogo style={{ fontSize: titleFontSize }}>
-                        {userPreferences.isUserPremium
-                            ? strings.AppName_ProVersion
-                            : strings.AppName}
-                    </TextLogo>
-                )}
+                    {title ? (
+                        <TextLogo style={{ fontSize: titleFontSize }}>
+                            {title}
+                        </TextLogo>
+                    ) : (
+                        <TextLogo style={{ fontSize: titleFontSize }}>
+                            {userPreferences.isUserPremium
+                                ? strings.AppName_ProVersion
+                                : strings.AppName}
+                        </TextLogo>
+                    )}
+                </>
             </HeaderContainer>
         </>
     );
