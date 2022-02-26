@@ -261,10 +261,6 @@
     "View_Settings_AccountDescription": "Manage your account linked to the app",
     "View_Settings_Button_SignOut": "Sign out",
 
-    "View_Settings_UnlockCode_Description": "Do you have an unlock code? Here is where you'll put it",
-    "View_Settings_UnlockCode_Placeholder": "Your unlocker code",
-    "View_Settings_UnlockCode_ButtonSubmit": "Check code",
-
     "View_Settings_Appearance_Theme_SelectOne": "Choose a theme",
     "View_Settings_Appearance_Theme_System": "System (Default)",
     "View_Settings_Appearance_Theme_Light": "Light",

@@ -1,7 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { compareAsc, parseISO, startOfDay } from 'date-fns';
-
-import api from '~/Services/API';
 
 interface ISetSettingProps {
     type:
@@ -28,31 +25,6 @@ export async function setSetting({
     value,
 }: ISetSettingProps): Promise<void> {
     await AsyncStorage.setItem(type, value);
-}
-
-interface ProCodeProps {
-    code: string;
-    lastTimeChecked: Date;
-}
-
-export async function setProCode({
-    code,
-    lastTimeChecked,
-}: ProCodeProps): Promise<void> {
-    await AsyncStorage.setItem(
-        'ProCode',
-        JSON.stringify({ code, lastTimeChecked: startOfDay(lastTimeChecked) })
-    );
-}
-
-export async function getProCode(): Promise<ProCodeProps | null> {
-    const result = await AsyncStorage.getItem('ProCode');
-
-    if (!result) {
-        return null;
-    }
-
-    return JSON.parse(result) as ProCodeProps;
 }
 
 export async function setHowManyDaysToBeNextExp(
@@ -148,43 +120,9 @@ export async function getNotificationCadency(): Promise<NotificationCadency> {
 }
 
 export async function getEnableProVersion(): Promise<boolean> {
-    if (__DEV__) {
-        return true;
-    }
-    const code = await getProCode();
-
-    if (code) {
-        const isAfter = compareAsc(
-            parseISO(String(code.lastTimeChecked)),
-            startOfDay(new Date())
-        );
-
-        if (isAfter < 0) {
-            console.log('App will check user subscription');
-
-            try {
-                const response = await api.post('/subscriptions', {
-                    code: code.code,
-                });
-                if (response.data.success) {
-                    await setProCode({
-                        code: code.code,
-                        lastTimeChecked: new Date(),
-                    });
-                } else {
-                    await AsyncStorage.removeItem('ProCode');
-                }
-            } catch (err) {
-                await AsyncStorage.removeItem('ProCode');
-            }
-        }
-
-        const updatedCode = await getProCode();
-
-        if (updatedCode) {
-            return true;
-        }
-    }
+    // if (__DEV__) {
+    //     return true;
+    // }
 
     const setting = await getSetting({ type: 'EnableProVersion' });
 
