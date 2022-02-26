@@ -18,7 +18,7 @@ type RoutesParams = {
         productId: number;
     };
     EditProduct: {
-        product: number;
+        productId: number;
     };
     EditLote: {
         productId: number;
@@ -47,7 +47,7 @@ type RoutesParams = {
     };
     Error;
     PhotoView: {
-        productId: string;
+        productId: number;
     };
     ListCategory;
     CategoryView: {
