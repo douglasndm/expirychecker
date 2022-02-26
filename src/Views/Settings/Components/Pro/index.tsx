@@ -4,9 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import RNPermissions from 'react-native-permissions';
-import * as Yup from 'yup';
-
-import api from '~/Services/API';
 
 import strings from '~/Locales';
 
@@ -33,15 +30,10 @@ import {
     ButtonCancelText,
     Loading,
 } from './styles';
-import InputText from '~/Components/InputText';
-import { getEnableProVersion, setProCode } from '~/Functions/Settings';
 
 const Pro: React.FC = () => {
-    const { userPreferences, setUserPreferences } =
-        useContext(PreferencesContext);
+    const { userPreferences } = useContext(PreferencesContext);
 
-    const [code, setCode] = useState<string>('');
-    const [isChecking, setIsChecking] = useState<boolean>(false);
     const [isImportLoading, setIsImportLoading] = useState<boolean>(false);
 
     const { navigate, reset } =
@@ -107,75 +99,6 @@ const Pro: React.FC = () => {
         }
     }, [reset]);
 
-    const handleCodeChange = useCallback((value: string) => {
-        setCode(value.trim());
-    }, []);
-
-    const handleCheckCode = useCallback(async () => {
-        try {
-            const schema = Yup.object().shape({
-                code: Yup.string().required('Digite seu código'),
-            });
-
-            await schema.validate({ code });
-        } catch (err) {
-            if (err instanceof Error) {
-                showMessage({
-                    message: err.message,
-                    type: 'warning',
-                });
-            }
-            return;
-        }
-
-        try {
-            setIsChecking(true);
-
-            const response = await api.post('/subscriptions', {
-                code,
-            });
-
-            if (response.data.success) {
-                await setProCode({
-                    code,
-                    lastTimeChecked: new Date(),
-                });
-
-                const enablePro = await getEnableProVersion();
-
-                setUserPreferences({
-                    ...userPreferences,
-                    isUserPremium: enablePro,
-                });
-
-                showMessage({
-                    message: 'Sucesso',
-                    type: 'info',
-                });
-
-                reset({
-                    routes: [{ name: 'Home' }],
-                });
-            }
-        } catch (err) {
-            if (err.response.data.message) {
-                if (err.response.data.message) {
-                    showMessage({
-                        message: err.response.data.message,
-                        type: 'danger',
-                    });
-                }
-            } else if (err instanceof Error) {
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-            }
-        } finally {
-            setIsChecking(false);
-        }
-    }, [code, reset, setUserPreferences, userPreferences]);
-
     return (
         <Container>
             <Category>
@@ -191,31 +114,6 @@ const Pro: React.FC = () => {
                             }
                             onPress={navigateToPremiumView}
                         />
-
-                        {Platform.OS !== 'ios' && (
-                            <>
-                                <SettingDescription>
-                                    {
-                                        strings.View_Settings_UnlockCode_Description
-                                    }
-                                </SettingDescription>
-                                <InputText
-                                    placeholder={
-                                        strings.View_Settings_UnlockCode_Placeholder
-                                    }
-                                    value={code}
-                                    onChange={handleCodeChange}
-                                    contentStyle={{ marginTop: 15 }}
-                                />
-                                <Button
-                                    text={
-                                        strings.View_Settings_UnlockCode_ButtonSubmit
-                                    }
-                                    onPress={handleCheckCode}
-                                    isLoading={isChecking}
-                                />
-                            </>
-                        )}
                     </>
                 )}
 
