@@ -1,7 +1,4 @@
 PODS:
-  - AppsFlyerFramework (6.4.0):
-    - AppsFlyerFramework/Main (= 6.4.0)
-  - AppsFlyerFramework/Main (6.4.0)
   - Base64 (1.1.2)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
@@ -597,7 +594,6 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - AppsFlyerFramework
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -695,7 +691,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AppsFlyerFramework
     - Base64
     - CocoaAsyncSocket
     - Firebase
@@ -876,7 +871,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppsFlyerFramework: 9c37252d3edce38257afc065ad48a48c0f004000
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
@@ -985,6 +979,6 @@ SPEC CHECKSUMS:
   Yoga: 9b6696970c3289e8dea34b3eda93f23e61fb8121
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b4ea1d5c907d70be5d6fe99097015ecbfdbc6630
+PODFILE CHECKSUM: 364f3fa6f495ba0a80eaa92b1d555e28cef95504
 
 COCOAPODS: 1.11.2
