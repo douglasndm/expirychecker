@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
 
@@ -30,7 +31,7 @@ const Header: React.FC<RequestProps> = ({
     onBackPressed,
     listRef,
 }: RequestProps) => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<DrawerNavigationProp<RoutesParams>>();
 
     const { userPreferences } = useContext(PreferencesContext);
 
