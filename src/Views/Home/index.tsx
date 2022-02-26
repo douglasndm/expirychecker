@@ -4,8 +4,9 @@ import React, {
     useCallback,
     useMemo,
     useContext,
+    useRef,
 } from 'react';
-import { Platform, PixelRatio } from 'react-native';
+import { Platform, PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import {
@@ -47,14 +48,16 @@ const Home: React.FC = () => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
+    const listRef = useRef<FlatList<IProduct>>(null);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
+    const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
     const [searchString, setSearchString] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-    const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
     const [enableBarCodeReader, setEnableBarCodeReader] =
         useState<boolean>(false);
     const [enableDatePicker, setEnableDatePicker] = useState(false);
@@ -137,15 +140,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         getProduts();
-    }, [getProduts]);
-
-    // useEffect(() => {
-    //     const unsubscribe = addListener('focus', () => {
-    //         getProduts();
-    //     });
-
-    //     return unsubscribe;
-    // }, [addListener, getProduts]);
+    }, []);
 
     const handleOnBarCodeReaderOpen = useCallback(() => {
         setEnableBarCodeReader(true);
@@ -213,7 +208,7 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <Container>
-                    <Header />
+                    <Header listRef={listRef} />
 
                     <NotificationsDenny />
 
@@ -268,6 +263,7 @@ const Home: React.FC = () => {
                         isHome
                         onRefresh={handleReload}
                         isRefreshing={isRefreshing}
+                        listRef={listRef}
                     />
                 </Container>
             )}

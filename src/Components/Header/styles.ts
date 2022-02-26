@@ -10,7 +10,7 @@ export const HeaderContainerNoDrawner = styled.SafeAreaView`
     align-items: center;
 `;
 
-export const HeaderContainer = styled.View`
+export const HeaderContainer = styled(RectButton)`
     width: 100%;
     padding: 30px 30px 15px 0px;
 
