@@ -23,6 +23,7 @@ import {
     Picker,
     ActionButton,
     Icons,
+    WarningText,
 } from './styles';
 
 interface IStoreItem {
@@ -127,22 +128,30 @@ const Teams: React.FC = () => {
                 <Text>{strings.Informations_Teams_AdvantageBackup}</Text>
 
                 {userPreferences.multiplesStores && (
-                    <PickerContainer
-                        style={{
-                            marginTop: 10,
-                            marginBottom: 10,
-                        }}
-                    >
-                        <Picker
-                            items={stores}
-                            onValueChange={handleStoreChange}
-                            value={selectedStore}
-                            placeholder={{
-                                label: strings.View_AddProduct_InputPlacehoder_Store,
-                                value: 'null',
+                    <>
+                        <PickerContainer
+                            style={{
+                                marginTop: 10,
+                                marginBottom: 10,
                             }}
-                        />
-                    </PickerContainer>
+                        >
+                            <Picker
+                                items={stores}
+                                onValueChange={handleStoreChange}
+                                value={selectedStore}
+                                placeholder={{
+                                    label: strings.View_AddProduct_InputPlacehoder_Store,
+                                    value: 'null',
+                                }}
+                            />
+                        </PickerContainer>
+                        <WarningText>
+                            Atenção, no momento o controle de validades times
+                            não suporta a importação de múltiplas lojas. Ao
+                            transferir o arquivo de exportação, os produtos
+                            ficaram sem loja
+                        </WarningText>
+                    </>
                 )}
 
                 <Button
