@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { Platform, PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import {
     BannerAd,
@@ -44,14 +45,14 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset, canGoBack } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { userPreferences } = useContext(PreferencesContext);
 
     const listRef = useRef<FlatList<IProduct>>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
@@ -94,7 +95,7 @@ const Home: React.FC = () => {
         return BannerAdSize.LARGE_BANNER;
     }, []);
 
-    const getProduts = useCallback(async () => {
+    const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -139,8 +140,8 @@ const Home: React.FC = () => {
     );
 
     useEffect(() => {
-        getProduts();
-    }, []);
+        loadData();
+    }, [loadData]);
 
     const handleOnBarCodeReaderOpen = useCallback(() => {
         setEnableBarCodeReader(true);
@@ -179,23 +180,20 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
-    const handleReload = useCallback(async () => {
-        try {
-            setIsRefreshing(true);
-
-            // await new Promise(f => setTimeout(f, 5000));
-
-            await getProduts();
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
+    useEffect(() => {
+        if (userPreferences.isUserPremium && userPreferences.multiplesStores) {
+            if (!canGoBack()) {
+                reset({
+                    routes: [{ name: 'StoreList' }],
                 });
-        } finally {
-            setIsRefreshing(false);
+            }
         }
-    }, [getProduts]);
+    }, [
+        canGoBack,
+        reset,
+        userPreferences.isUserPremium,
+        userPreferences.multiplesStores,
+    ]);
 
     return isLoading ? (
         <Loading />
@@ -261,8 +259,8 @@ const Home: React.FC = () => {
                     <ListProducts
                         products={productsSearch}
                         isHome
-                        onRefresh={handleReload}
-                        isRefreshing={isRefreshing}
+                        onRefresh={loadData}
+                        isRefreshing={isLoading}
                         listRef={listRef}
                     />
                 </Container>
