@@ -253,6 +253,7 @@
     "View_Settings_SettingName_DaysToExpPlaceholder": "Days to be close to expiration",
     "View_Settings_SettingName_EnableNotification": "Enable notifications?",
     "View_Settings_SettingName_EnableMultiplesStores": "Enable multiples stores mode?",
+    "View_Settings_SettingName_EnableStoresFirstPage": "Enable stores list as home page",
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
