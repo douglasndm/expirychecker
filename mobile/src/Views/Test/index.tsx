@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addDays } from 'date-fns';
 import messaging from '@react-native-firebase/messaging';
 import OneSignal from 'react-native-onesignal';
+import PushNotifications from 'react-native-push-notification';
 
 import Realm from '../../Services/Realm';
 
@@ -86,13 +87,11 @@ const Test: React.FC = () => {
         console.log(`One Signal -> ${oneSignal.userId}`);
     }, []);
 
-    useEffect(() => {
-        tokens();
-    }, []);
-
     const handleDeletePrivacySetting = useCallback(async () => {
         await AsyncStorage.removeItem('Privacy/canUseIDFA');
     }, []);
+
+    const handleRevokeNotifications = useCallback(async () => {}, []);
 
     return (
         <Container>
@@ -122,6 +121,13 @@ const Test: React.FC = () => {
                     <Button
                         text="Delete privacy setting"
                         onPress={handleDeletePrivacySetting}
+                    />
+
+                    <Button text="Log messaging id" onPress={tokens} />
+
+                    <Button
+                        text="Revoke notifications"
+                        onPress={handleRevokeNotifications}
                     />
                 </Category>
             </ScrollView>

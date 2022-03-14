@@ -181,7 +181,11 @@ const Home: React.FC = () => {
     );
 
     useEffect(() => {
-        if (userPreferences.isUserPremium && userPreferences.multiplesStores) {
+        if (
+            userPreferences.isUserPremium &&
+            userPreferences.multiplesStores &&
+            userPreferences.storesFirstPage
+        ) {
             if (!canGoBack()) {
                 reset({
                     routes: [{ name: 'StoreList' }],
@@ -193,6 +197,7 @@ const Home: React.FC = () => {
         reset,
         userPreferences.isUserPremium,
         userPreferences.multiplesStores,
+        userPreferences.storesFirstPage,
     ]);
 
     return isLoading ? (

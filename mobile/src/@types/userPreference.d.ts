@@ -5,6 +5,7 @@ export interface IUserPreferences {
     isUserPremium: boolean;
     appTheme: DefaultTheme;
     multiplesStores: boolean;
+    storesFirstPage: boolean;
     enableNotifications: boolean;
     notificationCadency: NotificationCadency;
     disableAds: boolean;

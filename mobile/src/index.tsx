@@ -49,6 +49,7 @@ const App: React.FC = () => {
         isUserPremium: false,
         appTheme: Themes.Light,
         multiplesStores: false,
+        storesFirstPage: false,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
         disableAds: false,
