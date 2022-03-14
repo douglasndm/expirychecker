@@ -33,7 +33,7 @@ import {
     PageContent,
     InputContainer,
     InputTextContainer,
-    InputText,
+    InputCodeText,
     Currency,
     InputGroup,
     ExpDateGroup,
@@ -224,7 +224,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                                     marginRight: 5,
                                 }}
                             >
-                                <InputText
+                                <InputCodeText
                                     placeholder={
                                         strings.View_AddBatch_InputPlacehoder_Batch
                                     }
@@ -237,7 +237,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                                     flex: 4,
                                 }}
                             >
-                                <InputText
+                                <InputCodeText
                                     placeholder={
                                         strings.View_AddBatch_InputPlacehoder_Amount
                                     }
