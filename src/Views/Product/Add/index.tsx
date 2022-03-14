@@ -16,6 +16,7 @@ import {
     AdEventType,
     TestIds,
 } from '@invertase/react-native-google-ads';
+import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
@@ -50,7 +51,6 @@ import {
     InputTextContainer,
     InputTextTip,
     CameraButtonContainer,
-    CameraButtonIcon,
     Currency,
     InputGroup,
     MoreInformationsContainer,
@@ -58,11 +58,14 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-    InputCodeTextIcon,
     InputTextIconContainer,
-    InputText,
     ImageContainer,
+    InputTextLoading,
+    Icon,
+    InputCodeTextContainer,
+    InputCodeText,
 } from './styles';
+import { findProductByCode } from '~/Functions/Products/FindByCode';
 
 let adUnit = TestIds.INTERSTITIAL;
 
@@ -142,8 +145,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const [existentProduct, setExistentProduct] = useState<number | null>(null);
 
+    const [isFindingProd, setIsFindingProd] = useState<boolean>(false);
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
+
+    const [productFinded, setProductFinded] = useState<boolean>(false);
+    const [productNameFinded, setProductNameFinded] = useState<null | string>(
+        null
+    );
+    const [showProdFindedModal, setShowProdFindedModal] =
+        useState<boolean>(false);
 
     const handleSave = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -261,6 +272,43 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             eventListener();
         };
     }, []);
+
+    const findProductByEAN = useCallback(async () => {
+        if (code !== '' && userPreferences.isUserPremium) {
+            if (getLocales()[0].languageCode === 'pt') {
+                try {
+                    setIsFindingProd(true);
+                    const response = await findProductByCode(code);
+
+                    if (response !== null) {
+                        setProductFinded(true);
+
+                        setProductNameFinded(response.name);
+                    } else {
+                        setProductFinded(false);
+
+                        setProductNameFinded(null);
+                    }
+                } finally {
+                    setIsFindingProd(false);
+                }
+            }
+        } else {
+            setProductFinded(false);
+        }
+    }, [code, userPreferences.isUserPremium]);
+
+    const handleSwitchFindModal = useCallback(() => {
+        setShowProdFindedModal(!showProdFindedModal);
+    }, [showProdFindedModal]);
+
+    const completeInfo = useCallback(() => {
+        if (productNameFinded) {
+            setName(productNameFinded);
+
+            setShowProdFindedModal(false);
+        }
+    }, [productNameFinded]);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
@@ -423,7 +471,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             <CameraButtonContainer
                                                 onPress={handleEnableCamera}
                                             >
-                                                <CameraButtonIcon />
+                                                <Icon
+                                                    name="camera-outline"
+                                                    size={36}
+                                                />
                                             </CameraButtonContainer>
                                         </InputGroup>
                                         {nameFieldError && (
@@ -434,20 +485,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             </InputTextTip>
                                         )}
 
-                                        <InputTextContainer
+                                        <InputCodeTextContainer
                                             hasError={codeFieldError}
-                                            style={{
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                                paddingRight: 10,
-                                            }}
                                         >
-                                            <InputText
+                                            <InputCodeText
                                                 placeholder={
                                                     strings.View_AddProduct_InputPlacehoder_Code
                                                 }
                                                 value={code}
+                                                onBlur={findProductByEAN}
                                                 onChangeText={value => {
                                                     setCode(value);
                                                     setCodeFieldError(false);
@@ -459,9 +505,30 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                     handleEnableBarCodeReader
                                                 }
                                             >
-                                                <InputCodeTextIcon />
+                                                <Icon
+                                                    name="barcode-outline"
+                                                    size={34}
+                                                />
                                             </InputTextIconContainer>
-                                        </InputTextContainer>
+
+                                            {isFindingProd && (
+                                                <InputTextLoading />
+                                            )}
+
+                                            {productFinded && !isFindingProd && (
+                                                <InputTextIconContainer
+                                                    style={{ marginTop: -5 }}
+                                                    onPress={
+                                                        handleSwitchFindModal
+                                                    }
+                                                >
+                                                    <Icon
+                                                        name="download"
+                                                        size={30}
+                                                    />
+                                                </InputTextIconContainer>
+                                            )}
+                                        </InputCodeTextContainer>
 
                                         {codeFieldError && (
                                             <InputTextTip
@@ -595,6 +662,34 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     />
                                 </PageContent>
                             </ScrollView>
+
+                            <Dialog.Container
+                                visible={showProdFindedModal}
+                                onBackdropPress={handleSwitchFindModal}
+                            >
+                                <Dialog.Title>
+                                    {
+                                        strings.View_AddProduct_FillInfo_Modal_Title
+                                    }
+                                </Dialog.Title>
+                                <Dialog.Description>
+                                    {
+                                        strings.View_AddProduct_FillInfo_Modal_Description
+                                    }
+                                </Dialog.Description>
+                                <Dialog.Button
+                                    label={
+                                        strings.View_AddProduct_FillInfo_Modal_No
+                                    }
+                                    onPress={handleSwitchFindModal}
+                                />
+                                <Dialog.Button
+                                    label={
+                                        strings.View_AddProduct_FillInfo_Modal_Yes
+                                    }
+                                    onPress={completeInfo}
+                                />
+                            </Dialog.Container>
                         </Container>
                     )}
                 </>
