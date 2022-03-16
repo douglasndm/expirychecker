@@ -16,7 +16,6 @@ import {
     AdEventType,
     TestIds,
 } from '@invertase/react-native-google-ads';
-import Dialog from 'react-native-dialog';
 
 import strings from '~/Locales';
 
@@ -41,6 +40,8 @@ import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
+
+import FillModal from './Components/FillModal';
 
 import {
     Container,
@@ -107,6 +108,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [adReady, setAdReady] = useState(false);
+    const [showFillModal, setShowFillModal] = useState(false);
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
@@ -153,8 +155,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [productNameFinded, setProductNameFinded] = useState<null | string>(
         null
     );
-    const [showProdFindedModal, setShowProdFindedModal] =
-        useState<boolean>(false);
 
     const handleSave = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -274,7 +274,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     }, []);
 
     const findProductByEAN = useCallback(async () => {
-        if (code !== '' && userPreferences.isUserPremium) {
+        if (code !== '') {
             if (getLocales()[0].languageCode === 'pt') {
                 try {
                     setIsFindingProd(true);
@@ -296,17 +296,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         } else {
             setProductFinded(false);
         }
-    }, [code, userPreferences.isUserPremium]);
+    }, [code]);
 
     const handleSwitchFindModal = useCallback(() => {
-        setShowProdFindedModal(!showProdFindedModal);
-    }, [showProdFindedModal]);
+        setShowFillModal(!showFillModal);
+    }, [showFillModal]);
 
     const completeInfo = useCallback(() => {
         if (productNameFinded) {
             setName(productNameFinded);
 
-            setShowProdFindedModal(false);
+            setShowFillModal(false);
         }
     }, [productNameFinded]);
 
@@ -399,8 +399,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             setCode(codeRead);
             setIsBarCodeEnabled(false);
             await handleCheckProductCode(codeRead);
+            await findProductByEAN();
         },
-        [handleCheckProductCode]
+        [findProductByEAN, handleCheckProductCode]
     );
 
     const handleNameChange = useCallback((value: string) => {
@@ -511,22 +512,30 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                 />
                                             </InputTextIconContainer>
 
-                                            {isFindingProd && (
-                                                <InputTextLoading />
-                                            )}
+                                            {userPreferences.isUserPremium && (
+                                                <>
+                                                    {isFindingProd && (
+                                                        <InputTextLoading />
+                                                    )}
 
-                                            {productFinded && !isFindingProd && (
-                                                <InputTextIconContainer
-                                                    style={{ marginTop: -5 }}
-                                                    onPress={
-                                                        handleSwitchFindModal
-                                                    }
-                                                >
-                                                    <Icon
-                                                        name="download"
-                                                        size={30}
-                                                    />
-                                                </InputTextIconContainer>
+                                                    {productFinded &&
+                                                        !isFindingProd && (
+                                                            <InputTextIconContainer
+                                                                style={{
+                                                                    marginTop:
+                                                                        -5,
+                                                                }}
+                                                                onPress={
+                                                                    handleSwitchFindModal
+                                                                }
+                                                            >
+                                                                <Icon
+                                                                    name="download"
+                                                                    size={30}
+                                                                />
+                                                            </InputTextIconContainer>
+                                                        )}
+                                                </>
                                             )}
                                         </InputCodeTextContainer>
 
@@ -662,36 +671,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     />
                                 </PageContent>
                             </ScrollView>
-
-                            <Dialog.Container
-                                visible={showProdFindedModal}
-                                onBackdropPress={handleSwitchFindModal}
-                            >
-                                <Dialog.Title>
-                                    {
-                                        strings.View_AddProduct_FillInfo_Modal_Title
-                                    }
-                                </Dialog.Title>
-                                <Dialog.Description>
-                                    {
-                                        strings.View_AddProduct_FillInfo_Modal_Description
-                                    }
-                                </Dialog.Description>
-                                <Dialog.Button
-                                    label={
-                                        strings.View_AddProduct_FillInfo_Modal_No
-                                    }
-                                    onPress={handleSwitchFindModal}
-                                />
-                                <Dialog.Button
-                                    label={
-                                        strings.View_AddProduct_FillInfo_Modal_Yes
-                                    }
-                                    onPress={completeInfo}
-                                />
-                            </Dialog.Container>
                         </Container>
                     )}
+                    <FillModal
+                        onConfirm={completeInfo}
+                        show={showFillModal}
+                        setShow={setShowFillModal}
+                    />
                 </>
             )}
         </>
