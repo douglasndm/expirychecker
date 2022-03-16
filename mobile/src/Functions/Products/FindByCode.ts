@@ -3,6 +3,8 @@ import api from '~/Services/API';
 interface findProductByCodeResponse {
     name: string;
     code: string;
+    brand?: string;
+    thumbnail?: string;
 }
 
 async function findProductByCode(
