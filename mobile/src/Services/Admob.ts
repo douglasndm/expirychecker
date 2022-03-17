@@ -1,8 +1,15 @@
-import admob, { MaxAdContentRating } from '@invertase/react-native-google-ads';
+import admob, {
+    MaxAdContentRating,
+    AdsConsent,
+    AdsConsentStatus,
+} from 'react-native-google-mobile-ads';
+
 import { getEnableProVersion } from '../Functions/Settings';
 
 async function prepareAds() {
-    if (!(await getEnableProVersion())) {
+    const disableAds = await getEnableProVersion();
+
+    if (!disableAds) {
         admob().setRequestConfiguration({
             // Update all future requests suitable for parental guidance
             maxAdContentRating: MaxAdContentRating.PG,
@@ -13,13 +20,25 @@ async function prepareAds() {
             // Indicates that you want the ad request to be handled in a
             // manner suitable for users under the age of consent.
             tagForUnderAgeOfConsent: true,
+
+            // An array of test device IDs to allow.
+            testDeviceIdentifiers: ['EMULATOR'],
         });
 
         admob()
             .initialize()
-            .then(adapterStatuses => {
+            .then(async adapterStatuses => {
                 console.log('AdMob was initiated');
                 console.log(adapterStatuses);
+
+                /*
+                const consentInfo = await AdsConsent.requestInfoUpdate();
+
+                if (consentInfo.status === AdsConsentStatus.REQUIRED) {
+                    const formResult = await AdsConsent.showForm();
+                    console.log(formResult);
+                }
+                */
             });
     }
 }

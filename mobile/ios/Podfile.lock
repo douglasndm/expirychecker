@@ -197,7 +197,6 @@ PODS:
     - RNPermissions
   - Permission-Notifications (3.0.5):
     - RNPermissions
-  - PersonalizedAdConsent (1.0.5)
   - PromisesObjC (2.0.0)
   - Purchases (3.13.1):
     - PurchasesCoreSwift (= 3.13.1)
@@ -529,9 +528,9 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNGoogleAds (3.4.0):
+  - RNGoogleMobileAds (5.0.0):
     - Google-Mobile-Ads-SDK (= 8.13.0)
-    - PersonalizedAdConsent (~> 1.0.5)
+    - GoogleUserMessagingPlatform (= 2.0.0)
     - React-Core
   - RNLocalize (2.1.1):
     - React-Core
@@ -677,7 +676,7 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - "RNGoogleAds (from `../node_modules/@invertase/react-native-google-ads`)"
+  - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
@@ -721,7 +720,6 @@ SPEC REPOS:
     - OneSignal
     - OneSignalXCFramework
     - OpenSSL-Universal
-    - PersonalizedAdConsent
     - PromisesObjC
     - Purchases
     - PurchasesCoreSwift
@@ -847,8 +845,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNGoogleAds:
-    :path: "../node_modules/@invertase/react-native-google-ads"
+  RNGoogleMobileAds:
+    :path: "../node_modules/react-native-google-mobile-ads"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNPermissions:
@@ -911,7 +909,6 @@ SPEC CHECKSUMS:
   Permission-AppTrackingTransparency: ed3a54759541929d0a81a75b04a3559af5b2a738
   Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
   Permission-Notifications: 16ccd862111103378a7bab9fb1c5c71addffc348
-  PersonalizedAdConsent: dbecabb3467df967c16d9cebc2ef4a8890e4bbd8
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Purchases: 2693d6444609de044ab25fcda9561bef038f24da
   PurchasesCoreSwift: ca55f9ef671f89abed133775dd9e53f55007828d
@@ -964,7 +961,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 8e3575bb0303b43a852bf5decbe99c3272035048
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNGoogleAds: f18bb05542ba813ddff9319e903b8745d9fb73e4
+  RNGoogleMobileAds: 3b35145daceeb09105dcafa4778d65678486a53a
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
   RNPurchases: aa1b4dff749eb760c6de50f1d987aa45455e58a8
