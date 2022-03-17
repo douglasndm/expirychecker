@@ -241,30 +241,35 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         userPreferences.disableAds,
     ]);
 
-    const findProductByEAN = useCallback(async (ean_code: string) => {
-        if (ean_code !== '') {
-            if (getLocales()[0].languageCode === 'pt') {
-                try {
-                    setIsFindingProd(true);
-                    const response = await findProductByCode(ean_code);
+    const findProductByEAN = useCallback(
+        async (ean_code: string) => {
+            if (ean_code.length < 8) return;
 
-                    if (response !== null) {
-                        setProductFinded(true);
+            if (ean_code !== '' && userPreferences.isUserPremium) {
+                if (getLocales()[0].languageCode === 'pt') {
+                    try {
+                        setIsFindingProd(true);
+                        const response = await findProductByCode(ean_code);
 
-                        setProductNameFinded(response.name);
-                    } else {
-                        setProductFinded(false);
+                        if (response !== null) {
+                            setProductFinded(true);
 
-                        setProductNameFinded(null);
+                            setProductNameFinded(response.name);
+                        } else {
+                            setProductFinded(false);
+
+                            setProductNameFinded(null);
+                        }
+                    } finally {
+                        setIsFindingProd(false);
                     }
-                } finally {
-                    setIsFindingProd(false);
                 }
+            } else {
+                setProductFinded(false);
             }
-        } else {
-            setProductFinded(false);
-        }
-    }, []);
+        },
+        [userPreferences.isUserPremium]
+    );
 
     const handleCodeBlur = useCallback(
         (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
