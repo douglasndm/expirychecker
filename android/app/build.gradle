@@ -275,12 +275,11 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
 
-    implementation 'com.google.android.gms:play-services-ads:20.3.0'
-    implementation 'com.google.ads.mediation:inmobi:9.1.1.0'
-    implementation 'com.google.ads.mediation:vungle:6.8.1.1'
-    implementation 'com.google.ads.mediation:facebook:6.5.1.1'
+    implementation 'com.google.ads.mediation:inmobi:10.0.3.0'
+    implementation 'com.google.ads.mediation:vungle:6.10.4.0'
+
     // Mediation Test Suite
-    implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
+    // implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
 
     // this 2 implementaions fix crash on some android devices
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
