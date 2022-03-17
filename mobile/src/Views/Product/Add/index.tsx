@@ -5,7 +5,11 @@ import React, {
     useMemo,
     useRef,
 } from 'react';
-import { ScrollView } from 'react-native';
+import {
+    NativeSyntheticEvent,
+    ScrollView,
+    TextInputFocusEventData,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
@@ -237,12 +241,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         userPreferences.disableAds,
     ]);
 
-    const findProductByEAN = useCallback(async () => {
-        if (code !== '') {
+    const findProductByEAN = useCallback(async (ean_code: string) => {
+        if (ean_code !== '') {
             if (getLocales()[0].languageCode === 'pt') {
                 try {
                     setIsFindingProd(true);
-                    const response = await findProductByCode(code);
+                    const response = await findProductByCode(ean_code);
 
                     if (response !== null) {
                         setProductFinded(true);
@@ -260,7 +264,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         } else {
             setProductFinded(false);
         }
-    }, [code]);
+    }, []);
+
+    const handleCodeBlur = useCallback(
+        (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+            if (code) {
+                findProductByEAN(code);
+            }
+        },
+        [code, findProductByEAN]
+    );
 
     const handleSwitchFindModal = useCallback(() => {
         setShowFillModal(!showFillModal);
@@ -362,8 +375,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         async (codeRead: string) => {
             setCode(codeRead);
             setIsBarCodeEnabled(false);
+            await findProductByEAN(codeRead);
             await handleCheckProductCode(codeRead);
-            await findProductByEAN();
         },
         [findProductByEAN, handleCheckProductCode]
     );
@@ -459,7 +472,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                     strings.View_AddProduct_InputPlacehoder_Code
                                                 }
                                                 value={code}
-                                                onBlur={findProductByEAN}
+                                                onBlur={handleCodeBlur}
                                                 onChangeText={value => {
                                                     setCode(value);
                                                     setCodeFieldError(false);
