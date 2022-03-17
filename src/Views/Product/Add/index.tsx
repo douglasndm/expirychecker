@@ -1,21 +1,15 @@
 import React, {
     useState,
-    useEffect,
     useContext,
     useCallback,
     useMemo,
+    useRef,
 } from 'react';
-import { ScrollView, Platform } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import EnvConfig from 'react-native-config';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
-import {
-    InterstitialAd,
-    AdEventType,
-    TestIds,
-} from '@invertase/react-native-google-ads';
 
 import strings from '~/Locales';
 
@@ -28,6 +22,7 @@ import {
 } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
+import { findProductByCode } from '~/Functions/Products/FindByCode';
 
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
@@ -42,6 +37,7 @@ import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
 import FillModal from './Components/FillModal';
+import Interstitial, { IInterstitialRef } from './Components/Interstitial';
 
 import {
     Container,
@@ -66,17 +62,6 @@ import {
     InputCodeTextContainer,
     InputCodeText,
 } from './styles';
-import { findProductByCode } from '~/Functions/Products/FindByCode';
-
-let adUnit = TestIds.INTERSTITIAL;
-
-if (Platform.OS === 'ios' && !__DEV__) {
-    adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_PRODUCT;
-} else if (Platform.OS === 'android' && !__DEV__) {
-    adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
-}
-
-const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 interface Request {
     route: {
@@ -90,6 +75,7 @@ interface Request {
 
 const Add: React.FC<Request> = ({ route }: Request) => {
     const { navigate } = useNavigation();
+    const InterstitialRef = useRef<IInterstitialRef>();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -107,7 +93,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [adReady, setAdReady] = useState(false);
     const [showFillModal, setShowFillModal] = useState(false);
 
     const [name, setName] = useState('');
@@ -213,8 +198,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     productId: productCreatedId,
                 });
 
-                if (!userPreferences.disableAds && adReady) {
-                    interstitialAd.show();
+                if (!userPreferences.disableAds) {
+                    if (InterstitialRef.current) {
+                        InterstitialRef.current.showInterstitial();
+                    }
                 }
 
                 navigate('Success', {
@@ -233,7 +220,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 });
         }
     }, [
-        adReady,
         amount,
         code,
         codeFieldError,
@@ -250,28 +236,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         selectedStore,
         userPreferences.disableAds,
     ]);
-
-    useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent(type => {
-            if (type === AdEventType.LOADED) {
-                setAdReady(true);
-            }
-            if (type === AdEventType.CLOSED) {
-                setAdReady(false);
-            }
-            if (type === AdEventType.ERROR) {
-                setAdReady(false);
-            }
-        });
-
-        // Start loading the interstitial straight away
-        interstitialAd.load();
-
-        // Unsubscribe from events on unmount
-        return () => {
-            eventListener();
-        };
-    }, []);
 
     const findProductByEAN = useCallback(async () => {
         if (code !== '') {
@@ -433,6 +397,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         />
                     ) : (
                         <Container>
+                            <Interstitial ref={InterstitialRef} />
                             <ScrollView>
                                 <Header
                                     title={strings.View_AddProduct_PageTitle}

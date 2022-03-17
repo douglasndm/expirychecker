@@ -14,7 +14,7 @@ import {
     InterstitialAd,
     AdEventType,
     TestIds,
-} from '@invertase/react-native-google-ads';
+} from 'react-native-google-mobile-ads';
 
 import strings from '~/Locales';
 

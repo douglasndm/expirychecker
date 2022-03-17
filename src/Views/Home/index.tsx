@@ -14,7 +14,7 @@ import {
     BannerAd,
     BannerAdSize,
     TestIds,
-} from '@invertase/react-native-google-ads';
+} from 'react-native-google-mobile-ads';
 import EnvConfig from 'react-native-config';
 import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
