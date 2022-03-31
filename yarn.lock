@@ -8092,6 +8092,11 @@ react-localization@^1.0.17:
   dependencies:
     localized-strings "^0.2.0"
 
+react-native-appsflyer@^6.5.21:
+  version "6.5.21"
+  resolved "https://registry.yarnpkg.com/react-native-appsflyer/-/react-native-appsflyer-6.5.21.tgz#ab67214f05e29d8ff20a662d6ee2fd41d4ed9f2b"
+  integrity sha512-9xokVnTRYszhBdBLrwNH9poeQnH0p1wA9ojHACWkZgDjCUypnIIq+5DFqD5oTTE3jPS9alU0AyLGL7zpZZoT7Q==
+
 react-native-background-fetch@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.0.5.tgz#cf59466440d66585313d7fcb718a30ba1461a7be"
@@ -8276,10 +8281,10 @@ react-native-picker-select@^8.0.4:
     "@react-native-picker/picker" "^1.8.3"
     lodash.isequal "^4.5.0"
 
-react-native-purchases@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-4.5.0.tgz#7290f26d92a5d63e45ee37a8f9593a50de2fb324"
-  integrity sha512-l4hVCPqtXiflHN2vwZwrmja521eF2xvFyINn1OTzIgB+8xxi1eQ1AFmeelXzxaNsRsKkMS5ZJBC33Xa2l+IJ6w==
+react-native-purchases@^4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-purchases/-/react-native-purchases-4.5.3.tgz#34a0b67b8ff7faba9f5c999315e8a88864378fba"
+  integrity sha512-eG2FtcTTirkRau2SPBLdGS2i0/ev2UpNOFAKPZDLdUXORipitoUA1kw4+3JM+oo5PFUM97za8M4ztCqTLFUOgg==
 
 react-native-push-notification@^8.1.0:
   version "8.1.0"
@@ -8533,10 +8538,10 @@ realm-network-transport@^0.7.1:
     abort-controller "^3.0.0"
     node-fetch "^2.6.0"
 
-realm@^10.20.0-beta.2:
-  version "10.20.0-beta.2"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-10.20.0-beta.2.tgz#f821b298a4cf7fe285acc119f544e6cc80a1d348"
-  integrity sha512-jCOOsnspCHuZbAk/WPcEP6Q8zAxSOnwxkfDjwaf/H74DPRcKPkYnfidmrJblh1baymB+d2a/Znr5xkvIMnGR5A==
+realm@^10.20.0-beta.3:
+  version "10.20.0-beta.3"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-10.20.0-beta.3.tgz#7b0cc67064e94a14aac722e6f0fbd66491ae2a21"
+  integrity sha512-34Zkx/QCxXvKWiph//wFijGq1dtPivPdoXyd+D3HRvdKx2ehObKUWwqtSVjR3ly4EwF7dkUsloMW9Pxw0ki7cw==
   dependencies:
     "@realm.io/common" "^0.1.1"
     bindings "^1.5.0"
