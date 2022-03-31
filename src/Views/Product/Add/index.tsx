@@ -70,9 +70,10 @@ import {
 interface Request {
     route: {
         params: {
-            store?: string;
             brand?: string;
             category?: string;
+            code?: string;
+            store?: string;
         };
     };
 }
@@ -100,7 +101,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [showFillModal, setShowFillModal] = useState(false);
 
     const [name, setName] = useState('');
-    const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
@@ -115,6 +115,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             return null;
         }
     );
+    const [code, setCode] = useState<string | null>(() => {
+        if (route.params && route.params.code) {
+            return route.params.code;
+        }
+        return '';
+    });
 
     const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
         if (route.params && route.params.brand) {
