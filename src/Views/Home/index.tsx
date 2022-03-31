@@ -34,6 +34,8 @@ import BarCodeReader from '~/Components/BarCodeReader';
 import NotificationsDenny from '~/Components/NotificationsDenny';
 import OutdateApp from '~/Components/OutdateApp';
 
+import { FloatButton, Icons } from '~/Components/ListProducts/styles';
+
 import {
     Container,
     AdContainer,
@@ -45,7 +47,7 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset, canGoBack } =
+    const { reset, canGoBack, navigate } =
         useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { userPreferences } = useContext(PreferencesContext);
@@ -200,6 +202,19 @@ const Home: React.FC = () => {
         userPreferences.storesFirstPage,
     ]);
 
+    const handleNavigateAddProduct = useCallback(() => {
+        if (searchString && searchString !== '') {
+            const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
+            const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+            navigate('AddProduct', {
+                code: query,
+            });
+        } else {
+            navigate('AddProduct', {});
+        }
+    }, [navigate, searchString]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -267,6 +282,16 @@ const Home: React.FC = () => {
                         onRefresh={loadData}
                         isRefreshing={isLoading}
                         listRef={listRef}
+                        deactiveFloatButton
+                    />
+
+                    <FloatButton
+                        icon={() => (
+                            <Icons name="add-outline" color="white" size={22} />
+                        )}
+                        small
+                        label={strings.View_FloatMenu_AddProduct}
+                        onPress={handleNavigateAddProduct}
                     />
                 </Container>
             )}
