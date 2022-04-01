@@ -182,6 +182,10 @@ PODS:
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - libevent (2.1.12)
+  - LogRocket (1.2.0)
+  - logrocket-react-native (1.2.0):
+    - LogRocket (= 1.2.0)
+    - React
   - lottie-ios (3.2.3)
   - lottie-react-native (5.0.1):
     - lottie-ios (~> 3.2.3)
@@ -626,6 +630,7 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.99.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.99.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - "logrocket-react-native (from `../node_modules/@logrocket/react-native`)"
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - OneSignal (< 4.0, >= 3.0)
   - OpenSSL-Universal (= 1.1.180)
@@ -723,6 +728,7 @@ SPEC REPOS:
     - GoogleUtilities
     - JWT
     - libevent
+    - LogRocket
     - lottie-ios
     - nanopb
     - OneSignal
@@ -749,6 +755,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  logrocket-react-native:
+    :path: "../node_modules/@logrocket/react-native"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   Permission-AppTrackingTransparency:
@@ -911,6 +919,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  LogRocket: eeec8ab3bf27582fd1a5ea9bda2bd55342611cb4
+  logrocket-react-native: 1f7896a1919c842f637f3372a4a2b40c5b84fb6c
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   lottie-react-native: a029a86e1689c86a07169c520ae770e84348cd20
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
@@ -988,6 +998,6 @@ SPEC CHECKSUMS:
   Yoga: 9b6696970c3289e8dea34b3eda93f23e61fb8121
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 364f3fa6f495ba0a80eaa92b1d555e28cef95504
+PODFILE CHECKSUM: e552e138a453fdf145a5753bb9922b0ba8d4a04f
 
 COCOAPODS: 1.11.3
