@@ -255,9 +255,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 if (getLocales()[0].languageCode === 'pt') {
                     try {
                         setIsFindingProd(true);
-                        const response = await findProductByCode(
-                            ean_code.trim()
-                        );
+
+                        const queryWithoutLetters = ean_code
+                            .replace(/\D/g, '')
+                            .trim();
+                        const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+                        const response = await findProductByCode(query);
 
                         if (response !== null) {
                             setProductFinded(true);
