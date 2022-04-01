@@ -34,7 +34,7 @@ allprojects {
         }
         maven {
            // react-native-background-fetch
-           url("${project(':react-native-background-fetch').projectDir}/libs")
+            url("${project(':react-native-background-fetch').projectDir}/libs")
         }
         mavenCentral {
             // We don't want to fetch react-native from Maven Central as there are
