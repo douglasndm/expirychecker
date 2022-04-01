@@ -1,10 +1,13 @@
 import LogRocket from '@logrocket/react-native';
 import * as Sentry from '@sentry/react-native';
+import Config from 'react-native-config';
 
-LogRocket.init('abivwn/expiry-checker');
+if (!__DEV__) {
+    LogRocket.init(Config.LOGROCKET_APP_ID);
 
-LogRocket.getSessionURL(sessionURL => {
-    Sentry.configureScope(scope => {
-        scope.setExtra('sessionURL', sessionURL);
+    LogRocket.getSessionURL(sessionURL => {
+        Sentry.configureScope(scope => {
+            scope.setExtra('sessionURL', sessionURL);
+        });
     });
-});
+}
