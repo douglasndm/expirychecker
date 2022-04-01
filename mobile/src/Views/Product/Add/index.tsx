@@ -251,11 +251,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         async (ean_code: string) => {
             if (ean_code.length < 8) return;
 
-            if (ean_code !== '' && userPreferences.isUserPremium) {
+            if (ean_code.trim() !== '' && userPreferences.isUserPremium) {
                 if (getLocales()[0].languageCode === 'pt') {
                     try {
                         setIsFindingProd(true);
-                        const response = await findProductByCode(ean_code);
+                        const response = await findProductByCode(
+                            ean_code.trim()
+                        );
 
                         if (response !== null) {
                             setProductFinded(true);
