@@ -15,6 +15,7 @@ import { enableScreens } from 'react-native-screens';
 
 import './Locales';
 
+import './Services/LogRocket';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
 import './Services/AppsFlyer';
