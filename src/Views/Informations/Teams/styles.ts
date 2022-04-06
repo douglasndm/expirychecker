@@ -34,6 +34,15 @@ export const Text = styled.Text`
     color: ${({ theme }) => theme.colors.text};
 `;
 
+export const WarningText = styled.Text`
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 7px;
+    font-family: 'Open Sans';
+    color: red;
+    text-align: center;
+`;
+
 export const PickerContainer = styled.View`
     justify-content: space-between;
 

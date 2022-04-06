@@ -8,12 +8,13 @@ import React, {
 } from 'react';
 import { Platform, PixelRatio, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import {
     BannerAd,
     BannerAdSize,
     TestIds,
-} from '@invertase/react-native-google-ads';
+} from 'react-native-google-mobile-ads';
 import EnvConfig from 'react-native-config';
 import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
@@ -33,6 +34,8 @@ import BarCodeReader from '~/Components/BarCodeReader';
 import NotificationsDenny from '~/Components/NotificationsDenny';
 import OutdateApp from '~/Components/OutdateApp';
 
+import { FloatButton, Icons } from '~/Components/ListProducts/styles';
+
 import {
     Container,
     AdContainer,
@@ -44,14 +47,14 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset, canGoBack, navigate } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { userPreferences } = useContext(PreferencesContext);
 
     const listRef = useRef<FlatList<IProduct>>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
@@ -94,7 +97,7 @@ const Home: React.FC = () => {
         return BannerAdSize.LARGE_BANNER;
     }, []);
 
-    const getProduts = useCallback(async () => {
+    const loadData = useCallback(async () => {
         try {
             setIsLoading(true);
 
@@ -139,8 +142,8 @@ const Home: React.FC = () => {
     );
 
     useEffect(() => {
-        getProduts();
-    }, []);
+        loadData();
+    }, [loadData]);
 
     const handleOnBarCodeReaderOpen = useCallback(() => {
         setEnableBarCodeReader(true);
@@ -179,23 +182,38 @@ const Home: React.FC = () => {
         [handleSearchChange]
     );
 
-    const handleReload = useCallback(async () => {
-        try {
-            setIsRefreshing(true);
-
-            // await new Promise(f => setTimeout(f, 5000));
-
-            await getProduts();
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
+    useEffect(() => {
+        if (
+            userPreferences.isUserPremium &&
+            userPreferences.multiplesStores &&
+            userPreferences.storesFirstPage
+        ) {
+            if (!canGoBack()) {
+                reset({
+                    routes: [{ name: 'StoreList' }],
                 });
-        } finally {
-            setIsRefreshing(false);
+            }
         }
-    }, [getProduts]);
+    }, [
+        canGoBack,
+        reset,
+        userPreferences.isUserPremium,
+        userPreferences.multiplesStores,
+        userPreferences.storesFirstPage,
+    ]);
+
+    const handleNavigateAddProduct = useCallback(() => {
+        if (searchString && searchString !== '') {
+            const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
+            const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+            navigate('AddProduct', {
+                code: query,
+            });
+        } else {
+            navigate('AddProduct', {});
+        }
+    }, [navigate, searchString]);
 
     return isLoading ? (
         <Loading />
@@ -261,9 +279,19 @@ const Home: React.FC = () => {
                     <ListProducts
                         products={productsSearch}
                         isHome
-                        onRefresh={handleReload}
-                        isRefreshing={isRefreshing}
+                        onRefresh={loadData}
+                        isRefreshing={isLoading}
                         listRef={listRef}
+                        deactiveFloatButton
+                    />
+
+                    <FloatButton
+                        icon={() => (
+                            <Icons name="add-outline" color="white" size={22} />
+                        )}
+                        small
+                        label={strings.View_FloatMenu_AddProduct}
+                        onPress={handleNavigateAddProduct}
                     />
                 </Container>
             )}

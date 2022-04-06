@@ -8,6 +8,7 @@ import {
     getEnableProVersion,
     getHowManyDaysToBeNextExp,
     getDisableAds,
+    getStoreFirstPage,
 } from './Settings';
 import { getAppTheme } from './Themes';
 
@@ -16,6 +17,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
     const settingTheme = await getAppTheme();
     const settingNotification = await getEnableNotifications();
     const settingMultipleStores = await getEnableMultipleStoresMode();
+    const settingStoresFirstPage = await getStoreFirstPage();
     const settingNotificationCadency = await getNotificationCadency();
     const settingProMode = await getEnableProVersion();
     const disableAds = await getDisableAds();
@@ -27,6 +29,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
         notificationCadency: settingNotificationCadency,
         isUserPremium: settingProMode,
         multiplesStores: settingMultipleStores,
+        storesFirstPage: settingStoresFirstPage,
         disableAds: disableAds || settingProMode,
     };
 

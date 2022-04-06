@@ -1,8 +1,10 @@
 type RoutesParams = {
     Home;
     AddProduct: {
+        brand?: string;
         category?: string;
-        category?: string;
+        code?: string;
+        store?: string;
     };
     AllProducts;
     WeekView;

@@ -1,21 +1,19 @@
 import React, {
     useState,
-    useEffect,
     useContext,
     useCallback,
     useMemo,
+    useRef,
 } from 'react';
-import { ScrollView, Platform } from 'react-native';
+import {
+    NativeSyntheticEvent,
+    ScrollView,
+    TextInputFocusEventData,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
-import EnvConfig from 'react-native-config';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
-import {
-    InterstitialAd,
-    AdEventType,
-    TestIds,
-} from '@invertase/react-native-google-ads';
 
 import strings from '~/Locales';
 
@@ -28,6 +26,7 @@ import {
 } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
+import { findProductByCode } from '~/Functions/Products/FindByCode';
 
 import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
@@ -41,6 +40,9 @@ import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
+import FillModal from './Components/FillModal';
+import Interstitial, { IInterstitialRef } from './Components/Interstitial';
+
 import {
     Container,
     PageContent,
@@ -50,7 +52,6 @@ import {
     InputTextContainer,
     InputTextTip,
     CameraButtonContainer,
-    CameraButtonIcon,
     Currency,
     InputGroup,
     MoreInformationsContainer,
@@ -58,34 +59,28 @@ import {
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
-    InputCodeTextIcon,
     InputTextIconContainer,
-    InputText,
     ImageContainer,
+    InputTextLoading,
+    Icon,
+    InputCodeTextContainer,
+    InputCodeText,
 } from './styles';
-
-let adUnit = TestIds.INTERSTITIAL;
-
-if (Platform.OS === 'ios' && !__DEV__) {
-    adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_PRODUCT;
-} else if (Platform.OS === 'android' && !__DEV__) {
-    adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
-}
-
-const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 interface Request {
     route: {
         params: {
-            store?: string;
             brand?: string;
             category?: string;
+            code?: string;
+            store?: string;
         };
     };
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
     const { navigate } = useNavigation();
+    const InterstitialRef = useRef<IInterstitialRef>();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -103,10 +98,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [adReady, setAdReady] = useState(false);
+    const [showFillModal, setShowFillModal] = useState(false);
 
     const [name, setName] = useState('');
-    const [code, setCode] = useState('');
     const [photoPath, setPhotoPath] = useState('');
     const [lote, setLote] = useState('');
     const [amount, setAmount] = useState('');
@@ -121,6 +115,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             return null;
         }
     );
+    const [code, setCode] = useState<string | null>(() => {
+        if (route.params && route.params.code) {
+            return route.params.code;
+        }
+        return '';
+    });
 
     const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
         if (route.params && route.params.brand) {
@@ -142,8 +142,14 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
     const [existentProduct, setExistentProduct] = useState<number | null>(null);
 
+    const [isFindingProd, setIsFindingProd] = useState<boolean>(false);
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
+
+    const [productFinded, setProductFinded] = useState<boolean>(false);
+    const [productNameFinded, setProductNameFinded] = useState<null | string>(
+        null
+    );
 
     const handleSave = useCallback(async () => {
         if (!name || name.trim() === '') {
@@ -202,8 +208,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     productId: productCreatedId,
                 });
 
-                if (!userPreferences.disableAds && adReady) {
-                    interstitialAd.show();
+                if (!userPreferences.disableAds) {
+                    if (InterstitialRef.current) {
+                        InterstitialRef.current.showInterstitial();
+                    }
                 }
 
                 navigate('Success', {
@@ -222,7 +230,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 });
         }
     }, [
-        adReady,
         amount,
         code,
         codeFieldError,
@@ -240,27 +247,62 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         userPreferences.disableAds,
     ]);
 
-    useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent(type => {
-            if (type === AdEventType.LOADED) {
-                setAdReady(true);
-            }
-            if (type === AdEventType.CLOSED) {
-                setAdReady(false);
-            }
-            if (type === AdEventType.ERROR) {
-                setAdReady(false);
-            }
-        });
+    const findProductByEAN = useCallback(
+        async (ean_code: string) => {
+            if (ean_code.length < 8) return;
 
-        // Start loading the interstitial straight away
-        interstitialAd.load();
+            if (ean_code.trim() !== '' && userPreferences.isUserPremium) {
+                if (getLocales()[0].languageCode === 'pt') {
+                    try {
+                        setIsFindingProd(true);
 
-        // Unsubscribe from events on unmount
-        return () => {
-            eventListener();
-        };
-    }, []);
+                        const queryWithoutLetters = ean_code
+                            .replace(/\D/g, '')
+                            .trim();
+                        const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+                        const response = await findProductByCode(query);
+
+                        if (response !== null) {
+                            setProductFinded(true);
+
+                            setProductNameFinded(response.name);
+                        } else {
+                            setProductFinded(false);
+
+                            setProductNameFinded(null);
+                        }
+                    } finally {
+                        setIsFindingProd(false);
+                    }
+                }
+            } else {
+                setProductFinded(false);
+            }
+        },
+        [userPreferences.isUserPremium]
+    );
+
+    const handleCodeBlur = useCallback(
+        (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+            if (code) {
+                findProductByEAN(code);
+            }
+        },
+        [code, findProductByEAN]
+    );
+
+    const handleSwitchFindModal = useCallback(() => {
+        setShowFillModal(!showFillModal);
+    }, [showFillModal]);
+
+    const completeInfo = useCallback(() => {
+        if (productNameFinded) {
+            setName(productNameFinded);
+
+            setShowFillModal(false);
+        }
+    }, [productNameFinded]);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;
@@ -350,9 +392,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         async (codeRead: string) => {
             setCode(codeRead);
             setIsBarCodeEnabled(false);
+            await findProductByEAN(codeRead);
             await handleCheckProductCode(codeRead);
         },
-        [handleCheckProductCode]
+        [findProductByEAN, handleCheckProductCode]
     );
 
     const handleNameChange = useCallback((value: string) => {
@@ -384,6 +427,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         />
                     ) : (
                         <Container>
+                            <Interstitial ref={InterstitialRef} />
                             <ScrollView>
                                 <Header
                                     title={strings.View_AddProduct_PageTitle}
@@ -423,7 +467,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             <CameraButtonContainer
                                                 onPress={handleEnableCamera}
                                             >
-                                                <CameraButtonIcon />
+                                                <Icon
+                                                    name="camera-outline"
+                                                    size={36}
+                                                />
                                             </CameraButtonContainer>
                                         </InputGroup>
                                         {nameFieldError && (
@@ -434,20 +481,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             </InputTextTip>
                                         )}
 
-                                        <InputTextContainer
+                                        <InputCodeTextContainer
                                             hasError={codeFieldError}
-                                            style={{
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                                paddingRight: 10,
-                                            }}
                                         >
-                                            <InputText
+                                            <InputCodeText
                                                 placeholder={
                                                     strings.View_AddProduct_InputPlacehoder_Code
                                                 }
                                                 value={code}
+                                                onBlur={handleCodeBlur}
                                                 onChangeText={value => {
                                                     setCode(value);
                                                     setCodeFieldError(false);
@@ -459,9 +501,38 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                                     handleEnableBarCodeReader
                                                 }
                                             >
-                                                <InputCodeTextIcon />
+                                                <Icon
+                                                    name="barcode-outline"
+                                                    size={34}
+                                                />
                                             </InputTextIconContainer>
-                                        </InputTextContainer>
+
+                                            {userPreferences.isUserPremium && (
+                                                <>
+                                                    {isFindingProd && (
+                                                        <InputTextLoading />
+                                                    )}
+
+                                                    {productFinded &&
+                                                        !isFindingProd && (
+                                                            <InputTextIconContainer
+                                                                style={{
+                                                                    marginTop:
+                                                                        -5,
+                                                                }}
+                                                                onPress={
+                                                                    handleSwitchFindModal
+                                                                }
+                                                            >
+                                                                <Icon
+                                                                    name="download"
+                                                                    size={30}
+                                                                />
+                                                            </InputTextIconContainer>
+                                                        )}
+                                                </>
+                                            )}
+                                        </InputCodeTextContainer>
 
                                         {codeFieldError && (
                                             <InputTextTip
@@ -597,6 +668,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                             </ScrollView>
                         </Container>
                     )}
+                    <FillModal
+                        onConfirm={completeInfo}
+                        show={showFillModal}
+                        setShow={setShowFillModal}
+                    />
                 </>
             )}
         </>

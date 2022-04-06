@@ -1,10 +1,8 @@
-import { Platform } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import DatePicker from 'react-native-date-picker';
 import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
-import RNPickerSelect from 'react-native-picker-select';
 
 export const Container = styled.SafeAreaView`
     flex: 1;
@@ -45,14 +43,6 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
         `}
 `;
 
-export const InputText = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.placeholderColor,
-}))`
-    padding: 15px 5px 15px 15px;
-    font-size: 18px;
-    color: ${props => props.theme.colors.inputText};
-`;
-
 export const InputTextTip = styled.Text`
     color: red;
     margin: -5px 10px 5px;
@@ -62,9 +52,7 @@ export const CameraButtonContainer = styled(RectButton)`
     margin-left: 15px;
 `;
 
-export const CameraButtonIcon = styled(Ionicons).attrs(props => ({
-    name: 'camera-outline',
-    size: 36,
+export const Icon = styled(Ionicons).attrs(props => ({
     color: props.theme.colors.text,
 }))``;
 
@@ -94,6 +82,32 @@ export const Currency = styled(CurrencyInput).attrs(props => ({
     font-size: 18px;
     background-color: ${({ theme }) => theme.colors.inputBackground};
     color: ${({ theme }) => theme.colors.inputText};
+`;
+
+export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background-color: ${({ theme }) => theme.colors.inputBackground};
+    padding-right: 10px;
+
+    ${props =>
+        props.hasError &&
+        css`
+            border: 2px solid red;
+        `}
+`;
+
+export const InputCodeText = styled.TextInput.attrs(props => ({
+    placeholderTextColor: props.theme.colors.subText,
+}))`
+    flex: 1;
+    padding: 15px 5px 15px 15px;
+    font-size: 18px;
+    color: ${props => props.theme.colors.text};
 `;
 
 export const InputTextIconContainer = styled(RectButton)``;
@@ -130,4 +144,12 @@ export const CustomDatePicker = styled(DatePicker).attrs(props => ({
 }))`
     background: ${({ theme }) => theme.colors.inputBackground};
     z-index: 1;
+`;
+
+export const InputTextLoading = styled.ActivityIndicator.attrs(props => ({
+    size: 26,
+    color: props.theme.colors.text,
+}))`
+    margin-right: 7px;
+    margin-left: 7px;
 `;

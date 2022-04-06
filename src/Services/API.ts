@@ -5,7 +5,7 @@ import EnvConfig from 'react-native-config';
 import { getDeviceId } from '~/Services/DeviceId';
 
 const api = axios.create({
-    baseURL: EnvConfig.API_URL,
+    baseURL: __DEV__ ? EnvConfig.DEV_URL : EnvConfig.API_URL,
 });
 
 api.interceptors.request.use(async config => {
