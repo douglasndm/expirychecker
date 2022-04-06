@@ -15,8 +15,10 @@ import { enableScreens } from 'react-native-screens';
 
 import './Locales';
 
+import './Services/LogRocket';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
+import './Services/AppsFlyer';
 import './Services/Admob';
 import './Services/Analytics';
 import './Services/OneSignal';
@@ -49,6 +51,7 @@ const App: React.FC = () => {
         isUserPremium: false,
         appTheme: Themes.Light,
         multiplesStores: false,
+        storesFirstPage: false,
         enableNotifications: true,
         notificationCadency: NotificationCadency.Day,
         disableAds: false,

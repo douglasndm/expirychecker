@@ -21,7 +21,7 @@ import {
     PageContent,
     InputContainer,
     InputTextContainer,
-    InputText,
+    InputCodeText,
     Currency,
     InputGroup,
     ExpDateGroup,
@@ -248,7 +248,7 @@ const EditBatch: React.FC = () => {
                                         marginRight: 5,
                                     }}
                                 >
-                                    <InputText
+                                    <InputCodeText
                                         placeholder={
                                             strings.View_EditBatch_InputPlacehoder_Batch
                                         }
@@ -261,7 +261,7 @@ const EditBatch: React.FC = () => {
                                         flex: 4,
                                     }}
                                 >
-                                    <InputText
+                                    <InputCodeText
                                         placeholder={
                                             strings.View_EditBatch_InputPlacehoder_Amount
                                         }

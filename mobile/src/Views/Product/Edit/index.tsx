@@ -39,14 +39,14 @@ import {
     InputGroup,
     InputContainer,
     InputTextContainer,
-    InputText,
+    InputCodeText,
     InputTextTip,
     InputCodeTextIcon,
     InputTextIconContainer,
     ImageContainer,
     ProductImage,
     CameraButtonContainer,
-    CameraButtonIcon,
+    Icon,
     ProductImageContainer,
     MoreInformationsContainer,
     MoreInformationsTitle,
@@ -323,7 +323,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 <CameraButtonContainer
                                                     onPress={handleEnableCamera}
                                                 >
-                                                    <CameraButtonIcon />
+                                                    <Icon
+                                                        name="camera-outline"
+                                                        size={36}
+                                                    />
                                                 </CameraButtonContainer>
                                             )}
                                         </InputGroup>
@@ -345,7 +348,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                     paddingRight: 10,
                                                 }}
                                             >
-                                                <InputText
+                                                <InputCodeText
                                                     placeholder={
                                                         strings.View_EditProduct_InputPlacehoder_Code
                                                     }

@@ -11,7 +11,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        gradlePluginPortal()
         mavenCentral()
     }
     dependencies {
@@ -20,7 +19,6 @@ buildscript {
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.10, 0.99.99]'
     }
 }
 
@@ -36,7 +34,7 @@ allprojects {
         }
         maven {
            // react-native-background-fetch
-           url("${project(':react-native-background-fetch').projectDir}/libs")
+            url("${project(':react-native-background-fetch').projectDir}/libs")
         }
         mavenCentral {
             // We don't want to fetch react-native from Maven Central as there are
@@ -49,6 +47,8 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://www.jitpack.io' }
+
+        maven { url "https://storage.googleapis.com/logrocket-maven/" }
     }
 }
 

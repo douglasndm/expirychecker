@@ -114,6 +114,10 @@
     "View_AddProduct_Button_Save": "Save",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Button to save the new product",
     "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
+    "View_AddProduct_FillInfo_Modal_Title": "Fill informations?",
+    "View_AddProduct_FillInfo_Modal_Description": "This product has some informations that can be filled, do you want to fill it?",
+    "View_AddProduct_FillInfo_Modal_Yes": "Yes",
+    "View_AddProduct_FillInfo_Modal_No": "No",
 
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
@@ -253,6 +257,7 @@
     "View_Settings_SettingName_DaysToExpPlaceholder": "Days to be close to expiration",
     "View_Settings_SettingName_EnableNotification": "Enable notifications?",
     "View_Settings_SettingName_EnableMultiplesStores": "Enable multiples stores mode?",
+    "View_Settings_SettingName_EnableStoresFirstPage": "Enable stores list as home page",
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
