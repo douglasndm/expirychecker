@@ -7,30 +7,39 @@ import api from '~/Services/API';
 
 async function CheckCurrentVersion(): Promise<number> {
     interface responseProps {
-        android_build_number: number;
-        ios_build_number: number;
+        appPackage: string;
+        latestAndroidVersion: number;
+        latestIOSVersion: number;
     }
 
-    const response = await api.get<responseProps>('/latest_version');
+    const response = await api.get<responseProps[]>('/version');
 
     await AsyncStorage.setItem(
         'LastTimeUpdateCheck',
         JSON.stringify(new Date())
     );
 
+    const data = response.data.find(
+        version => version.appPackage === 'com.controledevalidade'
+    );
+
+    if (!data) {
+        throw new Error('App package was not found in server version');
+    }
+
     if (Platform.OS === 'ios') {
         await AsyncStorage.setItem(
             'LastServerVersion',
-            JSON.stringify(response.data.ios_build_number)
+            JSON.stringify(data.latestIOSVersion)
         );
 
-        return response.data.ios_build_number;
+        return data.latestIOSVersion;
     }
     await AsyncStorage.setItem(
         'LastServerVersion',
-        JSON.stringify(response.data.android_build_number)
+        JSON.stringify(data.latestAndroidVersion)
     );
-    return response.data.android_build_number;
+    return data.latestAndroidVersion;
 }
 
 async function isTimeToCheckUpdates(): Promise<boolean> {
@@ -42,7 +51,7 @@ async function isTimeToCheckUpdates(): Promise<boolean> {
 
     const date = parseISO(JSON.parse(lastTimeChecked));
 
-    if (addDays(date, 15) < new Date()) {
+    if (addDays(date, 5) < new Date()) {
         return true;
     }
 

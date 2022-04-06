@@ -16,6 +16,7 @@ import Pro from './Components/Pro';
 import {
     setHowManyDaysToBeNextExp,
     setEnableMultipleStoresMode,
+    setStoreFirstPage,
 } from '~/Functions/Settings';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -35,6 +36,7 @@ const Settings: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
+    const [storeFirstPageState, setStoreFirstPageState] = useState<boolean>();
 
     const { userPreferences, setUserPreferences } =
         useContext(PreferencesContext);
@@ -60,9 +62,19 @@ const Settings: React.FC = () => {
         });
     }, [multipleStoresState, setUserPreferences, userPreferences]);
 
+    const handleStoreFirstPageSwitch = useCallback(async () => {
+        await setStoreFirstPage(!storeFirstPageState);
+
+        setUserPreferences({
+            ...userPreferences,
+            storesFirstPage: !userPreferences.storesFirstPage,
+        });
+    }, [setUserPreferences, storeFirstPageState, userPreferences]);
+
     useEffect(() => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
         setMultipleStoresState(userPreferences.multiplesStores);
+        setStoreFirstPageState(userPreferences.storesFirstPage);
     }, [userPreferences]);
 
     const loadData = useCallback(async () => {
@@ -136,19 +148,41 @@ const Settings: React.FC = () => {
                             {/* <Notifications /> */}
 
                             {userPreferences.isUserPremium && (
-                                <SettingContainer>
-                                    <SettingDescription>
-                                        {
-                                            strings.View_Settings_SettingName_EnableMultiplesStores
-                                        }
-                                    </SettingDescription>
-                                    <Switch
-                                        value={userPreferences.multiplesStores}
-                                        onValueChange={
-                                            handleMultiStoresEnableSwitch
-                                        }
-                                    />
-                                </SettingContainer>
+                                <>
+                                    <SettingContainer>
+                                        <SettingDescription>
+                                            {
+                                                strings.View_Settings_SettingName_EnableMultiplesStores
+                                            }
+                                        </SettingDescription>
+                                        <Switch
+                                            value={
+                                                userPreferences.multiplesStores
+                                            }
+                                            onValueChange={
+                                                handleMultiStoresEnableSwitch
+                                            }
+                                        />
+                                    </SettingContainer>
+
+                                    {userPreferences.multiplesStores && (
+                                        <SettingContainer>
+                                            <SettingDescription>
+                                                {
+                                                    strings.View_Settings_SettingName_EnableStoresFirstPage
+                                                }
+                                            </SettingDescription>
+                                            <Switch
+                                                value={
+                                                    userPreferences.storesFirstPage
+                                                }
+                                                onValueChange={
+                                                    handleStoreFirstPageSwitch
+                                                }
+                                            />
+                                        </SettingContainer>
+                                    )}
+                                </>
                             )}
                         </CategoryOptions>
                     </Category>

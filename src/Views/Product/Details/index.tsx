@@ -15,7 +15,7 @@ import {
     BannerAd,
     BannerAdSize,
     TestIds,
-} from '@invertase/react-native-google-ads';
+} from 'react-native-google-mobile-ads';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
