@@ -37,7 +37,10 @@ import {
     DiscountLabel,
     FirstLine,
 } from './styles';
-import { getFormatedPrice } from '~/Utils/System/getFormatedPrice';
+import {
+    getCurrencySymbol,
+    getFormatedPrice,
+} from '~/Utils/System/getFormatedPrice';
 
 const SubscriptionList: React.FC = () => {
     const { reset, replace } =
@@ -161,18 +164,6 @@ const SubscriptionList: React.FC = () => {
     useEffect(() => {
         loadData();
     }, [loadData]);
-
-    const getCurrencySymbol = useCallback((currency: string) => {
-        return (0)
-            .toLocaleString(getCurrentLocale(), {
-                style: 'currency',
-                currency,
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-            })
-            .replace(/\d/g, '')
-            .trim();
-    }, []);
 
     return isLoading || isPurchasing ? (
         <Loading />
