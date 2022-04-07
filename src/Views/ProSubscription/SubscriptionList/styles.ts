@@ -5,9 +5,7 @@ import { darken } from 'polished';
 export const Container = styled.View``;
 
 export const SubscriptionsGroup = styled.View`
-    flex-direction: row;
-    flex: 1;
-    justify-content: center;
+    flex-direction: column;
     margin: 0 10px 15px;
 `;
 
@@ -18,10 +16,9 @@ interface Offer {
 export const SubscriptionContainer = styled(RectButton)<Offer>`
     flex: 1;
     flex-direction: column;
-    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 12px;
-    max-width: 150px;
-    margin: 10px 5px;
+
+    margin-top: 10px;
 
     background-color: ${props => props.theme.colors.productBackground};
 `;
@@ -39,29 +36,28 @@ export const SubscriptionPeriodContainer = styled.View<Offer>`
         `}
 `;
 
-export const SubscriptionPeriod = styled.Text`
+export const SubscriptionPeriod = styled.Text<Offer>`
     color: white;
     text-align: center;
-    font-size: 15px;
-    font-weight: 300;
-`;
+    font-size: 18px;
+    font-weight: bold;
 
-export const TeamMembersLimit = styled.Text<Offer>`
-    text-align: center;
-    color: white;
-    font-size: 17px;
+    color: ${({ theme }) => theme.colors.text};
 
     ${props =>
-        !props.isSelected &&
+        props.isSelected &&
         css`
-            color: ${({ theme }) => theme.colors.text};
-        `}
+            color: #fff;
+        `};
 `;
 
 export const DetailsContainer = styled.View<Offer>`
     flex: 1;
     justify-content: center;
     padding: 12px;
+
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 
     background-color: ${({ theme }) => theme.colors.productBackground};
 
@@ -85,6 +81,40 @@ export const SubscriptionDescription = styled.Text.attrs(() => ({
         css`
             color: ${({ theme }) => theme.colors.text};
         `};
+`;
+
+export const FirstLine = styled.View`
+    flex-direction: row;
+    justify-content: center;
+`;
+
+export const SubscriptionCostByMonth = styled.Text<Offer>`
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    text-transform: uppercase;
+
+    color: ${({ theme }) => theme.colors.subText};
+
+    ${props =>
+        props.isSelected &&
+        css`
+            color: ${({ theme }) => theme.colors.text};
+        `};
+`;
+
+export const DiscountLabelContainer = styled.View`
+    margin-left: 10px;
+    background-color: #e60000;
+    width: 40px;
+    justify-content: center;
+    border-radius: 5px;
+`;
+
+export const DiscountLabel = styled.Text`
+    text-align: center;
+    font-weight: bold;
+    color: white;
 `;
 
 export const ButtonSubscription = styled.TouchableOpacity`

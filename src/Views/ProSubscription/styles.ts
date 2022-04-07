@@ -52,7 +52,7 @@ export const AdvantageContainer = styled.View`
     background-color: ${props => props.theme.colors.productBackground};
     padding: 20px;
     border-radius: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 7px;
     elevation: 1;
 `;
 
