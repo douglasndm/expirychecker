@@ -13,7 +13,6 @@ import {
     InputTextContainer,
     InputText,
     List,
-    ListTitle,
     Icons,
     LoadingIcon,
     InputTextTip,
@@ -102,7 +101,17 @@ const ListView: React.FC = () => {
                     name: strings.View_Store_List_NoStore,
                 };
 
-                setStores([...response, noStore]);
+                const sorted = response.sort((s1, s2) => {
+                    if (s1.name < s2.name) {
+                        return -1;
+                    }
+                    if (s1.name > s2.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+                setStores([...sorted, noStore]);
             });
         });
 
