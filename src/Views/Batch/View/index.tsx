@@ -8,18 +8,22 @@ import React, {
 import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import EnvConfig from 'react-native-config';
-import { TestIds, BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import {
+    TestIds,
+    BannerAd,
+    BannerAdSize,
+} from 'react-native-google-mobile-ads';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
-import NumberFormat from 'react-number-format';
 
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { ShareProductImageWithText } from '~/Functions/Share';
+import { getFormatedPrice } from '~/Utils/System/getFormatedPrice';
 
 import Header from '~/Components/Header';
 import Button from '~/Components/Button';
@@ -275,57 +279,41 @@ const View: React.FC = () => {
 
                     {!!batch.price && (
                         <BatchPrice>
-                            {`${strings.View_Batch_UnitPrice} `}
-                            <NumberFormat
-                                value={batch.price}
-                                displayType="text"
-                                thousandSeparator
-                                prefix={currencyPrefix}
-                                renderText={value => value}
-                                decimalScale={2}
-                            />
+                            {`${
+                                strings.View_Batch_UnitPrice
+                            } ${currencyPrefix}${getFormatedPrice(
+                                batch.price
+                            )}`}
                         </BatchPrice>
                     )}
 
                     {!!batch.price_tmp && (
                         <BatchPrice>
-                            {`${strings.View_Batch_UnitTempPrice} `}
-                            <NumberFormat
-                                value={batch.price_tmp}
-                                displayType="text"
-                                thousandSeparator
-                                prefix={currencyPrefix}
-                                renderText={value => value}
-                                decimalScale={2}
-                            />
+                            {`${
+                                strings.View_Batch_UnitTempPrice
+                            } ${currencyPrefix}${getFormatedPrice(
+                                batch.price_tmp
+                            )}`}
                         </BatchPrice>
                     )}
 
                     {!!batch.price && !!batch.amount && (
                         <BatchPrice>
-                            {`${strings.View_Batch_TotalPrice} `}
-                            <NumberFormat
-                                value={batch.price * batch.amount}
-                                displayType="text"
-                                thousandSeparator
-                                prefix={currencyPrefix}
-                                renderText={value => value}
-                                decimalScale={2}
-                            />
+                            {`${
+                                strings.View_Batch_TotalPrice
+                            } ${currencyPrefix}${getFormatedPrice(
+                                batch.price * batch.amount
+                            )}`}
                         </BatchPrice>
                     )}
 
                     {!!batch.price_tmp && !!batch.amount && (
                         <BatchPrice>
-                            {`${strings.View_Batch_TotalPriceDiscount} `}
-                            <NumberFormat
-                                value={batch.price_tmp * batch.amount}
-                                displayType="text"
-                                thousandSeparator
-                                prefix={currencyPrefix}
-                                renderText={value => value}
-                                decimalScale={2}
-                            />
+                            {`${
+                                strings.View_Batch_TotalPriceDiscount
+                            } ${currencyPrefix}${getFormatedPrice(
+                                batch.price_tmp * batch.amount
+                            )}`}
                         </BatchPrice>
                     )}
 
@@ -341,7 +329,7 @@ const View: React.FC = () => {
                     <ProFeaturesContainer>
                         {!userPreferences.isUserPremium && (
                             <ProFeaturesText>
-                                Seja PRO e desbloqueie novas funções
+                                {strings.ProBanner_Text2}
                             </ProFeaturesText>
                         )}
                         <Button
