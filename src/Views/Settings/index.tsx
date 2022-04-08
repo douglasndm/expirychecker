@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView } from 'react-native';
+import { getLocales } from 'react-native-localize';
 import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 
@@ -17,6 +18,7 @@ import {
     setHowManyDaysToBeNextExp,
     setEnableMultipleStoresMode,
     setStoreFirstPage,
+    setAutoComplete,
 } from '~/Functions/Settings';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -34,7 +36,9 @@ import {
 
 const Settings: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
+    const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
     const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
     const [storeFirstPageState, setStoreFirstPageState] = useState<boolean>();
 
@@ -92,6 +96,8 @@ const Settings: React.FC = () => {
             if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
                 await setSettingDaysToBeNext(Number(daysToBeNext));
             }
+
+            setAutoCompleteState(userPreferences.autoComplete);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -104,12 +110,25 @@ const Settings: React.FC = () => {
     }, [
         daysToBeNext,
         setSettingDaysToBeNext,
+        userPreferences.autoComplete,
         userPreferences.howManyDaysToBeNextToExpire,
     ]);
 
     useEffect(() => {
         loadData();
-    }, [loadData]);
+    }, []);
+
+    const handleUpdateAutoComplete = useCallback(async () => {
+        const newValue = !autoCompleteState;
+        setAutoCompleteState(newValue);
+
+        await setAutoComplete(newValue);
+
+        setUserPreferences({
+            ...userPreferences,
+            autoComplete: newValue,
+        });
+    }, [autoCompleteState, setUserPreferences, userPreferences]);
 
     return isLoading ? (
         <Loading />
@@ -149,6 +168,20 @@ const Settings: React.FC = () => {
 
                             {userPreferences.isUserPremium && (
                                 <>
+                                    {getLocales()[0].languageCode === 'pt' && (
+                                        <SettingContainer>
+                                            <SettingDescription>
+                                                Autocompletar automacatimente
+                                            </SettingDescription>
+                                            <Switch
+                                                value={autoCompleteState}
+                                                onValueChange={
+                                                    handleUpdateAutoComplete
+                                                }
+                                            />
+                                        </SettingContainer>
+                                    )}
+
                                     <SettingContainer>
                                         <SettingDescription>
                                             {
