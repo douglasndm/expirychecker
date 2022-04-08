@@ -9,11 +9,13 @@ import {
     getHowManyDaysToBeNextExp,
     getDisableAds,
     getStoreFirstPage,
+    getAutoComplete,
 } from './Settings';
 import { getAppTheme } from './Themes';
 
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
     const settingDay = await getHowManyDaysToBeNextExp();
+    const settingAutoComplete = await getAutoComplete();
     const settingTheme = await getAppTheme();
     const settingNotification = await getEnableNotifications();
     const settingMultipleStores = await getEnableMultipleStoresMode();
@@ -24,6 +26,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 
     const settings: IUserPreferences = {
         howManyDaysToBeNextToExpire: settingDay,
+        autoComplete: settingAutoComplete,
         appTheme: getThemeByName(settingTheme),
         enableNotifications: settingNotification,
         notificationCadency: settingNotificationCadency,
