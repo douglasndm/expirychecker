@@ -2,6 +2,7 @@ import React, { useState, useCallback, useContext } from 'react';
 import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
+import * as Yup from 'yup';
 
 import strings from '~/Locales';
 
@@ -37,6 +38,7 @@ interface InputsRequest {
     setCode: (value: string) => void;
     onDuplicateProduct: () => void;
     onCompleteInfo: ({ prodName, prodBrand }: completeInfoProps) => void;
+    BrandsPickerRef: React.MutableRefObject<any>;
 }
 
 const Inputs: React.FC<InputsRequest> = ({
@@ -45,6 +47,7 @@ const Inputs: React.FC<InputsRequest> = ({
     setCode,
     onDuplicateProduct,
     onCompleteInfo,
+    BrandsPickerRef,
 }: InputsRequest) => {
     const { navigate } = useNavigation();
     const { userPreferences } = useContext(PreferencesContext);
@@ -113,40 +116,48 @@ const Inputs: React.FC<InputsRequest> = ({
 
     const findProductByEAN = useCallback(
         async (ean_code: string) => {
+            if (!userPreferences.isUserPremium) return;
+
+            const schema = Yup.object().shape({
+                ean_code: Yup.string().required().min(8),
+            });
+
+            try {
+                await schema.validate({ ean_code });
+            } catch (err) {
+                setProductFinded(false);
+                return;
+            }
             if (ean_code.length < 8) return;
 
-            if (ean_code.trim() !== '' && userPreferences.isUserPremium) {
-                if (getLocales()[0].languageCode === 'pt') {
-                    try {
-                        setIsFindingProd(true);
+            if (getLocales()[0].languageCode === 'pt') {
+                try {
+                    setIsFindingProd(true);
 
-                        const queryWithoutLetters = ean_code
-                            .replace(/\D/g, '')
-                            .trim();
-                        const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+                    const queryWithoutLetters = ean_code
+                        .replace(/\D/g, '')
+                        .trim();
+                    const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
 
-                        const response = await findProductByCode(query);
+                    const response = await findProductByCode(query);
 
-                        if (response !== null) {
-                            setProductFinded(true);
+                    if (response !== null) {
+                        setProductFinded(true);
 
-                            setProductNameFinded(response.name);
+                        setProductNameFinded(response.name);
 
-                            if (response.brand) {
-                                setProductBrandFinded(response.brand);
-                            }
-                        } else {
-                            setProductFinded(false);
-
-                            setProductNameFinded(null);
-                            setProductBrandFinded(null);
+                        if (response.brand) {
+                            setProductBrandFinded(response.brand);
                         }
-                    } finally {
-                        setIsFindingProd(false);
+                    } else {
+                        setProductFinded(false);
+
+                        setProductNameFinded(null);
+                        setProductBrandFinded(null);
                     }
+                } finally {
+                    setIsFindingProd(false);
                 }
-            } else {
-                setProductFinded(false);
             }
         },
         [userPreferences.isUserPremium]
@@ -168,19 +179,22 @@ const Inputs: React.FC<InputsRequest> = ({
     const completeInfo = useCallback(() => {
         if (productNameFinded) {
             if (productBrandFinded) {
-                onCompleteInfo({
-                    prodName: productNameFinded,
-                    prodBrand: productBrandFinded,
-                });
-            } else {
-                onCompleteInfo({
-                    prodName: productNameFinded,
-                });
+                if (BrandsPickerRef.current) {
+                    BrandsPickerRef.current.selectByName(productBrandFinded);
+                }
             }
+            onCompleteInfo({
+                prodName: productNameFinded,
+            });
 
             setShowFillModal(false);
         }
-    }, [onCompleteInfo, productBrandFinded, productNameFinded]);
+    }, [
+        BrandsPickerRef,
+        onCompleteInfo,
+        productBrandFinded,
+        productNameFinded,
+    ]);
 
     const handleOnCodeRead = useCallback(
         async (codeRead: string) => {

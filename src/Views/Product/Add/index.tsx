@@ -26,7 +26,9 @@ import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
-import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
+import BrandSelect, {
+    IBrandPickerRef,
+} from '~/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 
@@ -66,7 +68,9 @@ interface Request {
 
 const Add: React.FC<Request> = ({ route }: Request) => {
     const { navigate } = useNavigation();
+
     const InterstitialRef = useRef<IInterstitialRef>();
+    const BrandsPickerRef = useRef<IBrandPickerRef>();
 
     const locale = useMemo(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -353,6 +357,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     setCode={setCode}
                                     onDuplicateProduct={handleDuplicate}
                                     onCompleteInfo={onCompleteInfo}
+                                    BrandsPickerRef={BrandsPickerRef}
                                 />
 
                                 <MoreInformationsContainer>
@@ -414,6 +419,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                             />
 
                                             <BrandSelect
+                                                ref={BrandsPickerRef}
                                                 onChange={setSelectedBrand}
                                                 defaultValue={selectedBrand}
                                                 containerStyle={{
