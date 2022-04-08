@@ -230,18 +230,20 @@
     "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
 
     "View_ProPage_SubscribePeriod_Monthly": "Mensal",
-    "View_ProPage_SubscribePeriod_ThreeMonths": "3 meses",
+    "View_ProPage_SubscribePeriod_ThreeMonths": "Três meses",
     "View_ProPage_SubscribePeriod_OneYear": "Anual",
 
 
-    "View_Subscription_Monthly_WithIntroText": "{INTRO_PRICE} no primeiro mês e depois {PRICE} mensais",
-    "View_Subscription_Monthly_Text": "{PRICE} mensais",
+    "View_Subscription_AfterMonthlyPrice": "por mês",
 
-    "View_Subscription_3Months_WithIntroText": "{INTRO_PRICE} no primeiro pagando por 3 meses, e depois {PRICE} a cada 3 meses",
-    "View_Subscription_3Months_Text": "{PRICE} a cada 3 meses",
+    "View_Subscription_Monthly_WithIntroText": "Total de {INTRO_PRICE} no primeiro mês e depois {PRICE} mensais",
+    "View_Subscription_Monthly_Text": "Total de {PRICE} mensais",
 
-    "View_Subscription_AYear_WithIntroText": "{INTRO_PRICE} no primeiro ano e depois {PRICE} a cada ano",
-    "View_Subscription_AYear_Text": "{PRICE} a cada ano",
+    "View_Subscription_3Months_WithIntroText": "Total de {INTRO_PRICE} no primeiro pagando por 3 meses, e depois {PRICE} a cada 3 meses",
+    "View_Subscription_3Months_Text": "No plano trimestral com o valor total de {PRICE} a cada 3 meses",
+
+    "View_Subscription_AYear_WithIntroText": "Total de {INTRO_PRICE} no primeiro ano e depois {PRICE} a cada ano",
+    "View_Subscription_AYear_Text": "No plano anual com o valor total de {PRICE} a cada ano",
 
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
