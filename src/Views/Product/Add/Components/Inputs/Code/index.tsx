@@ -185,6 +185,8 @@ const Inputs: React.FC<InputsRequest> = ({
                                 completeInfo(response.name);
                             }
                         }
+
+                        await handleCheckProductCode(query);
                     } else {
                         setProductFinded(false);
 
@@ -198,6 +200,7 @@ const Inputs: React.FC<InputsRequest> = ({
         },
         [
             completeInfo,
+            handleCheckProductCode,
             userPreferences.autoComplete,
             userPreferences.isUserPremium,
         ]
