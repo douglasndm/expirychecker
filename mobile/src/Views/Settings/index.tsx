@@ -116,7 +116,7 @@ const Settings: React.FC = () => {
 
     useEffect(() => {
         loadData();
-    }, []);
+    }, [loadData]);
 
     const handleUpdateAutoComplete = useCallback(async () => {
         const newValue = !autoCompleteState;
