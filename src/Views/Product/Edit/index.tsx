@@ -39,10 +39,8 @@ import {
     InputGroup,
     InputContainer,
     InputTextContainer,
-    InputCodeText,
     InputTextTip,
     InputCodeTextIcon,
-    InputTextIconContainer,
     ImageContainer,
     ProductImage,
     CameraButtonContainer,
@@ -51,6 +49,11 @@ import {
     MoreInformationsContainer,
     MoreInformationsTitle,
 } from '../Add/styles';
+
+import {
+    InputCodeText,
+    InputTextIconContainer,
+} from '../Add/Components/Inputs/Code/styles';
 
 import {
     ButtonPaper,

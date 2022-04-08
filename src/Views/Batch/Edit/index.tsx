@@ -21,13 +21,13 @@ import {
     PageContent,
     InputContainer,
     InputTextContainer,
-    InputCodeText,
     Currency,
     InputGroup,
     ExpDateGroup,
     ExpDateLabel,
     CustomDatePicker,
 } from '~/Views/Product/Add/styles';
+import { InputCodeText } from '~/Views/Product/Add/Components/Inputs/Code/styles';
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
