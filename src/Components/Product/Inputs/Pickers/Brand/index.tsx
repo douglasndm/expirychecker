@@ -3,7 +3,7 @@ import { ViewStyle } from 'react-native';
 
 import strings from '~/Locales';
 
-import { getAllBrands } from '~/Utils/Brands';
+import { createBrand, getAllBrands } from '~/Utils/Brands';
 
 import { PickerContainer, Picker } from '../styles';
 
@@ -13,11 +13,15 @@ interface Props {
     defaultValue?: string | null;
 }
 
-const Brand: React.FC<Props> = ({
-    onChange,
-    containerStyle,
-    defaultValue,
-}: Props) => {
+export interface IBrandPickerRef {
+    onChange: (value: string) => void;
+    containerStyle?: ViewStyle;
+    defaultValue?: string | null;
+}
+
+const Brand = React.forwardRef<IBrandPickerRef>((props, ref) => {
+    const { defaultValue, containerStyle, onChange } = props;
+
     const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
         if (defaultValue && defaultValue !== '') {
             return defaultValue;
@@ -55,6 +59,31 @@ const Brand: React.FC<Props> = ({
         loadData();
     }, []);
 
+    const selectByName = useCallback(
+        async (name: string) => {
+            const brand = brands.find(
+                b => b.label.trim().toLowerCase() === name.trim().toLowerCase()
+            );
+
+            if (!brand) {
+                const createdBrand = await createBrand(name);
+
+                await loadData();
+
+                setSelectedBrand(createdBrand.id);
+            } else if (brand) {
+                setSelectedBrand(brand.key);
+            }
+        },
+        [brands, loadData]
+    );
+
+    React.useImperativeHandle(ref, () => ({
+        onChange,
+        setSelectedBrand,
+        selectByName,
+    }));
+
     return (
         <PickerContainer style={containerStyle}>
             <Picker
@@ -68,6 +97,6 @@ const Brand: React.FC<Props> = ({
             />
         </PickerContainer>
     );
-};
+});
 
 export default Brand;

@@ -45,7 +45,17 @@ const ListView: React.FC = () => {
 
             const cats = await getAllCategories();
 
-            setCategories(cats);
+            const sorted = cats.sort((b1, b2) => {
+                if (b1.name < b2.name) {
+                    return -1;
+                }
+                if (b1.name > b2.name) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            setCategories(sorted);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
