@@ -3,6 +3,7 @@ import Purchases, {
     UpgradeInfo,
 } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
+import appsFlyer from 'react-native-appsflyer';
 import EnvConfig from 'react-native-config';
 
 import { getUserId } from './User';
@@ -17,6 +18,12 @@ export async function isSubscriptionActive(): Promise<boolean> {
     if (!!localUserId) {
         Purchases.logIn(localUserId);
     }
+
+    appsFlyer.getAppsFlyerUID((err, id) => {
+        if (!err) {
+            Purchases.setAppsflyerID(id);
+        }
+    });
 
     const purchaserInfo = await Purchases.getPurchaserInfo();
 
