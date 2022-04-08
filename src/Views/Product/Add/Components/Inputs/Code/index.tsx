@@ -116,20 +116,28 @@ const Inputs: React.FC<InputsRequest> = ({
 
     const completeInfo = useCallback(
         (name?: string, brand?: string) => {
-            if (name || productNameFinded) {
-                if (brand || productBrandFinded) {
-                    if (BrandsPickerRef.current) {
-                        BrandsPickerRef.current.selectByName(
-                            brand || productBrandFinded
-                        );
-                    }
-                }
+            let prodName: string | undefined | null = name;
+
+            if (typeof prodName !== 'string') {
+                prodName = productNameFinded;
+            }
+
+            let prodBrand: string | undefined | null = brand;
+
+            if (typeof prodBrand !== 'string') {
+                prodBrand = productBrandFinded;
+            }
+
+            if (prodBrand) {
+                BrandsPickerRef.current.selectByName(prodBrand);
+            }
+
+            if (prodName)
                 onCompleteInfo({
-                    prodName: name || productNameFinded || '',
+                    prodName,
                 });
 
-                setShowFillModal(false);
-            }
+            setShowFillModal(false);
         },
         [BrandsPickerRef, onCompleteInfo, productBrandFinded, productNameFinded]
     );
