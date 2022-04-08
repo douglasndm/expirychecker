@@ -114,6 +114,26 @@ const Inputs: React.FC<InputsRequest> = ({
         }
     }, [existsProdId, navigate]);
 
+    const completeInfo = useCallback(
+        (name?: string, brand?: string) => {
+            if (name || productNameFinded) {
+                if (brand || productBrandFinded) {
+                    if (BrandsPickerRef.current) {
+                        BrandsPickerRef.current.selectByName(
+                            brand || productBrandFinded
+                        );
+                    }
+                }
+                onCompleteInfo({
+                    prodName: name || productNameFinded || '',
+                });
+
+                setShowFillModal(false);
+            }
+        },
+        [BrandsPickerRef, onCompleteInfo, productBrandFinded, productNameFinded]
+    );
+
     const findProductByEAN = useCallback(
         async (ean_code: string) => {
             if (!userPreferences.isUserPremium) return;
@@ -149,6 +169,14 @@ const Inputs: React.FC<InputsRequest> = ({
                         if (response.brand) {
                             setProductBrandFinded(response.brand);
                         }
+
+                        if (userPreferences.autoComplete) {
+                            if (response.brand) {
+                                completeInfo(response.name, response.brand);
+                            } else {
+                                completeInfo(response.name);
+                            }
+                        }
                     } else {
                         setProductFinded(false);
 
@@ -160,7 +188,11 @@ const Inputs: React.FC<InputsRequest> = ({
                 }
             }
         },
-        [userPreferences.isUserPremium]
+        [
+            completeInfo,
+            userPreferences.autoComplete,
+            userPreferences.isUserPremium,
+        ]
     );
 
     const handleCodeBlur = useCallback(
@@ -175,26 +207,6 @@ const Inputs: React.FC<InputsRequest> = ({
     const handleSwitchFindModal = useCallback(() => {
         setShowFillModal(!showFillModal);
     }, [showFillModal]);
-
-    const completeInfo = useCallback(() => {
-        if (productNameFinded) {
-            if (productBrandFinded) {
-                if (BrandsPickerRef.current) {
-                    BrandsPickerRef.current.selectByName(productBrandFinded);
-                }
-            }
-            onCompleteInfo({
-                prodName: productNameFinded,
-            });
-
-            setShowFillModal(false);
-        }
-    }, [
-        BrandsPickerRef,
-        onCompleteInfo,
-        productBrandFinded,
-        productNameFinded,
-    ]);
 
     const handleOnCodeRead = useCallback(
         async (codeRead: string) => {
