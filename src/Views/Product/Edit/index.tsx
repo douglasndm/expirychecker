@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
@@ -284,176 +285,189 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     ) : (
                         <>
                             <Container>
-                                <StatusBar />
-                                <Header
-                                    title={strings.View_EditProduct_PageTitle}
-                                    noDrawer
-                                />
+                                <ScrollView>
+                                    <StatusBar />
+                                    <Header
+                                        title={
+                                            strings.View_EditProduct_PageTitle
+                                        }
+                                        noDrawer
+                                    />
 
-                                {userPreferences.isUserPremium && !!photoPath && (
-                                    <ImageContainer>
-                                        <ProductImageContainer
-                                            onPress={handleEnableCamera}
-                                        >
-                                            <ProductImage
-                                                source={{
-                                                    uri: `file://${photoPath}`,
-                                                }}
-                                            />
-                                        </ProductImageContainer>
-                                    </ImageContainer>
-                                )}
-
-                                <PageContent>
-                                    <InputContainer>
-                                        <InputGroup>
-                                            <InputTextContainer>
-                                                <Input
-                                                    placeholder={
-                                                        strings.View_EditProduct_InputPlacehoder_Name
-                                                    }
-                                                    value={name}
-                                                    onChange={value => {
-                                                        setName(value);
-                                                        setNameFieldError(
-                                                            false
-                                                        );
-                                                    }}
-                                                />
-                                            </InputTextContainer>
-
-                                            {userPreferences.isUserPremium && (
-                                                <CameraButtonContainer
+                                    {userPreferences.isUserPremium &&
+                                        !!photoPath && (
+                                            <ImageContainer>
+                                                <ProductImageContainer
                                                     onPress={handleEnableCamera}
                                                 >
-                                                    <Icon
-                                                        name="camera-outline"
-                                                        size={36}
+                                                    <ProductImage
+                                                        source={{
+                                                            uri: `file://${photoPath}`,
+                                                        }}
                                                     />
-                                                </CameraButtonContainer>
-                                            )}
-                                        </InputGroup>
-                                        {nameFieldError && (
-                                            <InputTextTip>
-                                                {
-                                                    strings.View_EditProduct_Error_EmptyProductName
-                                                }
-                                            </InputTextTip>
+                                                </ProductImageContainer>
+                                            </ImageContainer>
                                         )}
 
-                                        <InputGroup>
-                                            <InputTextContainer
-                                                style={{
-                                                    flexDirection: 'row',
-                                                    justifyContent:
-                                                        'space-between',
-                                                    alignItems: 'center',
-                                                    paddingRight: 10,
-                                                }}
-                                            >
-                                                <InputCodeText
-                                                    placeholder={
-                                                        strings.View_EditProduct_InputPlacehoder_Code
+                                    <PageContent>
+                                        <InputContainer>
+                                            <InputGroup>
+                                                <InputTextContainer>
+                                                    <Input
+                                                        placeholder={
+                                                            strings.View_EditProduct_InputPlacehoder_Name
+                                                        }
+                                                        value={name}
+                                                        onChange={value => {
+                                                            setName(value);
+                                                            setNameFieldError(
+                                                                false
+                                                            );
+                                                        }}
+                                                    />
+                                                </InputTextContainer>
+
+                                                {userPreferences.isUserPremium && (
+                                                    <CameraButtonContainer
+                                                        onPress={
+                                                            handleEnableCamera
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            name="camera-outline"
+                                                            size={36}
+                                                        />
+                                                    </CameraButtonContainer>
+                                                )}
+                                            </InputGroup>
+                                            {nameFieldError && (
+                                                <InputTextTip>
+                                                    {
+                                                        strings.View_EditProduct_Error_EmptyProductName
                                                     }
-                                                    value={code}
-                                                    onChangeText={(
-                                                        value: string
-                                                    ) => {
-                                                        setCode(value);
+                                                </InputTextTip>
+                                            )}
+
+                                            <InputGroup>
+                                                <InputTextContainer
+                                                    style={{
+                                                        flexDirection: 'row',
+                                                        justifyContent:
+                                                            'space-between',
+                                                        alignItems: 'center',
+                                                        paddingRight: 10,
                                                     }}
-                                                />
-
-                                                <InputTextIconContainer
-                                                    onPress={
-                                                        handleEnableBarCodeReader
-                                                    }
                                                 >
-                                                    <InputCodeTextIcon />
-                                                </InputTextIconContainer>
-                                            </InputTextContainer>
-                                        </InputGroup>
-
-                                        <MoreInformationsContainer>
-                                            {userPreferences.isUserPremium && (
-                                                <>
-                                                    <MoreInformationsTitle>
-                                                        {
-                                                            strings.View_EditProduct_MoreInformation_Label
+                                                    <InputCodeText
+                                                        placeholder={
+                                                            strings.View_EditProduct_InputPlacehoder_Code
                                                         }
-                                                    </MoreInformationsTitle>
-
-                                                    <DaysToBeNext
-                                                        onChange={setDaysNext}
-                                                    />
-
-                                                    <CategorySelect
-                                                        defaultValue={
-                                                            selectedCategory
-                                                        }
-                                                        onChange={
-                                                            setSelectedCategory
-                                                        }
-                                                        containerStyle={{
-                                                            marginBottom: 10,
+                                                        value={code}
+                                                        onChangeText={(
+                                                            value: string
+                                                        ) => {
+                                                            setCode(value);
                                                         }}
                                                     />
 
-                                                    <BrandSelect
+                                                    <InputTextIconContainer
+                                                        onPress={
+                                                            handleEnableBarCodeReader
+                                                        }
+                                                    >
+                                                        <InputCodeTextIcon />
+                                                    </InputTextIconContainer>
+                                                </InputTextContainer>
+                                            </InputGroup>
+
+                                            <MoreInformationsContainer>
+                                                {userPreferences.isUserPremium && (
+                                                    <>
+                                                        <MoreInformationsTitle>
+                                                            {
+                                                                strings.View_EditProduct_MoreInformation_Label
+                                                            }
+                                                        </MoreInformationsTitle>
+
+                                                        <DaysToBeNext
+                                                            onChange={
+                                                                setDaysNext
+                                                            }
+                                                        />
+
+                                                        <CategorySelect
+                                                            defaultValue={
+                                                                selectedCategory
+                                                            }
+                                                            onChange={
+                                                                setSelectedCategory
+                                                            }
+                                                            containerStyle={{
+                                                                marginBottom: 10,
+                                                            }}
+                                                        />
+
+                                                        <BrandSelect
+                                                            defaultValue={
+                                                                selectedBrand
+                                                            }
+                                                            onChange={
+                                                                setSelectedBrand
+                                                            }
+                                                            containerStyle={{
+                                                                marginBottom: 10,
+                                                            }}
+                                                        />
+                                                    </>
+                                                )}
+
+                                                {userPreferences.multiplesStores && (
+                                                    <StoreSelect
                                                         defaultValue={
-                                                            selectedBrand
+                                                            selectedStore
                                                         }
                                                         onChange={
-                                                            setSelectedBrand
+                                                            setSelectedStore
                                                         }
-                                                        containerStyle={{
-                                                            marginBottom: 10,
-                                                        }}
-                                                    />
-                                                </>
-                                            )}
-
-                                            {userPreferences.multiplesStores && (
-                                                <StoreSelect
-                                                    defaultValue={selectedStore}
-                                                    onChange={setSelectedStore}
-                                                />
-                                            )}
-                                        </MoreInformationsContainer>
-
-                                        <ActionsButtonContainer>
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="save-outline"
-                                                        size={22}
                                                     />
                                                 )}
-                                                onPress={updateProd}
-                                            >
-                                                {
-                                                    strings.View_EditProduct_Button_Save
-                                                }
-                                            </ButtonPaper>
-                                            <ButtonPaper
-                                                icon={() => (
-                                                    <Icons
-                                                        name="trash-outline"
-                                                        size={22}
-                                                    />
-                                                )}
-                                                onPress={() => {
-                                                    setDeleteComponentVisible(
-                                                        true
-                                                    );
-                                                }}
-                                            >
-                                                {
-                                                    strings.View_ProductDetails_Button_DeleteProduct
-                                                }
-                                            </ButtonPaper>
-                                        </ActionsButtonContainer>
-                                    </InputContainer>
-                                </PageContent>
+                                            </MoreInformationsContainer>
+
+                                            <ActionsButtonContainer>
+                                                <ButtonPaper
+                                                    icon={() => (
+                                                        <Icons
+                                                            name="save-outline"
+                                                            size={22}
+                                                        />
+                                                    )}
+                                                    onPress={updateProd}
+                                                >
+                                                    {
+                                                        strings.View_EditProduct_Button_Save
+                                                    }
+                                                </ButtonPaper>
+                                                <ButtonPaper
+                                                    icon={() => (
+                                                        <Icons
+                                                            name="trash-outline"
+                                                            size={22}
+                                                        />
+                                                    )}
+                                                    onPress={() => {
+                                                        setDeleteComponentVisible(
+                                                            true
+                                                        );
+                                                    }}
+                                                >
+                                                    {
+                                                        strings.View_ProductDetails_Button_DeleteProduct
+                                                    }
+                                                </ButtonPaper>
+                                            </ActionsButtonContainer>
+                                        </InputContainer>
+                                    </PageContent>
+                                </ScrollView>
                             </Container>
                             <DialogPaper
                                 visible={deleteComponentVisible}
