@@ -63,3 +63,15 @@ export const Icons = styled(Ionicons).attrs(props => ({
             background: white;
         `}
 `;
+
+export const IconNoBackground = styled(Ionicons).attrs(() => ({
+    size: 34,
+}))`
+    padding: 10px 30px;
+
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+
+    background: #fff;
+    color: #000;
+`;

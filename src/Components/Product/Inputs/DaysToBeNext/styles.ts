@@ -10,6 +10,8 @@ export const Container = styled.View`
 export const TextDescription = styled.Text`
     margin: 0 5px 7px;
     font-family: 'Open Sans';
+
+    color: ${props => props.theme.colors.text};
 `;
 
 export const InputTextContainer = styled.View`
