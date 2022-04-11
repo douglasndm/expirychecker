@@ -5,7 +5,6 @@ import React, {
     useMemo,
     useRef,
 } from 'react';
-import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
@@ -19,7 +18,6 @@ import { createProduct } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
-import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 import Input from '~/Components/InputText';
 import GenericButton from '~/Components/Button';
@@ -303,164 +301,156 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             ) : (
                 <Container>
                     <Interstitial ref={InterstitialRef} />
-                    <ScrollView>
+
+                    <PageContent>
                         <Header
                             title={strings.View_AddProduct_PageTitle}
                             noDrawer
                         />
-                        <StatusBar />
-                        <PageContent>
-                            {userPreferences.isUserPremium && !!photoPath && (
-                                <ImageContainer>
-                                    <ProductImageContainer
-                                        onPress={handleEnableCamera}
-                                    >
-                                        <ProductImage
-                                            source={{
-                                                uri: `file://${photoPath}`,
-                                            }}
-                                        />
-                                    </ProductImageContainer>
-                                </ImageContainer>
+                        {userPreferences.isUserPremium && !!photoPath && (
+                            <ImageContainer>
+                                <ProductImageContainer
+                                    onPress={handleEnableCamera}
+                                >
+                                    <ProductImage
+                                        source={{
+                                            uri: `file://${photoPath}`,
+                                        }}
+                                    />
+                                </ProductImageContainer>
+                            </ImageContainer>
+                        )}
+
+                        <InputContainer>
+                            <InputGroup>
+                                <InputTextContainer hasError={nameFieldError}>
+                                    <Input
+                                        placeholder={
+                                            strings.View_AddProduct_InputPlacehoder_Name
+                                        }
+                                        value={name}
+                                        onChange={handleNameChange}
+                                    />
+                                </InputTextContainer>
+
+                                <CameraButtonContainer
+                                    onPress={handleEnableCamera}
+                                >
+                                    <Icon name="camera-outline" size={36} />
+                                </CameraButtonContainer>
+                            </InputGroup>
+                            {nameFieldError && (
+                                <InputTextTip>
+                                    {
+                                        strings.View_AddProduct_AlertTypeProductName
+                                    }
+                                </InputTextTip>
                             )}
 
-                            <InputContainer>
+                            <InputCode
+                                code={code}
+                                setCode={setCode}
+                                onDuplicateProduct={handleDuplicate}
+                                onCompleteInfo={onCompleteInfo}
+                                BrandsPickerRef={BrandsPickerRef}
+                            />
+
+                            <MoreInformationsContainer>
+                                <MoreInformationsTitle>
+                                    {
+                                        strings.View_AddProduct_MoreInformation_Label
+                                    }
+                                </MoreInformationsTitle>
+
                                 <InputGroup>
-                                    <InputTextContainer
-                                        hasError={nameFieldError}
-                                    >
-                                        <Input
-                                            placeholder={
-                                                strings.View_AddProduct_InputPlacehoder_Name
-                                            }
-                                            value={name}
-                                            onChange={handleNameChange}
-                                        />
-                                    </InputTextContainer>
-
-                                    <CameraButtonContainer
-                                        onPress={handleEnableCamera}
-                                    >
-                                        <Icon name="camera-outline" size={36} />
-                                    </CameraButtonContainer>
-                                </InputGroup>
-                                {nameFieldError && (
-                                    <InputTextTip>
-                                        {
-                                            strings.View_AddProduct_AlertTypeProductName
+                                    <Input
+                                        contentStyle={{
+                                            flex: 5,
+                                            marginRight: 10,
+                                        }}
+                                        placeholder={
+                                            strings.View_AddProduct_InputPlacehoder_Batch
                                         }
-                                    </InputTextTip>
-                                )}
+                                        value={lote}
+                                        onChange={value => setLote(value)}
+                                    />
 
-                                <InputCode
-                                    code={code}
-                                    setCode={setCode}
-                                    onDuplicateProduct={handleDuplicate}
-                                    onCompleteInfo={onCompleteInfo}
-                                    BrandsPickerRef={BrandsPickerRef}
+                                    <Input
+                                        contentStyle={{
+                                            flex: 4,
+                                        }}
+                                        placeholder={
+                                            strings.View_AddProduct_InputPlacehoder_Amount
+                                        }
+                                        keyboardType="numeric"
+                                        value={String(amount)}
+                                        onChange={handleAmountChange}
+                                    />
+                                </InputGroup>
+
+                                <Currency
+                                    value={price}
+                                    onChangeValue={handlePriceChange}
+                                    delimiter={currency === 'BRL' ? ',' : '.'}
+                                    placeholder={
+                                        strings.View_AddProduct_InputPlacehoder_UnitPrice
+                                    }
                                 />
 
-                                <MoreInformationsContainer>
-                                    <MoreInformationsTitle>
-                                        {
-                                            strings.View_AddProduct_MoreInformation_Label
-                                        }
-                                    </MoreInformationsTitle>
+                                {userPreferences.isUserPremium && (
+                                    <>
+                                        <DaysToBeNext onChange={setDaysNext} />
 
-                                    <InputGroup>
-                                        <Input
-                                            contentStyle={{
-                                                flex: 5,
-                                                marginRight: 10,
+                                        <CategorySelect
+                                            onChange={setSelectedCategory}
+                                            defaultValue={selectedCategory}
+                                            containerStyle={{
+                                                marginBottom: 10,
                                             }}
-                                            placeholder={
-                                                strings.View_AddProduct_InputPlacehoder_Batch
-                                            }
-                                            value={lote}
-                                            onChange={value => setLote(value)}
                                         />
 
-                                        <Input
-                                            contentStyle={{
-                                                flex: 4,
+                                        <BrandSelect
+                                            ref={BrandsPickerRef}
+                                            onChange={setSelectedBrand}
+                                            defaultValue={selectedBrand}
+                                            containerStyle={{
+                                                marginBottom: 10,
                                             }}
-                                            placeholder={
-                                                strings.View_AddProduct_InputPlacehoder_Amount
-                                            }
-                                            keyboardType="numeric"
-                                            value={String(amount)}
-                                            onChange={handleAmountChange}
                                         />
-                                    </InputGroup>
+                                    </>
+                                )}
 
-                                    <Currency
-                                        value={price}
-                                        onChangeValue={handlePriceChange}
-                                        delimiter={
-                                            currency === 'BRL' ? ',' : '.'
-                                        }
-                                        placeholder={
-                                            strings.View_AddProduct_InputPlacehoder_UnitPrice
-                                        }
+                                {userPreferences.multiplesStores && (
+                                    <StoreSelect
+                                        defaultValue={selectedStore}
+                                        onChange={setSelectedStore}
                                     />
+                                )}
+                            </MoreInformationsContainer>
 
-                                    {userPreferences.isUserPremium && (
-                                        <>
-                                            <DaysToBeNext
-                                                onChange={setDaysNext}
-                                            />
+                            <ExpDateGroup>
+                                <ExpDateLabel>
+                                    {strings.View_AddProduct_CalendarTitle}
+                                </ExpDateLabel>
 
-                                            <CategorySelect
-                                                onChange={setSelectedCategory}
-                                                defaultValue={selectedCategory}
-                                                containerStyle={{
-                                                    marginBottom: 10,
-                                                }}
-                                            />
+                                <CustomDatePicker
+                                    accessibilityLabel={
+                                        strings.View_AddProduct_CalendarAccessibilityDescription
+                                    }
+                                    date={expDate}
+                                    onDateChange={value => {
+                                        setExpDate(value);
+                                    }}
+                                    locale={locale}
+                                />
+                            </ExpDateGroup>
+                        </InputContainer>
 
-                                            <BrandSelect
-                                                ref={BrandsPickerRef}
-                                                onChange={setSelectedBrand}
-                                                defaultValue={selectedBrand}
-                                                containerStyle={{
-                                                    marginBottom: 10,
-                                                }}
-                                            />
-                                        </>
-                                    )}
-
-                                    {userPreferences.multiplesStores && (
-                                        <StoreSelect
-                                            defaultValue={selectedStore}
-                                            onChange={setSelectedStore}
-                                        />
-                                    )}
-                                </MoreInformationsContainer>
-
-                                <ExpDateGroup>
-                                    <ExpDateLabel>
-                                        {strings.View_AddProduct_CalendarTitle}
-                                    </ExpDateLabel>
-
-                                    <CustomDatePicker
-                                        accessibilityLabel={
-                                            strings.View_AddProduct_CalendarAccessibilityDescription
-                                        }
-                                        date={expDate}
-                                        onDateChange={value => {
-                                            setExpDate(value);
-                                        }}
-                                        locale={locale}
-                                    />
-                                </ExpDateGroup>
-                            </InputContainer>
-
-                            <GenericButton
-                                text={strings.View_AddProduct_Button_Save}
-                                onPress={handleSave}
-                            />
-                        </PageContent>
-                    </ScrollView>
+                        <GenericButton
+                            text={strings.View_AddProduct_Button_Save}
+                            onPress={handleSave}
+                        />
+                    </PageContent>
                 </Container>
             )}
         </>
