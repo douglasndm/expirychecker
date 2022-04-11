@@ -4,6 +4,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { sortCategories } from '~/Utils/Categories/Sort';
 import { getAllCategories, createCategory } from '~/Functions/Category';
 
 import Header from '~/Components/Header';
@@ -45,15 +46,7 @@ const ListView: React.FC = () => {
 
             const cats = await getAllCategories();
 
-            const sorted = cats.sort((b1, b2) => {
-                if (b1.name < b2.name) {
-                    return -1;
-                }
-                if (b1.name > b2.name) {
-                    return 1;
-                }
-                return 0;
-            });
+            const sorted = sortCategories(cats);
 
             setCategories(sorted);
         } catch (err) {
@@ -89,7 +82,9 @@ const ListView: React.FC = () => {
 
             const newCategory = await createCategory(newCategoryName);
 
-            setCategories([...categories, newCategory]);
+            const sorted = sortCategories([...categories, newCategory]);
+
+            setCategories(sorted);
             setNewCategoryName('');
         } catch (err) {
             if (err instanceof Error) setInputErrorMessage(err.message);
