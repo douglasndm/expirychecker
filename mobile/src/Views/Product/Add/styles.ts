@@ -4,14 +4,14 @@ import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.ScrollView`
     flex: 1;
     flex-direction: column;
     background: ${({ theme }) => theme.colors.background};
 `;
 
 export const PageContent = styled.View`
-    padding: 0 16px 16px 16px;
+    padding: 0 16px 0 16px;
 `;
 
 export const InputContainer = styled.View`
