@@ -3,7 +3,7 @@ import { compareAsc, startOfDay } from 'date-fns';
 import Realm from '~/Services/Realm';
 
 import { removeLotesTratados } from './Lotes';
-import { sortBatches } from './Batches';
+import { sortBatches } from '~/Utils/Batches/Sort';
 
 // ESSA FUNÇÃO RECEBE UMA LISTA DE PRODUTOS E ORDERNAR CADA ARRAY DE LOTES DE CADA PRODUTO
 // POR DATA DE VENCIMENTO, OU SEJA CADA PRODUTO DA LISTA VAI TER UM ARRAY DE LOTE JÁ ORDERNADO POR DATA DE VENCIMENTO
