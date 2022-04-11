@@ -70,6 +70,7 @@ const Header: React.FC<RequestProps> = ({
 
     return noDrawer ? (
         <HeaderContainerNoDrawner>
+            <StatusBar />
             <BackButton handleOnPress={onBackPressed || handleGoBack} />
 
             <TextLogo noDrawer={noDrawer}>{title}</TextLogo>

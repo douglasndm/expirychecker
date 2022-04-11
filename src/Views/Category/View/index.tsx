@@ -125,13 +125,11 @@ const CategoryView: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header />
-
             <TitleContainer>
-                <ItemTitle>
-                    {strings.View_Category_List_View_BeforeCategoryName}
-                    {categoryName}
-                </ItemTitle>
+                <Header
+                    title={`${strings.View_Category_List_View_BeforeCategoryName} ${categoryName}`}
+                    noDrawer
+                />
 
                 <ActionsContainer>
                     <ActionButtonsContainer onPress={handleEdit}>
