@@ -8,7 +8,7 @@ interface IProductStatus {
     expiredOrNext?: boolean;
 }
 
-export const ButtonPaper = styled(Button).attrs((props) => ({
+export const ButtonPaper = styled(Button).attrs(props => ({
     color: props.theme.colors.textAccent,
 }))``;
 
@@ -22,9 +22,9 @@ export const ActionsButtonContainer = styled.View`
 `;
 
 export const Text = styled.Text<IProductStatus>`
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
 
-    ${(props) =>
+    ${props =>
         props.expiredOrNext &&
         css`
             color: white;
@@ -32,5 +32,5 @@ export const Text = styled.Text<IProductStatus>`
 `;
 
 export const DialogPaper = styled(Dialog)`
-    background: ${(props) => props.theme.colors.productBackground};
+    background: ${props => props.theme.colors.productBackground};
 `;

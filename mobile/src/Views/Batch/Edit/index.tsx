@@ -197,8 +197,7 @@ const EditBatch: React.FC = () => {
     ) : (
         <>
             <Container>
-                <StatusBar />
-                <ScrollView>
+                <PageContent>
                     <PageHeader>
                         <Header
                             title={strings.View_EditBatch_PageTitle}
@@ -230,127 +229,123 @@ const EditBatch: React.FC = () => {
                         </ActionButtonsContainer>
                     </PageHeader>
 
-                    <PageContent>
-                        <InputContainer>
-                            <ProductHeader>
-                                {!!product && (
-                                    <ProductName>{product.name}</ProductName>
-                                )}
-                                {!!product && !!product.code && (
-                                    <ProductCode>{product.code}</ProductCode>
-                                )}
-                            </ProductHeader>
+                    <InputContainer>
+                        <ProductHeader>
+                            {!!product && (
+                                <ProductName>{product.name}</ProductName>
+                            )}
+                            {!!product && !!product.code && (
+                                <ProductCode>{product.code}</ProductCode>
+                            )}
+                        </ProductHeader>
 
-                            <InputGroup>
-                                <InputTextContainer
-                                    style={{
-                                        flex: 5,
-                                        marginRight: 5,
-                                    }}
-                                >
-                                    <InputCodeText
-                                        placeholder={
-                                            strings.View_EditBatch_InputPlacehoder_Batch
-                                        }
-                                        value={lote}
-                                        onChangeText={value => setLote(value)}
-                                    />
-                                </InputTextContainer>
-                                <InputTextContainer
-                                    style={{
-                                        flex: 4,
-                                    }}
-                                >
-                                    <InputCodeText
-                                        placeholder={
-                                            strings.View_EditBatch_InputPlacehoder_Amount
-                                        }
-                                        keyboardType="numeric"
-                                        value={String(amount)}
-                                        onChangeText={handleAmountChange}
-                                    />
-                                </InputTextContainer>
-                            </InputGroup>
+                        <InputGroup>
+                            <InputTextContainer
+                                style={{
+                                    flex: 5,
+                                    marginRight: 5,
+                                }}
+                            >
+                                <InputCodeText
+                                    placeholder={
+                                        strings.View_EditBatch_InputPlacehoder_Batch
+                                    }
+                                    value={lote}
+                                    onChangeText={value => setLote(value)}
+                                />
+                            </InputTextContainer>
+                            <InputTextContainer
+                                style={{
+                                    flex: 4,
+                                }}
+                            >
+                                <InputCodeText
+                                    placeholder={
+                                        strings.View_EditBatch_InputPlacehoder_Amount
+                                    }
+                                    keyboardType="numeric"
+                                    value={String(amount)}
+                                    onChangeText={handleAmountChange}
+                                />
+                            </InputTextContainer>
+                        </InputGroup>
 
-                            <Currency
-                                value={price}
-                                onChangeValue={handlePriceChange}
-                                delimiter={currency === 'BRL' ? ',' : '.'}
-                                placeholder={
-                                    strings.View_EditBatch_InputPlacehoder_UnitPrice
-                                }
-                            />
+                        <Currency
+                            value={price}
+                            onChangeValue={handlePriceChange}
+                            delimiter={currency === 'BRL' ? ',' : '.'}
+                            placeholder={
+                                strings.View_EditBatch_InputPlacehoder_UnitPrice
+                            }
+                        />
 
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                            }}
+                        >
                             <View
                                 style={{
                                     flexDirection: 'row',
-                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                 }}
                             >
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <RadioButton
-                                        value="tratado"
-                                        status={
-                                            tratado === true
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() => setTratado(true)}
-                                    />
-                                    <RadioButtonText>
-                                        {
-                                            strings.View_EditBatch_RadioButton_Treated
-                                        }
-                                    </RadioButtonText>
-                                </View>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                    }}
-                                >
-                                    <RadioButton
-                                        value="Não tratado"
-                                        status={
-                                            tratado === !true
-                                                ? 'checked'
-                                                : 'unchecked'
-                                        }
-                                        onPress={() => setTratado(false)}
-                                    />
-                                    <RadioButtonText>
-                                        {
-                                            strings.View_EditBatch_RadioButton_NotTreated
-                                        }
-                                    </RadioButtonText>
-                                </View>
-                            </View>
-
-                            <ExpDateGroup>
-                                <ExpDateLabel>
-                                    {strings.View_EditBatch_CalendarTitle}
-                                </ExpDateLabel>
-                                <CustomDatePicker
-                                    date={expDate}
-                                    onDateChange={value => {
-                                        setExpDate(value);
-                                    }}
-                                    locale={locale}
+                                <RadioButton
+                                    value="tratado"
+                                    status={
+                                        tratado === true
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() => setTratado(true)}
                                 />
-                            </ExpDateGroup>
-                        </InputContainer>
+                                <RadioButtonText>
+                                    {strings.View_EditBatch_RadioButton_Treated}
+                                </RadioButtonText>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <RadioButton
+                                    value="Não tratado"
+                                    status={
+                                        tratado === !true
+                                            ? 'checked'
+                                            : 'unchecked'
+                                    }
+                                    onPress={() => setTratado(false)}
+                                />
+                                <RadioButtonText>
+                                    {
+                                        strings.View_EditBatch_RadioButton_NotTreated
+                                    }
+                                </RadioButtonText>
+                            </View>
+                        </View>
 
-                        <GenericButton
-                            text={strings.View_EditBatch_Button_Save}
-                            onPress={handleSave}
-                        />
-                    </PageContent>
-                </ScrollView>
+                        <ExpDateGroup>
+                            <ExpDateLabel>
+                                {strings.View_EditBatch_CalendarTitle}
+                            </ExpDateLabel>
+                            <CustomDatePicker
+                                date={expDate}
+                                onDateChange={value => {
+                                    setExpDate(value);
+                                }}
+                                locale={locale}
+                            />
+                        </ExpDateGroup>
+                    </InputContainer>
+
+                    <GenericButton
+                        text={strings.View_EditBatch_Button_Save}
+                        onPress={handleSave}
+                    />
+                </PageContent>
             </Container>
 
             <Dialog
