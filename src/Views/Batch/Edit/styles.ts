@@ -1,9 +1,10 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 import {
     Button as ButtonPaper,
     RadioButton as RadioPaper,
 } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 export const LoadingText = styled.Text``;
 
@@ -18,7 +19,12 @@ export const PageTitleContainer = styled.View`
     align-items: center;
 `;
 
-export const ActionButtonsContainer = styled.View``;
+export const ActionButtonsContainer = styled.View`
+    ${isIphoneX() &&
+    css`
+        margin-top: 30px;
+    `}
+`;
 
 export const Button = styled(ButtonPaper).attrs(props => ({
     color: props.theme.colors.accent,
