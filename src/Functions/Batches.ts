@@ -1,11 +1,5 @@
 import Realm from '~/Services/Realm';
 
-export function removeCheckedBatches(batches: Array<ILote>): Array<ILote> {
-    const filted = batches.filter(batch => batch.status !== 'checked');
-
-    return filted;
-}
-
 export async function saveManyBatches(batches: Array<ILote>): Promise<ILote[]> {
     const realm = await Realm();
 
