@@ -5,11 +5,12 @@ import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
+import Logo from './Logo';
+
 import {
     Container,
     MainMenuContainer,
     LogoContainer,
-    Logo,
     MenuItemContainer,
     MenuContent,
     MenuItemText,
