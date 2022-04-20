@@ -161,5 +161,3 @@ export async function getAllProductsByStore(
 
     return filtedProducts;
 }
-
-getAllStores();
