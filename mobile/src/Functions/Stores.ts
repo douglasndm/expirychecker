@@ -84,7 +84,7 @@ export async function createStore(storeName: string): Promise<IStore> {
 
     if (storeAlreadyExists) {
         throw new Error(
-            strings.Function_Category_AddCategory_Error_AlreadyExists
+            strings.View_Store_List_AddNewStore_Error_DuplicateStore
         );
     }
 
