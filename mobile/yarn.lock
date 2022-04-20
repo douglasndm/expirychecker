@@ -9609,10 +9609,10 @@ realm-network-transport@^0.7.2:
     abort-controller "^3.0.0"
     node-fetch "^2.6.0"
 
-realm@^10.20.0-beta.4:
-  version "10.20.0-beta.4"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-10.20.0-beta.4.tgz#48f61adf0233a14bbce9b77b267311ccf51fdecc"
-  integrity sha512-YoyaqwpiTV+Ah1DD0La23ZIefblPZ+1vItiicikFBVueE5EKIwldum62t5Mwzpc4iytRDPx2oe3atKWoqy5wiA==
+realm@^10.20.0-beta.5:
+  version "10.20.0-beta.5"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-10.20.0-beta.5.tgz#8bcd4e62c6fa1d2376c93cc5a9b0f083830d70e6"
+  integrity sha512-NI6DUaD8+WfcPMUn4KD/KEmPmBus2T4ScjUKiYQ0YuUR31qtoQZ6A2WM6Mf2WBM+XGStqBxM09hte+eX0Q6XcQ==
   dependencies:
     "@realm.io/common" "^0.1.1"
     bindings "^1.5.0"
