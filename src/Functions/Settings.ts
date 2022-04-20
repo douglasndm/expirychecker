@@ -45,22 +45,6 @@ export async function setAutoComplete(value: boolean): Promise<void> {
     });
 }
 
-export async function setEnableNotifications(enable: boolean): Promise<void> {
-    await setSetting({
-        type: 'EnableNotifications',
-        value: String(enable),
-    });
-}
-
-export async function setNotificationCadency(
-    cadency: NotificationCadency
-): Promise<void> {
-    await setSetting({
-        type: 'NotificationCadency',
-        value: cadency,
-    });
-}
-
 export async function setEnableMultipleStoresMode(
     enable: boolean
 ): Promise<void> {
