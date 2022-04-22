@@ -67,48 +67,52 @@ const WeekView: React.FC = () => {
                 compareAsc(b1.exp_date, b2.exp_date)
             );
 
-            const weeksInUse = eachWeekOfInterval({
-                start: sorted[0].exp_date,
-                end: sorted[sorted.length - 1].exp_date,
-            });
-
-            const weeksProds = weeksInUse.map(week => {
-                const prods: IProduct[] = [];
-
-                const weekLimit = addDays(week, 7);
-
-                allProducts.forEach(prod => {
-                    const filtedBatches = prod.lotes.filter(b => {
-                        const { exp_date } = b;
-
-                        if (compareAsc(weekLimit, exp_date) >= 0) {
-                            if (compareAsc(exp_date, week) >= 0) {
-                                if (b.status?.toLowerCase() !== 'tratado') {
-                                    return true;
-                                }
-                            }
-                        }
-                        return false;
-                    });
-
-                    if (filtedBatches.length > 0) {
-                        prods.push({
-                            ...prod,
-                            lotes: filtedBatches,
-                        });
-                    }
+            if (sorted.length > 0) {
+                const weeksInUse = eachWeekOfInterval({
+                    start: sorted[0].exp_date,
+                    end: sorted[sorted.length - 1].exp_date,
                 });
 
-                const weekProps: WeekProps = {
-                    date: week,
-                    products: prods,
-                };
-                return weekProps;
-            });
+                const weeksProds = weeksInUse.map(week => {
+                    const prods: IProduct[] = [];
 
-            const usedWeeks = weeksProds.filter(wp => wp.products.length > 0);
+                    const weekLimit = addDays(week, 7);
 
-            setWeeks(usedWeeks);
+                    allProducts.forEach(prod => {
+                        const filtedBatches = prod.lotes.filter(b => {
+                            const { exp_date } = b;
+
+                            if (compareAsc(weekLimit, exp_date) >= 0) {
+                                if (compareAsc(exp_date, week) >= 0) {
+                                    if (b.status?.toLowerCase() !== 'tratado') {
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        });
+
+                        if (filtedBatches.length > 0) {
+                            prods.push({
+                                ...prod,
+                                lotes: filtedBatches,
+                            });
+                        }
+                    });
+
+                    const weekProps: WeekProps = {
+                        date: week,
+                        products: prods,
+                    };
+                    return weekProps;
+                });
+
+                const usedWeeks = weeksProds.filter(
+                    wp => wp.products.length > 0
+                );
+
+                setWeeks(usedWeeks);
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
