@@ -12,6 +12,10 @@ import { getAllStores } from '~/Functions/Stores';
 
 import Header from '~/Components/Header';
 import Button from '~/Components/Button';
+import {
+    PickerContainer,
+    Picker,
+} from '~/Components/Product/Inputs/Pickers/styles';
 
 import {
     Container,
@@ -19,8 +23,6 @@ import {
     Title,
     Advantage,
     Text,
-    PickerContainer,
-    Picker,
     ActionButton,
     Icons,
     WarningText,
@@ -140,6 +142,8 @@ const Teams: React.FC = () => {
                                 onValueChange={handleStoreChange}
                                 value={selectedStore}
                                 placeholder={{
+                                    color: userPreferences.appTheme.colors
+                                        .placeholderColor,
                                     label: strings.View_AddProduct_InputPlacehoder_Store,
                                     value: 'null',
                                 }}
