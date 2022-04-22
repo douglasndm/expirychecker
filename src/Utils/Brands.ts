@@ -106,7 +106,13 @@ export async function saveManyBrands(brands: Array<IBrand>): Promise<void> {
 
     realm.write(() => {
         brands.forEach(brand => {
-            realm.create('Brand', brand);
+            const alreadyExists = realm
+                .objects<IBrand>('Brand')
+                .filtered(`name ==[c] "${brand.name}"`)[0]; // ==[c] makes the search insensitive
+
+            if (!alreadyExists) {
+                realm.create('Brand', brand);
+            }
         });
     });
 }
