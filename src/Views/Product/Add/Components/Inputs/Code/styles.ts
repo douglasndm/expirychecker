@@ -34,7 +34,7 @@ export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
 `;
 
 export const InputCodeText = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
+    placeholderTextColor: props.theme.colors.placeholderColor,
 }))`
     flex: 1;
     padding: 15px 5px 15px 15px;
