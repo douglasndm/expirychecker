@@ -7,7 +7,13 @@ export async function saveManyCategories(
 
     realm.write(() => {
         categories.forEach(cat => {
-            realm.create('Category', cat);
+            const alreadyExists = realm
+                .objects<ICategory>('Category')
+                .filtered(`name ==[c] "${cat.name}"`)[0]; // ==[c] makes the search insensitive
+
+            if (!alreadyExists) {
+                realm.create('Category', cat);
+            }
         });
     });
 }
