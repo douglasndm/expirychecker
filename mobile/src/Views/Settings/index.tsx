@@ -7,7 +7,6 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';
-import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 
 import Appearance from './Components/Appearance';
@@ -142,7 +141,6 @@ const Settings: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <StatusBar />
             <ScrollView>
                 <Header title={strings.View_Settings_PageTitle} noDrawer />
 
@@ -186,6 +184,10 @@ const Settings: React.FC = () => {
                                                 onValueChange={
                                                     handleUpdateAutoComplete
                                                 }
+                                                color={
+                                                    userPreferences.appTheme
+                                                        .colors.accent
+                                                }
                                             />
                                         </SettingContainer>
                                     )}
@@ -201,6 +203,10 @@ const Settings: React.FC = () => {
                                             onValueChange={
                                                 handleMultiStoresEnableSwitch
                                             }
+                                            color={
+                                                userPreferences.appTheme.colors
+                                                    .accent
+                                            }
                                         />
                                     </SettingContainer>
 
@@ -215,6 +221,10 @@ const Settings: React.FC = () => {
                                                 value={storeFirstPageState}
                                                 onValueChange={
                                                     handleStoreFirstPageSwitch
+                                                }
+                                                color={
+                                                    userPreferences.appTheme
+                                                        .colors.accent
                                                 }
                                             />
                                         </SettingContainer>
