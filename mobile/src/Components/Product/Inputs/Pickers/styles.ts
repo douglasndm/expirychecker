@@ -26,8 +26,6 @@ export const Picker = styled(RNPickerSelect).attrs(({ theme }) => ({
         },
     },
     textInputProps: {
-        style: {
-            color: theme.colors.text,
-        },
+        color: theme.colors.inputText,
     },
 }))``;

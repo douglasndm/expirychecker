@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
-
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ViewStyle } from 'react-native';
+
 import strings from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getAllCategories } from '~/Functions/Category';
 
@@ -18,6 +20,8 @@ const CategorySelect: React.FC<Props> = ({
     containerStyle,
     defaultValue,
 }: Props) => {
+    const { userPreferences } = useContext(PreferencesContext);
+
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
         () => {
             if (defaultValue && defaultValue !== '') {
@@ -65,6 +69,7 @@ const CategorySelect: React.FC<Props> = ({
                 onValueChange={handleOnChange}
                 value={selectedCategory}
                 placeholder={{
+                    color: userPreferences.appTheme.colors.placeholderColor,
                     label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
                     value: 'null',
                 }}
