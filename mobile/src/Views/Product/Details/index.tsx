@@ -25,7 +25,7 @@ import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import BackButton from '~/Components/BackButton';
 import { getProductById } from '~/Functions/Product';
-import { sortBatches } from '~/Functions/Batches';
+import { sortBatches } from '~/Utils/Batches/Sort';
 import { getStore } from '~/Functions/Stores';
 import { getProductImagePath } from '~/Functions/Products/Image';
 

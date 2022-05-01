@@ -160,7 +160,7 @@ const Edit: React.FC = () => {
                         {strings.View_Category_Edit_DeleteModal_Confirm}
                     </Button>
                     <Button
-                        color={theme.colors.accent}
+                        color={theme.colors.text}
                         onPress={() => {
                             setDeleteComponentVisible(false);
                         }}

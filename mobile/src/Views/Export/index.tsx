@@ -74,7 +74,7 @@ const Export: React.FC = () => {
 
     return (
         <Container>
-            <Header title={strings.View_Export_PageTitle} />
+            <Header title={strings.View_Export_PageTitle} noDrawer />
 
             <Content>
                 <ExportOptionContainer>

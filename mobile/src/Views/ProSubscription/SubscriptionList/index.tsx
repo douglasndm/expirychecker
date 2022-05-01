@@ -18,7 +18,6 @@ import {
 } from '~/Functions/ProMode';
 import { getEnableProVersion } from '~/Functions/Settings';
 import { getPlansString } from '~/Utils/Purchases/Plans';
-import { getCurrentLocale } from '~/Utils/System/getLocale';
 
 import {
     Container,
@@ -187,8 +186,8 @@ const SubscriptionList: React.FC = () => {
                                             pack.product.currency_code
                                         );
 
-                                        let priceByMonth = `${price.toLocaleString(
-                                            getCurrentLocale()
+                                        let priceByMonth = `${getFormatedPrice(
+                                            price
                                         )} ${
                                             strings.View_Subscription_AfterMonthlyPrice
                                         }`;

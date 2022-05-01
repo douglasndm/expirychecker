@@ -7,11 +7,9 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';
-import StatusBar from '~/Components/StatusBar';
 import Header from '~/Components/Header';
 
 import Appearance from './Components/Appearance';
-import Notifications from './Components/Notifications';
 import Pro from './Components/Pro';
 
 import {
@@ -39,8 +37,10 @@ const Settings: React.FC = () => {
 
     const [daysToBeNext, setDaysToBeNext] = useState<string>('');
     const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
-    const [multipleStoresState, setMultipleStoresState] = useState<boolean>();
-    const [storeFirstPageState, setStoreFirstPageState] = useState<boolean>();
+    const [multipleStoresState, setMultipleStoresState] =
+        useState<boolean>(false);
+    const [storeFirstPageState, setStoreFirstPageState] =
+        useState<boolean>(false);
 
     const { userPreferences, setUserPreferences } =
         useContext(PreferencesContext);
@@ -57,29 +57,9 @@ const Settings: React.FC = () => {
         [setUserPreferences, userPreferences]
     );
 
-    const handleMultiStoresEnableSwitch = useCallback(async () => {
-        await setEnableMultipleStoresMode(!multipleStoresState);
-
-        setUserPreferences({
-            ...userPreferences,
-            multiplesStores: !userPreferences.multiplesStores,
-        });
-    }, [multipleStoresState, setUserPreferences, userPreferences]);
-
-    const handleStoreFirstPageSwitch = useCallback(async () => {
-        await setStoreFirstPage(!storeFirstPageState);
-
-        setUserPreferences({
-            ...userPreferences,
-            storesFirstPage: !userPreferences.storesFirstPage,
-        });
-    }, [setUserPreferences, storeFirstPageState, userPreferences]);
-
     useEffect(() => {
         setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
-        setMultipleStoresState(userPreferences.multiplesStores);
-        setStoreFirstPageState(userPreferences.storesFirstPage);
-    }, [userPreferences]);
+    }, [userPreferences.howManyDaysToBeNextToExpire]);
 
     const loadData = useCallback(async () => {
         try {
@@ -98,6 +78,8 @@ const Settings: React.FC = () => {
             }
 
             setAutoCompleteState(userPreferences.autoComplete);
+            setMultipleStoresState(userPreferences.multiplesStores);
+            setStoreFirstPageState(userPreferences.storesFirstPage);
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -112,6 +94,8 @@ const Settings: React.FC = () => {
         setSettingDaysToBeNext,
         userPreferences.autoComplete,
         userPreferences.howManyDaysToBeNextToExpire,
+        userPreferences.multiplesStores,
+        userPreferences.storesFirstPage,
     ]);
 
     useEffect(() => {
@@ -130,11 +114,33 @@ const Settings: React.FC = () => {
         });
     }, [autoCompleteState, setUserPreferences, userPreferences]);
 
+    const handleMultiStoresEnableSwitch = useCallback(async () => {
+        const newValue = !multipleStoresState;
+        setMultipleStoresState(newValue);
+
+        await setEnableMultipleStoresMode(newValue);
+
+        setUserPreferences({
+            ...userPreferences,
+            multiplesStores: newValue,
+        });
+    }, [multipleStoresState, setUserPreferences, userPreferences]);
+
+    const handleStoreFirstPageSwitch = useCallback(async () => {
+        const newValue = !storeFirstPageState;
+        setStoreFirstPageState(newValue);
+        await setStoreFirstPage(newValue);
+
+        setUserPreferences({
+            ...userPreferences,
+            storesFirstPage: newValue,
+        });
+    }, [setUserPreferences, storeFirstPageState, userPreferences]);
+
     return isLoading ? (
         <Loading />
     ) : (
         <Container>
-            <StatusBar />
             <ScrollView>
                 <Header title={strings.View_Settings_PageTitle} noDrawer />
 
@@ -178,6 +184,10 @@ const Settings: React.FC = () => {
                                                 onValueChange={
                                                     handleUpdateAutoComplete
                                                 }
+                                                color={
+                                                    userPreferences.appTheme
+                                                        .colors.accent
+                                                }
                                             />
                                         </SettingContainer>
                                     )}
@@ -189,16 +199,18 @@ const Settings: React.FC = () => {
                                             }
                                         </SettingDescription>
                                         <Switch
-                                            value={
-                                                userPreferences.multiplesStores
-                                            }
+                                            value={multipleStoresState}
                                             onValueChange={
                                                 handleMultiStoresEnableSwitch
+                                            }
+                                            color={
+                                                userPreferences.appTheme.colors
+                                                    .accent
                                             }
                                         />
                                     </SettingContainer>
 
-                                    {userPreferences.multiplesStores && (
+                                    {multipleStoresState && (
                                         <SettingContainer>
                                             <SettingDescription>
                                                 {
@@ -206,11 +218,13 @@ const Settings: React.FC = () => {
                                                 }
                                             </SettingDescription>
                                             <Switch
-                                                value={
-                                                    userPreferences.storesFirstPage
-                                                }
+                                                value={storeFirstPageState}
                                                 onValueChange={
                                                     handleStoreFirstPageSwitch
+                                                }
+                                                color={
+                                                    userPreferences.appTheme
+                                                        .colors.accent
                                                 }
                                             />
                                         </SettingContainer>

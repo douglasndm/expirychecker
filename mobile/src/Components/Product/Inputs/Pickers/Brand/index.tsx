@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ViewStyle } from 'react-native';
 
 import strings from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { createBrand, getAllBrands } from '~/Utils/Brands';
 
@@ -21,6 +23,8 @@ export interface IBrandPickerRef {
 
 const Brand = React.forwardRef<IBrandPickerRef>((props, ref) => {
     const { defaultValue, containerStyle, onChange } = props;
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
         if (defaultValue && defaultValue !== '') {
@@ -91,6 +95,7 @@ const Brand = React.forwardRef<IBrandPickerRef>((props, ref) => {
                 onValueChange={handleOnChange}
                 value={selectedBrand}
                 placeholder={{
+                    color: userPreferences.appTheme.colors.placeholderColor,
                     label: strings.View_AddProduct_InputPlaceholder_SelectBrand,
                     value: 'null',
                 }}
