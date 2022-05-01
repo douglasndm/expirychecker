@@ -21,6 +21,7 @@ import {
     AddButtonContainer,
     AddNewItemContent,
 } from '~/Styles/Views/GenericListPage';
+import { sortStores } from '~/Utils/Stores/Sort';
 
 const ListView: React.FC = () => {
     const { navigate, addListener } = useNavigation();
@@ -52,7 +53,9 @@ const ListView: React.FC = () => {
 
             const newStore = await createStore(newStoreName);
 
-            setStores([...stores, newStore]);
+            const sorted = sortStores([...stores, newStore]);
+
+            setStores(sorted);
             setNewStoreName('');
         } catch (err) {
             if (err instanceof Error) setInputErrorMessage(err.message);
@@ -101,15 +104,7 @@ const ListView: React.FC = () => {
                     name: strings.View_Store_List_NoStore,
                 };
 
-                const sorted = response.sort((s1, s2) => {
-                    if (s1.name < s2.name) {
-                        return -1;
-                    }
-                    if (s1.name > s2.name) {
-                        return 1;
-                    }
-                    return 0;
-                });
+                const sorted = sortStores(response);
 
                 setStores([...sorted, noStore]);
             });

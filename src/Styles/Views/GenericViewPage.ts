@@ -1,9 +1,8 @@
 import styled from 'styled-components/native';
-import { Button } from 'react-native-paper';
 import { RectButton } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     background: ${props => props.theme.colors.background};
 `;
@@ -11,8 +10,7 @@ export const Container = styled.View`
 export const TitleContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    padding: 5px 10px;
+    align-items: flex-start;
 `;
 
 export const ItemTitle = styled.Text`
@@ -24,7 +22,7 @@ export const ItemTitle = styled.Text`
 
 export const ActionsContainer = styled.View`
     flex-direction: column;
-    margin-bottom: 15px;
+    margin-right: 10px;
 `;
 
 export const ActionButtonsContainer = styled(RectButton)`
