@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ViewStyle } from 'react-native';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import strings from '~/Locales';
 
@@ -18,6 +20,8 @@ const Store: React.FC<Props> = ({
     containerStyle,
     defaultValue,
 }: Props) => {
+    const { userPreferences } = useContext(PreferencesContext);
+
     const [selectedStore, setSelectedStore] = useState<string | null>(() => {
         if (defaultValue && defaultValue !== '') {
             return defaultValue;
@@ -65,6 +69,7 @@ const Store: React.FC<Props> = ({
                 onValueChange={handleOnChange}
                 value={selectedStore}
                 placeholder={{
+                    color: userPreferences.appTheme.colors.placeholderColor,
                     label: strings.View_AddProduct_InputPlacehoder_Store,
                     value: 'null',
                 }}

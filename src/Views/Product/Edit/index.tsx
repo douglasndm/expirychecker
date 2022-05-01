@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
@@ -21,7 +22,6 @@ import {
     getImageFileNameFromPath,
 } from '~/Functions/Products/Image';
 
-import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import Input from '~/Components/InputText';
@@ -284,27 +284,28 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                     ) : (
                         <>
                             <Container>
-                                <StatusBar />
-                                <Header
-                                    title={strings.View_EditProduct_PageTitle}
-                                    noDrawer
-                                />
-
-                                {userPreferences.isUserPremium && !!photoPath && (
-                                    <ImageContainer>
-                                        <ProductImageContainer
-                                            onPress={handleEnableCamera}
-                                        >
-                                            <ProductImage
-                                                source={{
-                                                    uri: `file://${photoPath}`,
-                                                }}
-                                            />
-                                        </ProductImageContainer>
-                                    </ImageContainer>
-                                )}
-
                                 <PageContent>
+                                    <Header
+                                        title={
+                                            strings.View_EditProduct_PageTitle
+                                        }
+                                        noDrawer
+                                    />
+
+                                    {userPreferences.isUserPremium &&
+                                        !!photoPath && (
+                                            <ImageContainer>
+                                                <ProductImageContainer
+                                                    onPress={handleEnableCamera}
+                                                >
+                                                    <ProductImage
+                                                        source={{
+                                                            uri: `file://${photoPath}`,
+                                                        }}
+                                                    />
+                                                </ProductImageContainer>
+                                            </ImageContainer>
+                                        )}
                                     <InputContainer>
                                         <InputGroup>
                                             <InputTextContainer>

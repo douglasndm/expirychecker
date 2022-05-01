@@ -19,6 +19,7 @@ import {
     Icons,
     PicPreview,
     PreviewContainer,
+    IconNoBackground,
 } from './styles';
 
 export interface onPhotoTakedProps {
@@ -160,10 +161,9 @@ const Camera: React.FC<CameraProps> = ({
                                 name="checkmark-outline"
                                 onPress={handleOnPhotoTaked}
                             />
-                            <Icons
+                            <IconNoBackground
                                 name="close-outline"
                                 onPress={handleTakeAnotherPhoto}
-                                isSelected
                             />
                         </>
                     ) : (
@@ -172,10 +172,9 @@ const Camera: React.FC<CameraProps> = ({
                                 name="camera-outline"
                                 onPress={handleCapturePicture}
                             />
-                            <Icons
+                            <IconNoBackground
                                 name="documents-outline"
                                 onPress={hanleOpenPhotoFromLib}
-                                isSelected
                             />
                         </>
                     )}
