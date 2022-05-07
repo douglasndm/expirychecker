@@ -50,10 +50,10 @@
             "error",
             "ignorePackages",
             {
-              "ts": "never",
-              "tsx": "never"
+                "ts": "never",
+                "tsx": "never"
             }
-          ]
+        ]
     },
     "settings": {
         "import/resolver": {
