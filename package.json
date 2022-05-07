@@ -1,0 +1,26 @@
+{
+  "name": "expirychecker",
+  "version": "1.0.0",
+  "private": "true",
+  "main": "index.js",
+  "repository": "https://github.com/douglasndm/expirychecker.git",
+  "author": "Douglas <7841509+douglasndm@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "reset": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock"
+  },
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": [
+      "**sentry**"
+    ]
+  },
+  "dependencies": {
+    "@react-navigation/drawer": "^5.12.5",
+    "@react-navigation/native": "^5.9.8",
+    "@react-navigation/stack": "^5.14.9"
+  },
+  "devDependencies": {
+    "react-native-monorepo-tools": "^1.1.4"
+  }
+}

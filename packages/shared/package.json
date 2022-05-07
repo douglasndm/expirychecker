@@ -1,6 +1,10 @@
 {
-  "name": "shared",
+  "name": "@expirychecker/shared",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "private": "true", 
+  "main": "src",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  }
 }
