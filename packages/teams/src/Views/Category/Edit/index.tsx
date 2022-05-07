@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -14,7 +15,6 @@ import {
     deleteCategory,
 } from '~/Functions/Categories';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

@@ -3,13 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import BackButton from '@shared/Components/BackButton';
 import strings from '~/Locales';
 
 import { createTeam } from '~/Functions/Team';
 
-import BackButton from '~/Components/BackButton';
 import Button from '~/Components/Button';
-import StatusBar from '~/Components/StatusBar';
 
 import {
     Container,
@@ -22,9 +21,8 @@ import {
 } from './styles';
 
 const Add: React.FC = () => {
-    const { goBack, reset } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { goBack, reset } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [isMounted, setIsMounted] = useState(true);
 
@@ -74,8 +72,6 @@ const Add: React.FC = () => {
 
     return (
         <Container>
-            <StatusBar />
-
             <PageHeader>
                 <BackButton handleOnPress={goBack} />
                 <PageTitle>{strings.View_CreateTeam_PageTitle}</PageTitle>

@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { exportBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 
 import {

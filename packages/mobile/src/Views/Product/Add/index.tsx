@@ -10,6 +10,7 @@ import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -18,7 +19,6 @@ import { createProduct } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';

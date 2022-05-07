@@ -11,13 +11,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 import { useTeam } from '~/Contexts/TeamContext';
-
-import StatusBar from '~/Components/StatusBar';
-import Header from '@expirychecker/shared/src/Components/Header';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';
@@ -155,7 +153,6 @@ const Settings: React.FC = () => {
 
     return (
         <Container>
-            <StatusBar />
             <Header title={strings.View_Settings_PageTitle} noDrawer />
 
             <SettingsContent>

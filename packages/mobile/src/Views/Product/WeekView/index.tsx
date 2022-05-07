@@ -16,12 +16,12 @@ import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import Accordion from 'react-native-collapsible/Accordion';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import ProductCard from '~/Components/ListProducts/ProductCard';
 import FloatButton from '~/Components/FloatButton';
 

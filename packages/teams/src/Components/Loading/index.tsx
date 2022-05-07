@@ -1,8 +1,8 @@
 import React from 'react';
 
-import strings from '../../Locales';
+import StatusBar from '@shared/Components/StatusBar';
 
-import StatusBar from '../StatusBar';
+import strings from '../../Locales';
 
 import { Container, LoadingIndicator, LoadingText } from './styles';
 

@@ -3,12 +3,12 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { enterTeamCode } from '~/Functions/Team/Users';
 
 import Button from '~/Components/Button';
-import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     Container,

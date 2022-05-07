@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import { StackNavigationProp } from '@react-navigation/stack';
+import Header from '@shared/Components/Header';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { editTeam } from '~/Functions/Team';
@@ -11,7 +12,6 @@ import {
     setSelectedTeam,
 } from '~/Functions/Team/SelectedTeam';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 

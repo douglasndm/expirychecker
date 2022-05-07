@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { createStore, getAllStores } from '~/Functions/Stores';
-
-import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     Container,

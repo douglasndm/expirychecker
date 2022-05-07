@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
@@ -11,7 +12,6 @@ import {
 } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import {
     FloatButton,

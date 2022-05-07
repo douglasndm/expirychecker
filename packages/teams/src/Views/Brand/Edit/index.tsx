@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -11,7 +12,6 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { deleteBrand, getAllBrands, updateBrand } from '~/Functions/Brand';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     Container,

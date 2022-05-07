@@ -3,10 +3,10 @@ import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import { deleteUser } from '~/Functions/User';
 import { UserTeamsResponse, getUserTeams } from '~/Functions/User/Teams';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import InputText from '~/Components/InputText';
 import Button from '~/Components/Button';
 

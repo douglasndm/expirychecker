@@ -2,12 +2,12 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { sortCategories } from '~/Utils/Categories/Sort';
 import { getAllCategories, createCategory } from '~/Functions/Category';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

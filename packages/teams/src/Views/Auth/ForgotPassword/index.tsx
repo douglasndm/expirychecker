@@ -3,11 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { recoveryPassword } from '~/Functions/Auth/Firebase/password';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 

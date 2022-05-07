@@ -20,6 +20,7 @@ import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -28,7 +29,6 @@ import { getAllowedToReadIDFA } from '~/Functions/Privacy';
 import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 import NotificationsDenny from '~/Components/NotificationsDenny';

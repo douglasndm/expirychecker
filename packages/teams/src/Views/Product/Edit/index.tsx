@@ -4,16 +4,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { deleteProduct, updateProduct } from '~/Functions/Products/Product';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
-
-import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import BarCodeReader from '~/Components/BarCodeReader';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
@@ -52,9 +50,8 @@ interface RequestParams {
 }
 
 const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
-    const { reset, replace } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { reset, replace } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [isMounted, setIsMounted] = useState(true);
 
@@ -280,7 +277,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 />
             ) : (
                 <Container>
-                    <StatusBar />
                     <PageTitleContainer>
                         <Header
                             title={strings.View_EditProduct_PageTitle}

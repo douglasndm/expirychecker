@@ -3,6 +3,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import {
@@ -15,7 +16,6 @@ import {
 } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 
 import {

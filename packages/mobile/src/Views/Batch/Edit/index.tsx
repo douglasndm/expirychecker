@@ -6,14 +6,12 @@ import { showMessage } from 'react-native-flash-message';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { updateLote, deleteLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';
-
-import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import GenericButton from '~/Components/Button';
 
 import {

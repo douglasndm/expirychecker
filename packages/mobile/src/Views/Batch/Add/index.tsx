@@ -16,7 +16,7 @@ import {
     TestIds,
 } from 'react-native-google-mobile-ads';
 
-import Header from '@expirychecker/shared/src/Components/Header';
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';

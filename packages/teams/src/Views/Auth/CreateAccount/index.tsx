@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { createAccount } from '~/Functions/Auth/Account';
@@ -9,7 +10,6 @@ import { createSeassion } from '~/Functions/Auth/Session';
 
 import { reset } from '~/References/Navigation';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 

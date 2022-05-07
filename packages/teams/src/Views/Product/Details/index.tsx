@@ -4,13 +4,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 
 import { getProduct } from '~/Functions/Products/Product';
 
@@ -108,7 +107,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     ) : (
         <>
             <Container>
-                <StatusBar />
                 <Header
                     title={strings.View_ProductDetails_PageTitle}
                     noDrawer

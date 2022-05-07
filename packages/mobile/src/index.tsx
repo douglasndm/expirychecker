@@ -36,7 +36,7 @@ import Routes from './Routes/DrawerContainer';
 import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from '~/Components/AskReview';
-import StatusBar from '@expirychecker/shared/src/Components/StatusBar';
+import StatusBar from '@shared/Components/StatusBar';
 
 LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
 

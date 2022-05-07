@@ -6,6 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -23,7 +24,6 @@ import {
 } from '~/Functions/Products/Image';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';

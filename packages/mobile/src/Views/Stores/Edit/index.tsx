@@ -4,11 +4,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { getStore, updateStore, deleteStore } from '~/Functions/Stores';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import InputText from '~/Components/InputText';
 
 import {

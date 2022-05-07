@@ -3,12 +3,12 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { deleteBrand, getBrand, updateBrand } from '~/Utils/Brands';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     Container,

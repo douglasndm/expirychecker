@@ -7,6 +7,7 @@ import Dialog from 'react-native-dialog';
 import { parseISO } from 'date-fns';
 
 import { StackNavigationProp } from '@react-navigation/stack';
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -16,9 +17,6 @@ import {
     getBatch,
     updateBatch,
 } from '~/Functions/Products/Batches/Batch';
-
-import Header from '@expirychecker/shared/src/Components/Header';
-import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 
 import {
@@ -242,7 +240,6 @@ const EditBatch: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <StatusBar />
             <ScrollView>
                 <PageTitleContainer>
                     <Header title={strings.View_EditBatch_PageTitle} noDrawer />

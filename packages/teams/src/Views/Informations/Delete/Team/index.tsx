@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { isSubscriptionActive } from '~/Functions/Team/Subscriptions';
 import { deleteTeam } from '~/Functions/Team';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 
 import {
@@ -27,9 +27,8 @@ import {
 } from './styles';
 
 const Team: React.FC = () => {
-    const { navigate, reset } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { navigate, reset } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
     const teamContext = useTeam();
 
     const [activesSubs, setActivesSubs] = useState<boolean>(false);

@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { createBrand, getAllBrands } from '~/Functions/Brand';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

@@ -4,9 +4,8 @@ import { showMessage } from 'react-native-flash-message';
 import { useTheme } from 'styled-components/native';
 import { Button } from 'react-native-paper';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
-
-import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     getCategory,

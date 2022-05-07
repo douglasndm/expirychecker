@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -11,7 +12,6 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { exportToExcel } from '~/Functions/Excel';
 import { getAllProductsFromStore } from '~/Functions/Team/Stores/Products';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 

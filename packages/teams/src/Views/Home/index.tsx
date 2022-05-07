@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -15,7 +16,6 @@ import { getSelectedTeam } from '~/Functions/Team/SelectedTeam';
 import AppError from '~/Errors/AppError';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 
@@ -30,9 +30,8 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-    const { reset, navigate } = useNavigation<
-        StackNavigationProp<RoutesParams>
-    >();
+    const { reset, navigate } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
     const teamContext = useTeam();
 
     const listRef = useRef<FlatList<IProduct>>(null);
@@ -44,9 +43,8 @@ const Home: React.FC = () => {
 
     const [searchString, setSearchString] = useState<string>();
     const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
-    const [enableBarCodeReader, setEnableBarCodeReader] = useState<boolean>(
-        false
-    );
+    const [enableBarCodeReader, setEnableBarCodeReader] =
+        useState<boolean>(false);
 
     const loadData = useCallback(async () => {
         if (!isMounted) return;

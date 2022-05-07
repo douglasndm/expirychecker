@@ -3,6 +3,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import Analytics from '@react-native-firebase/analytics';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -10,7 +11,6 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { getAllProductsFromCategory } from '~/Functions/Categories/Products';
 
 import Loading from '~/Components/Loading';
-import Header from '@expirychecker/shared/src/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 
 import {

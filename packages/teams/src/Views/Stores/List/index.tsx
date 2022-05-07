@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import { getAllStoresFromTeam } from '~/Functions/Team/Stores/AllStores';
 import { createStore } from '~/Functions/Team/Stores/Create';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

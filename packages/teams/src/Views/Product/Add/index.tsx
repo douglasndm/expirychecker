@@ -11,6 +11,7 @@ import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -21,9 +22,6 @@ import { createBatch } from '~/Functions/Products/Batches/Batch';
 
 import { findProductByCode } from '~/Functions/Products/FindByCode';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
-
-import StatusBar from '~/Components/StatusBar';
-import Header from '@expirychecker/shared/src/Components/Header';
 import GenericButton from '~/Components/Button';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Loading from '~/Components/Loading';
@@ -136,9 +134,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     const [productNameFinded, setProductNameFinded] = useState<null | string>(
         null
     );
-    const [showProdFindedModal, setShowProdFindedModal] = useState<boolean>(
-        false
-    );
+    const [showProdFindedModal, setShowProdFindedModal] =
+        useState<boolean>(false);
 
     const [nameFieldError, setNameFieldError] = useState<boolean>(false);
     const [codeFieldError, setCodeFieldError] = useState<boolean>(false);
@@ -404,7 +401,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         title={strings.View_AddProduct_PageTitle}
                         noDrawer
                     />
-                    <StatusBar />
                     <PageContent>
                         <InputContainer>
                             <InputGroup>

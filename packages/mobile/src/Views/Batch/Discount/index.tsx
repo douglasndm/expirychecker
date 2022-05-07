@@ -5,9 +5,9 @@ import { showMessage } from 'react-native-flash-message';
 import { getLocales } from 'react-native-localize';
 import NumberFormat from 'react-number-format';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
 

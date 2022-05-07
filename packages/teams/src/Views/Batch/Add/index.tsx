@@ -5,12 +5,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import StatusBar from '~/Components/StatusBar';
-import Header from '@expirychecker/shared/src/Components/Header';
 import GenericButton from '~/Components/Button';
 
 import { getProduct } from '~/Functions/Products/Product';
@@ -142,7 +141,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
     return (
         <Container>
-            <StatusBar />
             <ScrollView>
                 <Header title={strings.View_AddBatch_PageTitle} noDrawer />
 

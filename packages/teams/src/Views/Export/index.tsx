@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -9,7 +10,6 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { importExportFileFromApp } from '~/Functions/ImportExport';
 import { exportToExcel } from '~/Functions/Excel';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 
 import {

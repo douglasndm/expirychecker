@@ -33,7 +33,6 @@ import { TeamProvider } from '~/Contexts/TeamContext';
 import { navigationRef } from '~/References/Navigation';
 
 import AskReview from '~/Components/AskReview';
-import StatusBar from './Components/StatusBar';
 
 LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
 
@@ -99,7 +98,6 @@ const App: React.FC = () => {
                     >
                         <AuthProvider>
                             <TeamProvider>
-                                <StatusBar />
                                 <Routes />
 
                                 <AskReview />

@@ -8,11 +8,11 @@ import {  format, parseISO } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 import NumberFormat from 'react-number-format';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 
 import { sendBatchNotification } from '~/Functions/Notifications/Batch';

@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Clipboard from '@react-native-clipboard/clipboard';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -16,9 +17,6 @@ import {
     addUserToStore,
     removeUserFromStore,
 } from '~/Functions/Team/Stores/User';
-
-import StatusBar from '~/Components/StatusBar';
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {
@@ -260,8 +258,6 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         <Loading />
     ) : (
         <Container>
-            <StatusBar />
-
             <PageHeader>
                 <Header title={strings.View_UserDetails_PageTitle} noDrawer />
 

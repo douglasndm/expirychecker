@@ -4,13 +4,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { updateUser, updatePassword } from '~/Functions/Auth/Account';
 import { getUser } from '~/Functions/User/List';
 
 import Button from '~/Components/Button';
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 import Input from '~/Components/InputText';
 
@@ -37,9 +37,8 @@ const User: React.FC = () => {
 
     const [nameError, setNameError] = useState<boolean>(false);
     const [newPasswordError, setNewPasswordError] = useState<boolean>(false);
-    const [newPasswordConfiError, setNewPasswordConfiError] = useState<boolean>(
-        false
-    );
+    const [newPasswordConfiError, setNewPasswordConfiError] =
+        useState<boolean>(false);
 
     const loadData = useCallback(async () => {
         if (!isMounted) return;

@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
@@ -11,7 +12,6 @@ import {
     createCategory,
 } from '~/Functions/Categories';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

@@ -3,6 +3,7 @@ import { Linking, Platform } from 'react-native';
 import Share from 'react-native-share';
 import { showMessage } from 'react-native-flash-message';
 
+import Header from '@shared/Components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -10,7 +11,6 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import { generateBackupFile } from '~/Functions/Backup';
 import { getAllStores } from '~/Functions/Stores';
 
-import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 import {
     PickerContainer,
