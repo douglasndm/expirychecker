@@ -1,6 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
+import About from '@shared/Views/About';
+
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
 import AddBatch from '~/Views/Batch/Add';
@@ -8,7 +10,7 @@ import EditProduct from '~/Views/Product/Edit';
 import EditBatch from '~/Views/Batch/Edit';
 import ProductDetails from '~/Views/Product/Details';
 import Settings from '~/Views/Settings';
-import About from '~/Views/About';
+
 import Error from '~/Views/Informations/Error';
 import PhotoView from '~/Views/PhotoView';
 

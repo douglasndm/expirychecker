@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import About from '@expirychecker/shared/src/Views/About';
+import About from '@shared/Views/About';
 
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';

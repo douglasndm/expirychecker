@@ -10,7 +10,9 @@
     "reset": "find . -type dir -name node_modules | xargs rm -rf && rm -rf yarn.lock"
   },
   "workspaces": {
-    "packages": ["packages/*"],
+    "packages": [
+      "packages/*"
+    ],
     "nohoist": [
       "**sentry**"
     ]
@@ -21,6 +23,7 @@
     "@react-navigation/stack": "^5.14.9"
   },
   "devDependencies": {
+    "eslint-import-resolver-typescript": "^2.7.1",
     "react-native-monorepo-tools": "^1.1.4"
   }
 }

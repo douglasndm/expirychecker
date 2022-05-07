@@ -14,6 +14,8 @@ module.exports = {
                 alias: {
                     '~': './src',
                     '@utils': './src/Functions',
+                    '@mobile': '../mobile/src',
+                    '@shared': '../shared/src',
                 },
             },
         ],

@@ -14,9 +14,11 @@
     "react-native-purchases": "*",
     "react-native-gesture-handler": "*",
     "react-native-vector-icons": "*",
-    "react-native-iphone-x-helper": "*"
+    "react-native-iphone-x-helper": "*",
+    "react-native-share": "*"
   },
   "dependencies": {
+    "@expirychecker/mobile": "*",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
