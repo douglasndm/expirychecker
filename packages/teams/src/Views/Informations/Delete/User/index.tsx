@@ -6,7 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import { deleteUser } from '~/Functions/User';
 import { UserTeamsResponse, getUserTeams } from '~/Functions/User/Teams';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import InputText from '~/Components/InputText';
 import Button from '~/Components/Button';
 

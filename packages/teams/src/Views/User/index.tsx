@@ -10,7 +10,7 @@ import { updateUser, updatePassword } from '~/Functions/Auth/Account';
 import { getUser } from '~/Functions/User/List';
 
 import Button from '~/Components/Button';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 import Input from '~/Components/InputText';
 

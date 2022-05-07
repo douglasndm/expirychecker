@@ -7,7 +7,7 @@ import strings from '~/Locales';
 import { sortCategories } from '~/Utils/Categories/Sort';
 import { getAllCategories, createCategory } from '~/Functions/Category';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

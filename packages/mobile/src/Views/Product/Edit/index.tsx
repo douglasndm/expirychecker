@@ -23,7 +23,7 @@ import {
 } from '~/Functions/Products/Image';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
 import BarCodeReader from '~/Components/BarCodeReader';

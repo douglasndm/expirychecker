@@ -9,7 +9,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { importExportFileFromApp } from '~/Functions/ImportExport';
 import { exportToExcel } from '~/Functions/Excel';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 
 import {

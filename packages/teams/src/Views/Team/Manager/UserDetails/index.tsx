@@ -18,7 +18,7 @@ import {
 } from '~/Functions/Team/Stores/User';
 
 import StatusBar from '~/Components/StatusBar';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

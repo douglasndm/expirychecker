@@ -7,7 +7,7 @@ import NumberFormat from 'react-number-format';
 
 import strings from '~/Locales';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
 

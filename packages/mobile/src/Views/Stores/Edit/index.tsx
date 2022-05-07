@@ -8,7 +8,7 @@ import strings from '~/Locales';
 
 import { getStore, updateStore, deleteStore } from '~/Functions/Stores';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import InputText from '~/Components/InputText';
 
 import {

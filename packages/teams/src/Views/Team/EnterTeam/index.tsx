@@ -8,7 +8,7 @@ import strings from '~/Locales';
 import { enterTeamCode } from '~/Functions/Team/Users';
 
 import Button from '~/Components/Button';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     Container,

@@ -11,12 +11,12 @@ import messaging from '@react-native-firebase/messaging';
 import Purchases from 'react-native-purchases';
 import OneSignal from 'react-native-onesignal';
 
+import StatusBar from '@shared/Components/StatusBar';
+import BackButton from '@shared/Components/BackButton';
+
 import strings from '~/Locales';
 
 import { shareText } from '~/Functions/Share';
-
-import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
 
 import {
     Container,

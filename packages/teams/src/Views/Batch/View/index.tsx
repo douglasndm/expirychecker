@@ -12,7 +12,7 @@ import strings from '~/Locales';
 
 import { useTeam } from '~/Contexts/TeamContext';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 
 import { sendBatchNotification } from '~/Functions/Notifications/Batch';

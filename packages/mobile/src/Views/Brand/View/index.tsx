@@ -13,7 +13,7 @@ import { exportToExcel } from '~/Functions/Excel';
 
 import { getAllBrands, getAllProductsByBrand } from '~/Utils/Brands';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 

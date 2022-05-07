@@ -10,7 +10,7 @@ import strings from '~/Locales';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import StatusBar from '~/Components/StatusBar';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import GenericButton from '~/Components/Button';
 
 import { getProduct } from '~/Functions/Products/Product';

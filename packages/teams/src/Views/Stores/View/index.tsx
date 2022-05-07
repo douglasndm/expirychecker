@@ -11,7 +11,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { exportToExcel } from '~/Functions/Excel';
 import { getAllProductsFromStore } from '~/Functions/Team/Stores/Products';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 

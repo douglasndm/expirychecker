@@ -11,7 +11,7 @@ import {
     setSelectedTeam,
 } from '~/Functions/Team/SelectedTeam';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 

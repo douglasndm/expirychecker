@@ -17,7 +17,7 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import { useTeam } from '~/Contexts/TeamContext';
 
 import StatusBar from '~/Components/StatusBar';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 
 import Appearance from './Components/Appearance';
 import Notifications from './Components/Notifications';

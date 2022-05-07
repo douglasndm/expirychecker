@@ -19,11 +19,10 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import BackButton from '@shared/Components/BackButton';
 import strings from '~/Locales';
 
-import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
 import { getProductById } from '~/Functions/Product';
 import { sortBatches } from '~/Utils/Batches/Sort';
 import { getStore } from '~/Functions/Stores';
@@ -207,7 +206,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     ) : (
         <>
             <Container>
-                <StatusBar />
                 <ScrollView>
                     <PageHeader>
                         <PageTitleContent>

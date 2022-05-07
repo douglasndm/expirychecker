@@ -16,11 +16,10 @@ import {
     TestIds,
 } from 'react-native-google-mobile-ads';
 
+import Header from '@expirychecker/shared/src/Components/Header';
 import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';
-import StatusBar from '~/Components/StatusBar';
-import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 
 import { createLote } from '~/Functions/Lotes';
@@ -206,7 +205,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
         <Loading />
     ) : (
         <Container>
-            <StatusBar />
             <ScrollView>
                 <Header title={strings.View_AddBatch_PageTitle} noDrawer />
 

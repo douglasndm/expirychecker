@@ -25,7 +25,7 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import { ShareProductImageWithText } from '~/Functions/Share';
 import { getFormatedPrice } from '~/Utils/System/getFormatedPrice';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 import Loading from '~/Components/Loading';
 

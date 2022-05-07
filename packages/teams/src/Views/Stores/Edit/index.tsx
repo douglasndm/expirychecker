@@ -12,7 +12,7 @@ import { updateStore } from '~/Functions/Team/Stores/Update';
 import { deleteStore } from '~/Functions/Team/Stores/Delete';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     Container,

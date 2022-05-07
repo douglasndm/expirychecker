@@ -13,7 +13,7 @@ import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import BarCodeReader from '~/Components/BarCodeReader';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';

@@ -4,11 +4,11 @@ import { RNCamera } from 'react-native-camera';
 import { showMessage } from 'react-native-flash-message';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
+import Header from '@shared/Components/Header';
+
 import strings from '~/Locales';
 
 import { copyImageFromTempDirToDefinitiveDir } from '~/Functions/Products/Image';
-
-import Header from '../Header';
 
 import {
     Container,

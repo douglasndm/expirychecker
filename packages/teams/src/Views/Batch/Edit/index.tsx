@@ -17,7 +17,7 @@ import {
     updateBatch,
 } from '~/Functions/Products/Batches/Batch';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 

@@ -10,7 +10,7 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import { generateBackupFile } from '~/Functions/Backup';
 import { getAllStores } from '~/Functions/Stores';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 import {
     PickerContainer,

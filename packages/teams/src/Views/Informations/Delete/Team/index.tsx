@@ -9,7 +9,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 import { isSubscriptionActive } from '~/Functions/Team/Subscriptions';
 import { deleteTeam } from '~/Functions/Team';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Button from '~/Components/Button';
 
 import {

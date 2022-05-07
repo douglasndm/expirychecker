@@ -28,7 +28,7 @@ import { getAllowedToReadIDFA } from '~/Functions/Privacy';
 import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 import NotificationsDenny from '~/Components/NotificationsDenny';

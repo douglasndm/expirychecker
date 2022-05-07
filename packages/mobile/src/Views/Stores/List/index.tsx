@@ -5,7 +5,7 @@ import strings from '~/Locales';
 
 import { createStore, getAllStores } from '~/Functions/Stores';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     Container,

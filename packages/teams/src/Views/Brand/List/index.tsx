@@ -6,7 +6,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { createBrand, getAllBrands } from '~/Functions/Brand';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

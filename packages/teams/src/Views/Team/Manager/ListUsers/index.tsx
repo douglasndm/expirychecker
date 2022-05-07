@@ -9,7 +9,7 @@ import { useTeam } from '~/Contexts/TeamContext';
 
 import { getAllUsersFromTeam, putUserInTeam } from '~/Functions/Team/Users';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Loading from '~/Components/Loading';
 
 import {

@@ -7,7 +7,7 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 
 import Appearance from './Components/Appearance';
 import Pro from './Components/Pro';

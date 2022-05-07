@@ -7,7 +7,7 @@ import strings from '~/Locales';
 
 import { recoveryPassword } from '~/Functions/Auth/Firebase/password';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import Button from '~/Components/Button';
 

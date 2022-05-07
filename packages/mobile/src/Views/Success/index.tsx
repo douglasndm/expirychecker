@@ -7,15 +7,18 @@ import {
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import LottieView from 'lottie-react-native';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import {
+    BannerAd,
+    BannerAdSize,
+    TestIds,
+} from 'react-native-google-mobile-ads';
 import EnvConfig from 'react-native-config';
 
+import BackButton from '@shared/Components/BackButton';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
 import FloatButton from '~/Components/FloatButton';
 
 import {
@@ -168,8 +171,6 @@ const Success: React.FC = () => {
 
     return (
         <Container>
-            <StatusBar />
-
             <BackButton handleOnPress={handleGoBack} />
 
             <Content>

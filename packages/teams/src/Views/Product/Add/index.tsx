@@ -23,7 +23,7 @@ import { findProductByCode } from '~/Functions/Products/FindByCode';
 import { getExtraInfoForProducts } from '~/Functions/Products/ExtraInfo';
 
 import StatusBar from '~/Components/StatusBar';
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import GenericButton from '~/Components/Button';
 import BarCodeReader from '~/Components/BarCodeReader';
 import Loading from '~/Components/Loading';

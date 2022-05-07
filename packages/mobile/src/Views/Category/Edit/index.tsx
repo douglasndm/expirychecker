@@ -6,7 +6,7 @@ import { Button } from 'react-native-paper';
 
 import strings from '~/Locales';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 
 import {
     getCategory,

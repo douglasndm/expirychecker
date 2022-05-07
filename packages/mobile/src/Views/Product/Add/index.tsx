@@ -18,7 +18,7 @@ import { createProduct } from '~/Functions/Product';
 import { createLote } from '~/Functions/Lotes';
 import { getImageFileNameFromPath } from '~/Functions/Products/Image';
 
-import Header from '~/Components/Header';
+import Header from '@expirychecker/shared/src/Components/Header';
 import Input from '~/Components/InputText';
 import GenericButton from '~/Components/Button';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
