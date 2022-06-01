@@ -14,3 +14,6 @@
 
 -keep class com.swmansion.reanimated.** { *; }
 -keep class com.facebook.react.turbomodule.** { *; }
+
+-keep class io.invertase.firebase.** { *; }
+-dontwarn io.invertase.firebase.**
