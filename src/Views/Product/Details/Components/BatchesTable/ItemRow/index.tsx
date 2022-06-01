@@ -57,6 +57,17 @@ const ItemRow: React.FC<Props> = ({ batch, productId, onLongPress }: Props) => {
         [batch.status]
     );
 
+    const price = useMemo(() => {
+        if (batch.amount && batch.price) {
+            return (
+                batch.amount *
+                parseFloat(String(batch.price).replace(/\$/g, ''))
+            );
+        }
+
+        return 0;
+    }, [batch.amount, batch.price]);
+
     const handleNavigateEditBatch = useCallback(() => {
         navigate('EditLote', {
             productId,
@@ -81,7 +92,7 @@ const ItemRow: React.FC<Props> = ({ batch, productId, onLongPress }: Props) => {
                         nextToExp={nextToExp}
                         treated={treated}
                     >
-                        {batch.lote}
+                        {!!batch.lote ? batch.lote : batch.id}
                     </Text>
                 </TableCell>
                 <TableCell>
@@ -95,7 +106,7 @@ const ItemRow: React.FC<Props> = ({ batch, productId, onLongPress }: Props) => {
                         })}
                     </Text>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{ justifyContent: 'center' }}>
                     <Text
                         expired={expired}
                         nextToExp={nextToExp}
@@ -104,24 +115,23 @@ const ItemRow: React.FC<Props> = ({ batch, productId, onLongPress }: Props) => {
                         {batch.amount}
                     </Text>
                 </TableCell>
-                {!!batch.amount && !!batch.price && batch.price > 0 && (
-                    <TableCell>
-                        <Text
-                            expired={expired}
-                            nextToExp={nextToExp}
-                            treated={treated}
-                        >
-                            <NumberFormat
-                                value={batch.amount * batch.price}
-                                displayType="text"
-                                thousandSeparator
-                                prefix={currencyPrefix}
-                                renderText={value => value}
-                                decimalScale={2}
-                            />
-                        </Text>
-                    </TableCell>
-                )}
+
+                <TableCell>
+                    <Text
+                        expired={expired}
+                        nextToExp={nextToExp}
+                        treated={treated}
+                    >
+                        <NumberFormat
+                            value={price}
+                            displayType="text"
+                            thousandSeparator
+                            prefix={currencyPrefix}
+                            renderText={value => value}
+                            decimalScale={2}
+                        />
+                    </Text>
+                </TableCell>
             </TableRow>
         </RowContainer>
     );
