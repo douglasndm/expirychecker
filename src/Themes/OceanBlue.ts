@@ -5,6 +5,7 @@ const OceanBlue: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_OceanBlue,
     key: 'oceanblue',
     isPro: true,
+    isDark: false,
 
     colors: {
         primary: '#69dafa',

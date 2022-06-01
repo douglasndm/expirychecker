@@ -7,6 +7,7 @@ const UltraViolet: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_UltraViolet,
     key: 'ultraviolet',
     isPro: true,
+    isDark: true,
 
     colors: {
         primary: darken(0.1, '#7b00ba'),

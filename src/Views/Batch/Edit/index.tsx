@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
@@ -11,7 +11,6 @@ import strings from '~/Locales';
 import { updateLote, deleteLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';
 
-import StatusBar from '~/Components/StatusBar';
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';

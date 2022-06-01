@@ -6,6 +6,7 @@ const DarkGreen: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_DarkGreen,
     key: 'darkgreen',
     isPro: true,
+    isDark: true,
 
     colors: {
         primary: darken(0.1, '#33e860'),

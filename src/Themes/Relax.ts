@@ -6,6 +6,7 @@ const Relax: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_Relax,
     key: 'relax',
     isPro: true,
+    isDark: false,
 
     colors: {
         primary: '#99e1d9',

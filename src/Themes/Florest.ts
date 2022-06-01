@@ -5,6 +5,7 @@ const Florest: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_Florest,
     key: 'florest',
     isPro: true,
+    isDark: false,
 
     colors: {
         primary: '#B2EDC5',

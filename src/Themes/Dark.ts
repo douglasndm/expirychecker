@@ -7,6 +7,7 @@ const Dark: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_Dark,
     key: 'dark',
     isPro: false,
+    isDark: true,
 
     colors: {
         primary: darken(0.1, '#14d48f'),

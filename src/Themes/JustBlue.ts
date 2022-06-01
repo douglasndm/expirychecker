@@ -6,6 +6,7 @@ const JustBlue: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_JustBlue,
     key: 'justblue',
     isPro: true,
+    isDark: true,
 
     colors: {
         primary: '#918EF4',
