@@ -5,6 +5,7 @@ declare module 'styled-components/native' {
         name: string;
         key: string;
         isPro: boolean;
+        isDark: boolean;
 
         colors: {
             primary: string;

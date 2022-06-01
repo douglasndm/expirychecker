@@ -39,5 +39,5 @@ export const InputCodeText = styled.TextInput.attrs(props => ({
     flex: 1;
     padding: 15px 5px 15px 15px;
     font-size: 18px;
-    color: ${props => props.theme.colors.text};
+    color: ${({ theme }) => theme.colors.inputText};
 `;

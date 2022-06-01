@@ -6,6 +6,7 @@ const Light: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_Light,
     key: 'light',
     isPro: false,
+    isDark: false,
 
     colors: {
         primary: '#14d48f',

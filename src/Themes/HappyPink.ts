@@ -6,6 +6,7 @@ const HappyPink: DefaultTheme = {
     name: strings.View_Settings_Appearance_Theme_HappyPink,
     key: 'happypink',
     isPro: true,
+    isDark: false,
 
     colors: {
         primary: '#f772b7',
