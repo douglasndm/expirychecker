@@ -41,7 +41,7 @@
         "no-underscore-dangle": "off",
         "camelcase": "off",
         "jsx-a11y/anchor-is-valid": "off",
-        "no-console": ["error", { "allow": ["tron"] }],
+        "no-console": "off",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
