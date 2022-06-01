@@ -17,21 +17,29 @@ const OutdateApp: React.FC = () => {
     const [isOutdated, setIsOutdated] = useState<boolean>(false);
 
     const checkUpdate = useCallback(async () => {
-        const shouldCheck = await isTimeToCheckUpdates();
+        try {
+            const shouldCheck = await isTimeToCheckUpdates();
 
-        if (shouldCheck) {
-            const isOutdate = await isAppOutdated();
+            if (shouldCheck) {
+                const isOutdate = await isAppOutdated();
 
-            if (isOutdate) {
-                setIsOutdated(isOutdate);
+                if (isOutdate) {
+                    setIsOutdated(isOutdate);
+                }
             }
-        }
 
-        const lastVersion = await lastServerVersion();
+            const lastVersion = await lastServerVersion();
 
-        if (lastVersion > 0) {
-            if (lastVersion > Number(getBuildNumber())) {
-                setIsOutdated(true);
+            if (lastVersion > 0) {
+                if (lastVersion > Number(getBuildNumber())) {
+                    setIsOutdated(true);
+                }
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(
+                    `Fail on search for app updates on own server: ${err.message}`
+                );
             }
         }
     }, []);
