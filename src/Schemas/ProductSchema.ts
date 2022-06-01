@@ -11,6 +11,9 @@ const ProductSchema = {
         store: 'string?',
         categories: 'string[]', // uuid
         lotes: 'Lote[]',
+
+        createdAt: { type: 'date?', default: new Date() },
+        updateddAt: { type: 'date?', default: new Date() },
     },
 };
 

@@ -15,7 +15,7 @@ export default async function RealmInstance(): Promise<Realm> {
             StoreSchema,
             BrandSchema,
         ],
-        schemaVersion: 9,
+        schemaVersion: 10,
     });
 
     return realm;
