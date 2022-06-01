@@ -182,10 +182,6 @@ PODS:
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - libevent (2.1.12)
-  - LogRocket (1.2.1)
-  - logrocket-react-native (1.2.1):
-    - LogRocket (= 1.2.1)
-    - React
   - lottie-ios (3.2.3)
   - lottie-react-native (5.0.1):
     - lottie-ios (~> 3.2.3)
@@ -579,7 +575,7 @@ PODS:
   - RNScreens (3.9.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.4.0):
+  - RNSentry (3.4.2):
     - React-Core
     - Sentry (= 7.11.0)
   - RNShare (7.2.0):
@@ -629,7 +625,6 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.99.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.99.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - "logrocket-react-native (from `../node_modules/@logrocket/react-native`)"
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - OneSignal (< 4.0, >= 3.0)
   - OpenSSL-Universal (= 1.1.180)
@@ -727,7 +722,6 @@ SPEC REPOS:
     - GoogleUtilities
     - JWT
     - libevent
-    - LogRocket
     - lottie-ios
     - nanopb
     - OneSignal
@@ -754,8 +748,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  logrocket-react-native:
-    :path: "../node_modules/@logrocket/react-native"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   Permission-AppTrackingTransparency:
@@ -918,8 +910,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  LogRocket: fb4e942d127475755665908bf0ab03ed1f10ee2e
-  logrocket-react-native: eb1f35dfa4f5c97f47c187f353948c46a8ed826e
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   lottie-react-native: a029a86e1689c86a07169c520ae770e84348cd20
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
@@ -988,7 +978,7 @@ SPEC CHECKSUMS:
   RNPurchases: fd7e85ca54a006b0894cfe0698f261bcd499abe3
   RNReanimated: 96ab42cfb0e5517293499e0f3f810420eb459f75
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
-  RNSentry: ec3c033c13bcb65c79f19d54ca54c514d1832bb5
+  RNSentry: 2cd1daa124b0d9fd0dfc2cb6094fdd168cb579bc
   RNShare: 70356a1bb406bc46ae03196a5d3048c702bb71a7
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   RNZipArchive: 924d63f15f2838837f8379ee6e9955d8ff4736c4
