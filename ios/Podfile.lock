@@ -131,9 +131,6 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
-  - GCDWebServer (3.5.4):
-    - GCDWebServer/Core (= 3.5.4)
-  - GCDWebServer/Core (3.5.4)
   - glog (0.3.5)
   - Google-Mobile-Ads-SDK (8.13.0):
     - GoogleAppMeasurement (< 9.0, >= 7.0)
@@ -512,8 +509,7 @@ PODS:
     - React-perflogger (= 0.67.2)
   - ReactNativeLocalization (2.1.7):
     - React-Core
-  - RealmJS (10.16.0):
-    - GCDWebServer
+  - RealmJS (10.20.0-beta.5):
     - React
   - RNBackgroundFetch (4.0.5):
     - React-Core
@@ -724,7 +720,6 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
-    - GCDWebServer
     - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -915,7 +910,6 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   Google-Mobile-Ads-SDK: 05e5d68bb42a61b2e5bef336a52789785605aa22
   GoogleAppMeasurement: 4c19f031220c72464d460c9daa1fb5d1acce958e
@@ -976,7 +970,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 2450b43df7ffe8e805a0b3dcb2abd4282f1f1836
   ReactCommon: d98c6c96b567f9b3a15f9fd4cc302c1eda8e3cf2
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
-  RealmJS: 8a3478957315c29cdc0b3f958f2e370d22330b2d
+  RealmJS: 772520fb85c19b65c2ea0c8f9aa6e790a905a377
   RNBackgroundFetch: f61b5eb62e86e76ec6302c3ba9798966a14aa312
   RNCAsyncStorage: 26f25150da507524a7815f2ada06ca0967f65633
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd

@@ -9,6 +9,8 @@ import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
+import { format } from 'date-fns';
+import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import EnvConfig from 'react-native-config';
 import {
@@ -55,6 +57,7 @@ import {
     AdContainer,
     TableContainer,
     FloatButton,
+    ProductInfo,
 } from './styles';
 
 import BatchTable from './Components/BatchesTable';
@@ -99,6 +102,20 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
     const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
     const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
+
+    const dateFormat = useMemo(() => {
+        if (getLocales()[0].languageCode === 'en') {
+            return 'MM/dd/yyyy';
+        }
+        return 'dd/MM/yyyy';
+    }, []);
+
+    const created_at = useMemo(() => {
+        if (product && product.createdAt) {
+            return format(product.createdAt, dateFormat, {});
+        }
+        return null;
+    }, [dateFormat, product]);
 
     const choosenAdText = useMemo(() => {
         const result = Math.floor(Math.random() * 3) + 1;
@@ -244,6 +261,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                             {storeName}
                                         </ProductStore>
                                     )}
+                                {created_at && (
+                                    <ProductInfo>{`${strings.View_ProductDetails_AddDate.replace(
+                                        '{DATE}',
+                                        created_at
+                                    )}`}</ProductInfo>
+                                )}
 
                                 <ActionsButtonContainer>
                                     <ActionButton

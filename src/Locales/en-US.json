@@ -179,6 +179,7 @@
     "View_ProductDetails_PageTitle": "More info",
     "View_ProductDetails_Code": "Code",
     "View_ProductDetails_Store": "Store",
+    "View_ProductDetails_AddDate": "Created at {DATE}",
     "View_ProductDetails_Button_UpdateProduct": "Update",
     "View_ProductDetails_Button_ShareProduct": "Share",
     "View_ProductDetails_Button_DeleteProduct": "Delete",

@@ -8,6 +8,9 @@ interface IProduct {
     daysToBeNext?: number;
     categories: Array<string>;
     lotes: Array<ILote>;
+
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 interface ILote {
@@ -18,6 +21,9 @@ interface ILote {
     price?: number;
     status?: string;
     price_tmp?: number;
+
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 interface ICategory {
