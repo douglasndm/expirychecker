@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { getLocales } from 'react-native-localize';
+import FastImage from 'react-native-fast-image';
 import { addDays, format, formatDistanceToNow, isPast } from 'date-fns'; // eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
 
@@ -140,7 +141,12 @@ const Product = ({ product, onLongPress }: Request) => {
         >
             <Content>
                 {userPreferences.isUserPremium && !!imagePath && (
-                    <ProductImage source={{ uri: imagePath }} />
+                    <ProductImage
+                        source={{
+                            uri: imagePath,
+                            priority: FastImage.priority.low,
+                        }}
+                    />
                 )}
 
                 <TextContainer>
