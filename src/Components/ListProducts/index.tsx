@@ -54,6 +54,9 @@ const ListProducts: React.FC<RequestProps> = ({
 
     const [sortedProducts, setSortedProducts] = useState<IProduct[]>([]);
 
+    const [limitedProducts, setLimitedProducts] = useState<IProduct[]>([]);
+    const [page, setPage] = useState(0);
+
     const [selectedProds, setSelectedProds] = useState<Array<number>>([]);
     const [selectMode, setSelectMode] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
@@ -70,7 +73,12 @@ const ListProducts: React.FC<RequestProps> = ({
         temp.normal.forEach(item => tempArray.push(item));
 
         setSortedProducts(tempArray);
+        setPage(0);
     }, [products]);
+
+    useEffect(() => {
+        setLimitedProducts(sortedProducts.slice(0, 10));
+    }, [sortedProducts]);
 
     useEffect(() => {
         handleSortProducts();
@@ -83,6 +91,13 @@ const ListProducts: React.FC<RequestProps> = ({
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
     }, [navigate]);
+
+    const loadMoreProducts = useCallback(() => {
+        let currentPage = page;
+        setLimitedProducts(sortedProducts.slice(0, 10 * ++currentPage));
+
+        setPage(currentPage);
+    }, [page, sortedProducts]);
 
     const switchSelectedItem = useCallback(
         (productId: number) => {
@@ -233,7 +248,7 @@ const ListProducts: React.FC<RequestProps> = ({
             )}
             <FlatList
                 ref={listRef}
-                data={sortedProducts}
+                data={limitedProducts}
                 keyExtractor={item => String(item.id)}
                 ListHeaderComponent={ListHeader}
                 renderItem={renderComponent}
@@ -242,6 +257,8 @@ const ListProducts: React.FC<RequestProps> = ({
                 initialNumToRender={10}
                 onRefresh={onRefresh}
                 refreshing={isRefreshing}
+                onEndReached={loadMoreProducts}
+                onEndReachedThreshold={0.1}
             />
 
             {!deactiveFloatButton && (
