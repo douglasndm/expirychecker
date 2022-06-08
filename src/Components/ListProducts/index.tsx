@@ -258,7 +258,7 @@ const ListProducts: React.FC<RequestProps> = ({
                 onRefresh={onRefresh}
                 refreshing={isRefreshing}
                 onEndReached={loadMoreProducts}
-                onEndReachedThreshold={0.1}
+                onEndReachedThreshold={0.2}
             />
 
             {!deactiveFloatButton && (
