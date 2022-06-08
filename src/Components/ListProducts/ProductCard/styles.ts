@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import FastImage from 'react-native-fast-image';
 
 interface ICard {
     expired?: boolean;
@@ -76,7 +77,7 @@ export const ProductInfoItem = styled.Text<IProductInfo>`
             : props.theme.colors.productCardText};
 `;
 
-export const ProductImage = styled.Image`
+export const ProductImage = styled(FastImage)`
     width: 85px;
     height: 85px;
     border-radius: 42px;
