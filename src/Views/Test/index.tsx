@@ -1,11 +1,12 @@
-import React, { useCallback } from 'react';
-import { ScrollView } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { ScrollView, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addDays } from 'date-fns';
 import messaging from '@react-native-firebase/messaging';
 import OneSignal from 'react-native-onesignal';
 import PushNotifications from 'react-native-push-notification';
 
+import { exists } from 'react-native-fs';
 import Realm from '../../Services/Realm';
 
 import Button from '../../Components/Button';
@@ -18,14 +19,18 @@ import {
 
 import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
 import { sendNotification } from '~/Services/Notifications';
+import Camera from '~/Components/Camera';
 
 const Test: React.FC = () => {
+    const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+    const [photoPath, setPhotoPath] = useState('');
+
     async function sampleData() {
         const realm = await Realm();
 
         try {
             realm.write(() => {
-                for (let i = 0; i < 50; i++) {
+                for (let i = 0; i < 150; i++) {
                     const lastProduct = realm
                         .objects<IProduct>('Product')
                         .sorted('id', true)[0];
@@ -41,6 +46,7 @@ const Test: React.FC = () => {
                         id: nextProductId,
                         name: `Product ${i}`,
                         code: `${i}7841686${i}`,
+                        photo: `${photoPath}`,
                         lotes: [
                             {
                                 id: nextLoteId,
@@ -93,45 +99,78 @@ const Test: React.FC = () => {
 
     const handleRevokeNotifications = useCallback(async () => {}, []);
 
+    const handleDisableCamera = useCallback(() => {
+        setIsCameraEnabled(false);
+    }, []);
+
+    const onPhotoTaked = useCallback(
+        async ({ filePath }: onPhotoTakedProps) => {
+            if (await exists(filePath)) {
+                setPhotoPath(filePath);
+            }
+
+            handleDisableCamera();
+        },
+        [handleDisableCamera]
+    );
+
     return (
-        <Container>
-            <ScrollView>
-                <Category>
-                    <Button text="Load with sample data" onPress={sampleData} />
+        <>
+            {isCameraEnabled ? (
+                <Camera
+                    onPhotoTaked={onPhotoTaked}
+                    onBackButtonPressed={handleDisableCamera}
+                />
+            ) : (
+                <Container>
+                    <ScrollView>
+                        <Category>
+                            <Text>{photoPath}</Text>
+                            <Button
+                                text="Enable camera"
+                                onPress={() => setIsCameraEnabled(true)}
+                            />
 
-                    <Button
-                        text="Delete all realm data"
-                        onPress={deleteProducts}
-                    />
+                            <Button
+                                text="Load with sample data"
+                                onPress={sampleData}
+                            />
 
-                    <Button
-                        text="Log is time to notificaiton"
-                        onPress={() =>
-                            isTimeForANotification().then(response =>
-                                console.log(response)
-                            )
-                        }
-                    />
+                            <Button
+                                text="Delete all realm data"
+                                onPress={deleteProducts}
+                            />
 
-                    <Button
-                        text="Throw notification"
-                        onPress={handleNotification}
-                    />
+                            <Button
+                                text="Log is time to notificaiton"
+                                onPress={() =>
+                                    isTimeForANotification().then(response =>
+                                        console.log(response)
+                                    )
+                                }
+                            />
 
-                    <Button
-                        text="Delete privacy setting"
-                        onPress={handleDeletePrivacySetting}
-                    />
+                            <Button
+                                text="Throw notification"
+                                onPress={handleNotification}
+                            />
 
-                    <Button text="Log messaging id" onPress={tokens} />
+                            <Button
+                                text="Delete privacy setting"
+                                onPress={handleDeletePrivacySetting}
+                            />
 
-                    <Button
-                        text="Revoke notifications"
-                        onPress={handleRevokeNotifications}
-                    />
-                </Category>
-            </ScrollView>
-        </Container>
+                            <Button text="Log messaging id" onPress={tokens} />
+
+                            <Button
+                                text="Revoke notifications"
+                                onPress={handleRevokeNotifications}
+                            />
+                        </Category>
+                    </ScrollView>
+                </Container>
+            )}
+        </>
     );
 };
 
