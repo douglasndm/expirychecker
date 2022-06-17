@@ -73,7 +73,7 @@ const ListProducts: React.FC<RequestProps> = ({
         temp.normal.forEach(item => tempArray.push(item));
 
         setSortedProducts(tempArray);
-        setPage(0);
+        setPage(1);
     }, [products]);
 
     useEffect(() => {
@@ -84,6 +84,14 @@ const ListProducts: React.FC<RequestProps> = ({
         handleSortProducts();
     }, [handleSortProducts]);
 
+    const loadMoreProducts = useCallback(() => {
+        const nextPage = page + 1;
+
+        setLimitedProducts(sortedProducts.slice(0, 10 * nextPage));
+
+        setPage(nextPage);
+    }, [page, sortedProducts]);
+
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
     }, [navigate]);
@@ -91,13 +99,6 @@ const ListProducts: React.FC<RequestProps> = ({
     const handleNavigateAddProduct = useCallback(() => {
         navigate('AddProduct');
     }, [navigate]);
-
-    const loadMoreProducts = useCallback(() => {
-        let currentPage = page;
-        setLimitedProducts(sortedProducts.slice(0, 10 * ++currentPage));
-
-        setPage(currentPage);
-    }, [page, sortedProducts]);
 
     const switchSelectedItem = useCallback(
         (productId: number) => {
@@ -254,11 +255,10 @@ const ListProducts: React.FC<RequestProps> = ({
                 renderItem={renderComponent}
                 ListEmptyComponent={EmptyList}
                 ListFooterComponent={FooterButton}
-                initialNumToRender={10}
                 onRefresh={onRefresh}
                 refreshing={isRefreshing}
                 onEndReached={loadMoreProducts}
-                onEndReachedThreshold={0.2}
+                onEndReachedThreshold={0.5}
             />
 
             {!deactiveFloatButton && (
