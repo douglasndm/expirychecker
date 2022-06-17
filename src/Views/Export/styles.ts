@@ -17,7 +17,7 @@ export const ExportOptionContainer = styled.View`
 
 export const ExportExplain = styled.Text`
     font-size: 16px;
-    color: ${props => props.theme.colors.text};
+    color: ${props => props.theme.colors.productCardText};
 `;
 
 export const SortTitle = styled.Text`
@@ -40,7 +40,9 @@ export const RadioButtonContainer = styled.View`
 `;
 
 export const RadioButtonText = styled.Text`
-    color: ${props => props.theme.colors.text};
+    color: ${props => props.theme.colors.productCardText};
 `;
 
-export const RadioButton = styled(Radio)``;
+export const RadioButton = styled(Radio).attrs(({ theme }) => ({
+    color: theme.colors.accent,
+}))``;
