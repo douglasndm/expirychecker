@@ -27,6 +27,7 @@ import {
     ProductInfoItem,
     ProductExpDate,
     ProductImage,
+    LoadingImage,
 } from './styles';
 
 interface Request {
@@ -40,6 +41,7 @@ const Product = ({ product, onLongPress }: Request) => {
 
     const [imagePath, setImagePath] = useState<string>('');
     const [storeName, setStoreName] = useState<string | null>();
+    const [isImgLoading, setIsImgLoading] = useState(false);
 
     const [languageCode] = useState(() => {
         if (getLocales()[0].languageCode === 'en') {
@@ -109,6 +111,14 @@ const Product = ({ product, onLongPress }: Request) => {
         return !!(expired || nextToExp);
     }, [expired, nextToExp]);
 
+    const onLoadStart = useCallback(() => {
+        setIsImgLoading(true);
+    }, []);
+
+    const onLoadEnd = useCallback(() => {
+        setIsImgLoading(false);
+    }, []);
+
     useEffect(() => {
         getProductImagePath(product.id).then(path => {
             if (path) {
@@ -141,12 +151,18 @@ const Product = ({ product, onLongPress }: Request) => {
         >
             <Content>
                 {userPreferences.isUserPremium && !!imagePath && (
-                    <ProductImage
-                        source={{
-                            uri: imagePath,
-                            priority: FastImage.priority.low,
-                        }}
-                    />
+                    <>
+                        {isImgLoading && <LoadingImage />}
+
+                        <ProductImage
+                            source={{
+                                uri: imagePath,
+                                priority: FastImage.priority.low,
+                            }}
+                            onLoadStart={onLoadStart}
+                            onLoadEnd={onLoadEnd}
+                        />
+                    </>
                 )}
 
                 <TextContainer>

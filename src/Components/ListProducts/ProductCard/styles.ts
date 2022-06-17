@@ -84,6 +84,11 @@ export const ProductImage = styled(FastImage)`
     margin-right: 10px;
 `;
 
+export const LoadingImage = styled.ActivityIndicator.attrs(({ theme }) => ({
+    size: 50,
+    color: theme.colors.accent,
+}))``;
+
 export const ProductExpDate = styled.Text<IProductInfo>`
     font-size: 16px;
     margin-left: 2px;
