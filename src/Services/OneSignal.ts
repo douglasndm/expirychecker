@@ -2,12 +2,21 @@ import OneSignal from 'react-native-onesignal';
 import Purchases from 'react-native-purchases';
 import dotenv from 'react-native-config';
 
+import Sentry from './Sentry';
+
 OneSignal.setLogLevel(6, 0);
 OneSignal.setAppId(dotenv.ONESIGNAL_APP_ID);
 
 async function OneSignalInit() {
-    const user_id = (await OneSignal.getDeviceState()).userId;
-    Purchases.setOnesignalID(user_id);
+    try {
+        const deviceState = await OneSignal.getDeviceState();
+
+        if (deviceState === null) return;
+
+        Purchases.setOnesignalID(deviceState.userId);
+    } catch (err) {
+        Sentry.captureException(err);
+    }
 }
 
 // Prompt for push on iOS
