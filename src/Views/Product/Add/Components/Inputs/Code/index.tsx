@@ -147,7 +147,7 @@ const Inputs: React.FC<InputsRequest> = ({
             if (!userPreferences.isUserPremium) return;
 
             const schema = Yup.object().shape({
-                ean_code: Yup.string().required().min(8),
+                ean_code: Yup.number().required().min(8),
             });
 
             try {
