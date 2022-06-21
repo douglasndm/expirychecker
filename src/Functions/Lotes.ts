@@ -7,7 +7,7 @@ import {
 } from 'date-fns';
 import { UpdateMode } from 'realm';
 
-import Realm from '../Services/Realm';
+import realm from '~/Services/Realm';
 
 import { getProductByCode, getProductById } from './Product';
 
@@ -78,8 +78,6 @@ export async function checkIfLoteAlreadyExists({
 }
 
 export async function getLoteById(loteId: number): Promise<ILote> {
-    const realm = await Realm();
-
     const result = realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`)[0];
 
     return result;
@@ -111,8 +109,6 @@ export async function createLote({
     ) {
         throw new Error('Já existe o mesmo lote cadastro');
     }
-
-    const realm = await Realm();
 
     realm.write(() => {
         let product;
@@ -169,16 +165,12 @@ export async function createLote({
 }
 
 export async function updateLote(lote: ILote): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         realm.create('Lote', lote, UpdateMode.Modified);
     });
 }
 
 export async function deleteLote(loteId: number): Promise<void> {
-    const realm = await Realm();
-
     const lote = realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);
 
     realm.write(() => {

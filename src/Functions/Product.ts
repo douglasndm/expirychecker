@@ -1,7 +1,8 @@
 import { UpdateMode } from 'realm';
 import { exists, unlink } from 'react-native-fs';
 
-import Realm from '../Services/Realm';
+import realm from '~/Services/Realm';
+
 import { createLote } from './Lotes';
 import { getProductImagePath } from './Products/Image';
 import { saveManyBatches } from './Batches';
@@ -15,8 +16,6 @@ export async function checkIfProductAlreadyExistsByCode({
     productCode,
     productStore,
 }: ICheckIfProductAlreadyExistsByCodeProps): Promise<boolean> {
-    const realm = await Realm();
-
     if (productStore) {
         const results = realm
             .objects('Product')
@@ -44,8 +43,6 @@ export async function getProductByCode({
     productCode,
     store,
 }: getProductByCodeProps): Promise<IProduct> {
-    const realm = await Realm();
-
     let result = realm
         .objects<IProduct>('Product')
         .filtered(`code = "${productCode}"`)[0];
@@ -60,8 +57,6 @@ export async function getProductByCode({
 }
 
 export async function getProductById(productId: number): Promise<IProduct> {
-    const realm = await Realm();
-
     const result = realm
         .objects<IProduct>('Product')
         .filtered(`id = "${productId}"`)[0];
@@ -78,8 +73,6 @@ export async function createProduct({
     product,
     ignoreDuplicate = false,
 }: createProductProps): Promise<void | number> {
-    const realm = await Realm();
-
     if (product.code) {
         const productExist = await checkIfProductAlreadyExistsByCode({
             productCode: product.code,
@@ -146,16 +139,12 @@ interface updateProductProps {
 export async function updateProduct(
     product: updateProductProps
 ): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         realm.create('Product', product, UpdateMode.Modified);
     });
 }
 
 export async function deleteProduct(productId: number): Promise<void> {
-    const realm = await Realm();
-
     const product = realm
         .objects<IProduct>('Product')
         .filtered(`id == ${productId}`)[0];

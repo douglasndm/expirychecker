@@ -3,7 +3,7 @@ import UUID from 'react-native-uuid-generator';
 
 import strings from '~/Locales';
 
-import Realm from '~/Services/Realm';
+import realm from '~/Services/Realm';
 
 import { getAllStores as allStores } from './Store';
 
@@ -13,8 +13,6 @@ const regularExpression = new RegExp(
 );
 
 export async function getStore(idOrName: string): Promise<IStore | null> {
-    const realm = await Realm();
-
     if (regularExpression.test(idOrName)) {
         const realmResponse = realm
             .objects<IStore>('Store')
@@ -39,8 +37,6 @@ export async function getAllStores(): Promise<Array<IStore>> {
         }
         return true;
     });
-
-    const realm = await Realm();
 
     const realmResponse = realm.objects<IStore>('Store').slice();
 
@@ -88,8 +84,6 @@ export async function createStore(storeName: string): Promise<IStore> {
         );
     }
 
-    const realm = await Realm();
-
     const storeUUID = await UUID.getRandomUUID();
 
     const store: IStore = {
@@ -105,16 +99,12 @@ export async function createStore(storeName: string): Promise<IStore> {
 }
 
 export async function updateStore(store: IStore): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         realm.create('Store', store, UpdateMode.Modified);
     });
 }
 
 export async function deleteStore(store_id: string): Promise<void> {
-    const realm = await Realm();
-
     const allProductsByStore = realm
         .objects<IProduct[]>('Product')
         .filtered(`store = "${store_id}"`);
@@ -132,8 +122,6 @@ export async function deleteStore(store_id: string): Promise<void> {
 export async function getAllProductsByStore(
     storeUUID: string | null
 ): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
     const products = realm.objects<IProduct>('Product').slice();
 
     if (storeUUID === null) {

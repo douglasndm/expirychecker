@@ -1,8 +1,6 @@
-import Realm from '~/Services/Realm';
+import realm from '~/Services/Realm';
 
 export async function saveMany(products: Array<IProduct>): Promise<void> {
-    const realm = await Realm();
-
     const lastProd = realm.objects<ILote>('Product').sorted('id', true)[0];
     let nextProdId = lastProd == null ? 1 : lastProd.id + 1;
 

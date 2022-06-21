@@ -7,9 +7,9 @@ import OneSignal from 'react-native-onesignal';
 import PushNotifications from 'react-native-push-notification';
 
 import { exists } from 'react-native-fs';
-import Realm from '../../Services/Realm';
+import realm from '~/Services/Realm';
 
-import Button from '../../Components/Button';
+import Button from '~/Components/Button';
 
 import { Container, Category } from '../Settings/styles';
 import {
@@ -26,8 +26,6 @@ const Test: React.FC = () => {
     const [photoPath, setPhotoPath] = useState('');
 
     async function sampleData() {
-        const realm = await Realm();
-
         try {
             realm.write(() => {
                 for (let i = 0; i < 150; i++) {
@@ -65,7 +63,6 @@ const Test: React.FC = () => {
     }
 
     async function deleteProducts() {
-        const realm = await Realm();
         try {
             realm.write(() => {
                 realm.deleteAll();

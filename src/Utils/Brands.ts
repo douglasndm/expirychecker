@@ -1,13 +1,11 @@
 import { UpdateMode } from 'realm';
 import UUID from 'react-native-uuid-generator';
 
-import Realm from '~/Services/Realm';
+import realm from '~/Services/Realm';
 
 import strings from '~/Locales';
 
 export async function getBrand(id: string): Promise<IBrand> {
-    const realm = await Realm();
-
     const realmResponse = realm
         .objects<IBrand>('Brand')
         .filtered(`id = "${id}"`)[0];
@@ -16,8 +14,6 @@ export async function getBrand(id: string): Promise<IBrand> {
 }
 
 export async function getAllBrands(): Promise<Array<IBrand>> {
-    const realm = await Realm();
-
     const realmResponse = realm.objects<ICategory>('Brand').slice();
 
     return realmResponse;
@@ -36,8 +32,6 @@ export async function createBrand(brandName: string): Promise<IBrand> {
         );
     }
 
-    const realm = await Realm();
-
     const brandUuid = await UUID.getRandomUUID();
 
     const brand: IBrand = {
@@ -53,8 +47,6 @@ export async function createBrand(brandName: string): Promise<IBrand> {
 }
 
 export async function updateBrand(brand: IBrand): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         realm.create('Brand', brand, UpdateMode.Modified);
     });
@@ -63,8 +55,6 @@ export async function updateBrand(brand: IBrand): Promise<void> {
 export async function getAllProductsByBrand(
     brand_id: string
 ): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
     const products = realm.objects<IProduct>('Product').slice();
 
     const filtedProducts = products.filter(p => {
@@ -77,8 +67,6 @@ export async function getAllProductsByBrand(
 export async function deleteBrand({
     brand_id,
 }: deleteBrandProps): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         const products = realm.objects<IProduct>('Product');
 
@@ -102,8 +90,6 @@ export async function deleteBrand({
 }
 
 export async function saveManyBrands(brands: Array<IBrand>): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         brands.forEach(brand => {
             const alreadyExists = realm

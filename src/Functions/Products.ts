@@ -1,6 +1,6 @@
 import { compareAsc, startOfDay } from 'date-fns';
 
-import Realm from '~/Services/Realm';
+import realm from '~/Services/Realm';
 
 import { removeLotesTratados } from './Lotes';
 import { sortBatches } from '~/Utils/Batches/Sort';
@@ -94,8 +94,6 @@ export async function getAllProducts({
     sortProductsByExpDate = false,
     limit,
 }: getAllProductsProps): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
     const allProducts = realm.objects<IProduct>('Product').slice();
 
     let filtertedProducts: Array<IProduct> = allProducts;
