@@ -3,11 +3,9 @@ import UUID from 'react-native-uuid-generator';
 
 import strings from '~/Locales';
 
-import Realm from '~/Services/Realm';
+import realm from '~/Services/Realm';
 
 export async function getCategory(id: string): Promise<ICategory> {
-    const realm = await Realm();
-
     const realmResponse = realm
         .objects<ICategory>('Category')
         .filtered(`id = "${id}"`)[0];
@@ -16,8 +14,6 @@ export async function getCategory(id: string): Promise<ICategory> {
 }
 
 export async function getAllCategories(): Promise<Array<ICategory>> {
-    const realm = await Realm();
-
     const realmResponse = realm.objects<ICategory>('Category').slice();
 
     return realmResponse;
@@ -37,8 +33,6 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
         );
     }
 
-    const realm = await Realm();
-
     const categoryUuid = await UUID.getRandomUUID();
 
     const category: ICategory = {
@@ -54,8 +48,6 @@ export async function createCategory(categoryName: string): Promise<ICategory> {
 }
 
 export async function updateCategory(category: ICategory): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         realm.create('Category', category, UpdateMode.Modified);
     });
@@ -64,8 +56,6 @@ export async function updateCategory(category: ICategory): Promise<void> {
 export async function getAllProductsByCategory(
     categoryUuid: string
 ): Promise<Array<IProduct>> {
-    const realm = await Realm();
-
     const products = realm.objects<IProduct>('Product').slice();
 
     const filtedProducts = products.filter(p => {
@@ -85,8 +75,6 @@ interface deleteCategoryProps {
 export async function deleteCategory({
     category_id,
 }: deleteCategoryProps): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         const products = realm.objects<IProduct>('Product');
 

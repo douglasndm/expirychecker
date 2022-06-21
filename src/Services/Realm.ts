@@ -6,17 +6,15 @@ import CategorySchema from '~/Schemas/Category';
 import StoreSchema from '~/Schemas/Store';
 import BrandSchema from '~/Schemas/Brand';
 
-export default async function RealmInstance(): Promise<Realm> {
-    const realm = await Realm.open({
-        schema: [
-            ProductSchema,
-            LoteSchema,
-            CategorySchema,
-            StoreSchema,
-            BrandSchema,
-        ],
-        schemaVersion: 10,
-    });
+const RealmInstance = new Realm({
+    schema: [
+        ProductSchema,
+        LoteSchema,
+        CategorySchema,
+        StoreSchema,
+        BrandSchema,
+    ],
+    schemaVersion: 10,
+});
 
-    return realm;
-}
+export default RealmInstance;

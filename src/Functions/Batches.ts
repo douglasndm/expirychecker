@@ -1,8 +1,6 @@
-import Realm from '~/Services/Realm';
+import realm from '~/Services/Realm';
 
 export async function saveManyBatches(batches: Array<ILote>): Promise<ILote[]> {
-    const realm = await Realm();
-
     const lastBatch = realm.objects<ILote>('Lote').sorted('id', true)[0];
     let nextId = lastBatch == null ? 1 : lastBatch.id + 1;
 

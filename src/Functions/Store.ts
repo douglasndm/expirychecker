@@ -1,8 +1,6 @@
-import Realm from '../Services/Realm';
+import realm from '~/Services/Realm';
 
 export async function getAllStores(): Promise<Array<string>> {
-    const realm = await Realm();
-
     const stores: Array<string> = [];
 
     const results = realm.objects<IProduct>('Product').sorted('store');

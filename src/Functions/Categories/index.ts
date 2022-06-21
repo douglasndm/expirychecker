@@ -1,10 +1,8 @@
-import Realm from '~/Services/Realm';
+import realm from '~/Services/Realm';
 
 export async function saveManyCategories(
     categories: Array<ICategory>
 ): Promise<void> {
-    const realm = await Realm();
-
     realm.write(() => {
         categories.forEach(cat => {
             const alreadyExists = realm
