@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -22,19 +22,37 @@ import {
     Container,
     Content,
     PageTitle,
+    ApplicationName,
     ApplicationVersion,
     AboutSection,
-    ApplicationName,
+    UserId,
     Text,
     Link,
     SocialContainer,
     SocialIcon,
+    IdContainer,
 } from './styles';
 
 const About: React.FC = () => {
     const { goBack } = useNavigation();
 
-    const [tapsCount, setTapsCount] = useState<number>(0);
+    const [pid, setPid] = useState('');
+    const [signalId, setSignalId] = useState('');
+    const [firebaseId, setFirebaseId] = useState('');
+
+    const loadData = useCallback(async () => {
+        const purchase = await Purchases.getAppUserID();
+        const oneSignal = await OneSignal.getDeviceState();
+        const firebase = await messaging().getToken();
+
+        setPid(purchase);
+        setSignalId(oneSignal.userId);
+        setFirebaseId(firebase);
+    }, []);
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     const handleNavigateToSite = useCallback(async () => {
         await Linking.openURL('https://douglasndm.dev');
@@ -66,30 +84,16 @@ const About: React.FC = () => {
     }, []);
 
     const handleShareIdInfo = useCallback(async () => {
-        setTapsCount(tapsCount + 1);
-        if (tapsCount > 15) {
-            let firebase_messaging = null;
-
-            try {
-                firebase_messaging = await messaging().getToken();
-            } catch {
-                firebase_messaging = null;
-            }
-
-            const revenueCatId = await Purchases.getAppUserID();
-            const oneSignal = await OneSignal.getDeviceState();
-
-            const userInfo = {
-                purchase_idetinfy: revenueCatId,
-                firebase_messaging,
-                oneSignal,
-            };
-            shareText({
-                title: 'User informations',
-                text: JSON.stringify(userInfo),
-            });
-        }
-    }, [tapsCount]);
+        const userInfo = {
+            purchase_idetinfy: pid,
+            firebase_messaging: firebaseId,
+            oneSignal: signalId,
+        };
+        await shareText({
+            title: 'User informations',
+            text: JSON.stringify(userInfo),
+        });
+    }, [firebaseId, pid, signalId]);
 
     return (
         <Container>
@@ -110,11 +114,13 @@ const About: React.FC = () => {
                 <ApplicationVersion>{`${getSystemName()} ${getSystemVersion()}`}</ApplicationVersion>
             </AboutSection>
 
-            <AboutSection>
-                <Link onPress={handleNavigateToSite}>
-                    {strings.Menu_Button_KnowOthersApps}
-                </Link>
-            </AboutSection>
+            <IdContainer onLongPress={handleShareIdInfo}>
+                <View>
+                    <UserId>{`fid: ${firebaseId}`}</UserId>
+                    <UserId>{`pid: ${pid}`}</UserId>
+                    <UserId>{`sid: ${signalId}`}</UserId>
+                </View>
+            </IdContainer>
 
             <AboutSection>
                 <Text>
@@ -139,12 +145,14 @@ const About: React.FC = () => {
             </AboutSection>
 
             <AboutSection>
-                <Text onPress={handleShareIdInfo}>
-                    {strings.View_About_DevelopedBy}
-                </Text>
+                <Text>{strings.View_About_DevelopedBy}</Text>
             </AboutSection>
 
             <SocialContainer>
+                <SocialIcon
+                    name="desktop-outline"
+                    onPress={handleNavigateToSite}
+                />
                 <SocialIcon
                     name="logo-linkedin"
                     onPress={handleLinkedinPress}
