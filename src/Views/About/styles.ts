@@ -34,6 +34,15 @@ export const ApplicationVersion = styled.Text`
     color: ${props => props.theme.colors.subText};
 `;
 
+export const IdContainer = styled.TouchableWithoutFeedback``;
+
+export const UserId = styled.Text.attrs(() => ({
+    numberOfLines: 1,
+}))`
+    font-size: 14px;
+    color: ${props => props.theme.colors.subText};
+`;
+
 export const Text = styled.Text`
     color: ${props => props.theme.colors.text};
     font-size: 16px;
