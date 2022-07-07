@@ -80,7 +80,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+    enableHermes: true,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -124,7 +124,7 @@ def useIntlJsc = false
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
-def enableHermes = project.ext.react.get("enableHermes", false);
+def enableHermes = project.ext.react.get("enableHermes", true);
 
 def codePushStagingDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_STAGING_DEPLOYMENTKEY") +'"'
 def codePushProductionDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_PRODUCTION_DEPLOYMENTKEY") +'"'
@@ -154,8 +154,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 171
-        versionName "1.12.9"
+        versionCode 173
+        versionName "1.12.10"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
