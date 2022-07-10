@@ -41,13 +41,35 @@ const About: React.FC = () => {
     const [firebaseId, setFirebaseId] = useState('');
 
     const loadData = useCallback(async () => {
-        const purchase = await Purchases.getAppUserID();
-        const oneSignal = await OneSignal.getDeviceState();
-        const firebase = await messaging().getToken();
+        try {
+            const purchase = await Purchases.getAppUserID();
 
-        setPid(purchase);
-        setSignalId(oneSignal.userId);
-        setFirebaseId(firebase);
+            setPid(purchase);
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err);
+            }
+        }
+
+        try {
+            const firebase = await messaging().getToken();
+
+            setFirebaseId(firebase);
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err);
+            }
+        }
+
+        try {
+            const oneSignal = await OneSignal.getDeviceState();
+
+            setSignalId(oneSignal.userId);
+        } catch (err) {
+            if (err instanceof Error) {
+                console.log(err);
+            }
+        }
     }, []);
 
     useEffect(() => {
@@ -114,13 +136,15 @@ const About: React.FC = () => {
                 <ApplicationVersion>{`${getSystemName()} ${getSystemVersion()}`}</ApplicationVersion>
             </AboutSection>
 
-            <IdContainer onLongPress={handleShareIdInfo}>
-                <View>
-                    <UserId>{`fid: ${firebaseId}`}</UserId>
-                    <UserId>{`pid: ${pid}`}</UserId>
-                    <UserId>{`sid: ${signalId}`}</UserId>
-                </View>
-            </IdContainer>
+            {(!!firebaseId || !!pid || !!signalId) && (
+                <IdContainer onLongPress={handleShareIdInfo}>
+                    <View>
+                        <UserId>{`fid: ${firebaseId}`}</UserId>
+                        <UserId>{`pid: ${pid}`}</UserId>
+                        <UserId>{`sid: ${signalId}`}</UserId>
+                    </View>
+                </IdContainer>
+            )}
 
             <AboutSection>
                 <Text>
