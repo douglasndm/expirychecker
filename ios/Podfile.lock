@@ -573,7 +573,7 @@ PODS:
     - React-Core
   - RNPermissions (3.0.5):
     - React-Core
-  - RNPurchases (4.5.3):
+  - RNPurchases (4.6.1):
     - PurchasesHybridCommon (= 2.0.1)
     - React-Core
   - RNReanimated (2.9.1):
@@ -606,9 +606,9 @@ PODS:
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.4.2):
+  - RNSentry (4.2.1):
     - React-Core
-    - Sentry (= 7.11.0)
+    - Sentry (= 7.22.0)
   - RNShare (7.2.0):
     - React-Core
   - RNVectorIcons (8.1.0):
@@ -626,9 +626,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (7.11.0):
-    - Sentry/Core (= 7.11.0)
-  - Sentry/Core (7.11.0)
+  - Sentry (7.22.0):
+    - Sentry/Core (= 7.22.0)
+  - Sentry/Core (7.22.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -1028,16 +1028,16 @@ SPEC CHECKSUMS:
   RNGoogleMobileAds: 4646be245829a55cdefad6c3b136887dfa21c1e7
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
-  RNPurchases: fd7e85ca54a006b0894cfe0698f261bcd499abe3
+  RNPurchases: 80db47ee6da394f92713dff35738e94fe62828a3
   RNReanimated: b5b17149593e7c05e4ec5c0efea1f21e05829510
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
-  RNSentry: 2cd1daa124b0d9fd0dfc2cb6094fdd168cb579bc
+  RNSentry: 42328a31577f64d188282b43f1f11b284c38c159
   RNShare: 70356a1bb406bc46ae03196a5d3048c702bb71a7
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   RNZipArchive: 924d63f15f2838837f8379ee6e9955d8ff4736c4
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
-  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
+  Sentry: 30b51086ca9aac23337880152e95538f7e177f7f
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: d6b6a80659aa3e91aaba01d0012e7edcbedcbecd
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
