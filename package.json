@@ -8,10 +8,12 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "check-dependencies": "rnx-dep-check",
+    "fix-dependencies": "rnx-dep-check --write"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.15.8",
+    "@react-native-async-storage/async-storage": "^1.15.16",
     "@react-native-community/push-notification-ios": "^1.10.1",
     "@react-native-community/slider": "^3.0.3",
     "@react-native-firebase/analytics": "^14.8.0",
@@ -20,8 +22,9 @@
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-native-picker/picker": "^2.3.0",
     "@react-navigation/drawer": "^5.12.5",
-    "@react-navigation/native": "^5.9.8",
-    "@react-navigation/stack": "^5.14.9",
+    "@react-navigation/native": "^6.0.8",
+    "@react-navigation/native-stack": "^6.7.0",
+    "@react-navigation/stack": "^6.2.0",
     "@sentry/react-native": "^3.4.2",
     "axios": "^0.21.2",
     "crypto-js": "^3.3.0",
@@ -29,7 +32,7 @@
     "lottie-react-native": "^5.0.1",
     "polished": "^4.1.1",
     "react": "17.0.2",
-    "react-native": "^0.67.2",
+    "react-native": "^0.67.4",
     "react-native-appsflyer": "^6.5.21",
     "react-native-background-fetch": "^4.0.5",
     "react-native-camera": "^3.40.0",
@@ -59,9 +62,9 @@
     "react-native-purchases": "^4.5.3",
     "react-native-push-notification": "^8.1.0",
     "react-native-qrcode-scanner": "^1.5.1",
-    "react-native-reanimated": "^2.7.0",
+    "react-native-reanimated": "^2.2.4",
     "react-native-safe-area-context": "^3.2.0",
-    "react-native-screens": "^3.7.0",
+    "react-native-screens": "^3.9.0",
     "react-native-share": "^7.2.0",
     "react-native-splash-screen": "^3.2.0",
     "react-native-uuid-generator": "^6.1.1",
@@ -78,7 +81,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.15.3",
     "@react-native-community/eslint-config": "^3.0.0",
-    "@rnx-kit/dep-check": "^1.8.7",
+    "@rnx-kit/dep-check": "^1.12.20",
     "@types/crypto-js": "^3.1.47",
     "@types/jest": "^27.4.1",
     "@types/react-native": "^0.64.2",
@@ -102,7 +105,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
-    "jest": "^27.5.1",
+    "jest": "^26.6.3",
     "jetifier": "^1.6.6",
     "metro-react-native-babel-preset": "^0.66.2",
     "patch-package": "^6.2.2",
@@ -114,5 +117,27 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnx-kit": {
+    "reactNativeVersion": "^0.67",
+    "kitType": "app",
+    "capabilities": [
+      "animation",
+      "babel-preset-react-native",
+      "core",
+      "core-android",
+      "core-ios",
+      "filesystem",
+      "gestures",
+      "jest",
+      "masked-view",
+      "navigation/native",
+      "navigation/stack",
+      "react",
+      "react-test-renderer",
+      "safe-area",
+      "screens",
+      "storage"
+    ]
   }
 }
