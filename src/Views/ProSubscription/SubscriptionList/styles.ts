@@ -89,7 +89,7 @@ export const FirstLine = styled.View`
     justify-content: center;
 `;
 
-export const SubscriptionCostByMonth = styled(CurrencyInput)<Offer>`
+export const SubscriptionCostByMonth = styled.Text<Offer>`
     text-align: center;
     font-weight: bold;
     font-size: 22px;
