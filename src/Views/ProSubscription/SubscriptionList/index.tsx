@@ -1,8 +1,15 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useContext,
+    useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 import { showMessage } from 'react-native-flash-message';
+import { getLocales } from 'react-native-localize';
 
 import strings from '~/Locales';
 
@@ -36,10 +43,6 @@ import {
     DiscountLabel,
     FirstLine,
 } from './styles';
-import {
-    getCurrencySymbol,
-    getFormatedPrice,
-} from '~/Utils/System/getFormatedPrice';
 
 const SubscriptionList: React.FC = () => {
     const { reset, replace } =
@@ -60,6 +63,16 @@ const SubscriptionList: React.FC = () => {
     >();
 
     const [monthlyPrice, setMonthlyPrice] = useState(0);
+
+    const currencyPrefix = useMemo(() => {
+        if (getLocales()[0].countryCode === 'BR') {
+            return 'R$';
+        }
+        if (getLocales()[0].countryCode === 'PT') {
+            return '€';
+        }
+        return '$';
+    }, []);
 
     const loadData = useCallback(async () => {
         try {
@@ -182,15 +195,8 @@ const SubscriptionList: React.FC = () => {
                                 <SubscriptionsGroup>
                                     {packages.map(pack => {
                                         const { price } = pack.product;
-                                        const currency = getCurrencySymbol(
-                                            pack.product.currency_code
-                                        );
 
-                                        let priceByMonth = `${getFormatedPrice(
-                                            price
-                                        )} ${
-                                            strings.View_Subscription_AfterMonthlyPrice
-                                        }`;
+                                        let priceByMonth = price;
 
                                         let discount = 0;
 
@@ -200,11 +206,7 @@ const SubscriptionList: React.FC = () => {
                                             case PACKAGE_TYPE.THREE_MONTH:
                                                 title =
                                                     strings.View_ProPage_SubscribePeriod_ThreeMonths;
-                                                priceByMonth = `${getFormatedPrice(
-                                                    price / 3
-                                                )} ${
-                                                    strings.View_Subscription_AfterMonthlyPrice
-                                                }`;
+                                                priceByMonth = price / 3;
 
                                                 if (monthlyPrice > 0) {
                                                     const packMonthlyPrice =
@@ -220,11 +222,7 @@ const SubscriptionList: React.FC = () => {
                                             case PACKAGE_TYPE.ANNUAL:
                                                 title =
                                                     strings.View_ProPage_SubscribePeriod_OneYear;
-                                                priceByMonth = `${getFormatedPrice(
-                                                    price / 12
-                                                )} ${
-                                                    strings.View_Subscription_AfterMonthlyPrice
-                                                }`;
+                                                priceByMonth = price / 12;
 
                                                 if (monthlyPrice > 0) {
                                                     const packMonthlyPrice =
@@ -271,12 +269,12 @@ const SubscriptionList: React.FC = () => {
                                                 >
                                                     <FirstLine>
                                                         <SubscriptionCostByMonth
-                                                            isSelected={
-                                                                isSelected
+                                                            value={priceByMonth}
+                                                            prefix={
+                                                                currencyPrefix
                                                             }
-                                                        >
-                                                            {`${currency}${priceByMonth}`}
-                                                        </SubscriptionCostByMonth>
+                                                            suffix={` ${strings.View_Subscription_AfterMonthlyPrice.toUpperCase()}`}
+                                                        />
 
                                                         {discount > 0 && (
                                                             <DiscountLabelContainer>

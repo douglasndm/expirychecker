@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 import { darken } from 'polished';
+import CurrencyInput from 'react-native-currency-input';
 
 export const Container = styled.View``;
 
@@ -88,7 +89,7 @@ export const FirstLine = styled.View`
     justify-content: center;
 `;
 
-export const SubscriptionCostByMonth = styled.Text<Offer>`
+export const SubscriptionCostByMonth = styled(CurrencyInput)<Offer>`
     text-align: center;
     font-weight: bold;
     font-size: 22px;
