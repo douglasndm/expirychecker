@@ -1,15 +1,9 @@
-import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    useMemo,
-} from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 import { showMessage } from 'react-native-flash-message';
-import { getLocales } from 'react-native-localize';
+import { formatCurrency } from 'react-native-format-currency';
 
 import strings from '~/Locales';
 
@@ -63,16 +57,6 @@ const SubscriptionList: React.FC = () => {
     >();
 
     const [monthlyPrice, setMonthlyPrice] = useState(0);
-
-    const currencyPrefix = useMemo(() => {
-        if (getLocales()[0].countryCode === 'BR') {
-            return 'R$';
-        }
-        if (getLocales()[0].countryCode === 'PT') {
-            return '€';
-        }
-        return '$';
-    }, []);
 
     const loadData = useCallback(async () => {
         try {
@@ -246,6 +230,11 @@ const SubscriptionList: React.FC = () => {
                                                 .identifier ===
                                             pack.product.identifier;
 
+                                        const price_string = formatCurrency({
+                                            amount: priceByMonth.toFixed(2),
+                                            code: pack.product.currency_code,
+                                        });
+
                                         return (
                                             <SubscriptionContainer
                                                 key={pack.identifier}
@@ -269,12 +258,14 @@ const SubscriptionList: React.FC = () => {
                                                 >
                                                     <FirstLine>
                                                         <SubscriptionCostByMonth
-                                                            value={priceByMonth}
-                                                            prefix={
-                                                                currencyPrefix
+                                                            isSelected={
+                                                                isSelected
                                                             }
-                                                            suffix={` ${strings.View_Subscription_AfterMonthlyPrice.toUpperCase()}`}
-                                                        />
+                                                        >
+                                                            {`${
+                                                                price_string[0]
+                                                            } ${strings.View_Subscription_AfterMonthlyPrice.toUpperCase()}`}
+                                                        </SubscriptionCostByMonth>
 
                                                         {discount > 0 && (
                                                             <DiscountLabelContainer>
