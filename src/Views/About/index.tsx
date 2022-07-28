@@ -7,9 +7,11 @@ import {
     getSystemName,
     getSystemVersion,
 } from 'react-native-device-info';
+import codepush from 'react-native-code-push';
 import messaging from '@react-native-firebase/messaging';
 import Purchases from 'react-native-purchases';
 import OneSignal from 'react-native-onesignal';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
@@ -24,6 +26,7 @@ import {
     PageTitle,
     ApplicationName,
     ApplicationVersion,
+    CheckUpdateText,
     AboutSection,
     UserId,
     Text,
@@ -39,6 +42,8 @@ const About: React.FC = () => {
     const [pid, setPid] = useState('');
     const [signalId, setSignalId] = useState('');
     const [firebaseId, setFirebaseId] = useState('');
+
+    const [codePushChecking, setCodePushChecking] = useState(false);
 
     const loadData = useCallback(async () => {
         try {
@@ -117,6 +122,36 @@ const About: React.FC = () => {
         });
     }, [firebaseId, pid, signalId]);
 
+    const checkUpdate = useCallback(async () => {
+        try {
+            setCodePushChecking(true);
+            const response = await codepush.checkForUpdate();
+
+            if (!response) {
+                showMessage({
+                    message: 'There is no update pending',
+                    type: 'info',
+                });
+                return;
+            }
+
+            const update = await response.download();
+
+            if (update) {
+                await update.install(codepush.InstallMode.IMMEDIATE);
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
+        } finally {
+            setCodePushChecking(false);
+        }
+    }, []);
+
     return (
         <Container>
             <StatusBar />
@@ -128,11 +163,21 @@ const About: React.FC = () => {
             <AboutSection>
                 <ApplicationName>{strings.AppName}</ApplicationName>
 
-                <ApplicationVersion>
-                    {`${
-                        strings.View_About_AppVersion
-                    } ${getVersion()} (Build: ${getBuildNumber()})`}
-                </ApplicationVersion>
+                <View style={{ flexDirection: 'row' }}>
+                    <ApplicationVersion>
+                        {`${
+                            strings.View_About_AppVersion
+                        } ${getVersion()} (Build: ${getBuildNumber()})`}
+                    </ApplicationVersion>
+
+                    {codePushChecking ? (
+                        <ApplicationVersion>Checking...</ApplicationVersion>
+                    ) : (
+                        <CheckUpdateText onPress={checkUpdate}>
+                            {` Check for updates`}
+                        </CheckUpdateText>
+                    )}
+                </View>
                 <ApplicationVersion>{`${getSystemName()} ${getSystemVersion()}`}</ApplicationVersion>
             </AboutSection>
 

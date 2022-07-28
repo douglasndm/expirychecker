@@ -34,6 +34,11 @@ export const ApplicationVersion = styled.Text`
     color: ${props => props.theme.colors.subText};
 `;
 
+export const CheckUpdateText = styled.Text`
+    font-size: 14px;
+    color: ${props => props.theme.colors.accent};
+`;
+
 export const IdContainer = styled.TouchableWithoutFeedback``;
 
 export const UserId = styled.Text.attrs(() => ({
