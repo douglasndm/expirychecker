@@ -234,7 +234,8 @@
 
 
     "View_Subscription_AfterMonthlyPrice": "por mês",
-    "View_Subscription_iOS_AfterFullPrice": "por ano",
+    "View_Subscription_AfterFullPrice_ThreeMonths": " a cada 3 meses",
+    "View_Subscription_AfterFullPrice": "por ano",
 
     "View_Subscription_Monthly_WithIntroText": "Total de {INTRO_PRICE} no primeiro mês e depois {PRICE} mensais",
     "View_Subscription_Monthly_Text": "Total de {PRICE} mensais",
