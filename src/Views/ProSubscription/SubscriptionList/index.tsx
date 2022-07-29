@@ -10,6 +10,7 @@ import strings from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
+import Card from './Card';
 
 import {
     getSubscriptionDetails,
@@ -18,7 +19,6 @@ import {
     RestorePurchasers,
 } from '~/Functions/ProMode';
 import { getEnableProVersion } from '~/Functions/Settings';
-import { getPlansString } from '~/Utils/Purchases/Plans';
 
 import {
     Container,
@@ -26,16 +26,10 @@ import {
     SubscriptionContainer,
     SubscriptionPeriodContainer,
     SubscriptionPeriod,
-    SubscriptionDescription,
-    DetailsContainer,
     ButtonSubscription,
     ButtonText,
     TextSubscription,
     LoadingIndicator,
-    SubscriptionCostByMonth,
-    DiscountLabelContainer,
-    DiscountLabel,
-    FirstLine,
 } from './styles';
 
 const SubscriptionList: React.FC = () => {
@@ -253,46 +247,14 @@ const SubscriptionList: React.FC = () => {
                                                     </SubscriptionPeriod>
                                                 </SubscriptionPeriodContainer>
 
-                                                <DetailsContainer
+                                                <Card
                                                     isSelected={isSelected}
-                                                >
-                                                    <FirstLine>
-                                                        <SubscriptionCostByMonth
-                                                            isSelected={
-                                                                isSelected
-                                                            }
-                                                        >
-                                                            {`${
-                                                                price_string[0]
-                                                            } ${strings.View_Subscription_AfterMonthlyPrice.toUpperCase()}`}
-                                                        </SubscriptionCostByMonth>
-
-                                                        {discount > 0 && (
-                                                            <DiscountLabelContainer>
-                                                                <DiscountLabel>
-                                                                    {`${discount.toFixed(
-                                                                        0
-                                                                    )}% OFF`}
-                                                                </DiscountLabel>
-                                                            </DiscountLabelContainer>
-                                                        )}
-                                                    </FirstLine>
-
-                                                    {pack.packageType !==
-                                                        PACKAGE_TYPE.MONTHLY && (
-                                                        <SubscriptionDescription
-                                                            isSelected={
-                                                                isSelected
-                                                            }
-                                                        >
-                                                            <TextSubscription>
-                                                                {getPlansString(
-                                                                    pack
-                                                                )}
-                                                            </TextSubscription>
-                                                        </SubscriptionDescription>
-                                                    )}
-                                                </DetailsContainer>
+                                                    price_string={
+                                                        price_string[0]
+                                                    }
+                                                    discount={discount}
+                                                    pack={pack}
+                                                />
                                             </SubscriptionContainer>
                                         );
                                     })}

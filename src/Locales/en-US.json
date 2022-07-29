@@ -232,15 +232,18 @@
 
 
     "View_Subscription_AfterMonthlyPrice": "per month",
+    "View_Subscription_iOS_AfterFullPrice": "per year",
 
     "View_Subscription_Monthly_WithIntroText": "Total of {INTRO_PRICE} on the first month, then {PRICE} monthly",
     "View_Subscription_Monthly_Text": "Total of {PRICE} monthly",
 
     "View_Subscription_3Months_WithIntroText": "Total of {INTRO_PRICE} on first payment for 3 months, then {PRICE} every three months",
     "View_Subscription_3Months_Text": "On three months plans on total of {PRICE} every three months",
+    "View_Subscription_iOS_3Months_Text": "Same as {PRICE} per month",
 
     "View_Subscription_AYear_WithIntroText": "Total of {INTRO_PRICE} on the first year, then {PRICE} every year",
     "View_Subscription_AYear_Text": "On annual plan on total of {PRICE} every year",
+    "View_Subscription_iOS_AYear_Text": "Same as {PRICE} per month",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
     "View_ProPage_Button_ClickToSignIn": "Continue to subscription",

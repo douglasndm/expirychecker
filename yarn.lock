@@ -8608,10 +8608,10 @@ react-native-flash-message@^0.1.23:
     prop-types "^15.7.2"
     react-native-iphone-x-helper "^1.3.0"
 
-react-native-format-currency@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-format-currency/-/react-native-format-currency-0.0.1.tgz#65ad43baeeb0321bf4b0c35788f32e4c49879c3f"
-  integrity sha512-brmNUhQ5To0uV+Ff/d/bLYcwXN9toy9yqUG0ceO1ZLX+iwRrKdrfxX08eufUz08xp7Smjy46IiTXdLFQt52I+Q==
+react-native-format-currency@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-format-currency/-/react-native-format-currency-0.0.2.tgz#3c9c3ea1bc7e6bc9c9a67db691456bbeebb1096b"
+  integrity sha512-NKQ+8ZSGZjRnYte4Y/n5/pYrBiFlhykjctvpHz1xXCXNNW+BaqjImXVy5uJasoq9Z5k0NH+nB+EDyVJMDXKWvw==
 
 react-native-fs@^2.18.0:
   version "2.18.0"
