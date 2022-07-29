@@ -3,7 +3,7 @@ import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
 import strings from '~/Locales';
 
-function getPlansString(pack: PurchasesPackage): string {
+function getPlansString(pack: PurchasesPackage, per_month?: string): string {
     const { price_string, introPrice } = pack.product;
 
     let text = '';
@@ -29,13 +29,18 @@ function getPlansString(pack: PurchasesPackage): string {
                     '{INTRO_PRICE}',
                     introPrice.priceString
                 ).replace('{PRICE}', price_string);
+            } else {
+                text = strings.View_Subscription_3Months_Text.replace(
+                    '{PRICE}',
+                    price_string
+                );
             }
+        } else {
+            text = strings.View_Subscription_iOS_3Months_Text.replace(
+                '{PRICE}',
+                per_month || price_string
+            );
         }
-
-        text = strings.View_Subscription_3Months_Text.replace(
-            '{PRICE}',
-            price_string
-        );
     } else if (pack.packageType === PACKAGE_TYPE.ANNUAL) {
         if (Platform.OS === 'android') {
             if (introPrice) {
@@ -43,13 +48,18 @@ function getPlansString(pack: PurchasesPackage): string {
                     '{INTRO_PRICE}',
                     introPrice.priceString
                 ).replace('{PRICE}', price_string);
+            } else {
+                text = strings.View_Subscription_AYear_Text.replace(
+                    '{PRICE}',
+                    price_string
+                );
             }
+        } else {
+            text = strings.View_Subscription_iOS_AYear_Text.replace(
+                '{PRICE}',
+                per_month || price_string
+            );
         }
-
-        text = strings.View_Subscription_AYear_Text.replace(
-            '{PRICE}',
-            price_string
-        );
     }
     return text;
 }
