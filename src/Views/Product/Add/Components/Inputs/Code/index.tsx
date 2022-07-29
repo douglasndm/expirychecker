@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext } from 'react';
-import { NativeSyntheticEvent, TextInputFocusEventData } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import * as Yup from 'yup';
 
@@ -49,7 +49,7 @@ const Inputs: React.FC<InputsRequest> = ({
     onCompleteInfo,
     BrandsPickerRef,
 }: InputsRequest) => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
     const { userPreferences } = useContext(PreferencesContext);
 
     const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
@@ -128,8 +128,9 @@ const Inputs: React.FC<InputsRequest> = ({
                 prodBrand = productBrandFinded;
             }
 
-            if (prodBrand) {
-                BrandsPickerRef.current.selectByName(prodBrand);
+            if (prodBrand && BrandsPickerRef.current) {
+                if (BrandsPickerRef.current.selectByName)
+                    BrandsPickerRef.current.selectByName(prodBrand);
             }
 
             if (prodName)
@@ -208,14 +209,11 @@ const Inputs: React.FC<InputsRequest> = ({
         ]
     );
 
-    const handleCodeBlur = useCallback(
-        (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-            if (code) {
-                findProductByEAN(code);
-            }
-        },
-        [code, findProductByEAN]
-    );
+    const handleCodeBlur = useCallback(() => {
+        if (code) {
+            findProductByEAN(code);
+        }
+    }, [code, findProductByEAN]);
 
     const handleSwitchFindModal = useCallback(() => {
         setShowFillModal(!showFillModal);
