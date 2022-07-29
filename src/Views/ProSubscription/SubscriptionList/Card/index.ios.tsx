@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 
 import strings from '~/Locales';
@@ -29,13 +29,22 @@ const Card: React.FC<Props> = ({
     discount,
     pack,
 }: Props) => {
+    const afterFullPrice = useMemo(() => {
+        if (pack.packageType === PACKAGE_TYPE.THREE_MONTH) {
+            return strings.View_Subscription_AfterFullPrice_ThreeMonths;
+        }
+        if (pack.packageType === PACKAGE_TYPE.ANNUAL) {
+            return strings.View_Subscription_AfterFullPrice;
+        }
+        return strings.View_Subscription_AfterMonthlyPrice;
+    }, [pack.packageType]);
     return (
         <DetailsContainer isSelected={isSelected}>
             <FirstLine>
                 <SubscriptionCostByMonth isSelected={isSelected}>
                     {`${
                         pack.product.price_string
-                    } ${strings.View_Subscription_iOS_AfterFullPrice.toUpperCase()}`}
+                    } ${afterFullPrice.toUpperCase()}`}
                 </SubscriptionCostByMonth>
 
                 {discount > 0 && (

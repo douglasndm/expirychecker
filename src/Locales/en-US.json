@@ -232,7 +232,8 @@
 
 
     "View_Subscription_AfterMonthlyPrice": "per month",
-    "View_Subscription_iOS_AfterFullPrice": "per year",
+    "View_Subscription_AfterFullPrice_ThreeMonths": "every 3 months",
+    "View_Subscription_AfterFullPrice": "per year",
 
     "View_Subscription_Monthly_WithIntroText": "Total of {INTRO_PRICE} on the first month, then {PRICE} monthly",
     "View_Subscription_Monthly_Text": "Total of {PRICE} monthly",
