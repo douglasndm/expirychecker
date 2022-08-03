@@ -225,7 +225,9 @@ const SubscriptionList: React.FC = () => {
                                             pack.product.identifier;
 
                                         const price_string = formatCurrency({
-                                            amount: priceByMonth.toFixed(2),
+                                            amount: Number(
+                                                priceByMonth.toFixed(2)
+                                            ),
                                             code: pack.product.currency_code,
                                         });
 

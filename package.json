@@ -47,7 +47,7 @@
     "react-native-document-picker": "^7.1.0",
     "react-native-fast-image": "^8.5.11",
     "react-native-flash-message": "^0.1.23",
-    "react-native-format-currency": "^0.0.2",
+    "react-native-format-currency": "^0.0.3",
     "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-google-mobile-ads": "^5.0.0",
