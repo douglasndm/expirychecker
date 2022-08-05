@@ -67,9 +67,15 @@ const About: React.FC = () => {
         }
 
         try {
-            const oneSignal = await OneSignal.getDeviceState();
+            OneSignal.addSubscriptionObserver(async event => {
+                if (event.to.isSubscribed) {
+                    const deviceState = await OneSignal.getDeviceState();
 
-            setSignalId(oneSignal.userId);
+                    if (deviceState === null) return;
+
+                    setSignalId(deviceState.userId);
+                }
+            });
         } catch (err) {
             if (err instanceof Error) {
                 console.log(err);
