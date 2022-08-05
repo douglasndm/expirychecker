@@ -44,14 +44,6 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
         `}
 `;
 
-export const InputText = styled.TextInput.attrs(props => ({
-    placeholderTextColor: props.theme.colors.subText,
-}))`
-    padding: 15px 5px 15px 15px;
-    font-size: 18px;
-    color: ${props => props.theme.colors.text};
-`;
-
 export const InputTextTip = styled.Text`
     color: red;
     margin: 5px 10px 5px;

@@ -7,6 +7,7 @@ import { Button } from 'react-native-paper';
 import strings from '~/Locales';
 
 import Header from '~/Components/Header';
+import InputText from '~/Components/InputText';
 
 import {
     getCategory,
@@ -20,7 +21,6 @@ import {
     ActionsButtonContainer,
     ButtonPaper,
     InputTextContainer,
-    InputText,
     InputTextTip,
     DialogPaper,
     Icons,
@@ -35,7 +35,7 @@ const Edit: React.FC = () => {
     const { reset } = useNavigation();
     const theme = useTheme();
 
-    const [name, setName] = useState<string | undefined>(undefined);
+    const [name, setName] = useState<string>('');
     const [errorName, setErrorName] = useState<string>('');
 
     const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
@@ -115,7 +115,7 @@ const Edit: React.FC = () => {
                                 strings.View_Category_Edit_InputNamePlaceholder
                             }
                             value={name}
-                            onChangeText={onNameChange}
+                            onChange={onNameChange}
                         />
                     </InputTextContainer>
                     {!!errorName && <InputTextTip>{errorName}</InputTextTip>}
