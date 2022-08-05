@@ -7,28 +7,17 @@ export const Container = styled.SafeAreaView`
     background: ${props => props.theme.colors.background};
 `;
 
-export const TitleContainer = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-`;
-
-export const ItemTitle = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    margin: 5px 10px;
-    color: ${props => props.theme.colors.text};
-`;
-
 export const ActionsContainer = styled.View`
     flex-direction: column;
+    align-items: flex-end;
     margin-right: 10px;
+    margin-top: 10px;
 `;
 
 export const ActionButtonsContainer = styled(RectButton)`
     flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     width: 150px;
     margin-bottom: 5px;
 `;

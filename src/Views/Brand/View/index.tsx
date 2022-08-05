@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
@@ -24,11 +25,9 @@ import {
 
 import {
     Container,
-    ItemTitle,
     ActionsContainer,
     ActionButtonsContainer,
     Icons,
-    TitleContainer,
     ActionText,
 } from '~/Styles/Views/GenericViewPage';
 
@@ -38,7 +37,7 @@ interface Props {
 
 const View: React.FC = () => {
     const { params } = useRoute();
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const routeParams = params as Props;
 
@@ -123,27 +122,26 @@ const View: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <Header title={strings.View_Brand_View_PageTitle} noDrawer />
+            <Header
+                title={`${strings.View_Brand_View_PageTitle} ${brandName}`}
+                noDrawer
+            />
 
-            <TitleContainer>
-                <ItemTitle>{brandName}</ItemTitle>
+            <ActionsContainer>
+                <ActionButtonsContainer onPress={handleEdit}>
+                    <ActionText>
+                        {strings.View_ProductDetails_Button_UpdateProduct}
+                    </ActionText>
+                    <Icons name="create-outline" size={22} />
+                </ActionButtonsContainer>
 
-                <ActionsContainer>
-                    <ActionButtonsContainer onPress={handleEdit}>
-                        <ActionText>
-                            {strings.View_ProductDetails_Button_UpdateProduct}
-                        </ActionText>
-                        <Icons name="create-outline" size={22} />
-                    </ActionButtonsContainer>
-
-                    <ActionButtonsContainer onPress={handleGenereteExcel}>
-                        <ActionText>
-                            {strings.View_Brand_View_ActionButton_GenereteExcel}
-                        </ActionText>
-                        <Icons name="stats-chart-outline" size={22} />
-                    </ActionButtonsContainer>
-                </ActionsContainer>
-            </TitleContainer>
+                <ActionButtonsContainer onPress={handleGenereteExcel}>
+                    <ActionText>
+                        {strings.View_Brand_View_ActionButton_GenereteExcel}
+                    </ActionText>
+                    <Icons name="stats-chart-outline" size={22} />
+                </ActionButtonsContainer>
+            </ActionsContainer>
 
             <ListProducts products={products} deactiveFloatButton />
 

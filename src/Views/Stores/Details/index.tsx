@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
+import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
@@ -20,11 +21,11 @@ import {
 
 import {
     Container,
-    HeaderContainer,
-    ActionsButtonContainer,
-    ButtonPaper,
+    ActionsContainer,
+    ActionButtonsContainer,
     Icons,
-} from './styles';
+    ActionText,
+} from '~/Styles/Views/GenericViewPage';
 
 interface RequestProps {
     route: {
@@ -35,7 +36,8 @@ interface RequestProps {
 }
 
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
-    const { navigate, addListener } = useNavigation();
+    const { navigate, addListener } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -105,22 +107,18 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
         <Loading />
     ) : (
         <Container>
-            <HeaderContainer>
-                <Header title={storeName} noDrawer />
+            <Header title={storeName} noDrawer />
 
-                {store !== '000' && (
-                    <ActionsButtonContainer>
-                        <ButtonPaper
-                            icon={() => (
-                                <Icons name="create-outline" size={22} />
-                            )}
-                            onPress={handleNavigateEditStore}
-                        >
+            {store !== '000' && (
+                <ActionsContainer>
+                    <ActionButtonsContainer onPress={handleNavigateEditStore}>
+                        <ActionText>
                             {strings.View_Store_View_Button_EditStore}
-                        </ButtonPaper>
-                    </ActionsButtonContainer>
-                )}
-            </HeaderContainer>
+                        </ActionText>
+                        <Icons name="create-outline" size={22} />
+                    </ActionButtonsContainer>
+                </ActionsContainer>
+            )}
 
             <ListProducts products={products} deactiveFloatButton />
 
