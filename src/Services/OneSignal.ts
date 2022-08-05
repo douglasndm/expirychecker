@@ -9,11 +9,15 @@ OneSignal.setAppId(dotenv.ONESIGNAL_APP_ID);
 
 async function OneSignalInit() {
     try {
-        const deviceState = await OneSignal.getDeviceState();
+        OneSignal.addSubscriptionObserver(async event => {
+            if (event.to.isSubscribed) {
+                const deviceState = await OneSignal.getDeviceState();
 
-        if (deviceState === null) return;
+                if (deviceState === null) return;
 
-        Purchases.setOnesignalID(deviceState.userId);
+                Purchases.setOnesignalID(deviceState.userId);
+            }
+        });
     } catch (err) {
         Sentry.captureException(err);
     }
