@@ -17,4 +17,5 @@ interface exportProps {
     sortBy: 'created_date' | 'expire_date';
     category?: string | null;
     brand?: string | null;
+    store?: string;
 }

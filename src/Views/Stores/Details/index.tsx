@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import { StackNavigationProp } from '@react-navigation/stack';
 import strings from '~/Locales';
 
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
@@ -10,6 +11,7 @@ import {
     sortProductsByFisrtLoteExpDate,
     sortProductsLotesByLotesExpDate,
 } from '~/Functions/Products';
+import { exportToExcel } from '~/Functions/Excel';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -95,6 +97,33 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
         navigate('StoreEdit', { store_id: store });
     }, [navigate, store]);
 
+    const handleExportExcel = useCallback(async () => {
+        try {
+            setIsLoading(true);
+
+            await exportToExcel({
+                sortBy: 'expire_date',
+                store,
+            });
+
+            if (!__DEV__)
+                Analytics().logEvent('Exported_To_Excel_From_StoreView');
+
+            showMessage({
+                message: strings.View_Category_View_ExcelExportedSuccess,
+                type: 'info',
+            });
+        } catch (err) {
+            if (err instanceof Error)
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [store]);
+
     useEffect(() => {
         const unsubscribe = addListener('focus', () => {
             loadData();
@@ -116,6 +145,13 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                             {strings.View_Store_View_Button_EditStore}
                         </ActionText>
                         <Icons name="create-outline" size={22} />
+                    </ActionButtonsContainer>
+
+                    <ActionButtonsContainer onPress={handleExportExcel}>
+                        <ActionText>
+                            {strings.View_Brand_View_ActionButton_GenereteExcel}
+                        </ActionText>
+                        <Icons name="stats-chart-outline" size={22} />
                     </ActionButtonsContainer>
                 </ActionsContainer>
             )}

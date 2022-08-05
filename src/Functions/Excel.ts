@@ -24,6 +24,7 @@ export async function exportToExcel({
     sortBy,
     category,
     brand,
+    store,
 }: exportProps): Promise<void> {
     let dateFormat = 'dd/MM/yyyy';
 
@@ -70,6 +71,15 @@ export async function exportToExcel({
     if (brand && brand !== 'null') {
         sortedProducts = sortedProducts.filter(prod => {
             if (prod.product.brand === brand) {
+                return true;
+            }
+            return false;
+        });
+    }
+
+    if (store && store !== 'null') {
+        sortedProducts = sortedProducts.filter(prod => {
+            if (prod.product.store === store) {
                 return true;
             }
             return false;
