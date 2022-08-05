@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
@@ -25,11 +26,9 @@ import {
 
 import {
     Container,
-    ItemTitle,
     ActionsContainer,
     ActionButtonsContainer,
     Icons,
-    TitleContainer,
     ActionText,
 } from '~/Styles/Views/GenericViewPage';
 import { exportToExcel } from '~/Functions/Excel';
@@ -40,7 +39,7 @@ interface Props {
 
 const CategoryView: React.FC = () => {
     const { params } = useRoute();
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const routeParams = params as Props;
 
@@ -125,26 +124,26 @@ const CategoryView: React.FC = () => {
         <Loading />
     ) : (
         <Container>
-            <TitleContainer>
-                <Header
-                    title={`${strings.View_Category_List_View_BeforeCategoryName} ${categoryName}`}
-                    noDrawer
-                />
+            <Header
+                title={`${strings.View_Category_List_View_BeforeCategoryName} ${categoryName}`}
+                noDrawer
+            />
 
-                <ActionsContainer>
-                    <ActionButtonsContainer onPress={handleEdit}>
-                        <ActionText>
-                            {strings.View_ProductDetails_Button_UpdateProduct}
-                        </ActionText>
-                        <Icons name="create-outline" size={22} />
-                    </ActionButtonsContainer>
+            <ActionsContainer>
+                <ActionButtonsContainer onPress={handleEdit}>
+                    <ActionText>
+                        {strings.View_ProductDetails_Button_UpdateProduct}
+                    </ActionText>
+                    <Icons name="create-outline" size={22} />
+                </ActionButtonsContainer>
 
-                    <ActionButtonsContainer onPress={handleExportExcel}>
-                        <ActionText>Gerar Excel</ActionText>
-                        <Icons name="stats-chart-outline" size={22} />
-                    </ActionButtonsContainer>
-                </ActionsContainer>
-            </TitleContainer>
+                <ActionButtonsContainer onPress={handleExportExcel}>
+                    <ActionText>
+                        {strings.View_Brand_View_ActionButton_GenereteExcel}
+                    </ActionText>
+                    <Icons name="stats-chart-outline" size={22} />
+                </ActionButtonsContainer>
+            </ActionsContainer>
 
             <ListProducts products={products} deactiveFloatButton />
 
