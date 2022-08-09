@@ -1,17 +1,23 @@
 import React from 'react';
 
-import strings from '../../Locales';
+import strings from '~/Locales';
 
-import StatusBar from '../StatusBar';
+import StatusBar from '~/Components/StatusBar';
 
 import { Container, LoadingIndicator, LoadingText } from './styles';
 
-const Loading: React.FC = () => {
+interface Props {
+    disableText?: boolean;
+}
+
+const Loading: React.FC<Props> = ({ disableText }: Props) => {
     return (
         <Container>
             <StatusBar />
             <LoadingIndicator />
-            <LoadingText>{strings.LoadingComponent_Text}</LoadingText>
+            {!disableText && (
+                <LoadingText>{strings.LoadingComponent_Text}</LoadingText>
+            )}
         </Container>
     );
 };
