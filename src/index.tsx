@@ -20,7 +20,6 @@ import './Services/BackgroundJobs';
 import './Services/AppsFlyer';
 import './Services/Admob';
 import './Services/Analytics';
-import './Services/OneSignal';
 import DeepLinking from './Services/DeepLinking';
 
 import './Functions/ProMode';

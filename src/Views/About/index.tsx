@@ -10,7 +10,6 @@ import {
 import codepush from 'react-native-code-push';
 import messaging from '@react-native-firebase/messaging';
 import Purchases from 'react-native-purchases';
-import OneSignal from 'react-native-onesignal';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -40,7 +39,6 @@ const About: React.FC = () => {
     const { goBack } = useNavigation();
 
     const [pid, setPid] = useState('');
-    const [signalId, setSignalId] = useState('');
     const [firebaseId, setFirebaseId] = useState('');
 
     const [codePushChecking, setCodePushChecking] = useState(false);
@@ -60,22 +58,6 @@ const About: React.FC = () => {
             const firebase = await messaging().getToken();
 
             setFirebaseId(firebase);
-        } catch (err) {
-            if (err instanceof Error) {
-                console.log(err);
-            }
-        }
-
-        try {
-            OneSignal.addSubscriptionObserver(async event => {
-                if (event.to.isSubscribed) {
-                    const deviceState = await OneSignal.getDeviceState();
-
-                    if (deviceState === null) return;
-
-                    setSignalId(deviceState.userId);
-                }
-            });
         } catch (err) {
             if (err instanceof Error) {
                 console.log(err);
@@ -120,13 +102,12 @@ const About: React.FC = () => {
         const userInfo = {
             purchase_idetinfy: pid,
             firebase_messaging: firebaseId,
-            oneSignal: signalId,
         };
         await shareText({
             title: 'User informations',
             text: JSON.stringify(userInfo),
         });
-    }, [firebaseId, pid, signalId]);
+    }, [firebaseId, pid]);
 
     const checkUpdate = useCallback(async () => {
         try {
@@ -187,12 +168,11 @@ const About: React.FC = () => {
                 <ApplicationVersion>{`${getSystemName()} ${getSystemVersion()}`}</ApplicationVersion>
             </AboutSection>
 
-            {(!!firebaseId || !!pid || !!signalId) && (
+            {(!!firebaseId || !!pid) && (
                 <IdContainer onLongPress={handleShareIdInfo}>
                     <View>
                         <UserId>{`fid: ${firebaseId}`}</UserId>
                         <UserId>{`pid: ${pid}`}</UserId>
-                        <UserId>{`sid: ${signalId}`}</UserId>
                     </View>
                 </IdContainer>
             )}

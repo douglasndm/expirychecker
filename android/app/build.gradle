@@ -133,16 +133,6 @@ def codePushProductionDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_PR
  * Architectures to build native code for in debug.
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
-buildscript {
-    repositories {
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.10, 0.99.99]'
-    }
-}
-
-apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -154,8 +144,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 179
-        versionName "1.12.11"
+        versionCode 180
+        versionName "1.12.12"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
