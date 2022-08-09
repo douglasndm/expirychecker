@@ -58,7 +58,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
-  - FirebaseCoreInternal (9.3.0):
+  - FirebaseCoreInternal (9.4.0):
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
   - FirebaseInstallations (8.15.0):
     - FirebaseCore (~> 8.0)
@@ -201,15 +201,15 @@ PODS:
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - libevent (2.1.12)
-  - libwebp (1.2.1):
-    - libwebp/demux (= 1.2.1)
-    - libwebp/mux (= 1.2.1)
-    - libwebp/webp (= 1.2.1)
-  - libwebp/demux (1.2.1):
+  - libwebp (1.2.3):
+    - libwebp/demux (= 1.2.3)
+    - libwebp/mux (= 1.2.3)
+    - libwebp/webp (= 1.2.3)
+  - libwebp/demux (1.2.3):
     - libwebp/webp
-  - libwebp/mux (1.2.1):
+  - libwebp/mux (1.2.3):
     - libwebp/demux
-  - libwebp/webp (1.2.1)
+  - libwebp/webp (1.2.3)
   - lottie-ios (3.2.3)
   - lottie-react-native (5.0.1):
     - lottie-ios (~> 3.2.3)
@@ -219,17 +219,6 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - OneSignal (3.11.2):
-    - OneSignal/OneSignalCore (= 3.11.2)
-    - OneSignal/OneSignalExtension (= 3.11.2)
-    - OneSignal/OneSignalOutcomes (= 3.11.2)
-  - OneSignal/OneSignalCore (3.11.2)
-  - OneSignal/OneSignalExtension (3.11.2):
-    - OneSignal/OneSignalCore
-    - OneSignal/OneSignalOutcomes
-  - OneSignal/OneSignalOutcomes (3.11.2):
-    - OneSignal/OneSignalCore
-  - OneSignalXCFramework (3.9.1)
   - OpenSSL-Universal (1.1.180)
   - Permission-AppTrackingTransparency (3.0.5):
     - RNPermissions
@@ -481,9 +470,6 @@ PODS:
     - React-Core
   - react-native-in-app-review (3.2.2):
     - React
-  - react-native-onesignal (4.3.3):
-    - OneSignalXCFramework (= 3.9.1)
-    - React (< 1.0.0, >= 0.13.0)
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-slider (3.0.3):
@@ -695,7 +681,6 @@ DEPENDENCIES:
   - hermes-engine (~> 0.9.0)
   - libevent (~> 2.1.12)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
-  - OneSignal (< 4.0, >= 3.0)
   - OpenSSL-Universal (= 1.1.180)
   - Permission-AppTrackingTransparency (from `../node_modules/react-native-permissions/ios/AppTrackingTransparency`)
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
@@ -722,7 +707,6 @@ DEPENDENCIES:
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
-  - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -798,8 +782,6 @@ SPEC REPOS:
     - libwebp
     - lottie-ios
     - nanopb
-    - OneSignal
-    - OneSignalXCFramework
     - OpenSSL-Universal
     - PromisesObjC
     - Purchases
@@ -872,8 +854,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-in-app-review:
     :path: "../node_modules/react-native-in-app-review"
-  react-native-onesignal:
-    :path: "../node_modules/react-native-onesignal"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
@@ -970,7 +950,7 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: 7761cbadb00a717d8d0939363eb46041526474fa
   FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
-  FirebaseCoreInternal: 635d1c9a612a6502b6377a0c92af83758076ffff
+  FirebaseCoreInternal: a13302b0088fbf5f38b79b6ece49c2af7d3e05d6
   FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
   FirebaseMessaging: 5e5118a2383b3531e730d974680954c679ca0a13
   Flipper: 30e8eeeed6abdc98edaf32af0cda2f198be4b733
@@ -992,12 +972,10 @@ SPEC CHECKSUMS:
   hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
+  libwebp: 60305b2e989864154bd9be3d772730f08fc6a59c
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   lottie-react-native: a029a86e1689c86a07169c520ae770e84348cd20
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  OneSignal: 8861a1407c321ca1ae59d3adca6286eb7caf9d6e
-  OneSignalXCFramework: 27159b0a150cdfe528c85325215c9d78b2f973c7
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   Permission-AppTrackingTransparency: ed3a54759541929d0a81a75b04a3559af5b2a738
   Permission-Camera: ac603073e4128e51e6ca3c39129778f05b4082fa
@@ -1026,7 +1004,6 @@ SPEC CHECKSUMS:
   react-native-document-picker: bf12b9ca87790f9b723106ffde0eff239928e515
   react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
   react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
-  react-native-onesignal: 9a543af01c2359b7567919cd3b1490051c553e21
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -1074,6 +1051,6 @@ SPEC CHECKSUMS:
   Yoga: d6b6a80659aa3e91aaba01d0012e7edcbedcbecd
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 3f096face8ac4226544a9916b110075284a3488f
+PODFILE CHECKSUM: 111ee02a84fdd138bba5d5f0b68be2a40523ad7b
 
 COCOAPODS: 1.11.3

@@ -3,8 +3,6 @@ import { ScrollView, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addDays } from 'date-fns';
 import messaging from '@react-native-firebase/messaging';
-import OneSignal from 'react-native-onesignal';
-import PushNotifications from 'react-native-push-notification';
 
 import { exists } from 'react-native-fs';
 import realm from '~/Services/Realm';
@@ -84,10 +82,8 @@ const Test: React.FC = () => {
 
     const tokens = useCallback(async () => {
         const messaing = await messaging().getToken();
-        const oneSignal = await OneSignal.getDeviceState();
 
         console.log(`Firebase -> ${messaing}`);
-        console.log(`One Signal -> ${oneSignal.userId}`);
     }, []);
 
     const handleDeletePrivacySetting = useCallback(async () => {
