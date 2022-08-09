@@ -2,20 +2,14 @@ import React, {
     useState,
     useEffect,
     useCallback,
-    useMemo,
     useContext,
     useRef,
 } from 'react';
-import { Platform, PixelRatio, FlatList } from 'react-native';
+import { Platform, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import {
-    BannerAd,
-    BannerAdSize,
-    TestIds,
-} from 'react-native-google-mobile-ads';
-import EnvConfig from 'react-native-config';
+
 import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
@@ -38,13 +32,13 @@ import { FloatButton, Icons } from '~/Components/ListProducts/styles';
 
 import {
     Container,
-    AdContainer,
     InputSearch,
     InputTextContainer,
     InputTextIcon,
     InputTextIconContainer,
     ActionButtonsContainer,
 } from './styles';
+import Banner from '~/Components/Ads/Banner';
 
 const Home: React.FC = () => {
     const { reset, canGoBack, navigate } =
@@ -57,13 +51,21 @@ const Home: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
-    const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
     const [searchString, setSearchString] = useState<string>('');
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [enableBarCodeReader, setEnableBarCodeReader] =
         useState<boolean>(false);
     const [enableDatePicker, setEnableDatePicker] = useState(false);
+
+    const filteredProducts =
+        searchString.length > 0
+            ? searchForAProductInAList({
+                  products,
+                  searchFor: searchString.trim(),
+                  sortByExpDate: true,
+              })
+            : products;
 
     useEffect(() => {
         if (Platform.OS === 'ios') {
@@ -76,26 +78,6 @@ const Home: React.FC = () => {
             });
         }
     }, [reset]);
-
-    const adUnit = useMemo(() => {
-        if (__DEV__) {
-            return TestIds.BANNER;
-        }
-
-        if (Platform.OS === 'ios') {
-            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_HOME;
-        }
-
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_HOME;
-    }, []);
-
-    const bannerSize = useMemo(() => {
-        if (PixelRatio.get() < 2) {
-            return BannerAdSize.BANNER;
-        }
-
-        return BannerAdSize.LARGE_BANNER;
-    }, []);
 
     const loadData = useCallback(async () => {
         try {
@@ -118,28 +100,9 @@ const Home: React.FC = () => {
         }
     }, []);
 
-    useEffect(() => {
-        setProductsSearch(products);
-    }, [products]);
-
-    const handleSearchChange = useCallback(
-        async (search: string) => {
-            setSearchString(search);
-
-            if (search && search !== '') {
-                const findProducts = searchForAProductInAList({
-                    products,
-                    searchFor: search,
-                    sortByExpDate: true,
-                });
-
-                setProductsSearch(findProducts);
-            } else {
-                setProductsSearch(products);
-            }
-        },
-        [products]
-    );
+    const handleSearchChange = useCallback(async (search: string) => {
+        setSearchString(search);
+    }, []);
 
     useEffect(() => {
         loadData();
@@ -157,30 +120,22 @@ const Home: React.FC = () => {
         setEnableDatePicker(true);
     }, []);
 
-    const handleSelectDateChange = useCallback(
-        (date: Date) => {
-            setEnableDatePicker(false);
+    const handleSelectDateChange = useCallback((date: Date) => {
+        setEnableDatePicker(false);
 
-            let dateFormat = 'dd/MM/yyyy';
-            if (getLocales()[0].languageCode === 'en') {
-                dateFormat = 'MM/dd/yyyy';
-            }
-            const d = format(date, dateFormat);
-            setSearchString(d);
-            setSelectedDate(date);
-            handleSearchChange(d);
-        },
-        [handleSearchChange]
-    );
+        let dateFormat = 'dd/MM/yyyy';
+        if (getLocales()[0].languageCode === 'en') {
+            dateFormat = 'MM/dd/yyyy';
+        }
+        const d = format(date, dateFormat);
+        setSearchString(d);
+        setSelectedDate(date);
+    }, []);
 
-    const handleOnCodeRead = useCallback(
-        code => {
-            setSearchString(code);
-            handleSearchChange(code);
-            setEnableBarCodeReader(false);
-        },
-        [handleSearchChange]
-    );
+    const handleOnCodeRead = useCallback(code => {
+        setSearchString(code);
+        setEnableBarCodeReader(false);
+    }, []);
 
     useEffect(() => {
         if (
@@ -215,6 +170,7 @@ const Home: React.FC = () => {
         }
     }, [navigate, searchString]);
 
+    console.log('render');
     return isLoading ? (
         <Loading />
     ) : (
@@ -232,11 +188,7 @@ const Home: React.FC = () => {
 
                     <OutdateApp />
 
-                    {!userPreferences.disableAds && (
-                        <AdContainer>
-                            <BannerAd unitId={adUnit} size={bannerSize} />
-                        </AdContainer>
-                    )}
+                    <Banner />
 
                     {products.length > 0 && (
                         <InputTextContainer>
@@ -277,7 +229,7 @@ const Home: React.FC = () => {
                     />
 
                     <ListProducts
-                        products={productsSearch}
+                        products={filteredProducts}
                         isHome
                         onRefresh={loadData}
                         isRefreshing={isLoading}
