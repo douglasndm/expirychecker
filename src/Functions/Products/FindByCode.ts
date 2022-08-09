@@ -10,11 +10,20 @@ interface findProductByCodeResponse {
 async function findProductByCode(
     code: string
 ): Promise<findProductByCodeResponse | null> {
-    const response = await api.get<findProductByCodeResponse>(
-        `/products/search?query=${code}`
-    );
+    try {
+        const response = await api.get<findProductByCodeResponse>(
+            `/products/search?query=${code}`
+        );
 
-    if (response.data !== null) return response.data;
+        if (response.data !== null) {
+            return response.data;
+        }
+        return null;
+    } catch (err) {
+        if (err instanceof Error) {
+            console.log(err.message);
+        }
+    }
 
     return null;
 }
