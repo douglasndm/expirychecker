@@ -37,6 +37,7 @@
     "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
 
     "Component_FastSub_Text": "Subscribe and enjoy all features",
+    "Component_FastSub_Price": "Only {PRICE} monthly",
 
     "Banner_NoAds": "You don't care about PRO but want to remove ads? Do it for just {PRICE} monthly",
     "Banner_SubscriptionSuccess_Alert": "You removed the ads",

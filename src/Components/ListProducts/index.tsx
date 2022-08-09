@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
@@ -23,8 +24,6 @@ import {
     SelectButton,
     SelectIcon,
     ButtonPaper,
-    ProBanner,
-    ProText,
     CategoryDetails,
     CategoryDetailsText,
     EmptyListText,
@@ -50,7 +49,7 @@ const ListProducts: React.FC<RequestProps> = ({
     isRefreshing = false,
     listRef,
 }: RequestProps) => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [sortedProducts, setSortedProducts] = useState<IProduct[]>([]);
 
@@ -97,7 +96,7 @@ const ListProducts: React.FC<RequestProps> = ({
     }, [navigate]);
 
     const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct');
+        navigate('AddProduct', {});
     }, [navigate]);
 
     const switchSelectedItem = useCallback(
@@ -165,7 +164,7 @@ const ListProducts: React.FC<RequestProps> = ({
     }, [products.length, isHome, handleNavigateToAllProducts]);
 
     const renderComponent = useCallback(
-        ({ item }) => {
+        ({ item, index }) => {
             const product: IProduct = item as IProduct;
 
             const isChecked = selectedProds.find(id => id === product.id);
@@ -187,6 +186,7 @@ const ListProducts: React.FC<RequestProps> = ({
                     )}
                     <ProductItem
                         product={product}
+                        index={index}
                         handleEnableSelect={handleEnableSelectMode}
                     />
                 </ProductContainer>

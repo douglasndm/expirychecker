@@ -37,6 +37,7 @@
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
 
     "Component_FastSub_Text": "Assine e aproveite todos os recursos",
+    "Component_FastSub_Price": "Só {PRICE} mensais",
 
     "Banner_NoAds": "Não precisa do PRO mas quer remover os anúncios? Acabe com os anúncios por {PRICE} mensais", "ProBanner_Text1": "Usuários PRO podem tirar fotos dos produtos, conheça outras vantagens",
     "Banner_SubscriptionSuccess_Alert": "Você removeu os anúncios",

@@ -5,16 +5,17 @@ import React, {
     useMemo,
     useContext,
 } from 'react';
-import { Linking, Platform } from 'react-native';
+import { Linking } from 'react-native';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
+import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
-import { getSubscriptionDetails, makeSubscription } from '~/Functions/ProMode';
 
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getEnableProVersion } from '~/Functions/Settings';
+import { getSubscriptionDetails, makeSubscription } from '~/Functions/ProMode';
 
 import Loading from '../Loading';
 import Button from '../Button';
@@ -27,8 +28,6 @@ import {
 import {
     FastSubContainer,
     Container,
-    SubCardContainer,
-    SubCardText,
     SubscriptionText,
     SubscriptionTextContainer,
 } from './styles';
@@ -55,19 +54,9 @@ const FastSubscription: React.FC = () => {
         let string = '';
 
         if (monthlyPlan) {
-            const { price_string, introPrice } = monthlyPlan.product;
+            const { price_string } = monthlyPlan.product;
 
-            if (Platform.OS === 'android') {
-                if (introPrice) {
-                    string =
-                        strings.View_Subscription_Monthly_WithIntroText.replace(
-                            '{INTRO_PRICE}',
-                            introPrice.priceString
-                        ).replace('{PRICE}', price_string);
-                }
-            }
-
-            string = strings.View_Subscription_Monthly_Text.replace(
+            string = strings.Component_FastSub_Price.replace(
                 '{PRICE}',
                 price_string
             );
@@ -107,9 +96,16 @@ const FastSubscription: React.FC = () => {
 
             const enablePro = await getEnableProVersion();
 
+            if (enablePro && !__DEV__) {
+                Analytics().logEvent(
+                    'subscription_from_fast_component_homepage'
+                );
+            }
+
             setUserPreferences({
                 ...userPreferences,
                 isUserPremium: enablePro,
+                disableAds: enablePro,
             });
         } catch (err) {
             if (err instanceof Error)
@@ -123,20 +119,18 @@ const FastSubscription: React.FC = () => {
     }, [monthlyPlan, setUserPreferences, userPreferences]);
 
     return isLoading ? (
-        <Loading />
+        <Loading disableText />
     ) : (
         <>
             {monthlyPlan && (
                 <FastSubContainer>
                     <Container>
-                        <SubCardContainer>
-                            <SubCardText>{monthlyString}</SubCardText>
-                        </SubCardContainer>
-
                         <SubscriptionTextContainer>
                             <SubscriptionText>
                                 {strings.Component_FastSub_Text}
                             </SubscriptionText>
+
+                            <SubscriptionText>{monthlyString}</SubscriptionText>
                         </SubscriptionTextContainer>
 
                         <Button

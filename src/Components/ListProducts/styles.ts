@@ -17,20 +17,6 @@ export const ButtonPaper = styled(Button).attrs(props => ({
     color: props.theme.colors.textAccent,
 }))``;
 
-export const ProBanner = styled(RectButton)`
-    background-color: #ffffff;
-    border-radius: 12px;
-    margin: 5px 10px 5px 10px;
-`;
-
-export const ProText = styled.Text`
-    font-size: 13px;
-    font-weight: bold;
-    text-align: center;
-    color: #454545;
-    margin: 15px;
-`;
-
 export const CategoryDetails = styled.View`
     flex-direction: row;
     justify-content: space-between;
