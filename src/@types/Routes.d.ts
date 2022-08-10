@@ -53,8 +53,7 @@ type RoutesParams = {
     };
     ListCategory;
     CategoryView: {
-        category_id: string;
-        category_name?: string;
+        id: string;
     };
     CategoryEdit: {
         id: string;
