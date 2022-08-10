@@ -27,6 +27,10 @@ const Relax: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        TabBackground: 'rgba(255, 255, 255, 0.85)',
+        TabText: '#32292f',
+        TabTextSelected: '#99e1d9',
     },
 };
 

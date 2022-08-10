@@ -28,6 +28,10 @@ const Dark: DefaultTheme = {
         productNextToExpBackground: darken(0.1, '#DDE053'),
         productThreatedBackground: darken(0.1, '#b0b0b0'),
         productNextOrExpiredText: '#FFF',
+
+        TabBackground: 'rgba(0, 0, 0, 0.85)',
+        TabText: '#ffffff',
+        TabTextSelected: darken(0.1, '#14d48f'),
     },
 };
 

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Home from '~/Views/Home';
 import AddProduct from '~/Views/Product/Add';
@@ -39,53 +41,75 @@ import Teams from '~/Views/Informations/Teams';
 import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
+import TabMenu from '~/Components/TabMenu';
 
 const Stack = createNativeStackNavigator<RoutesParams>();
 
 const Routes: React.FC = () => {
+    const { userPreferences } = useContext(PreferencesContext);
+
+    const [currentRoute, setCurrentRoute] = useState('Home');
+
+    const handleRouteChange = useCallback(navRoutes => {
+        if (navRoutes) {
+            const { routes } = navRoutes.data.state;
+
+            setCurrentRoute(routes[routes.length - 1].name);
+        }
+    }, []);
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="AddProduct" component={AddProduct} />
-            <Stack.Screen name="AllProducts" component={AllProducts} />
-            <Stack.Screen name="WeekView" component={WeekView} />
+        <>
+            <Stack.Navigator
+                screenOptions={{ headerShown: false }}
+                screenListeners={{ state: handleRouteChange }}
+            >
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen name="AddProduct" component={AddProduct} />
+                <Stack.Screen name="AllProducts" component={AllProducts} />
+                <Stack.Screen name="WeekView" component={WeekView} />
 
-            <Stack.Screen name="Settings" component={Settings} />
-            <Stack.Screen name="About" component={About} />
-            <Stack.Screen name="ProductDetails" component={ProductDetails} />
-            <Stack.Screen name="StoreDetails" component={StoreDetails} />
-            <Stack.Screen name="AddLote" component={AddLote} />
-            <Stack.Screen name="EditProduct" component={EditProduct} />
-            <Stack.Screen name="EditLote" component={EditLote} />
-            <Stack.Screen name="Test" component={Test} />
-            <Stack.Screen name="Pro" component={ProSubscription} />
-            <Stack.Screen name="Success" component={Success} />
-            <Stack.Screen name="PhotoView" component={PhotoView} />
-
-            <Stack.Screen name="BatchView" component={BatchView} />
-            <Stack.Screen name="BatchDiscount" component={BatchDiscount} />
-
-            <Stack.Screen name="ListCategory" component={ListCategory} />
-            <Stack.Screen name="CategoryView" component={CategoryView} />
-            <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
-
-            <Stack.Screen name="StoreList" component={StoreList} />
-            <Stack.Screen name="StoreEdit" component={StoreEdit} />
-
-            <Stack.Screen name="BrandList" component={BrandList} />
-            <Stack.Screen name="BrandView" component={BrandView} />
-            <Stack.Screen name="BrandEdit" component={BrandEdit} />
-
-            <Stack.Screen name="Export" component={Export} />
-            <Stack.Screen name="Teams" component={Teams} />
-
-            {Platform.OS === 'ios' && (
+                <Stack.Screen name="Settings" component={Settings} />
+                <Stack.Screen name="About" component={About} />
                 <Stack.Screen
-                    name="TrackingPermission"
-                    component={TrackingPermission}
+                    name="ProductDetails"
+                    component={ProductDetails}
                 />
-            )}
-        </Stack.Navigator>
+                <Stack.Screen name="StoreDetails" component={StoreDetails} />
+                <Stack.Screen name="AddLote" component={AddLote} />
+                <Stack.Screen name="EditProduct" component={EditProduct} />
+                <Stack.Screen name="EditLote" component={EditLote} />
+                <Stack.Screen name="Test" component={Test} />
+                <Stack.Screen name="Pro" component={ProSubscription} />
+                <Stack.Screen name="Success" component={Success} />
+                <Stack.Screen name="PhotoView" component={PhotoView} />
+
+                <Stack.Screen name="BatchView" component={BatchView} />
+                <Stack.Screen name="BatchDiscount" component={BatchDiscount} />
+
+                <Stack.Screen name="ListCategory" component={ListCategory} />
+                <Stack.Screen name="CategoryView" component={CategoryView} />
+                <Stack.Screen name="CategoryEdit" component={CategoryEdit} />
+
+                <Stack.Screen name="StoreList" component={StoreList} />
+                <Stack.Screen name="StoreEdit" component={StoreEdit} />
+
+                <Stack.Screen name="BrandList" component={BrandList} />
+                <Stack.Screen name="BrandView" component={BrandView} />
+                <Stack.Screen name="BrandEdit" component={BrandEdit} />
+
+                <Stack.Screen name="Export" component={Export} />
+                <Stack.Screen name="Teams" component={Teams} />
+
+                {Platform.OS === 'ios' && (
+                    <Stack.Screen
+                        name="TrackingPermission"
+                        component={TrackingPermission}
+                    />
+                )}
+            </Stack.Navigator>
+
+            {userPreferences.isUserPremium && <TabMenu />}
+        </>
     );
 };
 

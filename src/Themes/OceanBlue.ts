@@ -26,6 +26,10 @@ const OceanBlue: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        TabBackground: 'rgba(255, 255, 255, 0.85)',
+        TabText: '#999999',
+        TabTextSelected: '#69dafa',
     },
 };
 

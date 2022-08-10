@@ -28,6 +28,10 @@ const UltraViolet: DefaultTheme = {
         productNextToExpBackground: darken(0.1, '#eded1f'),
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        TabBackground: 'rgba(0, 0, 0, 0.95)',
+        TabText: '#ffffff',
+        TabTextSelected: '#8e02d6',
     },
 };
 

@@ -27,6 +27,10 @@ const JustBlue: DefaultTheme = {
         productNextToExpBackground: '#DDE053',
         productThreatedBackground: '#b0b0b0',
         productNextOrExpiredText: '#FFF',
+
+        TabBackground: 'rgba(20, 27, 65, 0.85)',
+        TabText: '#fff',
+        TabTextSelected: '#918EF4',
     },
 };
 
