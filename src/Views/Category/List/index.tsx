@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -27,7 +28,7 @@ import {
 } from '~/Styles/Views/GenericListPage';
 
 const ListView: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
