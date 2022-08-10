@@ -26,6 +26,10 @@ declare module 'styled-components/native' {
             productNextToExpBackground: string;
             productThreatedBackground: string;
             productNextOrExpiredText: string;
+
+            TabBackground: string;
+            TabText: string;
+            TabTextSelected: string;
         };
     }
 }

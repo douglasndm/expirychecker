@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
     flex: 1;
+    padding-bottom: 15px;
 `;
 
 export const ActionButtonsContainer = styled.View`

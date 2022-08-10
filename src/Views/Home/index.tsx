@@ -237,14 +237,20 @@ const Home: React.FC = () => {
                         deactiveFloatButton
                     />
 
-                    <FloatButton
-                        icon={() => (
-                            <Icons name="add-outline" color="white" size={22} />
-                        )}
-                        small
-                        label={strings.View_FloatMenu_AddProduct}
-                        onPress={handleNavigateAddProduct}
-                    />
+                    {!userPreferences.isUserPremium && (
+                        <FloatButton
+                            icon={() => (
+                                <Icons
+                                    name="add-outline"
+                                    color="white"
+                                    size={22}
+                                />
+                            )}
+                            small
+                            label={strings.View_FloatMenu_AddProduct}
+                            onPress={handleNavigateAddProduct}
+                        />
+                    )}
                 </Container>
             )}
         </>
