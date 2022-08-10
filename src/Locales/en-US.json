@@ -3,7 +3,7 @@
     "AppName_ProVersion": "PRO",
 
     "Menu_Button_GoToHome": "Home",
-    "Menu_Button_GoToAddProduct": "Add new product",
+    "Menu_Button_GoToAddProduct": "Add product",
     "Menu_Button_GoToAllProducts": "All products",
     "Menu_Button_GoToByWeeks": "Products by weeks",
     "Menu_Button_GoToCategories": "Categories",
@@ -38,13 +38,6 @@
 
     "Component_FastSub_Text": "Subscribe and enjoy all features",
     "Component_FastSub_Price": "Only {PRICE} monthly",
-
-    "Banner_NoAds": "You don't care about PRO but want to remove ads? Do it for just {PRICE} monthly",
-    "Banner_SubscriptionSuccess_Alert": "You removed the ads",
-    "ProBanner_Text1": "PRO users can take photos of products!",
-    "ProBanner_Text2": "Discover the benefits of PRO",
-    "ProBanner_Text3": "We don't have ads on PRO, meet more advantages",
-    "ProBanner_Text4": "Test PRO monthly for free for 7 days",
 
     "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",

@@ -33,8 +33,6 @@ import { getProductImagePath } from '~/Functions/Products/Image';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import { ProBanner, ProText } from '~/Components/ListProducts/styles';
-
 import {
     Container,
     ScrollView,
@@ -117,24 +115,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         return null;
     }, [dateFormat, product]);
 
-    const choosenAdText = useMemo(() => {
-        const result = Math.floor(Math.random() * 3) + 1;
-
-        switch (result) {
-            case 1:
-                return strings.ProBanner_Text1;
-
-            case 2:
-                return strings.ProBanner_Text2;
-
-            case 3:
-                return strings.ProBanner_Text3;
-
-            default:
-                return strings.ProBanner_Text4;
-        }
-    }, []);
-
     const getProduct = useCallback(async () => {
         setIsLoading(true);
         try {
@@ -206,10 +186,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
             });
         }
     }, [navigate, product, productId]);
-
-    const handleNavigateToPro = useCallback(() => {
-        navigate('Pro');
-    }, [navigate]);
 
     useEffect(() => {
         const unsubscribe = addListener('focus', () => {
@@ -311,10 +287,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                                     unitId={adUnit}
                                     size={BannerAdSize.MEDIUM_RECTANGLE}
                                 />
-
-                                <ProBanner onPress={handleNavigateToPro}>
-                                    <ProText>{choosenAdText}</ProText>
-                                </ProBanner>
                             </AdContainer>
                         )}
 
