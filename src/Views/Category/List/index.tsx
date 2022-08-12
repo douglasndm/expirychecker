@@ -8,8 +8,9 @@ import strings from '~/Locales';
 import { sortCategories } from '~/Utils/Categories/Sort';
 import { getAllCategories, createCategory } from '~/Functions/Category';
 
-import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
+import Header from '~/Components/Header';
+import PaddingComponent from '~/Components/PaddingComponent';
 
 import {
     Container,
@@ -158,6 +159,7 @@ const ListView: React.FC = () => {
                 data={categories}
                 keyExtractor={(item, index) => String(index)}
                 renderItem={renderCategory}
+                ListFooterComponent={PaddingComponent}
             />
         </Container>
     );

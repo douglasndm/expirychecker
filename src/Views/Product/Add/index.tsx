@@ -6,6 +6,7 @@ import React, {
     useRef,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
@@ -29,6 +30,7 @@ import BrandSelect, {
 } from '~/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
+import PaddingComponent from '~/Components/PaddingComponent';
 
 import InputCode, { completeInfoProps } from './Components/Inputs/Code';
 import Interstitial, { IInterstitialRef } from './Components/Interstitial';
@@ -65,7 +67,7 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const InterstitialRef = useRef<IInterstitialRef>();
     const BrandsPickerRef = useRef<IBrandPickerRef>();
@@ -302,11 +304,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                 <Container>
                     <Interstitial ref={InterstitialRef} />
 
+                    <Header
+                        title={strings.View_AddProduct_PageTitle}
+                        noDrawer
+                    />
                     <PageContent>
-                        <Header
-                            title={strings.View_AddProduct_PageTitle}
-                            noDrawer
-                        />
                         {userPreferences.isUserPremium && !!photoPath && (
                             <ImageContainer>
                                 <ProductImageContainer
@@ -450,6 +452,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                             text={strings.View_AddProduct_Button_Save}
                             onPress={handleSave}
                         />
+                        <PaddingComponent />
                     </PageContent>
                 </Container>
             )}

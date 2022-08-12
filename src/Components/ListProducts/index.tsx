@@ -15,6 +15,7 @@ import { deleteManyProducts } from '~/Utils/Products';
 
 import ProductItem from './ProductContainer';
 import GenericButton from '../Button';
+import PaddingComponent from '../PaddingComponent';
 
 import {
     Container,
@@ -152,11 +153,15 @@ const ListProducts: React.FC<RequestProps> = ({
     const FooterButton = useCallback(() => {
         if (products.length > 5 && isHome) {
             return (
-                <GenericButton
-                    text={strings.ListProductsComponent_Button_ShowAllProducts}
-                    onPress={handleNavigateToAllProducts}
-                    contentStyle={{ marginBottom: 100 }}
-                />
+                <>
+                    <GenericButton
+                        text={
+                            strings.ListProductsComponent_Button_ShowAllProducts
+                        }
+                        onPress={handleNavigateToAllProducts}
+                    />
+                    <PaddingComponent />
+                </>
             );
         }
 
