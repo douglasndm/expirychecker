@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -57,6 +57,23 @@ const Routes: React.FC = () => {
             setCurrentRoute(routes[routes.length - 1].name);
         }
     }, []);
+
+    const showTab = useMemo(() => {
+        switch (currentRoute) {
+            case 'Home':
+                return true;
+            case 'ListCategory':
+                return true;
+            case 'AddProduct':
+                return true;
+            case 'BrandList':
+                return true;
+            case 'StoreList':
+                return true;
+            default:
+                return false;
+        }
+    }, [currentRoute]);
     return (
         <>
             <Stack.Navigator
@@ -108,7 +125,9 @@ const Routes: React.FC = () => {
                 )}
             </Stack.Navigator>
 
-            {userPreferences.isUserPremium && <TabMenu />}
+            {userPreferences.isUserPremium && showTab && (
+                <TabMenu currentRoute={currentRoute} />
+            )}
         </>
     );
 };

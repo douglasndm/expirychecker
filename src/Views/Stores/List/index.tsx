@@ -1,11 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '~/Locales';
+
+import { sortStores } from '~/Utils/Stores/Sort';
 
 import { createStore, getAllStores } from '~/Functions/Stores';
 
 import Header from '~/Components/Header';
+import PaddingComponent from '~/Components/PaddingComponent';
 
 import {
     Container,
@@ -21,10 +25,10 @@ import {
     AddButtonContainer,
     AddNewItemContent,
 } from '~/Styles/Views/GenericListPage';
-import { sortStores } from '~/Utils/Stores/Sort';
 
 const ListView: React.FC = () => {
-    const { navigate, addListener } = useNavigation();
+    const { navigate, addListener } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [newStoreName, setNewStoreName] = useState<string | undefined>();
     const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -150,6 +154,7 @@ const ListView: React.FC = () => {
                 data={stores}
                 keyExtractor={(item, index) => String(index)}
                 renderItem={renderCategory}
+                ListFooterComponent={PaddingComponent}
             />
         </Container>
     );

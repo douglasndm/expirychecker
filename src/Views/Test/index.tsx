@@ -26,7 +26,7 @@ const Test: React.FC = () => {
     async function sampleData() {
         try {
             realm.write(() => {
-                for (let i = 0; i < 150; i++) {
+                for (let i = 0; i < 20; i++) {
                     const lastProduct = realm
                         .objects<IProduct>('Product')
                         .sorted('id', true)[0];

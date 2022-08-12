@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -9,6 +10,7 @@ import { createBrand, getAllBrands } from '~/Utils/Brands';
 
 import Header from '~/Components/Header';
 import Loading from '~/Components/Loading';
+import PaddingComponent from '~/Components/PaddingComponent';
 
 import {
     Container,
@@ -27,7 +29,7 @@ import {
 } from '~/Styles/Views/GenericListPage';
 
 const ListView: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [brands, setBrands] = useState<Array<IBrand>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -155,6 +157,7 @@ const ListView: React.FC = () => {
                 data={brands}
                 keyExtractor={(item, index) => String(index)}
                 renderItem={renderItem}
+                ListFooterComponent={PaddingComponent}
             />
         </Container>
     );
