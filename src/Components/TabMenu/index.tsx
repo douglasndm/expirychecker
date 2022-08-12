@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { StyleSheet, Animated, Easing } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
@@ -12,6 +12,49 @@ interface Props {
 
 const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
     const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const positionY = useState(new Animated.Value(0))[0];
+
+    const showBar = useCallback(() => {
+        Animated.timing(positionY, {
+            toValue: 0,
+            duration: 500,
+            easing: Easing.elastic(1),
+            useNativeDriver: true,
+        }).start();
+    }, [positionY]);
+
+    const hideBar = useCallback(() => {
+        Animated.timing(positionY, {
+            toValue: 120,
+            duration: 350,
+            easing: Easing.back(1),
+            useNativeDriver: true,
+        }).start();
+    }, [positionY]);
+
+    useEffect(() => {
+        switch (currentRoute) {
+            case 'Home':
+                showBar();
+                break;
+            case 'ListCategory':
+                showBar();
+                break;
+            case 'AddProduct':
+                showBar();
+                break;
+            case 'BrandList':
+                showBar();
+                break;
+            case 'StoreList':
+                showBar();
+                break;
+            default:
+                hideBar();
+                break;
+        }
+    }, [currentRoute, hideBar, showBar]);
 
     const handlePress = useCallback(
         (button_name: string) => {
@@ -50,7 +93,11 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
     });
 
     return (
-        <Container>
+        <Container
+            style={{
+                transform: [{ translateX: 0 }, { translateY: positionY }],
+            }}
+        >
             <BlurView
                 style={styles.absolute}
                 blurType="light"
