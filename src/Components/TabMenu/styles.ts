@@ -1,9 +1,10 @@
+import { Animated } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { darken } from 'polished';
 
-export const Container = styled.View`
+export const Container = styled(Animated.View)`
     background-color: ${({ theme }) => theme.colors.TabBackground};
     position: absolute;
     flex-direction: row;

@@ -170,7 +170,6 @@ const Home: React.FC = () => {
         }
     }, [navigate, searchString]);
 
-    console.log('render');
     return isLoading ? (
         <Loading />
     ) : (
