@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, Animated, Easing } from 'react-native';
+import { StyleSheet, Animated, Easing, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
@@ -120,7 +120,7 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
             </IconContainer>
 
             <IconContainer
-                style={{ bottom: 10 }}
+                style={{ bottom: Platform.OS === 'ios' ? 10 : -10 }}
                 onPress={() => handlePress('AddProduct')}
             >
                 <IconRound>

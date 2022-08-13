@@ -53,6 +53,6 @@ export const IconRound = styled(LinearGradient).attrs(({ theme }) => ({
     margin-bottom: 20px;
     align-items: center;
     justify-content: center;
-    elevation: 6;
+    elevation: 3;
     flex-direction: row;
 `;
