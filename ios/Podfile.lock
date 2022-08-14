@@ -582,7 +582,7 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNGoogleMobileAds (5.0.1):
+  - RNGoogleMobileAds (5.1.1):
     - Google-Mobile-Ads-SDK (= 8.13.0)
     - GoogleUserMessagingPlatform (= 2.0.0)
     - React-Core
@@ -1046,7 +1046,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: be32545d51756214a7002855bc6e390f6cede4cf
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNGoogleMobileAds: 4646be245829a55cdefad6c3b136887dfa21c1e7
+  RNGoogleMobileAds: 4604caf3d13b0d58a5dcdc8f013e3c114e71bf98
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
   RNPurchases: 80db47ee6da394f92713dff35738e94fe62828a3
