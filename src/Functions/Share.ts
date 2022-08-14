@@ -46,35 +46,26 @@ export async function ShareProductImageWithText({
     title,
     text,
 }: ShareProductImageWithTextProps): Promise<void> {
-    try {
-        const imagePath = await getProductImagePath(productId);
+    const imagePath = await getProductImagePath(productId);
 
-        let shareOptions = {
-            title,
-            message: text,
-            url: '',
-        };
+    let shareOptions = {
+        title,
+        message: text,
+        url: '',
+    };
 
-        if (imagePath !== null) {
-            if (await RNFS.exists(imagePath)) {
-                shareOptions = {
-                    ...shareOptions,
-                    url: `file://${imagePath}`,
-                };
-            }
+    if (imagePath !== null) {
+        if (await RNFS.exists(imagePath)) {
+            shareOptions = {
+                ...shareOptions,
+                url: `file://${imagePath}`,
+            };
         }
-
-        Share.open(shareOptions).then(async () => {
-            if (!__DEV__) {
-                await Analytics().logEvent('user_shared_a_product');
-            }
-        });
-    } catch (err) {
-        if (err instanceof Error)
-            if (err.message !== 'User did not share') {
-                throw new Error(err.message);
-            }
     }
+
+    await Share.open(shareOptions);
+
+    if (!__DEV__) await Analytics().logEvent('user_shared_a_product');
 }
 
 interface shareTextProps {
@@ -86,15 +77,8 @@ export async function shareText({
     text,
     title,
 }: shareTextProps): Promise<void> {
-    try {
-        await Share.open({
-            title,
-            message: text,
-        });
-    } catch (err) {
-        if (err instanceof Error)
-            if (err.message !== 'User did not share') {
-                throw new Error(err.message);
-            }
-    }
+    await Share.open({
+        title,
+        message: text,
+    });
 }
