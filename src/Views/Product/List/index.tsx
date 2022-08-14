@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
@@ -29,6 +30,7 @@ const List: React.FC = () => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
+    const enableTabBar = remoteConfig().getValue('enable_app_bar');
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
@@ -147,20 +149,24 @@ const List: React.FC = () => {
 
                         <ListProducts products={productsSearch} />
 
-                        {!userPreferences.isPRO && (
-                            <FloatButton
-                                icon={() => (
-                                    <Icons
-                                        name="add-outline"
-                                        color="white"
-                                        size={22}
+                        {!userPreferences.isPRO ||
+                            (userPreferences.isPRO &&
+                                enableTabBar.asBoolean() === false && (
+                                    <FloatButton
+                                        icon={() => (
+                                            <Icons
+                                                name="add-outline"
+                                                color="white"
+                                                size={22}
+                                            />
+                                        )}
+                                        small
+                                        label={
+                                            strings.View_FloatMenu_AddProduct
+                                        }
+                                        onPress={handleNavigateAddProduct}
                                     />
-                                )}
-                                small
-                                label={strings.View_FloatMenu_AddProduct}
-                                onPress={handleNavigateAddProduct}
-                            />
-                        )}
+                                ))}
                     </Container>
                 </>
             )}
