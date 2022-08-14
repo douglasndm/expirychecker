@@ -29,14 +29,12 @@ import {
     CategoryDetailsText,
     EmptyListText,
     InvisibleComponent,
-    FloatButton,
     Icons,
 } from './styles';
 
 interface RequestProps {
     products: Array<IProduct>;
     isHome?: boolean;
-    deactiveFloatButton?: boolean;
     onRefresh?: () => void;
     isRefreshing?: boolean;
     listRef?: React.RefObject<FlatList<IProduct>>;
@@ -45,7 +43,6 @@ interface RequestProps {
 const ListProducts: React.FC<RequestProps> = ({
     products,
     isHome,
-    deactiveFloatButton,
     onRefresh,
     isRefreshing = false,
     listRef,
@@ -94,10 +91,6 @@ const ListProducts: React.FC<RequestProps> = ({
 
     const handleNavigateToAllProducts = useCallback(() => {
         navigate('AllProducts');
-    }, [navigate]);
-
-    const handleNavigateAddProduct = useCallback(() => {
-        navigate('AddProduct', {});
     }, [navigate]);
 
     const switchSelectedItem = useCallback(
@@ -265,17 +258,6 @@ const ListProducts: React.FC<RequestProps> = ({
                 onEndReached={loadMoreProducts}
                 onEndReachedThreshold={0.5}
             />
-
-            {!deactiveFloatButton && (
-                <FloatButton
-                    icon={() => (
-                        <Icons name="add-outline" color="white" size={22} />
-                    )}
-                    small
-                    label={strings.View_FloatMenu_AddProduct}
-                    onPress={handleNavigateAddProduct}
-                />
-            )}
 
             <Dialog.Container
                 visible={deleteModal}

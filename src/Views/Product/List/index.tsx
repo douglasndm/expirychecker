@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';
@@ -10,6 +14,7 @@ import BarCodeReader from '~/Components/BarCodeReader';
 
 import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';
 
+import { FloatButton, Icons } from '~/Components/ListProducts/styles';
 import {
     InputSearch,
     InputTextContainer,
@@ -20,6 +25,10 @@ import {
 import { Container } from './styles';
 
 const List: React.FC = () => {
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const { userPreferences } = useContext(PreferencesContext);
+
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const [products, setProducts] = useState<Array<IProduct>>([]);
@@ -92,6 +101,19 @@ const List: React.FC = () => {
         [handleSearchChange]
     );
 
+    const handleNavigateAddProduct = useCallback(() => {
+        if (searchString && searchString !== '') {
+            const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
+            const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+
+            navigate('AddProduct', {
+                code: query,
+            });
+        } else {
+            navigate('AddProduct', {});
+        }
+    }, [navigate, searchString]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -124,6 +146,21 @@ const List: React.FC = () => {
                         )}
 
                         <ListProducts products={productsSearch} />
+
+                        {!userPreferences.isPRO && (
+                            <FloatButton
+                                icon={() => (
+                                    <Icons
+                                        name="add-outline"
+                                        color="white"
+                                        size={22}
+                                    />
+                                )}
+                                small
+                                label={strings.View_FloatMenu_AddProduct}
+                                onPress={handleNavigateAddProduct}
+                            />
+                        )}
                     </Container>
                 </>
             )}

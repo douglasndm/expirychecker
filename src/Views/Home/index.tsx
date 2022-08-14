@@ -233,7 +233,6 @@ const Home: React.FC = () => {
                         onRefresh={loadData}
                         isRefreshing={isLoading}
                         listRef={listRef}
-                        deactiveFloatButton
                     />
 
                     {!userPreferences.isPRO && (
