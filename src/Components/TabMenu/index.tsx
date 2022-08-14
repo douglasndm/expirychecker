@@ -3,6 +3,7 @@ import { StyleSheet, Animated, Easing, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 import { Container, IconContainer, Icon, MainIcon, IconRound } from './styles';
 
@@ -12,6 +13,8 @@ interface Props {
 
 const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
     const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const enableBlur = remoteConfig().getValue('enable_app_bar_blur');
 
     const positionY = useState(new Animated.Value(0))[0];
 
@@ -100,13 +103,17 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
             style={{
                 transform: [{ translateX: 0 }, { translateY: positionY }],
             }}
+            disableTransparency={!enableBlur.asBoolean() === true}
         >
-            <BlurView
-                style={styles.absolute}
-                blurType="light"
-                blurAmount={10}
-                reducedTransparencyFallbackColor="white"
-            />
+            {enableBlur.asBoolean() === true && (
+                <BlurView
+                    style={styles.absolute}
+                    blurType="light"
+                    blurAmount={10}
+                    reducedTransparencyFallbackColor="white"
+                />
+            )}
+
             <IconContainer onPress={() => handlePress('Home')}>
                 {currentRoute === 'Home' ? (
                     <Icon name="home" isSelected />
