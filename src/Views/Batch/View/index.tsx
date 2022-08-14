@@ -7,23 +7,24 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import EnvConfig from 'react-native-config';
 import {
     TestIds,
     BannerAd,
     BannerAdSize,
 } from 'react-native-google-mobile-ads';
-import { getLocales } from 'react-native-localize';
+import { getLocales, getCurrencies } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
+import { formatCurrency } from 'react-native-format-currency';
 
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { ShareProductImageWithText } from '~/Functions/Share';
-import { getFormatedPrice } from '~/Utils/System/getFormatedPrice';
 
 import Header from '~/Components/Header';
 import Button from '~/Components/Button';
@@ -57,7 +58,8 @@ interface Props {
 
 const View: React.FC = () => {
     const { params } = useRoute();
-    const { navigate, addListener } = useNavigation();
+    const { navigate, addListener } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const routeParams = params as Props;
 
@@ -81,7 +83,6 @@ const View: React.FC = () => {
 
         return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
     }, []);
-
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'BR') {
             return ptBR;
@@ -97,16 +98,6 @@ const View: React.FC = () => {
             return 'MM/dd/yyyy';
         }
         return 'dd/MM/yyyy';
-    }, []);
-
-    const currencyPrefix = useMemo(() => {
-        if (getLocales()[0].countryCode === 'BR') {
-            return 'R$';
-        }
-        if (getLocales()[0].countryCode === 'PT') {
-            return '€';
-        }
-        return '$';
     }, []);
 
     const productId = useMemo(() => {
@@ -153,13 +144,19 @@ const View: React.FC = () => {
 
                     text = text.replace(
                         '{TMP_PRICE}',
-                        `${currencyPrefix}${batch.price_tmp.toFixed(2)}`
+                        formatCurrency({
+                            amount: Number(batch.price_tmp.toFixed(2)),
+                            code: getCurrencies()[0],
+                        })[0]
                     );
                     text = text.replace(
                         '{TOTAL_DISCOUNT_PRICE}',
-                        `${currencyPrefix}${(
-                            batch.price_tmp * batch.amount
-                        ).toFixed(2)}`
+                        formatCurrency({
+                            amount: Number(
+                                (batch.price_tmp * batch.amount).toFixed(2)
+                            ),
+                            code: getCurrencies()[0],
+                        })[0]
                     );
                 } else {
                     text = strings.View_ShareProduct_MessageWithAmount;
@@ -178,7 +175,10 @@ const View: React.FC = () => {
 
                 text = text.replace(
                     '{PRICE}',
-                    `${currencyPrefix}${batch.price.toFixed(2)}`
+                    formatCurrency({
+                        amount: Number(batch.price.toFixed(2)),
+                        code: getCurrencies()[0],
+                    })[0]
                 );
             }
 
@@ -192,7 +192,7 @@ const View: React.FC = () => {
             });
         } catch (err) {
             if (err instanceof Error)
-                if (err.message !== 'User did not share') {
+                if (!err.message.includes('User did not share')) {
                     showMessage({
                         message: err.message,
                         type: 'danger',
@@ -201,7 +201,7 @@ const View: React.FC = () => {
         } finally {
             setIsSharing(false);
         }
-    }, [product, batch, exp_date, productId, currencyPrefix]);
+    }, [product, batch, exp_date, productId]);
 
     const handleNavigateToDiscount = useCallback(() => {
         navigate('BatchDiscount', {
@@ -279,41 +279,51 @@ const View: React.FC = () => {
 
                     {!!batch.price && (
                         <BatchPrice>
-                            {`${
-                                strings.View_Batch_UnitPrice
-                            } ${currencyPrefix}${getFormatedPrice(
-                                batch.price
-                            )}`}
+                            {`${strings.View_Batch_UnitPrice} ${
+                                formatCurrency({
+                                    amount: Number(batch.price.toFixed(2)),
+                                    code: getCurrencies()[0],
+                                })[0]
+                            }`}
                         </BatchPrice>
                     )}
 
                     {!!batch.price_tmp && (
                         <BatchPrice>
-                            {`${
-                                strings.View_Batch_UnitTempPrice
-                            } ${currencyPrefix}${getFormatedPrice(
-                                batch.price_tmp
-                            )}`}
+                            {`${strings.View_Batch_UnitTempPrice} ${
+                                formatCurrency({
+                                    amount: Number(batch.price_tmp.toFixed(2)),
+                                    code: getCurrencies()[0],
+                                })[0]
+                            }`}
                         </BatchPrice>
                     )}
 
                     {!!batch.price && !!batch.amount && (
                         <BatchPrice>
-                            {`${
-                                strings.View_Batch_TotalPrice
-                            } ${currencyPrefix}${getFormatedPrice(
-                                batch.price * batch.amount
-                            )}`}
+                            {`${strings.View_Batch_TotalPrice}: ${
+                                formatCurrency({
+                                    amount: Number(
+                                        (batch.price * batch.amount).toFixed(2)
+                                    ),
+                                    code: getCurrencies()[0],
+                                })[0]
+                            }`}
                         </BatchPrice>
                     )}
 
                     {!!batch.price_tmp && !!batch.amount && (
                         <BatchPrice>
-                            {`${
-                                strings.View_Batch_TotalPriceDiscount
-                            } ${currencyPrefix}${getFormatedPrice(
-                                batch.price_tmp * batch.amount
-                            )}`}
+                            {`${strings.View_Batch_TotalPriceDiscount} ${
+                                formatCurrency({
+                                    amount: Number(
+                                        (
+                                            batch.price_tmp * batch.amount
+                                        ).toFixed(2)
+                                    ),
+                                    code: getCurrencies()[0],
+                                })[0]
+                            }`}
                         </BatchPrice>
                     )}
 
