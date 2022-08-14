@@ -139,7 +139,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         if (
-            userPreferences.isUserPremium &&
+            userPreferences.isPRO &&
             userPreferences.multiplesStores &&
             userPreferences.storesFirstPage
         ) {
@@ -152,7 +152,7 @@ const Home: React.FC = () => {
     }, [
         canGoBack,
         reset,
-        userPreferences.isUserPremium,
+        userPreferences.isPRO,
         userPreferences.multiplesStores,
         userPreferences.storesFirstPage,
     ]);
@@ -204,7 +204,7 @@ const Home: React.FC = () => {
                                     <InputTextIcon name="barcode-outline" />
                                 </InputTextIconContainer>
 
-                                {userPreferences.isUserPremium && (
+                                {userPreferences.isPRO && (
                                     <InputTextIconContainer
                                         onPress={enableCalendarModal}
                                         style={{ marginLeft: 5 }}
@@ -236,7 +236,7 @@ const Home: React.FC = () => {
                         deactiveFloatButton
                     />
 
-                    {!userPreferences.isUserPremium && (
+                    {!userPreferences.isPRO && (
                         <FloatButton
                             icon={() => (
                                 <Icons

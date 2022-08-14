@@ -236,7 +236,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
     }, []);
 
     const handleEnableCamera = useCallback(async () => {
-        if (!userPreferences.isUserPremium) {
+        if (!userPreferences.isPRO) {
             navigate('Pro');
             return;
         }
@@ -248,7 +248,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
             }
         }
         setIsCameraEnabled(true);
-    }, [photoPath, navigate, userPreferences.isUserPremium]);
+    }, [photoPath, navigate, userPreferences.isPRO]);
 
     const handleDisableCamera = useCallback(() => {
         setIsCameraEnabled(false);
@@ -309,7 +309,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                         noDrawer
                     />
                     <PageContent>
-                        {userPreferences.isUserPremium && !!photoPath && (
+                        {userPreferences.isPRO && !!photoPath && (
                             <ImageContainer>
                                 <ProductImageContainer
                                     onPress={handleEnableCamera}
@@ -399,7 +399,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                     }
                                 />
 
-                                {userPreferences.isUserPremium && (
+                                {userPreferences.isPRO && (
                                     <>
                                         <DaysToBeNext onChange={setDaysNext} />
 

@@ -46,7 +46,7 @@ const App: React.FC = () => {
     const [preferences, setPreferences] = useState({
         howManyDaysToBeNextToExpire: 30,
         autoComplete: false,
-        isUserPremium: false,
+        isPRO: false,
         appTheme: Themes.Light,
         multiplesStores: false,
         storesFirstPage: false,

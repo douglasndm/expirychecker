@@ -8,7 +8,7 @@ const PreferencesContext = createContext({
     userPreferences: {
         howManyDaysToBeNextToExpire: 30,
         autoComplete: false,
-        isUserPremium: false,
+        isPRO: false,
         appTheme: Themes.Light,
         multiplesStores: false,
         storesFirstPage: false,
@@ -19,7 +19,7 @@ const PreferencesContext = createContext({
     setUserPreferences: ({
         howManyDaysToBeNextToExpire,
         autoComplete,
-        isUserPremium,
+        isPRO,
         appTheme,
         multiplesStores,
         storesFirstPage,

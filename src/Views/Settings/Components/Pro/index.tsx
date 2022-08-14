@@ -106,7 +106,7 @@ const Pro: React.FC = () => {
                     {strings.View_Settings_CategoryName_Pro}
                 </CategoryTitle>
 
-                {!userPreferences.isUserPremium && (
+                {!userPreferences.isPRO && (
                     <>
                         <Button
                             text={
@@ -117,7 +117,7 @@ const Pro: React.FC = () => {
                     </>
                 )}
 
-                <CategoryOptions notPremium={!userPreferences.isUserPremium}>
+                <CategoryOptions notPremium={!userPreferences.isPRO}>
                     <View>
                         <SettingDescription>
                             {strings.View_Settings_SettingName_ExportAndInmport}
@@ -126,7 +126,7 @@ const Pro: React.FC = () => {
                         <PremiumButtonsContainer>
                             <ButtonPremium
                                 enabled={
-                                    userPreferences.isUserPremium &&
+                                    userPreferences.isPRO &&
                                     !isImportLoading
                                 }
                                 onPress={handleImportBackup}
@@ -145,7 +145,7 @@ const Pro: React.FC = () => {
                     </View>
                 </CategoryOptions>
 
-                {userPreferences.isUserPremium && (
+                {userPreferences.isPRO && (
                     <ButtonCancel onPress={handleCancel}>
                         <ButtonCancelText>
                             {strings.View_Settings_Button_CancelSubscribe}

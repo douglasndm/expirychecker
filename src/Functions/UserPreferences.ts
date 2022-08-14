@@ -30,7 +30,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
         appTheme: getThemeByName(settingTheme),
         enableNotifications: settingNotification,
         notificationCadency: settingNotificationCadency,
-        isUserPremium: settingProMode,
+        isPRO: settingProMode,
         multiplesStores: settingMultipleStores,
         storesFirstPage: settingStoresFirstPage,
         disableAds: disableAds || settingProMode,

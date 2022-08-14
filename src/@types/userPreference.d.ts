@@ -3,7 +3,7 @@ import { DefaultTheme } from 'styled-components';
 export interface IUserPreferences {
     howManyDaysToBeNextToExpire: number;
     autoComplete: boolean;
-    isUserPremium: boolean;
+    isPRO: boolean;
     appTheme: DefaultTheme;
     multiplesStores: boolean;
     storesFirstPage: boolean;

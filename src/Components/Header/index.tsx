@@ -91,7 +91,7 @@ const Header: React.FC<RequestProps> = ({
                         </TextLogo>
                     ) : (
                         <TextLogo style={{ fontSize: titleFontSize }}>
-                            {userPreferences.isUserPremium
+                            {userPreferences.isPRO
                                 ? strings.AppName_ProVersion
                                 : strings.AppName}
                         </TextLogo>

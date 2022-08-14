@@ -104,7 +104,7 @@ const SubscriptionList: React.FC = () => {
 
             setUserPreferences({
                 ...userPreferences,
-                isUserPremium: enablePro,
+                isPRO: enablePro,
                 disableAds: enablePro,
             });
 
@@ -131,7 +131,7 @@ const SubscriptionList: React.FC = () => {
         if (result === true) {
             setUserPreferences({
                 ...userPreferences,
-                isUserPremium: true,
+                isPRO: true,
             });
 
             showMessage({

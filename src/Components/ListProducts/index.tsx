@@ -118,8 +118,8 @@ const ListProducts: React.FC<RequestProps> = ({
     );
 
     const handleEnableSelectMode = useCallback(() => {
-        if (userPreferences.isUserPremium) setSelectMode(true);
-    }, [userPreferences.isUserPremium]);
+        if (userPreferences.isPRO) setSelectMode(true);
+    }, [userPreferences.isPRO]);
 
     const handleDisableSelectMode = useCallback(() => {
         setSelectMode(false);
@@ -231,7 +231,7 @@ const ListProducts: React.FC<RequestProps> = ({
 
     return (
         <Container>
-            {selectMode && userPreferences.isUserPremium && (
+            {selectMode && userPreferences.isPRO && (
                 <ActionButtonsContainer>
                     <ButtonPaper
                         icon={() => <Icons name="trash-outline" />}

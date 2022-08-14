@@ -327,7 +327,7 @@ const View: React.FC = () => {
                     )}
 
                     <ProFeaturesContainer>
-                        {!userPreferences.isUserPremium && (
+                        {!userPreferences.isPRO && (
                             <ProFeaturesText>
                                 {strings.ProBanner_Text2}
                             </ProFeaturesText>
@@ -339,7 +339,7 @@ const View: React.FC = () => {
                             onPress={handleShare}
                             isLoading={isSharing}
                             contentStyle={{ width: 250 }}
-                            enable={userPreferences.isUserPremium}
+                            enable={userPreferences.isPRO}
                         />
 
                         {!!batch.price && (
@@ -347,7 +347,7 @@ const View: React.FC = () => {
                                 text={strings.View_Batch_Discount_Button_Apply}
                                 onPress={handleNavigateToDiscount}
                                 contentStyle={{ marginTop: -5, width: 250 }}
-                                enable={userPreferences.isUserPremium}
+                                enable={userPreferences.isPRO}
                             />
                         )}
                     </ProFeaturesContainer>
