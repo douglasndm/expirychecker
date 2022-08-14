@@ -20,6 +20,7 @@ import './Services/BackgroundJobs';
 import './Services/AppsFlyer';
 import './Services/Admob';
 import './Services/Analytics';
+import './Services/RemoteConfig';
 import DeepLinking from './Services/DeepLinking';
 
 import './Functions/ProMode';

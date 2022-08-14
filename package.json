@@ -20,6 +20,7 @@
     "@react-native-firebase/analytics": "^14.8.0",
     "@react-native-firebase/app": "^14.8.0",
     "@react-native-firebase/messaging": "^14.8.0",
+    "@react-native-firebase/remote-config": "^14.8.0",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-native-picker/picker": "^2.3.0",
     "@react-navigation/drawer": "^5.12.5",

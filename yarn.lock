@@ -1956,6 +1956,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-14.11.1.tgz#891b92f5606386e83ae377e72659d0836ac7bd6b"
   integrity sha512-nJjmA+Oku/rWM//y0hpsXJAM8dqkucZKyu71bZ8f4XCOU0ueqO/Qlyv8ylQ/2G+4+FCoSxncffxDdUfr+3nExA==
 
+"@react-native-firebase/remote-config@^14.8.0":
+  version "14.11.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/remote-config/-/remote-config-14.11.1.tgz#843bbc6a7d083f0abc42b6e77488b1f61ba2278c"
+  integrity sha512-OyiOQweTh06kNdLDxyllvqYYzaUEUQ4S63/f6aS0d2287o/W8nXybb1O0UWz1NRg6mfqlqQPIqdpjtKJrKz9Tg==
+
 "@react-native-masked-view/masked-view@^0.2.6":
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.6.tgz#b26c52d5db3ad0926b13deea79c69620966a9221"

@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
@@ -49,6 +50,8 @@ const Routes: React.FC = () => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const [currentRoute, setCurrentRoute] = useState('Home');
+
+    const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
     const handleRouteChange = useCallback(navRoutes => {
         if (navRoutes) {
@@ -109,7 +112,7 @@ const Routes: React.FC = () => {
                 )}
             </Stack.Navigator>
 
-            {userPreferences.isPRO && (
+            {userPreferences.isPRO && enableTabBar.asBoolean() === true && (
                 <TabMenu currentRoute={currentRoute} />
             )}
         </>
