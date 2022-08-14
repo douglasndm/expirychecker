@@ -2,9 +2,13 @@ import { Animated, Dimensions } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { darken } from 'polished';
+import { darken, opacify } from 'polished';
 
-export const Container = styled(Animated.View)`
+interface Props {
+    disableTransparency?: boolean;
+}
+
+export const Container = styled(Animated.View)<Props>`
     background-color: ${({ theme }) => theme.colors.TabBackground};
     position: absolute;
     flex-direction: row;
@@ -12,6 +16,13 @@ export const Container = styled(Animated.View)`
     width: 100%;
     padding-bottom: ${Dimensions.get('window').height > 600 ? '15px' : '5px'};
     bottom: 0;
+
+    ${props =>
+        props.disableTransparency &&
+        css`
+            background-color: ${({ theme }) =>
+                opacify(1, theme.colors.TabBackground)};
+        `}
 `;
 
 export const IconContainer = styled.Pressable`
