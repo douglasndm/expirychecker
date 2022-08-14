@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useMemo } from 'react';
+import { useWindowDimensions } from 'react-native';
 import { DrawerContentOptions } from '@react-navigation/drawer';
 
 import strings from '~/Locales';
@@ -27,6 +28,8 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const { navigation } = props;
 
     const { userPreferences } = useContext(PreferencesContext);
+
+    const windowHeight = useWindowDimensions().height;
 
     const shouldShowMultiplesStores = useMemo(() => {
         if (!userPreferences.isUserPremium) {
@@ -84,7 +87,13 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
         <Container>
             <MainMenuContainer>
                 <LogoContainer>
-                    <Logo />
+                    {windowHeight > 600 ? (
+                        <Logo />
+                    ) : (
+                        <MenuItemText style={{ color: '#fff' }}>
+                            {strings.AppName}
+                        </MenuItemText>
+                    )}
                 </LogoContainer>
                 <DrawerSection>
                     <MenuItemContainer

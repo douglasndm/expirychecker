@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
-
+import styled, { css } from 'styled-components/native';
+import { Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -31,7 +31,7 @@ interface InputTextIconProps {
 
 export const InputTextIcon = styled(Ionicons).attrs(props => ({
     name: props.name,
-    size: 33,
+    size: Dimensions.get('window').height <= 600 ? 28 : 33,
     color: props.theme.colors.productCardText,
 }))<InputTextIconProps>``;
 
@@ -42,4 +42,9 @@ export const InputSearch = styled.TextInput.attrs(props => ({
     padding: 15px 5px 15px 15px;
     font-size: 18px;
     color: ${props => props.theme.colors.inputText};
+
+    ${Dimensions.get('window').height <= 600 &&
+    css`
+        padding: 10px;
+    `}
 `;

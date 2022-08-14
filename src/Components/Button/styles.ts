@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { Dimensions } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 export const Button = styled(RectButton)`
@@ -10,6 +11,11 @@ export const Button = styled(RectButton)`
     border-radius: 12px;
     margin: 15px 0;
     elevation: 2;
+
+    ${Dimensions.get('window').height <= 600 &&
+    css`
+        padding: 15px;
+    `}
 
     ${props =>
         !props.enabled &&
