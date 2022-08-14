@@ -291,7 +291,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         noDrawer
                                     />
 
-                                    {userPreferences.isUserPremium &&
+                                    {userPreferences.isPRO &&
                                         !!photoPath && (
                                             <ImageContainer>
                                                 <ProductImageContainer
@@ -322,7 +322,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                                 />
                                             </InputTextContainer>
 
-                                            {userPreferences.isUserPremium && (
+                                            {userPreferences.isPRO && (
                                                 <CameraButtonContainer
                                                     onPress={handleEnableCamera}
                                                 >
@@ -374,7 +374,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         </InputGroup>
 
                                         <MoreInformationsContainer>
-                                            {userPreferences.isUserPremium && (
+                                            {userPreferences.isPRO && (
                                                 <>
                                                     <MoreInformationsTitle>
                                                         {

@@ -150,7 +150,7 @@ const Product = ({ product, onLongPress }: Request) => {
             onLongPress={onLongPress}
         >
             <Content>
-                {userPreferences.isUserPremium && !!imagePath && (
+                {userPreferences.isPRO && !!imagePath && (
                     <>
                         {isImgLoading && <LoadingImage />}
 

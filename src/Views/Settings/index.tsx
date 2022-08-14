@@ -172,7 +172,7 @@ const Settings: React.FC = () => {
                             />
                             {/* <Notifications /> */}
 
-                            {userPreferences.isUserPremium && (
+                            {userPreferences.isPRO && (
                                 <>
                                     {getLocales()[0].languageCode === 'pt' && (
                                         <SettingContainer>

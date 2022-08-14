@@ -211,7 +211,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
                         </PageTitleContent>
 
                         <ProductContainer>
-                            {userPreferences.isUserPremium && !!photo && (
+                            {userPreferences.isPRO && !!photo && (
                                 <ProductImageContainer
                                     onPress={handleOnPhotoPress}
                                 >

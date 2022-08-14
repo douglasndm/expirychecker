@@ -109,7 +109,7 @@ const Routes: React.FC = () => {
                 )}
             </Stack.Navigator>
 
-            {userPreferences.isUserPremium && (
+            {userPreferences.isPRO && (
                 <TabMenu currentRoute={currentRoute} />
             )}
         </>

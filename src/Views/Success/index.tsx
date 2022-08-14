@@ -232,7 +232,7 @@ const Success: React.FC = () => {
                     )}
 
                     <ButtonContainer>
-                        {userPreferences.isUserPremium && category_id && (
+                        {userPreferences.isPRO && category_id && (
                             <Button onPress={handleNavigateToCategory}>
                                 <ButtonText>
                                     {strings.View_Success_Button_GoToCategory}
@@ -240,7 +240,7 @@ const Success: React.FC = () => {
                             </Button>
                         )}
 
-                        {userPreferences.isUserPremium && store_id && (
+                        {userPreferences.isPRO && store_id && (
                             <Button onPress={handleNavigateToStore}>
                                 <ButtonText>
                                     {strings.View_Success_Button_GoToStore}
@@ -275,11 +275,11 @@ const Success: React.FC = () => {
                 </SuccessMessageContainer>
             </Content>
 
-            {type === 'create_product' && userPreferences.isUserPremium && (
+            {type === 'create_product' && userPreferences.isPRO && (
                 <FloatButton navigateTo="AddProduct" />
             )}
             {type === 'create_batch' &&
-                userPreferences.isUserPremium &&
+                userPreferences.isPRO &&
                 productId && (
                     <FloatButton navigateTo="AddBatch" productId={productId} />
                 )}

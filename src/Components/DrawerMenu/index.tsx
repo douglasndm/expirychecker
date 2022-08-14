@@ -32,11 +32,11 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     const windowHeight = useWindowDimensions().height;
 
     const shouldShowMultiplesStores = useMemo(() => {
-        if (!userPreferences.isUserPremium) {
+        if (!userPreferences.isPRO) {
             return true;
         }
 
-        if (userPreferences.isUserPremium && userPreferences.multiplesStores) {
+        if (userPreferences.isPRO && userPreferences.multiplesStores) {
             return true;
         }
 
@@ -56,12 +56,12 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
     }, [navigation]);
 
     const navigateToWeekProds = useCallback(() => {
-        if (!userPreferences.isUserPremium) {
+        if (!userPreferences.isPRO) {
             navigateToPRO();
             return;
         }
         navigation.navigate('WeekView');
-    }, [navigateToPRO, navigation, userPreferences.isUserPremium]);
+    }, [navigateToPRO, navigation, userPreferences.isPRO]);
 
     const navigateToCategories = useCallback(() => {
         navigation.navigate('ListCategory');
@@ -142,7 +142,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
                     <MenuItemContainer
                         onPress={
-                            userPreferences.isUserPremium
+                            userPreferences.isPRO
                                 ? navigateToCategories
                                 : navigateToPRO
                         }
@@ -163,7 +163,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
                     <MenuItemContainer
                         onPress={
-                            userPreferences.isUserPremium
+                            userPreferences.isPRO
                                 ? navigateToBrands
                                 : navigateToPRO
                         }
@@ -185,7 +185,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                     {shouldShowMultiplesStores && (
                         <MenuItemContainer
                             onPress={
-                                userPreferences.isUserPremium
+                                userPreferences.isPRO
                                     ? navigateToAllProductsByStore
                                     : navigateToPRO
                             }
@@ -207,7 +207,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
 
                     <MenuItemContainer
                         onPress={
-                            userPreferences.isUserPremium
+                            userPreferences.isPRO
                                 ? navigateToExport
                                 : navigateToPRO
                         }
@@ -226,7 +226,7 @@ const DrawerMenu: React.FC<DrawerContentOptions> = (
                         </LabelGroup>
                     </MenuItemContainer>
 
-                    {!userPreferences.isUserPremium && (
+                    {!userPreferences.isPRO && (
                         <MenuItemContainer
                             onPress={() => navigation.navigate('Pro')}
                         >

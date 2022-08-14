@@ -38,7 +38,7 @@ const Appearance: React.FC = () => {
             key: 'system',
         });
 
-        if (userPreferences.isUserPremium) {
+        if (userPreferences.isPRO) {
             Themes.forEach(theme => {
                 availableThemes.push({
                     label: theme.name,
@@ -59,7 +59,7 @@ const Appearance: React.FC = () => {
         }
 
         return availableThemes;
-    }, [userPreferences.isUserPremium]);
+    }, [userPreferences.isPRO]);
 
     useEffect(() => {
         getAppTheme().then(response => setSelectedTheme(response));

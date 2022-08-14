@@ -104,7 +104,7 @@ const FastSubscription: React.FC = () => {
 
             setUserPreferences({
                 ...userPreferences,
-                isUserPremium: enablePro,
+                isPRO: enablePro,
                 disableAds: enablePro,
             });
         } catch (err) {

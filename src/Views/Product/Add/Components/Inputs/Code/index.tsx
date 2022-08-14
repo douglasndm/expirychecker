@@ -145,7 +145,7 @@ const Inputs: React.FC<InputsRequest> = ({
 
     const findProductByEAN = useCallback(
         async (ean_code: string) => {
-            if (!userPreferences.isUserPremium) return;
+            if (!userPreferences.isPRO) return;
 
             const schema = Yup.object().shape({
                 ean_code: Yup.number().required().min(8),
@@ -205,7 +205,7 @@ const Inputs: React.FC<InputsRequest> = ({
             completeInfo,
             handleCheckProductCode,
             userPreferences.autoComplete,
-            userPreferences.isUserPremium,
+            userPreferences.isPRO,
         ]
     );
 
@@ -251,7 +251,7 @@ const Inputs: React.FC<InputsRequest> = ({
                     <Icon name="barcode-outline" size={34} />
                 </InputTextIconContainer>
 
-                {userPreferences.isUserPremium && (
+                {userPreferences.isPRO && (
                     <>
                         {isFindingProd && <InputTextLoading />}
 
