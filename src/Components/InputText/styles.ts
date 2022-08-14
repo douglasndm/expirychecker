@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface InputTextContainerProps {
@@ -32,6 +33,11 @@ export const Input = styled.TextInput.attrs(props => ({
     font-size: 18px;
     color: ${props => props.theme.colors.inputText};
     flex: 1;
+
+    ${Dimensions.get('window').height <= 600 &&
+    css`
+        padding: 10px 5px 10px 10px;
+    `}
 `;
 
 export const Icon = styled(Ionicons).attrs(props => ({

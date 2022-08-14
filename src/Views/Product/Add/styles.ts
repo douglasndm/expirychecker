@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { Dimensions } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import CurrencyInput from 'react-native-currency-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,7 +15,6 @@ export const PageContent = styled.ScrollView``;
 export const InputContainer = styled.View`
     margin-top: 25px;
     padding: 0 10px;
-    margin-bottom: 40px;
 `;
 
 export const InputGroup = styled.View`
@@ -112,6 +112,8 @@ export const CustomDatePicker = styled(DatePicker).attrs(props => ({
     textColor: props.theme.colors.inputText,
     fadeToColor: 'none',
     mode: 'date',
+    androidVariant:
+        Dimensions.get('window').height >= 600 ? 'iosClone' : 'nativeAndroid',
 }))`
     background: ${({ theme }) => theme.colors.inputBackground};
     z-index: 1;

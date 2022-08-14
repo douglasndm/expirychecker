@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { Drawer } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -42,6 +42,12 @@ export const LogoContainer = styled.View`
     css`
         margin-top: -10px;
     `}
+
+    ${Dimensions.get('window').height <= 600 &&
+    css`
+        padding: 10px 0;
+        margin-top: 0;
+    `}
 `;
 
 export const Logo = styled.Image.attrs(() => ({
@@ -56,7 +62,7 @@ export const MenuItemContainer = styled(RectButton)`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: ${Dimensions.get('window').height > 600 ? '15px' : '10px'};
 `;
 
 export const MenuContent = styled.View`

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/native';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -13,6 +13,11 @@ export const HeaderContainerNoDrawner = styled.SafeAreaView`
 export const HeaderContainer = styled(RectButton)`
     width: 100%;
     padding: 30px 30px 15px 0px;
+
+    ${Dimensions.get('window').height <= 600 &&
+    css`
+        padding: 20px 20px 0px 0px;
+    `}
 
     justify-content: flex-start;
     align-items: center;

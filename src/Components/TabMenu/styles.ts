@@ -1,4 +1,4 @@
-import { Animated } from 'react-native';
+import { Animated, Dimensions } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,7 +10,7 @@ export const Container = styled(Animated.View)`
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding-bottom: 15px;
+    padding-bottom: ${Dimensions.get('window').height > 600 ? '15px' : '5px'};
     bottom: 0;
 `;
 
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export const Icon = styled(Ionicons).attrs(() => ({
-    size: 28,
+    size: Dimensions.get('window').height > 600 ? 28 : 22,
 }))<Props>`
     ${props =>
         props.isSelected
@@ -38,7 +38,7 @@ export const Icon = styled(Ionicons).attrs(() => ({
 `;
 
 export const MainIcon = styled(Ionicons).attrs(() => ({
-    size: 30,
+    size: Dimensions.get('window').height > 600 ? 30 : 20,
     color: '#fff',
 }))``;
 
@@ -47,12 +47,12 @@ export const IconRound = styled(LinearGradient).attrs(({ theme }) => ({
     end: { x: 0, y: 0 },
     colors: [theme.colors.accent, darken(0.15, theme.colors.accent)],
 }))`
-    width: 60px;
-    height: 60px;
+    width: ${Dimensions.get('window').height > 600 ? '60px' : '40px'};
+    height: ${Dimensions.get('window').height > 600 ? '60px' : '40px'};
     border-radius: 30px;
     margin-bottom: 20px;
     align-items: center;
     justify-content: center;
-    elevation: 3;
+    elevation: 2;
     flex-direction: row;
 `;
