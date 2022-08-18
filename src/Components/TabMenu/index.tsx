@@ -44,9 +44,6 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
             case 'ListCategory':
                 showBar();
                 break;
-            case 'AddProduct':
-                showBar();
-                break;
             case 'BrandList':
                 showBar();
                 break;
@@ -55,6 +52,9 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
                 break;
             case 'AllProducts':
                 showBar();
+                break;
+            case 'AddProduct':
+                hideBar();
                 break;
             default:
                 hideBar();
