@@ -5,8 +5,8 @@ import Sentry from './Sentry';
 async function init() {
     try {
         await remoteConfig().setDefaults({
-            enable_app_bar: true,
-            enable_app_bar_blur: true,
+            enable_app_bar: false,
+            enable_app_bar_blur: false,
         });
 
         /*
