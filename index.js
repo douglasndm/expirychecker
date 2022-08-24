@@ -6,8 +6,6 @@ import { AppRegistry, Linking } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { showMessage } from 'react-native-flash-message';
 
-import Sentry from './src/Services/Sentry';
-
 import { name as appName } from './app.json';
 import App from './src';
 import './src/Functions/OpenAppTimes';
@@ -44,6 +42,4 @@ messaging().onMessage(async remoteMessage => {
     });
 });
 
-const SentryWrap = Sentry.wrap(App);
-
-AppRegistry.registerComponent(appName, () => SentryWrap);
+AppRegistry.registerComponent(appName, () => App);

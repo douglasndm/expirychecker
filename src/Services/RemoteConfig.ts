@@ -1,6 +1,5 @@
 import remoteConfig from '@react-native-firebase/remote-config';
-
-import Sentry from './Sentry';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 async function init() {
     try {
@@ -21,7 +20,7 @@ async function init() {
     } catch (err) {
         if (err instanceof Error) {
             if (!__DEV__) {
-                Sentry.captureException(err);
+                crashlytics().recordError(err);
             }
             console.log(err.message);
         }
