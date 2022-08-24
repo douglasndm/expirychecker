@@ -1,8 +1,7 @@
 import { Platform } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
-
-import Sentry from '~/Services/Sentry';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 // Must be outside of any component LifeCycle (such as `componentDidMount`).
 PushNotification.configure({
@@ -33,9 +32,9 @@ PushNotification.configure({
     onRegistrationError(err) {
         if (!__DEV__) {
             if (err instanceof Error) {
-                Sentry.captureException(err);
+                crashlytics().recordError(err);
             } else {
-                Sentry.captureException(new Error(err));
+                crashlytics().recordError(new Error(err));
             }
         }
     },
