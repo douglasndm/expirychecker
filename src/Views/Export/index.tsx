@@ -1,9 +1,13 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
+import RNPermissions from 'react-native-permissions';
 
+import { Platform } from 'react-native';
 import strings from '~/Locales';
 
-import { exportBackupFile } from '~/Functions/Backup';
+import { exportBackupFile, importBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
 
 import Header from '~/Components/Header';
@@ -22,14 +26,18 @@ import {
 } from './styles';
 
 const Export: React.FC = () => {
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
+
     const [checked, setChecked] = React.useState('created_at');
 
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
-    const [isBackupLoading, setIsBackupLoading] = useState<boolean>(false);
+
+    const [isExporting, setIsExporting] = useState<boolean>(false);
+    const [isImporting, setIsImporting] = useState<boolean>(false);
 
     const handleExportBackup = useCallback(async () => {
         try {
-            setIsBackupLoading(true);
+            setIsExporting(true);
             await exportBackupFile();
         } catch (err) {
             if (err instanceof Error) {
@@ -39,7 +47,7 @@ const Export: React.FC = () => {
                 });
             }
         } finally {
-            setIsBackupLoading(false);
+            setIsExporting(false);
         }
     }, []);
 
@@ -71,6 +79,46 @@ const Export: React.FC = () => {
             setIsExcelLoading(false);
         }
     }, [checked]);
+
+    const handleImportBackup = useCallback(async () => {
+        try {
+            setIsImporting(true);
+
+            if (Platform.OS === 'android') {
+                const isReadFileAllow = await RNPermissions.check(
+                    RNPermissions.PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+                );
+                if (isReadFileAllow !== 'granted') {
+                    const granted = await RNPermissions.request(
+                        RNPermissions.PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+                    );
+
+                    if (granted !== 'granted') {
+                        throw new Error('Permission denided');
+                    }
+                }
+            }
+
+            await importBackupFile();
+
+            showMessage({
+                message: strings.View_Settings_Backup_Import_Alert_Sucess,
+                type: 'info',
+            });
+            reset({
+                routes: [{ name: 'Home' }],
+            });
+        } catch (err) {
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
+        } finally {
+            setIsImporting(false);
+        }
+    }, []);
 
     return (
         <Container>
@@ -128,7 +176,16 @@ const Export: React.FC = () => {
                     <Button
                         text={strings.View_Export_Button_ExportBackup}
                         onPress={handleExportBackup}
-                        isLoading={isBackupLoading}
+                        isLoading={isExporting}
+                    />
+
+                    <ExportExplain>
+                        {strings.View_Settings_SettingName_ExportAndInmport}
+                    </ExportExplain>
+                    <Button
+                        text={strings.View_Settings_Button_ImportFile}
+                        onPress={handleImportBackup}
+                        isLoading={isImporting}
                     />
                 </ExportOptionContainer>
             </Content>
