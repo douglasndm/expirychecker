@@ -8,6 +8,13 @@ export const Container = styled.View`
 
 export const Content = styled.ScrollView``;
 
+export const CategoryTitle = styled.Text`
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: ${props => props.theme.colors.productCardText};
+`;
+
 export const ExportOptionContainer = styled.View`
     margin: 10px;
     padding: 20px;

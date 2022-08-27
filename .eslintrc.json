@@ -28,6 +28,7 @@
         "react-hooks"
     ],
     "rules": {
+        "no-restricted-syntax":"off",
         "no-plusplus": "off",
         "no-extra-boolean-cast": 0,
         "react/require-default-props": "off",
