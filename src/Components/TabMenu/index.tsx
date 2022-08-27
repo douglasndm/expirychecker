@@ -1,9 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { StyleSheet, Animated, Easing, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BlurView } from '@react-native-community/blur';
 import remoteConfig from '@react-native-firebase/remote-config';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { Container, IconContainer, Icon, MainIcon, IconRound } from './styles';
 
@@ -13,6 +15,8 @@ interface Props {
 
 const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
     const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const enableBlur = remoteConfig().getValue('enable_app_bar_blur');
 
@@ -53,6 +57,9 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
             case 'AllProducts':
                 showBar();
                 break;
+            case 'Export':
+                showBar();
+                break;
             case 'AddProduct':
                 hideBar();
                 break;
@@ -76,6 +83,9 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
                     break;
                 case 'Stores':
                     navigate('StoreList');
+                    break;
+                case 'Export':
+                    navigate('Export');
                     break;
                 default:
                     navigate('Home');
@@ -145,13 +155,23 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
                     <Icon name="ribbon-outline" isSelected={false} />
                 )}
             </IconContainer>
-            <IconContainer onPress={() => handlePress('Stores')}>
-                {currentRoute === 'StoreList' ? (
-                    <Icon name="list" isSelected />
-                ) : (
-                    <Icon name="list-outline" isSelected={false} />
-                )}
-            </IconContainer>
+            {userPreferences.multiplesStores ? (
+                <IconContainer onPress={() => handlePress('Stores')}>
+                    {currentRoute === 'StoreList' ? (
+                        <Icon name="list" isSelected />
+                    ) : (
+                        <Icon name="list-outline" isSelected={false} />
+                    )}
+                </IconContainer>
+            ) : (
+                <IconContainer onPress={() => handlePress('Export')}>
+                    {currentRoute === 'Export' ? (
+                        <Icon name="download" isSelected />
+                    ) : (
+                        <Icon name="download-outline" isSelected={false} />
+                    )}
+                </IconContainer>
+            )}
         </Container>
     );
 };

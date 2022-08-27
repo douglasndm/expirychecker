@@ -19,3 +19,7 @@ interface exportProps {
     brand?: string | null;
     store?: string;
 }
+
+interface IExcelProduct extends IProduct {
+    lotes: Omit<ILote, 'id'>[];
+}
