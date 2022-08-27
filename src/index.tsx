@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
-import { LogBox, Button } from 'react-native';
+import { LogBox } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import {
@@ -105,12 +105,6 @@ const App: React.FC = () => {
                         >
                             <StatusBar />
                             <Routes />
-                            <Button
-                                title="Javascript Crash Now."
-                                onPress={() => {
-                                    undefinedVariable.notAFunction();
-                                }}
-                            />
                             <AskReview />
                         </NavigationContainer>
                         <FlashMessage duration={7000} />
