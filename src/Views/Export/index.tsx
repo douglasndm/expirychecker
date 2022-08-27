@@ -1,17 +1,21 @@
 import React, { useState, useCallback } from 'react';
+import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import RNPermissions from 'react-native-permissions';
+import remoteConfig from '@react-native-firebase/remote-config';
 
-import { Platform } from 'react-native';
 import strings from '~/Locales';
+
+import { importExcel } from '~/Utils/Export/Excel/Import';
 
 import { exportBackupFile, importBackupFile } from '~/Functions/Backup';
 import { exportToExcel } from '~/Functions/Excel';
 
 import Header from '~/Components/Header';
 import Button from '~/Components/Button';
+import PaddingComponent from '~/Components/PaddingComponent';
 
 import {
     Container,
@@ -23,14 +27,21 @@ import {
     RadioButtonContainer,
     RadioButton,
     RadioButtonText,
+    CategoryTitle,
 } from './styles';
 
 const Export: React.FC = () => {
     const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
+    const enableExcelImport = remoteConfig().getValue('enable_excel_import');
+    const enableExcelExport = remoteConfig().getValue('enable_excel_export');
+    const enableBackupImport = remoteConfig().getValue('enable_backup_import');
+    const enableBackupExport = remoteConfig().getValue('enable_backup_export');
+
     const [checked, setChecked] = React.useState('created_at');
 
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
+    const [isExcelImporting, setIsExcelImporting] = useState<boolean>(false);
 
     const [isExporting, setIsExporting] = useState<boolean>(false);
     const [isImporting, setIsImporting] = useState<boolean>(false);
@@ -80,6 +91,31 @@ const Export: React.FC = () => {
         }
     }, [checked]);
 
+    const handleImportExcel = useCallback(async () => {
+        try {
+            setIsExcelImporting(true);
+
+            await importExcel();
+
+            showMessage({
+                message: strings.View_Settings_Backup_Import_Alert_Sucess,
+                type: 'info',
+            });
+            reset({
+                routes: [{ name: 'Home' }],
+            });
+        } catch (err) {
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
+        } finally {
+            setIsExcelImporting(false);
+        }
+    }, []);
+
     const handleImportBackup = useCallback(async () => {
         try {
             setIsImporting(true);
@@ -126,68 +162,104 @@ const Export: React.FC = () => {
 
             <Content>
                 <ExportOptionContainer>
-                    <ExportExplain>
-                        {strings.View_Export_Explain_Excel}
-                    </ExportExplain>
-                    <RadioButtonGroupContainer>
-                        <SortTitle>{strings.View_Export_SortTitle}</SortTitle>
-                        <RadioButtonContainer>
-                            <RadioButtonText>
-                                {strings.View_Export_SortByCreatedDate}
-                            </RadioButtonText>
-                            <RadioButton
-                                value="created_at"
-                                status={
-                                    checked === 'created_at'
-                                        ? 'checked'
-                                        : 'unchecked'
-                                }
-                                onPress={() => setChecked('created_at')}
-                            />
-                        </RadioButtonContainer>
+                    <CategoryTitle>Excel</CategoryTitle>
 
-                        <RadioButtonContainer>
-                            <RadioButtonText>
-                                {strings.View_Export_SortByExpireDate}
-                            </RadioButtonText>
-                            <RadioButton
-                                value="expire_in"
-                                status={
-                                    checked === 'expire_in'
-                                        ? 'checked'
-                                        : 'unchecked'
-                                }
-                                onPress={() => setChecked('expire_in')}
-                            />
-                        </RadioButtonContainer>
-                    </RadioButtonGroupContainer>
+                    {enableExcelExport.asBoolean() === true && (
+                        <>
+                            <ExportExplain>
+                                {strings.View_Export_Explain_Excel}
+                            </ExportExplain>
+                            <RadioButtonGroupContainer>
+                                <SortTitle>
+                                    {strings.View_Export_SortTitle}
+                                </SortTitle>
+                                <RadioButtonContainer>
+                                    <RadioButtonText>
+                                        {strings.View_Export_SortByCreatedDate}
+                                    </RadioButtonText>
+                                    <RadioButton
+                                        value="created_at"
+                                        status={
+                                            checked === 'created_at'
+                                                ? 'checked'
+                                                : 'unchecked'
+                                        }
+                                        onPress={() => setChecked('created_at')}
+                                    />
+                                </RadioButtonContainer>
 
-                    <Button
-                        text={strings.View_Export_Button_ExportExcel}
-                        onPress={handleExportToExcel}
-                        isLoading={isExcelLoading}
-                    />
+                                <RadioButtonContainer>
+                                    <RadioButtonText>
+                                        {strings.View_Export_SortByExpireDate}
+                                    </RadioButtonText>
+                                    <RadioButton
+                                        value="expire_in"
+                                        status={
+                                            checked === 'expire_in'
+                                                ? 'checked'
+                                                : 'unchecked'
+                                        }
+                                        onPress={() => setChecked('expire_in')}
+                                    />
+                                </RadioButtonContainer>
+                            </RadioButtonGroupContainer>
+
+                            <Button
+                                text={strings.View_Export_Button_ExportExcel}
+                                onPress={handleExportToExcel}
+                                isLoading={isExcelLoading}
+                            />
+                        </>
+                    )}
+
+                    {enableExcelImport.asBoolean() === true && (
+                        <>
+                            <ExportExplain>
+                                {strings.View_Export_Import_Excel}
+                            </ExportExplain>
+
+                            <Button
+                                text={strings.View_Export_Button_ImportExcel}
+                                onPress={handleImportExcel}
+                                isLoading={isExcelImporting}
+                            />
+                        </>
+                    )}
                 </ExportOptionContainer>
 
                 <ExportOptionContainer>
-                    <ExportExplain>
-                        {strings.View_Export_Explain_Backup}
-                    </ExportExplain>
-                    <Button
-                        text={strings.View_Export_Button_ExportBackup}
-                        onPress={handleExportBackup}
-                        isLoading={isExporting}
-                    />
+                    <CategoryTitle>Backup</CategoryTitle>
 
-                    <ExportExplain>
-                        {strings.View_Settings_SettingName_ExportAndInmport}
-                    </ExportExplain>
-                    <Button
-                        text={strings.View_Settings_Button_ImportFile}
-                        onPress={handleImportBackup}
-                        isLoading={isImporting}
-                    />
+                    {enableBackupExport.asBoolean() === true && (
+                        <>
+                            <ExportExplain>
+                                {strings.View_Export_Explain_Backup}
+                            </ExportExplain>
+                            <Button
+                                text={strings.View_Export_Button_ExportBackup}
+                                onPress={handleExportBackup}
+                                isLoading={isExporting}
+                            />
+                        </>
+                    )}
+
+                    {enableBackupImport.asBoolean() === true && (
+                        <>
+                            <ExportExplain>
+                                {
+                                    strings.View_Settings_SettingName_ExportAndInmport
+                                }
+                            </ExportExplain>
+                            <Button
+                                text={strings.View_Settings_Button_ImportFile}
+                                onPress={handleImportBackup}
+                                isLoading={isImporting}
+                            />
+                        </>
+                    )}
                 </ExportOptionContainer>
+
+                <PaddingComponent />
             </Content>
         </Container>
     );
