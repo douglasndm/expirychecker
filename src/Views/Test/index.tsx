@@ -1,8 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, Text } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addDays } from 'date-fns';
-import messaging from '@react-native-firebase/messaging';
 
 import { exists } from 'react-native-fs';
 import realm from '~/Services/Realm';
@@ -18,6 +16,7 @@ import {
 import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
 import { sendNotification } from '~/Services/Notifications';
 import Camera from '~/Components/Camera';
+import { importExcel } from '~/Utils/Export/Excel/Import';
 
 const Test: React.FC = () => {
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
@@ -80,17 +79,13 @@ const Test: React.FC = () => {
         }
     }, []);
 
-    const tokens = useCallback(async () => {
-        const messaing = await messaging().getToken();
-
-        console.log(`Firebase -> ${messaing}`);
+    const handleOpenExcel = useCallback(async () => {
+        try {
+            await importExcel();
+        } catch (err) {
+            console.log(err);
+        }
     }, []);
-
-    const handleDeletePrivacySetting = useCallback(async () => {
-        await AsyncStorage.removeItem('Privacy/canUseIDFA');
-    }, []);
-
-    const handleRevokeNotifications = useCallback(async () => {}, []);
 
     const handleDisableCamera = useCallback(() => {
         setIsCameraEnabled(false);
@@ -149,15 +144,8 @@ const Test: React.FC = () => {
                             />
 
                             <Button
-                                text="Delete privacy setting"
-                                onPress={handleDeletePrivacySetting}
-                            />
-
-                            <Button text="Log messaging id" onPress={tokens} />
-
-                            <Button
-                                text="Revoke notifications"
-                                onPress={handleRevokeNotifications}
+                                text="Open excel"
+                                onPress={handleOpenExcel}
                             />
                         </Category>
                     </ScrollView>

@@ -9,6 +9,7 @@ import { getAllBrands } from '~/Utils/Brands';
 import { shareFile } from './Share';
 import { getAllProducts } from './Products';
 import { getStore } from './Stores';
+import { getAllCategories } from './Category';
 
 function sortProducts(products: Array<exportModel>): Array<exportModel> {
     const lotesSorted = products.sort((p1, p2) => {
@@ -87,6 +88,7 @@ export async function exportToExcel({
     }
 
     const allBrands = await getAllBrands();
+    const allCategories = await getAllCategories();
 
     const excelRows: Array<ExcelRowProps> = [];
 
@@ -94,6 +96,9 @@ export async function exportToExcel({
         const store = await getStore(item.product.store || '');
 
         const brand = allBrands.find(b => b.id === item.product.brand);
+        const category = allCategories.find(
+            cat => cat.id === item.product.categories[0]
+        );
 
         const row: any = {};
 
@@ -101,6 +106,8 @@ export async function exportToExcel({
         row[strings.Function_Excel_ColumnName_ProductCode] =
             item.product.code || '';
         row[strings.Function_Excel_ColumnName_ProductBrand] = brand?.name || '';
+        row[strings.Function_Excel_ColumnName_ProductCategory] =
+            category?.name || '';
         row[strings.Function_Excel_ColumnName_ProductStore] = store?.name;
         row[strings.Function_Excel_ColumnName_BatchName] = item.batch.lote;
         row[strings.Function_Excel_ColumnName_BatchPrice] =
