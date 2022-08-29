@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '~/Locales';
 
@@ -23,7 +24,7 @@ import {
 } from './styles';
 
 const Pro: React.FC = () => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const handleNavigateHome = useCallback(() => {
         navigate('Home');

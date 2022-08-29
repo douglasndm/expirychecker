@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
@@ -26,7 +27,7 @@ interface Props {
 }
 const Edit: React.FC = () => {
     const { params } = useRoute();
-    const { reset } = useNavigation();
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 
 import strings from '../../Locales';
@@ -23,7 +24,7 @@ const PhotoView: React.FC<Props> = () => {
     const { params } = useRoute();
     const routeParams = params as Props;
 
-    const { goBack } = useNavigation();
+    const { goBack } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const loadData = useCallback(async () => {
         setIsLoading(true);

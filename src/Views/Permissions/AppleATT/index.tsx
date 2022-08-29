@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import RNPermissions, { request } from 'react-native-permissions';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '~/Locales';
 
@@ -11,7 +12,7 @@ import Button from '~/Components/Button';
 import { Container, Content, PageTitle, Message } from './styles';
 
 const AppleATT: React.FC = () => {
-    const { reset } = useNavigation();
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const handleContinue = useCallback(async () => {
         let response = null;

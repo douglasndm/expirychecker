@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 import { Button } from 'react-native-paper';
@@ -75,7 +76,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const { productId } = route.params;
 
-    const { navigate, addListener } = useNavigation();
+    const { navigate, addListener } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -291,20 +293,19 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                                         noDrawer
                                     />
 
-                                    {userPreferences.isPRO &&
-                                        !!photoPath && (
-                                            <ImageContainer>
-                                                <ProductImageContainer
-                                                    onPress={handleEnableCamera}
-                                                >
-                                                    <ProductImage
-                                                        source={{
-                                                            uri: `file://${photoPath}`,
-                                                        }}
-                                                    />
-                                                </ProductImageContainer>
-                                            </ImageContainer>
-                                        )}
+                                    {userPreferences.isPRO && !!photoPath && (
+                                        <ImageContainer>
+                                            <ProductImageContainer
+                                                onPress={handleEnableCamera}
+                                            >
+                                                <ProductImage
+                                                    source={{
+                                                        uri: `file://${photoPath}`,
+                                                    }}
+                                                />
+                                            </ProductImageContainer>
+                                        </ImageContainer>
+                                    )}
                                     <InputContainer>
                                         <InputGroup>
                                             <InputTextContainer>

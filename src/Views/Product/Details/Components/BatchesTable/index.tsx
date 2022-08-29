@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
@@ -31,7 +32,7 @@ const BatchesTable: React.FC<BatchesTableProps> = ({
     product_id,
     batches,
 }: BatchesTableProps) => {
-    const { reset } = useNavigation();
+    const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
     const lotes = useMemo(() => batches, [batches]);
 
     const [selectedBatches, setSelectedBatches] = useState<Array<number>>([]);

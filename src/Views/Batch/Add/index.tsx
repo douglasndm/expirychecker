@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import EnvConfig from 'react-native-config';
 import { showMessage } from 'react-native-flash-message';
@@ -62,7 +63,7 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
     const { productId } = route.params;
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
