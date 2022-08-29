@@ -156,7 +156,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
                 </ActionsContainer>
             )}
 
-            <ListProducts products={products} deactiveFloatButton />
+            <ListProducts products={products} />
 
             <FloatButton
                 icon={() => (

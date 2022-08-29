@@ -1,5 +1,6 @@
 import React, { memo, useMemo, useContext, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { isPast, addDays, format } from 'date-fns';//eslint-disable-line
 import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const ItemRow: React.FC<Props> = ({ batch, productId, onLongPress }: Props) => {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const { userPreferences } = useContext(PreferencesContext);
 

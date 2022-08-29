@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import {
     getVersion,
     getBuildNumber,
@@ -36,7 +37,7 @@ import {
 } from './styles';
 
 const About: React.FC = () => {
-    const { goBack } = useNavigation();
+    const { goBack } = useNavigation<StackNavigationProp<RoutesParams>>();
 
     const [pid, setPid] = useState('');
     const [firebaseId, setFirebaseId] = useState('');

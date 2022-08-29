@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { Dialog } from 'react-native-paper';
@@ -45,7 +46,8 @@ interface Props {
 
 const EditBatch: React.FC = () => {
     const route = useRoute();
-    const { reset, navigate } = useNavigation();
+    const { reset, navigate } =
+        useNavigation<StackNavigationProp<RoutesParams>>();
 
     const routeParams = route.params as Props;
 
