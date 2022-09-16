@@ -150,18 +150,22 @@ async function importExcel(): Promise<void> {
                 store = await createStore(tablePStore);
             }
 
+            const lotes: Omit<ILote, 'id'>[] = [];
+
+            if (product[localizedBExp]) {
+                lotes.push({
+                    lote: tableBName,
+                    exp_date: date,
+                    amount: tableBAmount,
+                    price: tableBPrice,
+                    status: tableBStatus,
+                });
+            }
+
             products.push({
                 name: tablePName,
                 code: tablePCode,
-                lotes: [
-                    {
-                        lote: tableBName,
-                        exp_date: date,
-                        amount: tableBAmount,
-                        price: tableBPrice,
-                        status: tableBStatus,
-                    },
-                ],
+                lotes,
                 categories: !!category ? [category.id] : [],
                 brand: !!brand ? brand.id : undefined,
                 store: !!store ? store.id : undefined,
@@ -169,7 +173,7 @@ async function importExcel(): Promise<void> {
         } else {
             const index = findProductIndex({ products, product: exists });
 
-            if (index >= 0) {
+            if (index >= 0 && product[localizedBExp]) {
                 products[index].lotes = [
                     ...products[index].lotes,
                     {
