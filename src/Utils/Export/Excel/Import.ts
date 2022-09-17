@@ -117,6 +117,8 @@ async function importExcel(): Promise<void> {
         date = String(date).split('/').reverse().join('/');
         date = parseISO(date.replace(/\//g, '-'));
 
+        const price = product[localizedBPrice] ? tableBPrice : undefined;
+
         if (!exists) {
             let brand = allBrands.find(
                 bra => bra.name.toLowerCase() === tablePBrand.toLowerCase()
@@ -157,7 +159,7 @@ async function importExcel(): Promise<void> {
                     lote: tableBName,
                     exp_date: date,
                     amount: tableBAmount,
-                    price: tableBPrice,
+                    price,
                     status: tableBStatus,
                 });
             }
@@ -180,7 +182,7 @@ async function importExcel(): Promise<void> {
                         lote: tableBName,
                         exp_date: date,
                         amount: tableBAmount,
-                        price: tableBPrice,
+                        price,
                         status: tableBStatus,
                     },
                 ];
