@@ -1,5 +1,4 @@
 import remoteConfig from '@react-native-firebase/remote-config';
-import crashlytics from '@react-native-firebase/crashlytics';
 
 async function init() {
     try {
@@ -25,9 +24,6 @@ async function init() {
         await remoteConfig().fetchAndActivate();
     } catch (err) {
         if (err instanceof Error) {
-            if (!__DEV__) {
-                crashlytics().recordError(err);
-            }
             console.log(err.message);
         }
     }
