@@ -19,9 +19,15 @@ export async function saveMany(
             const batches = prod.lotes.map(batch => {
                 lastLoteId += 1;
 
+                const batchName =
+                    batch.lote !== 'undefined'
+                        ? batch.lote
+                        : String(lastLoteId);
+
                 return {
                     ...batch,
                     id: lastLoteId,
+                    lote: batchName,
                 };
             });
             const product: IProduct = {
