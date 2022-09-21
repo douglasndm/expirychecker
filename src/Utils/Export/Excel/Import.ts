@@ -136,6 +136,7 @@ async function importExcel(): Promise<void> {
                 tablePBrand !== 'undefined'
             ) {
                 brand = await createBrand(tablePBrand);
+                allBrands.push(brand);
             }
             if (
                 !category &&
@@ -143,6 +144,7 @@ async function importExcel(): Promise<void> {
                 tablePCategory !== 'undefined'
             ) {
                 category = await createCategory(tablePCategory);
+                allCategories.push(category);
             }
             if (
                 !store &&
@@ -150,6 +152,7 @@ async function importExcel(): Promise<void> {
                 tablePStore !== 'undefined'
             ) {
                 store = await createStore(tablePStore);
+                allStores.push(store);
             }
 
             const lotes: Omit<ILote, 'id'>[] = [];
