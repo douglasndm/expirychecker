@@ -1,5 +1,5 @@
 import React from 'react';
-import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
+import { PurchasesPackage } from 'react-native-purchases';
 
 import strings from '~/Locales';
 
@@ -45,11 +45,9 @@ const Card: React.FC<Props> = ({
                 )}
             </FirstLine>
 
-            {pack.packageType !== PACKAGE_TYPE.MONTHLY && (
-                <SubscriptionDescription isSelected={isSelected}>
-                    <TextSubscription>{getPlansString(pack)}</TextSubscription>
-                </SubscriptionDescription>
-            )}
+            <SubscriptionDescription isSelected={isSelected}>
+                <TextSubscription>{getPlansString(pack)}</TextSubscription>
+            </SubscriptionDescription>
         </DetailsContainer>
     );
 };

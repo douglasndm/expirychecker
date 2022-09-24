@@ -233,16 +233,20 @@
     "View_Subscription_AfterFullPrice": "por ano",
 
     "View_Subscription_Monthly_WithIntroText": "Total de {INTRO_PRICE} no primeiro mês e depois {PRICE} mensais",
+    "View_Subscription_Monthly_WithIntroTrialText": "Teste grátis por {DAYS} dias e depois {PRICE} mensais",
     "View_Subscription_Monthly_Text": "Total de {PRICE} mensais",
 
     "View_Subscription_3Months_WithIntroText": "Total de {INTRO_PRICE} no primeiro pagando por 3 meses, e depois {PRICE} a cada 3 meses",
+    "View_Subscription_3Months_WithIntroTrialText": "Teste grátis por {DAYS} dias e depois {PRICE} a cada 3 meses",
     "View_Subscription_3Months_Text": "No plano trimestral com o valor total de {PRICE} a cada 3 meses",
     "View_Subscription_iOS_3Months_Text": "Igual a {PRICE} por mês",
 
     "View_Subscription_AYear_WithIntroText": "Total de {INTRO_PRICE} no primeiro ano e depois {PRICE} a cada ano",
+    "View_Subscription_AYear_WithIntroTrialText": "Teste grátis por {DAYS} dias e depois {PRICE} a cada ano",
     "View_Subscription_AYear_Text": "No plano anual com o valor total de {PRICE} a cada ano",
     "View_Subscription_iOS_AYear_Text": "Igual a {PRICE} por mês",
 
+    "View_Subscription_Disclaim_IntroPrice": "Teste gratuito somente válido para usuários que nunca foram usuários PRO",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
     "View_ProPage_Button_ClickToSignIn": "Continuar para a assinatura",

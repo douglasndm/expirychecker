@@ -262,6 +262,17 @@ const SubscriptionList: React.FC = () => {
                                     })}
                                 </SubscriptionsGroup>
 
+                                {packages.length > 0 &&
+                                    packages[0].product.introPrice && (
+                                        <TextSubscription
+                                            style={{ marginBottom: 10 }}
+                                        >
+                                            {
+                                                strings.View_Subscription_Disclaim_IntroPrice
+                                            }
+                                        </TextSubscription>
+                                    )}
+
                                 {packages.length > 0 && (
                                     <>
                                         <ButtonSubscription
