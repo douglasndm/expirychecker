@@ -121,13 +121,19 @@ async function importExcel(): Promise<void> {
 
         if (!exists) {
             let brand = allBrands.find(
-                bra => bra.name.toLowerCase() === tablePBrand.toLowerCase()
+                bra =>
+                    bra.name.toLowerCase().trim() ===
+                    tablePBrand.toLowerCase().trim()
             );
             let category = allCategories.find(
-                cat => cat.name.toLowerCase() === tablePCategory.toLowerCase()
+                cat =>
+                    cat.name.toLowerCase().trim() ===
+                    tablePCategory.toLowerCase().trim()
             );
             let store = allStores.find(
-                sto => sto.name.toLowerCase() === tablePStore.toLowerCase()
+                sto =>
+                    sto.name.toLowerCase().trim() ===
+                    tablePStore.toLowerCase().trim()
             );
 
             if (
