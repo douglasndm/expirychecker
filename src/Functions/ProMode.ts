@@ -3,6 +3,7 @@ import Purchases, {
     UpgradeInfo,
 } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
+import messaging from '@react-native-firebase/messaging';
 import appsFlyer from 'react-native-appsflyer';
 import EnvConfig from 'react-native-config';
 
@@ -15,6 +16,8 @@ Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
 export async function isSubscriptionActive(): Promise<boolean> {
     const localUserId = await getUserId();
 
+    const firebase = await messaging().getToken();
+
     if (!!localUserId) {
         Purchases.logIn(localUserId);
     }
@@ -24,6 +27,12 @@ export async function isSubscriptionActive(): Promise<boolean> {
             Purchases.setAppsflyerID(id);
         }
     });
+
+    if (firebase) {
+        Purchases.setAttributes({
+            FirebaseMessasingToken: firebase,
+        });
+    }
 
     const purchaserInfo = await Purchases.getPurchaserInfo();
 
