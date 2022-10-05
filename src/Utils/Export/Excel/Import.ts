@@ -70,7 +70,9 @@ async function importExcel(): Promise<void> {
         throw new Error('File path not found');
     }
 
-    const fileRead = await RNFS.readFile(file.fileCopyUri, 'base64');
+    const uri = decodeURIComponent(file.fileCopyUri);
+
+    const fileRead = await RNFS.readFile(uri, 'base64');
 
     const workbook = XLSX.read(fileRead);
     const firstSheet = workbook.SheetNames[0];
