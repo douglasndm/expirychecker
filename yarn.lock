@@ -8414,10 +8414,10 @@ react-native-dialog@^9.1.2:
   resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-9.1.2.tgz#15ba668f6b6937160cf4332399cce34ca6b4df1d"
   integrity sha512-J3TfhvUIfBobSl4LF2sCa2pgXXvk7Ql0OKoBXwbJKAuiPa63WWSg4s0w1Zd3WhUQu/BbizwEXYrWLmizW2tizA==
 
-react-native-document-picker@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-7.1.0.tgz#3b08f8a1a296617f4677e8e834427f63ef28e0d3"
-  integrity sha512-pdGlOYh7YM9X0GCrDJIGNHrwCV/l7QCYGvLya8w4YnJAE3NmM/39lk+pPrbxnkEygifwPqG9R3IBt7ydmPLi/w==
+react-native-document-picker@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-8.1.1.tgz#642bbe25752cc428b96416318f8dc07cef29ee10"
+  integrity sha512-mH0oghd7ndgU9/1meVJdqts1sAkOfUQW1qbrqTTsvR5f2K9r0BAj/X02dve5IBMOMZvlGd7qWrNVuIFg5AUXWg==
   dependencies:
     invariant "^2.2.4"
 
@@ -8439,10 +8439,10 @@ react-native-format-currency@^0.0.3:
   resolved "https://registry.yarnpkg.com/react-native-format-currency/-/react-native-format-currency-0.0.3.tgz#31e2db4c6955bb78e5efb926fb92a2927af47ccb"
   integrity sha512-MLCTyQ+B9DWz85KQZzqsjY+peKYScnemRobTcNb+A6bstmNR8LLK8dx3PAYlwc5ZQ0PMm13XXAqT2sPwp9UKAA==
 
-react-native-fs@^2.18.0:
-  version "2.18.0"
-  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.18.0.tgz#987b99cc90518ef26663a8d60e62104694b41c21"
-  integrity sha512-9iQhkUNnN2JNED0in06JwZy88YEVyIGKWz4KLlQYxa5Y2U0U2AZh9FUHtA04oWj+xt2LlHh0LFPCzhmNsAsUDg==
+react-native-fs@^2.20.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.20.0.tgz#05a9362b473bfc0910772c0acbb73a78dbc810f6"
+  integrity sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ==
   dependencies:
     base-64 "^0.1.0"
     utf8 "^3.0.0"
