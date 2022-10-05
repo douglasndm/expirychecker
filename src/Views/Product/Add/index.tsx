@@ -355,6 +355,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                                 onDuplicateProduct={handleDuplicate}
                                 onCompleteInfo={onCompleteInfo}
                                 BrandsPickerRef={BrandsPickerRef}
+                                selectedStoreId={selectedStore || undefined}
                             />
 
                             <MoreInformationsContainer>
