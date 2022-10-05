@@ -30,7 +30,7 @@ export async function checkIfProductAlreadyExistsByCode({
 
     const results = realm
         .objects('Product')
-        .filtered(`code = "${productCode}"`)
+        .filtered(`code = "${productCode}" AND store = NULL`)
         .slice();
 
     if (results.length > 0) {
@@ -78,6 +78,8 @@ export async function createProduct({
             productCode: product.code,
             productStore: product?.store,
         });
+
+        console.log(productExist);
 
         if (productExist) {
             const productLotes = product.lotes.slice();
