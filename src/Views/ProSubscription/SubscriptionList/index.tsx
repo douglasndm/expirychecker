@@ -132,6 +132,7 @@ const SubscriptionList: React.FC = () => {
             setUserPreferences({
                 ...userPreferences,
                 isPRO: true,
+                disableAds: true,
             });
 
             showMessage({
