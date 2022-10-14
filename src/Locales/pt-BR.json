@@ -380,7 +380,7 @@
     "View_Export_SortTitle": "Escolha como organizar o arquivo",
     "View_Export_SortByCreatedDate": "Por ordem de cadastro",
     "View_Export_SortByExpireDate": "Por ordem de validade",
-    "View_Export_Import_Excel": "Importe uma planilha Excel gerada pelo aplicativo e carregue todos os seus produtos novamente no aplicativo",
+    "View_Export_Import_Excel": "Importe uma planilha Excel gerada pelo aplicativo e carregue todos os seus produtos novamente no aplicativo. Atenção! todos os campos da planilha devem está no formato de texto, inclusive a data de vencimento do lote, recomendamos utilizar uma planilha já gerada pelo aplicado para ter o modelo de como devem está os dados, caso algum campo da planilha não estiver no formato de texto o aplicativo não fará a importação.",
     "View_Export_Button_ImportExcel": "Importar do Excel",
     "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
     "View_Export_Button_ExportExcel": "Exportar para Excel",
