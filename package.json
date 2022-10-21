@@ -66,7 +66,7 @@
     "react-native-purchases": "^4.6.1",
     "react-native-push-notification": "^8.1.0",
     "react-native-qrcode-scanner": "^1.5.1",
-    "react-native-reanimated": "^2.2.4",
+    "react-native-reanimated": "^2.10.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.9.0",
     "react-native-share": "^7.2.0",
