@@ -11,7 +11,9 @@ import { getUserId } from './User';
 import { setDisableAds, setEnableProVersion } from './Settings';
 
 Purchases.setDebugLogsEnabled(true);
-Purchases.setup(EnvConfig.REVENUECAT_PUBLIC_APP_ID);
+Purchases.configure({
+    apiKey: EnvConfig.REVENUECAT_PUBLIC_APP_ID,
+});
 
 export async function isSubscriptionActive(): Promise<boolean> {
     const localUserId = await getUserId();
@@ -34,7 +36,7 @@ export async function isSubscriptionActive(): Promise<boolean> {
         });
     }
 
-    const purchaserInfo = await Purchases.getPurchaserInfo();
+    const purchaserInfo = await Purchases.getCustomerInfo();
 
     if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
         await setEnableProVersion(true);
@@ -91,7 +93,7 @@ export async function makeSubscription(
     }
 
     try {
-        const prevPurchases = await Purchases.getPurchaserInfo();
+        const prevPurchases = await Purchases.getCustomerInfo();
 
         const upgrade: UpgradeInfo | null =
             prevPurchases.activeSubscriptions.length > 0
@@ -128,7 +130,7 @@ export async function makeSubscription(
 }
 
 export async function RestorePurchasers(): Promise<void> {
-    const restore = await Purchases.restoreTransactions();
+    const restore = await Purchases.restorePurchases();
     // ... check restored purchaserInfo to see if entitlement is now active
 
     if (restore.activeSubscriptions.length > 0) {
