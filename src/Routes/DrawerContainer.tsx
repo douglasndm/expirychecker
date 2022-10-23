@@ -10,11 +10,9 @@ const Drawer = createDrawerNavigator();
 const DrawerContainer: React.FC = () => {
     return (
         <Drawer.Navigator
-            drawerType="slide"
-            openByDefault={false}
-            keyboardDismissMode="on-drag"
-            initialRouteName="Home"
-            drawerContent={(props) => <DrawerMenu {...props} />}
+            defaultStatus="closed"
+            screenOptions={{ headerShown: false }}
+            drawerContent={props => <DrawerMenu {...props} />}
         >
             <Drawer.Screen name="HomePage" component={Routes} />
         </Drawer.Navigator>
