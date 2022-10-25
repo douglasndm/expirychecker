@@ -31,14 +31,16 @@ const Interstitial = forwardRef<IInterstitialRef>((props, ref) => {
     const [adReady, setAdReady] = useState(false);
 
     useEffect(() => {
-        interstitialAd.addAdEventListener(AdEventType.LOADED, () => {
-            setAdReady(true);
-        });
-        interstitialAd.addAdEventListener(AdEventType.CLOSED, () => {
-            setAdReady(false);
-        });
-        interstitialAd.addAdEventListener(AdEventType.ERROR, () => {
-            setAdReady(false);
+        const eventListener = interstitialAd.onAdEvent(type => {
+            if (type === AdEventType.LOADED) {
+                setAdReady(true);
+            }
+            if (type === AdEventType.CLOSED) {
+                setAdReady(false);
+            }
+            if (type === AdEventType.ERROR) {
+                setAdReady(false);
+            }
         });
 
         // Start loading the interstitial straight away
@@ -46,7 +48,7 @@ const Interstitial = forwardRef<IInterstitialRef>((props, ref) => {
 
         // Unsubscribe from events on unmount
         return () => {
-            interstitialAd.removeAllListeners();
+            eventListener();
         };
     }, []);
 
