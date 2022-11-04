@@ -9,6 +9,7 @@ import GenericButton from '../Button';
 
 import {
     Container,
+    Content,
     BarCodeTitle,
     CameraContainer,
     Camera,
@@ -82,38 +83,40 @@ const BarCodeReader: React.FC<Props> = ({ onCodeRead, onClose }: Props) => {
 
     return (
         <Container>
-            <BarCodeTitle>{strings.BarCodeReader_PageTitle}</BarCodeTitle>
-            {cameraAllowed ? (
-                <CameraContainer>
-                    <Camera onRead={handleCodeRead} />
-                </CameraContainer>
-            ) : (
-                <AuthorizationCameraContainer>
-                    {isCameraBlocked ? (
-                        <AuthorizationCameraText>
-                            {strings.BarCodeReader_PermissionBlocked}
-                        </AuthorizationCameraText>
-                    ) : (
-                        <AuthorizationCameraText>
-                            {strings.BarCodeReader_PermissionRequired}
-                        </AuthorizationCameraText>
-                    )}
+            <Content>
+                <BarCodeTitle>{strings.BarCodeReader_PageTitle}</BarCodeTitle>
+                {cameraAllowed ? (
+                    <CameraContainer>
+                        <Camera onRead={handleCodeRead} />
+                    </CameraContainer>
+                ) : (
+                    <AuthorizationCameraContainer>
+                        {isCameraBlocked ? (
+                            <AuthorizationCameraText>
+                                {strings.BarCodeReader_PermissionBlocked}
+                            </AuthorizationCameraText>
+                        ) : (
+                            <AuthorizationCameraText>
+                                {strings.BarCodeReader_PermissionRequired}
+                            </AuthorizationCameraText>
+                        )}
 
-                    {!isCameraBlocked && (
-                        <GenericButton
-                            text={
-                                strings.BarCodeReader_Button_RequestPermission
-                            }
-                            onPress={() => requestCameraAuthorization()}
-                        />
-                    )}
-                </AuthorizationCameraContainer>
-            )}
+                        {!isCameraBlocked && (
+                            <GenericButton
+                                text={
+                                    strings.BarCodeReader_Button_RequestPermission
+                                }
+                                onPress={() => requestCameraAuthorization()}
+                            />
+                        )}
+                    </AuthorizationCameraContainer>
+                )}
 
-            <GenericButton
-                text={strings.BarCodeReader_CloseButton}
-                onPress={onClose}
-            />
+                <GenericButton
+                    text={strings.BarCodeReader_CloseButton}
+                    onPress={onClose}
+                />
+            </Content>
         </Container>
     );
 };
