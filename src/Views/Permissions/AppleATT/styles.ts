@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     padding: 15px 10px;
 
@@ -11,7 +11,9 @@ export const Container = styled.View`
     `}
 `;
 
-export const Content = styled.View``;
+export const Content = styled.View`
+    margin: 0 15px;
+`;
 
 export const PageTitle = styled.Text`
     font-family: 'Open Sans';

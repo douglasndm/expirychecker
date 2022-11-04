@@ -5,13 +5,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 import { isIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     background: ${({ theme }) => theme.colors.background};
 `;
 
 export const ScrollView = styled.ScrollView`
-    padding: 30px 0;
+    padding: 0 0 30px 0;
+
     ${isIphoneX() &&
     css`
         padding-top: ${getStatusBarHeight() + 20}px;
