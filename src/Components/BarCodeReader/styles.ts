@@ -6,6 +6,10 @@ export const Container = styled.SafeAreaView`
     background: ${props => props.theme.colors.background};
 `;
 
+export const Content = styled.View`
+    flex: 1;
+`;
+
 export const BarCodeTitle = styled.Text`
     color: ${props => props.theme.colors.text};
     font-size: 28px;
@@ -13,7 +17,7 @@ export const BarCodeTitle = styled.Text`
 `;
 
 export const CameraContainer = styled.View`
-    flex: 1;
+    height: 70%;
 `;
 
 export const Camera = styled(QRCodeScanner).attrs(props => ({
