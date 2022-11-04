@@ -3,11 +3,11 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 
 export const Container = styled.SafeAreaView`
     flex: 1;
-    background: ${(props) => props.theme.colors.background};
+    background: ${props => props.theme.colors.background};
 `;
 
 export const BarCodeTitle = styled.Text`
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     font-size: 28px;
     margin: 10px;
 `;
@@ -16,7 +16,7 @@ export const CameraContainer = styled.View`
     flex: 1;
 `;
 
-export const Camera = styled(QRCodeScanner).attrs((props) => ({
+export const Camera = styled(QRCodeScanner).attrs(props => ({
     showMarker: true,
     cameraType: 'back',
     fadeIn: true,
@@ -35,6 +35,6 @@ export const AuthorizationCameraContainer = styled.View`
 
 export const AuthorizationCameraText = styled.Text`
     font-size: 22px;
-    color: ${(props) => props.theme.colors.text};
+    color: ${props => props.theme.colors.text};
     margin: 0 15px;
 `;

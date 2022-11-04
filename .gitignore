@@ -7,6 +7,7 @@ app.json
 java_pid24724.hprof
 .hprof
 *.hprof
+.cxx/
 
 # react-native-config codegen
 ios/tmp.xcconfig
@@ -34,6 +35,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -65,9 +67,11 @@ buck-out/
 */fastlane/report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
+**/fastlane/test_output
 
 # Bundle artifact
 *.jsbundle
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
+/vendor/bundle/
