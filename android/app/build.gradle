@@ -148,7 +148,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 190
+        versionCode 192
         versionName "1.13.4"
 
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
@@ -325,12 +325,6 @@ dependencies {
         } else {
             implementation jscFlavor
         }
-
-        implementation 'com.google.ads.mediation:inmobi:10.0.3.0'
-        implementation 'com.google.ads.mediation:vungle:6.10.4.0'
-
-        // Mediation Test Suite
-        // implementation 'com.google.android.ads:mediation-test-suite:1.5.0'
 
         // this 2 implementaions fix crash on some android devices
         implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
