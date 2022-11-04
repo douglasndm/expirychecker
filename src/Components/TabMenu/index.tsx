@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {
+    useState,
+    useCallback,
+    useEffect,
+    useContext,
+    useMemo,
+} from 'react';
 import { StyleSheet, Animated, Easing, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -18,7 +24,17 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
 
     const { userPreferences } = useContext(PreferencesContext);
 
-    const enableBlur = remoteConfig().getValue('enable_app_bar_blur');
+    const enableBlurRemote = remoteConfig().getValue('enable_app_bar_blur');
+
+    const enableBlur = useMemo(() => {
+        if (enableBlurRemote.asBoolean() === true) {
+            if (Platform.OS === 'ios') {
+                return true;
+            }
+        }
+
+        return false;
+    }, [enableBlurRemote]);
 
     const positionY = useState(new Animated.Value(0))[0];
 
@@ -113,9 +129,9 @@ const TabMenu: React.FC<Props> = ({ currentRoute }: Props) => {
             style={{
                 transform: [{ translateX: 0 }, { translateY: positionY }],
             }}
-            disableTransparency={!enableBlur.asBoolean() === true}
+            disableTransparency={!enableBlurRemote.asBoolean()}
         >
-            {enableBlur.asBoolean() === true && (
+            {enableBlur && (
                 <BlurView
                     style={styles.absolute}
                     blurType="light"
