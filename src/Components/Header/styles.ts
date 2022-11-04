@@ -19,6 +19,12 @@ export const HeaderContainer = styled(RectButton)`
         padding: 20px 20px 0px 0px;
     `}
 
+    ${Dimensions.get('window').height > 920 &&
+    Platform.OS === 'ios' &&
+    css`
+        padding: 40px 30px 15px 0px;
+    `}
+
     justify-content: flex-start;
     align-items: center;
 
