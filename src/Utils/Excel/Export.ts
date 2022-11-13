@@ -6,10 +6,10 @@ import strings from '~/Locales';
 
 import { getAllBrands } from '~/Utils/Brands';
 
-import { shareFile } from './Share';
-import { getAllProducts } from './Products';
-import { getStore } from './Stores';
-import { getAllCategories } from './Category';
+import { shareFile } from '~/Functions/Share';
+import { getAllProducts } from '~/Functions/Products';
+import { getStore } from '~/Functions/Stores';
+import { getAllCategories } from '~/Functions/Category';
 
 function sortProducts(products: Array<exportModel>): Array<exportModel> {
     const lotesSorted = products.sort((p1, p2) => {
@@ -19,6 +19,51 @@ function sortProducts(products: Array<exportModel>): Array<exportModel> {
     });
 
     return lotesSorted;
+}
+
+async function saveSheet(worksheet: XLSX.WorkSheet): Promise<void> {
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        strings.Function_Excel_Workbook_Name
+    );
+
+    const wbout = XLSX.write(workbook, {
+        type: 'base64',
+        bookType: 'xlsx',
+    });
+
+    await shareFile({
+        fileAsString: wbout,
+        fileName: strings.Function_Excel_filename,
+        fileExtesion: 'xlsx',
+        encoding: 'base64',
+    });
+}
+
+export async function generateEmptyExcel(): Promise<void> {
+    const excelRows: Array<ExcelRowProps> = [];
+
+    const row: any = {};
+
+    row[strings.Function_Excel_ColumnName_ProductName] = '';
+    row[strings.Function_Excel_ColumnName_ProductCode] = '';
+    row[strings.Function_Excel_ColumnName_ProductBrand] = '';
+    row[strings.Function_Excel_ColumnName_ProductCategory] = '';
+    row[strings.Function_Excel_ColumnName_ProductStore] = '';
+    row[strings.Function_Excel_ColumnName_BatchName] = '';
+    row[strings.Function_Excel_ColumnName_BatchPrice] = '';
+    row[strings.Function_Excel_ColumnName_BatchAmount] = '';
+    row[strings.Function_Excel_ColumnName_BatchExpDate] = '';
+    row[strings.Function_Excel_ColumnName_Status] = '';
+
+    excelRows.push(row);
+
+    const worksheet = XLSX.utils.json_to_sheet(excelRows);
+
+    await saveSheet(worksheet);
 }
 
 export async function exportToExcel({
@@ -34,8 +79,6 @@ export async function exportToExcel({
     }
 
     const excelExport: Array<exportModel> = [];
-
-    const workbook = XLSX.utils.book_new();
 
     const allProducts = await getAllProducts({});
 
@@ -92,11 +135,11 @@ export async function exportToExcel({
 
     const excelRows: Array<ExcelRowProps> = [];
 
-    for (const item of sortedProducts) {
-        const store = await getStore(item.product.store || '');
+    for await (const item of sortedProducts) {
+        const findedStore = await getStore(item.product.store || '');
 
-        const brand = allBrands.find(b => b.id === item.product.brand);
-        const category = allCategories.find(
+        const findedBrand = allBrands.find(b => b.id === item.product.brand);
+        const findedCategory = allCategories.find(
             cat => cat.id === item.product.categories[0]
         );
 
@@ -105,10 +148,11 @@ export async function exportToExcel({
         row[strings.Function_Excel_ColumnName_ProductName] = item.product.name;
         row[strings.Function_Excel_ColumnName_ProductCode] =
             item.product.code || '';
-        row[strings.Function_Excel_ColumnName_ProductBrand] = brand?.name || '';
+        row[strings.Function_Excel_ColumnName_ProductBrand] =
+            findedBrand?.name || '';
         row[strings.Function_Excel_ColumnName_ProductCategory] =
-            category?.name || '';
-        row[strings.Function_Excel_ColumnName_ProductStore] = store?.name;
+            findedCategory?.name || '';
+        row[strings.Function_Excel_ColumnName_ProductStore] = findedStore?.name;
         row[strings.Function_Excel_ColumnName_BatchName] = item.batch.lote;
         row[strings.Function_Excel_ColumnName_BatchPrice] =
             item.batch.price || 0;
@@ -128,21 +172,5 @@ export async function exportToExcel({
 
     const worksheet = XLSX.utils.json_to_sheet(excelRows);
 
-    XLSX.utils.book_append_sheet(
-        workbook,
-        worksheet,
-        strings.Function_Excel_Workbook_Name
-    );
-
-    const wbout = XLSX.write(workbook, {
-        type: 'base64',
-        bookType: 'xlsx',
-    });
-
-    await shareFile({
-        fileAsString: wbout,
-        fileName: strings.Function_Excel_filename,
-        fileExtesion: 'xlsx',
-        encoding: 'base64',
-    });
+    await saveSheet(worksheet);
 }

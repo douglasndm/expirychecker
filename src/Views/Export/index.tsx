@@ -8,10 +8,10 @@ import remoteConfig from '@react-native-firebase/remote-config';
 
 import strings from '~/Locales';
 
-import { importExcel } from '~/Utils/Export/Excel/Import';
+import { importExcel } from '~/Utils/Excel/Import';
+import { exportToExcel, generateEmptyExcel } from '~/Utils/Excel/Export';
 
 import { exportBackupFile, importBackupFile } from '~/Functions/Backup';
-import { exportToExcel } from '~/Functions/Excel';
 
 import Header from '~/Components/Header';
 import Button from '~/Components/Button';
@@ -28,6 +28,8 @@ import {
     RadioButton,
     RadioButtonText,
     CategoryTitle,
+    LinkEmptyExcel,
+    Loading,
 } from './styles';
 
 const Export: React.FC = () => {
@@ -42,6 +44,8 @@ const Export: React.FC = () => {
 
     const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
     const [isExcelImporting, setIsExcelImporting] = useState<boolean>(false);
+    const [isExcelModelGenerating, setIsExcelModelGenerating] =
+        useState<boolean>(false);
 
     const [isExporting, setIsExporting] = useState<boolean>(false);
     const [isImporting, setIsImporting] = useState<boolean>(false);
@@ -156,6 +160,23 @@ const Export: React.FC = () => {
         }
     }, []);
 
+    const handleExcelModelGenerete = useCallback(async () => {
+        try {
+            setIsExcelModelGenerating(true);
+
+            await generateEmptyExcel();
+        } catch (err) {
+            if (err instanceof Error) {
+                showMessage({
+                    message: err.message,
+                    type: 'danger',
+                });
+            }
+        } finally {
+            setIsExcelModelGenerating(false);
+        }
+    }, []);
+
     return (
         <Container>
             <Header title={strings.View_Export_PageTitle} noDrawer />
@@ -223,6 +244,18 @@ const Export: React.FC = () => {
                                 onPress={handleImportExcel}
                                 isLoading={isExcelImporting}
                             />
+
+                            {isExcelModelGenerating ? (
+                                <Loading />
+                            ) : (
+                                <LinkEmptyExcel
+                                    onPress={handleExcelModelGenerete}
+                                >
+                                    {
+                                        strings.View_Export_Excel_GenerateEmptyExcel
+                                    }
+                                </LinkEmptyExcel>
+                            )}
                         </>
                     )}
                 </ExportOptionContainer>

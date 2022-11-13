@@ -7,6 +7,7 @@ import strings from '~/Locales';
 
 import { createBrand, getAllBrands } from '~/Utils/Brands';
 import { getAllStores } from '~/Utils/Stores/Find';
+
 import { createCategory, getAllCategories } from '~/Functions/Category';
 import { saveMany } from '~/Functions/Products/index';
 import { createStore } from '~/Functions/Stores';
@@ -74,11 +75,15 @@ async function importExcel(): Promise<void> {
 
     const fileRead = await RNFS.readFile(uri, 'base64');
 
-    const workbook = XLSX.read(fileRead);
+    const workbook = XLSX.read(fileRead, {
+        dateNF: 'yyyy"-"mm"-"dd',
+    });
     const firstSheet = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[firstSheet];
 
-    const data = XLSX.utils.sheet_to_json<ExcelRowProps>(worksheet);
+    const data = XLSX.utils.sheet_to_json<ExcelRowProps>(worksheet, {
+        raw: false,
+    });
 
     const products: Omit<IExcelProduct, 'id'>[] = [];
 
@@ -99,13 +104,15 @@ async function importExcel(): Promise<void> {
         const tableBStatus = String(product[localizedBStatus]);
 
         const exists = products.find(p => {
-            if (p.code && tablePCode) {
-                if (p.code === tablePCode) {
-                    return true;
+            if (tablePCode !== 'undefined') {
+                if (p.code && tablePCode) {
+                    if (p.code === tablePCode) {
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
             }
-            if (tablePName) {
+            if (tablePName && tablePName !== 'undefined') {
                 if (p.name === tablePName) {
                     return true;
                 }
@@ -116,8 +123,15 @@ async function importExcel(): Promise<void> {
         });
 
         let date = product[localizedBExp];
-        date = String(date).split('/').reverse().join('/');
-        date = parseISO(date.replace(/\//g, '-'));
+        date = parseISO(date);
+
+        if (isNaN(date)) {
+            date = String(product[localizedBExp])
+                .split('/')
+                .reverse()
+                .join('/');
+            date = parseISO(date.replace(/\//g, '-'));
+        }
 
         const price = product[localizedBPrice] ? tableBPrice : undefined;
 

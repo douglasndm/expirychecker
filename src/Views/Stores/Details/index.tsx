@@ -6,12 +6,13 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { exportToExcel } from '~/Utils/Excel/Export';
+
 import { getAllProductsByStore, getStore } from '~/Functions/Stores';
 import {
     sortProductsByFisrtLoteExpDate,
     sortProductsLotesByLotesExpDate,
 } from '~/Functions/Products';
-import { exportToExcel } from '~/Functions/Excel';
 
 import Loading from '~/Components/Loading';
 import Header from '~/Components/Header';

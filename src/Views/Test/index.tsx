@@ -16,7 +16,6 @@ import {
 import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
 import { sendNotification } from '~/Services/Notifications';
 import Camera from '~/Components/Camera';
-import { importExcel } from '~/Utils/Export/Excel/Import';
 
 const Test: React.FC = () => {
     const [isCameraEnabled, setIsCameraEnabled] = useState(false);
@@ -79,14 +78,6 @@ const Test: React.FC = () => {
         }
     }, []);
 
-    const handleOpenExcel = useCallback(async () => {
-        try {
-            await importExcel();
-        } catch (err) {
-            console.log(err);
-        }
-    }, []);
-
     const handleDisableCamera = useCallback(() => {
         setIsCameraEnabled(false);
     }, []);
@@ -141,11 +132,6 @@ const Test: React.FC = () => {
                             <Button
                                 text="Throw notification"
                                 onPress={handleNotification}
-                            />
-
-                            <Button
-                                text="Open excel"
-                                onPress={handleOpenExcel}
                             />
                         </Category>
                     </ScrollView>
