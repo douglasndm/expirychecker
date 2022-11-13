@@ -8685,10 +8685,10 @@ react-localization@^1.0.17:
   dependencies:
     localized-strings "^0.2.0"
 
-react-native-appsflyer@^6.9.2:
-  version "6.9.2"
-  resolved "https://registry.yarnpkg.com/react-native-appsflyer/-/react-native-appsflyer-6.9.2.tgz#0b6da238967f4470697d771253ebb6ea395468dd"
-  integrity sha512-9l+9oW9EQ4tGsjyZZ25TQEtu6TQXiGdWB4YDOU/V6jjxX3IG3s1ZyPqgwlWWG9kqSNk8ZnX0Yy0f4LX4ftnxIQ==
+react-native-adjust@^4.32.0:
+  version "4.32.0"
+  resolved "https://registry.yarnpkg.com/react-native-adjust/-/react-native-adjust-4.32.0.tgz#8bbcd350862f2925da416cccd5f03810cb4698cd"
+  integrity sha512-Ipd56bMzvdWPLXPsac19bkA/2Y4uJTa4+/I3dGbKVWKkP4gPUR2oZlT04bWz9B1HWmKeoyrSqGdEdIyKVtyvlw==
 
 react-native-background-fetch@^4.1.3:
   version "4.1.3"
@@ -8999,10 +8999,10 @@ react-native-zip-archive@^6.0.3:
   resolved "https://registry.yarnpkg.com/react-native-zip-archive/-/react-native-zip-archive-6.0.3.tgz#19dad30565b068b352c55048c8c535a6195f0b46"
   integrity sha512-EBJJV+owqD8ibBwYvEuvtBWlstHQUaN7QOJbc7shWwtJEgxayRbyVv5gGtUGTnMO2wX+dav+3egHX3s7GacRyA==
 
-react-native@0.70.4:
-  version "0.70.4"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.70.4.tgz#f2a3a7996431a47a45ce1f5097352c5721417516"
-  integrity sha512-1e4jWotS20AJ/4lGVkZQs2wE0PvCpIRmPQEQ1FyH7wdyuewFFIxbUHqy6vAj1JWVFfAzbDakOQofrIkkHWLqNA==
+react-native@0.70.5:
+  version "0.70.5"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.70.5.tgz#f60540b21d338891086e0a834e331c124dd1f55c"
+  integrity sha512-5NZM80LC3L+TIgQX/09yiyy48S73wMgpIgN5cCv3XTMR394+KpDI3rBZGH4aIgWWuwijz31YYVF5504+9n2Zfw==
   dependencies:
     "@jest/create-cache-key-function" "^29.0.3"
     "@react-native-community/cli" "9.2.1"

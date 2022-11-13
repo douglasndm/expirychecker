@@ -4,8 +4,8 @@ import Purchases, {
 } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
-import appsFlyer from 'react-native-appsflyer';
 import EnvConfig from 'react-native-config';
+import { Adjust, AdjustEvent, AdjustConfig } from 'react-native-adjust';
 
 import { getUserId } from './User';
 import { setDisableAds, setEnableProVersion } from './Settings';
@@ -16,38 +16,38 @@ Purchases.configure({
 });
 
 export async function isSubscriptionActive(): Promise<boolean> {
-    const localUserId = await getUserId();
+    try {
+        const localUserId = await getUserId();
 
-    const firebase = await messaging().getToken();
+        const firebase = await messaging().getToken();
 
-    if (!!localUserId) {
-        Purchases.logIn(localUserId);
-    }
-
-    appsFlyer.getAppsFlyerUID((err, id) => {
-        if (!err) {
-            Purchases.setAppsflyerID(id);
+        if (!!localUserId) {
+            Purchases.logIn(localUserId);
         }
-    });
 
-    if (firebase) {
-        Purchases.setAttributes({
-            FirebaseMessasingToken: firebase,
-        });
-    }
+        if (firebase) {
+            Purchases.setAttributes({
+                FirebaseMessasingToken: firebase,
+            });
+        }
 
-    const purchaserInfo = await Purchases.getCustomerInfo();
+        const purchaserInfo = await Purchases.getCustomerInfo();
 
-    if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
-        await setEnableProVersion(true);
-        return true;
+        if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
+            await setEnableProVersion(true);
+            return true;
+        }
+        if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
+            await setDisableAds(true);
+        } else {
+            await setDisableAds(false);
+        }
+        await setEnableProVersion(false);
+    } catch (err) {
+        if (err instanceof Error) {
+            console.log(err.message);
+        }
     }
-    if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
-        await setDisableAds(true);
-    } else {
-        await setDisableAds(false);
-    }
-    await setEnableProVersion(false);
     return false;
 }
 
@@ -102,20 +102,26 @@ export async function makeSubscription(
                   }
                 : null;
 
-        const {
-            purchaserInfo,
-            // productIdentifier,
-        } = await Purchases.purchasePackage(purchasePackage, upgrade);
+        const { productIdentifier, customerInfo } =
+            await Purchases.purchasePackage(purchasePackage, upgrade);
 
-        // console.log(productIdentifier);
-        // console.log(purchaserInfo);
-        if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
+        if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
             await Analytics().logEvent('user_subscribed_successfully');
+
+            const adjustEvent = new AdjustEvent(
+                `PRO_Subscription_${productIdentifier}`
+            );
+
+            adjustEvent.setRevenue(
+                purchasePackage.product.price,
+                purchasePackage.product.currencyCode
+            );
+            Adjust.trackEvent(adjustEvent);
 
             await setEnableProVersion(true);
         }
 
-        if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
+        if (typeof customerInfo.entitlements.active.noads !== 'undefined') {
             await setDisableAds(true);
         }
     } catch (e) {
