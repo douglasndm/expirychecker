@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
@@ -76,8 +76,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
     const { productId } = route.params;
 
-    const { navigate, addListener } =
+    const { navigate, addListener, dispatch } =
         useNavigation<StackNavigationProp<RoutesParams>>();
+
     const theme = useTheme();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -189,10 +190,21 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
                 photo: photoFileName,
             });
 
-            navigate('Success', {
-                productId,
-                type: 'edit_product',
-            });
+            if (userPreferences.isPRO) {
+                navigate('ProductDetails', {
+                    id: productId,
+                });
+
+                showMessage({
+                    message: strings.View_Success_ProductUpdatedDescription,
+                    type: 'info',
+                });
+            } else {
+                navigate('Success', {
+                    productId,
+                    type: 'edit_product',
+                });
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -210,6 +222,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         selectedBrand,
         selectedCategory,
         selectedStore,
+        userPreferences.isPRO,
     ]);
 
     const handleOnCodeRead = useCallback((codeRead: string) => {
@@ -254,9 +267,19 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
         try {
             await deleteProduct(productId);
 
-            navigate('Success', {
-                type: 'delete_product',
-            });
+            if (userPreferences.isPRO) {
+                const popAction = StackActions.pop(3);
+                dispatch(popAction);
+
+                showMessage({
+                    message: strings.View_Success_ProductDeletedDescription,
+                    type: 'info',
+                });
+            } else {
+                navigate('Success', {
+                    type: 'delete_product',
+                });
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({

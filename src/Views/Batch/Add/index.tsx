@@ -117,10 +117,21 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
                 await interstitialAd.show();
             }
 
-            navigate('Success', {
-                type: 'create_batch',
-                productId,
-            });
+            if (userPreferences.isPRO) {
+                navigate('ProductDetails', {
+                    id: productId,
+                });
+
+                showMessage({
+                    message: strings.View_Success_BatchCreated,
+                    type: 'info',
+                });
+            } else {
+                navigate('Success', {
+                    type: 'create_batch',
+                    productId,
+                });
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({

@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    useContext,
+} from 'react';
 import { View, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -8,6 +14,8 @@ import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
 import strings from '~/Locales';
+
+import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { updateLote, deleteLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';
@@ -48,6 +56,8 @@ const EditBatch: React.FC = () => {
     const route = useRoute();
     const { reset, navigate } =
         useNavigation<StackNavigationProp<RoutesParams>>();
+
+    const { userPreferences } = useContext(PreferencesContext);
 
     const routeParams = route.params as Props;
 
@@ -140,10 +150,21 @@ const EditBatch: React.FC = () => {
                 status: tratado ? 'Tratado' : 'Não tratado',
             });
 
-            navigate('Success', {
-                productId,
-                type: 'edit_batch',
-            });
+            if (userPreferences.isPRO) {
+                navigate('ProductDetails', {
+                    id: productId,
+                });
+
+                showMessage({
+                    message: strings.View_Success_BatchUpdatedDescription,
+                    type: 'info',
+                });
+            } else {
+                navigate('Success', {
+                    productId,
+                    type: 'edit_batch',
+                });
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -157,13 +178,28 @@ const EditBatch: React.FC = () => {
         try {
             await deleteLote(loteId);
 
-            reset({
-                index: 1,
-                routes: [
-                    { name: 'Home' },
-                    { name: 'Success', params: { type: 'delete_batch' } },
-                ],
-            });
+            if (userPreferences.isPRO) {
+                reset({
+                    index: 1,
+                    routes: [
+                        { name: 'Home' },
+                        { name: 'ProductDetails', params: { id: productId } },
+                    ],
+                });
+
+                showMessage({
+                    message: strings.View_Success_BatchDeletedDescription,
+                    type: 'info',
+                });
+            } else {
+                reset({
+                    index: 1,
+                    routes: [
+                        { name: 'Home' },
+                        { name: 'Success', params: { type: 'delete_batch' } },
+                    ],
+                });
+            }
         } catch (err) {
             if (err instanceof Error)
                 showMessage({
@@ -171,7 +207,7 @@ const EditBatch: React.FC = () => {
                     type: 'danger',
                 });
         }
-    }, [loteId, reset]);
+    }, [loteId, productId, reset, userPreferences.isPRO]);
 
     const handleAmountChange = useCallback(value => {
         const regex = /^[0-9\b]+$/;

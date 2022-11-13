@@ -65,7 +65,7 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    const { navigate, push, goBack, addListener } =
+    const { navigate, push, goBack, addListener, reset } =
         useNavigation<StackNavigationProp<RoutesParams>>();
 
     const productId = useMemo(() => {
@@ -101,6 +101,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
         setIsLoading(true);
         try {
             const result = await getProductById(productId);
+
+            // When the product doesn't exists it will reset the view for app get new data
+            if (!result) {
+                reset({
+                    routes: [{ name: 'Home' }],
+                });
+                return;
+            }
 
             if (result.photo) {
                 const imagePath = await getProductImagePath(productId);
