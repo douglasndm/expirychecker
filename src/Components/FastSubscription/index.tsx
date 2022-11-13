@@ -54,11 +54,11 @@ const FastSubscription: React.FC = () => {
         let string = '';
 
         if (monthlyPlan) {
-            const { price_string } = monthlyPlan.product;
+            const { priceString } = monthlyPlan.product;
 
             string = strings.Component_FastSub_Price.replace(
                 '{PRICE}',
-                price_string
+                priceString
             );
         }
         return string;
