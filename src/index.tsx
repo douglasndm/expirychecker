@@ -12,12 +12,13 @@ import Analyticts from '@react-native-firebase/analytics';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
+import { Adjust } from 'react-native-adjust';
 
 import './Locales';
 
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
-import './Services/AppsFlyer';
+import './Services/Adjust';
 import './Services/Admob';
 import './Services/Analytics';
 import './Services/RemoteConfig';
@@ -88,6 +89,10 @@ const App: React.FC = () => {
     useEffect(() => {
         loadInitialData();
     }, [loadInitialData]);
+
+    useEffect(() => {
+        return () => Adjust.componentWillUnmount();
+    }, []);
 
     return (
         <PreferencesContext.Provider

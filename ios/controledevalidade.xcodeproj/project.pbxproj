@@ -22,6 +22,11 @@
 		54393D10A095445299A2FFD4 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1706DDDD3D36483EBB1E83DB /* OpenSans-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9C6A2F9AC9D24DBFB7B9D4FA /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6C9DE39E59D4B4EB75EB0D8 /* Roboto-Regular.ttf */; };
+		A568F10D2919C9B80040334F /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F10C2919C9B80040334F /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A568F10F2919C9C10040334F /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F10E2919C9C10040334F /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A568F1112919C9D20040334F /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F1102919C9D20040334F /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A568F1132919C9E20040334F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F1122919C9E20040334F /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A568F1152919C9EE0040334F /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F1142919C9EE0040334F /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A59E05B32905ED9500254967 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A59E05B22905ED9500254967 /* RNBackgroundFetch+AppDelegate.m */; };
 		B2D0D443C5DF06D778725F90 /* libPods-controledevalidade.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF5EC8A6D72B0D1E0784BB8D /* libPods-controledevalidade.a */; };
 		BFFE7E5E82094BA59E2D3037 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44D558C29B5B4E65B1ED4030 /* OpenSans-Bold.ttf */; };
@@ -97,6 +102,11 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = controledevalidade/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F5E7C37D9BD49CF8F3451F4 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		99E15B2747B0961A01CD027D /* Pods-controledevalidade.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-controledevalidade.staging.xcconfig"; path = "Target Support Files/Pods-controledevalidade/Pods-controledevalidade.staging.xcconfig"; sourceTree = "<group>"; };
+		A568F10C2919C9B80040334F /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		A568F10E2919C9C10040334F /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
+		A568F1102919C9D20040334F /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		A568F1122919C9E20040334F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		A568F1142919C9EE0040334F /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		A59E05B22905ED9500254967 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
 		AEDB098E6E57BAE61D9C18BD /* libPods-controledevalidade-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6C9DE39E59D4B4EB75EB0D8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/Assets/Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
@@ -128,6 +138,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A568F1152919C9EE0040334F /* AppTrackingTransparency.framework in Frameworks */,
+				A568F1132919C9E20040334F /* StoreKit.framework in Frameworks */,
+				A568F1112919C9D20040334F /* AdSupport.framework in Frameworks */,
+				A568F10F2919C9C10040334F /* AdServices.framework in Frameworks */,
+				A568F10D2919C9B80040334F /* iAd.framework in Frameworks */,
 				B2D0D443C5DF06D778725F90 /* libPods-controledevalidade.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -171,6 +186,11 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A568F1142919C9EE0040334F /* AppTrackingTransparency.framework */,
+				A568F1122919C9E20040334F /* StoreKit.framework */,
+				A568F1102919C9D20040334F /* AdSupport.framework */,
+				A568F10E2919C9C10040334F /* AdServices.framework */,
+				A568F10C2919C9B80040334F /* iAd.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				AEDB098E6E57BAE61D9C18BD /* libPods-controledevalidade-tvOS.a */,
@@ -756,14 +776,14 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 116;
+				CURRENT_PROJECT_VERSION = 118;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.13.4;
+				MARKETING_VERSION = 1.13.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -788,14 +808,14 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 116;
+				CURRENT_PROJECT_VERSION = 118;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.13.4;
+				MARKETING_VERSION = 1.13.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -879,13 +899,13 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 116;
+				CURRENT_PROJECT_VERSION = 118;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.13.4;
+				MARKETING_VERSION = 1.13.5;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
