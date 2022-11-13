@@ -4,6 +4,7 @@ import React, {
     useCallback,
     useContext,
     useRef,
+    useMemo,
 } from 'react';
 import { Platform, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -28,6 +29,7 @@ import ListProducts from '~/Components/ListProducts';
 import BarCodeReader from '~/Components/BarCodeReader';
 import NotificationsDenny from '~/Components/NotificationsDenny';
 import OutdateApp from '~/Components/OutdateApp';
+import Banner from '~/Components/Ads/Banner';
 
 import { FloatButton, Icons } from '~/Components/ListProducts/styles';
 
@@ -39,7 +41,6 @@ import {
     InputTextIconContainer,
     ActionButtonsContainer,
 } from './styles';
-import Banner from '~/Components/Ads/Banner';
 
 const Home: React.FC = () => {
     const { reset, canGoBack, navigate } =
@@ -50,6 +51,18 @@ const Home: React.FC = () => {
     const listRef = useRef<FlatList<IProduct>>(null);
 
     const enableTabBar = remoteConfig().getValue('enable_app_bar');
+
+    const enableFloatAddButton = useMemo(() => {
+        if (!userPreferences.isPRO) {
+            return true;
+        }
+
+        if (userPreferences.isPRO && enableTabBar.asBoolean() === false) {
+            return true;
+        }
+
+        return false;
+    }, [enableTabBar, userPreferences.isPRO]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -238,22 +251,20 @@ const Home: React.FC = () => {
                         listRef={listRef}
                     />
 
-                    {!userPreferences.isPRO ||
-                        (userPreferences.isPRO &&
-                            enableTabBar.asBoolean() === false && (
-                                <FloatButton
-                                    icon={() => (
-                                        <Icons
-                                            name="add-outline"
-                                            color="white"
-                                            size={22}
-                                        />
-                                    )}
-                                    small
-                                    label={strings.View_FloatMenu_AddProduct}
-                                    onPress={handleNavigateAddProduct}
+                    {enableFloatAddButton && (
+                        <FloatButton
+                            icon={() => (
+                                <Icons
+                                    name="add-outline"
+                                    color="white"
+                                    size={22}
                                 />
-                            ))}
+                            )}
+                            small
+                            label={strings.View_FloatMenu_AddProduct}
+                            onPress={handleNavigateAddProduct}
+                        />
+                    )}
                 </Container>
             )}
         </>
