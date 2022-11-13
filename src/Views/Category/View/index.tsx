@@ -146,7 +146,7 @@ const CategoryView: React.FC = () => {
                 </ActionButtonsContainer>
             </ActionsContainer>
 
-            <ListProducts products={products} deactiveFloatButton />
+            <ListProducts products={products} />
 
             <FloatButton
                 icon={() => (

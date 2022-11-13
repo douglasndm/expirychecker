@@ -198,8 +198,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     type: 'create_product',
                     productId: productCreatedId,
 
-                    category_id: selectedCategory,
-                    store_id: selectedStore,
+                    category_id: selectedCategory || undefined,
+                    store_id: selectedStore || undefined,
                 });
             }
         } catch (err) {
