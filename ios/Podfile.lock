@@ -584,7 +584,7 @@ PODS:
     - React-perflogger (= 0.70.5)
   - ReactNativeLocalization (2.1.7):
     - React-Core
-  - RealmJS (11.0.0):
+  - RealmJS (11.2.0):
     - React
   - RevenueCat (4.13.1)
   - RNBackgroundFetch (4.1.3):
@@ -624,7 +624,7 @@ PODS:
     - RNFBApp
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (1.10.3):
+  - RNGestureHandler (2.8.0):
     - React-Core
   - RNGoogleMobileAds (5.1.1):
     - Google-Mobile-Ads-SDK (= 8.13.0)
@@ -637,7 +637,7 @@ PODS:
   - RNPurchases (5.1.0):
     - PurchasesHybridCommon (= 4.3.1)
     - React-Core
-  - RNReanimated (2.11.0):
+  - RNReanimated (2.12.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -1087,7 +1087,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 7401c4a40f8728fd89df4a56104541b760876117
   ReactCommon: c9246996e73bf75a2c6c3ff15f1e16707cdc2da9
   ReactNativeLocalization: 90a1181b7672309701dd7e5364fbf587319d41c6
-  RealmJS: 55a0d0d600a0da7d5f0cf42ecbabcd09708c7601
+  RealmJS: d0e94d35363a3a9ebd27981d9ac0aa4b63f66c85
   RevenueCat: f713337182aeda810fe6602f817f0909285cc1d4
   RNBackgroundFetch: 8d16f3d080f7257ee68d6bf52a20e50ff899b71b
   RNCAsyncStorage: d81ee5c3db1060afd49ea7045ad460eff82d2b7d
@@ -1102,12 +1102,12 @@ SPEC CHECKSUMS:
   RNFBMessaging: ed43c957c714ca8baa6c0f09704fabaa9601c48a
   RNFBRemoteConfig: e7ba454b97e986571707e39ed03476e5a47fda97
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNGoogleMobileAds: 4887bbac7901d64498b725c6b16d0f3f80f07243
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNPermissions: 7043bacbf928eae25808275cfe73799b8f618911
   RNPurchases: 5a022342ebe816bc42610e36e8272dfd4f412a99
-  RNReanimated: 8eeff42c5452ca82b939abcb80eb8d8008914d13
+  RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNShare: 70356a1bb406bc46ae03196a5d3048c702bb71a7
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
