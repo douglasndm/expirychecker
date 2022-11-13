@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
-import React, { useState, useEffect, useCallback } from 'react';
-import { LogBox } from 'react-native';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { LogBox, Platform } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components';
 import {
@@ -37,6 +37,7 @@ import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from '~/Components/AskReview';
 import StatusBar from './Components/StatusBar';
+import AppOpen from './Components/Ads/AppOpen';
 
 LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
 
@@ -108,6 +109,7 @@ const App: React.FC = () => {
                             linking={DeepLinking}
                             onStateChange={handleOnScreenChange}
                         >
+                            <AppOpen />
                             <StatusBar />
                             <Routes />
                             <AskReview />
