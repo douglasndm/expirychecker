@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useMemo } from 'react';
-import { Platform } from 'react-native';
 import {
     useNavigation,
     useRoute,
@@ -7,12 +6,7 @@ import {
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import LottieView from 'lottie-react-native';
-import {
-    BannerAd,
-    BannerAdSize,
-    TestIds,
-} from 'react-native-google-mobile-ads';
-import EnvConfig from 'react-native-config';
+import { BannerAdSize } from 'react-native-google-mobile-ads';
 
 import strings from '~/Locales';
 
@@ -21,6 +15,8 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import StatusBar from '~/Components/StatusBar';
 import BackButton from '~/Components/BackButton';
 import FloatButton from '~/Components/FloatButton';
+import Banner from '~/Components/Ads/Banner';
+import PaddingComponent from '~/Components/PaddingComponent';
 
 import {
     Container,
@@ -124,20 +120,6 @@ const Success: React.FC = () => {
         }
     }, [type]);
 
-    const adUnitId = useMemo(() => {
-        if (__DEV__) return TestIds.BANNER;
-
-        if (Platform.OS === 'ios') {
-            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
-        }
-
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
-    }, []);
-
-    const bannerSize = useMemo(() => {
-        return BannerAdSize.MEDIUM_RECTANGLE;
-    }, []);
-
     const handleNavigateHome = useCallback(() => {
         reset({
             routes: [{ name: 'Home' }],
@@ -182,7 +164,7 @@ const Success: React.FC = () => {
                         source={animation}
                         autoPlay
                         loop={false}
-                        style={{ width: 180, height: 180 }}
+                        style={{ width: 130, height: 130 }}
                     />
 
                     {type === 'create_batch' && (
@@ -235,6 +217,11 @@ const Success: React.FC = () => {
                         </Description>
                     )}
 
+                    <Banner
+                        adFor="Success"
+                        size={BannerAdSize.MEDIUM_RECTANGLE}
+                    />
+
                     <ButtonContainer>
                         {userPreferences.isPRO && category_id && (
                             <Button onPress={handleNavigateToCategory}>
@@ -272,11 +259,9 @@ const Success: React.FC = () => {
                                 </Button>
                             )}
                     </ButtonContainer>
-
-                    {!userPreferences.disableAds && (
-                        <BannerAd size={bannerSize} unitId={adUnitId} />
-                    )}
                 </SuccessMessageContainer>
+
+                <PaddingComponent />
             </Content>
 
             {type === 'create_product' && userPreferences.isPRO && (
