@@ -5,15 +5,9 @@ import React, {
     useContext,
     useEffect,
 } from 'react';
-import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import EnvConfig from 'react-native-config';
-import {
-    TestIds,
-    BannerAd,
-    BannerAdSize,
-} from 'react-native-google-mobile-ads';
+import { BannerAdSize } from 'react-native-google-mobile-ads';
 import { getLocales, getCurrencies } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
@@ -50,6 +44,7 @@ import {
 } from './styles';
 
 import { getProductById } from '~/Functions/Product';
+import Banner from '~/Components/Ads/Banner';
 
 interface Props {
     product_id: number;
@@ -72,17 +67,6 @@ const View: React.FC = () => {
 
     const [isSharing, setIsSharing] = useState<boolean>(false);
 
-    const adUnit = useMemo(() => {
-        if (__DEV__) {
-            return TestIds.BANNER;
-        }
-
-        if (Platform.OS === 'ios') {
-            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
-        }
-
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
-    }, []);
     const languageCode = useMemo(() => {
         if (getLocales()[0].languageCode === 'BR') {
             return ptBR;
@@ -237,6 +221,10 @@ const View: React.FC = () => {
         return unsubscribe;
     }, [addListener, loadData]);
 
+    const navigateToPRO = useCallback(() => {
+        navigate('Pro');
+    }, [navigate]);
+
     return isLoading ? (
         <Loading />
     ) : (
@@ -329,17 +317,17 @@ const View: React.FC = () => {
 
                     {!userPreferences.disableAds && (
                         <BannerContainer>
-                            <BannerAd
-                                unitId={adUnit}
-                                size={BannerAdSize.LARGE_BANNER}
+                            <Banner
+                                AdFor="BatchView"
+                                Size={BannerAdSize.MEDIUM_RECTANGLE}
                             />
                         </BannerContainer>
                     )}
 
                     <ProFeaturesContainer>
                         {!userPreferences.isPRO && (
-                            <ProFeaturesText>
-                                {strings.ProBanner_Text2}
+                            <ProFeaturesText onPress={navigateToPRO}>
+                                {strings.Component_FastSub_Text}
                             </ProFeaturesText>
                         )}
                         <Button

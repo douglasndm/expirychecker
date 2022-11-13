@@ -7,7 +7,11 @@ import {
 } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import LottieView from 'lottie-react-native';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import {
+    BannerAd,
+    BannerAdSize,
+    TestIds,
+} from 'react-native-google-mobile-ads';
 import EnvConfig from 'react-native-config';
 
 import strings from '~/Locales';
@@ -278,11 +282,9 @@ const Success: React.FC = () => {
             {type === 'create_product' && userPreferences.isPRO && (
                 <FloatButton navigateTo="AddProduct" />
             )}
-            {type === 'create_batch' &&
-                userPreferences.isPRO &&
-                productId && (
-                    <FloatButton navigateTo="AddBatch" productId={productId} />
-                )}
+            {type === 'create_batch' && userPreferences.isPRO && productId && (
+                <FloatButton navigateTo="AddBatch" productId={productId} />
+            )}
         </Container>
     );
 };
