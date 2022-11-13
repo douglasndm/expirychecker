@@ -43,7 +43,7 @@ const Card: React.FC<Props> = ({
             <FirstLine>
                 <SubscriptionCostByMonth isSelected={isSelected}>
                     {`${
-                        pack.product.price_string
+                        pack.product.priceString
                     } ${afterFullPrice.toUpperCase()}`}
                 </SubscriptionCostByMonth>
 

@@ -229,7 +229,7 @@ const SubscriptionList: React.FC = () => {
                                             amount: Number(
                                                 priceByMonth.toFixed(2)
                                             ),
-                                            code: pack.product.currency_code,
+                                            code: pack.product.currencyCode,
                                         });
 
                                         return (

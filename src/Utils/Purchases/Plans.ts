@@ -4,7 +4,7 @@ import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 import strings from '~/Locales';
 
 function getPlansString(pack: PurchasesPackage, per_month?: string): string {
-    const { price_string, introPrice } = pack.product;
+    const { priceString, introPrice } = pack.product;
 
     let text = '';
 
@@ -16,20 +16,20 @@ function getPlansString(pack: PurchasesPackage, per_month?: string): string {
                 '{DAYS}',
                 String(introPrice.periodNumberOfUnits)
             );
-            const price = days.replace('{PRICE}', price_string);
+            const price = days.replace('{PRICE}', priceString);
             return price;
         }
         if (introPrice) {
             text = strings.View_Subscription_Monthly_WithIntroText;
 
             const intro = text.replace('{INTRO_PRICE}', introPrice.priceString);
-            const price = intro.replace('{PRICE}', price_string);
+            const price = intro.replace('{PRICE}', priceString);
             return price;
         }
 
         text = strings.View_Subscription_Monthly_Text.replace(
             '{PRICE}',
-            price_string
+            priceString
         );
     } else if (pack.packageType === PACKAGE_TYPE.THREE_MONTH) {
         if (Platform.OS === 'android') {
@@ -40,24 +40,24 @@ function getPlansString(pack: PurchasesPackage, per_month?: string): string {
                     '{DAYS}',
                     String(introPrice.periodNumberOfUnits)
                 );
-                const price = days.replace('{PRICE}', price_string);
+                const price = days.replace('{PRICE}', priceString);
                 return price;
             }
             if (introPrice) {
                 text = strings.View_Subscription_3Months_WithIntroText.replace(
                     '{INTRO_PRICE}',
                     introPrice.priceString
-                ).replace('{PRICE}', price_string);
+                ).replace('{PRICE}', priceString);
             } else {
                 text = strings.View_Subscription_3Months_Text.replace(
                     '{PRICE}',
-                    price_string
+                    priceString
                 );
             }
         } else {
             text = strings.View_Subscription_iOS_3Months_Text.replace(
                 '{PRICE}',
-                per_month || price_string
+                per_month || priceString
             );
         }
     } else if (pack.packageType === PACKAGE_TYPE.ANNUAL) {
@@ -68,18 +68,18 @@ function getPlansString(pack: PurchasesPackage, per_month?: string): string {
                 '{DAYS}',
                 String(introPrice.periodNumberOfUnits)
             );
-            const price = days.replace('{PRICE}', price_string);
+            const price = days.replace('{PRICE}', priceString);
             return price;
         }
         if (introPrice) {
             text = strings.View_Subscription_AYear_WithIntroText.replace(
                 '{INTRO_PRICE}',
                 introPrice.priceString
-            ).replace('{PRICE}', price_string);
+            ).replace('{PRICE}', priceString);
         } else {
             text = strings.View_Subscription_AYear_Text.replace(
                 '{PRICE}',
-                price_string
+                priceString
             );
         }
     }
