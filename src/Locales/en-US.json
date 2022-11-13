@@ -383,6 +383,7 @@
     "View_Export_Explain_Business": "Export all your products to Expiry Checker Teams",
     "View_Export_Button_Business": "Export",
     "View_Export_StorePicker_NoStore": "No store",
+    "View_Export_Excel_GenerateEmptyExcel": "Generate model Excel file",
 
     "View_Permissions_AppleAT_PageTitle": "We need your permission",
     "View_Permissions_AppleAT_Message": "We need your authorization to use your device's unique identifier to track you in sites and apps that you use to show you more relevant ads and to analyze what part of the app needs improvement. Please note that disabling these options did not remove the ads if you are not a PRO user, it just says that the ads are not as interesting to you as they could be. In-app ads are one of the few forms of income for this app and with more relevant ads you would be contributing to the development and maintenance of the app.",
@@ -418,8 +419,8 @@
     "Function_Excel_ColumnName_Status": "Status",
     "Function_Excel_ColumnName_Status_Checked": "Checked",
     "Function_Excel_ColumnName_Status_Unchecked": "Unchecked",
-    "Function_Excel_Workbook_Name": "Expiration checker",
-    "Function_Excel_filename": "expirationcheck",
+    "Function_Excel_Workbook_Name": "Expiry checker",
+    "Function_Excel_filename": "expirycheck",
 
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",

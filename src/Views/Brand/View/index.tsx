@@ -10,7 +10,7 @@ import {
     sortProductsByFisrtLoteExpDate,
     sortProductsLotesByLotesExpDate,
 } from '~/Functions/Products';
-import { exportToExcel } from '~/Functions/Excel';
+import { exportToExcel } from '~/Utils/Excel/Export';
 
 import { getAllBrands, getAllProductsByBrand } from '~/Utils/Brands';
 

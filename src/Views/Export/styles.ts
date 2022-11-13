@@ -35,6 +35,17 @@ export const SortTitle = styled.Text`
     color: ${props => props.theme.colors.text};
 `;
 
+export const LinkEmptyExcel = styled.Text`
+    color: ${props => props.theme.colors.textAccent};
+    font-family: 'Open Sans';
+    text-align: center;
+`;
+
+export const Loading = styled.ActivityIndicator.attrs(props => ({
+    size: 48,
+    color: props.theme.colors.accent,
+}))``;
+
 export const RadioButtonGroupContainer = styled.View`
     justify-content: center;
     align-items: center;

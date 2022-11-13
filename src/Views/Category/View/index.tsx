@@ -6,6 +6,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '~/Locales';
 
+import { exportToExcel } from '~/Utils/Excel/Export';
+
 import {
     getAllCategories,
     getAllProductsByCategory,
@@ -31,7 +33,6 @@ import {
     Icons,
     ActionText,
 } from '~/Styles/Views/GenericViewPage';
-import { exportToExcel } from '~/Functions/Excel';
 
 interface Props {
     id: string;
