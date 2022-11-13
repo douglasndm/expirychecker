@@ -1,18 +1,12 @@
 import styled from 'styled-components/native';
-import { Platform } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.ScrollView.attrs(() => ({
-    contentContainerStyle: { flexGrow: 1 },
-}))`
-    background: ${props => props.theme.colors.background};
-    padding: ${Platform.OS === 'ios' ? 50 : 16}px 10px 5px 10px;
+export const Container = styled.SafeAreaView`
+    flex: 1;
+    background: ${({ theme }) => theme.colors.background};
 `;
 
-export const Content = styled.View`
-    flex: 1;
-    justify-content: center;
-`;
+export const Content = styled.ScrollView``;
 
 export const SuccessMessageContainer = styled.View`
     flex-direction: column;

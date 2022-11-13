@@ -115,11 +115,6 @@ export const CategoryDetailsText = styled.Text`
     font-size: 18px;
 `;
 
-export const AdContainer = styled.View`
-    align-items: center;
-    margin: 20px 0px;
-`;
-
 export const TableContainer = styled.View``;
 
 export const FloatButton = styled(FAB).attrs(() => ({

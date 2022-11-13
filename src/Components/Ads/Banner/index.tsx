@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { Platform, View, PixelRatio } from 'react-native';
+import { Platform, PixelRatio } from 'react-native';
 import EnvConfig from 'react-native-config';
 import {
     BannerAd,
@@ -12,23 +12,41 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import { AdContainer } from './styles';
 
 interface Props {
-    AdFor: 'Home' | 'BatchView';
-    Size?: BannerAdSize;
+    adFor: 'Home' | 'BatchView' | 'ProductView' | 'Success';
+    size?: BannerAdSize;
 }
 
 const Banner: React.FC<Props> = ({
-    AdFor = 'Home',
-    Size = BannerAdSize.BANNER,
+    adFor = 'Home',
+    size = BannerAdSize.BANNER,
 }: Props) => {
     const { userPreferences } = useContext(PreferencesContext);
 
     const adUnit = useMemo(() => {
-        if (AdFor === 'BatchView') {
+        if (adFor === 'BatchView') {
+            if (Platform.OS === 'ios') {
+                return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+            }
+            if (Platform.OS === 'android') {
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
+            }
+        }
+
+        if (adFor === 'ProductView') {
             if (Platform.OS === 'ios') {
                 return EnvConfig.IOS_ADMOB_BANNER_VIEW_BATCH;
             }
             if (Platform.OS === 'android') {
                 return EnvConfig.ANDROID_ADMOB_BANNER_VIEW_BATCH;
+            }
+        }
+
+        if (adFor === 'Success') {
+            if (Platform.OS === 'ios') {
+                return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
+            }
+            if (Platform.OS === 'android') {
+                return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_SUCCESSPAGE;
             }
         }
 
@@ -40,28 +58,28 @@ const Banner: React.FC<Props> = ({
         }
 
         return TestIds.BANNER;
-    }, [AdFor]);
+    }, [adFor]);
 
     const bannerSize = useMemo(() => {
         if (PixelRatio.get() < 2) {
             return BannerAdSize.BANNER;
         }
 
-        if (Size) {
-            return Size;
+        if (size) {
+            return size;
         }
 
         return BannerAdSize.LARGE_BANNER;
-    }, [Size]);
+    }, [size]);
 
     return (
-        <View>
+        <>
             {!userPreferences.disableAds && (
                 <AdContainer>
                     <BannerAd unitId={adUnit} size={bannerSize} />
                 </AdContainer>
             )}
-        </View>
+        </>
     );
 };
 

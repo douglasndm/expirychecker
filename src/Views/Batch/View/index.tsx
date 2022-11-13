@@ -318,8 +318,8 @@ const View: React.FC = () => {
                     {!userPreferences.disableAds && (
                         <BannerContainer>
                             <Banner
-                                AdFor="BatchView"
-                                Size={BannerAdSize.MEDIUM_RECTANGLE}
+                                adFor="BatchView"
+                                size={BannerAdSize.MEDIUM_RECTANGLE}
                             />
                         </BannerContainer>
                     )}
