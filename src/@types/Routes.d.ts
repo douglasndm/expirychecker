@@ -27,7 +27,7 @@ type RoutesParams = {
         loteId: number;
     };
     BatchView: {
-        product: string;
+        product_id: number;
         batch_id: number;
     };
     BatchDiscount: {

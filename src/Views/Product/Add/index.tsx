@@ -194,13 +194,24 @@ const Add: React.FC<Request> = ({ route }: Request) => {
                     }
                 }
 
-                navigate('Success', {
-                    type: 'create_product',
-                    productId: productCreatedId,
+                if (userPreferences.isPRO) {
+                    navigate('ProductDetails', {
+                        id: productCreatedId,
+                    });
 
-                    category_id: selectedCategory || undefined,
-                    store_id: selectedStore || undefined,
-                });
+                    showMessage({
+                        message: strings.View_Success_ProductCreatedDescription,
+                        type: 'info',
+                    });
+                } else {
+                    navigate('Success', {
+                        type: 'create_product',
+                        productId: productCreatedId,
+
+                        category_id: selectedCategory || undefined,
+                        store_id: selectedStore || undefined,
+                    });
+                }
             }
         } catch (err) {
             if (err instanceof Error)
@@ -225,6 +236,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
         selectedCategory,
         selectedStore,
         userPreferences.disableAds,
+        userPreferences.isPRO,
     ]);
 
     const handleAmountChange = useCallback(value => {
