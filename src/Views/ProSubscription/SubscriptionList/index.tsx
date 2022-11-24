@@ -59,6 +59,14 @@ const SubscriptionList: React.FC = () => {
             const alreadyProUser = await isSubscriptionActive();
             setAlreadyPremium(alreadyProUser);
 
+            if (alreadyProUser) {
+                setUserPreferences({
+                    ...userPreferences,
+                    isPRO: true,
+                    disableAds: true,
+                });
+            }
+
             const response = await getSubscriptionDetails();
             const sorted = response.sort((pack1, pack2) => {
                 if (pack1.product.price > pack2.product.price) {
@@ -81,7 +89,7 @@ const SubscriptionList: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [userPreferences]);
 
     useEffect(() => {
         const monthlyPack = packages.find(
