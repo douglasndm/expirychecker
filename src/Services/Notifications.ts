@@ -71,11 +71,7 @@ PushNotification.createChannel(
     created => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
 );
 
-export function sendNotification({
-    title,
-    message,
-    amount,
-}: INotification): void {
+function sendNotification({ title, message, amount }: INotification): void {
     PushNotification.localNotification({
         title,
         message,
@@ -88,3 +84,11 @@ export function sendNotification({
         soundName: Platform.OS === 'ios' ? 'swiftly-610.m4r' : 'sound.mp3',
     });
 }
+
+function clearSystemNotifications(): void {
+    PushNotification.setApplicationIconBadgeNumber(0);
+}
+
+export { sendNotification, clearSystemNotifications };
+
+clearSystemNotifications();
