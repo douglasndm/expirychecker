@@ -5,7 +5,7 @@ import Purchases, {
 import Analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
 import EnvConfig from 'react-native-config';
-import { Adjust, AdjustEvent, AdjustConfig } from 'react-native-adjust';
+import { Adjust, AdjustEvent } from 'react-native-adjust';
 
 import { getUserId } from './User';
 import { setDisableAds, setEnableProVersion } from './Settings';
@@ -30,6 +30,12 @@ export async function isSubscriptionActive(): Promise<boolean> {
                 FirebaseMessasingToken: firebase,
             });
         }
+
+        Adjust.getAdid(adjustId => {
+            if (adjustId) {
+                Purchases.setAdjustID(adjustId);
+            }
+        });
 
         const purchaserInfo = await Purchases.getCustomerInfo();
 
