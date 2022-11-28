@@ -8660,10 +8660,10 @@ react-localization@^1.0.17:
   dependencies:
     localized-strings "^0.2.0"
 
-react-native-adjust@^4.32.0:
-  version "4.32.0"
-  resolved "https://registry.yarnpkg.com/react-native-adjust/-/react-native-adjust-4.32.0.tgz#8bbcd350862f2925da416cccd5f03810cb4698cd"
-  integrity sha512-Ipd56bMzvdWPLXPsac19bkA/2Y4uJTa4+/I3dGbKVWKkP4gPUR2oZlT04bWz9B1HWmKeoyrSqGdEdIyKVtyvlw==
+react-native-appsflyer@^6.9.2:
+  version "6.9.2"
+  resolved "https://registry.yarnpkg.com/react-native-appsflyer/-/react-native-appsflyer-6.9.2.tgz#0b6da238967f4470697d771253ebb6ea395468dd"
+  integrity sha512-9l+9oW9EQ4tGsjyZZ25TQEtu6TQXiGdWB4YDOU/V6jjxX3IG3s1ZyPqgwlWWG9kqSNk8ZnX0Yy0f4LX4ftnxIQ==
 
 react-native-background-fetch@^4.1.3:
   version "4.1.3"
