@@ -1,11 +1,12 @@
 import Purchases, {
     PurchasesPackage,
     UpgradeInfo,
+    PurchasesError,
 } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
 import EnvConfig from 'react-native-config';
-import { Adjust, AdjustEvent } from 'react-native-adjust';
+import appsFlyer from 'react-native-appsflyer';
 
 import { getUserId } from './User';
 import { setDisableAds, setEnableProVersion } from './Settings';
@@ -24,18 +25,17 @@ export async function isSubscriptionActive(): Promise<boolean> {
         if (!!localUserId) {
             Purchases.logIn(localUserId);
         }
+        appsFlyer.getAppsFlyerUID((err, id) => {
+            if (!err) {
+                Purchases.setAppsflyerID(id);
+            }
+        });
 
         if (firebase) {
             Purchases.setAttributes({
                 FirebaseMessasingToken: firebase,
             });
         }
-
-        Adjust.getAdid(adjustId => {
-            if (adjustId) {
-                Purchases.setAdjustID(adjustId);
-            }
-        });
 
         const purchaserInfo = await Purchases.getCustomerInfo();
 
@@ -112,17 +112,25 @@ export async function makeSubscription(
             await Purchases.purchasePackage(purchasePackage, upgrade);
 
         if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
-            await Analytics().logEvent('user_subscribed_successfully');
+            Analytics().logEvent('user_subscribed_successfully');
 
-            const adjustEvent = new AdjustEvent(
-                `PRO_Subscription_${productIdentifier}`
-            );
+            const eventName = 'PRO_Subscription';
+            const eventValues = {
+                af_package: productIdentifier,
+                af_currency: purchasePackage.product.currencyCode,
+                af_revenue: purchasePackage.product.price,
+            };
 
-            adjustEvent.setRevenue(
-                purchasePackage.product.price,
-                purchasePackage.product.currencyCode
+            appsFlyer.logEvent(
+                eventName,
+                eventValues,
+                res => {
+                    console.log(res);
+                },
+                err => {
+                    console.error(err);
+                }
             );
-            Adjust.trackEvent(adjustEvent);
 
             await setEnableProVersion(true);
         }
@@ -130,13 +138,11 @@ export async function makeSubscription(
         if (typeof customerInfo.entitlements.active.noads !== 'undefined') {
             await setDisableAds(true);
         }
-    } catch (e) {
-        if (e.userCancelled) {
-            await Analytics().logEvent('user_cancel_subscribe_process');
-        }
-        if (!e.userCancelled) {
-            await Analytics().logEvent('error_in_subscribe_process');
-            throw new Error(e);
+    } catch (err) {
+        if ((err as PurchasesError).userCancelled) {
+            Analytics().logEvent('user_cancel_subscribe_process');
+        } else if (err instanceof Error) {
+            throw new Error(err.message);
         }
     }
 }

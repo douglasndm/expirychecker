@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.32.1):
-    - Adjust/Core (= 4.32.1)
-  - Adjust/Core (4.32.1)
+  - AppsFlyerFramework (6.8.1):
+    - AppsFlyerFramework/Main (= 6.8.1)
+  - AppsFlyerFramework/Main (6.8.1)
   - Base64 (1.1.2)
   - boost (1.76.0)
   - BVLinearGradient (2.6.2):
@@ -479,9 +479,9 @@ PODS:
   - React-jsinspector (0.70.5)
   - React-logger (0.70.5):
     - glog
-  - react-native-adjust (4.32.0):
-    - Adjust (= 4.32.1)
-    - React-Core
+  - react-native-appsflyer (6.9.2):
+    - AppsFlyerFramework (= 6.8.1)
+    - React
   - react-native-blur (4.2.0):
     - React-Core
   - react-native-camera (4.2.1):
@@ -746,7 +746,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - react-native-adjust (from `../node_modules/react-native-adjust`)
+  - react-native-appsflyer (from `../node_modules/react-native-appsflyer`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-config (from `../node_modules/react-native-config`)
@@ -799,7 +799,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Adjust
+    - AppsFlyerFramework
     - Base64
     - CocoaAsyncSocket
     - Firebase
@@ -897,8 +897,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-  react-native-adjust:
-    :path: "../node_modules/react-native-adjust"
+  react-native-appsflyer:
+    :path: "../node_modules/react-native-appsflyer"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
   react-native-camera:
@@ -999,7 +999,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Adjust: 3030e2e086023cb6cadef374b500b6cc263bb9d0
+  AppsFlyerFramework: a664325124485223296354b4eec335f5340a6df8
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
@@ -1062,7 +1062,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 31564fa6912459921568e8b0e49024285a4d584b
   React-jsinspector: badd81696361249893a80477983e697aab3c1a34
   React-logger: fdda34dd285bdb0232e059b19d9606fa0ec3bb9c
-  react-native-adjust: 827d342fbcad3bb5632799d80b006e431132f40d
+  react-native-appsflyer: bfd683743d700a22e22111f2a828b02db2854ea2
   react-native-blur: 3e9c8e8e9f7d17fa1b94e1a0ae9fd816675f5382
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
