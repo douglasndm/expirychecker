@@ -1620,6 +1620,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@douglasndm/expirychecker.button@^0.0.0-745561db2898b6d93a9f25af806b468f47c6e328":
+  version "0.0.0-745561db2898b6d93a9f25af806b468f47c6e328"
+  resolved "https://node.bit.cloud/@douglasndm/expirychecker.button/-/@douglasndm-expirychecker.button-0.0.0-745561db2898b6d93a9f25af806b468f47c6e328.tgz#cbce795bdba49aa1ee53c954c0ac7345c7379530"
+  integrity sha1-y855W9ukmqHuU8lUwKxzRcc3lTA=
+
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
