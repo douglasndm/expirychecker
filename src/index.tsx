@@ -109,7 +109,7 @@ const App: React.FC = () => {
                             <Routes />
                             <AskReview />
                         </NavigationContainer>
-                        <FlashMessage duration={7000} />
+                        <FlashMessage duration={7000} statusBarHeight={50} />
                     </Portal>
                 </PaperProvider>
             </ThemeProvider>
