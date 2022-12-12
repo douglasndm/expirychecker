@@ -1,5 +1,5 @@
 import { IUserPreferences } from '../@types/userPreference';
-import { getThemeByName } from '../Themes';
+import { getThemeByName } from '@shared/Themes';
 
 import {
     getEnableMultipleStoresMode,

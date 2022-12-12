@@ -3,7 +3,7 @@ import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback } from 'react';
 import { LogBox } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components/native';
 import {
     NavigationContainer,
     getFocusedRouteNameFromRoute,
@@ -28,7 +28,7 @@ import './Functions/PushNotifications';
 import { getAllUserPreferences } from './Functions/UserPreferences';
 import { NotificationCadency } from './Functions/Settings';
 
-import Themes from './Themes';
+import Themes from '@shared/Themes';
 
 import Routes from './Routes/DrawerContainer';
 

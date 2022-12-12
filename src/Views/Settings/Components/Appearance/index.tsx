@@ -8,7 +8,7 @@ import React, {
 
 import strings from '~/Locales';
 
-import { getActualAppTheme, Themes } from '~/Themes';
+import { getActualAppTheme, Themes } from '@shared/Themes';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
