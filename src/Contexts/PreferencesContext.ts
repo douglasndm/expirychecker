@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { IUserPreferences } from '~/@types/userPreference';
 
 import { NotificationCadency } from '../Functions/Settings';
-import Themes from '../Themes';
+import Themes from '@shared/Themes';
 
 const PreferencesContext = createContext({
     userPreferences: {
