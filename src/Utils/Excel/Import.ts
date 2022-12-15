@@ -99,7 +99,7 @@ async function importExcel(): Promise<void> {
         const tablePStore = String(product[localizedStoreName]);
 
         const tableBName = String(product[localizedBName]);
-        const tableBAmount = Number(product[localizedBAmount]);
+        const tableBAmount = Number(product[localizedBAmount]) || undefined;
         const tableBPrice = Number(product[localizedBPrice]);
         const tableBStatus = String(product[localizedBStatus]);
 
