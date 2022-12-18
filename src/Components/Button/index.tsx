@@ -1,3 +1,3 @@
-import Button from 'shared/src/Components/Button';
+import Button from '@components/Button';
 
 export default Button;
