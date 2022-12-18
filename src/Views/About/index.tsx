@@ -17,8 +17,8 @@ import strings from '~/Locales';
 
 import { shareText } from '~/Functions/Share';
 
-import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import StatusBar from '@components/StatusBar';
+import BackButton from '@components/BackButton';
 
 import {
     Container,

@@ -17,9 +17,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import strings from '~/Locales';
 
-import StatusBar from '~/Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
+import BackButton from '@components/BackButton';
 import { getProductById } from '~/Functions/Product';
 import { sortBatches } from '~/Utils/Batches/Sort';
 import { getStore } from '~/Functions/Stores';

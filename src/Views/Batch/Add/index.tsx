@@ -20,7 +20,7 @@ import {
 import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';
-import StatusBar from '~/Components/StatusBar';
+import StatusBar from '@components/StatusBar';
 import Header from '~/Components/Header';
 import GenericButton from '~/Components/Button';
 
