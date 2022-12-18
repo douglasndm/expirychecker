@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 
+import TabMenu from '@components/TabMenu';
+
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Home from '~/Views/Home';
@@ -42,7 +44,6 @@ import Teams from '~/Views/Informations/Teams';
 import TrackingPermission from '~/Views/Permissions/AppleATT';
 
 import Test from '~/Views/Test';
-import TabMenu from '~/Components/TabMenu';
 
 const Stack = createNativeStackNavigator<RoutesParams>();
 
@@ -113,7 +114,7 @@ const Routes: React.FC = () => {
             </Stack.Navigator>
 
             {userPreferences.isPRO && enableTabBar.asBoolean() === true && (
-                <TabMenu currentRoute={currentRoute} />
+                <TabMenu currentRoute={currentRoute} enableMultiplesStores={userPreferences.multiplesStores} />
             )}
         </>
     );
