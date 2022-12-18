@@ -1,230 +1,59 @@
-import React, {
-    useState,
-    useEffect,
-    useContext,
-    useMemo,
-    useCallback,
-} from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { getLocales } from 'react-native-localize';
-import FastImage from 'react-native-fast-image';
-import { addDays, format, formatDistanceToNow, isPast } from 'date-fns'; // eslint-disable-line
-import { ptBR, enUS } from 'date-fns/locale' // eslint-disable-line
-
-import strings from '~/Locales';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { getProductImagePath } from '~/Functions/Products/Image';
 import { getStore } from '~/Functions/Stores';
 
-import {
-    Card,
-    Content,
-    ProductDetails,
-    TextContainer,
-    ProductName,
-    ProductInfoItem,
-    ProductExpDate,
-    ProductImage,
-    LoadingImage,
-} from './styles';
+import Card from '@components/Product/List/Card';
 
 interface Request {
     product: IProduct;
     onLongPress?: () => void;
 }
-const Product = ({ product, onLongPress }: Request) => {
-    const { navigate } = useNavigation();
 
+const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
     const { userPreferences } = useContext(PreferencesContext);
 
-    const [imagePath, setImagePath] = useState<string>('');
-    const [storeName, setStoreName] = useState<string | null>();
-    const [isImgLoading, setIsImgLoading] = useState(false);
+    const [imagePath, setImagePath] = useState<string | undefined>();
+    const [storeName, setStoreName] = useState<string | undefined>();
 
-    const [languageCode] = useState(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return enUS;
+    let prod = {
+        ...product,
+        batches: product.lotes,
+    }
+    delete prod.lotes;
+
+    const loadImagePath = useCallback(async () => {
+        const path = await getProductImagePath(product.id);
+
+        if(path) {
+            setImagePath(path);
         }
-        return ptBR;
-    });
-    const [dateFormat] = useState(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'MM/dd/yyyy';
-        }
-        return 'dd/MM/yyyy';
-    });
+    }, [product.id])
 
-    const batch = useMemo(() => {
-        let bat: ILote | null = null;
+    const loadStoreName = useCallback(async () => {
+        if(product.store) {
+            const store = await getStore(product.store);
 
-        product.lotes.forEach(l => {
-            if (!bat && l.status !== 'tratado') {
-                bat = l;
-            }
-        });
-
-        if (!bat && !!product.lotes[0]) {
-            bat = product.lotes[0]; // eslint-disable-line
-        }
-
-        return bat;
-    }, [product.lotes]);
-
-    const exp_date = useMemo(() => {
-        if (batch) {
-            return batch.exp_date;
-        }
-        return null;
-    }, [batch]);
-
-    const expired = useMemo(() => {
-        return (batch && isPast(batch.exp_date)) || undefined;
-    }, [batch]);
-
-    const nextToExp = useMemo(() => {
-        if (batch) {
-            if (product.daysToBeNext && product.daysToBeNext > 0) {
-                const dateToCheck = addDays(new Date(), product.daysToBeNext);
-
-                if (dateToCheck >= batch.exp_date) {
-                    return true;
-                }
-            }
-
-            const { howManyDaysToBeNextToExpire } = userPreferences;
-            const dateToCheck = addDays(
-                new Date(),
-                howManyDaysToBeNextToExpire
-            );
-
-            if (dateToCheck >= batch.exp_date) {
-                return true;
+            if(store?.name) {
+                setStoreName(store.name);
             }
         }
-
-        return false;
-    }, [batch, product.daysToBeNext, userPreferences]);
-
-    const expiredOrNext = useMemo(() => {
-        return !!(expired || nextToExp);
-    }, [expired, nextToExp]);
-
-    const onLoadStart = useCallback(() => {
-        setIsImgLoading(true);
-    }, []);
-
-    const onLoadEnd = useCallback(() => {
-        setIsImgLoading(false);
-    }, []);
+    }, [product.store])
 
     useEffect(() => {
-        getProductImagePath(product.id).then(path => {
-            if (path) {
-                setImagePath(`file://${path}`);
-            }
-        });
+        loadImagePath();
+        loadStoreName();
+    }, [])
 
-        if (product.store) {
-            getStore(product.store).then(store => {
-                if (store?.name) {
-                    setStoreName(store.name);
-                } else {
-                    setStoreName(null);
-                }
-            });
-        }
-    }, [product.id, product.store]);
+    return <Card
+                product={prod}
+                storeName={storeName}
+                showImage={userPreferences.isPRO}
+                imagePath={imagePath}
+                daysToBeNext={userPreferences.howManyDaysToBeNextToExpire}
+                onLongPress={onLongPress} />
+}
 
-    const handleNavigateToProduct = useCallback(() => {
-        navigate('ProductDetails', { id: product.id });
-    }, [navigate, product.id]);
-
-    return (
-        <Card
-            expired={expired}
-            nextToExp={nextToExp}
-            threated={batch?.status === 'Tratado'}
-            onPress={handleNavigateToProduct}
-            onLongPress={onLongPress}
-        >
-            <Content>
-                {userPreferences.isPRO && !!imagePath && (
-                    <>
-                        {isImgLoading && <LoadingImage />}
-
-                        <ProductImage
-                            source={{
-                                uri: imagePath,
-                                priority: FastImage.priority.low,
-                            }}
-                            onLoadStart={onLoadStart}
-                            onLoadEnd={onLoadEnd}
-                        />
-                    </>
-                )}
-
-                <TextContainer>
-                    <ProductName expiredOrNext={expiredOrNext}>
-                        {product.name}
-                    </ProductName>
-                    <ProductDetails>
-                        {!!product.code && (
-                            <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {strings.ProductCardComponent_ProductCode}:
-                                {product.code}
-                            </ProductInfoItem>
-                        )}
-
-                        {product.lotes.length > 0 && !!product.lotes[0].lote && (
-                            <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {strings.ProductCardComponent_ProductBatch}:{' '}
-                                {product.lotes[0].lote}
-                            </ProductInfoItem>
-                        )}
-
-                        {product.lotes.length > 1 && (
-                            <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {`${product.lotes.length - 1} ${
-                                    strings.ProductCardComponent_OthersBatches
-                                }`}
-                            </ProductInfoItem>
-                        )}
-
-                        {userPreferences.multiplesStores && !!storeName && (
-                            <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                {strings.ProductCardComponent_ProductStore}:{' '}
-                                {storeName}
-                            </ProductInfoItem>
-                        )}
-
-                        {product.lotes.length > 0 &&
-                            !!product.lotes[0].amount && (
-                                <ProductInfoItem expiredOrNext={expiredOrNext}>
-                                    {`${strings.ProductCardComponent_ProductAmount}: ${product.lotes[0].amount}`}
-                                </ProductInfoItem>
-                            )}
-                    </ProductDetails>
-                </TextContainer>
-            </Content>
-
-            {!!exp_date && (
-                <ProductExpDate expiredOrNext={expiredOrNext}>
-                    {expired
-                        ? strings.ProductCardComponent_ProductExpiredIn
-                        : strings.ProductCardComponent_ProductExpireIn}
-                    {` ${formatDistanceToNow(exp_date, {
-                        addSuffix: true,
-                        locale: languageCode,
-                    })}`}
-                    {format(exp_date, `, EEEE, ${dateFormat}`, {
-                        locale: languageCode,
-                    })}
-                </ProductExpDate>
-            )}
-        </Card>
-    );
-};
-
-export default React.memo(Product);
+export default ProductCard;
