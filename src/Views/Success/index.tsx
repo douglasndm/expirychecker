@@ -12,8 +12,8 @@ import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import StatusBar from '~/Components/StatusBar';
-import BackButton from '~/Components/BackButton';
+import StatusBar from '@components/StatusBar';
+import BackButton from '@components/BackButton';
 import FloatButton from '~/Components/FloatButton';
 import Banner from '~/Components/Ads/Banner';
 import PaddingComponent from '~/Components/PaddingComponent';

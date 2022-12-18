@@ -8,7 +8,7 @@ import strings from '../../Locales';
 import { getProductImagePath } from '~/Functions/Products/Image';
 
 import Loading from '~/Components/Loading';
-import BackButton from '../../Components/BackButton';
+import BackButton from '@components/BackButton';
 import Button from '../../Components/Button';
 
 import { Container, PageHeader, PageTitle, Image } from './styles';
