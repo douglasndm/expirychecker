@@ -77,7 +77,7 @@
     "react-native-zip-archive": "^6.0.3",
     "react-number-format": "^4.4.1",
     "realm": "^11.2.0",
-    "styled-components": "*",
+    "styled-components": "^5.3.6",
     "xlsx": "^0.17.0",
     "yup": "^0.32.9"
   },

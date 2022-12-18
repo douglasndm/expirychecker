@@ -1,5 +1,5 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../../../node_modules/react-native/scripts/react_native_pods'
+require_relative '../../../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
@@ -34,7 +34,7 @@ target 'controledevalidade' do
     $RNFirebaseAsStaticFramework = true
     $RNGoogleMobileAdsAsStaticFramework = true
 
-  permissions_path = '../node_modules/react-native-permissions/ios'
+  permissions_path = '../../../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
   pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
