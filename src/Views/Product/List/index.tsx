@@ -9,9 +9,9 @@ import strings from '~/Locales';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import ListProducts from '~/Components/ListProducts';
-import BarCodeReader from '~/Components/BarCodeReader';
+import BarCodeReader from '@components/BarCodeReader';
 
 import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';
 

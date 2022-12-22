@@ -9,7 +9,7 @@ import { getProductImagePath } from '~/Functions/Products/Image';
 
 import Loading from '~/Components/Loading';
 import BackButton from '@components/BackButton';
-import Button from '../../Components/Button';
+import Button from '@components/Button';
 
 import { Container, PageHeader, PageTitle, Image } from './styles';
 

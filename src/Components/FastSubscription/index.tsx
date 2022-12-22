@@ -18,7 +18,7 @@ import { getEnableProVersion } from '~/Functions/Settings';
 import { getSubscriptionDetails, makeSubscription } from '~/Functions/ProMode';
 
 import Loading from '../Loading';
-import Button from '../Button';
+import Button from '@components/Button';
 
 import {
     TermsPrivacyLink,

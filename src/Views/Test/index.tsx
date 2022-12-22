@@ -5,7 +5,7 @@ import { addDays } from 'date-fns';
 import { exists } from 'react-native-fs';
 import realm from '~/Services/Realm';
 
-import Button from '~/Components/Button';
+import Button from '@components/Button';
 
 import { Container, Category } from '../Settings/styles';
 import {

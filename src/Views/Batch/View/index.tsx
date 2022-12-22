@@ -20,8 +20,8 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { ShareProductImageWithText } from '~/Functions/Share';
 
-import Header from '~/Components/Header';
-import Button from '~/Components/Button';
+import Header from '@components/Header';
+import Button from '@components/Button';
 import Loading from '~/Components/Loading';
 
 import {

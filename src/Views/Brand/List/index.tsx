@@ -8,7 +8,7 @@ import strings from '~/Locales';
 import { sortBrands } from '~/Utils/Brands/Sort';
 import { createBrand, getAllBrands } from '~/Utils/Brands';
 
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import Loading from '~/Components/Loading';
 import PaddingComponent from '~/Components/PaddingComponent';
 

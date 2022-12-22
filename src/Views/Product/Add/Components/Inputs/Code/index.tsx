@@ -14,7 +14,7 @@ import {
 } from '~/Functions/Product';
 import { findProductByCode } from '~/Functions/Products/FindByCode';
 
-import BarCodeReader from '~/Components/BarCodeReader';
+import BarCodeReader from '@components/BarCodeReader';
 
 import FillModal from '../../FillModal';
 

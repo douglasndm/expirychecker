@@ -14,7 +14,7 @@ import { sortByBatchesExpType } from '~/Functions/Products/SortBatches';
 import { deleteManyProducts } from '~/Utils/Products';
 
 import ProductItem from './ProductContainer';
-import GenericButton from '../Button';
+import GenericButton from '@components/Button';
 import PaddingComponent from '../PaddingComponent';
 
 import {

@@ -9,7 +9,7 @@ import { sortCategories } from '~/Utils/Categories/Sort';
 import { getAllCategories, createCategory } from '~/Functions/Category';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import PaddingComponent from '~/Components/PaddingComponent';
 
 import {
