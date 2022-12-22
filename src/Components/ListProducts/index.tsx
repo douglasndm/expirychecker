@@ -15,7 +15,7 @@ import { deleteManyProducts } from '~/Utils/Products';
 
 import ProductItem from './ProductContainer';
 import GenericButton from '@components/Button';
-import PaddingComponent from '../PaddingComponent';
+import PaddingComponent from '@components/PaddingComponent';
 
 import {
     Container,

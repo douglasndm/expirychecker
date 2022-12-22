@@ -10,7 +10,7 @@ import { getAllCategories, createCategory } from '~/Functions/Category';
 
 import Loading from '~/Components/Loading';
 import Header from '@components/Header';
-import PaddingComponent from '~/Components/PaddingComponent';
+import PaddingComponent from '@components/PaddingComponent';
 
 import {
     Container,

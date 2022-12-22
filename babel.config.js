@@ -13,7 +13,8 @@ module.exports = {
 				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js'],
 				alias: {
 					'~': './src',
-                    "@components": "../shared/src/Components",
+					'@components': '../shared/src/Components',
+					'@views': '../shared/src/Views',
 					'@themes': '../shared/src/Themes',
 					'@utils': '../shared/src/Utils',
 					'@shared': '../shared/src',
