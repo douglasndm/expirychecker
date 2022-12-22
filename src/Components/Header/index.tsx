@@ -1,27 +1,27 @@
 import React, { useContext, useMemo } from 'react';
 
+import Header, { RequestProps } from '@components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import Header, { RequestProps} from '@components/Header';
+const LocalHeader: React.FC<RequestProps> = (props: RequestProps) => {
+	const { userPreferences } = useContext(PreferencesContext);
 
-const LocalHeader: React.FC<RequestProps> = (props) => {
-    const { userPreferences } = useContext(PreferencesContext);
+	const headerTitle = useMemo(() => {
+		const { title } = props;
+		if (title) {
+			return title;
+		}
 
-    const title = useMemo(() => {
-        if(props.title) {
-            return props.title;
-        }
+		if (!title && userPreferences.isPRO) {
+			return strings.AppName_ProVersion;
+		}
 
-        if(!props.title && userPreferences.isPRO) {
-            return strings.AppName_ProVersion;
-        }
+		return strings.AppName;
+	}, [props, userPreferences.isPRO]);
 
-        return strings.AppName;
-    }, [])
-
-    return <Header {...props} title={title} />
-}
+	return <Header {...props} title={headerTitle} />;
+};
 
 export default LocalHeader;

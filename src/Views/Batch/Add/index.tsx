@@ -21,8 +21,8 @@ import strings from '~/Locales';
 
 import Loading from '~/Components/Loading';
 import StatusBar from '@components/StatusBar';
-import Header from '~/Components/Header';
-import GenericButton from '~/Components/Button';
+import Header from '@components/Header';
+import GenericButton from '@components/Button';
 
 import { createLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';

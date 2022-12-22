@@ -9,7 +9,7 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import { isSubscriptionActive } from '~/Functions/ProMode';
 
-import Button from '~/Components/Button';
+import Button from '@components/Button';
 
 import { Category, CategoryTitle } from '../../styles';
 

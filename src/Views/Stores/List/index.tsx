@@ -8,7 +8,7 @@ import { sortStores } from '~/Utils/Stores/Sort';
 
 import { createStore, getAllStores } from '~/Functions/Stores';
 
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import PaddingComponent from '~/Components/PaddingComponent';
 
 import {

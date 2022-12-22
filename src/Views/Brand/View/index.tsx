@@ -14,7 +14,7 @@ import { exportToExcel } from '~/Utils/Excel/Export';
 
 import { getAllBrands, getAllProductsByBrand } from '~/Utils/Brands';
 
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 

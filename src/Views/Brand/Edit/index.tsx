@@ -9,7 +9,7 @@ import strings from '~/Locales';
 import { deleteBrand, getBrand, updateBrand } from '~/Utils/Brands';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 
 import {
     Container,

@@ -15,7 +15,7 @@ import {
 } from '~/Functions/Products';
 
 import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Header from '@components/Header';
 import ListProducts from '~/Components/ListProducts';
 import {
     FloatButton,
