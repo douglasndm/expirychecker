@@ -11,7 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
-
 import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
@@ -19,6 +18,15 @@ import { getLocales } from 'react-native-localize';
 import BarCodeReader from '@components/BarCodeReader';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
+
+import {
+	Container,
+	InputSearch,
+	InputTextContainer,
+	InputTextIcon,
+	InputTextIconContainer,
+	ActionButtonsContainer,
+} from '@views/Home/styles';
 
 import Header from '~/Components/Header';
 import strings from '~/Locales';
@@ -33,15 +41,6 @@ import ListProducts from '~/Components/ListProducts';
 import Banner from '~/Components/Ads/Banner';
 
 import { FloatButton, Icons } from '~/Components/ListProducts/styles';
-
-import {
-	Container,
-	InputSearch,
-	InputTextContainer,
-	InputTextIcon,
-	InputTextIconContainer,
-	ActionButtonsContainer,
-} from './styles';
 
 const Home: React.FC = () => {
 	const { reset, canGoBack, navigate } =
