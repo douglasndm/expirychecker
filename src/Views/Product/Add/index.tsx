@@ -30,7 +30,7 @@ import BrandSelect, {
 } from '~/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
-import PaddingComponent from '~/Components/PaddingComponent';
+import PaddingComponent from '@components/PaddingComponent';
 
 import InputCode, { completeInfoProps } from './Components/Inputs/Code';
 import Interstitial, { IInterstitialRef } from './Components/Interstitial';

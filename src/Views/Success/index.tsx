@@ -16,7 +16,7 @@ import StatusBar from '@components/StatusBar';
 import BackButton from '@components/BackButton';
 import FloatButton from '~/Components/FloatButton';
 import Banner from '~/Components/Ads/Banner';
-import PaddingComponent from '~/Components/PaddingComponent';
+import PaddingComponent from '@components/PaddingComponent';
 
 import {
     Container,

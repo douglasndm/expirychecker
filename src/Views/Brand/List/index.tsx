@@ -10,7 +10,7 @@ import { createBrand, getAllBrands } from '~/Utils/Brands';
 
 import Header from '@components/Header';
 import Loading from '~/Components/Loading';
-import PaddingComponent from '~/Components/PaddingComponent';
+import PaddingComponent from '@components/PaddingComponent';
 
 import {
     Container,
