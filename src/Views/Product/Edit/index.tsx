@@ -7,6 +7,9 @@ import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
 import Input from '@components/InputText';
+import Loading from '@components/Loading';
+import Header from '@components/Header';
+import BarCodeReader from '@components/BarCodeReader';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
@@ -23,10 +26,7 @@ import {
 	getImageFileNameFromPath,
 } from '~/Functions/Products/Image';
 
-import Loading from '~/Components/Loading';
-import Header from '@components/Header';
 import Camera, { onPhotoTakedProps } from '~/Components/Camera';
-import BarCodeReader from '@components/BarCodeReader';
 
 import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';

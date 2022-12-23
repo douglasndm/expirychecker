@@ -5,334 +5,334 @@ import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 import { showMessage } from 'react-native-flash-message';
 import { formatCurrency } from 'react-native-format-currency';
 
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import Loading from '~/Components/Loading';
 import Card from './Card';
 
 import {
-    getSubscriptionDetails,
-    makeSubscription,
-    isSubscriptionActive,
-    RestorePurchasers,
+	getSubscriptionDetails,
+	makeSubscription,
+	isSubscriptionActive,
+	RestorePurchasers,
 } from '~/Functions/ProMode';
 import { getEnableProVersion } from '~/Functions/Settings';
 
 import {
-    Container,
-    SubscriptionsGroup,
-    SubscriptionContainer,
-    SubscriptionPeriodContainer,
-    SubscriptionPeriod,
-    ButtonSubscription,
-    ButtonText,
-    TextSubscription,
-    LoadingIndicator,
+	Container,
+	SubscriptionsGroup,
+	SubscriptionContainer,
+	SubscriptionPeriodContainer,
+	SubscriptionPeriod,
+	ButtonSubscription,
+	ButtonText,
+	TextSubscription,
+	LoadingIndicator,
 } from './styles';
 
 const SubscriptionList: React.FC = () => {
-    const { reset, replace } =
-        useNavigation<StackNavigationProp<RoutesParams>>();
+	const { reset, replace } =
+		useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const { userPreferences, setUserPreferences } =
-        useContext(PreferencesContext);
+	const { userPreferences, setUserPreferences } =
+		useContext(PreferencesContext);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [isPurchasing, setIsPurchasing] = useState<boolean>(false);
-    const [isRestoreLoading, setIsRestoreLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isPurchasing, setIsPurchasing] = useState<boolean>(false);
+	const [isRestoreLoading, setIsRestoreLoading] = useState<boolean>(false);
 
-    const [alreadyPremium, setAlreadyPremium] = useState(false);
+	const [alreadyPremium, setAlreadyPremium] = useState(false);
 
-    const [packages, setPackages] = useState<PurchasesPackage[]>([]);
-    const [selectedPackage, setSelectedPackage] = useState<
-        PurchasesPackage | undefined
-    >();
+	const [packages, setPackages] = useState<PurchasesPackage[]>([]);
+	const [selectedPackage, setSelectedPackage] = useState<
+		PurchasesPackage | undefined
+	>();
 
-    const [monthlyPrice, setMonthlyPrice] = useState(0);
+	const [monthlyPrice, setMonthlyPrice] = useState(0);
 
-    const loadData = useCallback(async () => {
-        try {
-            setIsLoading(true);
+	const loadData = useCallback(async () => {
+		try {
+			setIsLoading(true);
 
-            const alreadyProUser = await isSubscriptionActive();
-            setAlreadyPremium(alreadyProUser);
+			const alreadyProUser = await isSubscriptionActive();
+			setAlreadyPremium(alreadyProUser);
 
-            if (alreadyProUser) {
-                setUserPreferences({
-                    ...userPreferences,
-                    isPRO: true,
-                    disableAds: true,
-                });
-            }
+			if (alreadyProUser) {
+				setUserPreferences({
+					...userPreferences,
+					isPRO: true,
+					disableAds: true,
+				});
+			}
 
-            const response = await getSubscriptionDetails();
-            const sorted = response.sort((pack1, pack2) => {
-                if (pack1.product.price > pack2.product.price) {
-                    return -1;
-                }
-                if (pack1.product.price < pack2.product.price) {
-                    return 1;
-                }
-                return 0;
-            });
+			const response = await getSubscriptionDetails();
+			const sorted = response.sort((pack1, pack2) => {
+				if (pack1.product.price > pack2.product.price) {
+					return -1;
+				}
+				if (pack1.product.price < pack2.product.price) {
+					return 1;
+				}
+				return 0;
+			});
 
-            setPackages(sorted);
-            setSelectedPackage(sorted[0]);
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [userPreferences]);
+			setPackages(sorted);
+			setSelectedPackage(sorted[0]);
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [userPreferences]);
 
-    useEffect(() => {
-        const monthlyPack = packages.find(
-            p => p.packageType === PACKAGE_TYPE.MONTHLY
-        );
+	useEffect(() => {
+		const monthlyPack = packages.find(
+			p => p.packageType === PACKAGE_TYPE.MONTHLY
+		);
 
-        if (monthlyPack) {
-            setMonthlyPrice(monthlyPack.product.price);
-        }
-    }, [packages]);
+		if (monthlyPack) {
+			setMonthlyPrice(monthlyPack.product.price);
+		}
+	}, [packages]);
 
-    const handleMakeSubscription = useCallback(async () => {
-        if (!selectedPackage) return;
-        try {
-            setIsPurchasing(true);
+	const handleMakeSubscription = useCallback(async () => {
+		if (!selectedPackage) return;
+		try {
+			setIsPurchasing(true);
 
-            await makeSubscription(selectedPackage);
+			await makeSubscription(selectedPackage);
 
-            const enablePro = await getEnableProVersion();
+			const enablePro = await getEnableProVersion();
 
-            setUserPreferences({
-                ...userPreferences,
-                isPRO: enablePro,
-                disableAds: enablePro,
-            });
+			setUserPreferences({
+				...userPreferences,
+				isPRO: enablePro,
+				disableAds: enablePro,
+			});
 
-            if (enablePro) {
-                replace('Home');
-            }
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsPurchasing(false);
-        }
-    }, [selectedPackage, setUserPreferences, userPreferences, replace]);
+			if (enablePro) {
+				replace('Home');
+			}
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsPurchasing(false);
+		}
+	}, [selectedPackage, setUserPreferences, userPreferences, replace]);
 
-    const handleRestore = useCallback(async () => {
-        setIsRestoreLoading(true);
-        await RestorePurchasers();
+	const handleRestore = useCallback(async () => {
+		setIsRestoreLoading(true);
+		await RestorePurchasers();
 
-        const result = await isSubscriptionActive();
+		const result = await isSubscriptionActive();
 
-        if (result === true) {
-            setUserPreferences({
-                ...userPreferences,
-                isPRO: true,
-                disableAds: true,
-            });
+		if (result === true) {
+			setUserPreferences({
+				...userPreferences,
+				isPRO: true,
+				disableAds: true,
+			});
 
-            showMessage({
-                message: strings.View_PROView_Subscription_Alert_RestoreSuccess,
-                type: 'info',
-            });
+			showMessage({
+				message: strings.View_PROView_Subscription_Alert_RestoreSuccess,
+				type: 'info',
+			});
 
-            reset({
-                routes: [{ name: 'Home' }],
-            });
-        } else {
-            showMessage({
-                message: strings.View_PROView_Subscription_Alert_NoSubscription,
-                type: 'info',
-            });
-        }
-        setIsRestoreLoading(false);
-    }, [setUserPreferences, userPreferences, reset]);
+			reset({
+				routes: [{ name: 'Home' }],
+			});
+		} else {
+			showMessage({
+				message: strings.View_PROView_Subscription_Alert_NoSubscription,
+				type: 'info',
+			});
+		}
+		setIsRestoreLoading(false);
+	}, [setUserPreferences, userPreferences, reset]);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+	useEffect(() => {
+		loadData();
+	}, [loadData]);
 
-    return isLoading || isPurchasing ? (
-        <Loading />
-    ) : (
-        <>
-            {alreadyPremium ? (
-                <ButtonSubscription>
-                    <TextSubscription>
-                        {strings.View_ProPage_UserAlreadyPro}
-                    </TextSubscription>
-                </ButtonSubscription>
-            ) : (
-                <>
-                    {packages.length > 0 ? (
-                        <Container>
-                            <>
-                                <SubscriptionsGroup>
-                                    {packages.map(pack => {
-                                        const { price } = pack.product;
+	return isLoading || isPurchasing ? (
+		<Loading />
+	) : (
+		<>
+			{alreadyPremium ? (
+				<ButtonSubscription>
+					<TextSubscription>
+						{strings.View_ProPage_UserAlreadyPro}
+					</TextSubscription>
+				</ButtonSubscription>
+			) : (
+				<>
+					{packages.length > 0 ? (
+						<Container>
+							<>
+								<SubscriptionsGroup>
+									{packages.map(pack => {
+										const { price } = pack.product;
 
-                                        let priceByMonth = price;
+										let priceByMonth = price;
 
-                                        let discount = 0;
+										let discount = 0;
 
-                                        let title = '';
+										let title = '';
 
-                                        switch (pack.packageType) {
-                                            case PACKAGE_TYPE.THREE_MONTH:
-                                                title =
-                                                    strings.View_ProPage_SubscribePeriod_ThreeMonths;
-                                                priceByMonth = price / 3;
+										switch (pack.packageType) {
+											case PACKAGE_TYPE.THREE_MONTH:
+												title =
+													strings.View_ProPage_SubscribePeriod_ThreeMonths;
+												priceByMonth = price / 3;
 
-                                                if (monthlyPrice > 0) {
-                                                    const packMonthlyPrice =
-                                                        price / 3;
+												if (monthlyPrice > 0) {
+													const packMonthlyPrice =
+														price / 3;
 
-                                                    discount =
-                                                        ((monthlyPrice -
-                                                            packMonthlyPrice) /
-                                                            monthlyPrice) *
-                                                        100;
-                                                }
-                                                break;
-                                            case PACKAGE_TYPE.ANNUAL:
-                                                title =
-                                                    strings.View_ProPage_SubscribePeriod_OneYear;
-                                                priceByMonth = price / 12;
+													discount =
+														((monthlyPrice -
+															packMonthlyPrice) /
+															monthlyPrice) *
+														100;
+												}
+												break;
+											case PACKAGE_TYPE.ANNUAL:
+												title =
+													strings.View_ProPage_SubscribePeriod_OneYear;
+												priceByMonth = price / 12;
 
-                                                if (monthlyPrice > 0) {
-                                                    const packMonthlyPrice =
-                                                        price / 12;
+												if (monthlyPrice > 0) {
+													const packMonthlyPrice =
+														price / 12;
 
-                                                    discount =
-                                                        ((monthlyPrice -
-                                                            packMonthlyPrice) /
-                                                            monthlyPrice) *
-                                                        100;
-                                                }
-                                                break;
-                                            default:
-                                                title =
-                                                    strings.View_ProPage_SubscribePeriod_Monthly;
-                                                break;
-                                        }
+													discount =
+														((monthlyPrice -
+															packMonthlyPrice) /
+															monthlyPrice) *
+														100;
+												}
+												break;
+											default:
+												title =
+													strings.View_ProPage_SubscribePeriod_Monthly;
+												break;
+										}
 
-                                        const isSelected =
-                                            selectedPackage?.product
-                                                .identifier ===
-                                            pack.product.identifier;
+										const isSelected =
+											selectedPackage?.product
+												.identifier ===
+											pack.product.identifier;
 
-                                        const price_string = formatCurrency({
-                                            amount: Number(
-                                                priceByMonth.toFixed(2)
-                                            ),
-                                            code: pack.product.currencyCode,
-                                        });
+										const price_string = formatCurrency({
+											amount: Number(
+												priceByMonth.toFixed(2)
+											),
+											code: pack.product.currencyCode,
+										});
 
-                                        return (
-                                            <SubscriptionContainer
-                                                key={pack.identifier}
-                                                onPress={() => {
-                                                    setSelectedPackage(pack);
-                                                }}
-                                                isSelected={isSelected}
-                                            >
-                                                <SubscriptionPeriodContainer
-                                                    isSelected={isSelected}
-                                                >
-                                                    <SubscriptionPeriod
-                                                        isSelected={isSelected}
-                                                    >
-                                                        {title}
-                                                    </SubscriptionPeriod>
-                                                </SubscriptionPeriodContainer>
+										return (
+											<SubscriptionContainer
+												key={pack.identifier}
+												onPress={() => {
+													setSelectedPackage(pack);
+												}}
+												isSelected={isSelected}
+											>
+												<SubscriptionPeriodContainer
+													isSelected={isSelected}
+												>
+													<SubscriptionPeriod
+														isSelected={isSelected}
+													>
+														{title}
+													</SubscriptionPeriod>
+												</SubscriptionPeriodContainer>
 
-                                                <Card
-                                                    isSelected={isSelected}
-                                                    price_string={
-                                                        price_string[0]
-                                                    }
-                                                    discount={discount}
-                                                    pack={pack}
-                                                />
-                                            </SubscriptionContainer>
-                                        );
-                                    })}
-                                </SubscriptionsGroup>
+												<Card
+													isSelected={isSelected}
+													price_string={
+														price_string[0]
+													}
+													discount={discount}
+													pack={pack}
+												/>
+											</SubscriptionContainer>
+										);
+									})}
+								</SubscriptionsGroup>
 
-                                {packages.length > 0 &&
-                                    packages[0].product.introPrice && (
-                                        <TextSubscription
-                                            style={{ marginBottom: 10 }}
-                                        >
-                                            {
-                                                strings.View_Subscription_Disclaim_IntroPrice
-                                            }
-                                        </TextSubscription>
-                                    )}
+								{packages.length > 0 &&
+									packages[0].product.introPrice && (
+										<TextSubscription
+											style={{ marginBottom: 10 }}
+										>
+											{
+												strings.View_Subscription_Disclaim_IntroPrice
+											}
+										</TextSubscription>
+									)}
 
-                                {packages.length > 0 && (
-                                    <>
-                                        <ButtonSubscription
-                                            onPress={handleMakeSubscription}
-                                            disabled={
-                                                isPurchasing || isRestoreLoading
-                                            }
-                                        >
-                                            {isPurchasing ? (
-                                                <LoadingIndicator />
-                                            ) : (
-                                                <ButtonText>
-                                                    {
-                                                        strings.View_ProPage_Button_Subscribe
-                                                    }
-                                                </ButtonText>
-                                            )}
-                                        </ButtonSubscription>
-                                        <ButtonSubscription
-                                            onPress={handleRestore}
-                                            disabled={
-                                                isPurchasing || isRestoreLoading
-                                            }
-                                        >
-                                            {isRestoreLoading ? (
-                                                <LoadingIndicator />
-                                            ) : (
-                                                <TextSubscription
-                                                    style={{ color: '#fff' }}
-                                                >
-                                                    {
-                                                        strings.View_PROView_Subscription_RestoreButton
-                                                    }
-                                                </TextSubscription>
-                                            )}
-                                        </ButtonSubscription>
-                                    </>
-                                )}
-                            </>
-                        </Container>
-                    ) : (
-                        <ButtonSubscription disabled>
-                            <TextSubscription>
-                                {strings.View_ProPage_SubscriptionNotAvailable}
-                            </TextSubscription>
-                        </ButtonSubscription>
-                    )}
-                </>
-            )}
-        </>
-    );
+								{packages.length > 0 && (
+									<>
+										<ButtonSubscription
+											onPress={handleMakeSubscription}
+											disabled={
+												isPurchasing || isRestoreLoading
+											}
+										>
+											{isPurchasing ? (
+												<LoadingIndicator />
+											) : (
+												<ButtonText>
+													{
+														strings.View_ProPage_Button_Subscribe
+													}
+												</ButtonText>
+											)}
+										</ButtonSubscription>
+										<ButtonSubscription
+											onPress={handleRestore}
+											disabled={
+												isPurchasing || isRestoreLoading
+											}
+										>
+											{isRestoreLoading ? (
+												<LoadingIndicator />
+											) : (
+												<TextSubscription
+													style={{ color: '#fff' }}
+												>
+													{
+														strings.View_PROView_Subscription_RestoreButton
+													}
+												</TextSubscription>
+											)}
+										</ButtonSubscription>
+									</>
+								)}
+							</>
+						</Container>
+					) : (
+						<ButtonSubscription disabled>
+							<TextSubscription>
+								{strings.View_ProPage_SubscriptionNotAvailable}
+							</TextSubscription>
+						</ButtonSubscription>
+					)}
+				</>
+			)}
+		</>
+	);
 };
 
 export default SubscriptionList;
