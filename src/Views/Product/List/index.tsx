@@ -14,11 +14,11 @@ import {
 	InputTextIcon,
 } from '@views/Home/styles';
 
+import Loading from '@components/Loading';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 
 import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';

@@ -28,6 +28,7 @@ import {
 	ActionButtonsContainer,
 } from '@views/Home/styles';
 
+import Loading from '@components/Loading';
 import Header from '~/Components/Header';
 import strings from '~/Locales';
 
@@ -36,7 +37,6 @@ import PreferencesContext from '~/Contexts/PreferencesContext';
 import { getAllowedToReadIDFA } from '~/Functions/Privacy';
 import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
 
-import Loading from '~/Components/Loading';
 import ListProducts from '~/Components/ListProducts';
 import Banner from '~/Components/Ads/Banner';
 
