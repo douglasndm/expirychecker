@@ -19,6 +19,7 @@ module.exports = {
 					'@styles': '../shared/src/Styles',
 					'@utils': '../shared/src/Utils',
 					'@shared': '../shared/src',
+					'@expirychecker': './src',
 				},
 			},
 		],

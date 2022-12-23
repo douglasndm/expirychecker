@@ -1,40 +1,40 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { ScrollView } from 'react-native';
 import { getLocales } from 'react-native-localize';
 import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@expirychecker/Locales';
+
 import Loading from '@components/Loading';
 import Header from '@components/Header';
-import strings from '~/Locales';
 
-import Appearance from './Components/Appearance';
-import Pro from './Components/Pro';
+import DaysNext from '@views/Settings/Components/DaysNext';
 
 import {
-	setHowManyDaysToBeNextExp,
 	setEnableMultipleStoresMode,
 	setStoreFirstPage,
 	setAutoComplete,
-} from '~/Functions/Settings';
+} from '@expirychecker/Functions/Settings';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import {
 	Container,
+	Content,
 	SettingsContent,
 	Category,
 	CategoryTitle,
 	CategoryOptions,
 	SettingContainer,
 	SettingDescription,
-	InputSetting,
-} from './styles';
+} from '@views/Settings/styles';
+
+import Appearance from './Components/Appearance';
+import Pro from './Components/Pro';
 
 const Settings: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const [daysToBeNext, setDaysToBeNext] = useState<string>('');
 	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
 	const [multipleStoresState, setMultipleStoresState] =
 		useState<boolean>(false);
@@ -46,8 +46,6 @@ const Settings: React.FC = () => {
 
 	const setSettingDaysToBeNext = useCallback(
 		async (days: number) => {
-			await setHowManyDaysToBeNextExp(days);
-
 			setUserPreferences({
 				...userPreferences,
 				howManyDaysToBeNextToExpire: days,
@@ -56,25 +54,12 @@ const Settings: React.FC = () => {
 		[setUserPreferences, userPreferences]
 	);
 
-	useEffect(() => {
-		setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
-	}, [userPreferences.howManyDaysToBeNextToExpire]);
-
+	const previousDaysToBeNext = String(
+		userPreferences.howManyDaysToBeNextToExpire
+	);
 	const loadData = useCallback(async () => {
 		try {
 			setIsLoading(true);
-
-			const previousDaysToBeNext = String(
-				userPreferences.howManyDaysToBeNextToExpire
-			);
-
-			if (!daysToBeNext || daysToBeNext === '') {
-				return;
-			}
-
-			if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
-				await setSettingDaysToBeNext(Number(daysToBeNext));
-			}
 
 			setAutoCompleteState(userPreferences.autoComplete);
 			setMultipleStoresState(userPreferences.multiplesStores);
@@ -89,10 +74,7 @@ const Settings: React.FC = () => {
 			setIsLoading(false);
 		}
 	}, [
-		daysToBeNext,
-		setSettingDaysToBeNext,
 		userPreferences.autoComplete,
-		userPreferences.howManyDaysToBeNextToExpire,
 		userPreferences.multiplesStores,
 		userPreferences.storesFirstPage,
 	]);
@@ -140,7 +122,7 @@ const Settings: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
-			<ScrollView>
+			<Content>
 				<Header title={strings.View_Settings_PageTitle} noDrawer />
 
 				<SettingsContent>
@@ -150,26 +132,10 @@ const Settings: React.FC = () => {
 						</CategoryTitle>
 
 						<CategoryOptions>
-							<SettingDescription>
-								{
-									strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
-								}
-							</SettingDescription>
-							<InputSetting
-								keyboardType="numeric"
-								placeholder={
-									strings.View_Settings_SettingName_DaysToExpPlaceholder
-								}
-								value={daysToBeNext}
-								onChangeText={v => {
-									const regex = /^[0-9\b]+$/;
-
-									if (v === '' || regex.test(v)) {
-										setDaysToBeNext(v);
-									}
-								}}
+							<DaysNext
+								defaultValue={previousDaysToBeNext}
+								onUpdate={setSettingDaysToBeNext}
 							/>
-							{/* <Notifications /> */}
 
 							{userPreferences.isPRO && (
 								<>
@@ -237,7 +203,7 @@ const Settings: React.FC = () => {
 
 					<Pro />
 				</SettingsContent>
-			</ScrollView>
+			</Content>
 		</Container>
 	);
 };

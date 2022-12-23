@@ -53,7 +53,6 @@ const App: React.FC = () => {
         multiplesStores: false,
         storesFirstPage: false,
         enableNotifications: true,
-        notificationCadency: NotificationCadency.Day,
         disableAds: false,
     });
 
