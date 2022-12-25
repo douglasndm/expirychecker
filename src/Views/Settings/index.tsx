@@ -18,6 +18,8 @@ import {
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
+import Appearance from '@views/Settings/Components/Appearance';
+
 import {
 	Container,
 	Content,
@@ -29,7 +31,6 @@ import {
 	SettingDescription,
 } from '@views/Settings/styles';
 
-import Appearance from './Components/Appearance';
 import Pro from './Components/Pro';
 
 const Settings: React.FC = () => {
@@ -118,6 +119,16 @@ const Settings: React.FC = () => {
 		});
 	}, [setUserPreferences, storeFirstPageState, userPreferences]);
 
+	const onThemeChoosen = useCallback(
+		(theme: DefaultTheme) => {
+			setUserPreferences({
+				...userPreferences,
+				appTheme: theme,
+			});
+		},
+		[setUserPreferences, userPreferences]
+	);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -199,7 +210,10 @@ const Settings: React.FC = () => {
 						</CategoryOptions>
 					</Category>
 
-					<Appearance />
+					<Appearance
+						enablePROThemes={userPreferences.isPRO}
+						onThemeChoosen={onThemeChoosen}
+					/>
 
 					<Pro />
 				</SettingsContent>

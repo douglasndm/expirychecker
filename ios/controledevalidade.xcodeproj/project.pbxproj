@@ -426,7 +426,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../../../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=node\nexport PROJECT_ROOT=$PWD/..\n../../../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		0BA7D566382754331E7CA5A3 /* [CP-User] [RNGoogleMobileAds] Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -825,7 +825,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MULTI_DEPLOYMENT_CONFIG = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
-				REACT_NATIVE_PATH = "${PODS_ROOT}../../../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				REVENUECAT_PUBLIC_APP_ID = "$(REVENUECAT_PUBLIC_APP_ID)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -945,7 +945,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				MULTI_DEPLOYMENT_CONFIG = "";
 				ONLY_ACTIVE_ARCH = YES;
-				REACT_NATIVE_PATH = "${PODS_ROOT}../../../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				REVENUECAT_PUBLIC_APP_ID = "$(REVENUECAT_PUBLIC_APP_ID)";
 				SDKROOT = iphoneos;
 			};
@@ -1004,7 +1004,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MULTI_DEPLOYMENT_CONFIG = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../node_modules/react-native";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				REVENUECAT_PUBLIC_APP_ID = "$(REVENUECAT_PUBLIC_APP_ID)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
