@@ -16,16 +16,17 @@ import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import Accordion from 'react-native-collapsible/Accordion';
 
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
 import Loading from '@components/Loading';
 import Header from '@components/Header';
-import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import ProductCard from '@expirychecker/Components/ListProducts/ProductCard';
+import FloatButton from '@expirychecker/Components/FloatButton';
 
-import ProductCard from '~/Components/ListProducts/ProductCard';
-import FloatButton from '~/Components/FloatButton';
-
-import { getAllProducts } from '~/Functions/Products';
+import { getAllProducts } from '@expirychecker/Functions/Products';
 
 import {
 	Container,
@@ -61,7 +62,7 @@ const WeekView: React.FC = () => {
 
 			const batches: ILote[] = [];
 
-			allProducts.forEach(p => p.lotes.forEach(b => batches.push(b)));
+			allProducts.forEach(p => p.batches.forEach(b => batches.push(b)));
 
 			const sorted = batches.sort((b1, b2) =>
 				compareAsc(b1.exp_date, b2.exp_date)
@@ -79,7 +80,7 @@ const WeekView: React.FC = () => {
 					const weekLimit = addDays(week, 7);
 
 					allProducts.forEach(prod => {
-						const filtedBatches = prod.lotes.filter(b => {
+						const filtedBatches = prod.batches.filter(b => {
 							const { exp_date } = b;
 
 							if (compareAsc(weekLimit, exp_date) >= 0) {
@@ -95,7 +96,7 @@ const WeekView: React.FC = () => {
 						if (filtedBatches.length > 0) {
 							prods.push({
 								...prod,
-								lotes: filtedBatches,
+								batches: filtedBatches,
 							});
 						}
 					});

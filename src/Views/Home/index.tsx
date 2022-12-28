@@ -15,6 +15,11 @@ import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 
+import strings from '@expirychecker/Locales';
+
+import { searchProducts } from '@utils/Product/Search';
+
+import Loading from '@components/Loading';
 import BarCodeReader from '@components/BarCodeReader';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
@@ -28,19 +33,23 @@ import {
 	ActionButtonsContainer,
 } from '@views/Home/styles';
 
-import Loading from '@components/Loading';
-import Header from '~/Components/Header';
-import strings from '~/Locales';
+import Header from '@expirychecker/Components/Header';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import { getAllowedToReadIDFA } from '~/Functions/Privacy';
-import { searchForAProductInAList, getAllProducts } from '~/Functions/Products';
+import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
+import {
+	sortProductsLotesByLotesExpDate,
+	getAllProducts,
+} from '@expirychecker/Functions/Products';
 
-import ListProducts from '~/Components/ListProducts';
-import Banner from '~/Components/Ads/Banner';
+import ListProducts from '@expirychecker/Components/ListProducts';
+import Banner from '@expirychecker/Components/Ads/Banner';
 
-import { FloatButton, Icons } from '~/Components/ListProducts/styles';
+import {
+	FloatButton,
+	Icons,
+} from '@expirychecker/Components/ListProducts/styles';
 
 const Home: React.FC = () => {
 	const { reset, canGoBack, navigate } =
@@ -67,21 +76,13 @@ const Home: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [products, setProducts] = useState<Array<IProduct>>([]);
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 
 	const [searchString, setSearchString] = useState<string>('');
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 	const [enableBarCodeReader, setEnableBarCodeReader] =
 		useState<boolean>(false);
 	const [enableDatePicker, setEnableDatePicker] = useState(false);
-
-	const filteredProducts =
-		searchString.length > 0
-			? searchForAProductInAList({
-					products,
-					searchFor: searchString.trim(),
-					sortByExpDate: true,
-			  })
-			: products;
 
 	useEffect(() => {
 		if (Platform.OS === 'ios') {
@@ -104,6 +105,7 @@ const Home: React.FC = () => {
 				removeTreatedBatch: true,
 				sortProductsByExpDate: true,
 			});
+
 			setProducts(allProducts);
 		} catch (err) {
 			if (err instanceof Error)
@@ -116,9 +118,35 @@ const Home: React.FC = () => {
 		}
 	}, []);
 
-	const handleSearchChange = useCallback(async (search: string) => {
-		setSearchString(search);
-	}, []);
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
+
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchString(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(() => {
+		let prods: IProduct[] = [];
+
+		if (searchString && searchString !== '') {
+			prods = searchProducts({
+				products,
+				query: searchString,
+			});
+		}
+
+		prods = sortProductsLotesByLotesExpDate(prods);
+
+		setProductsSearch(prods);
+	}, [products, searchString]);
 
 	useEffect(() => {
 		loadData();
@@ -211,6 +239,7 @@ const Home: React.FC = () => {
 								placeholder={strings.View_Home_SearchText}
 								value={searchString}
 								onChangeText={handleSearchChange}
+								onSubmitEditing={handleSearch}
 							/>
 
 							<ActionButtonsContainer>
@@ -244,7 +273,7 @@ const Home: React.FC = () => {
 					/>
 
 					<ListProducts
-						products={filteredProducts}
+						products={productsSearch}
 						isHome
 						onRefresh={loadData}
 						isRefreshing={isLoading}

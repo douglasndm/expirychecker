@@ -12,19 +12,22 @@ import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
+import { getProductById } from '@expirychecker/Functions/Product';
+import { getStore } from '@expirychecker/Functions/Stores';
+import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
 
 import StatusBar from '@components/StatusBar';
 import Loading from '@components/Loading';
 import BackButton from '@components/BackButton';
-import strings from '~/Locales';
-import { getProductById } from '~/Functions/Product';
-import { sortBatches } from '~/Utils/Batches/Sort';
-import { getStore } from '~/Functions/Stores';
-import { getProductImagePath } from '~/Functions/Products/Image';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import Banner from '@expirychecker/Components/Ads/Banner';
 
 import {
 	Container,
@@ -51,7 +54,6 @@ import {
 } from './styles';
 
 import BatchTable from './Components/BatchesTable';
-import Banner from '~/Components/Ads/Banner';
 
 interface Request {
 	route: {
@@ -130,8 +132,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 			setName(result.name);
 			if (result.code) setCode(result.code);
 
-			if (result.lotes.length > 0) {
-				const lotesSorted = sortBatches(result.lotes);
+			if (result.batches.length > 0) {
+				const lotesSorted = sortBatches(result.batches);
 
 				setLotesTratados(() =>
 					lotesSorted.filter(lote => lote.status === 'Tratado')
