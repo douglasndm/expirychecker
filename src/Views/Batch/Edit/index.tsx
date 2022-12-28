@@ -13,15 +13,16 @@ import { showMessage } from 'react-native-flash-message';
 import { Dialog } from 'react-native-paper';
 import { useTheme } from 'styled-components';
 
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { updateLote, deleteLote } from '@expirychecker/Functions/Lotes';
+import { getProductById } from '@expirychecker/Functions/Product';
+
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import GenericButton from '@components/Button';
-import strings from '~/Locales';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import { updateLote, deleteLote } from '~/Functions/Lotes';
-import { getProductById } from '~/Functions/Product';
 
 import {
 	Container,
@@ -33,8 +34,8 @@ import {
 	ExpDateGroup,
 	ExpDateLabel,
 	CustomDatePicker,
-} from '~/Views/Product/Add/styles';
-import { InputCodeText } from '~/Views/Product/Add/Components/Inputs/Code/styles';
+} from '@expirychecker/Views/Product/Add/styles';
+import { InputCodeText } from '@expirychecker/Views/Product/Add/Components/Inputs/Code/styles';
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
@@ -106,7 +107,7 @@ const EditBatch: React.FC = () => {
 
 			if (!response) return;
 
-			const loteResult = response.lotes.find(l => l.id === loteId);
+			const loteResult = response.batches.find(l => l.id === loteId);
 
 			if (!loteResult) {
 				showMessage({
@@ -118,7 +119,7 @@ const EditBatch: React.FC = () => {
 
 			const loteStatus = loteResult.status === 'Tratado';
 
-			setLote(loteResult.lote);
+			setLote(loteResult.name);
 			setExpDate(loteResult.exp_date);
 			setTratado(loteStatus);
 
@@ -142,7 +143,7 @@ const EditBatch: React.FC = () => {
 		try {
 			await updateLote({
 				id: loteId,
-				lote,
+				name: lote,
 				amount: Number(amount),
 				exp_date: expDate,
 				price: price || undefined,

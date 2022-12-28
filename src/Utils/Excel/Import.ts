@@ -3,14 +3,17 @@ import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
 import { parseISO } from 'date-fns';
 
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import { createBrand, getAllBrands } from '~/Utils/Brands';
-import { getAllStores } from '~/Utils/Stores/Find';
+import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 
-import { createCategory, getAllCategories } from '~/Functions/Category';
-import { saveMany } from '~/Functions/Products/index';
-import { createStore } from '~/Functions/Stores';
+import {
+	createCategory,
+	getAllCategories,
+} from '@expirychecker/Functions/Category';
+import { saveMany } from '@expirychecker/Functions/Products/index';
+import { createStore } from '@expirychecker/Functions/Stores';
 
 // This is necessary because Excel exports use different languages, so depends of the user settings
 // This also makes only be possible to import and excel file of the same language
@@ -26,196 +29,196 @@ const localizedCategoryName = strings.Function_Excel_ColumnName_ProductCategory;
 const localizedStoreName = strings.Function_Excel_ColumnName_ProductStore;
 
 interface findProductIndexProps {
-    products: Omit<IExcelProduct, 'id'>[];
-    product: Omit<IExcelProduct, 'id'>;
+	products: Omit<IExcelProduct, 'id'>[];
+	product: Omit<IExcelProduct, 'id'>;
 }
 
 function findProductIndex({
-    products,
-    product,
+	products,
+	product,
 }: findProductIndexProps): number {
-    return products.findIndex(p => {
-        if (p.code && product.code) {
-            if (p.code === product.code) {
-                return true;
-            }
-            return false;
-        }
-        if (product.name) {
-            if (p.name === product.name) {
-                return true;
-            }
-            return false;
-        }
+	return products.findIndex(p => {
+		if (p.code && product.code) {
+			if (p.code === product.code) {
+				return true;
+			}
+			return false;
+		}
+		if (product.name) {
+			if (p.name === product.name) {
+				return true;
+			}
+			return false;
+		}
 
-        return false;
-    });
+		return false;
+	});
 }
 
 async function importExcel(): Promise<void> {
-    const file = await DocumentPicker.pickSingle({
-        copyTo: 'documentDirectory',
-        type: DocumentPicker.types.xlsx,
-        mode: 'open',
-    });
+	const file = await DocumentPicker.pickSingle({
+		copyTo: 'documentDirectory',
+		type: DocumentPicker.types.xlsx,
+		mode: 'open',
+	});
 
-    // Separa o nome do arquivo da extensão para fazer a validação da extensão do arquivo
-    const [, extension] = file.name.split('.');
+	// Separa o nome do arquivo da extensão para fazer a validação da extensão do arquivo
+	const [, extension] = file.name.split('.');
 
-    // caso a extensão do arquivo não for cvbf lança um erro e sai da função
-    if (extension !== 'xlsx') {
-        throw new Error(strings.Function_Import_Error_InvalidExtesion);
-    }
+	// caso a extensão do arquivo não for cvbf lança um erro e sai da função
+	if (extension !== 'xlsx') {
+		throw new Error(strings.Function_Import_Error_InvalidExtesion);
+	}
 
-    if (!file.fileCopyUri) {
-        throw new Error('File path not found');
-    }
+	if (!file.fileCopyUri) {
+		throw new Error('File path not found');
+	}
 
-    const uri = decodeURIComponent(file.fileCopyUri);
+	const uri = decodeURIComponent(file.fileCopyUri);
 
-    const fileRead = await RNFS.readFile(uri, 'base64');
+	const fileRead = await RNFS.readFile(uri, 'base64');
 
-    const workbook = XLSX.read(fileRead, {
-        dateNF: 'yyyy"-"mm"-"dd',
-    });
-    const firstSheet = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[firstSheet];
+	const workbook = XLSX.read(fileRead, {
+		dateNF: 'yyyy"-"mm"-"dd',
+	});
+	const firstSheet = workbook.SheetNames[0];
+	const worksheet = workbook.Sheets[firstSheet];
 
-    const data = XLSX.utils.sheet_to_json<ExcelRowProps>(worksheet, {
-        raw: false,
-    });
+	const data = XLSX.utils.sheet_to_json<ExcelRowProps>(worksheet, {
+		raw: false,
+	});
 
-    const products: Omit<IExcelProduct, 'id'>[] = [];
+	const products: Omit<IExcelProduct, 'id'>[] = [];
 
-    const allCategories = await getAllCategories();
-    const allBrands = await getAllBrands();
-    const allStores = await getAllStores();
+	const allCategories = await getAllCategories();
+	const allBrands = await getAllBrands();
+	const allStores = await getAllStores();
 
-    for await (const product of data) {
-        const tablePName = String(product[localizedName]);
-        const tablePCode = String(product[localizedCode]);
-        const tablePBrand = String(product[localizedBrandName]);
-        const tablePCategory = String(product[localizedCategoryName]);
-        const tablePStore = String(product[localizedStoreName]);
+	for await (const product of data) {
+		const tablePName = String(product[localizedName]);
+		const tablePCode = String(product[localizedCode]);
+		const tablePBrand = String(product[localizedBrandName]);
+		const tablePCategory = String(product[localizedCategoryName]);
+		const tablePStore = String(product[localizedStoreName]);
 
-        const tableBName = String(product[localizedBName]);
-        const tableBAmount = Number(product[localizedBAmount]) || undefined;
-        const tableBPrice = Number(product[localizedBPrice]);
-        const tableBStatus = String(product[localizedBStatus]);
+		const tableBName = String(product[localizedBName]);
+		const tableBAmount = Number(product[localizedBAmount]) || undefined;
+		const tableBPrice = Number(product[localizedBPrice]);
+		const tableBStatus = String(product[localizedBStatus]);
 
-        const exists = products.find(p => {
-            if (tablePCode !== 'undefined') {
-                if (p.code && tablePCode) {
-                    if (p.code === tablePCode) {
-                        return true;
-                    }
-                    return false;
-                }
-            }
-            if (tablePName && tablePName !== 'undefined') {
-                if (p.name === tablePName) {
-                    return true;
-                }
-                return false;
-            }
+		const exists = products.find(p => {
+			if (tablePCode !== 'undefined') {
+				if (p.code && tablePCode) {
+					if (p.code === tablePCode) {
+						return true;
+					}
+					return false;
+				}
+			}
+			if (tablePName && tablePName !== 'undefined') {
+				if (p.name === tablePName) {
+					return true;
+				}
+				return false;
+			}
 
-            return false;
-        });
+			return false;
+		});
 
-        let date = product[localizedBExp];
-        date = parseISO(date);
+		let date = product[localizedBExp];
+		date = parseISO(date);
 
-        if (isNaN(date)) {
-            date = String(product[localizedBExp])
-                .split('/')
-                .reverse()
-                .join('/');
-            date = parseISO(date.replace(/\//g, '-'));
-        }
+		if (isNaN(date)) {
+			date = String(product[localizedBExp])
+				.split('/')
+				.reverse()
+				.join('/');
+			date = parseISO(date.replace(/\//g, '-'));
+		}
 
-        const price = product[localizedBPrice] ? tableBPrice : undefined;
+		const price = product[localizedBPrice] ? tableBPrice : undefined;
 
-        if (!exists) {
-            let brand = allBrands.find(
-                bra =>
-                    bra.name.toLowerCase().trim() ===
-                    tablePBrand.toLowerCase().trim()
-            );
-            let category = allCategories.find(
-                cat =>
-                    cat.name.toLowerCase().trim() ===
-                    tablePCategory.toLowerCase().trim()
-            );
-            let store = allStores.find(
-                sto =>
-                    sto.name.toLowerCase().trim() ===
-                    tablePStore.toLowerCase().trim()
-            );
+		if (!exists) {
+			let brand = allBrands.find(
+				bra =>
+					bra.name.toLowerCase().trim() ===
+					tablePBrand.toLowerCase().trim()
+			);
+			let category = allCategories.find(
+				cat =>
+					cat.name.toLowerCase().trim() ===
+					tablePCategory.toLowerCase().trim()
+			);
+			let store = allStores.find(
+				sto =>
+					sto.name.toLowerCase().trim() ===
+					tablePStore.toLowerCase().trim()
+			);
 
-            if (
-                !brand &&
-                tablePBrand.length > 0 &&
-                tablePBrand !== 'undefined'
-            ) {
-                brand = await createBrand(tablePBrand);
-                allBrands.push(brand);
-            }
-            if (
-                !category &&
-                tablePCategory.length > 0 &&
-                tablePCategory !== 'undefined'
-            ) {
-                category = await createCategory(tablePCategory);
-                allCategories.push(category);
-            }
-            if (
-                !store &&
-                tablePStore.length > 0 &&
-                tablePStore !== 'undefined'
-            ) {
-                store = await createStore(tablePStore);
-                allStores.push(store);
-            }
+			if (
+				!brand &&
+				tablePBrand.length > 0 &&
+				tablePBrand !== 'undefined'
+			) {
+				brand = await createBrand(tablePBrand);
+				allBrands.push(brand);
+			}
+			if (
+				!category &&
+				tablePCategory.length > 0 &&
+				tablePCategory !== 'undefined'
+			) {
+				category = await createCategory(tablePCategory);
+				allCategories.push(category);
+			}
+			if (
+				!store &&
+				tablePStore.length > 0 &&
+				tablePStore !== 'undefined'
+			) {
+				store = await createStore(tablePStore);
+				allStores.push(store);
+			}
 
-            const lotes: Omit<ILote, 'id'>[] = [];
+			const lotes: Omit<ILote, 'id'>[] = [];
 
-            if (product[localizedBExp]) {
-                lotes.push({
-                    lote: tableBName,
-                    exp_date: date,
-                    amount: tableBAmount,
-                    price,
-                    status: tableBStatus,
-                });
-            }
+			if (product[localizedBExp]) {
+				lotes.push({
+					name: tableBName,
+					exp_date: date,
+					amount: tableBAmount,
+					price,
+					status: tableBStatus,
+				});
+			}
 
-            products.push({
-                name: tablePName,
-                code: tablePCode,
-                lotes,
-                categories: !!category ? [category.id] : [],
-                brand: !!brand ? brand.id : undefined,
-                store: !!store ? store.id : undefined,
-            });
-        } else {
-            const index = findProductIndex({ products, product: exists });
+			products.push({
+				name: tablePName,
+				code: tablePCode,
+				lotes,
+				categories: !!category ? [category.id] : [],
+				brand: !!brand ? brand.id : undefined,
+				store: !!store ? store.id : undefined,
+			});
+		} else {
+			const index = findProductIndex({ products, product: exists });
 
-            if (index >= 0 && product[localizedBExp]) {
-                products[index].lotes = [
-                    ...products[index].lotes,
-                    {
-                        lote: tableBName,
-                        exp_date: date,
-                        amount: tableBAmount,
-                        price,
-                        status: tableBStatus,
-                    },
-                ];
-            }
-        }
-    }
+			if (index >= 0 && product[localizedBExp]) {
+				products[index].batches = [
+					...products[index].batches,
+					{
+						name: tableBName,
+						exp_date: date,
+						amount: tableBAmount,
+						price,
+						status: tableBStatus,
+					},
+				];
+			}
+		}
+	}
 
-    await saveMany(products);
+	await saveMany(products);
 }
 
 export { importExcel };

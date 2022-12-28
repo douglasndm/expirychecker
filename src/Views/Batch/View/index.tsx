@@ -14,20 +14,23 @@ import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
 import { formatCurrency } from 'react-native-format-currency';
 
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { ShareProductImageWithText } from '@expirychecker/Functions/Share';
+
 import Header from '@components/Header';
 import Button from '@components/Button';
 import Loading from '@components/Loading';
-import strings from '~/Locales';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import { ShareProductImageWithText } from '~/Functions/Share';
 
 import {
 	ActionsButtonContainer,
 	ButtonPaper,
-} from '~/Views/Product/Edit/styles';
+} from '@expirychecker/Views/Product/Edit/styles';
 
+import { getProductById } from '@expirychecker/Functions/Product';
+import Banner from '@expirychecker/Components/Ads/Banner';
 import { PageHeader, Icons } from '../Edit/styles';
 
 import {
@@ -41,9 +44,6 @@ import {
 	ProFeaturesContainer,
 	ProFeaturesText,
 } from './styles';
-
-import { getProductById } from '~/Functions/Product';
-import Banner from '~/Components/Ads/Banner';
 
 interface Props {
 	product_id: number;
@@ -197,7 +197,7 @@ const View: React.FC = () => {
 			setIsLoading(true);
 			const prod = await getProductById(productId);
 
-			const b = prod.lotes.find(l => l.id === routeParams.batch_id);
+			const b = prod.batches.find(l => l.id === routeParams.batch_id);
 
 			setProduct(prod);
 			if (b) setBatch(b);
