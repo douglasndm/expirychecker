@@ -1,4 +1,6 @@
 import { getThemeByName } from '@shared/Themes';
+import { getAppTheme } from '@utils/Themes';
+
 import { IUserPreferences } from '../@types/userPreference';
 
 import {
@@ -10,17 +12,16 @@ import {
 	getStoreFirstPage,
 	getAutoComplete,
 } from './Settings';
-import { getAppTheme } from './Themes';
 
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settingDay = await getHowManyDaysToBeNextExp();
 	const settingAutoComplete = await getAutoComplete();
-	const settingTheme = await getAppTheme();
 	const settingNotification = await getEnableNotifications();
 	const settingMultipleStores = await getEnableMultipleStoresMode();
 	const settingStoresFirstPage = await getStoreFirstPage();
 	const settingProMode = await getEnableProVersion();
 	const disableAds = await getDisableAds();
+	const settingTheme = await getAppTheme(false, settingProMode);
 
 	const settings: IUserPreferences = {
 		howManyDaysToBeNextToExpire: settingDay,
