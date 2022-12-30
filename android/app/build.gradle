@@ -83,7 +83,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
-    cliPath: "../../../../node_modules/react-native/cli.js"
+    cliPath: "../../../../node_modules/react-native/cli.js",
+    composeSourceMapsPath: "../../node_modules/react-native/scripts/compose-source-maps.js",
+    hermesCommand: '../../../../node_modules/react-native/sdks/hermesc/%OS-BIN%/hermesc',
 ]
 
 apply from: "../../../../node_modules/react-native/react.gradle"
