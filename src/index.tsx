@@ -21,7 +21,6 @@ import './Locales';
 
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
-import './Services/AppsFlyer';
 import './Services/Admob';
 import './Services/Analytics';
 import './Services/RemoteConfig';
