@@ -1,8 +1,23 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
+
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import {
+	getAllProducts,
+	searchForAProductInAList,
+} from '@expirychecker/Functions/Products';
 
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
@@ -15,15 +30,12 @@ import {
 } from '@views/Home/styles';
 
 import Loading from '@components/Loading';
-import strings from '~/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import ListProducts from '~/Components/ListProducts';
-
-import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';
-
-import { FloatButton, Icons } from '~/Components/ListProducts/styles';
+import ListProducts from '@expirychecker/Components/ListProducts';
+import {
+	FloatButton,
+	Icons,
+} from '@expirychecker/Components/ListProducts/styles';
 
 import { Container } from './styles';
 
@@ -32,7 +44,6 @@ const List: React.FC = () => {
 
 	const { userPreferences } = useContext(PreferencesContext);
 
-	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [products, setProducts] = useState<Array<IProduct>>([]);
@@ -41,6 +52,20 @@ const List: React.FC = () => {
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 	const [enableBarCodeReader, setEnableBarCodeReader] =
 		useState<boolean>(false);
+
+	const enableTabBar = remoteConfig().getValue('enable_app_bar');
+
+	const enableFloatAddButton = useMemo(() => {
+		if (!userPreferences.isPRO) {
+			return true;
+		}
+
+		if (userPreferences.isPRO && enableTabBar.asBoolean() === false) {
+			return true;
+		}
+
+		return false;
+	}, [enableTabBar, userPreferences.isPRO]);
 
 	const getProducts = useCallback(async () => {
 		try {
@@ -149,26 +174,25 @@ const List: React.FC = () => {
 							</InputTextContainer>
 						)}
 
-						<ListProducts products={productsSearch} />
+						<ListProducts
+							products={productsSearch}
+							onRefresh={getProducts}
+						/>
 
-						{!userPreferences.isPRO ||
-							(userPreferences.isPRO &&
-								enableTabBar.asBoolean() === false && (
-									<FloatButton
-										icon={() => (
-											<Icons
-												name="add-outline"
-												color="white"
-												size={22}
-											/>
-										)}
-										small
-										label={
-											strings.View_FloatMenu_AddProduct
-										}
-										onPress={handleNavigateAddProduct}
+						{enableFloatAddButton && (
+							<FloatButton
+								icon={() => (
+									<Icons
+										name="add-outline"
+										color="white"
+										size={22}
 									/>
-								))}
+								)}
+								small
+								label={strings.View_FloatMenu_AddProduct}
+								onPress={handleNavigateAddProduct}
+							/>
+						)}
 					</Container>
 				</>
 			)}
