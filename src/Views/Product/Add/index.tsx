@@ -11,27 +11,26 @@ import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { createProduct } from '@expirychecker/Functions/Product';
+import { createLote } from '@expirychecker/Functions/Lotes';
+import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Image';
+
 import Input from '@components/InputText';
 import Header from '@components/Header';
-import strings from '~/Locales';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import { createProduct } from '~/Functions/Product';
-import { createLote } from '~/Functions/Lotes';
-import { getImageFileNameFromPath } from '~/Functions/Products/Image';
-
 import GenericButton from '@components/Button';
-import Camera, { onPhotoTakedProps } from '~/Components/Camera';
-
-import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
-import BrandSelect, {
-	IBrandPickerRef,
-} from '~/Components/Product/Inputs/Pickers/Brand';
-import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
-import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
 import PaddingComponent from '@components/PaddingComponent';
 
+import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
+import DaysToBeNext from '@expirychecker/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect, {
+	IBrandPickerRef,
+} from '@expirychecker/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
 import InputCode, { completeInfoProps } from './Components/Inputs/Code';
 import Interstitial, { IInterstitialRef } from './Components/Interstitial';
 
@@ -167,11 +166,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				photo: picFileName,
 				daysToBeNext: daysNext,
 				categories: prodCategories,
-				lotes: [],
+				batches: [],
 			};
 
 			const newLote: Omit<ILote, 'id'> = {
-				lote,
+				name,
 				exp_date: expDate,
 				amount: Number(amount),
 				price: price || undefined,
@@ -226,7 +225,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		daysNext,
 		existentProduct,
 		expDate,
-		lote,
 		name,
 		nameFieldError,
 		navigate,
