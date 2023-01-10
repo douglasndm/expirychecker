@@ -6,6 +6,7 @@ import { addDays } from 'date-fns';
 import Button from '@components/Button';
 
 import { Container, Category } from '@views/Settings/styles';
+import { sendNotification } from '@services/Notifications';
 import realm from '~/Services/Realm';
 import {
 	isTimeForANotification,
@@ -13,7 +14,6 @@ import {
 } from '~/Functions/Notifications';
 
 import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
-import { sendNotification } from '~/Services/Notifications';
 import Camera from '~/Components/Camera';
 
 const Test: React.FC = () => {
