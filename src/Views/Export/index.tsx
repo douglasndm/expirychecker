@@ -6,6 +6,22 @@ import { showMessage } from 'react-native-flash-message';
 import RNPermissions from 'react-native-permissions';
 import remoteConfig from '@react-native-firebase/remote-config';
 
+import strings from '@expirychecker/Locales';
+
+import { exportToExcel } from '@utils/Excel/Export';
+import { importExcel } from '@expirychecker/Utils/Excel/Import';
+import { generateEmptyExcel } from '@expirychecker/Utils/Excel/Export';
+import { getAllBrands } from '@expirychecker/Utils/Brands';
+
+import { getAllProducts } from '@expirychecker/Functions/Products';
+import { getAllCategories } from '@expirychecker/Functions/Category';
+import { getAllStores } from '@expirychecker/Functions/Stores';
+
+import {
+	exportBackupFile,
+	importBackupFile,
+} from '@expirychecker/Functions/Backup';
+
 import Header from '@components/Header';
 import Button from '@components/Button';
 import PaddingComponent from '@components/PaddingComponent';
@@ -24,13 +40,6 @@ import {
 	LinkEmptyExcel,
 	Loading,
 } from '@views/Export/styles';
-
-import strings from '~/Locales';
-
-import { importExcel } from '~/Utils/Excel/Import';
-import { exportToExcel, generateEmptyExcel } from '~/Utils/Excel/Export';
-
-import { exportBackupFile, importBackupFile } from '~/Functions/Backup';
 
 const Export: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -66,6 +75,8 @@ const Export: React.FC = () => {
 		}
 	}, []);
 
+	const getProducts = async () => getAllProducts({});
+
 	const handleExportToExcel = useCallback(async () => {
 		try {
 			setIsExcelLoading(true);
@@ -73,10 +84,18 @@ const Export: React.FC = () => {
 			if (checked === 'created_at') {
 				await exportToExcel({
 					sortBy: 'created_date',
+					getProducts,
+					getBrands: getAllBrands,
+					getCategories: getAllCategories,
+					getStores: getAllStores,
 				});
 			} else {
 				await exportToExcel({
 					sortBy: 'expire_date',
+					getProducts,
+					getBrands: getAllBrands,
+					getCategories: getAllCategories,
+					getStores: getAllStores,
 				});
 			}
 
