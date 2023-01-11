@@ -105,10 +105,12 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('did not share')) {
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+				}
 		} finally {
 			setIsExcelLoading(false);
 		}
