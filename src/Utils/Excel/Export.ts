@@ -4,9 +4,9 @@ import { getLocales } from 'react-native-localize';
 
 import strings from '@expirychecker/Locales';
 
+import { shareFile } from '@utils/Share';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
-import { shareFile } from '@expirychecker/Functions/Share';
 import { getAllProducts } from '@expirychecker/Functions/Products';
 import { getStore } from '@expirychecker/Functions/Stores';
 import { getAllCategories } from '@expirychecker/Functions/Category';
