@@ -12,14 +12,12 @@
     "fix-dependencies": "rnx-dep-check --write"
   },
   "dependencies": {
-    "shared": "^1.0.0",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-community/blur": "^4.2.0",
     "@react-native-community/push-notification-ios": "^1.10.1",
     "@react-native-community/slider": "^3.0.3",
     "@react-native-firebase/analytics": "^14.8.0",
     "@react-native-firebase/app": "^14.8.0",
-    "@react-native-firebase/crashlytics": "^14.8.0",
     "@react-native-firebase/messaging": "^14.8.0",
     "@react-native-firebase/remote-config": "^14.8.0",
     "@react-native-masked-view/masked-view": "^0.2.8",
@@ -28,6 +26,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
     "@react-navigation/stack": "^6.3.2",
+    "@sentry/react-native": "^4.13.0",
     "axios": "^0.23.0",
     "crypto-js": "^3.3.0",
     "date-fns": "^2.29.2",
@@ -74,6 +73,7 @@
     "react-native-zip-archive": "^6.0.3",
     "react-number-format": "^4.4.1",
     "realm": "^11.2.0",
+    "shared": "^1.0.0",
     "styled-components": "^5.3.6",
     "xlsx": "^0.17.0",
     "yup": "^0.32.9"

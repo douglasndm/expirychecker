@@ -1,7 +1,6 @@
 apply plugin: "com.android.application"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -151,8 +150,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 197
-        versionName "1.13.7"
+        versionCode 198
+        versionName "1.13.8"
 
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         if (isNewArchitectureEnabled()) {
@@ -257,15 +256,6 @@ android {
             matchingFallbacks = ['release']
         }
         release {
-            /* Add the firebaseCrashlytics extension (by default,
-            * it's disabled to improve build speeds) and set
-            * nativeSymbolUploadEnabled to true along with a pointer to native libs. */
-
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
-                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
-            }
-
             resValue "string", "CodePushDeploymentKey", codePushProductionDeploymentKey
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
