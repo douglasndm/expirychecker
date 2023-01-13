@@ -5,6 +5,7 @@
 import { AppRegistry, Linking } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { showMessage } from 'react-native-flash-message';
+import Sentry from '@expirychecker/Services/Sentry';
 
 import '@shared/Services/Notifications';
 import { handleSetNotification } from '@expirychecker/Services/BackgroundJobs';
@@ -43,4 +44,4 @@ messaging().onMessage(async remoteMessage => {
 	});
 });
 
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent(appName, () => Sentry.wrap(App));
