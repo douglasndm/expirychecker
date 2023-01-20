@@ -1,4 +1,4 @@
-const LoteSchema: Realm.ObjectSchema = {
+const BatchSchema: Realm.ObjectSchema = {
 	name: 'Lote',
 	primaryKey: 'id',
 	properties: {
@@ -10,9 +10,9 @@ const LoteSchema: Realm.ObjectSchema = {
 		status: 'string?',
 		price_tmp: 'float?',
 
-		createdAt: { type: 'date?', default: new Date() },
-		updateddAt: { type: 'date?', default: new Date() },
+		created_at: { type: 'date?', default: new Date(), mapTo: 'createdAt' },
+		updated_at: { type: 'date?', default: new Date(), mapTo: 'updateddAt' },
 	},
 };
 
-export default LoteSchema;
+export default BatchSchema;
