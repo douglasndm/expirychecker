@@ -6,32 +6,33 @@ import { showMessage } from 'react-native-flash-message';
 import { Button } from 'react-native-paper';
 import { useTheme } from 'styled-components/native';
 
-import Input from '@components/InputText';
-import Loading from '@components/Loading';
-import Header from '@components/Header';
-import BarCodeReader from '@components/BarCodeReader';
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import {
 	getProductById,
 	updateProduct,
 	deleteProduct,
-} from '~/Functions/Product';
-import { getStore } from '~/Functions/Stores';
+} from '@expirychecker/Functions/Product';
+import { getStore } from '@expirychecker/Functions/Stores';
 import {
 	saveProductImage,
 	getProductImagePath,
 	getImageFileNameFromPath,
-} from '~/Functions/Products/Image';
+} from '@expirychecker/Functions/Products/Image';
 
-import Camera, { onPhotoTakedProps } from '~/Components/Camera';
+import Input from '@components/InputText';
+import Loading from '@components/Loading';
+import Header from '@components/Header';
+import BarCodeReader from '@components/BarCodeReader';
 
-import DaysToBeNext from '~/Components/Product/Inputs/DaysToBeNext';
-import BrandSelect from '~/Components/Product/Inputs/Pickers/Brand';
-import CategorySelect from '~/Components/Product/Inputs/Pickers/Category';
-import StoreSelect from '~/Components/Product/Inputs/Pickers/Store';
+import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
+
+import DaysToBeNext from '@expirychecker/Components/Product/Inputs/DaysToBeNext';
+import BrandSelect from '@expirychecker/Components/Product/Inputs/Pickers/Brand';
+import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
+import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
 
 import {
 	Container,

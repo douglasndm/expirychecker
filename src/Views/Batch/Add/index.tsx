@@ -104,7 +104,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 			await createLote({
 				productId,
 				lote: {
-					lote,
+					name: lote,
 					amount: Number(amount),
 					exp_date: expDate,
 					price: price || undefined,
@@ -145,6 +145,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 		expDate,
 		price,
 		userPreferences.disableAds,
+		userPreferences.isPRO,
 		adReady,
 		navigate,
 	]);

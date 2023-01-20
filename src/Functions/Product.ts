@@ -133,14 +133,18 @@ interface updateProductProps {
 	photo?: string;
 	daysToBeNext?: number | undefined;
 	categories?: Array<string>;
-	lotes?: Array<ILote>;
+	batches?: Array<IBatch>;
 }
 
 export async function updateProduct(
 	product: updateProductProps
 ): Promise<void> {
 	realm.write(() => {
-		realm.create('Product', product, UpdateMode.Modified);
+		const prod = {
+			...product,
+			updated_at: new Date(),
+		};
+		realm.create('Product', prod, UpdateMode.Modified);
 	});
 }
 

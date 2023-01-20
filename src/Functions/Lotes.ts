@@ -1,3 +1,4 @@
+import { UpdateMode } from 'realm';
 import {
 	setHours,
 	setMinutes,
@@ -5,21 +6,20 @@ import {
 	setMilliseconds,
 	parseISO,
 } from 'date-fns';
-import { UpdateMode } from 'realm';
 
 import realm from '@expirychecker/Services/Realm';
 
 import { getProductByCode, getProductById } from './Product';
 
-export function removeLotesTratados(lotes: Array<ILote>): Array<ILote> {
+export function removeLotesTratados(batches: Array<IBatch>): Array<IBatch> {
 	// Não sei pq o certo mas o Realm transformou o array em uma coleção de objetos
 	// e sendo objetos não consigo fazer o sort deles usando as funções nativas do javscript
 	// solução -> percorrer todo o objeto de lotes e colocar cada um dentro de um array temporario
 	// para ai sim ser possível fazer o sort
-	const arrayTemp = lotes.map(l => l); // READ BEFORE DELETE
+	const arrayTemp = batches.map(b => b); // READ BEFORE DELETE
 
-	const results = arrayTemp.filter(lote => {
-		if (lote.status === 'Tratado') return false;
+	const results = arrayTemp.filter(batch => {
+		if (batch.status === 'Tratado') return false;
 		return true;
 	});
 
@@ -77,14 +77,16 @@ export async function checkIfLoteAlreadyExists({
 	return false;
 }
 
-export async function getLoteById(loteId: number): Promise<ILote> {
-	const result = realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`)[0];
+export async function getLoteById(loteId: number): Promise<IBatch> {
+	const result = realm
+		.objects<IBatch>('Lote')
+		.filtered(`id = "${loteId}"`)[0];
 
 	return result;
 }
 
 interface createLoteProps {
-	lote: Omit<ILote, 'id'>;
+	lote: Omit<IBatch, 'id'>;
 	productCode?: string;
 	productId?: number;
 	ignoreDuplicate?: boolean;
@@ -110,7 +112,7 @@ export async function createLote({
 		throw new Error('Já existe o mesmo lote cadastro');
 	}
 
-	realm.write(() => {
+	realm.write(async () => {
 		let product;
 
 		if (productCode) {
@@ -131,7 +133,7 @@ export async function createLote({
 			);
 		}
 
-		const lastLote = realm.objects<ILote>('Lote').sorted('id', true)[0];
+		const lastLote = realm.objects<IBatch>('Lote').sorted('id', true)[0];
 		const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
 		// UM MONTE DE SETS PARA DEIXAR A HORA COMPLETAMENTE ZERADA
@@ -160,20 +162,59 @@ export async function createLote({
 			amount: lote.amount,
 			price: lote.price,
 			status: lote.status,
+
+			created_at: new Date(),
+			updated_at: new Date(),
 		});
+
+		// send the product reference only to update the "updated_at" field
+		product[0].updated_at = new Date();
 	});
 }
 
-export async function updateLote(lote: ILote): Promise<void> {
+// send the product reference only to update the "updated_at" field
+export async function updateLote(
+	batch: IBatch,
+	product: IProduct
+): Promise<void> {
 	realm.write(() => {
-		realm.create('Lote', lote, UpdateMode.Modified);
+		realm.create(
+			'Lote',
+			{
+				...batch,
+				updated_at: new Date(),
+			},
+			UpdateMode.Modified
+		);
+
+		realm.create(
+			'Product',
+			{
+				...product,
+				id: product.id,
+				updated_at: new Date(),
+			},
+			UpdateMode.Modified
+		);
 	});
 }
 
-export async function deleteLote(loteId: number): Promise<void> {
-	const lote = realm.objects<ILote>('Lote').filtered(`id = "${loteId}"`);
+function deleteLote(batch_id: number, product: IProduct): void {
+	const batch = realm.objects<IBatch>('Lote').filtered(`id = "${batch_id}"`);
 
 	realm.write(() => {
-		realm.delete(lote);
+		realm.delete(batch);
+
+		realm.create(
+			'Product',
+			{
+				...product,
+				id: product.id,
+				updated_at: new Date(),
+			},
+			UpdateMode.Modified
+		);
 	});
 }
+
+export { deleteLote };

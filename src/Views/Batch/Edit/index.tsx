@@ -132,6 +132,7 @@ const EditBatch: React.FC = () => {
 	}, [productId, loteId]);
 
 	async function handleSave() {
+		if (!product) return;
 		if (!lote || lote.trim() === '') {
 			showMessage({
 				message: strings.View_EditBatch_Error_BatchWithNoName,
@@ -141,14 +142,17 @@ const EditBatch: React.FC = () => {
 		}
 
 		try {
-			await updateLote({
-				id: loteId,
-				name: lote,
-				amount: Number(amount),
-				exp_date: expDate,
-				price: price || undefined,
-				status: tratado ? 'Tratado' : 'Não tratado',
-			});
+			await updateLote(
+				{
+					id: loteId,
+					name: lote,
+					amount: Number(amount),
+					exp_date: expDate,
+					price: price || undefined,
+					status: tratado ? 'Tratado' : 'Não tratado',
+				},
+				product
+			);
 
 			if (userPreferences.isPRO) {
 				navigate('ProductDetails', {
@@ -166,6 +170,7 @@ const EditBatch: React.FC = () => {
 				});
 			}
 		} catch (err) {
+			console.log(err.stack);
 			if (err instanceof Error)
 				showMessage({
 					message: err.message,
@@ -175,8 +180,9 @@ const EditBatch: React.FC = () => {
 	}
 
 	const handleDelete = useCallback(async () => {
+		if (!product) return;
 		try {
-			await deleteLote(loteId);
+			await deleteLote(loteId, product);
 
 			if (userPreferences.isPRO) {
 				reset({
@@ -207,7 +213,7 @@ const EditBatch: React.FC = () => {
 					type: 'danger',
 				});
 		}
-	}, [loteId, productId, reset, userPreferences.isPRO]);
+	}, [loteId, product, productId, reset, userPreferences.isPRO]);
 
 	const handleAmountChange = useCallback(value => {
 		const regex = /^[0-9\b]+$/;
