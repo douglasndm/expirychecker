@@ -86,7 +86,6 @@ const FastSubscription: React.FC = () => {
 
 			response.forEach(packageItem => {
 				if (packageItem.packageType === PACKAGE_TYPE.ANNUAL) {
-					console.log(packageItem);
 					setPlan(packageItem);
 				}
 			});
