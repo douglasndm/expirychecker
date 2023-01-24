@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
@@ -22,7 +23,11 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 		const path = await getProductImagePath(product.id);
 
 		if (path) {
-			setImagePath(path);
+			if (Platform.OS === 'android') {
+				setImagePath(`file://${path}`);
+			} else if (Platform.OS === 'ios') {
+				setImagePath(path);
+			}
 		}
 	}, [product.id]);
 
