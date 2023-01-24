@@ -1,41 +1,32 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUnixTime, fromUnixTime, addHours, addMinutes } from 'date-fns';
 
-import {
-    getNotificationCadency,
-    NotificationCadency,
-} from '~/Functions/Settings';
+async function setTimeForNextNotification(): Promise<void> {
+	const date = __DEV__
+		? addMinutes(new Date(), 15)
+		: addHours(new Date(), 12);
 
-export async function setTimeForNextNotification(): Promise<void> {
-    const date = __DEV__
-        ? addMinutes(new Date(), 15)
-        : addHours(new Date(), 12);
+	const timestamp = getUnixTime(date);
 
-    const timestamp = getUnixTime(date);
-
-    await AsyncStorage.setItem('timeForNextNotification', String(timestamp));
+	await AsyncStorage.setItem('timeForNextNotification', String(timestamp));
 }
 
-export async function isTimeForANotification(): Promise<boolean> {
-    const notificationCadency = await getNotificationCadency();
+async function isTimeForANotification(): Promise<boolean> {
+	const timestamp = await AsyncStorage.getItem('timeForNextNotification');
 
-    if (notificationCadency === NotificationCadency.Never) {
-        return false;
-    }
+	if (timestamp) {
+		console.log(`Time for next update => ${timestamp}`);
+		const date = fromUnixTime(Number(timestamp));
 
-    const timestamp = await AsyncStorage.getItem('timeForNextNotification');
+		if (new Date() > date) {
+			return true;
+		}
 
-    if (timestamp) {
-        console.log(`Time for next update => ${timestamp}`);
-        const date = fromUnixTime(Number(timestamp));
+		return false;
+	}
 
-        if (new Date() > date) {
-            return true;
-        }
-
-        return false;
-    }
-
-    await setTimeForNextNotification();
-    return false;
+	await setTimeForNextNotification();
+	return false;
 }
+
+export { isTimeForANotification, setTimeForNextNotification };
