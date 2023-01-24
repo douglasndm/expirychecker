@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import RNPermissions from 'react-native-permissions';
 import remoteConfig from '@react-native-firebase/remote-config';
 
 import strings from '@expirychecker/Locales';
@@ -145,21 +143,6 @@ const Export: React.FC = () => {
 		try {
 			setIsImporting(true);
 
-			if (Platform.OS === 'android') {
-				const isReadFileAllow = await RNPermissions.check(
-					RNPermissions.PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
-				);
-				if (isReadFileAllow !== 'granted') {
-					const granted = await RNPermissions.request(
-						RNPermissions.PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
-					);
-
-					if (granted !== 'granted') {
-						throw new Error('Permission denided');
-					}
-				}
-			}
-
 			await importBackupFile();
 
 			showMessage({
@@ -179,7 +162,7 @@ const Export: React.FC = () => {
 		} finally {
 			setIsImporting(false);
 		}
-	}, []);
+	}, [reset]);
 
 	const handleExcelModelGenerete = useCallback(async () => {
 		try {
