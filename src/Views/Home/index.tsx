@@ -176,10 +176,14 @@ const Home: React.FC = () => {
 		setSelectedDate(date);
 	}, []);
 
-	const handleOnCodeRead = useCallback(code => {
-		setSearchString(code);
-		setEnableBarCodeReader(false);
-	}, []);
+	const handleOnCodeRead = useCallback(
+		code => {
+			setSearchString(code);
+			setEnableBarCodeReader(false);
+			handleSearch();
+		},
+		[handleSearch]
+	);
 
 	useEffect(() => {
 		if (
