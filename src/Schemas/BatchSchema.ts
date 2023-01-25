@@ -10,8 +10,8 @@ const BatchSchema: Realm.ObjectSchema = {
 		status: 'string?',
 		price_tmp: 'float?',
 
-		created_at: { type: 'date?', default: new Date(), mapTo: 'createdAt' },
-		updated_at: { type: 'date?', default: new Date(), mapTo: 'updateddAt' },
+		created_at: { type: 'date?', default: new Date(), mapTo: 'created_at' },
+		updated_at: { type: 'date?', default: new Date(), mapTo: 'updated_at' },
 	},
 };
 
