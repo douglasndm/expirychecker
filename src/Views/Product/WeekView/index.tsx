@@ -10,16 +10,20 @@ import WeekViewComponent from '@views/Product/WeekView';
 const WeekView: React.FC = () => {
 	const { userPreferences } = useContext(PreferencesContext);
 
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+
 	const [products, setProducts] = useState<IProduct[]>([]);
 
 	const loadData = useCallback(async () => {
 		try {
-			const allProducts = await getAllProducts({
+			setIsLoading(true);
+
+			const prods = await getAllProducts({
 				sortProductsByExpDate: true,
 				removeTreatedBatch: true,
 			});
 
-			setProducts(allProducts);
+			setProducts(prods);
 		} catch (err) {
 			if (err instanceof Error) {
 				showMessage({
@@ -27,12 +31,14 @@ const WeekView: React.FC = () => {
 					message: err.message,
 				});
 			}
+		} finally {
+			setIsLoading(false);
 		}
 	}, []);
 
 	useEffect(() => {
 		loadData();
-	}, []);
+	}, [loadData]);
 
 	return (
 		<WeekViewComponent
@@ -40,6 +46,7 @@ const WeekView: React.FC = () => {
 			howManyDaysToBeNextToExpire={
 				userPreferences.howManyDaysToBeNextToExpire
 			}
+			isLoading={isLoading}
 		/>
 	);
 };
