@@ -7,9 +7,9 @@ import { sendNotification } from '@services/Notifications';
 import {
 	isTimeForANotification,
 	setTimeForNextNotification,
-} from '~/Functions/Notifications';
+} from '@expirychecker/Functions/Notifications';
 
-import { getNotificationForAllProductsCloseToExp } from '../Functions/ProductsNotifications';
+import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
 
 export const handleSetNotification = async (): Promise<void> => {
 	const notificationTime = await isTimeForANotification();

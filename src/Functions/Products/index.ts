@@ -131,7 +131,7 @@ export async function getAllProducts({
 	removeTreatedBatch = false,
 	sortProductsByExpDate = false,
 	limit,
-}: getAllProductsProps): Promise<Array<IProduct>> {
+}: getAllProductsProps): Promise<IProduct[]> {
 	const allProducts = realm.objects<IProduct>('Product').slice();
 
 	let filtertedProducts: Array<IProduct> = allProducts;
