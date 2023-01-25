@@ -14,7 +14,7 @@ const RealmInstance = new Realm({
 		StoreSchema,
 		BrandSchema,
 	],
-	schemaVersion: 10,
+	schemaVersion: 11,
 });
 
 export default RealmInstance;

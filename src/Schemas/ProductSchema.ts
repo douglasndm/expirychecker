@@ -12,8 +12,8 @@ const ProductSchema: Realm.ObjectSchema = {
 		categories: 'string[]', // uuid
 		batches: { type: 'Lote[]', mapTo: 'lotes' },
 
-		created_at: { type: 'date?', default: new Date(), mapTo: 'createdAt' },
-		updated_at: { type: 'date?', default: new Date(), mapTo: 'updateddAt' },
+		created_at: { type: 'date?', default: new Date(), mapTo: 'created_at' },
+		updated_at: { type: 'date?', default: new Date(), mapTo: 'updated_at' },
 	},
 };
 
