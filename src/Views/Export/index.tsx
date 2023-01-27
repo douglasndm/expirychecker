@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import remoteConfig from '@react-native-firebase/remote-config';
+import DocumentPicker from 'react-native-document-picker';
 
 import strings from '@expirychecker/Locales';
 
@@ -56,10 +57,11 @@ const Export: React.FC = () => {
 			await exportBackupFile();
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('User did not share'))
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
 			}
 		} finally {
 			setIsExporting(false);
@@ -86,7 +88,7 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				if (!err.message.includes('did not share')) {
+				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
@@ -112,10 +114,11 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!DocumentPicker.isCancel(err))
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
 			}
 		} finally {
 			setIsExcelImporting(false);
@@ -137,10 +140,11 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!DocumentPicker.isCancel(err))
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
 			}
 		} finally {
 			setIsImporting(false);
@@ -154,10 +158,11 @@ const Export: React.FC = () => {
 			await generateEmptyExcel();
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('User did not share'))
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
 			}
 		} finally {
 			setIsExcelModelGenerating(false);
