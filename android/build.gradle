@@ -28,6 +28,9 @@ allprojects {
             // react-native-background-fetch
             url("${project(':react-native-background-fetch').projectDir}/libs")
         }
+        maven {
+            url "https://maven.google.com"
+        }
     }
 }
 
