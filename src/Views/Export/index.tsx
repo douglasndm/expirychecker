@@ -29,11 +29,6 @@ import {
 	Content,
 	ExportOptionContainer,
 	ExportExplain,
-	RadioButtonGroupContainer,
-	SortTitle,
-	RadioButtonContainer,
-	RadioButton,
-	RadioButtonText,
 	CategoryTitle,
 	LinkEmptyExcel,
 	Loading,
@@ -46,8 +41,6 @@ const Export: React.FC = () => {
 	const enableExcelExport = remoteConfig().getValue('enable_excel_export');
 	const enableBackupImport = remoteConfig().getValue('enable_backup_import');
 	const enableBackupExport = remoteConfig().getValue('enable_backup_export');
-
-	const [checked, setChecked] = React.useState('created_at');
 
 	const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
 	const [isExcelImporting, setIsExcelImporting] = useState<boolean>(false);
@@ -79,23 +72,13 @@ const Export: React.FC = () => {
 		try {
 			setIsExcelLoading(true);
 
-			if (checked === 'created_at') {
-				await exportToExcel({
-					sortBy: 'created_date',
-					getProducts,
-					getBrands: getAllBrands,
-					getCategories: getAllCategories,
-					getStores: getAllStores,
-				});
-			} else {
-				await exportToExcel({
-					sortBy: 'expire_date',
-					getProducts,
-					getBrands: getAllBrands,
-					getCategories: getAllCategories,
-					getStores: getAllStores,
-				});
-			}
+			await exportToExcel({
+				sortBy: 'expire_date',
+				getProducts,
+				getBrands: getAllBrands,
+				getCategories: getAllCategories,
+				getStores: getAllStores,
+			});
 
 			showMessage({
 				message: strings.View_Export_Excel_SuccessMessage,
@@ -112,7 +95,7 @@ const Export: React.FC = () => {
 		} finally {
 			setIsExcelLoading(false);
 		}
-	}, [checked]);
+	}, []);
 
 	const handleImportExcel = useCallback(async () => {
 		try {
@@ -137,7 +120,7 @@ const Export: React.FC = () => {
 		} finally {
 			setIsExcelImporting(false);
 		}
-	}, []);
+	}, [reset]);
 
 	const handleImportBackup = useCallback(async () => {
 		try {
@@ -194,40 +177,6 @@ const Export: React.FC = () => {
 							<ExportExplain>
 								{strings.View_Export_Explain_Excel}
 							</ExportExplain>
-							<RadioButtonGroupContainer>
-								<SortTitle>
-									{strings.View_Export_SortTitle}
-								</SortTitle>
-								<RadioButtonContainer>
-									<RadioButtonText>
-										{strings.View_Export_SortByCreatedDate}
-									</RadioButtonText>
-									<RadioButton
-										value="created_at"
-										status={
-											checked === 'created_at'
-												? 'checked'
-												: 'unchecked'
-										}
-										onPress={() => setChecked('created_at')}
-									/>
-								</RadioButtonContainer>
-
-								<RadioButtonContainer>
-									<RadioButtonText>
-										{strings.View_Export_SortByExpireDate}
-									</RadioButtonText>
-									<RadioButton
-										value="expire_in"
-										status={
-											checked === 'expire_in'
-												? 'checked'
-												: 'unchecked'
-										}
-										onPress={() => setChecked('expire_in')}
-									/>
-								</RadioButtonContainer>
-							</RadioButtonGroupContainer>
 
 							<Button
 								text={strings.View_Export_Button_ExportExcel}
