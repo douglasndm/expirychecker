@@ -379,8 +379,6 @@
     "View_Export_PageTitle": "Exportar",
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
     "View_Export_SortTitle": "Escolha como organizar o arquivo",
-    "View_Export_SortByCreatedDate": "Por ordem de cadastro",
-    "View_Export_SortByExpireDate": "Por ordem de validade",
     "View_Export_Import_Excel": "Importe uma planilha Excel gerada pelo aplicativo e carregue todos os seus produtos novamente no aplicativo.",
     "View_Export_Button_ImportExcel": "Importar do Excel",
     "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
