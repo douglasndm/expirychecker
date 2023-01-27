@@ -6,6 +6,7 @@ import Purchases, {
 import Analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
 import EnvConfig from 'react-native-config';
+import { Adjust, AdjustEvent } from 'react-native-adjust';
 
 import { getUserId } from './User';
 import { setDisableAds, setEnableProVersion } from './Settings';
@@ -30,6 +31,10 @@ export async function isSubscriptionActive(): Promise<boolean> {
 				FirebaseMessasingToken: firebase,
 			});
 		}
+
+		Adjust.getAdid(id => {
+			Purchases.setAdjustID(id);
+		});
 
 		const purchaserInfo = await Purchases.getCustomerInfo();
 
@@ -89,10 +94,15 @@ export async function makeSubscription(
 	purchasePackage: PurchasesPackage
 ): Promise<void> {
 	if (!__DEV__) {
-		await Analytics().logEvent('started_susbscription_process');
+		Analytics().logEvent('started_susbscription_process');
 	}
 
 	try {
+		const initialAdjustEvent = new AdjustEvent(
+			'User is opening system payment window'
+		);
+		Adjust.trackEvent(initialAdjustEvent);
+
 		const prevPurchases = await Purchases.getCustomerInfo();
 
 		const upgrade: UpgradeInfo | null =
@@ -106,6 +116,15 @@ export async function makeSubscription(
 			await Purchases.purchasePackage(purchasePackage, upgrade);
 
 		if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
+			const adjustEvent = new AdjustEvent(
+				`Purchase_${productIdentifier}`
+			);
+			adjustEvent.setRevenue(
+				purchasePackage.product.price,
+				purchasePackage.product.currencyCode
+			);
+			Adjust.trackEvent(adjustEvent);
+
 			Analytics().logEvent('user_subscribed_successfully');
 
 			await setEnableProVersion(true);
@@ -116,6 +135,10 @@ export async function makeSubscription(
 		}
 	} catch (err) {
 		if ((err as PurchasesError).userCancelled) {
+			const finalAdjustEvent = new AdjustEvent(
+				'User cancel the subscription process'
+			);
+			Adjust.trackEvent(finalAdjustEvent);
 			Analytics().logEvent('user_cancel_subscribe_process');
 		} else if (err instanceof Error) {
 			throw new Error(err.message);

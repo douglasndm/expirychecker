@@ -19,6 +19,7 @@ import StatusBar from '@components/StatusBar';
 
 import './Locales';
 
+import './Services/Adjust';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
 import './Services/Admob';

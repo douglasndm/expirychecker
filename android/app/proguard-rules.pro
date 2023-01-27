@@ -27,6 +27,7 @@
   public *;
 }
 
+# ADJUST
 -keep class com.adjust.sdk.** { *; }
 -keep class com.google.android.gms.common.ConnectionResult {
     int SUCCESS;
@@ -39,3 +40,4 @@
     boolean isLimitAdTrackingEnabled();
 }
 -keep public class com.android.installreferrer.** { *; }
+# ADJUST
