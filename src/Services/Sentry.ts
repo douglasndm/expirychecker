@@ -8,6 +8,7 @@ if (!__DEV__)
 		// We recommend adjusting this value in production.
 		tracesSampleRate: 0.5,
 		enabled: !__DEV__,
+		attachScreenshot: true,
 	});
 
 export default Sentry;
