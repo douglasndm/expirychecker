@@ -1,6 +1,6 @@
 # Controle de validade
 
-Passos necessários para realizar uma build bem sucedida do app. Atenção que o aplicativo só foi desenvolvido para o Android.
+Passos necessários para realizar uma build bem sucedida do app.
 
 ```
 npm insall
@@ -42,6 +42,12 @@ REVENUECAT_PUBLIC_APP_ID= <- ID do aplicativo na Revenuecat
 
 ## Adicionado SDK do android
 Crie um arquivo local.properties na pasta "android" e adicione o caminho do seu SDK do Android. Por exemplo: sdk.dir=C:\\Users\\User\\AppData\\Local\\Android\\sdk
+
+## Corrigindo o caminho da CLI do Sentry
+No final de cada arquivo "sentry.properties" adicione o seguinte código
+```
+cli.executable=../../node_modules/@sentry/cli/bin/sentry-cli
+```
 
 ## Depois disso é só partir para o abraço e compilar
 ```
