@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,11 +20,14 @@ import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
 import { getProductById } from '@expirychecker/Functions/Product';
 import { getStore } from '@expirychecker/Functions/Stores';
 import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
+import { deleteManyBatches } from '@expirychecker/Utils/Batches';
 
 import Loading from '@components/Loading';
 import PageHeader from '@views/Product/View/Components/PageHeader';
 
 import Banner from '@expirychecker/Components/Ads/Banner';
+
+import BatchTable from '@views/Product/View/Components/BatchesTable';
 
 import {
 	Container,
@@ -34,8 +38,6 @@ import {
 	TableContainer,
 	FloatButton,
 } from '@views/Product/View/styles';
-
-import BatchTable from './Components/BatchesTable';
 
 interface Request {
 	route: {
@@ -138,6 +140,27 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		return unsubscribe;
 	}, [addListener, getProduct]);
 
+	const onDeleteManyBathes = useCallback(async (ids: number[]) => {
+		try {
+			setIsLoading(true);
+
+			await deleteManyBatches(ids);
+
+			setLotesNaoTratados([]);
+			setLotesTratados([]);
+
+			await getProduct();
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -163,7 +186,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 								<BatchTable
 									batches={lotesNaoTratados}
-									product_id={productId}
+									product={product}
+									onDeleteMany={onDeleteManyBathes}
 								/>
 							</TableContainer>
 						)}
@@ -185,7 +209,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 								<BatchTable
 									batches={lotesTratados}
-									product_id={productId}
+									product={product}
+									onDeleteMany={onDeleteManyBathes}
 								/>
 							</>
 						)}
