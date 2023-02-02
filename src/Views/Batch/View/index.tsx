@@ -62,7 +62,7 @@ const View: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [product, setProduct] = useState<IProduct | null>(null);
-	const [batch, setBatch] = useState<ILote | null>(null);
+	const [batch, setBatch] = useState<IBatch | null>(null);
 
 	const [isSharing, setIsSharing] = useState<boolean>(false);
 
@@ -243,7 +243,7 @@ const View: React.FC = () => {
 
 			{!!batch && (
 				<BatchContainer>
-					<BatchTitle>{batch.lote}</BatchTitle>
+					<BatchTitle>{batch.name}</BatchTitle>
 
 					<BatchExpDate>
 						{expired
