@@ -17,42 +17,37 @@ Purchases.configure({
 });
 
 export async function isSubscriptionActive(): Promise<boolean> {
-	try {
-		const localUserId = await getUserId();
+	const localUserId = await getUserId();
 
-		const firebase = await messaging().getToken();
+	const firebase = await messaging().getToken();
 
-		if (!!localUserId) {
-			Purchases.logIn(localUserId);
-		}
-
-		if (firebase) {
-			Purchases.setAttributes({
-				FirebaseMessasingToken: firebase,
-			});
-		}
-
-		Adjust.getAdid(id => {
-			Purchases.setAdjustID(id);
-		});
-
-		const purchaserInfo = await Purchases.getCustomerInfo();
-
-		if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
-			await setEnableProVersion(true);
-			return true;
-		}
-		if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
-			await setDisableAds(true);
-		} else {
-			await setDisableAds(false);
-		}
-		await setEnableProVersion(false);
-	} catch (err) {
-		if (err instanceof Error) {
-			console.log(err.message);
-		}
+	if (!!localUserId) {
+		Purchases.logIn(localUserId);
 	}
+
+	if (firebase) {
+		Purchases.setAttributes({
+			FirebaseMessasingToken: firebase,
+		});
+	}
+
+	Adjust.getAdid(id => {
+		Purchases.setAdjustID(id);
+	});
+
+	const purchaserInfo = await Purchases.getCustomerInfo();
+
+	if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
+		await setEnableProVersion(true);
+		return true;
+	}
+	if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
+		await setDisableAds(true);
+	} else {
+		await setDisableAds(false);
+	}
+	await setEnableProVersion(false);
+
 	return false;
 }
 

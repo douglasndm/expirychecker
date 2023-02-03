@@ -14,6 +14,7 @@ import { showMessage } from 'react-native-flash-message';
 import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
+import { BannerAdSize } from 'react-native-google-mobile-ads';
 
 import strings from '@expirychecker/Locales';
 
@@ -240,7 +241,7 @@ const Home: React.FC = () => {
 
 					<OutdateApp />
 
-					<Banner adFor="Home" />
+					<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
 
 					{products.length > 0 && (
 						<InputTextContainer>
