@@ -40,7 +40,6 @@
     "Component_FastSub_TextWithTrial": "Teste grátis por {DAYS} dias e depois apenas {PRICE_MONTH} por mês no plano anual de {PRICE}.",
     "Component_FastSub_Price": "Só {PRICE} mensais",
 
-    "ListProductsComponent_Title_ProductsNextToExp": "Produtos próximos da validade",
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
     "ListProductsComponent_Button_AddNewProduct": "Adicionar novo produto",

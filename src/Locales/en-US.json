@@ -40,7 +40,6 @@
     "Component_FastSub_TextWithTrial": "Free trial of {DAYS} days, then only {PRICE_MONTH} per month on annual plan of {PRICE}.",
     "Component_FastSub_Price": "Only {PRICE} monthly",
 
-    "ListProductsComponent_Title_ProductsNextToExp": "Products close to expiration",
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_ShowAllProducts": "Show all products",
     "ListProductsComponent_Button_AddNewProduct": "Add new product",

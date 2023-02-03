@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
@@ -26,8 +26,6 @@ import {
 	SelectButton,
 	SelectIcon,
 	ButtonPaper,
-	CategoryDetails,
-	CategoryDetailsText,
 	EmptyListText,
 	InvisibleComponent,
 	Icons,
@@ -118,23 +116,6 @@ const ListProducts: React.FC<RequestProps> = ({
 	const handleDisableSelectMode = useCallback(() => {
 		setSelectMode(false);
 	}, []);
-
-	const ListHeader = useCallback(() => {
-		return (
-			<View>
-				{/* Verificar se há items antes de criar o titulo */}
-				{products.length > 0 && (
-					<CategoryDetails>
-						<CategoryDetailsText>
-							{
-								strings.ListProductsComponent_Title_ProductsNextToExp
-							}
-						</CategoryDetailsText>
-					</CategoryDetails>
-				)}
-			</View>
-		);
-	}, [products.length]);
 
 	const EmptyList = useCallback(() => {
 		return (
@@ -254,7 +235,6 @@ const ListProducts: React.FC<RequestProps> = ({
 				ref={listRef}
 				data={limitedProducts}
 				keyExtractor={item => String(item.id)}
-				ListHeaderComponent={ListHeader}
 				renderItem={renderComponent}
 				ListEmptyComponent={EmptyList}
 				ListFooterComponent={FooterButton}
