@@ -24,6 +24,7 @@ import Loading from '@components/Loading';
 import BarCodeReader from '@components/BarCodeReader';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
+import FAB from '@components/FAB';
 
 import {
 	Container,
@@ -46,11 +47,6 @@ import {
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 import Banner from '@expirychecker/Components/Ads/Banner';
-
-import {
-	FloatButton,
-	Icons,
-} from '@expirychecker/Components/ListProducts/styles';
 
 const Home: React.FC = () => {
 	const { reset, canGoBack, navigate } =
@@ -75,6 +71,7 @@ const Home: React.FC = () => {
 	}, [enableTabBar, userPreferences.isPRO]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isFABExtended, setIsFABExtended] = React.useState(true);
 
 	const [products, setProducts] = useState<Array<IProduct>>([]);
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
@@ -183,7 +180,7 @@ const Home: React.FC = () => {
 	);
 
 	const handleOnCodeRead = useCallback(
-		code => {
+		(code: string) => {
 			setSearchString(code);
 			setEnableBarCodeReader(false);
 			handleSearch();
@@ -223,6 +220,13 @@ const Home: React.FC = () => {
 			navigate('AddProduct', {});
 		}
 	}, [navigate, searchString]);
+
+	const onScroll = ({ nativeEvent }) => {
+		const currentScrollPosition =
+			Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
+
+		setIsFABExtended(currentScrollPosition <= 0);
+	};
 
 	return isLoading ? (
 		<Loading />
@@ -288,18 +292,13 @@ const Home: React.FC = () => {
 						onRefresh={loadData}
 						isRefreshing={isLoading}
 						listRef={listRef}
+						onScroll={onScroll}
 					/>
 
 					{enableFloatAddButton && (
-						<FloatButton
-							icon={() => (
-								<Icons
-									name="add-outline"
-									color="white"
-									size={22}
-								/>
-							)}
-							small
+						<FAB
+							icon="plus"
+							isFABExtended={isFABExtended}
 							label={strings.View_FloatMenu_AddProduct}
 							onPress={handleNavigateAddProduct}
 						/>
