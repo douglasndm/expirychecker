@@ -1,5 +1,9 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import {
+	FlatList,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Dialog from 'react-native-dialog';
@@ -37,6 +41,7 @@ interface RequestProps {
 	onRefresh?: () => void;
 	isRefreshing?: boolean;
 	listRef?: React.RefObject<FlatList<IProduct>>;
+	onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 const ListProducts: React.FC<RequestProps> = ({
@@ -45,6 +50,7 @@ const ListProducts: React.FC<RequestProps> = ({
 	onRefresh,
 	isRefreshing = false,
 	listRef,
+	onScroll,
 }: RequestProps) => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
@@ -242,6 +248,7 @@ const ListProducts: React.FC<RequestProps> = ({
 				refreshing={isRefreshing}
 				onEndReached={loadMoreProducts}
 				onEndReachedThreshold={0.5}
+				onScroll={onScroll}
 			/>
 
 			<Dialog.Container
