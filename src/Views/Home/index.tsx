@@ -164,17 +164,22 @@ const Home: React.FC = () => {
 		setEnableDatePicker(true);
 	}, []);
 
-	const handleSelectDateChange = useCallback((date: Date) => {
-		setEnableDatePicker(false);
+	const handleSelectDateChange = useCallback(
+		(date: Date) => {
+			setEnableDatePicker(false);
 
-		let dateFormat = 'dd/MM/yyyy';
-		if (getLocales()[0].languageCode === 'en') {
-			dateFormat = 'MM/dd/yyyy';
-		}
-		const d = format(date, dateFormat);
-		setSearchString(d);
-		setSelectedDate(date);
-	}, []);
+			let dateFormat = 'dd/MM/yyyy';
+			if (getLocales()[0].languageCode === 'en') {
+				dateFormat = 'MM/dd/yyyy';
+			}
+			const d = format(date, dateFormat);
+
+			setSearchString(d);
+			setSelectedDate(date);
+			handleSearch();
+		},
+		[handleSearch]
+	);
 
 	const handleOnCodeRead = useCallback(
 		code => {
