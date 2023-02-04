@@ -21,6 +21,7 @@ import {
 
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
+import FAB from '@components/FAB';
 
 import {
 	InputSearch,
@@ -32,10 +33,6 @@ import {
 import Loading from '@components/Loading';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
-import {
-	FloatButton,
-	Icons,
-} from '@expirychecker/Components/ListProducts/styles';
 
 import { Container } from './styles';
 
@@ -180,15 +177,8 @@ const List: React.FC = () => {
 						/>
 
 						{enableFloatAddButton && (
-							<FloatButton
-								icon={() => (
-									<Icons
-										name="add-outline"
-										color="white"
-										size={22}
-									/>
-								)}
-								small
+							<FAB
+								icon="plus"
 								label={strings.View_FloatMenu_AddProduct}
 								onPress={handleNavigateAddProduct}
 							/>
