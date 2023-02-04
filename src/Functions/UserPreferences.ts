@@ -1,6 +1,7 @@
 import { getThemeByName } from '@shared/Themes';
 import { getAppTheme } from '@utils/Themes';
 
+import { getAllowRemoteImages } from '@utils/Settings/ProductImage';
 import { IUserPreferences } from '../@types/userPreference';
 
 import {
@@ -22,6 +23,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settingProMode = await getEnableProVersion();
 	const disableAds = await getDisableAds();
 	const settingTheme = await getAppTheme(false, settingProMode);
+	const settingImages = await getAllowRemoteImages();
 
 	const settings: IUserPreferences = {
 		howManyDaysToBeNextToExpire: settingDay,
@@ -32,6 +34,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 		multiplesStores: settingMultipleStores,
 		storesFirstPage: settingStoresFirstPage,
 		disableAds: disableAds || settingProMode,
+		allowRemoteImages: settingImages,
 	};
 
 	return settings;
