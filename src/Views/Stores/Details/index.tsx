@@ -4,8 +4,21 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@expirychecker/Locales';
+
+import { exportToExcel } from '@expirychecker/Utils/Excel/Export';
+import {
+	getAllProductsByStore,
+	getStore,
+} from '@expirychecker/Functions/Stores';
+import {
+	sortProductsByFisrtLoteExpDate,
+	sortProductsLotesByLotesExpDate,
+} from '@expirychecker/Functions/Products';
+
 import Loading from '@components/Loading';
 import Header from '@components/Header';
+import FAB from '@components/FAB';
 
 import {
 	Container,
@@ -15,21 +28,7 @@ import {
 	ActionText,
 } from '@styles/Views/GenericViewPage';
 
-import strings from '~/Locales';
-
-import { exportToExcel } from '~/Utils/Excel/Export';
-
-import { getAllProductsByStore, getStore } from '~/Functions/Stores';
-import {
-	sortProductsByFisrtLoteExpDate,
-	sortProductsLotesByLotesExpDate,
-} from '~/Functions/Products';
-
-import ListProducts from '~/Components/ListProducts';
-import {
-	FloatButton,
-	Icons as FloatIcon,
-} from '~/Components/ListProducts/styles';
+import ListProducts from '@expirychecker/Components/ListProducts';
 
 interface RequestProps {
 	route: {
@@ -160,11 +159,8 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 
 			<ListProducts products={products} />
 
-			<FloatButton
-				icon={() => (
-					<FloatIcon name="add-outline" color="white" size={22} />
-				)}
-				small
+			<FAB
+				icon="plus"
 				label={strings.View_FloatMenu_AddProduct}
 				onPress={handleNavigateAddProduct}
 			/>
