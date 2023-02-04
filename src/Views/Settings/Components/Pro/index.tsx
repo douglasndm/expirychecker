@@ -3,15 +3,15 @@ import { Linking, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { isSubscriptionActive } from '@expirychecker/Functions/ProMode';
+
 import Button from '@components/Button';
 
 import { Category, CategoryTitle } from '@views/Settings/styles';
-
-import strings from '~/Locales';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import { isSubscriptionActive } from '~/Functions/ProMode';
 
 import { Container, ButtonCancel, ButtonCancelText } from './styles';
 

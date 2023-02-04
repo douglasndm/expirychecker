@@ -4,24 +4,24 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import Header from '@components/Header';
-import Loading from '@components/Loading';
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
 import {
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
-} from '~/Functions/Products';
-import { exportToExcel } from '~/Utils/Excel/Export';
-
-import { getAllBrands, getAllProductsByBrand } from '~/Utils/Brands';
-
-import ListProducts from '~/Components/ListProducts';
+} from '@expirychecker/Functions/Products';
+import { exportToExcel } from '@expirychecker/Utils/Excel/Export';
 
 import {
-	FloatButton,
-	Icons as FloatIcon,
-} from '~/Components/ListProducts/styles';
+	getAllBrands,
+	getAllProductsByBrand,
+} from '@expirychecker/Utils/Brands';
+
+import Loading from '@components/Loading';
+import Header from '@components/Header';
+import FAB from '@components/FAB';
+
+import ListProducts from '@expirychecker/Components/ListProducts';
 
 import {
 	Container,
@@ -145,11 +145,8 @@ const View: React.FC = () => {
 
 			<ListProducts products={products} />
 
-			<FloatButton
-				icon={() => (
-					<FloatIcon name="add-outline" color="white" size={22} />
-				)}
-				small
+			<FAB
+				icon="plus"
 				label={strings.View_FloatMenu_AddProduct}
 				onPress={handleNavigateAddProduct}
 			/>

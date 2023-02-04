@@ -20,9 +20,9 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { ShareProductImageWithText } from '@expirychecker/Functions/Share';
 
+import Loading from '@components/Loading';
 import Header from '@components/Header';
 import Button from '@components/Button';
-import Loading from '@components/Loading';
 
 import {
 	ActionsButtonContainer,
