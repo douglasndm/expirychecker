@@ -53,6 +53,7 @@ const App: React.FC = () => {
 		storesFirstPage: false,
 		enableNotifications: true,
 		disableAds: false,
+		allowRemoteImages: true,
 	});
 
 	const loadInitialData = useCallback(async () => {

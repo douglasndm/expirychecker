@@ -9,4 +9,5 @@ export interface IUserPreferences {
 	storesFirstPage: boolean;
 	enableNotifications: boolean;
 	disableAds: boolean;
+	allowRemoteImages: boolean;
 }

@@ -13,6 +13,7 @@ const PreferencesContext = createContext({
 		storesFirstPage: false,
 		enableNotifications: true,
 		disableAds: false,
+		allowRemoteImages: true,
 	},
 	setUserPreferences: ({
 		howManyDaysToBeNextToExpire,
@@ -23,6 +24,7 @@ const PreferencesContext = createContext({
 		storesFirstPage,
 		enableNotifications,
 		disableAds,
+		allowRemoteImages,
 	}: IUserPreferences) => {},
 });
 
