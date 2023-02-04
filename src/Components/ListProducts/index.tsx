@@ -18,6 +18,7 @@ import { deleteManyProducts } from '@expirychecker/Utils/Products';
 import { sortByBatchesExpType } from '@expirychecker/Functions/Products/SortBatches';
 
 import GenericButton from '@components/Button';
+import Icon from '@components/Icon';
 import PaddingComponent from '@components/PaddingComponent';
 
 import ProductItem from './ProductContainer';
@@ -32,7 +33,6 @@ import {
 	ButtonPaper,
 	EmptyListText,
 	InvisibleComponent,
-	Icons,
 } from './styles';
 
 interface RequestProps {
@@ -219,7 +219,7 @@ const ListProducts: React.FC<RequestProps> = ({
 			{selectMode && userPreferences.isPRO && (
 				<ActionButtonsContainer>
 					<ButtonPaper
-						icon={() => <Icons name="trash-outline" />}
+						icon={() => <Icon name="trash-outline" />}
 						onPress={handleSwitchDeleteModal}
 					>
 						{
@@ -228,7 +228,7 @@ const ListProducts: React.FC<RequestProps> = ({
 					</ButtonPaper>
 
 					<ButtonPaper
-						icon={() => <Icons name="exit-outline" />}
+						icon={() => <Icon name="exit-outline" />}
 						onPress={handleDisableSelectMode}
 					>
 						{
