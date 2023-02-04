@@ -16,6 +16,10 @@ export const ActionButtonsContainer = styled.View`
 
 export const ButtonPaper = styled(Button).attrs(props => ({
 	color: props.theme.colors.textAccent,
+	uppercase: true,
+	labelStyle: {
+		fontSize: 18,
+	},
 }))``;
 
 export const EmptyListText = styled.Text`
