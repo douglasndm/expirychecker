@@ -1,9 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import SplashScreen from 'react-native-splash-screen';
+
+import strings from '@expirychecker/Locales';
+
+import { sortStores } from '@expirychecker/Utils/Stores/Sort';
+import { createStore, getAllStores } from '@expirychecker/Functions/Stores';
 
 import Header from '@components/Header';
 import PaddingComponent from '@components/PaddingComponent';
+
 import {
 	Container,
 	InputContainer,
@@ -18,12 +25,6 @@ import {
 	AddButtonContainer,
 	AddNewItemContent,
 } from '@styles/Views/GenericListPage';
-
-import strings from '~/Locales';
-
-import { sortStores } from '~/Utils/Stores/Sort';
-
-import { createStore, getAllStores } from '~/Functions/Stores';
 
 const ListView: React.FC = () => {
 	const { navigate, addListener } =
@@ -101,16 +102,20 @@ const ListView: React.FC = () => {
 
 	useEffect(() => {
 		const unsubscribe = addListener('focus', () => {
-			getAllStores().then(response => {
-				const noStore: IStore = {
-					id: '000',
-					name: strings.View_Store_List_NoStore,
-				};
+			getAllStores()
+				.then(response => {
+					const noStore: IStore = {
+						id: '000',
+						name: strings.View_Store_List_NoStore,
+					};
 
-				const sorted = sortStores(response);
+					const sorted = sortStores(response);
 
-				setStores([...sorted, noStore]);
-			});
+					setStores([...sorted, noStore]);
+				})
+				.finally(() => {
+					SplashScreen.hide();
+				});
 		});
 
 		return unsubscribe;

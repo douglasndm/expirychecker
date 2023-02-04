@@ -9,7 +9,6 @@ import {
 	getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
-import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
 
@@ -60,8 +59,6 @@ const App: React.FC = () => {
 		const userPreferences = await getAllUserPreferences();
 
 		setPreferences(userPreferences);
-
-		SplashScreen.hide();
 	}, []);
 
 	const handleOnScreenChange = useCallback(
