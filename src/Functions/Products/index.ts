@@ -13,7 +13,9 @@ export async function saveMany(
 
 	realm.write(() => {
 		products.forEach(prod => {
-			const lastLote = realm.objects<ILote>('Lote').sorted('id', true)[0];
+			const lastLote = realm
+				.objects<IBatch>('Lote')
+				.sorted('id', true)[0];
 			let lastLoteId = lastLote == null ? 0 : lastLote.id;
 
 			const batches = prod.batches.map(batch => {
@@ -27,7 +29,7 @@ export async function saveMany(
 				return {
 					...batch,
 					id: lastLoteId,
-					lote: batchName,
+					name: batchName,
 				};
 			});
 			const product: IProduct = {
@@ -184,7 +186,27 @@ export async function getAllProducts({
 		filtertedProducts = productsLimited;
 	}
 
-	return filtertedProducts;
+	const prodsWithoutRealmRef = filtertedProducts.map(p => {
+		const batches = p.batches.map(b => ({
+			id: b.id,
+			name: b.name,
+			exp_date: b.exp_date,
+			amount: b.amount,
+			price: b.price,
+			status: b.status,
+			price_tmp: b.price_tmp,
+
+			created_at: b.created_at,
+			updated_at: b.updated_at,
+		}));
+
+		return {
+			...p,
+			batches,
+		};
+	});
+
+	return prodsWithoutRealmRef;
 }
 
 interface searchForAProductInAListProps {

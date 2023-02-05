@@ -50,7 +50,7 @@ import ListProducts from '@expirychecker/Components/ListProducts';
 import Banner from '@expirychecker/Components/Ads/Banner';
 
 const Home: React.FC = () => {
-	const { reset, canGoBack, navigate } =
+	const { reset, canGoBack, navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
@@ -230,6 +230,14 @@ const Home: React.FC = () => {
 
 		setIsFABExtended(currentScrollPosition <= 0);
 	};
+
+	useEffect(() => {
+		const unsubscribe = addListener('focus', () => {
+			loadData();
+		});
+
+		return unsubscribe;
+	}, [addListener, loadData]);
 
 	return isLoading ? (
 		<Loading />
