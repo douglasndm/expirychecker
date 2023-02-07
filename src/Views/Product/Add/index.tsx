@@ -169,8 +169,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				batches: [],
 			};
 
-			const newLote: Omit<ILote, 'id'> = {
-				name,
+			const newLote: Omit<IBatch, 'id'> = {
+				name: lote,
 				exp_date: expDate,
 				amount: Number(amount),
 				price: price || undefined,
@@ -225,6 +225,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		daysNext,
 		existentProduct,
 		expDate,
+		lote,
 		name,
 		nameFieldError,
 		navigate,
