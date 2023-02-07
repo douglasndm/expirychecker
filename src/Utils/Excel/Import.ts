@@ -180,7 +180,7 @@ async function importExcel(): Promise<void> {
 				allStores.push(store);
 			}
 
-			const lotes: Omit<ILote, 'id'>[] = [];
+			const lotes: Omit<IBatch, 'id'>[] = [];
 
 			if (product[localizedBExp]) {
 				lotes.push({
@@ -195,7 +195,7 @@ async function importExcel(): Promise<void> {
 			products.push({
 				name: tablePName,
 				code: tablePCode,
-				lotes,
+				batches: lotes,
 				categories: !!category ? [category.id] : [],
 				brand: !!brand ? brand.id : undefined,
 				store: !!store ? store.id : undefined,
