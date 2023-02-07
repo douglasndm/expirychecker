@@ -5,10 +5,14 @@ import { showMessage } from 'react-native-flash-message';
 import { getLocales } from 'react-native-localize';
 import NumberFormat from 'react-number-format';
 
+import strings from '@expirychecker/Locales';
+
+import { getLoteById } from '@expirychecker/Functions/Lotes';
+import { updateBatch } from '@expirychecker/Functions/Products/Batches/Batch';
+
 import Header from '@components/Header';
 import Button from '@components/Button';
 import Loading from '@components/Loading';
-import strings from '~/Locales';
 
 import {
 	Container,
@@ -20,8 +24,6 @@ import {
 	Slider,
 	NewPrice,
 } from './styles';
-import { getLoteById } from '~/Functions/Lotes';
-import { updateBatch } from '~/Functions/Products/Batches/Batch';
 
 interface Params {
 	batch_id: number;
@@ -36,7 +38,7 @@ const Discount: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const [batch, setBatch] = useState<ILote | null>(null);
+	const [batch, setBatch] = useState<IBatch | null>(null);
 
 	const [applyingDiscount, setApplyingDiscount] = useState<boolean>(false);
 	const [discount, setDiscount] = useState<number>(0);

@@ -7,14 +7,14 @@ import Button from '@components/Button';
 
 import { Container, Category } from '@views/Settings/styles';
 import { sendNotification } from '@services/Notifications';
-import realm from '~/Services/Realm';
+import realm from '@expirychecker/Services/Realm';
 import {
 	isTimeForANotification,
 	setTimeForNextNotification,
-} from '~/Functions/Notifications';
+} from '@expirychecker/Functions/Notifications';
 
-import { getNotificationForAllProductsCloseToExp } from '~/Functions/ProductsNotifications';
-import Camera from '~/Components/Camera';
+import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
+import Camera from '@expirychecker/Components/Camera';
 
 const Test: React.FC = () => {
 	const [isCameraEnabled, setIsCameraEnabled] = useState(false);
@@ -31,7 +31,7 @@ const Test: React.FC = () => {
 						lastProduct == null ? 1 : lastProduct.id + 1;
 
 					const lastLote = realm
-						.objects<ILote>('Lote')
+						.objects<IBatch>('Lote')
 						.sorted('id', true)[0];
 					const nextLoteId = lastLote == null ? 1 : lastLote.id + 1;
 
