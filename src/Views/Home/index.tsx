@@ -186,9 +186,21 @@ const Home: React.FC = () => {
 		(code: string) => {
 			setSearchString(code);
 			setEnableBarCodeReader(false);
-			handleSearch();
+
+			let prods: IProduct[] = [];
+
+			if (code && code !== '') {
+				prods = searchProducts({
+					products,
+					query: code,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
 		},
-		[handleSearch]
+		[products]
 	);
 
 	useEffect(() => {
