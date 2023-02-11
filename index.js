@@ -4,8 +4,8 @@
 
 import { AppRegistry } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import Sentry from '@expirychecker/Services/Sentry';
 
+import Sentry from '@services/Sentry';
 import '@services/Notifications';
 import '@services/PushNotificationHandler';
 import { handleSetNotification } from '@expirychecker/Services/BackgroundJobs';
