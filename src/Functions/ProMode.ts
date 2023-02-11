@@ -34,21 +34,23 @@ export async function isSubscriptionActive(): Promise<boolean> {
 	Adjust.getAdid(id => {
 		Purchases.setAdjustID(id);
 	});
+	try {
+		const purchaserInfo = await Purchases.getCustomerInfo();
 
-	const purchaserInfo = await Purchases.getCustomerInfo();
-
-	if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
-		await setEnableProVersion(true);
-		return true;
+		if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
+			await setEnableProVersion(true);
+			return true;
+		}
+		if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
+			await setDisableAds(true);
+		} else {
+			await setDisableAds(false);
+		}
+		await setEnableProVersion(false);
+		return false;
+	} catch (err) {
+		return false;
 	}
-	if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
-		await setDisableAds(true);
-	} else {
-		await setDisableAds(false);
-	}
-	await setEnableProVersion(false);
-
-	return false;
 }
 
 export async function getSubscriptionDetails(): Promise<
