@@ -2,6 +2,9 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { getImagePath } from '@utils/Images/GetImagePath';
+
 import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
 
 import { getStore } from '@expirychecker/Functions/Stores';
@@ -28,8 +31,14 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 			} else if (Platform.OS === 'ios') {
 				setImagePath(path);
 			}
+		} else if (product.code) {
+			const response = await getImagePath({
+				productCode: product.code,
+			});
+
+			setImagePath(response);
 		}
-	}, [product.id]);
+	}, [product.code, product.id]);
 
 	const loadStoreName = useCallback(async () => {
 		if (product.store) {
