@@ -7,9 +7,8 @@ import DocumentPicker from 'react-native-document-picker';
 
 import strings from '@expirychecker/Locales';
 
-import { exportToExcel } from '@utils/Excel/Export';
+import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
-import { generateEmptyExcel } from '@expirychecker/Utils/Excel/Export';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import { getAllProducts } from '@expirychecker/Functions/Products';

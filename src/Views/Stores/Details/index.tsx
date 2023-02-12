@@ -6,15 +6,19 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { exportToExcel } from '@expirychecker/Utils/Excel/Export';
+import { exportToExcel } from '@utils/Excel/Export';
 import {
-	getAllProductsByStore,
-	getStore,
-} from '@expirychecker/Functions/Stores';
-import {
+	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
+import { getAllCategories } from '@expirychecker/Functions/Category';
+import {
+	getAllStores,
+	getAllProductsByStore,
+	getStore,
+} from '@expirychecker/Functions/Stores';
+import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -98,13 +102,18 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		navigate('StoreEdit', { store_id: store });
 	}, [navigate, store]);
 
+	const getProducts = async () => getAllProducts({});
+
 	const handleExportExcel = useCallback(async () => {
 		try {
 			setIsLoading(true);
 
 			await exportToExcel({
-				sortBy: 'expire_date',
+				getProducts,
 				store,
+				getBrands: getAllBrands,
+				getCategories: getAllCategories,
+				getStores: getAllStores,
 			});
 
 			if (!__DEV__)
