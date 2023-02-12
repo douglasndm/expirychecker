@@ -5,7 +5,6 @@
 import { AppRegistry } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
-import Sentry from '@services/Sentry';
 import '@services/Notifications';
 import '@services/PushNotificationHandler';
 import { handleSetNotification } from '@expirychecker/Services/BackgroundJobs';
@@ -19,4 +18,4 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 	console.log('Message handled in the background!', remoteMessage);
 });
 
-AppRegistry.registerComponent(appName, () => Sentry.wrap(App));
+AppRegistry.registerComponent(appName, () => App);
