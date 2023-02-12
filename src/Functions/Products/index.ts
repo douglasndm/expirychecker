@@ -187,6 +187,18 @@ export async function getAllProducts({
 	}
 
 	const prodsWithoutRealmRef = filtertedProducts.map(p => {
+		const prod: Omit<IProduct, 'batches'> = {
+			id: p.id,
+			name: p.name,
+			categories: p.categories,
+			brand: p.brand,
+			code: p.code,
+			daysToBeNext: p.daysToBeNext,
+			photo: p.photo,
+			store: p.store,
+			created_at: p.created_at,
+			updated_at: p.updated_at,
+		};
 		const batches = p.batches.map(b => ({
 			id: b.id,
 			name: b.name,
@@ -201,7 +213,7 @@ export async function getAllProducts({
 		}));
 
 		return {
-			...p,
+			...prod,
 			batches,
 		};
 	});

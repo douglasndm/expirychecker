@@ -6,7 +6,18 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { exportToExcel } from '@expirychecker/Utils/Excel/Export';
+import { exportToExcel } from '@utils/Excel/Export';
+import {
+	getAllProducts,
+	sortProductsByFisrtLoteExpDate,
+	sortProductsLotesByLotesExpDate,
+} from '@expirychecker/Functions/Products';
+import {
+	getAllCategories,
+	getAllProductsByCategory,
+} from '@expirychecker/Functions/Category';
+import { getAllStores } from '@expirychecker/Functions/Stores';
+import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -19,15 +30,6 @@ import {
 	Icons,
 	ActionText,
 } from '@styles/Views/GenericViewPage';
-
-import {
-	getAllCategories,
-	getAllProductsByCategory,
-} from '@expirychecker/Functions/Category';
-import {
-	sortProductsByFisrtLoteExpDate,
-	sortProductsLotesByLotesExpDate,
-} from '@expirychecker/Functions/Products';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 
@@ -87,13 +89,18 @@ const CategoryView: React.FC = () => {
 		navigate('AddProduct', { category: routeParams.id });
 	}, [navigate, routeParams.id]);
 
+	const getProducts = async () => getAllProducts({});
+
 	const handleExportExcel = useCallback(async () => {
 		try {
 			setIsLoading(true);
 
 			await exportToExcel({
-				sortBy: 'expire_date',
+				getProducts,
 				category: routeParams.id,
+				getBrands: getAllBrands,
+				getCategories: getAllCategories,
+				getStores: getAllStores,
 			});
 
 			if (!__DEV__)
