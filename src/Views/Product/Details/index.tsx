@@ -21,6 +21,7 @@ import { getProductById } from '@expirychecker/Functions/Product';
 import { getStore } from '@expirychecker/Functions/Stores';
 import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
 import { deleteManyBatches } from '@expirychecker/Utils/Batches';
+import { getImagePath } from '@utils/Images/GetImagePath';
 
 import Loading from '@components/Loading';
 import PageHeader from '@views/Product/View/Components/PageHeader';
@@ -89,6 +90,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 						setImage(imagePath);
 					}
 				}
+			} else if (result.code) {
+				const response = await getImagePath({
+					productCode: result.code,
+				});
+
+				setImage(response);
 			}
 
 			if (!result || result === null) {
