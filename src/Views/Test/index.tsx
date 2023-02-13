@@ -40,10 +40,17 @@ const Test: React.FC = () => {
 						name: `Product ${i}`,
 						code: `${i}7841686${i}`,
 						photo: `${photoPath}`,
-						lotes: [
+						batches: [
 							{
 								id: nextLoteId,
-								lote: `ABC${i}xyz`,
+								name: `ABC${i}xyz`,
+								exp_date: addDays(new Date(), 1 * i),
+								amount: i,
+								status: 'Não tratado',
+							},
+							{
+								id: nextLoteId + 1,
+								name: `ABC${i}xyz21`,
 								exp_date: addDays(new Date(), 1 * i),
 								amount: i,
 								status: 'Não tratado',
