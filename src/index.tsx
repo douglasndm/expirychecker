@@ -12,7 +12,7 @@ import Analyticts from '@react-native-firebase/analytics';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
 
-import Sentry from '@services/Sentry';
+// import Sentry from '@services/Sentry';
 
 import Themes from '@shared/Themes';
 
@@ -20,6 +20,7 @@ import StatusBar from '@components/StatusBar';
 
 import './Locales';
 
+import '@services/BugSnag';
 import './Services/Adjust';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
@@ -124,4 +125,4 @@ const codePushOptions: CodePushOptions = {
 	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
 };
 
-export default CodePush(codePushOptions)(Sentry.wrap(App));
+export default CodePush(codePushOptions)(App);
