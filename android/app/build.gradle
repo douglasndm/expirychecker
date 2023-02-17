@@ -1,6 +1,9 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+// The following line must be inserted AFTER the React gradle plugin
+apply plugin: "com.bugsnag.android.gradle"
+
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -217,5 +220,10 @@ apply from: file("../../../../node_modules/@react-native-community/cli-platform-
 project.ext.vectoricons = [
     iconFontNames: [ 'Ionicons.ttf', 'Feather.ttf' ] // Name of the font files you want to copy
 ]
+
+bugsnag {
+    // for a path relative to this `build.gradle` file
+    nodeModulesDir = file("../../../../node_modules")
+}
 
 apply from: "../../../../node_modules/react-native-vector-icons/fonts.gradle"
