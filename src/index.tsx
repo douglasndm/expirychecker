@@ -20,6 +20,7 @@ import StatusBar from '@components/StatusBar';
 
 import './Locales';
 
+import '@services/AppCheck';
 import '@services/BugSnag';
 import './Services/Adjust';
 import './Services/DeviceId';

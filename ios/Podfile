@@ -46,15 +46,16 @@ target 'controledevalidade' do
     )
 
     pod 'Firebase', :modular_headers => true
+    pod 'FirebaseCore', :modular_headers => true
     pod 'FirebaseCoreInternal', :modular_headers => true
     pod 'GoogleUtilities', :modular_headers => true
     $RNFirebaseAsStaticFramework = true
     $RNGoogleMobileAdsAsStaticFramework = true
 
-  permissions_path = '../../../node_modules/react-native-permissions/ios'
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-  pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
+    permissions_path = '../../../node_modules/react-native-permissions/ios'
+    pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+    pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+    pod 'Permission-AppTrackingTransparency', :path => "#{permissions_path}/AppTrackingTransparency"
 
   target 'controledevalidadeTests' do
     inherit! :complete
