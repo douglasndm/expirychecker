@@ -238,7 +238,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		userPreferences.isPRO,
 	]);
 
-	const handleAmountChange = useCallback(value => {
+	const handleAmountChange = useCallback((value: string) => {
 		const regex = /^[0-9\b]+$/;
 
 		if (value === '' || regex.test(value)) {

@@ -8,13 +8,16 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import LottieView from 'lottie-react-native';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
 import StatusBar from '@components/StatusBar';
 import BackButton from '@components/BackButton';
 import FloatButton from '@components/FloatButton';
 import PaddingComponent from '@components/PaddingComponent';
-import PreferencesContext from '~/Contexts/PreferencesContext';
-import Banner from '~/Components/Ads/Banner';
-import strings from '~/Locales';
+
+import Banner from '@expirychecker/Components/Ads/Banner';
 
 import {
 	Container,
