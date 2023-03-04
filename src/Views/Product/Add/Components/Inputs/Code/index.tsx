@@ -157,6 +157,7 @@ const Inputs: React.FC<InputsRequest> = ({
 				setProductFinded(false);
 				return;
 			}
+
 			if (ean_code.length < 8) return;
 
 			if (getLocales()[0].languageCode === 'pt') {
