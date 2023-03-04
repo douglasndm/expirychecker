@@ -1,325 +1,240 @@
 import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    useMemo,
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useMemo,
 } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { exists } from 'react-native-fs';
-import { format } from 'date-fns';
-import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import EnvConfig from 'react-native-config';
-import {
-    BannerAd,
-    BannerAdSize,
-    TestIds,
-} from 'react-native-google-mobile-ads';
-
+import { BannerAdSize } from 'react-native-google-mobile-ads';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import StatusBar from '~/Components/StatusBar';
-import Loading from '~/Components/Loading';
-import BackButton from '~/Components/BackButton';
-import { getProductById } from '~/Functions/Product';
-import { sortBatches } from '~/Utils/Batches/Sort';
-import { getStore } from '~/Functions/Stores';
-import { getProductImagePath } from '~/Functions/Products/Image';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
+import { getProductById } from '@expirychecker/Functions/Product';
+import { getStore } from '@expirychecker/Functions/Stores';
+import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
+import { deleteManyBatches } from '@expirychecker/Utils/Batches';
+import { getImagePath } from '@utils/Images/GetImagePath';
+
+import Loading from '@components/Loading';
+import PageHeader from '@views/Product/View/Components/PageHeader';
+
+import Banner from '@expirychecker/Components/Ads/Banner';
+
+import BatchTable from '@views/Product/View/Components/BatchesTable';
 
 import {
-    Container,
-    ScrollView,
-    PageHeader,
-    ProductContainer,
-    PageTitleContent,
-    PageTitle,
-    ProductInformationContent,
-    ProductName,
-    ProductCode,
-    ProductStore,
-    ProductImageContainer,
-    ProductImage,
-    ActionsButtonContainer,
-    ActionButton,
-    PageContent,
-    Icons,
-    CategoryDetails,
-    CategoryDetailsText,
-    AdContainer,
-    TableContainer,
-    FloatButton,
-    ProductInfo,
-} from './styles';
-
-import BatchTable from './Components/BatchesTable';
+	Container,
+	Content,
+	PageContent,
+	CategoryDetails,
+	CategoryDetailsText,
+	TableContainer,
+	FloatButton,
+} from '@views/Product/View/styles';
 
 interface Request {
-    route: {
-        params: {
-            id: number;
-        };
-    };
+	route: {
+		params: {
+			id: number;
+		};
+	};
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
-    const { userPreferences } = useContext(PreferencesContext);
+	const { userPreferences } = useContext(PreferencesContext);
 
-    const { navigate, push, goBack, addListener } =
-        useNavigation<StackNavigationProp<RoutesParams>>();
+	const { push, goBack, addListener, reset } =
+		useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const productId = useMemo(() => {
-        return route.params.id;
-    }, [route.params.id]);
+	const productId = useMemo(() => {
+		return route.params.id;
+	}, [route.params.id]);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const adUnit = useMemo(() => {
-        if (__DEV__) {
-            return TestIds.BANNER;
-        }
+	const [product, setProduct] = useState<IProduct>();
+	const [image, setImage] = useState<string | undefined>();
+	const [storeName, setStoreName] = useState<string | null>();
 
-        if (Platform.OS === 'ios') {
-            return EnvConfig.IOS_ADMOB_ADUNITID_BANNER_PRODDETAILS;
-        }
+	const [lotesTratados, setLotesTratados] = useState<Array<IBatch>>([]);
+	const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
 
-        return EnvConfig.ANDROID_ADMOB_ADUNITID_BANNER_PRODDETAILS;
-    }, []);
+	const getProduct = useCallback(async () => {
+		setIsLoading(true);
+		try {
+			const result = await getProductById(productId);
 
-    const [name, setName] = useState('');
-    const [code, setCode] = useState('');
-    const [photo, setPhoto] = useState<string | null>(null);
-    const [product, setProduct] = useState<IProduct>();
-    const [storeName, setStoreName] = useState<string | null>();
+			// When the product doesn't exists it will reset the view for app get new data
+			if (!result) {
+				reset({
+					routes: [{ name: 'Home' }],
+				});
+				return;
+			}
 
-    const [lotesTratados, setLotesTratados] = useState<Array<ILote>>([]);
-    const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<ILote>>([]);
+			if (result.photo) {
+				const imagePath = await getProductImagePath(productId);
 
-    const dateFormat = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'MM/dd/yyyy';
-        }
-        return 'dd/MM/yyyy';
-    }, []);
+				if (imagePath) {
+					if (Platform.OS === 'android') {
+						setImage(`file://${imagePath}`);
+					} else if (Platform.OS === 'ios') {
+						setImage(imagePath);
+					}
+				}
+			} else if (result.code && userPreferences.isPRO) {
+				const response = await getImagePath({
+					productCode: result.code,
+				});
 
-    const created_at = useMemo(() => {
-        if (product && product.createdAt) {
-            return format(product.createdAt, dateFormat, {});
-        }
-        return null;
-    }, [dateFormat, product]);
+				setImage(response);
+			}
 
-    const getProduct = useCallback(async () => {
-        setIsLoading(true);
-        try {
-            const result = await getProductById(productId);
+			if (!result || result === null) {
+				goBack();
+				return;
+			}
 
-            if (result.photo) {
-                const imagePath = await getProductImagePath(productId);
+			setProduct(result);
 
-                if (imagePath) {
-                    const fileExists = await exists(imagePath);
-                    if (fileExists) {
-                        setPhoto(`file://${imagePath}`);
-                    }
-                }
-            }
+			if (result.batches.length > 0) {
+				const lotesSorted = sortBatches(result.batches);
 
-            if (!result || result === null) {
-                goBack();
-                return;
-            }
+				setLotesTratados(() =>
+					lotesSorted.filter(lote => lote.status === 'Tratado')
+				);
 
-            setProduct(result);
+				setLotesNaoTratados(() =>
+					lotesSorted.filter(lote => lote.status !== 'Tratado')
+				);
+			}
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [productId, userPreferences.isPRO, reset, goBack]);
 
-            setName(result.name);
-            if (result.code) setCode(result.code);
+	useEffect(() => {
+		if (product?.store) {
+			getStore(product.store).then(response =>
+				setStoreName(response?.name)
+			);
+		}
+	}, [product]);
 
-            if (result.lotes.length > 0) {
-                const lotesSorted = sortBatches(result.lotes);
+	const addNewLote = useCallback(() => {
+		push('AddLote', { productId });
+	}, [productId, push]);
 
-                setLotesTratados(() =>
-                    lotesSorted.filter(lote => lote.status === 'Tratado')
-                );
+	useEffect(() => {
+		const unsubscribe = addListener('focus', () => {
+			getProduct();
+		});
 
-                setLotesNaoTratados(() =>
-                    lotesSorted.filter(lote => lote.status !== 'Tratado')
-                );
-            }
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [productId, goBack]);
+		return unsubscribe;
+	}, [addListener, getProduct]);
 
-    useEffect(() => {
-        if (product?.store) {
-            getStore(product.store).then(response =>
-                setStoreName(response?.name)
-            );
-        }
-    }, [product]);
+	const onDeleteManyBathes = useCallback(async (ids: number[]) => {
+		try {
+			setIsLoading(true);
 
-    const addNewLote = useCallback(() => {
-        push('AddLote', { productId });
-    }, [productId, push]);
+			await deleteManyBatches(ids);
 
-    const handleEdit = useCallback(() => {
-        navigate('EditProduct', { productId });
-    }, [navigate, productId]);
+			setLotesNaoTratados([]);
+			setLotesTratados([]);
 
-    const handleOnPhotoPress = useCallback(() => {
-        if (product && product.photo) {
-            navigate('PhotoView', {
-                productId,
-            });
-        }
-    }, [navigate, product, productId]);
+			await getProduct();
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
 
-    useEffect(() => {
-        const unsubscribe = addListener('focus', () => {
-            getProduct();
-        });
+	return isLoading ? (
+		<Loading />
+	) : (
+		<>
+			<Container>
+				<Content>
+					<PageHeader
+						product={product}
+						imagePath={image}
+						storeName={storeName}
+						enableStore={userPreferences.multiplesStores}
+					/>
+					<PageContent>
+						{lotesNaoTratados.length > 0 && (
+							<TableContainer>
+								<CategoryDetails>
+									<CategoryDetailsText>
+										{
+											strings.View_ProductDetails_TableTitle_NotTreatedBatches
+										}
+									</CategoryDetailsText>
+								</CategoryDetails>
 
-        return unsubscribe;
-    }, [addListener, getProduct]);
+								<BatchTable
+									batches={lotesNaoTratados}
+									product={product}
+									onDeleteMany={onDeleteManyBathes}
+								/>
+							</TableContainer>
+						)}
 
-    return isLoading ? (
-        <Loading />
-    ) : (
-        <>
-            <Container>
-                <StatusBar />
-                <ScrollView>
-                    <PageHeader>
-                        <PageTitleContent>
-                            <BackButton handleOnPress={goBack} />
-                            <PageTitle>
-                                {strings.View_ProductDetails_PageTitle}
-                            </PageTitle>
-                        </PageTitleContent>
+						<Banner
+							adFor="ProductView"
+							size={BannerAdSize.MEDIUM_RECTANGLE}
+						/>
 
-                        <ProductContainer>
-                            {userPreferences.isPRO && !!photo && (
-                                <ProductImageContainer
-                                    onPress={handleOnPhotoPress}
-                                >
-                                    <ProductImage
-                                        source={{
-                                            uri: photo,
-                                        }}
-                                    />
-                                </ProductImageContainer>
-                            )}
-                            <ProductInformationContent>
-                                <ProductName>{name}</ProductName>
-                                {!!code && (
-                                    <ProductCode>
-                                        {strings.View_ProductDetails_Code}:{' '}
-                                        {code}
-                                    </ProductCode>
-                                )}
-                                {userPreferences.multiplesStores &&
-                                    !!storeName && (
-                                        <ProductStore>
-                                            {strings.View_ProductDetails_Store}:{' '}
-                                            {storeName}
-                                        </ProductStore>
-                                    )}
-                                {created_at && (
-                                    <ProductInfo>{`${strings.View_ProductDetails_AddDate.replace(
-                                        '{DATE}',
-                                        created_at
-                                    )}`}</ProductInfo>
-                                )}
+						{lotesTratados.length > 0 && (
+							<>
+								<CategoryDetails>
+									<CategoryDetailsText>
+										{
+											strings.View_ProductDetails_TableTitle_TreatedBatches
+										}
+									</CategoryDetailsText>
+								</CategoryDetails>
 
-                                <ActionsButtonContainer>
-                                    <ActionButton
-                                        icon={() => (
-                                            <Icons
-                                                name="create-outline"
-                                                size={22}
-                                            />
-                                        )}
-                                        onPress={handleEdit}
-                                    >
-                                        {
-                                            strings.View_ProductDetails_Button_UpdateProduct
-                                        }
-                                    </ActionButton>
-                                </ActionsButtonContainer>
-                            </ProductInformationContent>
-                        </ProductContainer>
-                    </PageHeader>
+								<BatchTable
+									batches={lotesTratados}
+									product={product}
+									onDeleteMany={onDeleteManyBathes}
+								/>
+							</>
+						)}
+					</PageContent>
+				</Content>
+			</Container>
 
-                    <PageContent>
-                        {lotesNaoTratados.length > 0 && (
-                            <TableContainer>
-                                <CategoryDetails>
-                                    <CategoryDetailsText>
-                                        {
-                                            strings.View_ProductDetails_TableTitle_NotTreatedBatches
-                                        }
-                                    </CategoryDetailsText>
-                                </CategoryDetails>
-
-                                <BatchTable
-                                    batches={lotesNaoTratados}
-                                    product_id={productId}
-                                />
-                            </TableContainer>
-                        )}
-
-                        {!userPreferences.disableAds && (
-                            <AdContainer>
-                                <BannerAd
-                                    unitId={adUnit}
-                                    size={BannerAdSize.MEDIUM_RECTANGLE}
-                                />
-                            </AdContainer>
-                        )}
-
-                        {lotesTratados.length > 0 && (
-                            <>
-                                <CategoryDetails>
-                                    <CategoryDetailsText>
-                                        {
-                                            strings.View_ProductDetails_TableTitle_TreatedBatches
-                                        }
-                                    </CategoryDetailsText>
-                                </CategoryDetails>
-
-                                <BatchTable
-                                    batches={lotesTratados}
-                                    product_id={productId}
-                                />
-                            </>
-                        )}
-                    </PageContent>
-                </ScrollView>
-            </Container>
-
-            <FloatButton
-                icon={() => (
-                    <Ionicons name="add-outline" color="white" size={22} />
-                )}
-                small
-                label={strings.View_ProductDetails_FloatButton_AddNewBatch}
-                onPress={addNewLote}
-            />
-        </>
-    );
+			<FloatButton
+				icon={() => (
+					<Ionicons name="add-outline" color="white" size={22} />
+				)}
+				small
+				label={strings.View_ProductDetails_FloatButton_AddNewBatch}
+				onPress={addNewLote}
+			/>
+		</>
+	);
 };
 
 export default ProductDetails;

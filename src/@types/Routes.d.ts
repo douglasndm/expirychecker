@@ -24,10 +24,10 @@ type RoutesParams = {
     };
     EditLote: {
         productId: number;
-        batchId: number;
+        loteId: number;
     };
     BatchView: {
-        product: string;
+        product_id: number;
         batch_id: number;
     };
     BatchDiscount: {

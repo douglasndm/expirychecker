@@ -1,159 +1,174 @@
 import React, {
-    useState,
-    useCallback,
-    useEffect,
-    useMemo,
-    useContext,
+	useState,
+	useCallback,
+	useEffect,
+	useMemo,
+	useContext,
 } from 'react';
 import { Linking } from 'react-native';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import { getEnableProVersion } from '~/Functions/Settings';
-import { getSubscriptionDetails, makeSubscription } from '~/Functions/ProMode';
+import { getEnableProVersion } from '@expirychecker/Functions/Settings';
+import {
+	getSubscriptionDetails,
+	makeSubscription,
+} from '@expirychecker/Functions/ProMode';
 
-import Loading from '../Loading';
-import Button from '../Button';
+import Loading from '@components/Loading';
+import Button from '@components/Button';
 
 import {
-    TermsPrivacyLink,
-    TermsPrivacyText,
-} from '~/Views/ProSubscription/styles';
+	TermsPrivacyLink,
+	TermsPrivacyText,
+} from '@expirychecker/Views/ProSubscription/styles';
 
 import {
-    FastSubContainer,
-    Container,
-    SubscriptionText,
-    SubscriptionTextContainer,
+	FastSubContainer,
+	Container,
+	SubscriptionText,
+	SubscriptionTextContainer,
 } from './styles';
 
 const FastSubscription: React.FC = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const navigateToTerms = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev/terms');
-    }, []);
+	const navigateToTerms = useCallback(async () => {
+		await Linking.openURL('https://douglasndm.dev/terms');
+	}, []);
 
-    const navigateToPrivacy = useCallback(async () => {
-        await Linking.openURL('https://douglasndm.dev/privacy');
-    }, []);
+	const navigateToPrivacy = useCallback(async () => {
+		await Linking.openURL('https://douglasndm.dev/privacy');
+	}, []);
 
-    const { userPreferences, setUserPreferences } =
-        useContext(PreferencesContext);
+	const { userPreferences, setUserPreferences } =
+		useContext(PreferencesContext);
 
-    const [monthlyPlan, setMonthlyPlan] = useState<
-        PurchasesPackage | undefined
-    >();
+	const [plan, setPlan] = useState<PurchasesPackage | undefined>();
 
-    const monthlyString = useMemo(() => {
-        let string = '';
+	const monthlyString = useMemo(() => {
+		let string = '';
 
-        if (monthlyPlan) {
-            const { price_string } = monthlyPlan.product;
+		if (plan) {
+			const { priceString, introPrice, price } = plan.product;
 
-            string = strings.Component_FastSub_Price.replace(
-                '{PRICE}',
-                price_string
-            );
-        }
-        return string;
-    }, [monthlyPlan]);
+			if (introPrice) {
+				if (introPrice?.periodNumberOfUnits > 0) {
+					const packMonthlyPrice = price / 12;
 
-    const loadData = useCallback(async () => {
-        try {
-            setIsLoading(true);
+					string = strings.Component_FastSub_TextWithTrial.replace(
+						'{DAYS}',
+						String(introPrice?.periodNumberOfUnits)
+					)
+						.replace('{PRICE_MONTH}', packMonthlyPrice.toFixed(2))
+						.replace('{PRICE}', priceString);
+				}
+			} else {
+				string = strings.Component_FastSub_Text.replace(
+					'{PRICE}',
+					priceString
+				);
+			}
+		}
+		return string;
+	}, [plan]);
 
-            const response = await getSubscriptionDetails();
+	const loadData = useCallback(async () => {
+		try {
+			setIsLoading(true);
 
-            response.forEach(packageItem => {
-                if (packageItem.packageType === PACKAGE_TYPE.MONTHLY) {
-                    setMonthlyPlan(packageItem);
-                }
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+			const response = await getSubscriptionDetails();
 
-    useEffect(() => {
-        loadData();
-    }, []);
+			response.forEach(packageItem => {
+				if (packageItem.packageType === PACKAGE_TYPE.ANNUAL) {
+					setPlan(packageItem);
+				}
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
 
-    const subscribe = useCallback(async () => {
-        try {
-            setIsLoading(true);
+	useEffect(() => {
+		loadData();
+	}, []);
 
-            if (!monthlyPlan) {
-                return;
-            }
+	const subscribe = useCallback(async () => {
+		try {
+			setIsLoading(true);
 
-            await makeSubscription(monthlyPlan);
+			if (!plan) {
+				return;
+			}
 
-            const enablePro = await getEnableProVersion();
+			await makeSubscription(plan);
 
-            if (enablePro && !__DEV__) {
-                Analytics().logEvent(
-                    'subscription_from_fast_component_homepage'
-                );
-            }
+			const enablePro = await getEnableProVersion();
 
-            setUserPreferences({
-                ...userPreferences,
-                isPRO: enablePro,
-                disableAds: enablePro,
-            });
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [monthlyPlan, setUserPreferences, userPreferences]);
+			if (enablePro && !__DEV__) {
+				Analytics().logEvent(
+					'subscription_from_fast_component_homepage'
+				);
+			}
 
-    return isLoading ? (
-        <Loading disableText />
-    ) : (
-        <>
-            {monthlyPlan && (
-                <FastSubContainer>
-                    <Container>
-                        <SubscriptionTextContainer>
-                            <SubscriptionText>
-                                {strings.Component_FastSub_Text}
-                            </SubscriptionText>
+			setUserPreferences({
+				...userPreferences,
+				isPRO: enablePro,
+				disableAds: enablePro,
+			});
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [plan, setUserPreferences, userPreferences]);
 
-                            <SubscriptionText>{monthlyString}</SubscriptionText>
-                        </SubscriptionTextContainer>
+	return isLoading ? (
+		<Loading disableText />
+	) : (
+		<>
+			{plan && (
+				<FastSubContainer>
+					<Container>
+						<SubscriptionTextContainer>
+							<SubscriptionText>{monthlyString}</SubscriptionText>
+						</SubscriptionTextContainer>
 
-                        <Button
-                            text={strings.View_ProPage_Button_Subscribe}
-                            onPress={subscribe}
-                            isLoading={isLoading}
-                        />
-                    </Container>
-                    <TermsPrivacyText>
-                        {strings.View_ProPage_Text_BeforeTermsAndPrivacy}
-                        <TermsPrivacyLink onPress={navigateToTerms}>
-                            {strings.Terms}
-                        </TermsPrivacyLink>
-                        {strings.BetweenTermsAndPrivacy}
-                        <TermsPrivacyLink onPress={navigateToPrivacy}>
-                            {strings.PrivacyPolicy}
-                        </TermsPrivacyLink>
-                        .
-                    </TermsPrivacyText>
-                </FastSubContainer>
-            )}
-        </>
-    );
+						<Button
+							text={strings.View_ProPage_Button_Subscribe}
+							onPress={subscribe}
+							isLoading={isLoading}
+							contentStyle={{ backgroundColor: '#ffffff' }}
+							textStyle={{ color: '#000000' }}
+						/>
+					</Container>
+					<TermsPrivacyText>
+						{strings.View_Subscription_Disclaim_IntroPrice}
+					</TermsPrivacyText>
+					<TermsPrivacyText>
+						{strings.View_ProPage_Text_BeforeTermsAndPrivacy}
+						<TermsPrivacyLink onPress={navigateToTerms}>
+							{strings.Terms}
+						</TermsPrivacyLink>
+						{strings.BetweenTermsAndPrivacy}
+						<TermsPrivacyLink onPress={navigateToPrivacy}>
+							{strings.PrivacyPolicy}
+						</TermsPrivacyLink>
+						.
+					</TermsPrivacyText>
+				</FastSubContainer>
+			)}
+		</>
+	);
 };
 
 export default FastSubscription;

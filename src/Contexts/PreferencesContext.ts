@@ -1,32 +1,31 @@
 import { createContext } from 'react';
-import { IUserPreferences } from '~/@types/userPreference';
+import Themes from '@shared/Themes';
 
-import { NotificationCadency } from '../Functions/Settings';
-import Themes from '../Themes';
+import { IUserPreferences } from '@expirychecker/@types/userPreference';
 
 const PreferencesContext = createContext({
-    userPreferences: {
-        howManyDaysToBeNextToExpire: 30,
-        autoComplete: false,
-        isPRO: false,
-        appTheme: Themes.Light,
-        multiplesStores: false,
-        storesFirstPage: false,
-        enableNotifications: true,
-        notificationCadency: NotificationCadency.Day,
-        disableAds: false,
-    },
-    setUserPreferences: ({
-        howManyDaysToBeNextToExpire,
-        autoComplete,
-        isPRO,
-        appTheme,
-        multiplesStores,
-        storesFirstPage,
-        enableNotifications,
-        notificationCadency,
-        disableAds,
-    }: IUserPreferences) => {},
+	userPreferences: {
+		howManyDaysToBeNextToExpire: 30,
+		autoComplete: false,
+		isPRO: false,
+		appTheme: Themes.Light,
+		multiplesStores: false,
+		storesFirstPage: false,
+		enableNotifications: true,
+		disableAds: false,
+		allowRemoteImages: true,
+	},
+	setUserPreferences: ({
+		howManyDaysToBeNextToExpire,
+		autoComplete,
+		isPRO,
+		appTheme,
+		multiplesStores,
+		storesFirstPage,
+		enableNotifications,
+		disableAds,
+		allowRemoteImages,
+	}: IUserPreferences) => {},
 });
 
 export default PreferencesContext;

@@ -1,23 +1,28 @@
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { LogBox } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components/native';
 import {
-    NavigationContainer,
-    getFocusedRouteNameFromRoute,
+	NavigationContainer,
+	getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
-import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
 
+import Themes from '@shared/Themes';
+
+import StatusBar from '@components/StatusBar';
+
 import './Locales';
 
+import '@services/AppCheck';
+import '@services/BugSnag';
+import './Services/Adjust';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
-import './Services/AppsFlyer';
 import './Services/Admob';
 import './Services/Analytics';
 import './Services/RemoteConfig';
@@ -26,98 +31,97 @@ import DeepLinking from './Services/DeepLinking';
 import './Functions/ProMode';
 import './Functions/PushNotifications';
 import { getAllUserPreferences } from './Functions/UserPreferences';
-import { NotificationCadency } from './Functions/Settings';
-
-import Themes from './Themes';
 
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
-import AskReview from '~/Components/AskReview';
-import StatusBar from './Components/StatusBar';
+import AskReview from './Components/AskReview';
+import AppOpen from './Components/Ads/AppOpen';
 
 LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
 
 enableScreens(true);
 
 const App: React.FC = () => {
-    const [previousRoute, setPreviousRoute] = useState('Home');
+	const [previousRoute, setPreviousRoute] = useState('Home');
 
-    const [preferences, setPreferences] = useState({
-        howManyDaysToBeNextToExpire: 30,
-        autoComplete: false,
-        isPRO: false,
-        appTheme: Themes.Light,
-        multiplesStores: false,
-        storesFirstPage: false,
-        enableNotifications: true,
-        notificationCadency: NotificationCadency.Day,
-        disableAds: false,
-    });
+	const [preferences, setPreferences] = useState({
+		howManyDaysToBeNextToExpire: 30,
+		autoComplete: false,
+		isPRO: false,
+		appTheme: Themes.Light,
+		multiplesStores: false,
+		storesFirstPage: false,
+		enableNotifications: true,
+		disableAds: false,
+		allowRemoteImages: true,
+	});
 
-    const loadInitialData = useCallback(async () => {
-        const userPreferences = await getAllUserPreferences();
+	const loadInitialData = useCallback(async () => {
+		const userPreferences = await getAllUserPreferences();
 
-        setPreferences(userPreferences);
+		setPreferences(userPreferences);
+	}, []);
 
-        SplashScreen.hide();
-    }, []);
+	const handleOnScreenChange = useCallback(
+		async state => {
+			const route = state.routes[0] || 'undefined';
+			const focusedRouteName = getFocusedRouteNameFromRoute(route);
 
-    const handleOnScreenChange = useCallback(
-        async state => {
-            const route = state.routes[0] || 'undefined';
-            const focusedRouteName = getFocusedRouteNameFromRoute(route);
+			if (focusedRouteName) {
+				if (previousRoute !== focusedRouteName) {
+					setPreviousRoute(focusedRouteName);
 
-            if (focusedRouteName) {
-                if (previousRoute !== focusedRouteName) {
-                    setPreviousRoute(focusedRouteName);
+					if (!__DEV__) {
+						await Analyticts().logScreenView({
+							screen_name: focusedRouteName,
+							screen_class: focusedRouteName,
+						});
+					}
+				}
+			}
+		},
+		[previousRoute]
+	);
 
-                    if (!__DEV__) {
-                        await Analyticts().logScreenView({
-                            screen_name: focusedRouteName,
-                            screen_class: focusedRouteName,
-                        });
-                    }
-                }
-            }
-        },
-        [previousRoute]
-    );
+	useEffect(() => {
+		loadInitialData();
+	}, [loadInitialData]);
 
-    useEffect(() => {
-        loadInitialData();
-    }, [loadInitialData]);
+	const prefes = useMemo(
+		() => ({
+			userPreferences: preferences,
+			setUserPreferences: setPreferences,
+		}),
+		[preferences]
+	);
 
-    return (
-        <PreferencesContext.Provider
-            value={{
-                userPreferences: preferences,
-                setUserPreferences: setPreferences,
-            }}
-        >
-            <ThemeProvider theme={preferences.appTheme}>
-                <PaperProvider>
-                    <Portal>
-                        <NavigationContainer
-                            linking={DeepLinking}
-                            onStateChange={handleOnScreenChange}
-                        >
-                            <StatusBar />
-                            <Routes />
-                            <AskReview />
-                        </NavigationContainer>
-                        <FlashMessage duration={7000} />
-                    </Portal>
-                </PaperProvider>
-            </ThemeProvider>
-        </PreferencesContext.Provider>
-    );
+	return (
+		<PreferencesContext.Provider value={prefes}>
+			<ThemeProvider theme={preferences.appTheme}>
+				<PaperProvider>
+					<Portal>
+						<NavigationContainer
+							linking={DeepLinking}
+							onStateChange={handleOnScreenChange}
+						>
+							<AppOpen />
+							<StatusBar />
+							<Routes />
+							<AskReview />
+						</NavigationContainer>
+						<FlashMessage duration={7000} statusBarHeight={50} />
+					</Portal>
+				</PaperProvider>
+			</ThemeProvider>
+		</PreferencesContext.Provider>
+	);
 };
 
 const codePushOptions: CodePushOptions = {
-    checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
-    mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
+	checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
 };
 
 export default CodePush(codePushOptions)(App);

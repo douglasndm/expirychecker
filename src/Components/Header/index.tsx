@@ -1,105 +1,27 @@
-import React, { useCallback, useContext } from 'react';
-import { PixelRatio, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
+import React, { useContext, useMemo } from 'react';
 
+import Header, { RequestProps } from '@components/Header';
 import strings from '~/Locales';
 
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
-import StatusBar from '../StatusBar';
-import BackButton from '../BackButton';
+const LocalHeader: React.FC<RequestProps> = (props: RequestProps) => {
+	const { userPreferences } = useContext(PreferencesContext);
 
-import {
-    HeaderContainerNoDrawner,
-    HeaderContainer,
-    TextLogo,
-    MenuIcon,
-    MenuButton,
-} from './styles';
+	const headerTitle = useMemo(() => {
+		const { title } = props;
+		if (title) {
+			return title;
+		}
 
-interface RequestProps {
-    title?: string;
-    noDrawer?: boolean;
-    onBackPressed?: () => void;
-    listRef?: React.RefObject<FlatList<IProduct>>;
-}
+		if (!title && userPreferences.isPRO) {
+			return strings.AppName_ProVersion;
+		}
 
-const Header: React.FC<RequestProps> = ({
-    title,
-    noDrawer,
-    onBackPressed,
-    listRef,
-}: RequestProps) => {
-    const navigation = useNavigation<DrawerNavigationProp<RoutesParams>>();
+		return strings.AppName;
+	}, [props, userPreferences.isPRO]);
 
-    const { userPreferences } = useContext(PreferencesContext);
-
-    const titleFontSize = PixelRatio.get() < 1.5 ? 19 : 26;
-
-    const handleOpenMenu = useCallback(() => {
-        navigation.toggleDrawer();
-    }, [navigation]);
-
-    const handleGoBack = useCallback(() => {
-        if (navigation.canGoBack()) {
-            navigation.goBack();
-        }
-    }, [navigation]);
-
-    let lastPress = 0;
-
-    const onDoublePress = useCallback(() => {
-        const time = new Date().getTime();
-        const delta = time - lastPress;
-
-        const DOUBLE_PRESS_DELAY = 400;
-        if (delta < DOUBLE_PRESS_DELAY) {
-            // Success double press
-
-            if (listRef && listRef.current) {
-                if (listRef.current.props.data?.length)
-                    listRef.current.scrollToIndex({
-                        animated: true,
-                        index: 0,
-                    });
-            }
-        }
-        lastPress = time;
-    }, []);
-
-    return noDrawer ? (
-        <HeaderContainerNoDrawner>
-            <StatusBar />
-            <BackButton handleOnPress={onBackPressed || handleGoBack} />
-
-            <TextLogo noDrawer={noDrawer}>{title}</TextLogo>
-        </HeaderContainerNoDrawner>
-    ) : (
-        <>
-            <StatusBar forceWhiteTextIOS />
-
-            <HeaderContainer onPress={onDoublePress}>
-                <>
-                    <MenuButton onPress={handleOpenMenu}>
-                        <MenuIcon />
-                    </MenuButton>
-
-                    {title ? (
-                        <TextLogo style={{ fontSize: titleFontSize }}>
-                            {title}
-                        </TextLogo>
-                    ) : (
-                        <TextLogo style={{ fontSize: titleFontSize }}>
-                            {userPreferences.isPRO
-                                ? strings.AppName_ProVersion
-                                : strings.AppName}
-                        </TextLogo>
-                    )}
-                </>
-            </HeaderContainer>
-        </>
-    );
+	return <Header {...props} title={headerTitle} />;
 };
 
-export default Header;
+export default LocalHeader;

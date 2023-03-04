@@ -1,42 +1,42 @@
-interface IProduct {
-    id: number;
-    name: string;
-    code?: string;
-    brand?: string;
-    store?: string;
-    photo?: string;
-    daysToBeNext?: number;
-    categories: Array<string>;
-    lotes: Array<ILote>;
+interface IBatch {
+	id: number;
+	name: string;
+	exp_date: Date;
+	amount?: number;
+	price?: number;
+	status?: string;
+	price_tmp?: number;
 
-    createdAt?: Date;
-    updatedAt?: Date;
+	created_at?: Date;
+	updated_at?: Date;
 }
 
-interface ILote {
-    id: number;
-    lote: string;
-    exp_date: Date;
-    amount?: number;
-    price?: number;
-    status?: string;
-    price_tmp?: number;
+interface IProduct {
+	id: number;
+	name: string;
+	code?: string;
+	brand?: string;
+	store?: string;
+	photo?: string;
+	daysToBeNext?: number;
+	categories: Array<string>;
+	batches: Array<IBatch>;
 
-    createdAt?: Date;
-    updatedAt?: Date;
+	created_at?: Date;
+	updated_at?: Date;
 }
 
 interface ICategory {
-    id: string;
-    name: string;
+	id: string;
+	name: string;
 }
 
 interface IBrand {
-    id: string;
-    name: string;
+	id: string;
+	name: string;
 }
 
 interface IStore {
-    id: string;
-    name: string;
+	id: string;
+	name: string;
 }
