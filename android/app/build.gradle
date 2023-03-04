@@ -1,12 +1,13 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 // The following line must be inserted AFTER the React gradle plugin
 apply plugin: "com.bugsnag.android.gradle"
 
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
@@ -112,13 +113,15 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 216
+        versionCode 217
         versionName "1.13.19"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
 
         resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
+
+        manifestPlaceholders = [bugsnagApiKey: project.env.get("BUGSNAG_API_KEY")]
     }
 
     splits {
@@ -224,6 +227,8 @@ project.ext.vectoricons = [
 bugsnag {
     // for a path relative to this `build.gradle` file
     nodeModulesDir = file("../../../../node_modules")
+
+    uploadReactNativeMappings = true
 }
 
 apply from: "../../../../node_modules/react-native-vector-icons/fonts.gradle"

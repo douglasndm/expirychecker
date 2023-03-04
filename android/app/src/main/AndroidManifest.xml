@@ -42,9 +42,7 @@
 
     </activity>
 
-    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="@string/BUGSNAG_API_KEY"/>
-
-    <meta-data android:name="io.sentry.anr.enable" android:value="false" />
+    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="${bugsnagApiKey}"/>
 
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>
