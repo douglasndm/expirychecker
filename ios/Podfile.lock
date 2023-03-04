@@ -709,9 +709,6 @@ PODS:
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
-  - RNSentry (4.14.0):
-    - React-Core
-    - Sentry/HybridSDK (= 7.31.5)
   - RNShare (7.9.1):
     - React-Core
   - RNZipArchive (6.0.9):
@@ -727,7 +724,6 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry/HybridSDK (7.31.5)
   - SocketRocket (0.6.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
@@ -838,7 +834,6 @@ DEPENDENCIES:
   - RNPurchases (from `../../../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
-  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../../../node_modules/react-native-share`)
   - RNZipArchive (from `../../../node_modules/react-native-zip-archive`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
@@ -884,7 +879,6 @@ SPEC REPOS:
     - RevenueCat
     - SDWebImage
     - SDWebImageWebPCoder
-    - Sentry
     - SocketRocket
     - SSZipArchive
     - YogaKit
@@ -1038,8 +1032,6 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../../../node_modules/react-native-screens"
-  RNSentry:
-    :path: "../node_modules/@sentry/react-native"
   RNShare:
     :path: "../../../node_modules/react-native-share"
   RNZipArchive:
@@ -1159,12 +1151,10 @@ SPEC CHECKSUMS:
   RNPurchases: bf74bd8e79ed681a84f05d2c7324964d0859b913
   RNReanimated: addc4900bf47882118d0a1b21747fa6705fa8cff
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
-  RNSentry: 7e90aec2633d2fdad8aeb839c9915e4376fd27d1
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNZipArchive: 68a0c6db4b1c103f846f1559622050df254a3ade
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
-  Sentry: 4c9babff9034785067c896fd580b1f7de44da020
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 5ed1699acbba8863755998a4245daa200ff3817b
