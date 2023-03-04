@@ -1,246 +1,225 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { ScrollView } from 'react-native';
 import { getLocales } from 'react-native-localize';
 import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
+import Loading from '@components/Loading';
+import Header from '@components/Header';
 
-import Appearance from './Components/Appearance';
+import DaysNext from '@views/Settings/Components/DaysNext';
+
+import {
+	setEnableMultipleStoresMode,
+	setStoreFirstPage,
+	setAutoComplete,
+} from '@expirychecker/Functions/Settings';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import Appearance from '@views/Settings/Components/Appearance';
+
+import {
+	Container,
+	Content,
+	SettingsContent,
+	Category,
+	CategoryTitle,
+	CategoryOptions,
+	SettingContainer,
+	SettingDescription,
+} from '@views/Settings/styles';
+
 import Pro from './Components/Pro';
 
-import {
-    setHowManyDaysToBeNextExp,
-    setEnableMultipleStoresMode,
-    setStoreFirstPage,
-    setAutoComplete,
-} from '~/Functions/Settings';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import {
-    Container,
-    SettingsContent,
-    Category,
-    CategoryTitle,
-    CategoryOptions,
-    SettingContainer,
-    SettingDescription,
-    InputSetting,
-} from './styles';
-
 const Settings: React.FC = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [daysToBeNext, setDaysToBeNext] = useState<string>('');
-    const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
-    const [multipleStoresState, setMultipleStoresState] =
-        useState<boolean>(false);
-    const [storeFirstPageState, setStoreFirstPageState] =
-        useState<boolean>(false);
+	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
+	const [multipleStoresState, setMultipleStoresState] =
+		useState<boolean>(false);
+	const [storeFirstPageState, setStoreFirstPageState] =
+		useState<boolean>(false);
 
-    const { userPreferences, setUserPreferences } =
-        useContext(PreferencesContext);
+	const { userPreferences, setUserPreferences } =
+		useContext(PreferencesContext);
 
-    const setSettingDaysToBeNext = useCallback(
-        async (days: number) => {
-            await setHowManyDaysToBeNextExp(days);
+	const setSettingDaysToBeNext = useCallback(
+		async (days: number) => {
+			setUserPreferences({
+				...userPreferences,
+				howManyDaysToBeNextToExpire: days,
+			});
+		},
+		[setUserPreferences, userPreferences]
+	);
 
-            setUserPreferences({
-                ...userPreferences,
-                howManyDaysToBeNextToExpire: days,
-            });
-        },
-        [setUserPreferences, userPreferences]
-    );
+	const previousDaysToBeNext = String(
+		userPreferences.howManyDaysToBeNextToExpire
+	);
+	const loadData = useCallback(async () => {
+		try {
+			setIsLoading(true);
 
-    useEffect(() => {
-        setDaysToBeNext(String(userPreferences.howManyDaysToBeNextToExpire));
-    }, [userPreferences.howManyDaysToBeNextToExpire]);
+			setAutoCompleteState(userPreferences.autoComplete);
+			setMultipleStoresState(userPreferences.multiplesStores);
+			setStoreFirstPageState(userPreferences.storesFirstPage);
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [
+		userPreferences.autoComplete,
+		userPreferences.multiplesStores,
+		userPreferences.storesFirstPage,
+	]);
 
-    const loadData = useCallback(async () => {
-        try {
-            setIsLoading(true);
+	useEffect(() => {
+		loadData();
+	}, [loadData]);
 
-            const previousDaysToBeNext = String(
-                userPreferences.howManyDaysToBeNextToExpire
-            );
+	const handleUpdateAutoComplete = useCallback(async () => {
+		const newValue = !autoCompleteState;
+		setAutoCompleteState(newValue);
 
-            if (!daysToBeNext || daysToBeNext === '') {
-                return;
-            }
+		await setAutoComplete(newValue);
 
-            if (!!daysToBeNext && previousDaysToBeNext !== daysToBeNext) {
-                await setSettingDaysToBeNext(Number(daysToBeNext));
-            }
+		setUserPreferences({
+			...userPreferences,
+			autoComplete: newValue,
+		});
+	}, [autoCompleteState, setUserPreferences, userPreferences]);
 
-            setAutoCompleteState(userPreferences.autoComplete);
-            setMultipleStoresState(userPreferences.multiplesStores);
-            setStoreFirstPageState(userPreferences.storesFirstPage);
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [
-        daysToBeNext,
-        setSettingDaysToBeNext,
-        userPreferences.autoComplete,
-        userPreferences.howManyDaysToBeNextToExpire,
-        userPreferences.multiplesStores,
-        userPreferences.storesFirstPage,
-    ]);
+	const handleMultiStoresEnableSwitch = useCallback(async () => {
+		const newValue = !multipleStoresState;
+		setMultipleStoresState(newValue);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+		await setEnableMultipleStoresMode(newValue);
 
-    const handleUpdateAutoComplete = useCallback(async () => {
-        const newValue = !autoCompleteState;
-        setAutoCompleteState(newValue);
+		setUserPreferences({
+			...userPreferences,
+			multiplesStores: newValue,
+		});
+	}, [multipleStoresState, setUserPreferences, userPreferences]);
 
-        await setAutoComplete(newValue);
+	const handleStoreFirstPageSwitch = useCallback(async () => {
+		const newValue = !storeFirstPageState;
+		setStoreFirstPageState(newValue);
+		await setStoreFirstPage(newValue);
 
-        setUserPreferences({
-            ...userPreferences,
-            autoComplete: newValue,
-        });
-    }, [autoCompleteState, setUserPreferences, userPreferences]);
+		setUserPreferences({
+			...userPreferences,
+			storesFirstPage: newValue,
+		});
+	}, [setUserPreferences, storeFirstPageState, userPreferences]);
 
-    const handleMultiStoresEnableSwitch = useCallback(async () => {
-        const newValue = !multipleStoresState;
-        setMultipleStoresState(newValue);
+	const onThemeChoosen = useCallback(
+		(theme: DefaultTheme) => {
+			setUserPreferences({
+				...userPreferences,
+				appTheme: theme,
+			});
+		},
+		[setUserPreferences, userPreferences]
+	);
 
-        await setEnableMultipleStoresMode(newValue);
+	return isLoading ? (
+		<Loading />
+	) : (
+		<Container>
+			<Content>
+				<Header title={strings.View_Settings_PageTitle} noDrawer />
 
-        setUserPreferences({
-            ...userPreferences,
-            multiplesStores: newValue,
-        });
-    }, [multipleStoresState, setUserPreferences, userPreferences]);
+				<SettingsContent>
+					<Category>
+						<CategoryTitle>
+							{strings.View_Settings_CategoryName_General}
+						</CategoryTitle>
 
-    const handleStoreFirstPageSwitch = useCallback(async () => {
-        const newValue = !storeFirstPageState;
-        setStoreFirstPageState(newValue);
-        await setStoreFirstPage(newValue);
+						<CategoryOptions>
+							<DaysNext
+								defaultValue={previousDaysToBeNext}
+								onUpdate={setSettingDaysToBeNext}
+							/>
 
-        setUserPreferences({
-            ...userPreferences,
-            storesFirstPage: newValue,
-        });
-    }, [setUserPreferences, storeFirstPageState, userPreferences]);
+							{userPreferences.isPRO && (
+								<>
+									{getLocales()[0].languageCode === 'pt' && (
+										<SettingContainer>
+											<SettingDescription>
+												Autocompletar automacatimente
+											</SettingDescription>
+											<Switch
+												value={autoCompleteState}
+												onValueChange={
+													handleUpdateAutoComplete
+												}
+												color={
+													userPreferences.appTheme
+														.colors.accent
+												}
+											/>
+										</SettingContainer>
+									)}
 
-    return isLoading ? (
-        <Loading />
-    ) : (
-        <Container>
-            <ScrollView>
-                <Header title={strings.View_Settings_PageTitle} noDrawer />
+									<SettingContainer>
+										<SettingDescription>
+											{
+												strings.View_Settings_SettingName_EnableMultiplesStores
+											}
+										</SettingDescription>
+										<Switch
+											value={multipleStoresState}
+											onValueChange={
+												handleMultiStoresEnableSwitch
+											}
+											color={
+												userPreferences.appTheme.colors
+													.accent
+											}
+										/>
+									</SettingContainer>
 
-                <SettingsContent>
-                    <Category>
-                        <CategoryTitle>
-                            {strings.View_Settings_CategoryName_General}
-                        </CategoryTitle>
+									{multipleStoresState && (
+										<SettingContainer>
+											<SettingDescription>
+												{
+													strings.View_Settings_SettingName_EnableStoresFirstPage
+												}
+											</SettingDescription>
+											<Switch
+												value={storeFirstPageState}
+												onValueChange={
+													handleStoreFirstPageSwitch
+												}
+												color={
+													userPreferences.appTheme
+														.colors.accent
+												}
+											/>
+										</SettingContainer>
+									)}
+								</>
+							)}
+						</CategoryOptions>
+					</Category>
 
-                        <CategoryOptions>
-                            <SettingDescription>
-                                {
-                                    strings.View_Settings_SettingName_HowManyDaysToBeNextToExp
-                                }
-                            </SettingDescription>
-                            <InputSetting
-                                keyboardType="numeric"
-                                placeholder={
-                                    strings.View_Settings_SettingName_DaysToExpPlaceholder
-                                }
-                                value={daysToBeNext}
-                                onChangeText={v => {
-                                    const regex = /^[0-9\b]+$/;
+					<Appearance
+						enablePROThemes={userPreferences.isPRO}
+						onThemeChoosen={onThemeChoosen}
+					/>
 
-                                    if (v === '' || regex.test(v)) {
-                                        setDaysToBeNext(v);
-                                    }
-                                }}
-                            />
-                            {/* <Notifications /> */}
-
-                            {userPreferences.isPRO && (
-                                <>
-                                    {getLocales()[0].languageCode === 'pt' && (
-                                        <SettingContainer>
-                                            <SettingDescription>
-                                                Autocompletar automacatimente
-                                            </SettingDescription>
-                                            <Switch
-                                                value={autoCompleteState}
-                                                onValueChange={
-                                                    handleUpdateAutoComplete
-                                                }
-                                                color={
-                                                    userPreferences.appTheme
-                                                        .colors.accent
-                                                }
-                                            />
-                                        </SettingContainer>
-                                    )}
-
-                                    <SettingContainer>
-                                        <SettingDescription>
-                                            {
-                                                strings.View_Settings_SettingName_EnableMultiplesStores
-                                            }
-                                        </SettingDescription>
-                                        <Switch
-                                            value={multipleStoresState}
-                                            onValueChange={
-                                                handleMultiStoresEnableSwitch
-                                            }
-                                            color={
-                                                userPreferences.appTheme.colors
-                                                    .accent
-                                            }
-                                        />
-                                    </SettingContainer>
-
-                                    {multipleStoresState && (
-                                        <SettingContainer>
-                                            <SettingDescription>
-                                                {
-                                                    strings.View_Settings_SettingName_EnableStoresFirstPage
-                                                }
-                                            </SettingDescription>
-                                            <Switch
-                                                value={storeFirstPageState}
-                                                onValueChange={
-                                                    handleStoreFirstPageSwitch
-                                                }
-                                                color={
-                                                    userPreferences.appTheme
-                                                        .colors.accent
-                                                }
-                                            />
-                                        </SettingContainer>
-                                    )}
-                                </>
-                            )}
-                        </CategoryOptions>
-                    </Category>
-
-                    <Appearance />
-
-                    <Pro />
-                </SettingsContent>
-            </ScrollView>
-        </Container>
-    );
+					<Pro />
+				</SettingsContent>
+			</Content>
+		</Container>
+	);
 };
 
 export default Settings;

@@ -1,5 +1,6 @@
 {
-  "compilerOptions": {
+    "extends": "@tsconfig/react-native/tsconfig.json",
+    "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Basic Options */
@@ -45,11 +46,23 @@
     "moduleResolution": "node",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
-        "~/*": ["src/*"]
+        "@shared/*": ["../shared/src/*"],
+        "@components/*": ["../shared/src/Components/*"],
+        "@utils/*": ["../shared/src/Utils/*"],
+        "@views/*": ["../shared/src/Views/*"],
+        "@themes/*": ["../shared/src/Themes/*"],
+        "@services/*": ["../shared/src/Services/*"],
+        "@styles/*": ["../shared/src/Styles/*"],
+        "@expirychecker/*": ["./src/*"],
+        "~/*": ["src/*"],
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
-    // "typeRoots": [],                       /* List of folders to include type definitions from. */
-    // "types": [],                           /* Type declaration files to be included in compilation. */
+    "typeRoots": [
+        "./src/@types"
+    ],                       /* List of folders to include type definitions from. */
+    "types": [
+    "@types/styled-components-react-native"
+    ],                          /* Type declaration files to be included in compilation. */
     "allowSyntheticDefaultImports": true,    /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
     "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
     // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
@@ -74,5 +87,6 @@
     "babel.config.js",
     "metro.config.js",
     "jest.config.js"
-  ]
+  ],
+  "references": [{ "path": "../shared" }]
 }

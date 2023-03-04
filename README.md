@@ -1,6 +1,6 @@
 # Controle de validade
 
-Passos necessários para realizar uma build bem sucedida do app. Atenção que o aplicativo só foi desenvolvido para o Android.
+Passos necessários para realizar uma build bem sucedida do app.
 
 ```
 npm insall

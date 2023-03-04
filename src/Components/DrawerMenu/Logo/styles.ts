@@ -1,4 +1,5 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
+import { Dimensions, Platform } from 'react-native';
 
 import LogoImg from '~/Assets/Logo.png';
 
@@ -10,4 +11,10 @@ export const LogoImage = styled.Image.attrs(() => ({
 }))`
     width: 120px;
     height: 120px;
+
+    ${Dimensions.get('window').height > 920 &&
+    Platform.OS === 'ios' &&
+    css`
+        margin-top: 50px;
+    `}
 `;

@@ -1,23 +1,25 @@
-import realm from '~/Services/Realm';
+import realm from '@expirychecker/Services/Realm';
 
-export async function saveManyBatches(batches: Array<ILote>): Promise<ILote[]> {
-    const lastBatch = realm.objects<ILote>('Lote').sorted('id', true)[0];
-    let nextId = lastBatch == null ? 1 : lastBatch.id + 1;
+export async function saveManyBatches(
+	batches: Array<IBatch>
+): Promise<IBatch[]> {
+	const lastBatch = realm.objects<IBatch>('Lote').sorted('id', true)[0];
+	let nextId = lastBatch == null ? 1 : lastBatch.id + 1;
 
-    const createdBatches: Array<ILote> = [];
+	const createdBatches: Array<IBatch> = [];
 
-    realm.write(() => {
-        batches.forEach(batch => {
-            const createdBatch = realm.create<ILote>('Lote', {
-                ...batch,
-                id: nextId,
-            });
+	realm.write(() => {
+		batches.forEach(batch => {
+			const createdBatch = realm.create<IBatch>('Lote', {
+				...batch,
+				id: nextId,
+			});
 
-            createdBatches.push(createdBatch);
+			createdBatches.push(createdBatch);
 
-            nextId += 1;
-        });
-    });
+			nextId += 1;
+		});
+	});
 
-    return createdBatches;
+	return createdBatches;
 }

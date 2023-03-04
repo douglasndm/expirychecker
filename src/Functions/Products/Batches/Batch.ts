@@ -1,9 +1,9 @@
 import { UpdateMode } from 'realm';
 
-import realm from '~/Services/Realm';
+import realm from '@expirychecker/Services/Realm';
 
-export async function updateBatch(batch: ILote): Promise<void> {
-    realm.write(() => {
-        realm.create('Lote', batch, UpdateMode.Modified);
-    });
+export function updateBatch(batch: IBatch): void {
+	realm.write(() => {
+		realm.create('Lote', batch, UpdateMode.Modified);
+	});
 }

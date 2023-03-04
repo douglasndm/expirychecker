@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.controledevalidade">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.CAMERA"/>
@@ -41,11 +41,20 @@
       </intent-filter>
 
     </activity>
+
+    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="${bugsnagApiKey}"/>
+
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/primary"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"/>
+
+    <receiver android:name="com.adjust.sdk.AdjustReferrerReceiver" android:exported="true" >
+        <intent-filter>
+            <action android:name="com.android.vending.INSTALL_REFERRER" />
+        </intent-filter>
+    </receiver>
 
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver" android:exported="true">
       <intent-filter>

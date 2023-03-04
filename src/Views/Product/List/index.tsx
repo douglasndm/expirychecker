@@ -1,177 +1,193 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import Loading from '~/Components/Loading';
-import Header from '~/Components/Header';
-import ListProducts from '~/Components/ListProducts';
-import BarCodeReader from '~/Components/BarCodeReader';
-
-import { getAllProducts, searchForAProductInAList } from '~/Functions/Products';
-
-import { FloatButton, Icons } from '~/Components/ListProducts/styles';
 import {
-    InputSearch,
-    InputTextContainer,
-    InputTextIconContainer,
-    InputTextIcon,
-} from '~/Views/Home/styles';
+	getAllProducts,
+	searchForAProductInAList,
+} from '@expirychecker/Functions/Products';
+
+import Header from '@components/Header';
+import BarCodeReader from '@components/BarCodeReader';
+import FAB from '@components/FAB';
+
+import {
+	InputSearch,
+	InputTextContainer,
+	InputTextIconContainer,
+	InputTextIcon,
+} from '@views/Home/styles';
+
+import Loading from '@components/Loading';
+
+import ListProducts from '@expirychecker/Components/ListProducts';
 
 import { Container } from './styles';
 
 const List: React.FC = () => {
-    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const { userPreferences } = useContext(PreferencesContext);
+	const { userPreferences } = useContext(PreferencesContext);
 
-    const enableTabBar = remoteConfig().getValue('enable_app_bar');
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const [products, setProducts] = useState<Array<IProduct>>([]);
+	const [products, setProducts] = useState<Array<IProduct>>([]);
 
-    const [searchString, setSearchString] = useState<string>();
-    const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
-    const [enableBarCodeReader, setEnableBarCodeReader] =
-        useState<boolean>(false);
+	const [searchString, setSearchString] = useState<string>();
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [enableBarCodeReader, setEnableBarCodeReader] =
+		useState<boolean>(false);
 
-    const getProducts = useCallback(async () => {
-        try {
-            setIsLoading(true);
-            const allProducts = await getAllProducts({
-                sortProductsByExpDate: true,
-                removeTreatedBatch: true,
-            });
-            setProducts(allProducts);
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
-    useEffect(() => {
-        getProducts();
-    }, [getProducts]);
+	const enableFloatAddButton = useMemo(() => {
+		if (!userPreferences.isPRO) {
+			return true;
+		}
 
-    useEffect(() => {
-        setProductsSearch(products);
-    }, [products]);
+		if (userPreferences.isPRO && enableTabBar.asBoolean() === false) {
+			return true;
+		}
 
-    const handleOnBarCodeReaderOpen = useCallback(() => {
-        setEnableBarCodeReader(true);
-    }, []);
+		return false;
+	}, [enableTabBar, userPreferences.isPRO]);
 
-    const handleOnBarCodeReaderClose = useCallback(() => {
-        setEnableBarCodeReader(false);
-    }, []);
+	const getProducts = useCallback(async () => {
+		try {
+			setIsLoading(true);
+			const allProducts = await getAllProducts({
+				sortProductsByExpDate: true,
+				removeTreatedBatch: true,
+			});
+			setProducts(allProducts);
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
 
-    const handleSearchChange = useCallback(
-        async (search: string) => {
-            setSearchString(search);
+	useEffect(() => {
+		getProducts();
+	}, [getProducts]);
 
-            if (search && search !== '') {
-                const findProducts = searchForAProductInAList({
-                    products,
-                    searchFor: search,
-                    sortByExpDate: true,
-                });
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
 
-                setProductsSearch(findProducts);
-            } else {
-                setProductsSearch(products);
-            }
-        },
-        [products]
-    );
+	const handleOnBarCodeReaderOpen = useCallback(() => {
+		setEnableBarCodeReader(true);
+	}, []);
 
-    const handleOnCodeRead = useCallback(
-        code => {
-            setSearchString(code);
-            handleSearchChange(code);
-            setEnableBarCodeReader(false);
-        },
-        [handleSearchChange]
-    );
+	const handleOnBarCodeReaderClose = useCallback(() => {
+		setEnableBarCodeReader(false);
+	}, []);
 
-    const handleNavigateAddProduct = useCallback(() => {
-        if (searchString && searchString !== '') {
-            const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
-            const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchString(search);
 
-            navigate('AddProduct', {
-                code: query,
-            });
-        } else {
-            navigate('AddProduct', {});
-        }
-    }, [navigate, searchString]);
+			if (search && search !== '') {
+				const findProducts = searchForAProductInAList({
+					products,
+					searchFor: search,
+					sortByExpDate: true,
+				});
 
-    return isLoading ? (
-        <Loading />
-    ) : (
-        <>
-            {enableBarCodeReader ? (
-                <BarCodeReader
-                    onCodeRead={handleOnCodeRead}
-                    onClose={handleOnBarCodeReaderClose}
-                />
-            ) : (
-                <>
-                    <Container>
-                        <Header title={strings.View_AllProducts_PageTitle} />
+				setProductsSearch(findProducts);
+			} else {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
 
-                        {products.length > 0 && (
-                            <InputTextContainer>
-                                <InputSearch
-                                    placeholder={
-                                        strings.View_AllProducts_SearchPlaceholder
-                                    }
-                                    value={searchString}
-                                    onChangeText={handleSearchChange}
-                                />
-                                <InputTextIconContainer
-                                    onPress={handleOnBarCodeReaderOpen}
-                                >
-                                    <InputTextIcon name="barcode-outline" />
-                                </InputTextIconContainer>
-                            </InputTextContainer>
-                        )}
+	const handleOnCodeRead = useCallback(
+		code => {
+			setSearchString(code);
+			handleSearchChange(code);
+			setEnableBarCodeReader(false);
+		},
+		[handleSearchChange]
+	);
 
-                        <ListProducts products={productsSearch} />
+	const handleNavigateAddProduct = useCallback(() => {
+		if (searchString && searchString !== '') {
+			const queryWithoutLetters = searchString.replace(/\D/g, '').trim();
+			const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
 
-                        {!userPreferences.isPRO ||
-                            (userPreferences.isPRO &&
-                                enableTabBar.asBoolean() === false && (
-                                    <FloatButton
-                                        icon={() => (
-                                            <Icons
-                                                name="add-outline"
-                                                color="white"
-                                                size={22}
-                                            />
-                                        )}
-                                        small
-                                        label={
-                                            strings.View_FloatMenu_AddProduct
-                                        }
-                                        onPress={handleNavigateAddProduct}
-                                    />
-                                ))}
-                    </Container>
-                </>
-            )}
-        </>
-    );
+			navigate('AddProduct', {
+				code: query,
+			});
+		} else {
+			navigate('AddProduct', {});
+		}
+	}, [navigate, searchString]);
+
+	return isLoading ? (
+		<Loading />
+	) : (
+		<>
+			{enableBarCodeReader ? (
+				<BarCodeReader
+					onCodeRead={handleOnCodeRead}
+					onClose={handleOnBarCodeReaderClose}
+				/>
+			) : (
+				<>
+					<Container>
+						<Header title={strings.View_AllProducts_PageTitle} />
+
+						{products.length > 0 && (
+							<InputTextContainer>
+								<InputSearch
+									placeholder={
+										strings.View_AllProducts_SearchPlaceholder
+									}
+									value={searchString}
+									onChangeText={handleSearchChange}
+								/>
+								<InputTextIconContainer
+									onPress={handleOnBarCodeReaderOpen}
+								>
+									<InputTextIcon name="barcode-outline" />
+								</InputTextIconContainer>
+							</InputTextContainer>
+						)}
+
+						<ListProducts
+							products={productsSearch}
+							onRefresh={getProducts}
+						/>
+
+						{enableFloatAddButton && (
+							<FAB
+								icon="plus"
+								label={strings.View_FloatMenu_AddProduct}
+								onPress={handleNavigateAddProduct}
+							/>
+						)}
+					</Container>
+				</>
+			)}
+		</>
+	);
 };
 
 export default List;

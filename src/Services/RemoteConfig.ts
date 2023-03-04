@@ -11,15 +11,15 @@ async function init() {
 
             enable_backup_import: true,
             enable_backup_export: true,
+
+            enable_ad_on_app_start: false,
         });
 
-        /*
-        if (__DEV__) {
-            await remoteConfig().setConfigSettings({
-                minimumFetchIntervalMillis: 5000,
-            });
-        }
-        */
+        // if (__DEV__) {
+        //     await remoteConfig().setConfigSettings({
+        //         minimumFetchIntervalMillis: 5000,
+        //     });
+        // }
 
         await remoteConfig().fetchAndActivate();
     } catch (err) {

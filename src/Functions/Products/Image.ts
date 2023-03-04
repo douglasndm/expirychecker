@@ -1,134 +1,134 @@
 import {
-    DocumentDirectoryPath,
-    readDir,
-    exists,
-    unlink,
-    mkdir,
-    copyFile,
+	DocumentDirectoryPath,
+	readDir,
+	exists,
+	unlink,
+	mkdir,
+	copyFile,
 } from 'react-native-fs';
 
 import { getProductById, updateProduct } from '../Product';
 
 export function getImageFileNameFromPath(path: string): string {
-    const productImage = path.split('/');
+	const productImage = path.split('/');
 
-    const fileName = productImage[productImage?.length - 1];
+	const fileName = productImage[productImage?.length - 1];
 
-    return fileName;
+	return fileName;
 }
 
 export async function getProductImagePath(
-    productId: number
+	productId: number
 ): Promise<string | null> {
-    const product = await getProductById(productId);
+	const product = await getProductById(productId);
 
-    if (product.photo) {
-        if (await exists(product.photo)) {
-            return product.photo;
-        }
+	if (product.photo) {
+		if (await exists(product.photo)) {
+			return product.photo;
+		}
 
-        const imagesPath = `${DocumentDirectoryPath}/images`;
+		const imagesPath = `${DocumentDirectoryPath}/images`;
 
-        if (!(await exists(imagesPath))) {
-            await mkdir(imagesPath);
-        }
+		if (!(await exists(imagesPath))) {
+			await mkdir(imagesPath);
+		}
 
-        const filesDir = await readDir(imagesPath);
-        const findedFile = filesDir.find(file => {
-            const productImage = product.photo?.split('/');
+		const filesDir = await readDir(imagesPath);
+		const findedFile = filesDir.find(file => {
+			const productImage = product.photo?.split('/');
 
-            if (productImage) {
-                const fileName = productImage[productImage?.length - 1];
+			if (productImage) {
+				const fileName = productImage[productImage?.length - 1];
 
-                if (file.name === fileName) return true;
-                return false;
-            }
+				if (file.name === fileName) return true;
+				return false;
+			}
 
-            return false;
-        });
+			return false;
+		});
 
-        if (findedFile) {
-            return findedFile.path;
-        }
-    }
+		if (findedFile) {
+			return findedFile.path;
+		}
+	}
 
-    return null;
+	return null;
 }
 
 interface saveProductIamgeProps {
-    fileName: string;
-    productId: number;
+	fileName: string;
+	productId: number;
 }
 
 export async function saveProductImage({
-    fileName,
-    productId,
+	fileName,
+	productId,
 }: saveProductIamgeProps): Promise<void> {
-    const product = await getProductById(productId);
+	const product = await getProductById(productId);
 
-    let path;
+	let path;
 
-    // For old users at 1.7.1 (app was save all path, not only file name)
-    if (await exists(fileName)) {
-        path = fileName;
-    } else {
-        const filesDir = await readDir(`${DocumentDirectoryPath}/images`);
+	// For old users at 1.7.1 (app was save all path, not only file name)
+	if (await exists(fileName)) {
+		path = fileName;
+	} else {
+		const filesDir = await readDir(`${DocumentDirectoryPath}/images`);
 
-        const findedFile = filesDir.find(file => file.name === fileName);
+		const findedFile = filesDir.find(file => file.name === fileName);
 
-        if (!findedFile) {
-            throw new Error('File was not find');
-        }
+		if (!findedFile) {
+			throw new Error('File was not find');
+		}
 
-        path = findedFile.path;
-    }
+		path = findedFile.path;
+	}
 
-    if (!path) {
-        throw new Error('Image path was not defined');
-    }
+	if (!path) {
+		throw new Error('Image path was not defined');
+	}
 
-    if (product.photo) {
-        const oldImagePath = await getProductImagePath(productId);
+	if (product.photo) {
+		const oldImagePath = await getProductImagePath(productId);
 
-        if (oldImagePath) {
-            if (await exists(oldImagePath)) {
-                await unlink(oldImagePath);
-            }
-        }
-    }
+		if (oldImagePath) {
+			if (await exists(oldImagePath)) {
+				await unlink(oldImagePath);
+			}
+		}
+	}
 
-    await updateProduct({
-        ...product,
-        id: productId,
-        photo: fileName,
-    });
+	await updateProduct({
+		...product,
+		id: productId,
+		photo: fileName,
+	});
 }
 
 interface copyTempImageResponse {
-    fileName: string;
-    filePath: string;
+	fileName: string;
+	filePath: string;
 }
 
 export async function copyImageFromTempDirToDefinitiveDir(
-    tempPath: string
+	tempPath: string
 ): Promise<copyTempImageResponse> {
-    const splited = tempPath.split('/');
-    const generatedFilneName = splited[splited.length - 1];
+	const splited = tempPath.split('/');
+	const generatedFilneName = splited[splited.length - 1];
 
-    const fileName = `${Date.now()}-${generatedFilneName}`;
+	const fileName = `${Date.now()}-${generatedFilneName}`;
 
-    const existsFolder = await exists(`${DocumentDirectoryPath}/images`);
-    if (!existsFolder) {
-        await mkdir(`${DocumentDirectoryPath}/images`);
-    }
+	const existsFolder = await exists(`${DocumentDirectoryPath}/images`);
+	if (!existsFolder) {
+		await mkdir(`${DocumentDirectoryPath}/images`);
+	}
 
-    const newPath = `${DocumentDirectoryPath}/images/${fileName}`;
+	const newPath = `${DocumentDirectoryPath}/images/${fileName}`;
 
-    await copyFile(tempPath, newPath);
-    await unlink(tempPath);
+	await copyFile(tempPath, newPath);
+	await unlink(tempPath);
 
-    return {
-        fileName,
-        filePath: newPath,
-    };
+	return {
+		fileName,
+		filePath: newPath,
+	};
 }

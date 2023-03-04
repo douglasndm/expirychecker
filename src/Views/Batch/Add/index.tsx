@@ -1,9 +1,9 @@
 import React, {
-    useState,
-    useEffect,
-    useCallback,
-    useContext,
-    useMemo,
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useMemo,
 } from 'react';
 import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -12,17 +12,16 @@ import { getLocales } from 'react-native-localize';
 import EnvConfig from 'react-native-config';
 import { showMessage } from 'react-native-flash-message';
 import {
-    InterstitialAd,
-    AdEventType,
-    TestIds,
+	InterstitialAd,
+	AdEventType,
+	TestIds,
 } from 'react-native-google-mobile-ads';
 
+import Loading from '@components/Loading';
+import StatusBar from '@components/StatusBar';
+import Header from '@components/Header';
+import GenericButton from '@components/Button';
 import strings from '~/Locales';
-
-import Loading from '~/Components/Loading';
-import StatusBar from '~/Components/StatusBar';
-import Header from '~/Components/Header';
-import GenericButton from '~/Components/Button';
 
 import { createLote } from '~/Functions/Lotes';
 import { getProductById } from '~/Functions/Product';
@@ -30,256 +29,268 @@ import { getProductById } from '~/Functions/Product';
 import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
-    Container,
-    PageContent,
-    InputContainer,
-    InputTextContainer,
-    Currency,
-    InputGroup,
-    ExpDateGroup,
-    ExpDateLabel,
-    CustomDatePicker,
+	Container,
+	PageContent,
+	InputContainer,
+	InputTextContainer,
+	Currency,
+	InputGroup,
+	ExpDateGroup,
+	ExpDateLabel,
+	CustomDatePicker,
 } from '~/Views/Product/Add/styles';
 import { InputCodeText } from '~/Views/Product/Add/Components/Inputs/Code/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
 interface Props {
-    route: {
-        params: {
-            productId: number;
-        };
-    };
+	route: {
+		params: {
+			productId: number;
+		};
+	};
 }
 
 let adUnit = TestIds.INTERSTITIAL;
 
 if (Platform.OS === 'ios' && !__DEV__) {
-    adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_BATCH;
+	adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_BATCH;
 } else if (Platform.OS === 'android' && !__DEV__) {
-    adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDLOTE;
+	adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDLOTE;
 }
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
 const AddBatch: React.FC<Props> = ({ route }: Props) => {
-    const { productId } = route.params;
-    const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { productId } = route.params;
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const locale = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'en-US';
-        }
-        return 'pt-BR';
-    }, []);
-    const currency = useMemo(() => {
-        if (getLocales()[0].languageCode === 'en') {
-            return 'USD';
-        }
+	const locale = useMemo(() => {
+		if (getLocales()[0].languageCode === 'en') {
+			return 'en-US';
+		}
+		return 'pt-BR';
+	}, []);
+	const currency = useMemo(() => {
+		if (getLocales()[0].languageCode === 'en') {
+			return 'USD';
+		}
 
-        return 'BRL';
-    }, []);
+		return 'BRL';
+	}, []);
 
-    const { userPreferences } = useContext(PreferencesContext);
+	const { userPreferences } = useContext(PreferencesContext);
 
-    const [adReady, setAdReady] = useState(false);
+	const [adReady, setAdReady] = useState(false);
 
-    const [name, setName] = useState('');
-    const [code, setCode] = useState('');
-    const [lote, setLote] = useState('');
-    const [amount, setAmount] = useState<string>('');
-    const [price, setPrice] = useState<number | null>(null);
+	const [name, setName] = useState('');
+	const [code, setCode] = useState('');
+	const [lote, setLote] = useState('');
+	const [amount, setAmount] = useState<string>('');
+	const [price, setPrice] = useState<number | null>(null);
 
-    const [expDate, setExpDate] = useState(new Date());
+	const [expDate, setExpDate] = useState(new Date());
 
-    const handleSave = useCallback(async () => {
-        if (!lote || lote.trim() === '') {
-            showMessage({
-                message: strings.View_AddBatch_AlertTypeBatchName,
-                type: 'danger',
-            });
-            return;
-        }
-        try {
-            await createLote({
-                productId,
-                lote: {
-                    lote,
-                    amount: Number(amount),
-                    exp_date: expDate,
-                    price: price || undefined,
-                    status: 'Não tratado',
-                },
-            });
+	const handleSave = useCallback(async () => {
+		if (!lote || lote.trim() === '') {
+			showMessage({
+				message: strings.View_AddBatch_AlertTypeBatchName,
+				type: 'danger',
+			});
+			return;
+		}
+		try {
+			await createLote({
+				productId,
+				lote: {
+					name: lote,
+					amount: Number(amount),
+					exp_date: expDate,
+					price: price || undefined,
+					status: 'Não tratado',
+				},
+			});
 
-            if (!userPreferences.disableAds && adReady) {
-                await interstitialAd.show();
-            }
+			if (!userPreferences.disableAds && adReady) {
+				await interstitialAd.show();
+			}
 
-            navigate('Success', {
-                type: 'create_batch',
-                productId,
-            });
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        }
-    }, [
-        lote,
-        productId,
-        amount,
-        expDate,
-        price,
-        userPreferences.disableAds,
-        adReady,
-        navigate,
-    ]);
+			if (userPreferences.isPRO) {
+				navigate('ProductDetails', {
+					id: productId,
+				});
 
-    useEffect(() => {
-        const eventListener = interstitialAd.onAdEvent(type => {
-            if (type === AdEventType.LOADED) {
-                setAdReady(true);
-            }
-            if (type === AdEventType.CLOSED) {
-                setAdReady(false);
-            }
-            if (type === AdEventType.ERROR) {
-                setAdReady(false);
-            }
-        });
+				showMessage({
+					message: strings.View_Success_BatchCreated,
+					type: 'info',
+				});
+			} else {
+				navigate('Success', {
+					type: 'create_batch',
+					productId,
+				});
+			}
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		}
+	}, [
+		lote,
+		productId,
+		amount,
+		expDate,
+		price,
+		userPreferences.disableAds,
+		userPreferences.isPRO,
+		adReady,
+		navigate,
+	]);
 
-        // Start loading the interstitial straight away
-        interstitialAd.load();
+	useEffect(() => {
+		const eventListener = interstitialAd.onAdEvent(type => {
+			if (type === AdEventType.LOADED) {
+				setAdReady(true);
+			}
+			if (type === AdEventType.CLOSED) {
+				setAdReady(false);
+			}
+			if (type === AdEventType.ERROR) {
+				setAdReady(false);
+			}
+		});
 
-        // Unsubscribe from events on unmount
-        return () => {
-            eventListener();
-        };
-    }, []);
+		// Start loading the interstitial straight away
+		interstitialAd.load();
 
-    const loadData = useCallback(async () => {
-        try {
-            setIsLoading(true);
+		// Unsubscribe from events on unmount
+		return () => {
+			eventListener();
+		};
+	}, []);
 
-            const prod = await getProductById(productId);
+	const loadData = useCallback(async () => {
+		try {
+			setIsLoading(true);
 
-            if (prod) {
-                setName(prod.name);
+			const prod = await getProductById(productId);
 
-                if (prod.code) setCode(prod.code);
-            }
-        } catch (err) {
-            if (err instanceof Error)
-                showMessage({
-                    message: err.message,
-                    type: 'danger',
-                });
-        } finally {
-            setIsLoading(false);
-        }
-    }, [productId]);
+			if (prod) {
+				setName(prod.name);
 
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+				if (prod.code) setCode(prod.code);
+			}
+		} catch (err) {
+			if (err instanceof Error)
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+		} finally {
+			setIsLoading(false);
+		}
+	}, [productId]);
 
-    const handleAmountChange = useCallback(value => {
-        const regex = /^[0-9\b]+$/;
+	useEffect(() => {
+		loadData();
+	}, [loadData]);
 
-        if (value === '' || regex.test(value)) {
-            setAmount(value);
-        }
-    }, []);
+	const handleAmountChange = useCallback(value => {
+		const regex = /^[0-9\b]+$/;
 
-    const handlePriceChange = useCallback((value: number) => {
-        if (value <= 0) {
-            setPrice(null);
-            return;
-        }
-        setPrice(value);
-    }, []);
+		if (value === '' || regex.test(value)) {
+			setAmount(value);
+		}
+	}, []);
 
-    return isLoading ? (
-        <Loading />
-    ) : (
-        <Container>
-            <StatusBar />
-            <ScrollView>
-                <Header title={strings.View_AddBatch_PageTitle} noDrawer />
+	const handlePriceChange = useCallback((value: number) => {
+		if (value <= 0) {
+			setPrice(null);
+			return;
+		}
+		setPrice(value);
+	}, []);
 
-                <PageContent>
-                    <InputContainer>
-                        <ProductHeader>
-                            <ProductName>{name}</ProductName>
-                            <ProductCode>{code}</ProductCode>
-                        </ProductHeader>
+	return isLoading ? (
+		<Loading />
+	) : (
+		<Container>
+			<StatusBar />
+			<ScrollView>
+				<Header title={strings.View_AddBatch_PageTitle} noDrawer />
 
-                        <InputGroup>
-                            <InputTextContainer
-                                style={{
-                                    flex: 5,
-                                    marginRight: 5,
-                                }}
-                            >
-                                <InputCodeText
-                                    placeholder={
-                                        strings.View_AddBatch_InputPlacehoder_Batch
-                                    }
-                                    value={lote}
-                                    onChangeText={value => setLote(value)}
-                                />
-                            </InputTextContainer>
-                            <InputTextContainer
-                                style={{
-                                    flex: 4,
-                                }}
-                            >
-                                <InputCodeText
-                                    placeholder={
-                                        strings.View_AddBatch_InputPlacehoder_Amount
-                                    }
-                                    keyboardType="numeric"
-                                    value={amount}
-                                    onChangeText={handleAmountChange}
-                                />
-                            </InputTextContainer>
-                        </InputGroup>
+				<PageContent>
+					<InputContainer>
+						<ProductHeader>
+							<ProductName>{name}</ProductName>
+							<ProductCode>{code}</ProductCode>
+						</ProductHeader>
 
-                        <Currency
-                            value={price}
-                            onChangeValue={handlePriceChange}
-                            delimiter={currency === 'BRL' ? ',' : '.'}
-                            placeholder={
-                                strings.View_AddBatch_InputPlacehoder_UnitPrice
-                            }
-                        />
+						<InputGroup>
+							<InputTextContainer
+								style={{
+									flex: 5,
+									marginRight: 5,
+								}}
+							>
+								<InputCodeText
+									placeholder={
+										strings.View_AddBatch_InputPlacehoder_Batch
+									}
+									value={lote}
+									onChangeText={value => setLote(value)}
+								/>
+							</InputTextContainer>
+							<InputTextContainer
+								style={{
+									flex: 4,
+								}}
+							>
+								<InputCodeText
+									placeholder={
+										strings.View_AddBatch_InputPlacehoder_Amount
+									}
+									keyboardType="numeric"
+									value={amount}
+									onChangeText={handleAmountChange}
+								/>
+							</InputTextContainer>
+						</InputGroup>
 
-                        <ExpDateGroup>
-                            <ExpDateLabel>
-                                {strings.View_AddBatch_CalendarTitle}
-                            </ExpDateLabel>
-                            <CustomDatePicker
-                                date={expDate}
-                                onDateChange={value => {
-                                    setExpDate(value);
-                                }}
-                                locale={locale}
-                            />
-                        </ExpDateGroup>
-                    </InputContainer>
+						<Currency
+							value={price}
+							onChangeValue={handlePriceChange}
+							delimiter={currency === 'BRL' ? ',' : '.'}
+							placeholder={
+								strings.View_AddBatch_InputPlacehoder_UnitPrice
+							}
+						/>
 
-                    <GenericButton
-                        text={strings.View_AddBatch_Button_Save}
-                        onPress={handleSave}
-                    />
-                </PageContent>
-            </ScrollView>
-        </Container>
-    );
+						<ExpDateGroup>
+							<ExpDateLabel>
+								{strings.View_AddBatch_CalendarTitle}
+							</ExpDateLabel>
+							<CustomDatePicker
+								date={expDate}
+								onDateChange={value => {
+									setExpDate(value);
+								}}
+								locale={locale}
+							/>
+						</ExpDateGroup>
+					</InputContainer>
+
+					<GenericButton
+						text={strings.View_AddBatch_Button_Save}
+						onPress={handleSave}
+					/>
+				</PageContent>
+			</ScrollView>
+		</Container>
+	);
 };
 
 export default AddBatch;
