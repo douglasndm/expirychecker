@@ -90,7 +90,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 						setImage(imagePath);
 					}
 				}
-			} else if (result.code) {
+			} else if (result.code && userPreferences.isPRO) {
 				const response = await getImagePath({
 					productCode: result.code,
 				});
@@ -125,7 +125,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [productId, reset, goBack]);
+	}, [productId, userPreferences.isPRO, reset, goBack]);
 
 	useEffect(() => {
 		if (product?.store) {

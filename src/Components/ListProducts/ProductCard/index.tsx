@@ -34,6 +34,7 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 		} else if (product.code) {
 			const response = await getImagePath({
 				productCode: product.code,
+				disableRemote: true, // dont make several calls to api for each item
 			});
 
 			setImagePath(response);
