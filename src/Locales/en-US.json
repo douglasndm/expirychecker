@@ -391,6 +391,23 @@
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
 
+    "View_Subscription_Cancel_ExplainTitle": "You are about to lose your benefits.",
+    "View_Subscription_Cancel_FeaturesTitle": "You will lose all of these features",
+    "View_Subscription_Cancel_Feature1": "Export to Excel",
+    "View_Subscription_Cancel_Feature2": "Suggestions for product names",
+    "View_Subscription_Cancel_Feature3": "Access photos of products to facilitate their search",
+    "View_Subscription_Cancel_Feature4": "Sort products by category",
+    "View_Subscription_Cancel_Feature5": "Sort products by brand",
+    "View_Subscription_Cancel_Feature6": "Sort products by store",
+    "View_Subscription_Cancel_Feature7": "Create backup files to keep your products safe",
+    "View_Subscription_Cancel_Feature8": "No ads",
+    "View_Subscription_Cancel_Feature9": "Weekly overview of your products",
+    "View_Subscription_Cancel_Feature10": "Share products with other apps",
+    "View_Subscription_Cancel_Feature11": "Exclusive themes",
+    "View_Subscription_Cancel_Button_KeepSubscription": "I'll keep my benefits 🥰",
+    "View_Subscription_Cancel_Button_CancelSubscription": "I want to continue and lose my benefits",
+
+
     "Function_StoreGroup_NoStore": "No store",
 
     "Function_Export_FileName": "expirationcheck_backup",
