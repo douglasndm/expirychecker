@@ -1,10 +1,8 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
-
-// The following line must be inserted AFTER the React gradle plugin
-apply plugin: "com.bugsnag.android.gradle"
 
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply plugin: 'com.google.gms.google-services'
@@ -119,8 +117,6 @@ android {
         missingDimensionStrategy 'react-native-camera', 'general'
 
         resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
-
-        manifestPlaceholders = [bugsnagApiKey: project.env.get("BUGSNAG_API_KEY")]
     }
 
     splits {
@@ -212,6 +208,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
 
     implementation "com.android.installreferrer:installreferrer:2.2"
+
+    implementation project(':@sentry_react-native')
 }
 
 apply from: file("../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
@@ -220,12 +218,5 @@ apply from: file("../../../../node_modules/@react-native-community/cli-platform-
 project.ext.vectoricons = [
     iconFontNames: [ 'Ionicons.ttf', 'Feather.ttf' ] // Name of the font files you want to copy
 ]
-
-bugsnag {
-    // for a path relative to this `build.gradle` file
-    nodeModulesDir = file("../../../../node_modules")
-
-    uploadReactNativeMappings = true
-}
 
 apply from: "../../../../node_modules/react-native-vector-icons/fonts.gradle"
