@@ -40,6 +40,7 @@ import BrandEdit from '@expirychecker/Views/Brand/Edit';
 import Export from '@expirychecker/Views/Export';
 
 import Teams from '@expirychecker/Views/Informations/Teams';
+import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/Cancel';
 
 import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
 
@@ -104,6 +105,10 @@ const Routes: React.FC = () => {
 
 				<Stack.Screen name="Export" component={Export} />
 				<Stack.Screen name="Teams" component={Teams} />
+				<Stack.Screen
+					name="SubscriptionCancel"
+					component={SubscriptionCancel}
+				/>
 
 				{Platform.OS === 'ios' && (
 					<Stack.Screen
