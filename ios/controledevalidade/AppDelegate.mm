@@ -1,6 +1,5 @@
 #import "AppDelegate.h"
 
-#import <Bugsnag/Bugsnag.h>
 #import <Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
@@ -22,7 +21,6 @@
     // They will be passed down to the ViewController used by React Native.
     self.initialProps = @{};
 
-    [Bugsnag start];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

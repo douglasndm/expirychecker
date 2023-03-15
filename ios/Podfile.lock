@@ -4,8 +4,6 @@ PODS:
   - Adjust/Core (4.33.3)
   - Base64 (1.1.2)
   - boost (1.76.0)
-  - BugsnagReactNative (7.19.0):
-    - React-Core
   - BVLinearGradient (2.6.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
@@ -709,6 +707,9 @@ PODS:
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
+  - RNSentry (5.1.1):
+    - React-Core
+    - Sentry/HybridSDK (= 8.3.0)
   - RNShare (7.9.1):
     - React-Core
   - RNZipArchive (6.0.9):
@@ -724,6 +725,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - Sentry/HybridSDK (8.3.0):
+    - SentryPrivate (= 8.3.0)
+  - SentryPrivate (8.3.0)
   - SocketRocket (0.6.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
@@ -732,7 +736,6 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../../../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - "BugsnagReactNative (from `../../../node_modules/@bugsnag/react-native`)"
   - BVLinearGradient (from `../../../node_modules/react-native-linear-gradient`)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -834,6 +837,7 @@ DEPENDENCIES:
   - RNPurchases (from `../../../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../../../node_modules/react-native-share`)
   - RNZipArchive (from `../../../node_modules/react-native-zip-archive`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
@@ -879,6 +883,8 @@ SPEC REPOS:
     - RevenueCat
     - SDWebImage
     - SDWebImageWebPCoder
+    - Sentry
+    - SentryPrivate
     - SocketRocket
     - SSZipArchive
     - YogaKit
@@ -886,8 +892,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   boost:
     :podspec: "../../../node_modules/react-native/third-party-podspecs/boost.podspec"
-  BugsnagReactNative:
-    :path: "../../../node_modules/@bugsnag/react-native"
   BVLinearGradient:
     :path: "../../../node_modules/react-native-linear-gradient"
   CodePush:
@@ -1032,6 +1036,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../../../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNShare:
     :path: "../../../node_modules/react-native-share"
   RNZipArchive:
@@ -1043,7 +1049,6 @@ SPEC CHECKSUMS:
   Adjust: 41d0d5c031409aebe7fb1f5703ff0d3306133439
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
-  BugsnagReactNative: fa312f53a83ca21c0afdfeaec98a9c5eeb8fc4ed
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CodePush: dce1b253fde81078249ea9cd4b948e4ac7b761a9
@@ -1151,10 +1156,13 @@ SPEC CHECKSUMS:
   RNPurchases: bf74bd8e79ed681a84f05d2c7324964d0859b913
   RNReanimated: addc4900bf47882118d0a1b21747fa6705fa8cff
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  RNSentry: 43658c8c327376e0c06149ce981899f5f84e90d9
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNZipArchive: 68a0c6db4b1c103f846f1559622050df254a3ade
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  Sentry: 757565eb01e2a6ef6b26e897e4e47e8213e12f06
+  SentryPrivate: 668d6ce46835769b32e61dc8b5c78ef0b6cdcef8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 5ed1699acbba8863755998a4245daa200ff3817b
@@ -1162,4 +1170,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: baaa99bb2f279eb8f6982cc8743453487d378426
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0

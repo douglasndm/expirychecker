@@ -19,13 +19,13 @@ import StatusBar from '@components/StatusBar';
 import './Locales';
 
 import '@services/AppCheck';
-import '@services/BugSnag';
 import './Services/Adjust';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
 import './Services/Admob';
 import './Services/Analytics';
 import './Services/RemoteConfig';
+import Sentry from '@services/Sentry';
 import DeepLinking from './Services/DeepLinking';
 
 import './Functions/ProMode';
@@ -124,4 +124,4 @@ const codePushOptions: CodePushOptions = {
 	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
 };
 
-export default CodePush(codePushOptions)(App);
+export default CodePush(codePushOptions)(Sentry.wrap(App));
