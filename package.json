@@ -20,6 +20,8 @@
     "@react-native-firebase/analytics": "^17.3.1",
     "@react-native-firebase/app": "^17.3.1",
     "@react-native-firebase/app-check": "^17.3.1",
+    "@react-native-firebase/in-app-messaging": "^17.3.1",
+    "@react-native-firebase/installations": "^17.3.1",
     "@react-native-firebase/messaging": "^17.3.1",
     "@react-native-firebase/remote-config": "^17.3.1",
     "@react-native-masked-view/masked-view": "^0.2.8",
