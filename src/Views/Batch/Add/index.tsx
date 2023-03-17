@@ -17,16 +17,17 @@ import {
 	TestIds,
 } from 'react-native-google-mobile-ads';
 
+import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { createLote } from '@expirychecker/Functions/Lotes';
+import { getProductById } from '@expirychecker/Functions/Product';
+
 import Loading from '@components/Loading';
 import StatusBar from '@components/StatusBar';
 import Header from '@components/Header';
 import GenericButton from '@components/Button';
-import strings from '~/Locales';
-
-import { createLote } from '~/Functions/Lotes';
-import { getProductById } from '~/Functions/Product';
-
-import PreferencesContext from '~/Contexts/PreferencesContext';
 
 import {
 	Container,
@@ -38,8 +39,8 @@ import {
 	ExpDateGroup,
 	ExpDateLabel,
 	CustomDatePicker,
-} from '~/Views/Product/Add/styles';
-import { InputCodeText } from '~/Views/Product/Add/Components/Inputs/Code/styles';
+} from '@expirychecker/Views/Product/Add/styles';
+import { InputCodeText } from '@expirychecker/Views/Product/Add/Components/Inputs/Code/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
 interface Props {
@@ -151,16 +152,16 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 	]);
 
 	useEffect(() => {
-		const eventListener = interstitialAd.onAdEvent(type => {
-			if (type === AdEventType.LOADED) {
-				setAdReady(true);
-			}
-			if (type === AdEventType.CLOSED) {
-				setAdReady(false);
-			}
-			if (type === AdEventType.ERROR) {
-				setAdReady(false);
-			}
+		interstitialAd.addAdEventListener(AdEventType.LOADED, () => {
+			setAdReady(true);
+		});
+
+		interstitialAd.addAdEventListener(AdEventType.CLOSED, () => {
+			setAdReady(false);
+		});
+
+		interstitialAd.addAdEventListener(AdEventType.ERROR, () => {
+			setAdReady(false);
 		});
 
 		// Start loading the interstitial straight away
@@ -168,7 +169,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
 		// Unsubscribe from events on unmount
 		return () => {
-			eventListener();
+			interstitialAd.removeAllListeners();
 		};
 	}, []);
 
