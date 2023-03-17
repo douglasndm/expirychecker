@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { LogBox } from 'react-native';
+import { LogBox, Platform } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components/native';
 import {
@@ -19,6 +19,7 @@ import StatusBar from '@components/StatusBar';
 import './Locales';
 
 import '@services/AppCheck';
+import '@services/Firebase/InAppMessaging';
 import './Services/Adjust';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
@@ -124,4 +125,9 @@ const codePushOptions: CodePushOptions = {
 	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
 };
 
-export default CodePush(codePushOptions)(Sentry.wrap(App));
+const exportedApp =
+	Platform.OS === 'android'
+		? CodePush(codePushOptions)(Sentry.wrap(App))
+		: Sentry.wrap(App);
+
+export default exportedApp;
