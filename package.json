@@ -99,7 +99,8 @@
     "react-native-typescript-transformer": "^1.2.13",
     "react-test-renderer": "18.2.0",
     "ts-jest": "^27.1.4",
-    "typescript": "*"
+    "typescript": "*",
+    "@types/jest": "*"
   },
   "jest": {
     "preset": "react-native"
