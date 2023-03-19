@@ -1,20 +1,16 @@
-import Purchases, {
+import {
 	PurchasesPackage,
 	UpgradeInfo,
 	PurchasesError,
 } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
-import EnvConfig from 'react-native-config';
 import { Adjust, AdjustEvent } from 'react-native-adjust';
+
+import Purchases from '@services/RevenueCat';
 
 import { getUserId } from './User';
 import { setDisableAds, setEnableProVersion } from './Settings';
-
-Purchases.setDebugLogsEnabled(true);
-Purchases.configure({
-	apiKey: EnvConfig.REVENUECAT_PUBLIC_APP_ID || '',
-});
 
 export async function isSubscriptionActive(): Promise<boolean> {
 	const localUserId = await getUserId();
