@@ -48,6 +48,7 @@ import {
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 import Banner from '@expirychecker/Components/Ads/Banner';
+import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 
 const Home: React.FC = () => {
 	const { reset, canGoBack, navigate, addListener } =
@@ -255,6 +256,7 @@ const Home: React.FC = () => {
 		<Loading />
 	) : (
 		<>
+			<ExpiredModal />
 			{enableBarCodeReader ? (
 				<BarCodeReader
 					onCodeRead={handleOnCodeRead}
@@ -268,7 +270,9 @@ const Home: React.FC = () => {
 
 					<OutdateApp />
 
-					<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
+					{!userPreferences.isPRO && (
+						<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
+					)}
 
 					{products.length > 0 && (
 						<InputTextContainer>
