@@ -133,6 +133,12 @@ export async function setDisableAds(disable: boolean): Promise<void> {
 }
 
 export async function getDisableAds(): Promise<boolean> {
+	const openTimes = await getHowManyTimesAppWasOpen();
+
+	if (openTimes && openTimes < 20) {
+		return true;
+	}
+
 	const setting = await getSetting({
 		type: 'DisableAds',
 	});

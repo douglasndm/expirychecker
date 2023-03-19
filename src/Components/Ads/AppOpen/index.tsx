@@ -8,7 +8,7 @@ import {
 	AdEventType,
 } from 'react-native-google-mobile-ads';
 
-import { getAllUserPreferences } from '~/Functions/UserPreferences';
+import { getAllUserPreferences } from '@expirychecker/Functions/UserPreferences';
 
 const AppOpen: React.FC = () => {
 	const adUnitId = useMemo(() => {
@@ -25,9 +25,12 @@ const AppOpen: React.FC = () => {
 		return '';
 	}, []);
 
-	const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
-		keywords: ['store', 'stores', 'business', 'productivity', 'tools'],
-	});
+	const appOpenAd = AppOpenAd.createForAdRequest(
+		adUnitId || TestIds.APP_OPEN,
+		{
+			keywords: ['store', 'stores', 'business', 'productivity', 'tools'],
+		}
+	);
 
 	appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
 		appOpenAd.show();
@@ -40,7 +43,7 @@ const AppOpen: React.FC = () => {
 			'enable_ad_on_app_start'
 		);
 
-		if (!userPreferences.isPRO) {
+		if (!userPreferences.isPRO && !userPreferences.disableAds) {
 			if (enable_ad_on_app_start.asBoolean() === true) {
 				appOpenAd.load();
 			}
