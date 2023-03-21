@@ -35,7 +35,9 @@ const Interstitial = forwardRef<IInterstitialRef>((props, ref) => {
 			setAdReady(true);
 		});
 
-		interstitialAd.addAdEventListener(AdEventType.CLOSED, () => {});
+		interstitialAd.addAdEventListener(AdEventType.CLOSED, () => {
+			setAdReady(false);
+		});
 
 		interstitialAd.addAdEventListener(AdEventType.ERROR, () => {
 			setAdReady(false);
