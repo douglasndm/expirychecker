@@ -26,7 +26,6 @@ import './Services/BackgroundJobs';
 import './Services/Admob';
 import './Services/Analytics';
 import './Services/RemoteConfig';
-import Sentry from '@services/Sentry';
 import DeepLinking from './Services/DeepLinking';
 
 import './Functions/ProMode';
@@ -85,7 +84,6 @@ const App: React.FC = () => {
 		},
 		[previousRoute]
 	);
-
 	useEffect(() => {
 		loadInitialData();
 	}, [loadInitialData]);
@@ -126,8 +124,6 @@ const codePushOptions: CodePushOptions = {
 };
 
 const exportedApp =
-	Platform.OS === 'android'
-		? CodePush(codePushOptions)(Sentry.wrap(App))
-		: Sentry.wrap(App);
+	Platform.OS === 'android' ? CodePush(codePushOptions)(App) : App;
 
 export default exportedApp;

@@ -42,8 +42,6 @@
 
     </activity>
 
-    <meta-data android:name="io.sentry.anr.enable" android:value="false" />
-
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/primary"/>
