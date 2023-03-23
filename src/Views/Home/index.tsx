@@ -41,10 +41,9 @@ import Header from '@expirychecker/Components/Header';
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
-import {
-	sortProductsLotesByLotesExpDate,
-	getAllProducts,
-} from '@expirychecker/Functions/Products';
+import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Products';
+
+import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 import Banner from '@expirychecker/Components/Ads/Banner';
@@ -100,7 +99,13 @@ const Home: React.FC = () => {
 		try {
 			setIsLoading(true);
 
-			const allProducts = await getAllProducts({
+			/* const allProducts = await getAllProducts({
+				removeProductsWithoutBatches: true,
+				removeTreatedBatch: true,
+				sortProductsByExpDate: true,
+			}); */
+
+			const allProducts = await getAllProductsAsync({
 				removeProductsWithoutBatches: true,
 				removeTreatedBatch: true,
 				sortProductsByExpDate: true,
