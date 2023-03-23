@@ -2,7 +2,6 @@ apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -85,9 +84,6 @@ def enableProguardInReleaseBuilds = false
 
 def useIntlJsc = false
 
-def codePushStagingDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_STAGING_DEPLOYMENTKEY") +'"'
-def codePushProductionDeploymentKey = '"' + project.env.get("ANDROID_CODEPUSH_PRODUCTION_DEPLOYMENTKEY") +'"'
-
 /**
  * Private function to get the list of Native Architectures you want to build.
  * This reads the value from reactNativeArchitectures in your gradle.properties
@@ -109,13 +105,11 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 222
+        versionCode 223
         versionName "1.13.22"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
-
-        resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
 
     splits {
@@ -145,12 +139,8 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-
-            // Note: CodePush updates shouldn't be tested in Debug mode as they're overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
-            resValue "string", "CodePushDeploymentKey", '""'
         }
         releaseStaging {
-            resValue "string", "CodePushDeploymentKey", codePushStagingDeploymentKey
             // Note: It's a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
             // Add the following line if not already there
             matchingFallbacks = ['release']
@@ -165,7 +155,6 @@ android {
                 unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
             }
 
-            resValue "string", "CodePushDeploymentKey", codePushProductionDeploymentKey
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             minifyEnabled enableProguardInReleaseBuilds
