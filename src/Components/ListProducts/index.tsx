@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
 import {
 	FlatList,
 	NativeScrollEvent,
@@ -123,7 +129,7 @@ const ListProducts: React.FC<RequestProps> = ({
 		setSelectMode(false);
 	}, []);
 
-	const EmptyList = useCallback(() => {
+	const EmptyList = useMemo(() => {
 		return (
 			<EmptyListText>
 				{strings.ListProductsComponent_Title_NoProductsInList}
@@ -131,7 +137,7 @@ const ListProducts: React.FC<RequestProps> = ({
 		);
 	}, []);
 
-	const FooterButton = useCallback(() => {
+	const FooterButton = useMemo(() => {
 		if (products.length > 5 && isHome) {
 			return (
 				<>
@@ -281,4 +287,4 @@ const ListProducts: React.FC<RequestProps> = ({
 	);
 };
 
-export default ListProducts;
+export default React.memo(ListProducts);

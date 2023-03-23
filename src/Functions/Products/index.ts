@@ -128,12 +128,12 @@ interface getAllProductsProps {
 	limit?: number;
 }
 
-export async function getAllProducts({
+export function getAllProducts({
 	removeProductsWithoutBatches = false,
 	removeTreatedBatch = false,
 	sortProductsByExpDate = false,
 	limit,
-}: getAllProductsProps): Promise<IProduct[]> {
+}: getAllProductsProps): IProduct[] {
 	let filteredProducts = [...realm.objects<IProduct>('Product')];
 
 	if (removeProductsWithoutBatches) {
