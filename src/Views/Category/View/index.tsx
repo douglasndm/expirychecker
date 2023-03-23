@@ -6,16 +6,14 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { exportToExcel } from '@utils/Excel/Export';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
-import {
-	getAllCategories,
-	getAllProductsByCategory,
-} from '@expirychecker/Functions/Category';
+import { getAllProductsByCategory } from '@expirychecker/Functions/Category';
 import { getAllStores } from '@expirychecker/Functions/Stores';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
