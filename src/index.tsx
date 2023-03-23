@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
-import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { LogBox, Platform } from 'react-native';
+import { LogBox } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components/native';
 import {
@@ -118,12 +117,4 @@ const App: React.FC = () => {
 	);
 };
 
-const codePushOptions: CodePushOptions = {
-	checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
-	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
-};
-
-const exportedApp =
-	Platform.OS === 'android' ? CodePush(codePushOptions)(App) : App;
-
-export default exportedApp;
+export default App;

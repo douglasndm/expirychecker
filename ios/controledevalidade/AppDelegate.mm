@@ -4,7 +4,6 @@
 
 #import <React/RCTBundleURLProvider.h>
 
-#import <CodePush/CodePush.h>
 #import <TSBackgroundFetch/TSBackgroundFetch.h>
 
 @implementation AppDelegate
@@ -29,7 +28,7 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [CodePush bundleURL];
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
 
