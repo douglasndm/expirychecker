@@ -177,6 +177,9 @@ android {
             }
         }
     }
+
+    // This to fix "Fatal Exception: java.lang.UnsatisfiedLinkError couldn't find DSO to load: libhermes.so caused by"
+    soloader { exclude '**/libjsc.so' }
 }
 
 repositories {
