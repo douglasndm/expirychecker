@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -16,19 +16,18 @@ interface RequestProps {
 
 const ProductContainer: React.FC<RequestProps> = ({
 	product,
-	index,
+	index = 0,
 	disableAds,
 	handleEnableSelect,
 }: RequestProps) => {
 	const { userPreferences } = useContext(PreferencesContext);
 
-	const showAd = useMemo(() => {
-		if (disableAds) return false;
-		if (userPreferences.disableAds || userPreferences.isPRO) return false;
-		if (index === 0) return false;
-		if (index && index % 5 === 0) return true;
-		return false;
-	}, [disableAds, userPreferences.disableAds, userPreferences.isPRO, index]);
+	const showAd = disableAds
+		? false
+		: !userPreferences.disableAds &&
+		  !userPreferences.isPRO &&
+		  index !== 0 &&
+		  index % 5 === 0;
 
 	return (
 		<Container>
