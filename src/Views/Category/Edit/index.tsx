@@ -5,16 +5,16 @@ import { showMessage } from 'react-native-flash-message';
 import { useTheme } from 'styled-components/native';
 import { Button } from 'react-native-paper';
 
-import InputText from '@components/InputText';
-import strings from '~/Locales';
-
-import Header from '@components/Header';
+import strings from '@expirychecker/Locales';
 
 import {
 	getCategory,
 	updateCategory,
 	deleteCategory,
-} from '~/Functions/Category';
+} from '@expirychecker/Functions/Category';
+
+import Header from '@components/Header';
+import InputText from '@components/InputText';
 
 import {
 	Container,

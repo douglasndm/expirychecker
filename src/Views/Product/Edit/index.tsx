@@ -288,7 +288,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					type: 'danger',
 				});
 		}
-	}, [navigate, productId]);
+	}, [dispatch, navigate, productId, userPreferences.isPRO]);
 
 	return isLoading ? (
 		<Loading />
