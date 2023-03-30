@@ -105,19 +105,12 @@ export async function makeSubscription(
 				  }
 				: null;
 
-		const { productIdentifier, customerInfo } =
-			await Purchases.purchasePackage(purchasePackage, upgrade);
+		const { customerInfo } = await Purchases.purchasePackage(
+			purchasePackage,
+			upgrade
+		);
 
 		if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
-			const adjustEvent = new AdjustEvent(
-				`Purchase_${productIdentifier}`
-			);
-			adjustEvent.setRevenue(
-				purchasePackage.product.price,
-				purchasePackage.product.currencyCode
-			);
-			Adjust.trackEvent(adjustEvent);
-
 			Analytics().logEvent('user_subscribed_successfully');
 
 			await setEnableProVersion(true);
