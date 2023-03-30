@@ -12,6 +12,7 @@ interface RequestProps {
 	index?: number;
 	disableAds?: boolean;
 	handleEnableSelect: () => void;
+	disabled?: boolean;
 }
 
 const ProductContainer: React.FC<RequestProps> = ({
@@ -19,6 +20,7 @@ const ProductContainer: React.FC<RequestProps> = ({
 	index = 0,
 	disableAds,
 	handleEnableSelect,
+	disabled,
 }: RequestProps) => {
 	const { userPreferences } = useContext(PreferencesContext);
 
@@ -33,7 +35,11 @@ const ProductContainer: React.FC<RequestProps> = ({
 		<Container>
 			{showAd && <FastSubscription />}
 
-			<ProductCard product={product} onLongPress={handleEnableSelect} />
+			<ProductCard
+				product={product}
+				onLongPress={handleEnableSelect}
+				disabled={disabled}
+			/>
 		</Container>
 	);
 };

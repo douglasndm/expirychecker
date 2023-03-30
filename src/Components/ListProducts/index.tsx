@@ -24,7 +24,7 @@ import { deleteManyProducts } from '@expirychecker/Utils/Products';
 import { sortByBatchesExpType } from '@expirychecker/Functions/Products/SortBatches';
 
 import GenericButton from '@components/Button';
-import Icon from '@components/Icon';
+import ActionButton from '@components/ActionButton';
 import PaddingComponent from '@components/PaddingComponent';
 
 import ProductItem from './ProductContainer';
@@ -36,7 +36,6 @@ import {
 	SelectButtonContainer,
 	SelectButton,
 	SelectIcon,
-	ButtonPaper,
 	EmptyListText,
 	InvisibleComponent,
 } from './styles';
@@ -127,6 +126,7 @@ const ListProducts: React.FC<RequestProps> = ({
 
 	const handleDisableSelectMode = useCallback(() => {
 		setSelectMode(false);
+		setSelectedProds([]);
 	}, []);
 
 	const EmptyList = useMemo(() => {
@@ -162,12 +162,13 @@ const ListProducts: React.FC<RequestProps> = ({
 			const isChecked = selectedProds.find(id => id === product.id);
 
 			return (
-				<ProductContainer onLongPress={handleEnableSelectMode}>
+				<ProductContainer
+					onLongPress={handleEnableSelectMode}
+					onPress={() => switchSelectedItem(product.id)}
+				>
 					{selectMode && (
 						<SelectButtonContainer>
-							<SelectButton
-								onPress={() => switchSelectedItem(product.id)}
-							>
+							<SelectButton>
 								{isChecked ? (
 									<SelectIcon name="checkmark-circle-outline" />
 								) : (
@@ -180,6 +181,7 @@ const ListProducts: React.FC<RequestProps> = ({
 						product={product}
 						index={index}
 						handleEnableSelect={handleEnableSelectMode}
+						disabled={selectMode}
 					/>
 				</ProductContainer>
 			);
@@ -224,23 +226,20 @@ const ListProducts: React.FC<RequestProps> = ({
 		<Container>
 			{selectMode && userPreferences.isPRO && (
 				<ActionButtonsContainer>
-					<ButtonPaper
-						icon={() => <Icon name="trash-outline" />}
-						onPress={handleSwitchDeleteModal}
-					>
-						{
+					<ActionButton
+						text={
 							strings.ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected
 						}
-					</ButtonPaper>
-
-					<ButtonPaper
-						icon={() => <Icon name="exit-outline" />}
-						onPress={handleDisableSelectMode}
-					>
-						{
+						iconName="trash-outline"
+						onPress={handleSwitchDeleteModal}
+					/>
+					<ActionButton
+						text={
 							strings.ListProductsComponent_DeleteProducts_ActionBar_Cancel
 						}
-					</ButtonPaper>
+						iconName="exit-outline"
+						onPress={handleDisableSelectMode}
+					/>
 				</ActionButtonsContainer>
 			)}
 			<FlatList
