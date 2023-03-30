@@ -14,9 +14,14 @@ import Card from '@components/Product/List/Card';
 interface Request {
 	product: IProduct;
 	onLongPress?: () => void;
+	disabled?: boolean;
 }
 
-const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
+const ProductCard: React.FC<Request> = ({
+	product,
+	onLongPress,
+	disabled,
+}: Request) => {
 	const { userPreferences } = useContext(PreferencesContext);
 
 	const [imagePath, setImagePath] = useState<string | undefined>();
@@ -64,6 +69,7 @@ const ProductCard: React.FC<Request> = ({ product, onLongPress }: Request) => {
 			imagePath={imagePath}
 			daysToBeNext={userPreferences.howManyDaysToBeNextToExpire}
 			onLongPress={onLongPress}
+			disabled={disabled}
 		/>
 	);
 };

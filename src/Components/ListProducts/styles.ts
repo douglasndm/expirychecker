@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
-import { Button } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
@@ -13,14 +12,6 @@ export const ActionButtonsContainer = styled.View`
 	align-items: flex-end;
 	margin: 5px 10px;
 `;
-
-export const ButtonPaper = styled(Button).attrs(props => ({
-	color: props.theme.colors.textAccent,
-	uppercase: true,
-	labelStyle: {
-		fontSize: 18,
-	},
-}))``;
 
 export const EmptyListText = styled.Text`
 	margin-top: 10px;
@@ -37,8 +28,9 @@ export const ProductContainer = styled.Pressable`
 	flex-direction: row;
 `;
 
-export const SelectButtonContainer = styled.View`
+export const SelectButtonContainer = styled(RectButton)`
 	justify-content: center;
+	margin: 5px 0;
 `;
 
 export const SelectButton = styled(RectButton)`
@@ -46,6 +38,6 @@ export const SelectButton = styled(RectButton)`
 `;
 
 export const SelectIcon = styled(Ionicons).attrs(props => ({
-	size: 28,
+	size: 36,
 	color: props.theme.colors.text,
 }))``;
