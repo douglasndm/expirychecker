@@ -105,8 +105,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 223
-        versionName "1.13.22"
+        versionCode 224
+        versionName "1.13.23"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -181,6 +181,15 @@ android {
 
 repositories {
     jcenter()
+
+    mavenCentral()
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
+    maven {
+        url "$rootDir/../../../node_modules/react-native/android"
+    }
 }
 
 dependencies {
