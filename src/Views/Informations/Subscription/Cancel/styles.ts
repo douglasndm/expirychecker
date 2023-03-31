@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.ScrollView`
 	flex: 1;
@@ -67,13 +66,13 @@ export const ButtonsContainer = styled.View`
 
 export const TextButton = styled.Text``;
 
-export const KeepSubscriptionButton = styled(RectButton)`
+export const KeepSubscriptionButton = styled.TouchableOpacity`
 	background-color: #2df8d5;
 	padding: 25px 45px;
 	border-radius: 12px;
 `;
 
-export const CancelSubscriptionButton = styled(RectButton)`
+export const CancelSubscriptionButton = styled.TouchableOpacity`
 	margin-top: 10px;
 	color: #000;
 `;

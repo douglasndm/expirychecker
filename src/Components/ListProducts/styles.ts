@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const Container = styled.View`
@@ -28,12 +27,12 @@ export const ProductContainer = styled.Pressable`
 	flex-direction: row;
 `;
 
-export const SelectButtonContainer = styled(RectButton)`
+export const SelectButtonContainer = styled.TouchableOpacity`
 	justify-content: center;
 	margin: 5px 0;
 `;
 
-export const SelectButton = styled(RectButton)`
+export const SelectButton = styled.TouchableOpacity`
 	margin-left: 7px;
 `;
 
