@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
-import { Platform, Linking } from 'react-native';
+import { Platform, Linking, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RectButton } from 'react-native-gesture-handler';
 import Analytics from '@react-native-firebase/analytics';
 
 import strings from '@expirychecker/Locales';
@@ -66,9 +65,9 @@ const Cancel: React.FC = () => {
 		<Container>
 			<HeaderContainer>
 				<ExitButtonContainer>
-					<RectButton onPress={goBack}>
+					<TouchableOpacity onPress={goBack}>
 						<Icon name="close-outline" size={50} color="#ffffff" />
-					</RectButton>
+					</TouchableOpacity>
 				</ExitButtonContainer>
 
 				<WarningIconContainer>
