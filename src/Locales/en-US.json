@@ -1,5 +1,5 @@
 {
-    "AppName": "Expiry Checker",
+    "AppName": "Expiro",
     "AppName_ProVersion": "PRO",
 
     "Menu_Button_GoToHome": "Home",
@@ -434,8 +434,8 @@
     "Function_Excel_ColumnName_Status": "Status",
     "Function_Excel_ColumnName_Status_Checked": "Checked",
     "Function_Excel_ColumnName_Status_Unchecked": "Unchecked",
-    "Function_Excel_Workbook_Name": "Expiry checker",
-    "Function_Excel_filename": "expirycheck",
+    "Function_Excel_Workbook_Name": "Expiro",
+    "Function_Excel_filename": "expiro",
 
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",
