@@ -4,21 +4,24 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
+import strings from '@expirychecker/Locales';
+import {
+	deleteBrand,
+	getBrand,
+	updateBrand,
+} from '@expirychecker/Utils/Brands';
+
 import Loading from '@components/Loading';
 import Header from '@components/Header';
-import strings from '~/Locales';
-
-import { deleteBrand, getBrand, updateBrand } from '~/Utils/Brands';
+import ActionButton from '@components/ActionButton';
 
 import {
 	Container,
 	Content,
 	ActionsButtonContainer,
-	ButtonPaper,
 	InputTextContainer,
 	InputText,
 	InputTextTip,
-	Icons,
 } from './styles';
 
 interface Props {
@@ -142,23 +145,20 @@ const Edit: React.FC = () => {
 					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
 
 					<ActionsButtonContainer>
-						<ButtonPaper
-							icon={() => <Icons name="save-outline" size={22} />}
+						<ActionButton
+							text={strings.View_Brand_Edit_ButtonSave}
+							iconName="save-outline"
 							onPress={handleUpdate}
-						>
-							{strings.View_Brand_Edit_ButtonSave}
-						</ButtonPaper>
-
-						<ButtonPaper
-							icon={() => (
-								<Icons name="trash-outline" size={22} />
-							)}
+						/>
+						<ActionButton
+							text={
+								strings.View_ProductDetails_Button_DeleteProduct
+							}
+							iconName="trash-outline"
 							onPress={() => {
 								setDeleteComponentVisible(true);
 							}}
-						>
-							{strings.View_ProductDetails_Button_DeleteProduct}
-						</ButtonPaper>
+						/>
 					</ActionsButtonContainer>
 				</Content>
 			</Container>

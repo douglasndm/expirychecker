@@ -15,16 +15,15 @@ import {
 
 import Header from '@components/Header';
 import InputText from '@components/InputText';
+import ActionButton from '@components/ActionButton';
 
 import {
 	Container,
 	Content,
 	ActionsButtonContainer,
-	ButtonPaper,
 	InputTextContainer,
 	InputTextTip,
 	DialogPaper,
-	Icons,
 	Text,
 } from './styles';
 
@@ -122,23 +121,20 @@ const Edit: React.FC = () => {
 					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
 
 					<ActionsButtonContainer>
-						<ButtonPaper
-							icon={() => <Icons name="save-outline" size={22} />}
+						<ActionButton
+							text={strings.View_Category_Edit_ButtonSave}
+							iconName="save-outline"
 							onPress={handleUpdate}
-						>
-							{strings.View_Category_Edit_ButtonSave}
-						</ButtonPaper>
-
-						<ButtonPaper
-							icon={() => (
-								<Icons name="trash-outline" size={22} />
-							)}
+						/>
+						<ActionButton
+							text={
+								strings.View_ProductDetails_Button_DeleteProduct
+							}
+							iconName="trash-outline"
 							onPress={() => {
 								setDeleteComponentVisible(true);
 							}}
-						>
-							{strings.View_ProductDetails_Button_DeleteProduct}
-						</ButtonPaper>
+						/>
 					</ActionsButtonContainer>
 				</Content>
 			</Container>

@@ -4,20 +4,18 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import Dialog from 'react-native-dialog';
 
-import InputText from '@components/InputText';
-import strings from '~/Locales';
-
-import { getStore, updateStore, deleteStore } from '~/Functions/Stores';
+import strings from '@expirychecker/Locales';
+import {
+	getStore,
+	updateStore,
+	deleteStore,
+} from '@expirychecker/Functions/Stores';
 
 import Header from '@components/Header';
+import InputText from '@components/InputText';
+import ActionButton from '@components/ActionButton';
 
-import {
-	Container,
-	Content,
-	ActionsButtonContainer,
-	ButtonPaper,
-	Icons,
-} from './styles';
+import { Container, Content, ActionsButtonContainer } from './styles';
 
 interface Props {
 	store_id: string;
@@ -120,18 +118,16 @@ const Edit: React.FC = () => {
 				/>
 
 				<ActionsButtonContainer>
-					<ButtonPaper
-						icon={() => <Icons name="save-outline" size={22} />}
+					<ActionButton
+						text={strings.View_EditProduct_Button_Save}
+						iconName="save-outline"
 						onPress={handleUpdate}
-					>
-						{strings.View_EditProduct_Button_Save}
-					</ButtonPaper>
-					<ButtonPaper
-						icon={() => <Icons name="trash-outline" size={22} />}
+					/>
+					<ActionButton
+						text={strings.View_ProductDetails_Button_DeleteProduct}
+						iconName="trash-outline"
 						onPress={handleSwitchShowDelete}
-					>
-						{strings.View_ProductDetails_Button_DeleteProduct}
-					</ButtonPaper>
+					/>
 				</ActionsButtonContainer>
 			</Content>
 

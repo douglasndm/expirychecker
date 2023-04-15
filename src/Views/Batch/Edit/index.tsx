@@ -23,6 +23,7 @@ import { getProductById } from '@expirychecker/Functions/Product';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import GenericButton from '@components/Button';
+import ActionButton from '@components/ActionButton';
 
 import {
 	Container,
@@ -41,7 +42,6 @@ import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 import {
 	PageHeader,
 	Button,
-	Icons,
 	RadioButton,
 	RadioButtonText,
 	ActionButtonsContainer,
@@ -248,27 +248,18 @@ const EditBatch: React.FC = () => {
 						/>
 
 						<ActionButtonsContainer>
-							<Button
-								icon={() => (
-									<Icons name="trash-outline" size={22} />
-								)}
+							<ActionButton
+								text={strings.View_EditBatch_Button_DeleteBatch}
+								iconName="trash-outline"
 								onPress={() => {
 									setDeleteComponentVisible(true);
 								}}
-							>
-								{strings.View_EditBatch_Button_DeleteBatch}
-							</Button>
-							<Button
-								icon={() => (
-									<Icons
-										name="information-circle-outline"
-										size={22}
-									/>
-								)}
+							/>
+							<ActionButton
+								text={strings.View_EditBatch_Button_MoreInfo}
+								iconName="information-circle-outline"
 								onPress={navigateToBatchDetails}
-							>
-								{strings.View_EditBatch_Button_MoreInfo}
-							</Button>
+							/>
 						</ActionButtonsContainer>
 					</PageHeader>
 
