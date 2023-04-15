@@ -115,6 +115,8 @@
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
+    "View_Store_View_PageTitle": "Loja",
+
     "View_Store_List_PageTitle": "Todas as lojas",
     "View_Store_List_AddNewStore_Placeholder": "Adicionar nova loja",
     "View_Store_List_AddNewStore_Error_TextEmpty": "Digite o nome da loja",

@@ -113,6 +113,8 @@
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
 
+    "View_Store_View_PageTitle": "Store",
+
     "View_Store_List_PageTitle": "Stores",
     "View_Store_List_AddNewStore_Placeholder": "Add new store",
     "View_Store_List_AddNewStore_Error_TextEmpty": "Type the store's name",
