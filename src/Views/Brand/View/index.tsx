@@ -12,7 +12,7 @@ import {
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
-import { getAllCategories } from '@expirychecker/Functions/Category';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Functions/Stores';
 import {
 	getAllBrands,
@@ -31,6 +31,7 @@ import {
 	ActionButtonsContainer,
 	Icons,
 	ActionText,
+	SubTitle,
 } from '@styles/Views/GenericViewPage';
 
 interface Props {
@@ -129,10 +130,7 @@ const View: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
-			<Header
-				title={`${strings.View_Brand_View_PageTitle} ${brandName}`}
-				noDrawer
-			/>
+			<Header title={`${strings.View_Brand_View_PageTitle}`} noDrawer />
 
 			<ActionsContainer>
 				<ActionButtonsContainer onPress={handleEdit}>
@@ -150,7 +148,8 @@ const View: React.FC = () => {
 				</ActionButtonsContainer>
 			</ActionsContainer>
 
-			<ListProducts products={products} />
+			<SubTitle>{brandName}</SubTitle>
+			<ListProducts products={products} onRefresh={loadData} />
 
 			<FAB
 				icon="plus"

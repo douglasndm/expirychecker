@@ -12,7 +12,7 @@ import {
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
-import { getAllCategories } from '@expirychecker/Functions/Category';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import {
 	getAllStores,
 	getAllProductsByStore,
@@ -30,6 +30,7 @@ import {
 	ActionButtonsContainer,
 	Icons,
 	ActionText,
+	SubTitle,
 } from '@styles/Views/GenericViewPage';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
@@ -146,7 +147,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		<Loading />
 	) : (
 		<Container>
-			<Header title={storeName} noDrawer />
+			<Header title={strings.View_Store_View_PageTitle} noDrawer />
 
 			{store !== '000' && (
 				<ActionsContainer>
@@ -166,6 +167,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				</ActionsContainer>
 			)}
 
+			<SubTitle>{storeName}</SubTitle>
 			<ListProducts products={products} />
 
 			<FAB

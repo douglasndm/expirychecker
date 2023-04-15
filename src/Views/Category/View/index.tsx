@@ -27,6 +27,7 @@ import {
 	ActionButtonsContainer,
 	Icons,
 	ActionText,
+	SubTitle,
 } from '@styles/Views/GenericViewPage';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
@@ -128,7 +129,7 @@ const CategoryView: React.FC = () => {
 	) : (
 		<Container>
 			<Header
-				title={`${strings.View_Category_List_View_BeforeCategoryName} ${categoryName}`}
+				title={`${strings.View_Category_List_View_BeforeCategoryName}`}
 				noDrawer
 			/>
 
@@ -148,7 +149,9 @@ const CategoryView: React.FC = () => {
 				</ActionButtonsContainer>
 			</ActionsContainer>
 
-			<ListProducts products={products} />
+			<SubTitle>{categoryName}</SubTitle>
+
+			<ListProducts products={products} onRefresh={loadData} />
 
 			<FAB
 				icon="plus"
