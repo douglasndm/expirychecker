@@ -26,6 +26,7 @@ import Input from '@components/InputText';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
+import ActionButton from '@components/ActionButton';
 
 import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
 
@@ -56,13 +57,7 @@ import {
 	InputTextIconContainer,
 } from '../Add/Components/Inputs/Code/styles';
 
-import {
-	ButtonPaper,
-	Icons,
-	ActionsButtonContainer,
-	DialogPaper,
-	Text,
-} from './styles';
+import { ActionsButtonContainer, DialogPaper, Text } from './styles';
 
 interface RequestParams {
 	route: {
@@ -446,36 +441,24 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 										</MoreInformationsContainer>
 
 										<ActionsButtonContainer>
-											<ButtonPaper
-												icon={() => (
-													<Icons
-														name="save-outline"
-														size={22}
-													/>
-												)}
-												onPress={updateProd}
-											>
-												{
+											<ActionButton
+												text={
 													strings.View_EditProduct_Button_Save
 												}
-											</ButtonPaper>
-											<ButtonPaper
-												icon={() => (
-													<Icons
-														name="trash-outline"
-														size={22}
-													/>
-												)}
+												iconName="save-outline"
+												onPress={updateProd}
+											/>
+											<ActionButton
+												text={
+													strings.View_ProductDetails_Button_DeleteProduct
+												}
+												iconName="trash-outline"
 												onPress={() => {
 													setDeleteComponentVisible(
 														true
 													);
 												}}
-											>
-												{
-													strings.View_ProductDetails_Button_DeleteProduct
-												}
-											</ButtonPaper>
+											/>
 										</ActionsButtonContainer>
 									</InputContainer>
 								</PageContent>

@@ -1,20 +1,11 @@
 import styled, { css } from 'styled-components/native';
-import { Button, Dialog } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Dialog } from 'react-native-paper';
 
 interface IProductStatus {
 	expired?: boolean;
 	nextToExp?: boolean;
 	expiredOrNext?: boolean;
 }
-
-export const ButtonPaper = styled(Button).attrs(props => ({
-	color: props.theme.colors.textAccent,
-}))``;
-
-export const Icons = styled(Ionicons)`
-	color: ${({ theme }) => theme.colors.text};
-`;
 
 export const ActionsButtonContainer = styled.View`
 	flex-direction: row;

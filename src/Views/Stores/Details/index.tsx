@@ -126,10 +126,11 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('User did not share'))
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
 		} finally {
 			setIsLoading(false);
 		}

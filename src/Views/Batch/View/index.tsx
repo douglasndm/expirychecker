@@ -23,15 +23,13 @@ import { ShareProductImageWithText } from '@expirychecker/Functions/Share';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import Button from '@components/Button';
+import ActionButton from '@components/ActionButton';
 
-import {
-	ActionsButtonContainer,
-	ButtonPaper,
-} from '@expirychecker/Views/Product/Edit/styles';
+import { ActionsButtonContainer } from '@expirychecker/Views/Product/Edit/styles';
 
 import { getProductById } from '@expirychecker/Functions/Product';
 import Banner from '@expirychecker/Components/Ads/Banner';
-import { PageHeader, Icons } from '../Edit/styles';
+import { PageHeader } from '../Edit/styles';
 
 import {
 	Container,
@@ -232,12 +230,11 @@ const View: React.FC = () => {
 				<Header title={strings.View_Batch_PageTitle} noDrawer />
 
 				<ActionsButtonContainer>
-					<ButtonPaper
-						icon={() => <Icons name="create-outline" size={22} />}
+					<ActionButton
+						iconName="create-outline"
 						onPress={handleNaviEdit}
-					>
-						{strings.View_Batch_Button_Edit}
-					</ButtonPaper>
+						text={strings.View_Batch_Button_Edit}
+					/>
 				</ActionsButtonContainer>
 			</PageHeader>
 
