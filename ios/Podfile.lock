@@ -648,7 +648,7 @@ PODS:
     - React-perflogger (= 0.71.6)
   - ReactNativeLocalization (2.3.1):
     - React-Core
-  - RealmJS (11.4.0):
+  - RealmJS (11.8.0):
     - React
   - RevenueCat (4.16.0)
   - RNBackgroundFetch (4.1.7):
@@ -1175,7 +1175,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 8692ac548bec648fa121980ccb4304afd136d584
   ReactCommon: 0c43eaeaaee231d7d8dc24fc5a6e4cf2b75bf196
   ReactNativeLocalization: 076497d7ca70341c751cd3b3e7c86187332a182d
-  RealmJS: fc807dff0d416153bcfcae0df613b2e93fb14af4
+  RealmJS: 27b8d695fa4bc9606a4a4a378de55511edc2084c
   RevenueCat: c12e14f5e3dc5732db6d5095ac4ce6ff08d7eeb0
   RNBackgroundFetch: 13fbe7b23d4a082eac8caa7b08c5bcbeabd92f79
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60

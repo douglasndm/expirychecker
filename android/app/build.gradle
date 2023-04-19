@@ -105,8 +105,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 228
-        versionName "1.13.26"
+        versionCode 230
+        versionName "1.13.27"
 
         // FOR REACT NATIVE CAMERA
         missingDimensionStrategy 'react-native-camera', 'general'
@@ -205,9 +205,7 @@ dependencies {
 
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
-        implementation("com.facebook.react:hermes-engine:+") {
-            exclude group:'com.facebook.fbjni'
-        }
+        implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
     }
@@ -216,18 +214,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
 
     implementation "com.android.installreferrer:installreferrer:2.2"
-
-    // This is a Bing fixer for  Fatal Exception: java.lang.UnsatisfiedLinkError: couldn't find DSO to load: libhermes.so
-    implementation 'com.facebook.soloader:soloader:0.9.0+'
-}
-
-allprojects {
-    repositories {
-        maven {
-            // All of React Native (JS, Android binaries) is installed from npm
-            url "$rootDir/../../../node_modules/react-native/android"
-        }
-    }
 }
 
 apply from: file("../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
