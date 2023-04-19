@@ -1,10 +1,4 @@
-import React, {
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	FlatList,
 	NativeScrollEvent,
@@ -16,8 +10,6 @@ import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
-
-import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { deleteManyProducts } from '@expirychecker/Utils/Products';
 
@@ -67,8 +59,6 @@ const ListProducts: React.FC<RequestProps> = ({
 	const [selectedProds, setSelectedProds] = useState<Array<number>>([]);
 	const [selectMode, setSelectMode] = useState(false);
 	const [deleteModal, setDeleteModal] = useState(false);
-
-	const { userPreferences } = useContext(PreferencesContext);
 
 	const handleSortProducts = useCallback(async () => {
 		const temp = await sortByBatchesExpType(products);
@@ -121,8 +111,8 @@ const ListProducts: React.FC<RequestProps> = ({
 	);
 
 	const handleEnableSelectMode = useCallback(() => {
-		if (userPreferences.isPRO) setSelectMode(true);
-	}, [userPreferences.isPRO]);
+		setSelectMode(true);
+	}, []);
 
 	const handleDisableSelectMode = useCallback(() => {
 		setSelectMode(false);
@@ -224,7 +214,7 @@ const ListProducts: React.FC<RequestProps> = ({
 
 	return (
 		<Container>
-			{selectMode && userPreferences.isPRO && (
+			{selectMode && (
 				<ActionButtonsContainer>
 					<ActionButton
 						text={
