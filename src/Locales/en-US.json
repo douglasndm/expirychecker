@@ -36,7 +36,7 @@
     "Component_DaysToBeNext_Placeholder": "Days to be next to expire",
     "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
 
-    "Component_FastSub_Text": "Only {PRICE_MONTH} per month on annual plan of {PRICE}.",
+    "Component_FastSub_Text": "Enjoy more features with PRO.",
     "Component_FastSub_TextWithTrial": "Free trial of {DAYS} days, then only {PRICE_MONTH} per month on annual plan of {PRICE}.",
     "Component_FastSub_Price": "Only {PRICE} monthly",
 
