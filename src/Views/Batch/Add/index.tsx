@@ -94,13 +94,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 	const [expDate, setExpDate] = useState(new Date());
 
 	const handleSave = useCallback(async () => {
-		if (!lote || lote.trim() === '') {
-			showMessage({
-				message: strings.View_AddBatch_AlertTypeBatchName,
-				type: 'danger',
-			});
-			return;
-		}
 		try {
 			await createLote({
 				productId,
@@ -111,6 +104,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 					price: price || undefined,
 					status: 'Não tratado',
 				},
+				ignoreDuplicate: true,
 			});
 
 			if (!userPreferences.disableAds && adReady) {
@@ -215,6 +209,10 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 		setPrice(value);
 	}, []);
 
+	const onChange = useCallback((value: string) => {
+		setLote(value);
+	}, []);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -242,7 +240,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 										strings.View_AddBatch_InputPlacehoder_Batch
 									}
 									value={lote}
-									onChangeText={value => setLote(value)}
+									onChangeText={onChange}
 								/>
 							</InputTextContainer>
 							<InputTextContainer

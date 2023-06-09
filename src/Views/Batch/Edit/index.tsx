@@ -133,13 +133,6 @@ const EditBatch: React.FC = () => {
 
 	async function handleSave() {
 		if (!product) return;
-		if (!lote || lote.trim() === '') {
-			showMessage({
-				message: strings.View_EditBatch_Error_BatchWithNoName,
-				type: 'danger',
-			});
-			return;
-		}
 
 		try {
 			await updateLote(
@@ -170,7 +163,6 @@ const EditBatch: React.FC = () => {
 				});
 			}
 		} catch (err) {
-			console.log(err.stack);
 			if (err instanceof Error)
 				showMessage({
 					message: err.message,

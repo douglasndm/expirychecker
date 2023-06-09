@@ -75,7 +75,6 @@
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo made by",
 
-    "View_AddBatch_AlertTypeBatchName": "Type the batch's name",
     "View_AddBatch_PageTitle": "Add new batch",
     "View_AddBatch_InputPlacehoder_Batch": "Batch",
     "View_AddBatch_InputPlacehoder_Amount": "Amount",
@@ -122,7 +121,6 @@
     "View_Store_List_NoStore": "No store",
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
-    "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
     "View_EditBatch_PageTitle": "Update batch",
     "View_EditBatch_Button_DeleteBatch": "Delete",
     "View_EditBatch_Button_MoreInfo": "More info",
