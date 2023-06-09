@@ -22,7 +22,6 @@ import { getProductById } from '@expirychecker/Functions/Product';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
-import GenericButton from '@components/Button';
 import ActionButton from '@components/ActionButton';
 
 import {
@@ -44,7 +43,7 @@ import {
 	Button,
 	RadioButton,
 	RadioButtonText,
-	ActionButtonsContainer,
+	ActionsButtonContainer,
 } from './styles';
 
 interface Props {
@@ -223,10 +222,6 @@ const EditBatch: React.FC = () => {
 		setPrice(value);
 	}, []);
 
-	const navigateToBatchDetails = useCallback(() => {
-		navigate('BatchView', { product_id: productId, batch_id: loteId });
-	}, [loteId, navigate, productId]);
-
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -238,21 +233,6 @@ const EditBatch: React.FC = () => {
 							title={strings.View_EditBatch_PageTitle}
 							noDrawer
 						/>
-
-						<ActionButtonsContainer>
-							<ActionButton
-								text={strings.View_EditBatch_Button_DeleteBatch}
-								iconName="trash-outline"
-								onPress={() => {
-									setDeleteComponentVisible(true);
-								}}
-							/>
-							<ActionButton
-								text={strings.View_EditBatch_Button_MoreInfo}
-								iconName="information-circle-outline"
-								onPress={navigateToBatchDetails}
-							/>
-						</ActionButtonsContainer>
 					</PageHeader>
 
 					<InputContainer>
@@ -367,10 +347,20 @@ const EditBatch: React.FC = () => {
 						</ExpDateGroup>
 					</InputContainer>
 
-					<GenericButton
-						text={strings.View_EditBatch_Button_Save}
-						onPress={handleSave}
-					/>
+					<ActionsButtonContainer>
+						<ActionButton
+							text={strings.View_EditBatch_Button_Save}
+							iconName="save-outline"
+							onPress={handleSave}
+						/>
+						<ActionButton
+							text={strings.View_EditBatch_Button_DeleteBatch}
+							iconName="trash-outline"
+							onPress={() => {
+								setDeleteComponentVisible(true);
+							}}
+						/>
+					</ActionsButtonContainer>
 				</PageContent>
 			</Container>
 
@@ -381,7 +371,7 @@ const EditBatch: React.FC = () => {
 				}}
 				style={{ backgroundColor: theme.colors.productBackground }}
 			>
-				<Dialog.Title>
+				<Dialog.Title style={{ color: theme.colors.text }}>
 					{strings.View_EditBatch_WarningDelete_Title}
 				</Dialog.Title>
 				<Dialog.Content>
@@ -390,11 +380,10 @@ const EditBatch: React.FC = () => {
 					</Text>
 				</Dialog.Content>
 				<Dialog.Actions>
-					<Button color="red" onPress={handleDelete}>
+					<Button onPress={handleDelete}>
 						{strings.View_EditBatch_WarningDelete_Button_Confirm}
 					</Button>
 					<Button
-						color={theme.colors.accent}
 						onPress={() => {
 							setDeleteComponentVisible(false);
 						}}
