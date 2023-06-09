@@ -36,7 +36,7 @@
     "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
 
-    "Component_FastSub_Text": "Por apenas {PRICE_MONTH} por mês no plano anual de {PRICE}.",
+    "Component_FastSub_Text": "Aproveite mais o app com mais recursos com o PRO",
     "Component_FastSub_TextWithTrial": "Teste grátis por {DAYS} dias e depois apenas {PRICE_MONTH} por mês no plano anual de {PRICE}.",
     "Component_FastSub_Price": "Só {PRICE} mensais",
 
