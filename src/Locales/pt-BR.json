@@ -185,7 +185,6 @@
     "View_ProductDetails_WarningDelete_Message": "Se você continuar você vai apagar este produto",
     "View_ProductDetails_WarningDelete_Button_Confirm": "Tenho certeza",
     "View_ProductDetails_WarningDelete_Button_Cancel": "Manter produto",
-    "View_ProductDetails_TableComponent_BatchNameColumnTitle": "Lote",
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Vence em",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
