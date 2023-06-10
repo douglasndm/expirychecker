@@ -56,13 +56,13 @@ const Card: React.FC<Props> = ({
 				)}
 			</FirstLine>
 
-			{pack.packageType !== PACKAGE_TYPE.MONTHLY && (
+			{/* pack.packageType !== PACKAGE_TYPE.MONTHLY && (
 				<SubscriptionDescription isSelected={isSelected}>
 					<TextSubscription>
 						{getPlansString(pack, price_string)}
 					</TextSubscription>
 				</SubscriptionDescription>
-			)}
+			) */}
 		</DetailsContainer>
 	);
 };

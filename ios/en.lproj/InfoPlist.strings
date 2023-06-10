@@ -1,12 +1,12 @@
-/* 
+/*
   InfoPlist.strings
   controledevalidade
 
   Created by Douglas de Mattos on 06/02/21.
-  
+
 */
-CFBundleDisplayName = "Expiro";
-CFBundleName = "Expiro";
+CFBundleDisplayName = "Expiry Tracker";
+CFBundleName = "Expiry Tracker";
 
 // Asking permission for camera access
 NSCameraUsageDescription = "We need your authorization to use your phone's camera to have access to the barcode reader and take pictures of the products (PRO).";
