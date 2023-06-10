@@ -8,6 +8,7 @@ import strings from '@expirychecker/Locales';
 
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { exportToExcel } from '@utils/Excel/Export';
+import { removeCheckedBatches } from '@utils/Product/Batches';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
@@ -60,8 +61,13 @@ const CategoryView: React.FC = () => {
 
 			const prods = await getAllProductsByCategory(routeParams.id);
 
+			const noCheckeds: IProduct[] = prods.map(prod => ({
+				...JSON.parse(JSON.stringify(prod)), // for deep clone Zzzz
+				batches: removeCheckedBatches(prod.batches),
+			}));
+
 			// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-			const sortedProds = sortProductsLotesByLotesExpDate(prods);
+			const sortedProds = sortProductsLotesByLotesExpDate(noCheckeds);
 
 			// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
 			// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
