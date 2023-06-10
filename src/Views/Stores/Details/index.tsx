@@ -7,6 +7,7 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '@expirychecker/Locales';
 
 import { exportToExcel } from '@utils/Excel/Export';
+import { removeCheckedBatches } from '@utils/Product/Batches';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
@@ -74,8 +75,13 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				}
 			}
 
+			const noCheckeds: IProduct[] = results.map(prod => ({
+				...JSON.parse(JSON.stringify(prod)), // for deep clone Zzzz
+				batches: removeCheckedBatches(prod.batches),
+			}));
+
 			// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-			const sortedProds = sortProductsLotesByLotesExpDate(results);
+			const sortedProds = sortProductsLotesByLotesExpDate(noCheckeds);
 
 			// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
 			// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
