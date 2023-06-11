@@ -11,7 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
-import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
@@ -23,6 +22,7 @@ import { searchProducts } from '@utils/Product/Search';
 
 import Loading from '@components/Loading';
 import BarCodeReader from '@components/BarCodeReader';
+import DatePicker from '@components/DatePicker';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
 import FAB from '@components/FAB';
@@ -99,12 +99,6 @@ const Home: React.FC = () => {
 		try {
 			setIsLoading(true);
 
-			/* const allProducts = await getAllProducts({
-				removeProductsWithoutBatches: true,
-				removeTreatedBatch: true,
-				sortProductsByExpDate: true,
-			}); */
-
 			const allProducts = await getAllProductsAsync({
 				removeProductsWithoutBatches: true,
 				removeTreatedBatch: true,
@@ -171,8 +165,15 @@ const Home: React.FC = () => {
 		setEnableDatePicker(true);
 	}, []);
 
+	const cleanSearch = useCallback(() => {
+		setProductsSearch([]);
+		setSearchString('');
+	}, []);
+
 	const handleSelectDateChange = useCallback(
 		(date: Date) => {
+			cleanSearch();
+
 			setEnableDatePicker(false);
 
 			let dateFormat = 'dd/MM/yyyy';
@@ -183,9 +184,20 @@ const Home: React.FC = () => {
 
 			setSearchString(d);
 			setSelectedDate(date);
-			handleSearch();
+
+			let prods: IProduct[] = [];
+			if (d && d !== '') {
+				prods = searchProducts({
+					products,
+					query: d,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
 		},
-		[handleSearch]
+		[cleanSearch, products]
 	);
 
 	const handleOnCodeRead = useCallback(
@@ -308,9 +320,7 @@ const Home: React.FC = () => {
 					)}
 
 					<DatePicker
-						modal
-						mode="date"
-						open={enableDatePicker}
+						isOpen={enableDatePicker}
 						date={selectedDate}
 						onConfirm={handleSelectDateChange}
 						onCancel={() => {
