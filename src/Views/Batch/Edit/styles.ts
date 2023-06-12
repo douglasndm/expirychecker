@@ -30,5 +30,18 @@ export const RadioButton = styled(RadioPaper).attrs(props => ({
 }))``;
 
 export const RadioButtonText = styled.Text`
-	color: ${({ theme }) => theme.colors.text};
+	color: ${({ theme }) => theme.colors.inputText};
+`;
+
+export const TextField = styled.TextInput.attrs(props => ({
+	multiline: true,
+	placeholderTextColor: props.theme.colors.placeholderColor,
+}))`
+	background-color: ${props => props.theme.colors.inputBackground};
+	color: ${props => props.theme.colors.inputText};
+
+	padding: 15px 10px;
+	margin: 5px;
+	border-radius: 12px;
+	font-size: 16px;
 `;

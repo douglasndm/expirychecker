@@ -41,6 +41,7 @@ import {
 	BannerContainer,
 	ProFeaturesContainer,
 	ProFeaturesText,
+	Text,
 } from './styles';
 
 interface Props {
@@ -222,6 +223,31 @@ const View: React.FC = () => {
 		navigate('Pro');
 	}, [navigate]);
 
+	const whereIs: string = useMemo(() => {
+		let text = `${strings.View_Batch_WhereIs}: `;
+
+		if (batch?.where_is === 'shelf') {
+			text += strings.View_Batch_WhereIs_Shelf;
+		} else if (batch?.where_is === 'stock') {
+			text += strings.View_Batch_WhereIs_Stock;
+		} else {
+			text = '';
+		}
+
+		return text;
+	}, [batch?.where_is]);
+
+	const extraInfo = useMemo(() => {
+		let text = `${strings.View_Batch_ExtraInfo}: `;
+
+		if (batch?.additional_data) {
+			text += batch.additional_data;
+		} else {
+			text = '';
+		}
+		return text;
+	}, [batch?.additional_data]);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -309,6 +335,12 @@ const View: React.FC = () => {
 								})[0]
 							}`}
 						</BatchPrice>
+					)}
+					{userPreferences.isPRO && !!whereIs && (
+						<Text>{whereIs}</Text>
+					)}
+					{userPreferences.isPRO && !!extraInfo && (
+						<Text>{extraInfo}</Text>
 					)}
 
 					{!userPreferences.disableAds && (

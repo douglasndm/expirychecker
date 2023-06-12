@@ -7,6 +7,9 @@ interface IBatch {
 	status?: string;
 	price_tmp?: number;
 
+	where_is?: 'stock' | 'shelf' | null;
+	additional_data?: string | null;
+
 	created_at?: Date;
 	updated_at?: Date;
 }
