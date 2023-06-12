@@ -2,8 +2,6 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import { useTheme } from 'styled-components/native';
-import { Button } from 'react-native-paper';
 
 import strings from '@expirychecker/Locales';
 
@@ -16,6 +14,7 @@ import {
 import Header from '@components/Header';
 import InputText from '@components/InputText';
 import ActionButton from '@components/ActionButton';
+import Dialog from '@components/Dialog';
 
 import {
 	Container,
@@ -23,8 +22,6 @@ import {
 	ActionsButtonContainer,
 	InputTextContainer,
 	InputTextTip,
-	DialogPaper,
-	Text,
 } from './styles';
 
 interface Props {
@@ -33,7 +30,6 @@ interface Props {
 const Edit: React.FC = () => {
 	const { params } = useRoute();
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
-	const theme = useTheme();
 
 	const [name, setName] = useState<string>('');
 	const [errorName, setErrorName] = useState<string>('');
@@ -72,7 +68,7 @@ const Edit: React.FC = () => {
 		getCategory(routeParams.id).then(response => setName(response.name));
 	}, [routeParams.id]);
 
-	const onNameChange = useCallback(value => {
+	const onNameChange = useCallback((value: string) => {
 		setErrorName('');
 		setName(value);
 	}, []);
@@ -104,69 +100,46 @@ const Edit: React.FC = () => {
 	}, [routeParams.id, name, reset]);
 
 	return (
-		<>
-			<Container>
-				<Header title={strings.View_Category_Edit_PageTitle} noDrawer />
+		<Container>
+			<Header title={strings.View_Category_Edit_PageTitle} noDrawer />
 
-				<Content>
-					<InputTextContainer hasError={!!errorName}>
-						<InputText
-							placeholder={
-								strings.View_Category_Edit_InputNamePlaceholder
-							}
-							value={name}
-							onChange={onNameChange}
-						/>
-					</InputTextContainer>
-					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+			<Content>
+				<InputTextContainer hasError={!!errorName}>
+					<InputText
+						placeholder={
+							strings.View_Category_Edit_InputNamePlaceholder
+						}
+						value={name}
+						onChange={onNameChange}
+					/>
+				</InputTextContainer>
+				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
 
-					<ActionsButtonContainer>
-						<ActionButton
-							text={strings.View_Category_Edit_ButtonSave}
-							iconName="save-outline"
-							onPress={handleUpdate}
-						/>
-						<ActionButton
-							text={
-								strings.View_ProductDetails_Button_DeleteProduct
-							}
-							iconName="trash-outline"
-							onPress={() => {
-								setDeleteComponentVisible(true);
-							}}
-						/>
-					</ActionsButtonContainer>
-				</Content>
-			</Container>
-			<DialogPaper
-				visible={deleteComponentVisible}
-				onDismiss={() => {
-					setDeleteComponentVisible(false);
-				}}
-			>
-				<DialogPaper.Title style={{ color: theme.colors.text }}>
-					{strings.View_Category_Edit_DeleteModal_Title}
-				</DialogPaper.Title>
-				<DialogPaper.Content>
-					<Text>
-						{strings.View_Category_Edit_DeleteModal_Message}
-					</Text>
-				</DialogPaper.Content>
-				<DialogPaper.Actions>
-					<Button color="red" onPress={handleDeleteCategory}>
-						{strings.View_Category_Edit_DeleteModal_Confirm}
-					</Button>
-					<Button
-						color={theme.colors.text}
+				<ActionsButtonContainer>
+					<ActionButton
+						text={strings.View_Category_Edit_ButtonSave}
+						iconName="save-outline"
+						onPress={handleUpdate}
+					/>
+					<ActionButton
+						text={strings.View_ProductDetails_Button_DeleteProduct}
+						iconName="trash-outline"
 						onPress={() => {
-							setDeleteComponentVisible(false);
+							setDeleteComponentVisible(true);
 						}}
-					>
-						{strings.View_Category_Edit_DeleteModal_Cancel}
-					</Button>
-				</DialogPaper.Actions>
-			</DialogPaper>
-		</>
+					/>
+				</ActionsButtonContainer>
+			</Content>
+			<Dialog
+				visible={deleteComponentVisible}
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDeleteCategory}
+				title={strings.View_Category_Edit_DeleteModal_Title}
+				description={strings.View_Category_Edit_DeleteModal_Message}
+				confirmText={strings.View_Category_Edit_DeleteModal_Confirm}
+				cancelText={strings.View_Category_Edit_DeleteModal_Cancel}
+			/>
+		</Container>
 	);
 };
 

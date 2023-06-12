@@ -5,13 +5,10 @@ import React, {
 	useMemo,
 	useContext,
 } from 'react';
-import { Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import { Dialog } from 'react-native-paper';
-import { useTheme } from 'styled-components';
 
 import strings from '@expirychecker/Locales';
 
@@ -24,6 +21,7 @@ import Loading from '@components/Loading';
 import Header from '@components/Header';
 import ActionButton from '@components/ActionButton';
 import Switch from '@components/Switch';
+import Dialog from '@components/Dialog';
 
 import {
 	Container,
@@ -46,7 +44,6 @@ import {
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
-	Button,
 	RadioButton,
 	RadioButtonText,
 	ActionsButtonContainer,
@@ -94,8 +91,6 @@ const EditBatch: React.FC = () => {
 	}, [routeParams]);
 
 	const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
-
-	const theme = useTheme();
 
 	const [lote, setLote] = useState('');
 	const [amount, setAmount] = useState(0);
@@ -260,234 +255,203 @@ const EditBatch: React.FC = () => {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<>
-			<Container>
-				<PageContent>
-					<Header title={strings.View_EditBatch_PageTitle} noDrawer />
+		<Container>
+			<PageContent>
+				<Header title={strings.View_EditBatch_PageTitle} noDrawer />
 
-					<InputContainer>
-						<ProductHeader>
-							{!!product && (
-								<ProductName>{product.name}</ProductName>
-							)}
-							{!!product && !!product.code && (
-								<ProductCode>{product.code}</ProductCode>
-							)}
-						</ProductHeader>
-
-						<InputGroup>
-							<InputTextContainer
-								style={{
-									flex: 5,
-									marginRight: 5,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_EditBatch_InputPlacehoder_Batch
-									}
-									value={lote}
-									onChangeText={(value: string) =>
-										setLote(value)
-									}
-								/>
-							</InputTextContainer>
-							<InputTextContainer
-								style={{
-									flex: 4,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_EditBatch_InputPlacehoder_Amount
-									}
-									keyboardType="numeric"
-									value={String(amount)}
-									onChangeText={handleAmountChange}
-								/>
-							</InputTextContainer>
-						</InputGroup>
-
-						<Currency
-							value={price}
-							onChangeValue={handlePriceChange}
-							delimiter={currency === 'BRL' ? ',' : '.'}
-							placeholder={
-								strings.View_EditBatch_InputPlacehoder_UnitPrice
-							}
-						/>
-
-						<RadioButtonGroup>
-							<CheckBoxContainer>
-								<CheckBoxGroupTitle>
-									{strings.View_EditBatch_Status}
-								</CheckBoxGroupTitle>
-								<CheckBoxOption>
-									<RadioButtonText>
-										{
-											strings.View_EditBatch_RadioButton_Treated
-										}
-									</RadioButtonText>
-									<RadioButton
-										value="tratado"
-										status={
-											tratado === true
-												? 'checked'
-												: 'unchecked'
-										}
-										onPress={() => setTratado(true)}
-									/>
-								</CheckBoxOption>
-								<CheckBoxOption>
-									<RadioButtonText>
-										{
-											strings.View_EditBatch_RadioButton_NotTreated
-										}
-									</RadioButtonText>
-									<RadioButton
-										value="Não tratado"
-										status={
-											tratado === !true
-												? 'checked'
-												: 'unchecked'
-										}
-										onPress={() => setTratado(false)}
-									/>
-								</CheckBoxOption>
-							</CheckBoxContainer>
-
-							{userPreferences.isPRO && (
-								<>
-									<CheckBoxContainer>
-										<CheckBoxGroupTitle>
-											{strings.View_Batch_WhereIs}
-										</CheckBoxGroupTitle>
-										<CheckBoxOption>
-											<RadioButtonText>
-												{
-													strings.View_Batch_WhereIs_Shelf
-												}
-											</RadioButtonText>
-											<RadioButton
-												status={
-													whereIs === 'shelf'
-														? 'checked'
-														: 'unchecked'
-												}
-												onPress={() => {
-													if (whereIs === 'shelf') {
-														setWhereIs(null);
-													} else {
-														setWhereIs('shelf');
-													}
-												}}
-											/>
-										</CheckBoxOption>
-
-										<CheckBoxOption>
-											<RadioButtonText>
-												{
-													strings.View_Batch_WhereIs_Stock
-												}
-											</RadioButtonText>
-											<RadioButton
-												status={
-													whereIs === 'stock'
-														? 'checked'
-														: 'unchecked'
-												}
-												onPress={() => {
-													if (whereIs === 'stock') {
-														setWhereIs(null);
-													} else {
-														setWhereIs('stock');
-													}
-												}}
-											/>
-										</CheckBoxOption>
-									</CheckBoxContainer>
-								</>
-							)}
-						</RadioButtonGroup>
-
-						<Switch
-							text={strings.View_Batch_ExtraInfo}
-							value={additionalData}
-							onValueChange={() =>
-								setAdditionalData(!additionalData)
-							}
-						/>
-
-						{additionalData && (
-							<TextField
-								placeholder="Dados adicionais para o produto"
-								value={additionalDataText}
-								onChangeText={(value: string) =>
-									setAdditionalDataText(value)
-								}
-							/>
+				<InputContainer>
+					<ProductHeader>
+						{!!product && <ProductName>{product.name}</ProductName>}
+						{!!product && !!product.code && (
+							<ProductCode>{product.code}</ProductCode>
 						)}
+					</ProductHeader>
 
-						<ExpDateGroup>
-							<ExpDateLabel>
-								{strings.View_EditBatch_CalendarTitle}
-							</ExpDateLabel>
-							<CustomDatePicker
-								date={expDate}
-								onDateChange={(value: Date) => {
-									setExpDate(value);
-								}}
-								locale={locale}
-							/>
-						</ExpDateGroup>
-					</InputContainer>
-
-					<ActionsButtonContainer>
-						<ActionButton
-							text={strings.View_EditBatch_Button_Save}
-							iconName="save-outline"
-							onPress={handleSave}
-						/>
-						<ActionButton
-							text={strings.View_EditBatch_Button_DeleteBatch}
-							iconName="trash-outline"
-							onPress={() => {
-								setDeleteComponentVisible(true);
+					<InputGroup>
+						<InputTextContainer
+							style={{
+								flex: 5,
+								marginRight: 5,
 							}}
+						>
+							<InputCodeText
+								placeholder={
+									strings.View_EditBatch_InputPlacehoder_Batch
+								}
+								value={lote}
+								onChangeText={(value: string) => setLote(value)}
+							/>
+						</InputTextContainer>
+						<InputTextContainer
+							style={{
+								flex: 4,
+							}}
+						>
+							<InputCodeText
+								placeholder={
+									strings.View_EditBatch_InputPlacehoder_Amount
+								}
+								keyboardType="numeric"
+								value={String(amount)}
+								onChangeText={handleAmountChange}
+							/>
+						</InputTextContainer>
+					</InputGroup>
+
+					<Currency
+						value={price}
+						onChangeValue={handlePriceChange}
+						delimiter={currency === 'BRL' ? ',' : '.'}
+						placeholder={
+							strings.View_EditBatch_InputPlacehoder_UnitPrice
+						}
+					/>
+
+					<RadioButtonGroup>
+						<CheckBoxContainer>
+							<CheckBoxGroupTitle>
+								{strings.View_EditBatch_Status}
+							</CheckBoxGroupTitle>
+							<CheckBoxOption>
+								<RadioButtonText>
+									{strings.View_EditBatch_RadioButton_Treated}
+								</RadioButtonText>
+								<RadioButton
+									value="tratado"
+									status={
+										tratado === true
+											? 'checked'
+											: 'unchecked'
+									}
+									onPress={() => setTratado(true)}
+								/>
+							</CheckBoxOption>
+							<CheckBoxOption>
+								<RadioButtonText>
+									{
+										strings.View_EditBatch_RadioButton_NotTreated
+									}
+								</RadioButtonText>
+								<RadioButton
+									value="Não tratado"
+									status={
+										tratado === !true
+											? 'checked'
+											: 'unchecked'
+									}
+									onPress={() => setTratado(false)}
+								/>
+							</CheckBoxOption>
+						</CheckBoxContainer>
+
+						{userPreferences.isPRO && (
+							<>
+								<CheckBoxContainer>
+									<CheckBoxGroupTitle>
+										{strings.View_Batch_WhereIs}
+									</CheckBoxGroupTitle>
+									<CheckBoxOption>
+										<RadioButtonText>
+											{strings.View_Batch_WhereIs_Shelf}
+										</RadioButtonText>
+										<RadioButton
+											status={
+												whereIs === 'shelf'
+													? 'checked'
+													: 'unchecked'
+											}
+											onPress={() => {
+												if (whereIs === 'shelf') {
+													setWhereIs(null);
+												} else {
+													setWhereIs('shelf');
+												}
+											}}
+										/>
+									</CheckBoxOption>
+
+									<CheckBoxOption>
+										<RadioButtonText>
+											{strings.View_Batch_WhereIs_Stock}
+										</RadioButtonText>
+										<RadioButton
+											status={
+												whereIs === 'stock'
+													? 'checked'
+													: 'unchecked'
+											}
+											onPress={() => {
+												if (whereIs === 'stock') {
+													setWhereIs(null);
+												} else {
+													setWhereIs('stock');
+												}
+											}}
+										/>
+									</CheckBoxOption>
+								</CheckBoxContainer>
+							</>
+						)}
+					</RadioButtonGroup>
+
+					<Switch
+						text={strings.View_Batch_ExtraInfo}
+						value={additionalData}
+						onValueChange={() => setAdditionalData(!additionalData)}
+					/>
+
+					{additionalData && (
+						<TextField
+							placeholder="Dados adicionais para o produto"
+							value={additionalDataText}
+							onChangeText={(value: string) =>
+								setAdditionalDataText(value)
+							}
 						/>
-					</ActionsButtonContainer>
-				</PageContent>
-			</Container>
+					)}
+
+					<ExpDateGroup>
+						<ExpDateLabel>
+							{strings.View_EditBatch_CalendarTitle}
+						</ExpDateLabel>
+						<CustomDatePicker
+							date={expDate}
+							onDateChange={(value: Date) => {
+								setExpDate(value);
+							}}
+							locale={locale}
+						/>
+					</ExpDateGroup>
+				</InputContainer>
+
+				<ActionsButtonContainer>
+					<ActionButton
+						text={strings.View_EditBatch_Button_Save}
+						iconName="save-outline"
+						onPress={handleSave}
+					/>
+					<ActionButton
+						text={strings.View_EditBatch_Button_DeleteBatch}
+						iconName="trash-outline"
+						onPress={() => {
+							setDeleteComponentVisible(true);
+						}}
+					/>
+				</ActionsButtonContainer>
+			</PageContent>
 
 			<Dialog
 				visible={deleteComponentVisible}
-				onDismiss={() => {
-					setDeleteComponentVisible(false);
-				}}
-				style={{ backgroundColor: theme.colors.productBackground }}
-			>
-				<Dialog.Title style={{ color: theme.colors.productCardText }}>
-					{strings.View_EditBatch_WarningDelete_Title}
-				</Dialog.Title>
-				<Dialog.Content>
-					<Text style={{ color: theme.colors.productCardText }}>
-						{strings.View_EditBatch_WarningDelete_Message}
-					</Text>
-				</Dialog.Content>
-				<Dialog.Actions>
-					<Button onPress={handleDelete}>
-						{strings.View_EditBatch_WarningDelete_Button_Confirm}
-					</Button>
-					<Button
-						onPress={() => {
-							setDeleteComponentVisible(false);
-						}}
-					>
-						{strings.View_EditBatch_WarningDelete_Button_Cancel}
-					</Button>
-				</Dialog.Actions>
-			</Dialog>
-		</>
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDelete}
+				title={strings.View_EditBatch_WarningDelete_Title}
+				description={strings.View_EditBatch_WarningDelete_Message}
+				confirmText={
+					strings.View_EditBatch_WarningDelete_Button_Confirm
+				}
+				cancelText={strings.View_EditBatch_WarningDelete_Button_Cancel}
+			/>
+		</Container>
 	);
 };
 
