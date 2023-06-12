@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
 
 import strings from '@expirychecker/Locales';
 import {
@@ -14,6 +13,7 @@ import {
 import Header from '@components/Header';
 import InputText from '@components/InputText';
 import ActionButton from '@components/ActionButton';
+import Dialog from '@components/Dialog';
 
 import { Container, Content, ActionsButtonContainer } from './styles';
 
@@ -131,29 +131,18 @@ const Edit: React.FC = () => {
 				</ActionsButtonContainer>
 			</Content>
 
-			<Dialog.Container
+			<Dialog
 				visible={deleteComponentVisible}
-				onBackdropPress={handleSwitchShowDelete}
-			>
-				<Dialog.Title>
-					{strings.View_Store_Edit_Delete_title}
-				</Dialog.Title>
-				<Dialog.Description>
-					{strings.View_Store_Edit_Delete_Description.replace(
-						'{STORE}',
-						storeName
-					)}
-				</Dialog.Description>
-				<Dialog.Button
-					label={strings.View_Store_Edit_Delete_Button_Cancel}
-					onPress={handleSwitchShowDelete}
-				/>
-				<Dialog.Button
-					label={strings.View_Store_Edit_Delete_Button_Confirm}
-					color="red"
-					onPress={handleDelete}
-				/>
-			</Dialog.Container>
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDelete}
+				title={strings.View_Store_Edit_Delete_title}
+				description={strings.View_Store_Edit_Delete_Description.replace(
+					'{STORE}',
+					storeName
+				)}
+				confirmText={strings.View_Store_Edit_Delete_Button_Confirm}
+				cancelText={strings.View_Store_Edit_Delete_Button_Cancel}
+			/>
 		</Container>
 	);
 };

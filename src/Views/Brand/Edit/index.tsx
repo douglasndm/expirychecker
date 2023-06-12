@@ -2,7 +2,6 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
 
 import strings from '@expirychecker/Locales';
 import {
@@ -14,6 +13,7 @@ import {
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import ActionButton from '@components/ActionButton';
+import Dialog from '@components/Dialog';
 
 import {
 	Container,
@@ -62,7 +62,7 @@ const Edit: React.FC = () => {
 		loadData();
 	}, []);
 
-	const onNameChange = useCallback(value => {
+	const onNameChange = useCallback((value: string) => {
 		setErrorName('');
 		setName(value);
 	}, []);
@@ -121,68 +121,49 @@ const Edit: React.FC = () => {
 		}
 	}, [reset, routeParams.brand_id]);
 
-	const handleSwitchDeleteVisible = useCallback(() => {
-		setDeleteComponentVisible(!deleteComponentVisible);
-	}, [deleteComponentVisible]);
-
 	return isLoading ? (
 		<Loading />
 	) : (
-		<>
-			<Container>
-				<Header title={strings.View_Brand_Edit_PageTitle} noDrawer />
+		<Container>
+			<Header title={strings.View_Brand_Edit_PageTitle} noDrawer />
 
-				<Content>
-					<InputTextContainer hasError={!!errorName}>
-						<InputText
-							placeholder={
-								strings.View_Brand_Edit_InputNamePlaceholder
-							}
-							value={name}
-							onChangeText={onNameChange}
-						/>
-					</InputTextContainer>
-					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+			<Content>
+				<InputTextContainer hasError={!!errorName}>
+					<InputText
+						placeholder={
+							strings.View_Brand_Edit_InputNamePlaceholder
+						}
+						value={name}
+						onChangeText={onNameChange}
+					/>
+				</InputTextContainer>
+				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
 
-					<ActionsButtonContainer>
-						<ActionButton
-							text={strings.View_Brand_Edit_ButtonSave}
-							iconName="save-outline"
-							onPress={handleUpdate}
-						/>
-						<ActionButton
-							text={
-								strings.View_ProductDetails_Button_DeleteProduct
-							}
-							iconName="trash-outline"
-							onPress={() => {
-								setDeleteComponentVisible(true);
-							}}
-						/>
-					</ActionsButtonContainer>
-				</Content>
-			</Container>
-			<Dialog.Container
+				<ActionsButtonContainer>
+					<ActionButton
+						text={strings.View_Brand_Edit_ButtonSave}
+						iconName="save-outline"
+						onPress={handleUpdate}
+					/>
+					<ActionButton
+						text={strings.View_ProductDetails_Button_DeleteProduct}
+						iconName="trash-outline"
+						onPress={() => {
+							setDeleteComponentVisible(true);
+						}}
+					/>
+				</ActionsButtonContainer>
+			</Content>
+			<Dialog
 				visible={deleteComponentVisible}
-				onBackdropPress={handleSwitchDeleteVisible}
-			>
-				<Dialog.Title>
-					{strings.View_Brand_Edit_DeleteModal_Title}
-				</Dialog.Title>
-				<Dialog.Description>
-					{strings.View_Brand_Edit_DeleteModal_Message}
-				</Dialog.Description>
-				<Dialog.Button
-					label={strings.View_Brand_Edit_DeleteModal_Cancel}
-					onPress={handleSwitchDeleteVisible}
-				/>
-				<Dialog.Button
-					label={strings.View_Brand_Edit_DeleteModal_Confirm}
-					color="red"
-					onPress={handleDeleteBrand}
-				/>
-			</Dialog.Container>
-		</>
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDeleteBrand}
+				title={strings.View_Brand_Edit_DeleteModal_Title}
+				description={strings.View_Brand_Edit_DeleteModal_Message}
+				confirmText={strings.View_Brand_Edit_DeleteModal_Confirm}
+				cancelText={strings.View_Brand_Edit_DeleteModal_Cancel}
+			/>
+		</Container>
 	);
 };
 

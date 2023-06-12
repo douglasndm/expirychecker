@@ -314,7 +314,7 @@
     "View_Store_Edit_Delete_title": "Atenção ⚠️",
     "View_Store_Edit_Delete_Description": "Apagando a loja {STORE}, você também vai está apagando PERMANENTEMENTE TODOS OS SEUS PRODUTOS, ESSA AÇÃO NÃO PODE SER DESFEITA. VOCÊ TEM CERTEZA?",
     "View_Store_Edit_Delete_Button_Cancel": "Manter loja",
-    "View_Store_Edit_Delete_Button_Confirm": "Apagar loja e produtos",
+    "View_Store_Edit_Delete_Button_Confirm": "Tenho certeza",
     "View_Store_Edit_Alert_Success_StoreDeleted": "A loja e seus produtos foram apagados",
 
 

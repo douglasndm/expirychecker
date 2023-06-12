@@ -3,8 +3,6 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
-import { Button } from 'react-native-paper';
-import { useTheme } from 'styled-components/native';
 
 import strings from '@expirychecker/Locales';
 
@@ -27,6 +25,7 @@ import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
 import ActionButton from '@components/ActionButton';
+import Dialog from '@components/Dialog';
 
 import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
 
@@ -57,7 +56,7 @@ import {
 	InputTextIconContainer,
 } from '../Add/Components/Inputs/Code/styles';
 
-import { ActionsButtonContainer, DialogPaper, Text } from './styles';
+import { ActionsButtonContainer } from './styles';
 
 interface RequestParams {
 	route: {
@@ -74,8 +73,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 	const { navigate, addListener, dispatch } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const theme = useTheme();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
@@ -302,209 +299,175 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 							onClose={handleDisableBarCodeReader}
 						/>
 					) : (
-						<>
-							<Container>
-								<PageContent>
-									<Header
-										title={
-											strings.View_EditProduct_PageTitle
-										}
-										noDrawer
-									/>
+						<Container>
+							<PageContent>
+								<Header
+									title={strings.View_EditProduct_PageTitle}
+									noDrawer
+								/>
 
-									{userPreferences.isPRO && !!photoPath && (
-										<ImageContainer>
-											<ProductImageContainer
+								{userPreferences.isPRO && !!photoPath && (
+									<ImageContainer>
+										<ProductImageContainer
+											onPress={handleEnableCamera}
+										>
+											<ProductImage
+												source={{
+													uri: `file://${photoPath}`,
+												}}
+											/>
+										</ProductImageContainer>
+									</ImageContainer>
+								)}
+								<InputContainer>
+									<InputGroup>
+										<InputTextContainer>
+											<Input
+												placeholder={
+													strings.View_EditProduct_InputPlacehoder_Name
+												}
+												value={name}
+												onChange={value => {
+													setName(value);
+													setNameFieldError(false);
+												}}
+											/>
+										</InputTextContainer>
+
+										{userPreferences.isPRO && (
+											<CameraButtonContainer
 												onPress={handleEnableCamera}
 											>
-												<ProductImage
-													source={{
-														uri: `file://${photoPath}`,
-													}}
+												<Icon
+													name="camera-outline"
+													size={36}
 												/>
-											</ProductImageContainer>
-										</ImageContainer>
+											</CameraButtonContainer>
+										)}
+									</InputGroup>
+									{nameFieldError && (
+										<InputTextTip>
+											{
+												strings.View_EditProduct_Error_EmptyProductName
+											}
+										</InputTextTip>
 									)}
-									<InputContainer>
-										<InputGroup>
-											<InputTextContainer>
-												<Input
-													placeholder={
-														strings.View_EditProduct_InputPlacehoder_Name
+
+									<InputGroup>
+										<InputTextContainer
+											style={{
+												flexDirection: 'row',
+												justifyContent: 'space-between',
+												alignItems: 'center',
+												paddingRight: 10,
+											}}
+										>
+											<InputCodeText
+												placeholder={
+													strings.View_EditProduct_InputPlacehoder_Code
+												}
+												value={code}
+												onChangeText={(
+													value: string
+												) => {
+													setCode(value);
+												}}
+											/>
+
+											<InputTextIconContainer
+												onPress={
+													handleEnableBarCodeReader
+												}
+											>
+												<InputCodeTextIcon />
+											</InputTextIconContainer>
+										</InputTextContainer>
+									</InputGroup>
+
+									<MoreInformationsContainer>
+										{userPreferences.isPRO && (
+											<>
+												<MoreInformationsTitle>
+													{
+														strings.View_EditProduct_MoreInformation_Label
 													}
-													value={name}
-													onChange={value => {
-														setName(value);
-														setNameFieldError(
-															false
-														);
+												</MoreInformationsTitle>
+
+												<DaysToBeNext
+													onChange={setDaysNext}
+												/>
+
+												<CategorySelect
+													defaultValue={
+														selectedCategory
+													}
+													onChange={
+														setSelectedCategory
+													}
+													containerStyle={{
+														marginBottom: 10,
 													}}
 												/>
-											</InputTextContainer>
 
-											{userPreferences.isPRO && (
-												<CameraButtonContainer
-													onPress={handleEnableCamera}
-												>
-													<Icon
-														name="camera-outline"
-														size={36}
-													/>
-												</CameraButtonContainer>
-											)}
-										</InputGroup>
-										{nameFieldError && (
-											<InputTextTip>
-												{
-													strings.View_EditProduct_Error_EmptyProductName
-												}
-											</InputTextTip>
+												<BrandSelect
+													defaultValue={selectedBrand}
+													onChange={setSelectedBrand}
+													containerStyle={{
+														marginBottom: 10,
+													}}
+												/>
+											</>
 										)}
 
-										<InputGroup>
-											<InputTextContainer
-												style={{
-													flexDirection: 'row',
-													justifyContent:
-														'space-between',
-													alignItems: 'center',
-													paddingRight: 10,
-												}}
-											>
-												<InputCodeText
-													placeholder={
-														strings.View_EditProduct_InputPlacehoder_Code
-													}
-													value={code}
-													onChangeText={(
-														value: string
-													) => {
-														setCode(value);
-													}}
-												/>
-
-												<InputTextIconContainer
-													onPress={
-														handleEnableBarCodeReader
-													}
-												>
-													<InputCodeTextIcon />
-												</InputTextIconContainer>
-											</InputTextContainer>
-										</InputGroup>
-
-										<MoreInformationsContainer>
-											{userPreferences.isPRO && (
-												<>
-													<MoreInformationsTitle>
-														{
-															strings.View_EditProduct_MoreInformation_Label
-														}
-													</MoreInformationsTitle>
-
-													<DaysToBeNext
-														onChange={setDaysNext}
-													/>
-
-													<CategorySelect
-														defaultValue={
-															selectedCategory
-														}
-														onChange={
-															setSelectedCategory
-														}
-														containerStyle={{
-															marginBottom: 10,
-														}}
-													/>
-
-													<BrandSelect
-														defaultValue={
-															selectedBrand
-														}
-														onChange={
-															setSelectedBrand
-														}
-														containerStyle={{
-															marginBottom: 10,
-														}}
-													/>
-												</>
-											)}
-
-											{userPreferences.multiplesStores && (
-												<StoreSelect
-													defaultValue={selectedStore}
-													onChange={setSelectedStore}
-												/>
-											)}
-										</MoreInformationsContainer>
-
-										<ActionsButtonContainer>
-											<ActionButton
-												text={
-													strings.View_EditProduct_Button_Save
-												}
-												iconName="save-outline"
-												onPress={updateProd}
+										{userPreferences.multiplesStores && (
+											<StoreSelect
+												defaultValue={selectedStore}
+												onChange={setSelectedStore}
 											/>
-											<ActionButton
-												text={
-													strings.View_ProductDetails_Button_DeleteProduct
-												}
-												iconName="trash-outline"
-												onPress={() => {
-													setDeleteComponentVisible(
-														true
-													);
-												}}
-											/>
-										</ActionsButtonContainer>
-									</InputContainer>
-								</PageContent>
-							</Container>
-							<DialogPaper
+										)}
+									</MoreInformationsContainer>
+
+									<ActionsButtonContainer>
+										<ActionButton
+											text={
+												strings.View_EditProduct_Button_Save
+											}
+											iconName="save-outline"
+											onPress={updateProd}
+										/>
+										<ActionButton
+											text={
+												strings.View_ProductDetails_Button_DeleteProduct
+											}
+											iconName="trash-outline"
+											onPress={() => {
+												setDeleteComponentVisible(true);
+											}}
+										/>
+									</ActionsButtonContainer>
+								</InputContainer>
+							</PageContent>
+
+							<Dialog
 								visible={deleteComponentVisible}
-								onDismiss={() => {
-									setDeleteComponentVisible(false);
-								}}
-							>
-								<DialogPaper.Title
-									style={{ color: theme.colors.text }}
-								>
-									{
-										strings.View_ProductDetails_WarningDelete_Title
-									}
-								</DialogPaper.Title>
-								<DialogPaper.Content>
-									<Text>
-										{
-											strings.View_ProductDetails_WarningDelete_Message
-										}
-									</Text>
-								</DialogPaper.Content>
-								<DialogPaper.Actions>
-									<Button
-										color="red"
-										onPress={handleDeleteProduct}
-									>
-										{
-											strings.View_ProductDetails_WarningDelete_Button_Confirm
-										}
-									</Button>
-									<Button
-										color={theme.colors.accent}
-										onPress={() => {
-											setDeleteComponentVisible(false);
-										}}
-									>
-										{
-											strings.View_ProductDetails_WarningDelete_Button_Cancel
-										}
-									</Button>
-								</DialogPaper.Actions>
-							</DialogPaper>
-						</>
+								onDismiss={() =>
+									setDeleteComponentVisible(false)
+								}
+								onConfirm={handleDeleteProduct}
+								title={
+									strings.View_ProductDetails_WarningDelete_Title
+								}
+								description={
+									strings.View_ProductDetails_WarningDelete_Message
+								}
+								confirmText={
+									strings.View_ProductDetails_WarningDelete_Button_Confirm
+								}
+								cancelText={
+									strings.View_ProductDetails_WarningDelete_Button_Cancel
+								}
+							/>
+						</Container>
 					)}
 				</>
 			)}

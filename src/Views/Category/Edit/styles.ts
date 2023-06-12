@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { Dialog } from 'react-native-paper';
 
 export const Container = styled.SafeAreaView`
 	flex: 1;
@@ -38,12 +37,4 @@ export const InputTextContainer = styled.View<InputTextContainerProps>`
 export const InputTextTip = styled.Text`
 	color: red;
 	margin: 5px 10px 5px;
-`;
-
-export const DialogPaper = styled(Dialog)`
-	background: ${props => props.theme.colors.productBackground};
-`;
-
-export const Text = styled.Text`
-	color: ${props => props.theme.colors.text};
 `;
