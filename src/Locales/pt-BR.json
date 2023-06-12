@@ -129,6 +129,7 @@
     "View_EditBatch_InputPlacehoder_Batch": "Lote",
     "View_EditBatch_InputPlacehoder_Amount": "Quantidade",
     "View_EditBatch_InputPlacehoder_UnitPrice": "Preço unitário",
+    "View_EditBatch_Status": "Estado do lote",
     "View_EditBatch_RadioButton_Treated": "Tratado",
     "View_EditBatch_RadioButton_NotTreated": "Não tratado",
     "View_EditBatch_CalendarTitle": "Data de vencimento",
@@ -157,6 +158,10 @@
     "View_Batch_UnitPrice": "Preço unitário",
     "View_Batch_UnitTempPrice": "Preço unitário temporário",
     "View_Batch_TotalPrice": "Preço total",
+    "View_Batch_WhereIs": "Localização",
+    "View_Batch_WhereIs_Stock": "Estoque",
+    "View_Batch_WhereIs_Shelf": "Prateleira",
+    "View_Batch_ExtraInfo": "Informações adicionais",
     "View_Batch_TotalPriceDiscount": "Preço total com desconto",
     "View_Batch_Button_ShareWithAnotherApps": "Compartilhar com outros apps",
 

@@ -5,7 +5,7 @@ import React, {
 	useMemo,
 	useContext,
 } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
@@ -23,6 +23,7 @@ import { getProductById } from '@expirychecker/Functions/Product';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import ActionButton from '@components/ActionButton';
+import Switch from '@components/Switch';
 
 import {
 	Container,
@@ -36,14 +37,20 @@ import {
 	CustomDatePicker,
 } from '@expirychecker/Views/Product/Add/styles';
 import { InputCodeText } from '@expirychecker/Views/Product/Add/Components/Inputs/Code/styles';
+import {
+	CheckBoxContainer,
+	CheckBoxGroupTitle,
+	CheckBoxOption,
+	RadioButtonGroup,
+} from '@views/Batch/Edit/styles';
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
 import {
-	PageHeader,
 	Button,
 	RadioButton,
 	RadioButtonText,
 	ActionsButtonContainer,
+	TextField,
 } from './styles';
 
 interface Props {
@@ -97,6 +104,10 @@ const EditBatch: React.FC = () => {
 	const [expDate, setExpDate] = useState(new Date());
 	const [tratado, setTratado] = useState(false);
 
+	const [whereIs, setWhereIs] = useState<'stock' | 'shelf' | null>(null);
+	const [additionalData, setAdditionalData] = useState<boolean>(false);
+	const [additionalDataText, setAdditionalDataText] = useState<string>('');
+
 	useEffect(() => {
 		async function getData() {
 			setIsLoading(true);
@@ -124,16 +135,24 @@ const EditBatch: React.FC = () => {
 
 			if (loteResult.amount) setAmount(loteResult.amount);
 			if (loteResult.price) setPrice(loteResult.price);
+			if (loteResult.where_is) setWhereIs(loteResult.where_is);
+			if (loteResult.additional_data) {
+				setAdditionalData(true);
+				setAdditionalDataText(loteResult.additional_data);
+			}
 			setIsLoading(false);
 		}
 
 		getData();
 	}, [productId, loteId]);
 
-	async function handleSave() {
+	const handleSave = useCallback(async () => {
 		if (!product) return;
 
 		try {
+			const { isPRO } = userPreferences;
+			const moreData = isPRO && additionalData;
+
 			await updateLote(
 				{
 					id: loteId,
@@ -142,11 +161,13 @@ const EditBatch: React.FC = () => {
 					exp_date: expDate,
 					price: price || undefined,
 					status: tratado ? 'Tratado' : 'Não tratado',
+					where_is: isPRO ? whereIs : null,
+					additional_data: moreData ? additionalDataText : null,
 				},
 				product
 			);
 
-			if (userPreferences.isPRO) {
+			if (isPRO) {
 				navigate('ProductDetails', {
 					id: productId,
 				});
@@ -168,7 +189,21 @@ const EditBatch: React.FC = () => {
 					type: 'danger',
 				});
 		}
-	}
+	}, [
+		additionalData,
+		additionalDataText,
+		amount,
+		expDate,
+		lote,
+		loteId,
+		navigate,
+		price,
+		product,
+		productId,
+		tratado,
+		userPreferences,
+		whereIs,
+	]);
 
 	const handleDelete = useCallback(async () => {
 		if (!product) return;
@@ -228,12 +263,7 @@ const EditBatch: React.FC = () => {
 		<>
 			<Container>
 				<PageContent>
-					<PageHeader>
-						<Header
-							title={strings.View_EditBatch_PageTitle}
-							noDrawer
-						/>
-					</PageHeader>
+					<Header title={strings.View_EditBatch_PageTitle} noDrawer />
 
 					<InputContainer>
 						<ProductHeader>
@@ -257,7 +287,9 @@ const EditBatch: React.FC = () => {
 										strings.View_EditBatch_InputPlacehoder_Batch
 									}
 									value={lote}
-									onChangeText={value => setLote(value)}
+									onChangeText={(value: string) =>
+										setLote(value)
+									}
 								/>
 							</InputTextContainer>
 							<InputTextContainer
@@ -285,53 +317,116 @@ const EditBatch: React.FC = () => {
 							}
 						/>
 
-						<View
-							style={{
-								flexDirection: 'row',
-								justifyContent: 'center',
-							}}
-						>
-							<View
-								style={{
-									flexDirection: 'row',
-									alignItems: 'center',
-								}}
-							>
-								<RadioButton
-									value="tratado"
-									status={
-										tratado === true
-											? 'checked'
-											: 'unchecked'
-									}
-									onPress={() => setTratado(true)}
-								/>
-								<RadioButtonText>
-									{strings.View_EditBatch_RadioButton_Treated}
-								</RadioButtonText>
-							</View>
-							<View
-								style={{
-									flexDirection: 'row',
-									alignItems: 'center',
-								}}
-							>
-								<RadioButton
-									value="Não tratado"
-									status={
-										tratado === !true
-											? 'checked'
-											: 'unchecked'
-									}
-									onPress={() => setTratado(false)}
-								/>
-								<RadioButtonText>
-									{
-										strings.View_EditBatch_RadioButton_NotTreated
-									}
-								</RadioButtonText>
-							</View>
-						</View>
+						<RadioButtonGroup>
+							<CheckBoxContainer>
+								<CheckBoxGroupTitle>
+									{strings.View_EditBatch_Status}
+								</CheckBoxGroupTitle>
+								<CheckBoxOption>
+									<RadioButtonText>
+										{
+											strings.View_EditBatch_RadioButton_Treated
+										}
+									</RadioButtonText>
+									<RadioButton
+										value="tratado"
+										status={
+											tratado === true
+												? 'checked'
+												: 'unchecked'
+										}
+										onPress={() => setTratado(true)}
+									/>
+								</CheckBoxOption>
+								<CheckBoxOption>
+									<RadioButtonText>
+										{
+											strings.View_EditBatch_RadioButton_NotTreated
+										}
+									</RadioButtonText>
+									<RadioButton
+										value="Não tratado"
+										status={
+											tratado === !true
+												? 'checked'
+												: 'unchecked'
+										}
+										onPress={() => setTratado(false)}
+									/>
+								</CheckBoxOption>
+							</CheckBoxContainer>
+
+							{userPreferences.isPRO && (
+								<>
+									<CheckBoxContainer>
+										<CheckBoxGroupTitle>
+											{strings.View_Batch_WhereIs}
+										</CheckBoxGroupTitle>
+										<CheckBoxOption>
+											<RadioButtonText>
+												{
+													strings.View_Batch_WhereIs_Shelf
+												}
+											</RadioButtonText>
+											<RadioButton
+												status={
+													whereIs === 'shelf'
+														? 'checked'
+														: 'unchecked'
+												}
+												onPress={() => {
+													if (whereIs === 'shelf') {
+														setWhereIs(null);
+													} else {
+														setWhereIs('shelf');
+													}
+												}}
+											/>
+										</CheckBoxOption>
+
+										<CheckBoxOption>
+											<RadioButtonText>
+												{
+													strings.View_Batch_WhereIs_Stock
+												}
+											</RadioButtonText>
+											<RadioButton
+												status={
+													whereIs === 'stock'
+														? 'checked'
+														: 'unchecked'
+												}
+												onPress={() => {
+													if (whereIs === 'stock') {
+														setWhereIs(null);
+													} else {
+														setWhereIs('stock');
+													}
+												}}
+											/>
+										</CheckBoxOption>
+									</CheckBoxContainer>
+								</>
+							)}
+						</RadioButtonGroup>
+
+						<Switch
+							text={strings.View_Batch_ExtraInfo}
+							value={additionalData}
+							onValueChange={() =>
+								setAdditionalData(!additionalData)
+							}
+						/>
+
+						{additionalData && (
+							<TextField
+								placeholder="Dados adicionais para o produto"
+								value={additionalDataText}
+								onChangeText={(value: string) =>
+									setAdditionalDataText(value)
+								}
+							/>
+						)}
 
 						<ExpDateGroup>
 							<ExpDateLabel>
@@ -339,7 +434,7 @@ const EditBatch: React.FC = () => {
 							</ExpDateLabel>
 							<CustomDatePicker
 								date={expDate}
-								onDateChange={value => {
+								onDateChange={(value: Date) => {
 									setExpDate(value);
 								}}
 								locale={locale}
@@ -371,11 +466,11 @@ const EditBatch: React.FC = () => {
 				}}
 				style={{ backgroundColor: theme.colors.productBackground }}
 			>
-				<Dialog.Title style={{ color: theme.colors.text }}>
+				<Dialog.Title style={{ color: theme.colors.productCardText }}>
 					{strings.View_EditBatch_WarningDelete_Title}
 				</Dialog.Title>
 				<Dialog.Content>
-					<Text style={{ color: theme.colors.text }}>
+					<Text style={{ color: theme.colors.productCardText }}>
 						{strings.View_EditBatch_WarningDelete_Message}
 					</Text>
 				</Dialog.Content>

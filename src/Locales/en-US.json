@@ -127,6 +127,7 @@
     "View_EditBatch_InputPlacehoder_Batch": "Batch",
     "View_EditBatch_InputPlacehoder_Amount": "Amount",
     "View_EditBatch_InputPlacehoder_UnitPrice": "Unit price",
+    "View_EditBatch_Status": "Status",
     "View_EditBatch_RadioButton_Treated": "Treated",
     "View_EditBatch_RadioButton_NotTreated": "Not Treaded",
     "View_EditBatch_CalendarTitle": "Expiration date",
@@ -156,6 +157,10 @@
     "View_Batch_UnitTempPrice": "Temp unit price",
     "View_Batch_TotalPrice": "Total price",
     "View_Batch_TotalPriceDiscount": "Total price with discount",
+    "View_Batch_WhereIs": "Localization",
+    "View_Batch_WhereIs_Stock": "Stock",
+    "View_Batch_WhereIs_Shelf": "Shelf",
+    "View_Batch_ExtraInfo": "Extra info",
     "View_Batch_Button_ShareWithAnotherApps": "Share with anothers apps",
 
     "View_Batch_Discount_PageTitle": "Discount",
