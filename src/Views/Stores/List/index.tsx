@@ -16,7 +16,6 @@ import {
 	InputContainer,
 	InputTextContainer,
 	InputText,
-	List,
 	Icons,
 	LoadingIcon,
 	InputTextTip,
@@ -24,6 +23,8 @@ import {
 	ListItemTitle,
 	AddButtonContainer,
 	AddNewItemContent,
+	ListTitle,
+	Content,
 } from '@styles/Views/GenericListPage';
 
 const ListView: React.FC = () => {
@@ -37,7 +38,7 @@ const ListView: React.FC = () => {
 
 	const [stores, setStores] = useState<Array<IStore>>([]);
 
-	const handleOnTextChange = useCallback(value => {
+	const handleOnTextChange = useCallback((value: string) => {
 		setInputHasError(false);
 		setInputErrorMessage('');
 		setNewStoreName(value);
@@ -77,29 +78,6 @@ const ListView: React.FC = () => {
 		[navigate]
 	);
 
-	const renderCategory = useCallback(
-		({ item }) => {
-			let storeToNavigate: string;
-
-			if (item.id) {
-				storeToNavigate = item.id;
-			} else if (!item.id && item.name) {
-				storeToNavigate = item.name;
-			} else {
-				storeToNavigate = item;
-			}
-
-			return (
-				<ListItemContainer
-					onPress={() => handleNavigateToStore(storeToNavigate)}
-				>
-					<ListItemTitle>{item.name}</ListItemTitle>
-				</ListItemContainer>
-			);
-		},
-		[handleNavigateToStore]
-	);
-
 	useEffect(() => {
 		const unsubscribe = addListener('focus', () => {
 			getAllStores()
@@ -123,43 +101,65 @@ const ListView: React.FC = () => {
 
 	return (
 		<Container>
-			<Header title={strings.View_Store_List_PageTitle} />
+			<Content>
+				<Header title={strings.View_Store_List_PageTitle} />
 
-			<AddNewItemContent>
-				<InputContainer>
-					<InputTextContainer hasError={inputHasError}>
-						<InputText
-							value={newStoreName}
-							onChangeText={handleOnTextChange}
-							placeholder={
-								strings.View_Store_List_AddNewStore_Placeholder
+				<AddNewItemContent>
+					<InputContainer>
+						<InputTextContainer hasError={inputHasError}>
+							<InputText
+								value={newStoreName}
+								onChangeText={handleOnTextChange}
+								placeholder={
+									strings.View_Store_List_AddNewStore_Placeholder
+								}
+							/>
+						</InputTextContainer>
+
+						<AddButtonContainer
+							onPress={handleSaveStore}
+							enabled={!isAdding}
+						>
+							{isAdding ? (
+								<LoadingIcon />
+							) : (
+								<Icons name="add-circle-outline" />
+							)}
+						</AddButtonContainer>
+					</InputContainer>
+
+					{!!inputErrorMessage && (
+						<InputTextTip>{inputErrorMessage}</InputTextTip>
+					)}
+				</AddNewItemContent>
+
+				<ListTitle>{strings.View_Store_List_PageTitle}</ListTitle>
+
+				{stores.map(store => {
+					let storeToNavigate: string | IStore;
+
+					if (store.id) {
+						storeToNavigate = store.id;
+					} else if (!store.id && store.name) {
+						storeToNavigate = store.name;
+					} else {
+						storeToNavigate = store;
+					}
+
+					return (
+						<ListItemContainer
+							key={store.id}
+							onPress={() =>
+								handleNavigateToStore(storeToNavigate)
 							}
-						/>
-					</InputTextContainer>
+						>
+							<ListItemTitle>{store.name}</ListItemTitle>
+						</ListItemContainer>
+					);
+				})}
 
-					<AddButtonContainer
-						onPress={handleSaveStore}
-						enabled={!isAdding}
-					>
-						{isAdding ? (
-							<LoadingIcon />
-						) : (
-							<Icons name="add-circle-outline" />
-						)}
-					</AddButtonContainer>
-				</InputContainer>
-
-				{!!inputErrorMessage && (
-					<InputTextTip>{inputErrorMessage}</InputTextTip>
-				)}
-			</AddNewItemContent>
-
-			<List
-				data={stores}
-				keyExtractor={(item, index) => String(index)}
-				renderItem={renderCategory}
-				ListFooterComponent={PaddingComponent}
-			/>
+				<PaddingComponent />
+			</Content>
 		</Container>
 	);
 };
