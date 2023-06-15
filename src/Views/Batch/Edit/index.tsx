@@ -394,20 +394,26 @@ const EditBatch: React.FC = () => {
 						)}
 					</RadioButtonGroup>
 
-					<Switch
-						text={strings.View_Batch_ExtraInfo}
-						value={additionalData}
-						onValueChange={() => setAdditionalData(!additionalData)}
-					/>
+					{userPreferences.isPRO && (
+						<>
+							<Switch
+								text={strings.View_Batch_ExtraInfo}
+								value={additionalData}
+								onValueChange={() =>
+									setAdditionalData(!additionalData)
+								}
+							/>
 
-					{additionalData && (
-						<TextField
-							placeholder="Dados adicionais para o produto"
-							value={additionalDataText}
-							onChangeText={(value: string) =>
-								setAdditionalDataText(value)
-							}
-						/>
+							{additionalData && (
+								<TextField
+									placeholder={strings.View_Batch_ExtraInfo}
+									value={additionalDataText}
+									onChangeText={(value: string) =>
+										setAdditionalDataText(value)
+									}
+								/>
+							)}
+						</>
 					)}
 
 					<ExpDateGroup>
