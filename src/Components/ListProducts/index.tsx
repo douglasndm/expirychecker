@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+	Dimensions,
 	FlatList,
 	NativeScrollEvent,
 	NativeSyntheticEvent,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Dialog from 'react-native-dialog';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
@@ -17,6 +17,7 @@ import { sortByBatchesExpType } from '@expirychecker/Functions/Products/SortBatc
 
 import GenericButton from '@components/Button';
 import ActionButton from '@components/ActionButton';
+import Dialog from '@components/Dialog';
 import PaddingComponent from '@components/PaddingComponent';
 
 import ProductItem from './ProductContainer';
@@ -74,7 +75,7 @@ const ListProducts: React.FC<RequestProps> = ({
 	}, [products]);
 
 	useEffect(() => {
-		setLimitedProducts(sortedProducts.slice(0, 10));
+		setLimitedProducts(sortedProducts.slice(0, 20));
 	}, [sortedProducts]);
 
 	useEffect(() => {
@@ -84,7 +85,7 @@ const ListProducts: React.FC<RequestProps> = ({
 	const loadMoreProducts = useCallback(() => {
 		const nextPage = page + 1;
 
-		setLimitedProducts(sortedProducts.slice(0, 10 * nextPage));
+		setLimitedProducts(sortedProducts.slice(0, 20 * nextPage));
 
 		setPage(nextPage);
 	}, [page, sortedProducts]);
@@ -244,34 +245,24 @@ const ListProducts: React.FC<RequestProps> = ({
 				onEndReached={loadMoreProducts}
 				onEndReachedThreshold={0.5}
 				onScroll={onScroll}
+				numColumns={Dimensions.get('screen').width > 600 ? 2 : 1}
 			/>
 
-			<Dialog.Container
+			<Dialog
 				visible={deleteModal}
-				onBackdropPress={handleSwitchDeleteModal}
-			>
-				<Dialog.Title>
-					{strings.ListProductsComponent_DeleteProducts_Modal_Title}
-				</Dialog.Title>
-				<Dialog.Description>
-					{
-						strings.ListProductsComponent_DeleteProducts_Modal_Description
-					}
-				</Dialog.Description>
-				<Dialog.Button
-					label={
-						strings.ListProductsComponent_DeleteProducts_Modal_Button_Keep
-					}
-					onPress={handleSwitchDeleteModal}
-				/>
-				<Dialog.Button
-					label={
-						strings.ListProductsComponent_DeleteProducts_Modal_Button_Delete
-					}
-					color="red"
-					onPress={handleDeleteMany}
-				/>
-			</Dialog.Container>
+				onDismiss={handleSwitchDeleteModal}
+				onConfirm={handleDeleteMany}
+				title={strings.ListProductsComponent_DeleteProducts_Modal_Title}
+				description={
+					strings.ListProductsComponent_DeleteProducts_Modal_Description
+				}
+				confirmText={
+					strings.ListProductsComponent_DeleteProducts_Modal_Button_Delete
+				}
+				cancelText={
+					strings.ListProductsComponent_DeleteProducts_Modal_Button_Keep
+				}
+			/>
 		</Container>
 	);
 };
