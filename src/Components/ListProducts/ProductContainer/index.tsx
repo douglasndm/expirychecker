@@ -5,7 +5,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import ProductCard from '@expirychecker/Components/ListProducts/ProductCard';
 import FastSubscription from '@expirychecker/Components/FastSubscription';
 
-import { Container } from './styles';
+import { Container } from '@components/Product/List/Card/styles';
 
 interface RequestProps {
 	product: IProduct;
