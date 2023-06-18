@@ -9,11 +9,21 @@ export const Container = styled.SafeAreaView`
 	background: ${({ theme }) => theme.colors.background};
 `;
 
-export const PageContent = styled.ScrollView``;
+export const PageContent = styled.ScrollView.attrs(() => ({
+	contentContainerStyle: {
+		alignItems: 'center',
+	},
+}))``;
 
 export const InputContainer = styled.View`
 	margin-top: 25px;
 	padding: 0 10px;
+	width: ${Dimensions.get('screen').width}px;
+
+	${Dimensions.get('screen').width > 700 &&
+	css`
+		width: ${Dimensions.get('screen').width / 2 + 100}px;
+	`}
 `;
 
 export const InputGroup = styled.View`
@@ -50,8 +60,14 @@ export const CameraButtonContainer = styled.TouchableOpacity`
 	margin-left: 15px;
 `;
 
-export const Icon = styled(Ionicons).attrs(props => ({
-	color: props.theme.colors.text,
+interface IconProps {
+	insideInput?: boolean;
+}
+
+export const Icon = styled(Ionicons).attrs<IconProps>(props => ({
+	color: props.insideInput
+		? props.theme.colors.inputText
+		: props.theme.colors.text,
 }))``;
 
 export const ImageContainer = styled.View`

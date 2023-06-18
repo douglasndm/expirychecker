@@ -249,7 +249,7 @@ const Inputs: React.FC<InputsRequest> = ({
 				/>
 
 				<InputTextIconContainer onPress={enableReader}>
-					<Icon name="barcode-outline" size={34} />
+					<Icon name="barcode-outline" size={34} insideInput />
 				</InputTextIconContainer>
 
 				{userPreferences.isPRO && (

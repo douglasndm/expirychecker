@@ -300,12 +300,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 						/>
 					) : (
 						<Container>
+							<Header
+								title={strings.View_EditProduct_PageTitle}
+								noDrawer
+							/>
 							<PageContent>
-								<Header
-									title={strings.View_EditProduct_PageTitle}
-									noDrawer
-								/>
-
 								{userPreferences.isPRO && !!photoPath && (
 									<ImageContainer>
 										<ProductImageContainer
