@@ -6,8 +6,6 @@ import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import Logo from './Logo';
-
 import {
 	Container,
 	MainMenuContainer,
@@ -20,7 +18,9 @@ import {
 	LabelGroup,
 	LabelContainer,
 	Label,
-} from './styles';
+} from '@components/Menu/Drawer/styles';
+
+import Logo from './Logo';
 
 const DrawerMenu: React.FC<DrawerContentOptions> = (
 	props: DrawerContentOptions

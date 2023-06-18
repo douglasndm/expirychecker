@@ -48,6 +48,7 @@
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
         "@shared/*": ["../shared/src/*"],
+        "@assets/*": ["../shared/src/Assets/*"],
         "@components/*": ["../shared/src/Components/*"],
         "@utils/*": ["../shared/src/Utils/*"],
         "@views/*": ["../shared/src/Views/*"],
