@@ -16,15 +16,14 @@ import { deleteManyProducts } from '@expirychecker/Utils/Products';
 import { sortByBatchesExpType } from '@expirychecker/Functions/Products/SortBatches';
 
 import GenericButton from '@components/Button';
-import ActionButton from '@components/ActionButton';
 import Dialog from '@components/Dialog';
 import PaddingComponent from '@components/PaddingComponent';
+import ActionButtons from '@components/Product/List/ActionButtons';
 
 import ProductItem from './ProductContainer';
 
 import {
 	Container,
-	ActionButtonsContainer,
 	ProductContainer,
 	SelectButtonContainer,
 	SelectButton,
@@ -215,24 +214,12 @@ const ListProducts: React.FC<RequestProps> = ({
 
 	return (
 		<Container>
-			{selectMode && (
-				<ActionButtonsContainer>
-					<ActionButton
-						text={
-							strings.ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected
-						}
-						iconName="trash-outline"
-						onPress={handleSwitchDeleteModal}
-					/>
-					<ActionButton
-						text={
-							strings.ListProductsComponent_DeleteProducts_ActionBar_Cancel
-						}
-						iconName="exit-outline"
-						onPress={handleDisableSelectMode}
-					/>
-				</ActionButtonsContainer>
-			)}
+			<ActionButtons
+				selectMode={selectMode}
+				onCancelDelete={handleDisableSelectMode}
+				onConfirmDelete={handleSwitchDeleteModal}
+			/>
+
 			<FlatList
 				ref={listRef}
 				data={limitedProducts}

@@ -43,8 +43,6 @@
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
     "ListProductsComponent_Button_AddNewProduct": "Adicionar novo produto",
-    "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Apagar selecionados",
-    "ListProductsComponent_DeleteProducts_ActionBar_Cancel": "Cancelar seleção",
     "ListProductsComponent_DeleteProducts_Modal_Title": "Apagar vários produtos",
     "ListProductsComponent_DeleteProducts_Modal_Description": "Você está preste a apagar VÁRIOS PRODUTOS, essa ação não pode ser revertida",
     "ListProductsComponent_DeleteProducts_Modal_Button_Keep": "Manter produtos",
