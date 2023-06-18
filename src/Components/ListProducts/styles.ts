@@ -7,12 +7,6 @@ export const Container = styled.View`
 	align-items: center;
 `;
 
-export const ActionButtonsContainer = styled.View`
-	flex-direction: column;
-	align-items: flex-end;
-	margin: 5px 10px;
-`;
-
 export const EmptyListText = styled.Text`
 	margin-top: 10px;
 	margin-left: 15px;
