@@ -33,7 +33,7 @@ import {
 	ExpDateGroup,
 	ExpDateLabel,
 	CustomDatePicker,
-} from '@expirychecker/Views/Product/Add/styles';
+} from '@views/Product/Add/styles';
 import { InputCodeText } from '@expirychecker/Views/Product/Add/Components/Inputs/Code/styles';
 import {
 	CheckBoxContainer,

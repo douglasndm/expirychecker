@@ -16,9 +16,9 @@ import { findProductByCode } from '@expirychecker/Functions/Products/FindByCode'
 
 import BarCodeReader from '@components/BarCodeReader';
 
-import FillModal from '../../FillModal';
+import { Icon, InputTextTip } from '@views/Product/Add/styles';
 
-import { Icon, InputTextTip } from '../../../styles';
+import FillModal from '../../FillModal';
 
 import {
 	InputCodeTextContainer,
