@@ -31,8 +31,6 @@ import BrandSelect, {
 } from '@expirychecker/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
-import InputCode, { completeInfoProps } from './Components/Inputs/Code';
-import Interstitial, { IInterstitialRef } from './Components/Interstitial';
 
 import {
 	Container,
@@ -52,7 +50,10 @@ import {
 	CustomDatePicker,
 	ImageContainer,
 	Icon,
-} from './styles';
+} from '@views/Product/Add/styles';
+
+import InputCode, { completeInfoProps } from './Components/Inputs/Code';
+import Interstitial, { IInterstitialRef } from './Components/Interstitial';
 
 interface Request {
 	route: {

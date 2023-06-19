@@ -49,7 +49,7 @@ import {
 	ProductImageContainer,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
-} from '../Add/styles';
+} from '@views/Product/Add/styles';
 
 import {
 	InputCodeText,
