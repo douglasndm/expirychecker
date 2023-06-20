@@ -1,22 +1,21 @@
-import { addDays, isPast, startOfDay } from 'date-fns';
+import { addDays, endOfDay, isPast, startOfDay } from 'date-fns';
 
-import strings from '../Locales';
+import strings from '@expirychecker/Locales';
+
+import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 
 import { getHowManyDaysToBeNextExp } from './Settings';
-import {
-	getAllProducts,
-	removeAllLotesTratadosFromAllProduts,
-} from './Products';
+import { removeAllLotesTratadosFromAllProduts } from './Products';
 
 export async function getNotificationForAllProductsCloseToExp(): Promise<INotification | null> {
 	const daysToBeNext = await getHowManyDaysToBeNextExp();
 
-	const prods = await getAllProducts({
+	const prods = await getAllProductsAsync({
 		removeProductsWithoutBatches: true,
 	});
 	const products = removeAllLotesTratadosFromAllProduts(prods);
 
-	const productsNextFiltered = products.map(p => {
+	const productsNextFiltered: IProduct[] = products.map(p => {
 		const lotes = p.batches.slice();
 
 		const lotesFiltered = lotes.filter(l => {
@@ -42,15 +41,18 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
 
 		return {
 			...p,
-			lotes: lotesFiltered,
+			batches: lotesFiltered,
 		};
 	});
 
-	const productsVencidosFiltered = products.map(p => {
+	const productsVencidosFiltered: IProduct[] = products.map(p => {
 		const lotes = p.batches.slice();
 
 		const lotesFiltered = lotes.filter(l => {
-			if (isPast(l.exp_date) && l.status !== 'Tratado') {
+			if (
+				isPast(endOfDay(l.exp_date)) &&
+				l.status?.toLowerCase() !== 'tratado'
+			) {
 				return true;
 			}
 
@@ -59,7 +61,7 @@ export async function getNotificationForAllProductsCloseToExp(): Promise<INotifi
 
 		return {
 			...p,
-			lotes: lotesFiltered,
+			batches: lotesFiltered,
 		};
 	});
 
