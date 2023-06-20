@@ -256,9 +256,8 @@ const EditBatch: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
+			<Header title={strings.View_EditBatch_PageTitle} noDrawer />
 			<PageContent>
-				<Header title={strings.View_EditBatch_PageTitle} noDrawer />
-
 				<InputContainer>
 					<ProductHeader>
 						{!!product && <ProductName>{product.name}</ProductName>}
