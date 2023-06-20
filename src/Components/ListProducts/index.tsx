@@ -158,7 +158,9 @@ const ListProducts: React.FC<RequestProps> = ({
 				>
 					{selectMode && (
 						<SelectButtonContainer>
-							<SelectButton>
+							<SelectButton
+								onPress={() => switchSelectedItem(product.id)}
+							>
 								{isChecked ? (
 									<SelectIcon name="checkmark-circle-outline" />
 								) : (
