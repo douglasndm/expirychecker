@@ -20,6 +20,7 @@ import { createLote } from '@expirychecker/Functions/Lotes';
 import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Image';
 
 import Input from '@components/InputText';
+import BarCodeReader from '@components/BarCodeReader';
 import Header from '@components/Header';
 import GenericButton from '@components/Button';
 import PaddingComponent from '@components/PaddingComponent';
@@ -52,7 +53,10 @@ import {
 	Icon,
 } from '@views/Product/Add/styles';
 
-import InputCode, { completeInfoProps } from './Components/Inputs/Code';
+import InputCode, {
+	completeInfoProps,
+	InputsRequestRef,
+} from './Components/Inputs/Code';
 import Interstitial, { IInterstitialRef } from './Components/Interstitial';
 
 interface Request {
@@ -71,6 +75,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 	const InterstitialRef = useRef<IInterstitialRef>();
 	const BrandsPickerRef = useRef<IBrandPickerRef>();
+	const BarCodeInputRef = useRef<InputsRequestRef>(null);
 
 	const locale = useMemo(() => {
 		if (getLocales()[0].languageCode === 'en') {
@@ -109,7 +114,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		}
 		return '';
 	});
-
 	const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
 		if (route.params && route.params.brand) {
 			return route.params.brand;
@@ -124,12 +128,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	});
 
 	const [daysNext, setDaysNext] = useState<number | undefined>();
-
 	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
-
 	const [existentProduct, setExistentProduct] = useState<boolean>(false);
 
 	const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
 	const handleSave = useCallback(async () => {
 		if (!name || name.trim() === '') {
@@ -262,6 +265,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		setIsCameraEnabled(true);
 	}, [photoPath, navigate, userPreferences.isPRO]);
 
+	const handleSwitchEnableBarCode = useCallback(() => {
+		const tmp = isBarCodeEnabled;
+		setIsBarCodeEnabled(!tmp);
+	}, [isBarCodeEnabled]);
+
 	const handleDisableCamera = useCallback(() => {
 		setIsCameraEnabled(false);
 	}, []);
@@ -305,171 +313,177 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		[]
 	);
 
+	const handleOnCodeRead = async (codeRead: string) => {
+		setCode(codeRead);
+		setIsBarCodeEnabled(false);
+
+		if (BarCodeInputRef.current) {
+			await BarCodeInputRef?.current.handleOnCodeRead(codeRead);
+		}
+	};
+
+	if (isCameraEnabled) {
+		return (
+			<Camera
+				onPhotoTaked={onPhotoTaked}
+				onBackButtonPressed={handleDisableCamera}
+			/>
+		);
+	}
+
 	return (
-		<>
-			{isCameraEnabled ? (
-				<Camera
-					onPhotoTaked={onPhotoTaked}
-					onBackButtonPressed={handleDisableCamera}
+		<Container>
+			{isBarCodeEnabled && (
+				<BarCodeReader
+					onClose={handleSwitchEnableBarCode}
+					onCodeRead={handleOnCodeRead}
 				/>
-			) : (
-				<Container>
-					<Interstitial ref={InterstitialRef} />
+			)}
+			<Interstitial ref={InterstitialRef} />
 
-					<Header
-						title={strings.View_AddProduct_PageTitle}
-						noDrawer
+			<Header title={strings.View_AddProduct_PageTitle} noDrawer />
+			<PageContent>
+				{userPreferences.isPRO && !!photoPath && (
+					<ImageContainer>
+						<ProductImageContainer onPress={handleEnableCamera}>
+							<ProductImage
+								source={{
+									uri: `file://${photoPath}`,
+								}}
+							/>
+						</ProductImageContainer>
+					</ImageContainer>
+				)}
+
+				<InputContainer>
+					<InputGroup>
+						<InputTextContainer hasError={nameFieldError}>
+							<Input
+								placeholder={
+									strings.View_AddProduct_InputPlacehoder_Name
+								}
+								value={name}
+								onChange={handleNameChange}
+							/>
+						</InputTextContainer>
+
+						<CameraButtonContainer onPress={handleEnableCamera}>
+							<Icon name="camera-outline" size={36} />
+						</CameraButtonContainer>
+					</InputGroup>
+					{nameFieldError && (
+						<InputTextTip>
+							{strings.View_AddProduct_AlertTypeProductName}
+						</InputTextTip>
+					)}
+
+					<InputCode
+						ref={BarCodeInputRef}
+						code={code}
+						setCode={setCode}
+						onDuplicateProduct={handleDuplicate}
+						onCompleteInfo={onCompleteInfo}
+						BrandsPickerRef={BrandsPickerRef}
+						selectedStoreId={selectedStore || undefined}
+						onSwitchEnable={handleSwitchEnableBarCode}
 					/>
-					<PageContent>
-						{userPreferences.isPRO && !!photoPath && (
-							<ImageContainer>
-								<ProductImageContainer
-									onPress={handleEnableCamera}
-								>
-									<ProductImage
-										source={{
-											uri: `file://${photoPath}`,
-										}}
-									/>
-								</ProductImageContainer>
-							</ImageContainer>
-						)}
 
-						<InputContainer>
-							<InputGroup>
-								<InputTextContainer hasError={nameFieldError}>
-									<Input
-										placeholder={
-											strings.View_AddProduct_InputPlacehoder_Name
-										}
-										value={name}
-										onChange={handleNameChange}
-									/>
-								</InputTextContainer>
+					<MoreInformationsContainer>
+						<MoreInformationsTitle>
+							{strings.View_AddProduct_MoreInformation_Label}
+						</MoreInformationsTitle>
 
-								<CameraButtonContainer
-									onPress={handleEnableCamera}
-								>
-									<Icon name="camera-outline" size={36} />
-								</CameraButtonContainer>
-							</InputGroup>
-							{nameFieldError && (
-								<InputTextTip>
-									{
-										strings.View_AddProduct_AlertTypeProductName
-									}
-								</InputTextTip>
-							)}
-
-							<InputCode
-								code={code}
-								setCode={setCode}
-								onDuplicateProduct={handleDuplicate}
-								onCompleteInfo={onCompleteInfo}
-								BrandsPickerRef={BrandsPickerRef}
-								selectedStoreId={selectedStore || undefined}
+						<InputGroup>
+							<Input
+								contentStyle={{
+									flex: 5,
+									marginRight: 10,
+								}}
+								placeholder={
+									strings.View_AddProduct_InputPlacehoder_Batch
+								}
+								value={lote}
+								onChange={value => setLote(value)}
 							/>
 
-							<MoreInformationsContainer>
-								<MoreInformationsTitle>
-									{
-										strings.View_AddProduct_MoreInformation_Label
-									}
-								</MoreInformationsTitle>
+							<Input
+								contentStyle={{
+									flex: 4,
+								}}
+								placeholder={
+									strings.View_AddProduct_InputPlacehoder_Amount
+								}
+								keyboardType="numeric"
+								value={String(amount)}
+								onChange={handleAmountChange}
+							/>
+						</InputGroup>
 
-								<InputGroup>
-									<Input
-										contentStyle={{
-											flex: 5,
-											marginRight: 10,
-										}}
-										placeholder={
-											strings.View_AddProduct_InputPlacehoder_Batch
-										}
-										value={lote}
-										onChange={value => setLote(value)}
-									/>
-
-									<Input
-										contentStyle={{
-											flex: 4,
-										}}
-										placeholder={
-											strings.View_AddProduct_InputPlacehoder_Amount
-										}
-										keyboardType="numeric"
-										value={String(amount)}
-										onChange={handleAmountChange}
-									/>
-								</InputGroup>
-
-								<Currency
-									value={price}
-									onChangeValue={handlePriceChange}
-									delimiter={currency === 'BRL' ? ',' : '.'}
-									placeholder={
-										strings.View_AddProduct_InputPlacehoder_UnitPrice
-									}
-								/>
-
-								{userPreferences.isPRO && (
-									<>
-										<DaysToBeNext onChange={setDaysNext} />
-
-										<CategorySelect
-											onChange={setSelectedCategory}
-											defaultValue={selectedCategory}
-											containerStyle={{
-												marginBottom: 10,
-											}}
-										/>
-
-										<BrandSelect
-											ref={BrandsPickerRef}
-											onChange={setSelectedBrand}
-											defaultValue={selectedBrand}
-											containerStyle={{
-												marginBottom: 10,
-											}}
-										/>
-									</>
-								)}
-
-								{userPreferences.multiplesStores && (
-									<StoreSelect
-										defaultValue={selectedStore}
-										onChange={setSelectedStore}
-									/>
-								)}
-							</MoreInformationsContainer>
-
-							<ExpDateGroup>
-								<ExpDateLabel>
-									{strings.View_AddProduct_CalendarTitle}
-								</ExpDateLabel>
-
-								<CustomDatePicker
-									accessibilityLabel={
-										strings.View_AddProduct_CalendarAccessibilityDescription
-									}
-									date={expDate}
-									onDateChange={value => {
-										setExpDate(value);
-									}}
-									locale={locale}
-								/>
-							</ExpDateGroup>
-						</InputContainer>
-
-						<GenericButton
-							text={strings.View_AddProduct_Button_Save}
-							onPress={handleSave}
+						<Currency
+							value={price}
+							onChangeValue={handlePriceChange}
+							delimiter={currency === 'BRL' ? ',' : '.'}
+							placeholder={
+								strings.View_AddProduct_InputPlacehoder_UnitPrice
+							}
 						/>
-						<PaddingComponent />
-					</PageContent>
-				</Container>
-			)}
-		</>
+
+						{userPreferences.isPRO && (
+							<>
+								<DaysToBeNext onChange={setDaysNext} />
+
+								<CategorySelect
+									onChange={setSelectedCategory}
+									defaultValue={selectedCategory}
+									containerStyle={{
+										marginBottom: 10,
+									}}
+								/>
+
+								<BrandSelect
+									ref={BrandsPickerRef}
+									onChange={setSelectedBrand}
+									defaultValue={selectedBrand}
+									containerStyle={{
+										marginBottom: 10,
+									}}
+								/>
+							</>
+						)}
+
+						{userPreferences.multiplesStores && (
+							<StoreSelect
+								defaultValue={selectedStore}
+								onChange={setSelectedStore}
+							/>
+						)}
+					</MoreInformationsContainer>
+
+					<ExpDateGroup>
+						<ExpDateLabel>
+							{strings.View_AddProduct_CalendarTitle}
+						</ExpDateLabel>
+
+						<CustomDatePicker
+							accessibilityLabel={
+								strings.View_AddProduct_CalendarAccessibilityDescription
+							}
+							date={expDate}
+							onDateChange={value => {
+								setExpDate(value);
+							}}
+							locale={locale}
+						/>
+					</ExpDateGroup>
+				</InputContainer>
+
+				<GenericButton
+					text={strings.View_AddProduct_Button_Save}
+					onPress={handleSave}
+				/>
+				<PaddingComponent />
+			</PageContent>
+		</Container>
 	);
 };
 
