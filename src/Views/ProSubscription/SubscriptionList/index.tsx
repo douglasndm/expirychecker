@@ -31,6 +31,8 @@ import {
 	ButtonText,
 	TextSubscription,
 	LoadingIndicator,
+	ButtonError,
+	ButtonErrorText,
 } from './styles';
 
 const SubscriptionList: React.FC = () => {
@@ -324,11 +326,11 @@ const SubscriptionList: React.FC = () => {
 							</>
 						</Container>
 					) : (
-						<ButtonSubscription disabled>
-							<TextSubscription>
+						<ButtonError disabled>
+							<ButtonErrorText>
 								{strings.View_ProPage_SubscriptionNotAvailable}
-							</TextSubscription>
-						</ButtonSubscription>
+							</ButtonErrorText>
+						</ButtonError>
 					)}
 				</>
 			)}

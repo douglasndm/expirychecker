@@ -73,3 +73,11 @@ export const LoadingIndicator = styled.ActivityIndicator.attrs(() => ({
 	color: '#ffffff',
 	size: 36,
 }))``;
+
+export const ButtonError = styled(ButtonSubscription)`
+	background-color: red;
+`;
+
+export const ButtonErrorText = styled(TextSubscription)`
+	color: #ffffff;
+`;
