@@ -16,7 +16,7 @@ import { findProductByCode } from '@expirychecker/Functions/Products/FindByCode'
 
 import { Icon, InputTextTip } from '@views/Product/Add/styles';
 
-import FillModal from '../../FillModal';
+import FillModal from '@shared/Views/Product/Add/Components/FillModal';
 
 import {
 	InputCodeTextContainer,
