@@ -13,7 +13,12 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
-import { BannerAdSize } from 'react-native-google-mobile-ads';
+import {
+	BannerAdSize,
+	AdsConsent,
+	AdsConsentStatus,
+	AdsConsentDebugGeography,
+} from 'react-native-google-mobile-ads';
 import SplashScreen from 'react-native-splash-screen';
 
 import strings from '@expirychecker/Locales';
@@ -94,6 +99,23 @@ const Home: React.FC = () => {
 			});
 		}
 	}, [reset]);
+
+	const adConsent = useCallback(async () => {
+		const consentInfo = await AdsConsent.requestInfoUpdate({
+			// debugGeography: AdsConsentDebugGeography.EEA,
+		});
+
+		if (
+			consentInfo.isConsentFormAvailable &&
+			consentInfo.status === AdsConsentStatus.REQUIRED
+		) {
+			const { status } = await AdsConsent.showForm();
+		}
+	}, []);
+
+	useEffect(() => {
+		adConsent();
+	}, [adConsent]);
 
 	const loadData = useCallback(async () => {
 		try {
