@@ -32,6 +32,8 @@ allprojects {
         maven {
             url "https://maven.google.com"
         }
+
+        maven { url "https://storage.googleapis.com/logrocket-maven/" }
     }
 }
 
