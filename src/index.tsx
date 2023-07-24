@@ -19,6 +19,7 @@ import './Locales';
 
 import '@services/AppCheck';
 import '@services/Firebase/InAppMessaging';
+import './Services/LogRocket';
 import './Services/Adjust';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
