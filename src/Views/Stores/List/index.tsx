@@ -101,9 +101,8 @@ const ListView: React.FC = () => {
 
 	return (
 		<Container>
+			<Header title={strings.View_Store_List_PageTitle} />
 			<Content>
-				<Header title={strings.View_Store_List_PageTitle} />
-
 				<AddNewItemContent>
 					<InputContainer>
 						<InputTextContainer hasError={inputHasError}>

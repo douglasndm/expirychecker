@@ -22,7 +22,7 @@ import {
 	ActionsButtonContainer,
 	InputTextContainer,
 	InputTextTip,
-} from './styles';
+} from '@views/Category/Edit/styles';
 
 interface Props {
 	id: string;

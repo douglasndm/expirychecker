@@ -15,7 +15,11 @@ import InputText from '@components/InputText';
 import ActionButton from '@components/ActionButton';
 import Dialog from '@components/Dialog';
 
-import { Container, Content, ActionsButtonContainer } from './styles';
+import {
+	Container,
+	Content,
+	ActionsButtonContainer,
+} from '@views/Store/Edit/styles';
 
 interface Props {
 	store_id: string;
