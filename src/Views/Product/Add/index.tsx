@@ -22,7 +22,6 @@ import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Imag
 import Input from '@components/InputText';
 import BarCodeReader from '@components/BarCodeReader';
 import Header from '@components/Header';
-import GenericButton from '@components/Button';
 import PaddingComponent from '@components/PaddingComponent';
 
 import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
@@ -341,7 +340,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			)}
 			<Interstitial ref={InterstitialRef} />
 
-			<Header title={strings.View_AddProduct_PageTitle} noDrawer />
+			<Header
+				title={strings.View_AddProduct_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleSave,
+					},
+				]}
+			/>
 			<PageContent>
 				{userPreferences.isPRO && !!photoPath && (
 					<ImageContainer>
@@ -477,10 +485,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 					</ExpDateGroup>
 				</InputContainer>
 
-				<GenericButton
-					text={strings.View_AddProduct_Button_Save}
-					onPress={handleSave}
-				/>
 				<PaddingComponent />
 			</PageContent>
 		</Container>

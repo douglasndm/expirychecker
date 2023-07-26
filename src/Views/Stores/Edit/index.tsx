@@ -12,14 +12,9 @@ import {
 
 import Header from '@components/Header';
 import InputText from '@components/InputText';
-import ActionButton from '@components/ActionButton';
 import Dialog from '@components/Dialog';
 
-import {
-	Container,
-	Content,
-	ActionsButtonContainer,
-} from '@views/Store/Edit/styles';
+import { Container, Content } from '@views/Store/Edit/styles';
 
 interface Props {
 	store_id: string;
@@ -101,8 +96,8 @@ const Edit: React.FC = () => {
 	}, []);
 
 	const handleSwitchShowDelete = useCallback(() => {
-		setDeleteComponentVisible(!deleteComponentVisible);
-	}, [deleteComponentVisible]);
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
 
 	return (
 		<Container>
@@ -112,6 +107,19 @@ const Edit: React.FC = () => {
 					storeName
 				)}
 				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: handleSwitchShowDelete,
+					},
+				]}
 			/>
 
 			<Content>
@@ -120,19 +128,6 @@ const Edit: React.FC = () => {
 					value={storeName}
 					onChange={handleTextChange}
 				/>
-
-				<ActionsButtonContainer>
-					<ActionButton
-						text={strings.View_EditProduct_Button_Save}
-						iconName="save-outline"
-						onPress={handleUpdate}
-					/>
-					<ActionButton
-						text={strings.View_ProductDetails_Button_DeleteProduct}
-						iconName="trash-outline"
-						onPress={handleSwitchShowDelete}
-					/>
-				</ActionsButtonContainer>
 			</Content>
 
 			<Dialog

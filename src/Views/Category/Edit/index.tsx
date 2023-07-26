@@ -13,13 +13,11 @@ import {
 
 import Header from '@components/Header';
 import InputText from '@components/InputText';
-import ActionButton from '@components/ActionButton';
 import Dialog from '@components/Dialog';
 
 import {
 	Container,
 	Content,
-	ActionsButtonContainer,
 	InputTextContainer,
 	InputTextTip,
 } from '@views/Category/Edit/styles';
@@ -99,9 +97,29 @@ const Edit: React.FC = () => {
 		});
 	}, [routeParams.id, name, reset]);
 
+	const switchShowDeleteModal = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
+
 	return (
 		<Container>
-			<Header title={strings.View_Category_Edit_PageTitle} noDrawer />
+			<Header
+				title={strings.View_Category_Edit_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: switchShowDeleteModal,
+					},
+				]}
+			/>
 
 			<Content>
 				<InputTextContainer hasError={!!errorName}>
@@ -114,21 +132,6 @@ const Edit: React.FC = () => {
 					/>
 				</InputTextContainer>
 				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
-
-				<ActionsButtonContainer>
-					<ActionButton
-						text={strings.View_Category_Edit_ButtonSave}
-						iconName="save-outline"
-						onPress={handleUpdate}
-					/>
-					<ActionButton
-						text={strings.View_ProductDetails_Button_DeleteProduct}
-						iconName="trash-outline"
-						onPress={() => {
-							setDeleteComponentVisible(true);
-						}}
-					/>
-				</ActionsButtonContainer>
 			</Content>
 			<Dialog
 				visible={deleteComponentVisible}
