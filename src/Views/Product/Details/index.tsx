@@ -53,7 +53,7 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	const { userPreferences } = useContext(PreferencesContext);
 
-	const { push, goBack, addListener, reset } =
+	const { push, goBack, addListener, reset, navigate } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const productId = useMemo(() => {
@@ -170,6 +170,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		}
 	}, []);
 
+	const handleEdit = useCallback(() => {
+		navigate('EditProduct', { productId });
+	}, [navigate, productId]);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -178,6 +182,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				<Header
 					title={strings.View_ProductDetails_PageTitle}
 					noDrawer
+					appBarActions={[
+						{
+							icon: 'square-edit-outline',
+							onPress: handleEdit,
+						},
+					]}
 				/>
 				<Content>
 					<PageHeader

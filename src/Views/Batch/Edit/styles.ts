@@ -7,11 +7,6 @@ export const PageHeader = styled.View`
 	padding: 10px 5px 0 5px;
 `;
 
-export const ActionsButtonContainer = styled.View`
-	flex-direction: row;
-	justify-content: center;
-`;
-
 export const RadioButton = styled(RadioPaper).attrs(props => ({
 	color: props.theme.colors.accent,
 	uncheckedColor: props.theme.colors.subText,

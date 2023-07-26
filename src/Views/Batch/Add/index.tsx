@@ -26,7 +26,6 @@ import { getProductById } from '@expirychecker/Functions/Product';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
-import GenericButton from '@components/Button';
 
 import {
 	Container,
@@ -216,7 +215,16 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 		<Loading />
 	) : (
 		<Container>
-			<Header title={strings.View_AddBatch_PageTitle} noDrawer />
+			<Header
+				title={strings.View_AddBatch_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleSave,
+					},
+				]}
+			/>
 			<ScrollView>
 				<PageContent>
 					<InputContainer>
@@ -278,11 +286,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 							/>
 						</ExpDateGroup>
 					</InputContainer>
-
-					<GenericButton
-						text={strings.View_AddBatch_Button_Save}
-						onPress={handleSave}
-					/>
 				</PageContent>
 			</ScrollView>
 		</Container>

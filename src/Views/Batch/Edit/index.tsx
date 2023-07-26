@@ -19,7 +19,6 @@ import { getProductById } from '@expirychecker/Functions/Product';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
-import ActionButton from '@components/ActionButton';
 import Switch from '@components/Switch';
 import Dialog from '@components/Dialog';
 
@@ -43,12 +42,7 @@ import {
 } from '@views/Batch/Edit/styles';
 import { ProductHeader, ProductName, ProductCode } from '../Add/styles';
 
-import {
-	RadioButton,
-	RadioButtonText,
-	ActionsButtonContainer,
-	TextField,
-} from './styles';
+import { RadioButton, RadioButtonText, TextField } from './styles';
 
 interface Props {
 	productId: number;
@@ -236,11 +230,11 @@ const EditBatch: React.FC = () => {
 		}
 	}, [loteId, product, productId, reset, userPreferences.isPRO]);
 
-	const handleAmountChange = useCallback(value => {
+	const handleAmountChange = useCallback((value: string) => {
 		const regex = /^[0-9\b]+$/;
 
 		if (value === '' || regex.test(value)) {
-			setAmount(value);
+			setAmount(Number(value));
 		}
 	}, []);
 
@@ -252,11 +246,31 @@ const EditBatch: React.FC = () => {
 		setPrice(value);
 	}, []);
 
+	const switchShowDeleteModal = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
-			<Header title={strings.View_EditBatch_PageTitle} noDrawer />
+			<Header
+				title={strings.View_EditBatch_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleSave,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: switchShowDeleteModal,
+					},
+				]}
+			/>
 			<PageContent>
 				<InputContainer>
 					<ProductHeader>
@@ -428,21 +442,6 @@ const EditBatch: React.FC = () => {
 						/>
 					</ExpDateGroup>
 				</InputContainer>
-
-				<ActionsButtonContainer>
-					<ActionButton
-						text={strings.View_EditBatch_Button_Save}
-						iconName="save-outline"
-						onPress={handleSave}
-					/>
-					<ActionButton
-						text={strings.View_EditBatch_Button_DeleteBatch}
-						iconName="trash-outline"
-						onPress={() => {
-							setDeleteComponentVisible(true);
-						}}
-					/>
-				</ActionsButtonContainer>
 			</PageContent>
 
 			<Dialog

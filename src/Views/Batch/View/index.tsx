@@ -23,9 +23,6 @@ import { ShareProductImageWithText } from '@expirychecker/Functions/Share';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import Button from '@components/Button';
-import ActionButton from '@components/ActionButton';
-
-import { ActionsButtonContainer } from '@expirychecker/Views/Product/Edit/styles';
 
 import { getProductById } from '@expirychecker/Functions/Product';
 import Banner from '@expirychecker/Components/Ads/Banner';
@@ -252,16 +249,16 @@ const View: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
-			<Header title={strings.View_Batch_PageTitle} noDrawer />
-			<PageHeader>
-				<ActionsButtonContainer>
-					<ActionButton
-						iconName="create-outline"
-						onPress={handleNaviEdit}
-						text={strings.View_Batch_Button_Edit}
-					/>
-				</ActionsButtonContainer>
-			</PageHeader>
+			<Header
+				title={strings.View_Batch_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'square-edit-outline',
+						onPress: handleNaviEdit,
+					},
+				]}
+			/>
 
 			{!!batch && (
 				<BatchContainer>

@@ -24,7 +24,6 @@ import Input from '@components/InputText';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
-import ActionButton from '@components/ActionButton';
 import Dialog from '@components/Dialog';
 
 import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
@@ -55,8 +54,6 @@ import {
 	InputCodeText,
 	InputTextIconContainer,
 } from '../Add/Components/Inputs/Code/styles';
-
-import { ActionsButtonContainer } from './styles';
 
 interface RequestParams {
 	route: {
@@ -282,6 +279,10 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		}
 	}, [dispatch, navigate, productId, userPreferences.isPRO]);
 
+	const switchShowDeleteModal = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -303,6 +304,19 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 							<Header
 								title={strings.View_EditProduct_PageTitle}
 								noDrawer
+								appBarActions={[
+									{
+										icon: 'content-save-outline',
+										onPress: updateProd,
+									},
+								]}
+								moreMenuItems={[
+									{
+										title: strings.View_ProductDetails_Button_DeleteProduct,
+										leadingIcon: 'trash-can-outline',
+										onPress: switchShowDeleteModal,
+									},
+								]}
 							/>
 							<PageContent>
 								{userPreferences.isPRO && !!photoPath && (
@@ -425,25 +439,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 											/>
 										)}
 									</MoreInformationsContainer>
-
-									<ActionsButtonContainer>
-										<ActionButton
-											text={
-												strings.View_EditProduct_Button_Save
-											}
-											iconName="save-outline"
-											onPress={updateProd}
-										/>
-										<ActionButton
-											text={
-												strings.View_ProductDetails_Button_DeleteProduct
-											}
-											iconName="trash-outline"
-											onPress={() => {
-												setDeleteComponentVisible(true);
-											}}
-										/>
-									</ActionsButtonContainer>
 								</InputContainer>
 							</PageContent>
 
