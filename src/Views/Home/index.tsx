@@ -294,7 +294,7 @@ const Home: React.FC = () => {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<>
+		<Container>
 			<ExpiredModal />
 			{enableBarCodeReader ? (
 				<BarCodeReader
@@ -302,7 +302,7 @@ const Home: React.FC = () => {
 					onClose={handleOnBarCodeReaderClose}
 				/>
 			) : (
-				<Container>
+				<>
 					<Header listRef={listRef} />
 
 					<NotificationsDenny />
@@ -367,9 +367,9 @@ const Home: React.FC = () => {
 							onPress={handleNavigateAddProduct}
 						/>
 					)}
-				</Container>
+				</>
 			)}
-		</>
+		</Container>
 	);
 };
 
