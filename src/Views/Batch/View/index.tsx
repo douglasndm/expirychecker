@@ -252,9 +252,8 @@ const View: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
+			<Header title={strings.View_Batch_PageTitle} noDrawer />
 			<PageHeader>
-				<Header title={strings.View_Batch_PageTitle} noDrawer />
-
 				<ActionsButtonContainer>
 					<ActionButton
 						iconName="create-outline"
