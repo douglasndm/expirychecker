@@ -9,6 +9,7 @@ import strings from '@expirychecker/Locales';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { exportToExcel } from '@utils/Excel/Export';
 import { removeCheckedBatches } from '@utils/Product/Batches';
+import { searchProducts } from '@utils/Product/Search';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
@@ -19,19 +20,12 @@ import { getAllStores } from '@expirychecker/Functions/Stores';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
-import Header from '@components/Header';
+import Header from '@components/Products/List/Header';
 import FAB from '@components/FAB';
 
-import {
-	Container,
-	ActionsContainer,
-	ActionButtonsContainer,
-	Icons,
-	ActionText,
-	SubTitle,
-} from '@styles/Views/GenericViewPage';
-
 import ListProducts from '@expirychecker/Components/ListProducts';
+
+import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
 interface Props {
 	id: string;
@@ -44,6 +38,9 @@ const CategoryView: React.FC = () => {
 	const routeParams = params as Props;
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [searchQuery, setSearchQuery] = React.useState('');
 
 	const [categoryName, setCategoryName] = useState<string>('CategoryTitle');
 
@@ -86,6 +83,10 @@ const CategoryView: React.FC = () => {
 		}
 	}, [routeParams.id]);
 
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
+
 	const handleEdit = useCallback(() => {
 		navigate('CategoryEdit', { id: routeParams.id });
 	}, [navigate, routeParams.id]);
@@ -116,11 +117,13 @@ const CategoryView: React.FC = () => {
 				type: 'info',
 			});
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
+				if (err.message.includes('did not share')) return;
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+			}
 		} finally {
 			setIsLoading(false);
 		}
@@ -130,35 +133,53 @@ const CategoryView: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchQuery(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(
+		(value?: string) => {
+			const query = value && value.trim() !== '' ? value : searchQuery;
+
+			let prods: IProduct[] = [];
+
+			if (query && query !== '') {
+				prods = searchProducts({
+					products,
+					query,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
+		},
+		[products, searchQuery]
+	);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
 			<Header
-				title={`${strings.View_Category_List_View_BeforeCategoryName}`}
-				noDrawer
+				title={strings.View_Category_List_View_BeforeCategoryName}
+				searchValue={searchQuery}
+				onSearchChange={handleSearchChange}
+				handleSearch={handleSearch}
+				exportToExcel={handleExportExcel}
+				navigateToEdit={handleEdit}
 			/>
-
-			<ActionsContainer>
-				<ActionButtonsContainer onPress={handleEdit}>
-					<ActionText>
-						{strings.View_ProductDetails_Button_UpdateProduct}
-					</ActionText>
-					<Icons name="create-outline" size={22} />
-				</ActionButtonsContainer>
-
-				<ActionButtonsContainer onPress={handleExportExcel}>
-					<ActionText>
-						{strings.View_Brand_View_ActionButton_GenereteExcel}
-					</ActionText>
-					<Icons name="stats-chart-outline" size={22} />
-				</ActionButtonsContainer>
-			</ActionsContainer>
 
 			<SubTitle>{categoryName}</SubTitle>
 
-			<ListProducts products={products} onRefresh={loadData} />
-
+			<ListProducts products={productsSearch} onRefresh={loadData} />
 			<FAB
 				icon="plus"
 				label={strings.View_FloatMenu_AddProduct}
