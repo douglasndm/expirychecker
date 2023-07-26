@@ -57,7 +57,7 @@ async function getAllProductsAsync({
 
 			// This makes a copy of the products and return it without the realm reference
 			// So we can use it in the react component and can be deleted without problems
-			const copiedProds = filteredProducts.map(p => ({
+			const copiedProds: IProduct[] = filteredProducts.map(p => ({
 				id: p.id,
 				name: p.name,
 				categories: p.categories,
