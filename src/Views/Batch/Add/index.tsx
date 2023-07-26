@@ -25,7 +25,6 @@ import { createLote } from '@expirychecker/Functions/Lotes';
 import { getProductById } from '@expirychecker/Functions/Product';
 
 import Loading from '@components/Loading';
-import StatusBar from '@components/StatusBar';
 import Header from '@components/Header';
 import GenericButton from '@components/Button';
 
@@ -217,10 +216,8 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 		<Loading />
 	) : (
 		<Container>
-			<StatusBar />
+			<Header title={strings.View_AddBatch_PageTitle} noDrawer />
 			<ScrollView>
-				<Header title={strings.View_AddBatch_PageTitle} noDrawer />
-
 				<PageContent>
 					<InputContainer>
 						<ProductHeader>

@@ -22,7 +22,7 @@ import {
 	InputTextContainer,
 	InputText,
 	InputTextTip,
-} from './styles';
+} from '@views/Brand/Edit/styles';
 
 interface Props {
 	brand_id: string;

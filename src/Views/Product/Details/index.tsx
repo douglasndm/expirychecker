@@ -24,6 +24,8 @@ import { deleteManyBatches } from '@expirychecker/Utils/Batches';
 import { getImagePath } from '@utils/Images/GetImagePath';
 
 import Loading from '@components/Loading';
+import Header from '@components/Header';
+
 import PageHeader from '@views/Product/View/Components/PageHeader';
 
 import Banner from '@expirychecker/Components/Ads/Banner';
@@ -173,6 +175,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	) : (
 		<>
 			<Container>
+				<Header
+					title={strings.View_ProductDetails_PageTitle}
+					noDrawer
+				/>
 				<Content>
 					<PageHeader
 						product={product}

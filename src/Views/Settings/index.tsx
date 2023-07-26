@@ -133,9 +133,8 @@ const Settings: React.FC = () => {
 		<Loading />
 	) : (
 		<Container>
+			<Header title={strings.View_Settings_PageTitle} noDrawer />
 			<Content>
-				<Header title={strings.View_Settings_PageTitle} noDrawer />
-
 				<SettingsContent>
 					<Category>
 						<CategoryTitle>
