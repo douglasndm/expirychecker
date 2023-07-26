@@ -4,8 +4,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 export const Container = styled.View`
 	flex: 1;
 	padding-bottom: 15px;
-	align-items: space-between;
 `;
+
+export const EmptyListContainer = styled.View``;
 
 export const EmptyListText = styled.Text`
 	margin-top: 10px;

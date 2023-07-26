@@ -30,6 +30,7 @@ import {
 	SelectIcon,
 	EmptyListText,
 	InvisibleComponent,
+	EmptyListContainer,
 } from './styles';
 
 interface RequestProps {
@@ -121,9 +122,11 @@ const ListProducts: React.FC<RequestProps> = ({
 
 	const EmptyList = useMemo(() => {
 		return (
-			<EmptyListText>
-				{strings.ListProductsComponent_Title_NoProductsInList}
-			</EmptyListText>
+			<EmptyListContainer>
+				<EmptyListText>
+					{strings.ListProductsComponent_Title_NoProductsInList}
+				</EmptyListText>
+			</EmptyListContainer>
 		);
 	}, []);
 
