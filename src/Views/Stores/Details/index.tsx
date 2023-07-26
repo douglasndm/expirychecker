@@ -8,6 +8,7 @@ import strings from '@expirychecker/Locales';
 
 import { exportToExcel } from '@utils/Excel/Export';
 import { removeCheckedBatches } from '@utils/Product/Batches';
+import { searchProducts } from '@utils/Product/Search';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
@@ -22,17 +23,10 @@ import {
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
-import Header from '@components/Header';
+import Header from '@components/Products/List/Header';
 import FAB from '@components/FAB';
 
-import {
-	Container,
-	ActionsContainer,
-	ActionButtonsContainer,
-	Icons,
-	ActionText,
-	SubTitle,
-} from '@styles/Views/GenericViewPage';
+import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 
@@ -49,6 +43,9 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [searchQuery, setSearchQuery] = React.useState('');
 
 	const [storeName, setStoreName] = useState<string>('');
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -101,11 +98,15 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		}
 	}, [store]);
 
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
+
 	const handleNavigateAddProduct = useCallback(() => {
 		navigate('AddProduct', { store });
 	}, [navigate, store]);
 
-	const handleNavigateEditStore = useCallback(() => {
+	const handleEdit = useCallback(() => {
 		navigate('StoreEdit', { store_id: store });
 	}, [navigate, store]);
 
@@ -150,32 +151,52 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		return unsubscribe;
 	}, [addListener, loadData]);
 
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchQuery(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(
+		(value?: string) => {
+			const query = value && value.trim() !== '' ? value : searchQuery;
+
+			let prods: IProduct[] = [];
+
+			if (query && query !== '') {
+				prods = searchProducts({
+					products,
+					query,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
+		},
+		[products, searchQuery]
+	);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
-			<Header title={strings.View_Store_View_PageTitle} noDrawer />
-
-			{store !== '000' && (
-				<ActionsContainer>
-					<ActionButtonsContainer onPress={handleNavigateEditStore}>
-						<ActionText>
-							{strings.View_Store_View_Button_EditStore}
-						</ActionText>
-						<Icons name="create-outline" size={22} />
-					</ActionButtonsContainer>
-
-					<ActionButtonsContainer onPress={handleExportExcel}>
-						<ActionText>
-							{strings.View_Brand_View_ActionButton_GenereteExcel}
-						</ActionText>
-						<Icons name="stats-chart-outline" size={22} />
-					</ActionButtonsContainer>
-				</ActionsContainer>
-			)}
+			<Header
+				title={strings.View_Store_View_PageTitle}
+				searchValue={searchQuery}
+				onSearchChange={handleSearchChange}
+				handleSearch={handleSearch}
+				exportToExcel={store !== '000' ? handleExportExcel : undefined}
+				navigateToEdit={store !== '000' ? handleEdit : undefined}
+			/>
 
 			<SubTitle>{storeName}</SubTitle>
-			<ListProducts products={products} />
+			<ListProducts products={productsSearch} />
 
 			<FAB
 				icon="plus"
