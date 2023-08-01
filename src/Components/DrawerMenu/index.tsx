@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useMemo } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { DrawerContentOptions } from '@react-navigation/drawer';
+import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 import strings from '@expirychecker/Locales';
 
@@ -21,8 +21,8 @@ import {
 	Label,
 } from '@components/Menu/Drawer/styles';
 
-const DrawerMenu: React.FC<DrawerContentOptions> = (
-	props: DrawerContentOptions
+const DrawerMenu: React.FC<DrawerContentComponentProps> = (
+	props: DrawerContentComponentProps
 ) => {
 	const { navigation } = props;
 
