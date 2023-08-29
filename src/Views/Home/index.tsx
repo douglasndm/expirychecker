@@ -9,6 +9,7 @@ import React, {
 import { Platform, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Crashlytics from '@react-native-firebase/crashlytics';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
 import { format } from 'date-fns';
@@ -113,10 +114,6 @@ const Home: React.FC = () => {
 		}
 	}, []);
 
-	useEffect(() => {
-		adConsent();
-	}, [adConsent]);
-
 	const loadData = useCallback(async () => {
 		try {
 			setIsLoading(true);
@@ -129,11 +126,14 @@ const Home: React.FC = () => {
 
 			setProducts(allProducts);
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
+				Crashlytics().recordError(err);
+
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+			}
 		} finally {
 			setIsLoading(false);
 
