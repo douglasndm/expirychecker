@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Crashlytics from '@react-native-firebase/crashlytics';
 import SplashScreen from 'react-native-splash-screen';
 
 import strings from '@expirychecker/Locales';
@@ -78,26 +79,34 @@ const ListView: React.FC = () => {
 		[navigate]
 	);
 
+	const loadData = useCallback(async () => {
+		try {
+			const sts = await getAllStores();
+
+			const noStore: IStore = {
+				id: '000',
+				name: strings.View_Store_List_NoStore,
+			};
+
+			const sorted = sortStores(sts);
+
+			setStores([...sorted, noStore]);
+		} catch (err) {
+			if (err instanceof Error) {
+				Crashlytics().recordError(err);
+			}
+		} finally {
+			SplashScreen.hide();
+		}
+	}, []);
+
 	useEffect(() => {
 		const unsubscribe = addListener('focus', () => {
-			getAllStores()
-				.then(response => {
-					const noStore: IStore = {
-						id: '000',
-						name: strings.View_Store_List_NoStore,
-					};
-
-					const sorted = sortStores(response);
-
-					setStores([...sorted, noStore]);
-				})
-				.finally(() => {
-					SplashScreen.hide();
-				});
+			loadData();
 		});
 
 		return unsubscribe;
-	}, [addListener]);
+	}, [addListener, loadData]);
 
 	return (
 		<Container>
