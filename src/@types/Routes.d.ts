@@ -16,8 +16,8 @@ type RoutesParams = {
 	StoreDetails: {
 		store: string;
 	};
-	AddLote: {
-		productId: number;
+	AddBatch: {
+		productId: number | string;
 	};
 	EditProduct: {
 		productId: number;

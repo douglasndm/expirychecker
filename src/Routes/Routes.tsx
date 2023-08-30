@@ -9,7 +9,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import Home from '@expirychecker/Views/Home';
 import AddProduct from '@expirychecker/Views/Product/Add';
-import AddLote from '@expirychecker/Views/Batch/Add';
+import AddBatch from '@expirychecker/Views/Batch/Add';
 import EditProduct from '@expirychecker/Views/Product/Edit';
 import EditLote from '@expirychecker/Views/Batch/Edit';
 import ProductDetails from '@expirychecker/Views/Product/Details';
@@ -81,7 +81,7 @@ const Routes: React.FC = () => {
 					component={ProductDetails}
 				/>
 				<Stack.Screen name="StoreDetails" component={StoreDetails} />
-				<Stack.Screen name="AddLote" component={AddLote} />
+				<Stack.Screen name="AddBatch" component={AddBatch} />
 				<Stack.Screen name="EditProduct" component={EditProduct} />
 				<Stack.Screen name="EditLote" component={EditLote} />
 				<Stack.Screen name="Test" component={Test} />
