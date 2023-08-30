@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Crashlytics from '@react-native-firebase/crashlytics';
-import SplashScreen from 'react-native-splash-screen';
 
 import strings from '@expirychecker/Locales';
 
@@ -95,8 +94,6 @@ const ListView: React.FC = () => {
 			if (err instanceof Error) {
 				Crashlytics().recordError(err);
 			}
-		} finally {
-			SplashScreen.hide();
 		}
 	}, []);
 

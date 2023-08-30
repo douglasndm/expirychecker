@@ -20,7 +20,6 @@ import {
 	AdsConsentStatus,
 	AdsConsentDebugGeography,
 } from 'react-native-google-mobile-ads';
-import SplashScreen from 'react-native-splash-screen';
 
 import strings from '@expirychecker/Locales';
 
@@ -136,8 +135,6 @@ const Home: React.FC = () => {
 			}
 		} finally {
 			setIsLoading(false);
-
-			SplashScreen.hide();
 		}
 	}, []);
 
