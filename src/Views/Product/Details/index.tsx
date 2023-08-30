@@ -138,7 +138,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	}, [product]);
 
 	const addNewLote = useCallback(() => {
-		push('AddLote', { productId });
+		push('AddBatch', { productId });
 	}, [productId, push]);
 
 	useEffect(() => {

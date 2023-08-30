@@ -103,7 +103,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 
 	const handleNavigateToExistProduct = useCallback(async () => {
 		if (existsProdId) {
-			navigate('AddLote', { productId: existsProdId });
+			navigate('AddBatch', { productId: existsProdId });
 		}
 	}, [existsProdId, navigate]);
 
