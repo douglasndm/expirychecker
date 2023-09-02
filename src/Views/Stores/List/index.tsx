@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import BootSplash from 'react-native-bootsplash';
 import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
@@ -94,6 +95,8 @@ const ListView: React.FC = () => {
 			if (err instanceof Error) {
 				Crashlytics().recordError(err);
 			}
+		} finally {
+			await BootSplash.hide({ fade: true });
 		}
 	}, []);
 

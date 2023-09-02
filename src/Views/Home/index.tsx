@@ -9,6 +9,7 @@ import React, {
 import { Platform, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import BootSplash from 'react-native-bootsplash';
 import Crashlytics from '@react-native-firebase/crashlytics';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
@@ -135,6 +136,7 @@ const Home: React.FC = () => {
 			}
 		} finally {
 			setIsLoading(false);
+			await BootSplash.hide({ fade: true });
 		}
 	}, []);
 

@@ -6,6 +6,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
 import android.os.Bundle;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 
 public class MainActivity extends ReactActivity {
@@ -39,6 +40,7 @@ public class MainActivity extends ReactActivity {
   // https://github.com/software-mansion/react-native-screens/issues/114
   @Override
   protected void onCreate(Bundle savedInstance){
+        RNBootSplash.init(this, R.style.BootTheme);
         // super.onCreate(savedInstance);
         super.onCreate(null);
   }

@@ -31,6 +31,7 @@
 		A5855C25294F67CA002F0161 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 465575EC9E104D4FBE9DD049 /* MaterialCommunityIcons.ttf */; };
 		A5855C26294F67CA002F0161 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 37B1DF09001B4265BBDCBEC2 /* MaterialIcons.ttf */; };
 		A59E05B32905ED9500254967 /* RNBackgroundFetch+AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A59E05B22905ED9500254967 /* RNBackgroundFetch+AppDelegate.m */; };
+		A5E298122AA3D9A8004BF7EF /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5E298112AA3D9A8004BF7EF /* BootSplash.storyboard */; };
 		B2D0D443C5DF06D778725F90 /* libPods-controledevalidade.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF5EC8A6D72B0D1E0784BB8D /* libPods-controledevalidade.a */; };
 		BFFE7E5E82094BA59E2D3037 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44D558C29B5B4E65B1ED4030 /* OpenSans-Bold.ttf */; };
 		C692F7558DBE4FF6BC3F19B9 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 445564B8F5864E5C9AE60D6E /* Roboto-Medium.ttf */; };
@@ -111,6 +112,7 @@
 		A568F1122919C9E20040334F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A568F1142919C9EE0040334F /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		A59E05B22905ED9500254967 /* RNBackgroundFetch+AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RNBackgroundFetch+AppDelegate.m"; path = "../../../node_modules/react-native-background-fetch/ios/RNBackgroundFetch/RNBackgroundFetch+AppDelegate.m"; sourceTree = "<group>"; };
+		A5E298112AA3D9A8004BF7EF /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = controledevalidade/BootSplash.storyboard; sourceTree = "<group>"; };
 		AEDB098E6E57BAE61D9C18BD /* libPods-controledevalidade-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-controledevalidade-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6C9DE39E59D4B4EB75EB0D8 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../src/Assets/Fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		B7E2B94A65434F26B645AC23 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../src/Assets/Fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 		13B07FAE1A68108700A75B9A /* controledevalidade */ = {
 			isa = PBXGroup;
 			children = (
+				A5E298112AA3D9A8004BF7EF /* BootSplash.storyboard */,
 				A59E05B22905ED9500254967 /* RNBackgroundFetch+AppDelegate.m */,
 				4FF2A1C825B64CE6007F6B6A /* controledevalidade.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -393,6 +396,7 @@
 				A5855C24294F67CA002F0161 /* Ionicons.ttf in Resources */,
 				A5855C25294F67CA002F0161 /* MaterialCommunityIcons.ttf in Resources */,
 				A5855C26294F67CA002F0161 /* MaterialIcons.ttf in Resources */,
+				A5E298122AA3D9A8004BF7EF /* BootSplash.storyboard in Resources */,
 				4FC6C2DA25A775F000A3DE7B /* swiftly-610.m4r in Resources */,
 				4F9E2D0125D0DDA30017A9CF /* InfoPlist.strings in Resources */,
 				4F47865D259661D0008C02AA /* Config.xcconfig in Resources */,
