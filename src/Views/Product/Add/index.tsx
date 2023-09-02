@@ -19,12 +19,12 @@ import { createProduct } from '@expirychecker/Functions/Product';
 import { createLote } from '@expirychecker/Functions/Lotes';
 import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Image';
 
-import Input from '@components/InputText';
 import BarCodeReader from '@components/BarCodeReader';
+import Camera from '@components/Camera';
+import Input from '@components/InputText';
 import Header from '@components/Header';
 import PaddingComponent from '@components/PaddingComponent';
 
-import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
 import DaysToBeNext from '@expirychecker/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect, {
 	IBrandPickerRef,
@@ -278,7 +278,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	}, []);
 
 	const onPhotoTaked = useCallback(
-		async ({ filePath }: onPhotoTakedProps) => {
+		async (filePath: string) => {
 			if (await exists(filePath)) {
 				setPhotoPath(filePath);
 			}
@@ -324,8 +324,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	if (isCameraEnabled) {
 		return (
 			<Camera
-				onPhotoTaked={onPhotoTaked}
-				onBackButtonPressed={handleDisableCamera}
+				onPhotoTaken={onPhotoTaked}
+				switchEnableCamera={handleDisableCamera}
 			/>
 		);
 	}
