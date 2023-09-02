@@ -24,9 +24,8 @@ import Input from '@components/InputText';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
+import Camera from '@components/Camera';
 import Dialog from '@components/Dialog';
-
-import Camera, { onPhotoTakedProps } from '@expirychecker/Components/Camera';
 
 import DaysToBeNext from '@expirychecker/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '@expirychecker/Components/Product/Inputs/Pickers/Brand';
@@ -289,8 +288,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		<>
 			{isCameraEnabled ? (
 				<Camera
-					onPhotoTaked={onPhotoTaked}
-					onBackButtonPressed={handleDisableCamera}
+					onPhotoTaken={onPhotoTaked}
+					switchEnableCamera={handleDisableCamera}
 				/>
 			) : (
 				<>
