@@ -31,7 +31,9 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
 
+// BootSplash
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
                           moduleName:(NSString *)moduleName
                            initProps:(NSDictionary *)initProps {
@@ -43,5 +45,6 @@
 
   return rootView;
 }
+// BootSplash
 
 @end
