@@ -5,8 +5,10 @@ import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
+import sharedStrings from '@shared/Locales';
 
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
+import { getAllProductsWithoutCategory } from '@expirychecker/Utils/Categories/Products/GetProductsWithoutCategories';
 import { exportToExcel } from '@utils/Excel/Export';
 import { removeCheckedBatches } from '@utils/Product/Batches';
 import { searchProducts } from '@utils/Product/Search';
@@ -28,7 +30,7 @@ import ListProducts from '@expirychecker/Components/ListProducts';
 import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
 interface Props {
-	id: string;
+	id: string | null;
 }
 
 const CategoryView: React.FC = () => {
@@ -49,29 +51,38 @@ const CategoryView: React.FC = () => {
 	const loadData = useCallback(async () => {
 		try {
 			setIsLoading(true);
-			const categories = await getAllCategories();
-			const findCat = categories.find(c => c.id === routeParams.id);
 
-			if (findCat) {
-				setCategoryName(findCat.name);
+			if (routeParams.id) {
+				const categories = await getAllCategories();
+				const findCat = categories.find(c => c.id === routeParams.id);
+
+				if (findCat) {
+					setCategoryName(findCat.name);
+				}
+
+				const prods = await getAllProductsByCategory(routeParams.id);
+
+				const noCheckeds: IProduct[] = prods.map(prod => ({
+					...JSON.parse(JSON.stringify(prod)), // for deep clone Zzzz
+					batches: removeCheckedBatches(prod.batches),
+				}));
+
+				// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+				const sortedProds = sortProductsLotesByLotesExpDate(noCheckeds);
+
+				// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+				// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+				// DE QUAL ESTÁ MAIS PRÓXIMO
+				const results = sortProductsByFisrtLoteExpDate(sortedProds);
+
+				setProducts(results);
+			} else {
+				setCategoryName(
+					sharedStrings.View_Category_List_View_NoCategoryName
+				);
+				const prods = await getAllProductsWithoutCategory();
+				setProducts(prods);
 			}
-
-			const prods = await getAllProductsByCategory(routeParams.id);
-
-			const noCheckeds: IProduct[] = prods.map(prod => ({
-				...JSON.parse(JSON.stringify(prod)), // for deep clone Zzzz
-				batches: removeCheckedBatches(prod.batches),
-			}));
-
-			// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-			const sortedProds = sortProductsLotesByLotesExpDate(noCheckeds);
-
-			// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
-			// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
-			// DE QUAL ESTÁ MAIS PRÓXIMO
-			const results = sortProductsByFisrtLoteExpDate(sortedProds);
-
-			setProducts(results);
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -88,11 +99,12 @@ const CategoryView: React.FC = () => {
 	}, [products]);
 
 	const handleEdit = useCallback(() => {
-		navigate('CategoryEdit', { id: routeParams.id });
+		if (routeParams.id) navigate('CategoryEdit', { id: routeParams.id });
 	}, [navigate, routeParams.id]);
 
 	const handleNavigateAddProduct = useCallback(() => {
-		navigate('AddProduct', { category: routeParams.id });
+		if (routeParams.id)
+			navigate('AddProduct', { category: routeParams.id });
 	}, [navigate, routeParams.id]);
 
 	const getProducts = async () => getAllProducts({});
@@ -174,7 +186,7 @@ const CategoryView: React.FC = () => {
 				onSearchChange={handleSearchChange}
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
-				navigateToEdit={handleEdit}
+				navigateToEdit={routeParams.id ? handleEdit : undefined}
 			/>
 
 			<SubTitle>{categoryName}</SubTitle>
