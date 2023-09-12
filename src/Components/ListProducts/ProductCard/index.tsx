@@ -38,7 +38,7 @@ const ProductCard: React.FC<Request> = ({
 			}
 		} else if (product.code) {
 			const response = await getImagePath({
-				productCode: product.code,
+				productCode: product.code.trim(),
 				disableRemote: true, // dont make several calls to api for each item
 			});
 
