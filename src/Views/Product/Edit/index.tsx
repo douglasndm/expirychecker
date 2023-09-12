@@ -19,6 +19,7 @@ import {
 	getProductImagePath,
 	getImageFileNameFromPath,
 } from '@expirychecker/Functions/Products/Image';
+import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
 
 import Input from '@components/InputText';
 import Loading from '@components/Loading';
@@ -238,12 +239,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, []);
 
 	const onPhotoTaked = useCallback(
-		async ({ fileName, filePath }: onPhotoTakedProps) => {
+		async (filePath: string) => {
 			if (await exists(filePath)) {
-				setPhotoPath(filePath);
+				const picFileName = getImageFileNameFromPath(filePath);
+				const newPath = await movePicturesToImagesDir(filePath);
+
+				setPhotoPath(newPath);
 
 				await saveProductImage({
-					fileName,
+					fileName: picFileName,
 					productId,
 				});
 			}

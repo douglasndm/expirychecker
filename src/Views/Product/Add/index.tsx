@@ -15,6 +15,8 @@ import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
+import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
+
 import { createProduct } from '@expirychecker/Functions/Product';
 import { createLote } from '@expirychecker/Functions/Lotes';
 import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Image';
@@ -144,6 +146,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		}
 		try {
 			const picFileName = getImageFileNameFromPath(photoPath);
+			await movePicturesToImagesDir(photoPath);
 
 			const prodCategories: Array<string> = [];
 
