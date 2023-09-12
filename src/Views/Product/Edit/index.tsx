@@ -171,7 +171,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			updateProduct({
 				id: productId,
 				name,
-				code,
+				code: code.trim(),
 				brand: tempBrand,
 				store: tempStore,
 				daysToBeNext: daysNext,
