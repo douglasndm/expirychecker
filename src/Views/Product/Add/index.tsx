@@ -166,7 +166,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 			const newProduct: Omit<IProduct, 'id'> = {
 				name,
-				code,
+				code: code?.trim(),
 				brand: tempBrand,
 				store: tempStore,
 				photo: picFileName,
