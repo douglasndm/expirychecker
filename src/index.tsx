@@ -52,7 +52,6 @@ const App: React.FC = () => {
 		isPRO: false,
 		appTheme: Themes.Light,
 		multiplesStores: false,
-		storesFirstPage: false,
 		enableNotifications: true,
 		disableAds: false,
 		allowRemoteImages: true,

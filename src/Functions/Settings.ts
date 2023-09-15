@@ -6,7 +6,6 @@ interface ISetSettingProps {
 		| 'AutoComplete'
 		| 'EnableNotifications'
 		| 'EnableMultipleStores'
-		| 'EnableStoresFirstPage'
 		| 'EnableProVersion'
 		| 'NotificationCadency'
 		| 'HowManyTimesAppWasOpen'
@@ -93,7 +92,7 @@ export async function getEnableNotifications(): Promise<boolean> {
 
 export async function getEnableProVersion(): Promise<boolean> {
 	if (__DEV__) {
-		return true;
+		return false;
 	}
 
 	const setting = await getSetting({ type: 'EnableProVersion' });
@@ -141,22 +140,6 @@ export async function getDisableAds(): Promise<boolean> {
 
 	const setting = await getSetting({
 		type: 'DisableAds',
-	});
-
-	if (setting === 'true') return true;
-	return false;
-}
-
-export async function setStoreFirstPage(enable: boolean): Promise<void> {
-	await setSetting({
-		type: 'EnableStoresFirstPage',
-		value: String(enable),
-	});
-}
-
-export async function getStoreFirstPage(): Promise<boolean> {
-	const setting = await getSetting({
-		type: 'EnableStoresFirstPage',
 	});
 
 	if (setting === 'true') return true;
