@@ -6,7 +6,6 @@ export interface IUserPreferences {
 	isPRO: boolean;
 	appTheme: DefaultTheme;
 	multiplesStores: boolean;
-	storesFirstPage: boolean;
 	enableNotifications: boolean;
 	disableAds: boolean;
 	allowRemoteImages: boolean;

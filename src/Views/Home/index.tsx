@@ -242,26 +242,6 @@ const Home: React.FC = () => {
 		[products]
 	);
 
-	useEffect(() => {
-		if (
-			userPreferences.isPRO &&
-			userPreferences.multiplesStores &&
-			userPreferences.storesFirstPage
-		) {
-			if (!canGoBack()) {
-				reset({
-					routes: [{ name: 'StoreList' }],
-				});
-			}
-		}
-	}, [
-		canGoBack,
-		reset,
-		userPreferences.isPRO,
-		userPreferences.multiplesStores,
-		userPreferences.storesFirstPage,
-	]);
-
 	const handleNavigateAddProduct = useCallback(() => {
 		if (searchString && searchString !== '') {
 			const queryWithoutLetters = searchString.replace(/\D/g, '').trim();

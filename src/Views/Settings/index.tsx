@@ -12,7 +12,6 @@ import DaysNext from '@views/Settings/Components/DaysNext';
 
 import {
 	setEnableMultipleStoresMode,
-	setStoreFirstPage,
 	setAutoComplete,
 } from '@expirychecker/Functions/Settings';
 
@@ -39,8 +38,6 @@ const Settings: React.FC = () => {
 	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
 	const [multipleStoresState, setMultipleStoresState] =
 		useState<boolean>(false);
-	const [storeFirstPageState, setStoreFirstPageState] =
-		useState<boolean>(false);
 
 	const { userPreferences, setUserPreferences } =
 		useContext(PreferencesContext);
@@ -64,7 +61,6 @@ const Settings: React.FC = () => {
 
 			setAutoCompleteState(userPreferences.autoComplete);
 			setMultipleStoresState(userPreferences.multiplesStores);
-			setStoreFirstPageState(userPreferences.storesFirstPage);
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -74,11 +70,7 @@ const Settings: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [
-		userPreferences.autoComplete,
-		userPreferences.multiplesStores,
-		userPreferences.storesFirstPage,
-	]);
+	}, [userPreferences.autoComplete, userPreferences.multiplesStores]);
 
 	useEffect(() => {
 		loadData();
@@ -107,17 +99,6 @@ const Settings: React.FC = () => {
 			multiplesStores: newValue,
 		});
 	}, [multipleStoresState, setUserPreferences, userPreferences]);
-
-	const handleStoreFirstPageSwitch = useCallback(async () => {
-		const newValue = !storeFirstPageState;
-		setStoreFirstPageState(newValue);
-		await setStoreFirstPage(newValue);
-
-		setUserPreferences({
-			...userPreferences,
-			storesFirstPage: newValue,
-		});
-	}, [setUserPreferences, storeFirstPageState, userPreferences]);
 
 	const onThemeChoosen = useCallback(
 		(theme: DefaultTheme) => {
@@ -184,26 +165,6 @@ const Settings: React.FC = () => {
 											}
 										/>
 									</SettingContainer>
-
-									{multipleStoresState && (
-										<SettingContainer>
-											<SettingDescription>
-												{
-													strings.View_Settings_SettingName_EnableStoresFirstPage
-												}
-											</SettingDescription>
-											<Switch
-												value={storeFirstPageState}
-												onValueChange={
-													handleStoreFirstPageSwitch
-												}
-												color={
-													userPreferences.appTheme
-														.colors.accent
-												}
-											/>
-										</SettingContainer>
-									)}
 								</>
 							)}
 						</CategoryOptions>
