@@ -25,6 +25,7 @@ import {
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+import ListContext from '@shared/Contexts/ListContext';
 
 import { searchProducts } from '@utils/Product/Search';
 
@@ -60,6 +61,7 @@ const Home: React.FC = () => {
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
+	const { setCurrentList } = useContext(ListContext);
 
 	interface listProdsRefProps {
 		switchDeleteModal: () => void;
@@ -317,6 +319,10 @@ const Home: React.FC = () => {
 			listProdsRef.current.switchSelectMode();
 		}
 	}, []);
+
+	useEffect(() => {
+		setCurrentList(listRef);
+	}, [setCurrentList]);
 
 	return isLoading ? (
 		<Loading />
