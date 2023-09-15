@@ -14,11 +14,9 @@ import {
 } from '@expirychecker/Functions/Product';
 import { findProductByCode } from '@expirychecker/Functions/Products/FindByCode';
 
-import BarCodeReader from '@components/BarCodeReader';
+import { Icon, InputTextTip } from '@views/Product/Add/styles';
 
-import FillModal from '../../FillModal';
-
-import { Icon, InputTextTip } from '../../../styles';
+import FillModal from '@shared/Views/Product/Add/Components/FillModal';
 
 import {
 	InputCodeTextContainer,
@@ -32,27 +30,30 @@ export interface completeInfoProps {
 	prodBrand?: string;
 }
 
-interface InputsRequest {
+export interface InputsRequestRef {
 	code: string | undefined;
 	selectedStoreId?: string; // for duplicate search
 	setCode: (value: string) => void;
 	onDuplicateProduct: () => void;
 	onCompleteInfo: ({ prodName, prodBrand }: completeInfoProps) => void;
 	BrandsPickerRef: React.MutableRefObject<any>;
+	onSwitchEnable: () => void;
+	handleOnCodeRead: (value: string) => Promise<void>;
 }
 
-const Inputs: React.FC<InputsRequest> = ({
-	code,
-	selectedStoreId,
-	setCode,
-	onDuplicateProduct,
-	onCompleteInfo,
-	BrandsPickerRef,
-}: InputsRequest) => {
+const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
+	const {
+		code,
+		selectedStoreId,
+		setCode,
+		onDuplicateProduct,
+		onCompleteInfo,
+		BrandsPickerRef,
+		onSwitchEnable,
+	} = props;
+
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 	const { userPreferences } = useContext(PreferencesContext);
-
-	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
 	const [existsProdId, setExistProdId] = useState<number | undefined>();
 
@@ -68,14 +69,6 @@ const Inputs: React.FC<InputsRequest> = ({
 	const [productBrandFinded, setProductBrandFinded] = useState<null | string>(
 		null
 	);
-
-	const handleDisableBarCodeReader = useCallback(() => {
-		setIsBarCodeEnabled(false);
-	}, []);
-
-	const enableReader = useCallback(() => {
-		setIsBarCodeEnabled(true);
-	}, []);
 
 	const handleCheckProductCode = useCallback(
 		async (anotherCode?: string) => {
@@ -110,7 +103,7 @@ const Inputs: React.FC<InputsRequest> = ({
 
 	const handleNavigateToExistProduct = useCallback(async () => {
 		if (existsProdId) {
-			navigate('AddLote', { productId: existsProdId });
+			navigate('AddBatch', { productId: existsProdId });
 		}
 	}, [existsProdId, navigate]);
 
@@ -173,7 +166,7 @@ const Inputs: React.FC<InputsRequest> = ({
 
 					const response = await findProductByCode(query);
 
-					if (response !== null) {
+					if (response !== null && !!response.name) {
 						setProductFinded(true);
 
 						setProductNameFinded(response.name);
@@ -222,20 +215,23 @@ const Inputs: React.FC<InputsRequest> = ({
 
 	const handleOnCodeRead = useCallback(
 		async (codeRead: string) => {
-			setCode(codeRead);
-			setIsBarCodeEnabled(false);
 			await findProductByEAN(codeRead);
 			await handleCheckProductCode(codeRead);
 		},
-		[findProductByEAN, handleCheckProductCode, setCode]
+		[findProductByEAN, handleCheckProductCode]
 	);
 
-	return isBarCodeEnabled ? (
-		<BarCodeReader
-			onCodeRead={handleOnCodeRead}
-			onClose={handleDisableBarCodeReader}
-		/>
-	) : (
+	React.useImperativeHandle(
+		ref,
+		() => ({
+			handleOnCodeRead,
+			findProductByEAN,
+			handleCheckProductCode,
+		}),
+		[findProductByEAN, handleCheckProductCode, handleOnCodeRead]
+	);
+
+	return (
 		<>
 			<InputCodeTextContainer hasError={fieldError}>
 				<InputCodeText
@@ -248,8 +244,8 @@ const Inputs: React.FC<InputsRequest> = ({
 					}}
 				/>
 
-				<InputTextIconContainer onPress={enableReader}>
-					<Icon name="barcode-outline" size={34} />
+				<InputTextIconContainer onPress={onSwitchEnable}>
+					<Icon name="barcode-outline" size={34} insideInput />
 				</InputTextIconContainer>
 
 				{userPreferences.isPRO && (
@@ -282,6 +278,6 @@ const Inputs: React.FC<InputsRequest> = ({
 			)}
 		</>
 	);
-};
+});
 
 export default Inputs;

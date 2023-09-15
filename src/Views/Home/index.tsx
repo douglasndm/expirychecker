@@ -9,13 +9,18 @@ import React, {
 import { Platform, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import BootSplash from 'react-native-bootsplash';
+import Crashlytics from '@react-native-firebase/crashlytics';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
-import DatePicker from 'react-native-date-picker';
 import { format } from 'date-fns';
 import { getLocales } from 'react-native-localize';
-import { BannerAdSize } from 'react-native-google-mobile-ads';
-import SplashScreen from 'react-native-splash-screen';
+import {
+	BannerAdSize,
+	AdsConsent,
+	AdsConsentStatus,
+	AdsConsentDebugGeography,
+} from 'react-native-google-mobile-ads';
 
 import strings from '@expirychecker/Locales';
 
@@ -23,6 +28,7 @@ import { searchProducts } from '@utils/Product/Search';
 
 import Loading from '@components/Loading';
 import BarCodeReader from '@components/BarCodeReader';
+import DatePicker from '@components/DatePicker';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
 import FAB from '@components/FAB';
@@ -41,13 +47,13 @@ import Header from '@expirychecker/Components/Header';
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
-import {
-	sortProductsLotesByLotesExpDate,
-	getAllProducts,
-} from '@expirychecker/Functions/Products';
+import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Products';
+
+import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 import Banner from '@expirychecker/Components/Ads/Banner';
+import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 
 const Home: React.FC = () => {
 	const { reset, canGoBack, navigate, addListener } =
@@ -95,11 +101,24 @@ const Home: React.FC = () => {
 		}
 	}, [reset]);
 
+	const adConsent = useCallback(async () => {
+		const consentInfo = await AdsConsent.requestInfoUpdate({
+			// debugGeography: AdsConsentDebugGeography.EEA,
+		});
+
+		if (
+			consentInfo.isConsentFormAvailable &&
+			consentInfo.status === AdsConsentStatus.REQUIRED
+		) {
+			const { status } = await AdsConsent.showForm();
+		}
+	}, []);
+
 	const loadData = useCallback(async () => {
 		try {
 			setIsLoading(true);
 
-			const allProducts = await getAllProducts({
+			const allProducts = await getAllProductsAsync({
 				removeProductsWithoutBatches: true,
 				removeTreatedBatch: true,
 				sortProductsByExpDate: true,
@@ -107,15 +126,17 @@ const Home: React.FC = () => {
 
 			setProducts(allProducts);
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
+				Crashlytics().recordError(err);
+
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+			}
 		} finally {
 			setIsLoading(false);
-
-			SplashScreen.hide();
+			await BootSplash.hide({ fade: true });
 		}
 	}, []);
 
@@ -165,8 +186,15 @@ const Home: React.FC = () => {
 		setEnableDatePicker(true);
 	}, []);
 
+	const cleanSearch = useCallback(() => {
+		setProductsSearch([]);
+		setSearchString('');
+	}, []);
+
 	const handleSelectDateChange = useCallback(
 		(date: Date) => {
+			cleanSearch();
+
 			setEnableDatePicker(false);
 
 			let dateFormat = 'dd/MM/yyyy';
@@ -177,9 +205,20 @@ const Home: React.FC = () => {
 
 			setSearchString(d);
 			setSelectedDate(date);
-			handleSearch();
+
+			let prods: IProduct[] = [];
+			if (d && d !== '') {
+				prods = searchProducts({
+					products,
+					query: d,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
 		},
-		[handleSearch]
+		[cleanSearch, products]
 	);
 
 	const handleOnCodeRead = useCallback(
@@ -202,26 +241,6 @@ const Home: React.FC = () => {
 		},
 		[products]
 	);
-
-	useEffect(() => {
-		if (
-			userPreferences.isPRO &&
-			userPreferences.multiplesStores &&
-			userPreferences.storesFirstPage
-		) {
-			if (!canGoBack()) {
-				reset({
-					routes: [{ name: 'StoreList' }],
-				});
-			}
-		}
-	}, [
-		canGoBack,
-		reset,
-		userPreferences.isPRO,
-		userPreferences.multiplesStores,
-		userPreferences.storesFirstPage,
-	]);
 
 	const handleNavigateAddProduct = useCallback(() => {
 		if (searchString && searchString !== '') {
@@ -254,21 +273,24 @@ const Home: React.FC = () => {
 	return isLoading ? (
 		<Loading />
 	) : (
-		<>
+		<Container>
+			<ExpiredModal />
 			{enableBarCodeReader ? (
 				<BarCodeReader
 					onCodeRead={handleOnCodeRead}
 					onClose={handleOnBarCodeReaderClose}
 				/>
 			) : (
-				<Container>
+				<>
 					<Header listRef={listRef} />
 
 					<NotificationsDenny />
 
 					<OutdateApp />
 
-					<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
+					{!userPreferences.isPRO && (
+						<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
+					)}
 
 					{products.length > 0 && (
 						<InputTextContainer>
@@ -299,9 +321,7 @@ const Home: React.FC = () => {
 					)}
 
 					<DatePicker
-						modal
-						mode="date"
-						open={enableDatePicker}
+						isOpen={enableDatePicker}
 						date={selectedDate}
 						onConfirm={handleSelectDateChange}
 						onCancel={() => {
@@ -326,9 +346,9 @@ const Home: React.FC = () => {
 							onPress={handleNavigateAddProduct}
 						/>
 					)}
-				</Container>
+				</>
 			)}
-		</>
+		</Container>
 	);
 };
 

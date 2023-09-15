@@ -2,31 +2,25 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import { useTheme } from 'styled-components/native';
-import { Button } from 'react-native-paper';
 
-import InputText from '@components/InputText';
-import strings from '~/Locales';
-
-import Header from '@components/Header';
+import strings from '@expirychecker/Locales';
 
 import {
 	getCategory,
 	updateCategory,
 	deleteCategory,
-} from '~/Functions/Category';
+} from '@expirychecker/Functions/Category';
+
+import Header from '@components/Header';
+import InputText from '@components/InputText';
+import Dialog from '@components/Dialog';
 
 import {
 	Container,
 	Content,
-	ActionsButtonContainer,
-	ButtonPaper,
 	InputTextContainer,
 	InputTextTip,
-	DialogPaper,
-	Icons,
-	Text,
-} from './styles';
+} from '@views/Category/Edit/styles';
 
 interface Props {
 	id: string;
@@ -34,7 +28,6 @@ interface Props {
 const Edit: React.FC = () => {
 	const { params } = useRoute();
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
-	const theme = useTheme();
 
 	const [name, setName] = useState<string>('');
 	const [errorName, setErrorName] = useState<string>('');
@@ -73,7 +66,7 @@ const Edit: React.FC = () => {
 		getCategory(routeParams.id).then(response => setName(response.name));
 	}, [routeParams.id]);
 
-	const onNameChange = useCallback(value => {
+	const onNameChange = useCallback((value: string) => {
 		setErrorName('');
 		setName(value);
 	}, []);
@@ -104,73 +97,52 @@ const Edit: React.FC = () => {
 		});
 	}, [routeParams.id, name, reset]);
 
+	const switchShowDeleteModal = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
+
 	return (
-		<>
-			<Container>
-				<Header title={strings.View_Category_Edit_PageTitle} noDrawer />
+		<Container>
+			<Header
+				title={strings.View_Category_Edit_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: switchShowDeleteModal,
+					},
+				]}
+			/>
 
-				<Content>
-					<InputTextContainer hasError={!!errorName}>
-						<InputText
-							placeholder={
-								strings.View_Category_Edit_InputNamePlaceholder
-							}
-							value={name}
-							onChange={onNameChange}
-						/>
-					</InputTextContainer>
-					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
-
-					<ActionsButtonContainer>
-						<ButtonPaper
-							icon={() => <Icons name="save-outline" size={22} />}
-							onPress={handleUpdate}
-						>
-							{strings.View_Category_Edit_ButtonSave}
-						</ButtonPaper>
-
-						<ButtonPaper
-							icon={() => (
-								<Icons name="trash-outline" size={22} />
-							)}
-							onPress={() => {
-								setDeleteComponentVisible(true);
-							}}
-						>
-							{strings.View_ProductDetails_Button_DeleteProduct}
-						</ButtonPaper>
-					</ActionsButtonContainer>
-				</Content>
-			</Container>
-			<DialogPaper
+			<Content>
+				<InputTextContainer hasError={!!errorName}>
+					<InputText
+						placeholder={
+							strings.View_Category_Edit_InputNamePlaceholder
+						}
+						value={name}
+						onChange={onNameChange}
+					/>
+				</InputTextContainer>
+				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+			</Content>
+			<Dialog
 				visible={deleteComponentVisible}
-				onDismiss={() => {
-					setDeleteComponentVisible(false);
-				}}
-			>
-				<DialogPaper.Title style={{ color: theme.colors.text }}>
-					{strings.View_Category_Edit_DeleteModal_Title}
-				</DialogPaper.Title>
-				<DialogPaper.Content>
-					<Text>
-						{strings.View_Category_Edit_DeleteModal_Message}
-					</Text>
-				</DialogPaper.Content>
-				<DialogPaper.Actions>
-					<Button color="red" onPress={handleDeleteCategory}>
-						{strings.View_Category_Edit_DeleteModal_Confirm}
-					</Button>
-					<Button
-						color={theme.colors.text}
-						onPress={() => {
-							setDeleteComponentVisible(false);
-						}}
-					>
-						{strings.View_Category_Edit_DeleteModal_Cancel}
-					</Button>
-				</DialogPaper.Actions>
-			</DialogPaper>
-		</>
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDeleteCategory}
+				title={strings.View_Category_Edit_DeleteModal_Title}
+				description={strings.View_Category_Edit_DeleteModal_Message}
+				confirmText={strings.View_Category_Edit_DeleteModal_Confirm}
+				cancelText={strings.View_Category_Edit_DeleteModal_Cancel}
+			/>
+		</Container>
 	);
 };
 

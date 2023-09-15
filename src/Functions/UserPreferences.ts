@@ -10,7 +10,6 @@ import {
 	getEnableProVersion,
 	getHowManyDaysToBeNextExp,
 	getDisableAds,
-	getStoreFirstPage,
 	getAutoComplete,
 } from './Settings';
 
@@ -19,7 +18,6 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settingAutoComplete = await getAutoComplete();
 	const settingNotification = await getEnableNotifications();
 	const settingMultipleStores = await getEnableMultipleStoresMode();
-	const settingStoresFirstPage = await getStoreFirstPage();
 	const settingProMode = await getEnableProVersion();
 	const disableAds = await getDisableAds();
 	const settingTheme = await getAppTheme(false, settingProMode);
@@ -32,7 +30,6 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 		enableNotifications: settingNotification,
 		isPRO: settingProMode,
 		multiplesStores: settingMultipleStores,
-		storesFirstPage: settingStoresFirstPage,
 		disableAds: disableAds || settingProMode,
 		allowRemoteImages: settingImages,
 	};

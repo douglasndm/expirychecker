@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-import CodePush, { CodePushOptions } from 'react-native-code-push';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { LogBox } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
@@ -19,7 +18,8 @@ import StatusBar from '@components/StatusBar';
 import './Locales';
 
 import '@services/AppCheck';
-import '@services/BugSnag';
+import '@services/Firebase/InAppMessaging';
+import './Services/LogRocket';
 import './Services/Adjust';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
@@ -52,7 +52,6 @@ const App: React.FC = () => {
 		isPRO: false,
 		appTheme: Themes.Light,
 		multiplesStores: false,
-		storesFirstPage: false,
 		enableNotifications: true,
 		disableAds: false,
 		allowRemoteImages: true,
@@ -84,7 +83,6 @@ const App: React.FC = () => {
 		},
 		[previousRoute]
 	);
-
 	useEffect(() => {
 		loadInitialData();
 	}, [loadInitialData]);
@@ -119,9 +117,4 @@ const App: React.FC = () => {
 	);
 };
 
-const codePushOptions: CodePushOptions = {
-	checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
-	mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
-};
-
-export default CodePush(codePushOptions)(App);
+export default App;

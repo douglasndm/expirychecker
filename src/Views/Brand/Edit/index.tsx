@@ -2,24 +2,25 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
+
+import strings from '@expirychecker/Locales';
+import {
+	deleteBrand,
+	getBrand,
+	updateBrand,
+} from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
-import strings from '~/Locales';
-
-import { deleteBrand, getBrand, updateBrand } from '~/Utils/Brands';
+import Dialog from '@components/Dialog';
 
 import {
 	Container,
 	Content,
-	ActionsButtonContainer,
-	ButtonPaper,
 	InputTextContainer,
 	InputText,
 	InputTextTip,
-	Icons,
-} from './styles';
+} from '@views/Brand/Edit/styles';
 
 interface Props {
 	brand_id: string;
@@ -59,7 +60,7 @@ const Edit: React.FC = () => {
 		loadData();
 	}, []);
 
-	const onNameChange = useCallback(value => {
+	const onNameChange = useCallback((value: string) => {
 		setErrorName('');
 		setName(value);
 	}, []);
@@ -118,71 +119,54 @@ const Edit: React.FC = () => {
 		}
 	}, [reset, routeParams.brand_id]);
 
-	const handleSwitchDeleteVisible = useCallback(() => {
-		setDeleteComponentVisible(!deleteComponentVisible);
-	}, [deleteComponentVisible]);
+	const switchShowDeleteModal = useCallback(() => {
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
 
 	return isLoading ? (
 		<Loading />
 	) : (
-		<>
-			<Container>
-				<Header title={strings.View_Brand_Edit_PageTitle} noDrawer />
+		<Container>
+			<Header
+				title={strings.View_Brand_Edit_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: switchShowDeleteModal,
+					},
+				]}
+			/>
 
-				<Content>
-					<InputTextContainer hasError={!!errorName}>
-						<InputText
-							placeholder={
-								strings.View_Brand_Edit_InputNamePlaceholder
-							}
-							value={name}
-							onChangeText={onNameChange}
-						/>
-					</InputTextContainer>
-					{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
-
-					<ActionsButtonContainer>
-						<ButtonPaper
-							icon={() => <Icons name="save-outline" size={22} />}
-							onPress={handleUpdate}
-						>
-							{strings.View_Brand_Edit_ButtonSave}
-						</ButtonPaper>
-
-						<ButtonPaper
-							icon={() => (
-								<Icons name="trash-outline" size={22} />
-							)}
-							onPress={() => {
-								setDeleteComponentVisible(true);
-							}}
-						>
-							{strings.View_ProductDetails_Button_DeleteProduct}
-						</ButtonPaper>
-					</ActionsButtonContainer>
-				</Content>
-			</Container>
-			<Dialog.Container
+			<Content>
+				<InputTextContainer hasError={!!errorName}>
+					<InputText
+						placeholder={
+							strings.View_Brand_Edit_InputNamePlaceholder
+						}
+						value={name}
+						onChangeText={onNameChange}
+					/>
+				</InputTextContainer>
+				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+			</Content>
+			<Dialog
 				visible={deleteComponentVisible}
-				onBackdropPress={handleSwitchDeleteVisible}
-			>
-				<Dialog.Title>
-					{strings.View_Brand_Edit_DeleteModal_Title}
-				</Dialog.Title>
-				<Dialog.Description>
-					{strings.View_Brand_Edit_DeleteModal_Message}
-				</Dialog.Description>
-				<Dialog.Button
-					label={strings.View_Brand_Edit_DeleteModal_Cancel}
-					onPress={handleSwitchDeleteVisible}
-				/>
-				<Dialog.Button
-					label={strings.View_Brand_Edit_DeleteModal_Confirm}
-					color="red"
-					onPress={handleDeleteBrand}
-				/>
-			</Dialog.Container>
-		</>
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDeleteBrand}
+				title={strings.View_Brand_Edit_DeleteModal_Title}
+				description={strings.View_Brand_Edit_DeleteModal_Message}
+				confirmText={strings.View_Brand_Edit_DeleteModal_Confirm}
+				cancelText={strings.View_Brand_Edit_DeleteModal_Cancel}
+			/>
+		</Container>
 	);
 };
 

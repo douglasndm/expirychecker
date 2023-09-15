@@ -5,36 +5,32 @@ import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
+import sharedStrings from '@shared/Locales';
 
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
+import { getAllProductsWithoutCategory } from '@expirychecker/Utils/Categories/Products/GetProductsWithoutCategories';
 import { exportToExcel } from '@utils/Excel/Export';
+import { removeCheckedBatches } from '@utils/Product/Batches';
+import { searchProducts } from '@utils/Product/Search';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
-import {
-	getAllCategories,
-	getAllProductsByCategory,
-} from '@expirychecker/Functions/Category';
+import { getAllProductsByCategory } from '@expirychecker/Functions/Category';
 import { getAllStores } from '@expirychecker/Functions/Stores';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
-import Header from '@components/Header';
+import Header from '@components/Products/List/Header';
 import FAB from '@components/FAB';
-
-import {
-	Container,
-	ActionsContainer,
-	ActionButtonsContainer,
-	Icons,
-	ActionText,
-} from '@styles/Views/GenericViewPage';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 
+import { Container, SubTitle } from '@styles/Views/GenericViewPage';
+
 interface Props {
-	id: string;
+	id: string | null;
 }
 
 const CategoryView: React.FC = () => {
@@ -45,6 +41,9 @@ const CategoryView: React.FC = () => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [searchQuery, setSearchQuery] = React.useState('');
+
 	const [categoryName, setCategoryName] = useState<string>('CategoryTitle');
 
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -52,24 +51,38 @@ const CategoryView: React.FC = () => {
 	const loadData = useCallback(async () => {
 		try {
 			setIsLoading(true);
-			const categories = await getAllCategories();
-			const findCat = categories.find(c => c.id === routeParams.id);
 
-			if (findCat) {
-				setCategoryName(findCat.name);
+			if (routeParams.id) {
+				const categories = await getAllCategories();
+				const findCat = categories.find(c => c.id === routeParams.id);
+
+				if (findCat) {
+					setCategoryName(findCat.name);
+				}
+
+				const prods = await getAllProductsByCategory(routeParams.id);
+
+				const noCheckeds: IProduct[] = prods.map(prod => ({
+					...JSON.parse(JSON.stringify(prod)), // for deep clone Zzzz
+					batches: removeCheckedBatches(prod.batches),
+				}));
+
+				// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
+				const sortedProds = sortProductsLotesByLotesExpDate(noCheckeds);
+
+				// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
+				// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
+				// DE QUAL ESTÁ MAIS PRÓXIMO
+				const results = sortProductsByFisrtLoteExpDate(sortedProds);
+
+				setProducts(results);
+			} else {
+				setCategoryName(
+					sharedStrings.View_Category_List_View_NoCategoryName
+				);
+				const prods = await getAllProductsWithoutCategory();
+				setProducts(prods);
 			}
-
-			const prods = await getAllProductsByCategory(routeParams.id);
-
-			// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-			const sortedProds = sortProductsLotesByLotesExpDate(prods);
-
-			// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
-			// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
-			// DE QUAL ESTÁ MAIS PRÓXIMO
-			const results = sortProductsByFisrtLoteExpDate(sortedProds);
-
-			setProducts(results);
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -81,12 +94,17 @@ const CategoryView: React.FC = () => {
 		}
 	}, [routeParams.id]);
 
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
+
 	const handleEdit = useCallback(() => {
-		navigate('CategoryEdit', { id: routeParams.id });
+		if (routeParams.id) navigate('CategoryEdit', { id: routeParams.id });
 	}, [navigate, routeParams.id]);
 
 	const handleNavigateAddProduct = useCallback(() => {
-		navigate('AddProduct', { category: routeParams.id });
+		if (routeParams.id)
+			navigate('AddProduct', { category: routeParams.id });
 	}, [navigate, routeParams.id]);
 
 	const getProducts = async () => getAllProducts({});
@@ -111,11 +129,13 @@ const CategoryView: React.FC = () => {
 				type: 'info',
 			});
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
+				if (err.message.includes('did not share')) return;
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+			}
 		} finally {
 			setIsLoading(false);
 		}
@@ -125,33 +145,53 @@ const CategoryView: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchQuery(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(
+		(value?: string) => {
+			const query = value && value.trim() !== '' ? value : searchQuery;
+
+			let prods: IProduct[] = [];
+
+			if (query && query !== '') {
+				prods = searchProducts({
+					products,
+					query,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
+		},
+		[products, searchQuery]
+	);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
 			<Header
-				title={`${strings.View_Category_List_View_BeforeCategoryName} ${categoryName}`}
-				noDrawer
+				title={strings.View_Category_List_View_BeforeCategoryName}
+				searchValue={searchQuery}
+				onSearchChange={handleSearchChange}
+				handleSearch={handleSearch}
+				exportToExcel={handleExportExcel}
+				navigateToEdit={routeParams.id ? handleEdit : undefined}
 			/>
 
-			<ActionsContainer>
-				<ActionButtonsContainer onPress={handleEdit}>
-					<ActionText>
-						{strings.View_ProductDetails_Button_UpdateProduct}
-					</ActionText>
-					<Icons name="create-outline" size={22} />
-				</ActionButtonsContainer>
+			<SubTitle>{categoryName}</SubTitle>
 
-				<ActionButtonsContainer onPress={handleExportExcel}>
-					<ActionText>
-						{strings.View_Brand_View_ActionButton_GenereteExcel}
-					</ActionText>
-					<Icons name="stats-chart-outline" size={22} />
-				</ActionButtonsContainer>
-			</ActionsContainer>
-
-			<ListProducts products={products} />
-
+			<ListProducts products={productsSearch} onRefresh={loadData} />
 			<FAB
 				icon="plus"
 				label={strings.View_FloatMenu_AddProduct}

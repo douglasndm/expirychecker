@@ -7,12 +7,14 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '@expirychecker/Locales';
 
 import { exportToExcel } from '@utils/Excel/Export';
+import { removeCheckedBatches } from '@utils/Product/Batches';
+import { searchProducts } from '@utils/Product/Search';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
-import { getAllCategories } from '@expirychecker/Functions/Category';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Functions/Stores';
 import {
 	getAllBrands,
@@ -20,18 +22,12 @@ import {
 } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
-import Header from '@components/Header';
+import Header from '@components/Products/List/Header';
 import FAB from '@components/FAB';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 
-import {
-	Container,
-	ActionsContainer,
-	ActionButtonsContainer,
-	Icons,
-	ActionText,
-} from '@styles/Views/GenericViewPage';
+import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
 interface Props {
 	brand_id: string;
@@ -44,6 +40,9 @@ const View: React.FC = () => {
 	const routeParams = params as Props;
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [searchQuery, setSearchQuery] = React.useState('');
 
 	const [brandName, setBrandName] = useState<string>('Brand Name');
 
@@ -61,8 +60,13 @@ const View: React.FC = () => {
 
 			const prods = await getAllProductsByBrand(routeParams.brand_id);
 
+			const noCheckeds: IProduct[] = prods.map(prod => ({
+				...JSON.parse(JSON.stringify(prod)), // for deep clone Zzzz
+				batches: removeCheckedBatches(prod.batches),
+			}));
+
 			// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-			const sortedProds = sortProductsLotesByLotesExpDate(prods);
+			const sortedProds = sortProductsLotesByLotesExpDate(noCheckeds);
 
 			// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
 			// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
@@ -81,13 +85,17 @@ const View: React.FC = () => {
 		}
 	}, [routeParams.brand_id]);
 
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
+
 	const handleEdit = useCallback(() => {
 		navigate('BrandEdit', { brand_id: routeParams.brand_id });
 	}, [navigate, routeParams.brand_id]);
 
 	const getProducts = async () => getAllProducts({});
 
-	const handleGenereteExcel = useCallback(async () => {
+	const handleExportExcel = useCallback(async () => {
 		try {
 			setIsLoading(true);
 
@@ -107,11 +115,13 @@ const View: React.FC = () => {
 				type: 'info',
 			});
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
+				if (err.message.includes('did not share')) return;
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+			}
 		} finally {
 			setIsLoading(false);
 		}
@@ -125,32 +135,52 @@ const View: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchQuery(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(
+		(value?: string) => {
+			const query = value && value.trim() !== '' ? value : searchQuery;
+
+			let prods: IProduct[] = [];
+
+			if (query && query !== '') {
+				prods = searchProducts({
+					products,
+					query,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
+		},
+		[products, searchQuery]
+	);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
 			<Header
-				title={`${strings.View_Brand_View_PageTitle} ${brandName}`}
-				noDrawer
+				title={strings.View_Brand_View_PageTitle}
+				searchValue={searchQuery}
+				onSearchChange={handleSearchChange}
+				handleSearch={handleSearch}
+				exportToExcel={handleExportExcel}
+				navigateToEdit={handleEdit}
 			/>
 
-			<ActionsContainer>
-				<ActionButtonsContainer onPress={handleEdit}>
-					<ActionText>
-						{strings.View_ProductDetails_Button_UpdateProduct}
-					</ActionText>
-					<Icons name="create-outline" size={22} />
-				</ActionButtonsContainer>
-
-				<ActionButtonsContainer onPress={handleGenereteExcel}>
-					<ActionText>
-						{strings.View_Brand_View_ActionButton_GenereteExcel}
-					</ActionText>
-					<Icons name="stats-chart-outline" size={22} />
-				</ActionButtonsContainer>
-			</ActionsContainer>
-
-			<ListProducts products={products} />
+			<SubTitle>{brandName}</SubTitle>
+			<ListProducts products={productsSearch} onRefresh={loadData} />
 
 			<FAB
 				icon="plus"

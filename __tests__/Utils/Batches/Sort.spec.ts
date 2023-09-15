@@ -1,6 +1,6 @@
 import { addDays, subDays } from 'date-fns';
 
-import { sortBatches } from '~/Utils/Batches/Sort';
+import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
 
 describe('Batches functions', () => {
 	it('Should sort batches', () => {
