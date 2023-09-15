@@ -17,44 +17,6 @@ export function getImageFileNameFromPath(path: string): string {
 	return fileName;
 }
 
-export async function getProductImagePath(
-	productId: number
-): Promise<string | null> {
-	const product = await getProductById(productId);
-
-	if (product.photo) {
-		if (await exists(product.photo)) {
-			return product.photo;
-		}
-
-		const imagesPath = `${DocumentDirectoryPath}/images`;
-
-		if (!(await exists(imagesPath))) {
-			await mkdir(imagesPath);
-		}
-
-		const filesDir = await readDir(imagesPath);
-		const findedFile = filesDir.find(file => {
-			const productImage = product.photo?.split('/');
-
-			if (productImage) {
-				const fileName = productImage[productImage?.length - 1];
-
-				if (file.name === fileName) return true;
-				return false;
-			}
-
-			return false;
-		});
-
-		if (findedFile) {
-			return findedFile.path;
-		}
-	}
-
-	return null;
-}
-
 interface saveProductIamgeProps {
 	fileName: string;
 	productId: number;
