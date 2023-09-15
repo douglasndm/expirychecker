@@ -7,12 +7,14 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '@expirychecker/Locales';
 
 import { exportToExcel } from '@utils/Excel/Export';
+import { removeCheckedBatches } from '@utils/Product/Batches';
+import { searchProducts } from '@utils/Product/Search';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
-import { getAllCategories } from '@expirychecker/Functions/Category';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import {
 	getAllStores,
 	getAllProductsByStore,
@@ -21,16 +23,10 @@ import {
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
-import Header from '@components/Header';
+import Header from '@components/Products/List/Header';
 import FAB from '@components/FAB';
 
-import {
-	Container,
-	ActionsContainer,
-	ActionButtonsContainer,
-	Icons,
-	ActionText,
-} from '@styles/Views/GenericViewPage';
+import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
 import ListProducts from '@expirychecker/Components/ListProducts';
 
@@ -47,6 +43,9 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
+	const [searchQuery, setSearchQuery] = React.useState('');
 
 	const [storeName, setStoreName] = useState<string>('');
 	const [products, setProducts] = useState<IProduct[]>([]);
@@ -73,8 +72,13 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				}
 			}
 
+			const noCheckeds: IProduct[] = results.map(prod => ({
+				...JSON.parse(JSON.stringify(prod)), // for deep clone Zzzz
+				batches: removeCheckedBatches(prod.batches),
+			}));
+
 			// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-			const sortedProds = sortProductsLotesByLotesExpDate(results);
+			const sortedProds = sortProductsLotesByLotesExpDate(noCheckeds);
 
 			// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
 			// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
@@ -94,11 +98,15 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		}
 	}, [store]);
 
+	useEffect(() => {
+		setProductsSearch(products);
+	}, [products]);
+
 	const handleNavigateAddProduct = useCallback(() => {
 		navigate('AddProduct', { store });
 	}, [navigate, store]);
 
-	const handleNavigateEditStore = useCallback(() => {
+	const handleEdit = useCallback(() => {
 		navigate('StoreEdit', { store_id: store });
 	}, [navigate, store]);
 
@@ -125,10 +133,11 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				if (!err.message.includes('User did not share'))
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
 		} finally {
 			setIsLoading(false);
 		}
@@ -142,31 +151,52 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		return unsubscribe;
 	}, [addListener, loadData]);
 
+	const handleSearchChange = useCallback(
+		async (search: string) => {
+			setSearchQuery(search);
+
+			if (search.trim() === '') {
+				setProductsSearch(products);
+			}
+		},
+		[products]
+	);
+
+	const handleSearch = useCallback(
+		(value?: string) => {
+			const query = value && value.trim() !== '' ? value : searchQuery;
+
+			let prods: IProduct[] = [];
+
+			if (query && query !== '') {
+				prods = searchProducts({
+					products,
+					query,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
+		},
+		[products, searchQuery]
+	);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
-			<Header title={storeName} noDrawer />
+			<Header
+				title={strings.View_Store_View_PageTitle}
+				searchValue={searchQuery}
+				onSearchChange={handleSearchChange}
+				handleSearch={handleSearch}
+				exportToExcel={store !== '000' ? handleExportExcel : undefined}
+				navigateToEdit={store !== '000' ? handleEdit : undefined}
+			/>
 
-			{store !== '000' && (
-				<ActionsContainer>
-					<ActionButtonsContainer onPress={handleNavigateEditStore}>
-						<ActionText>
-							{strings.View_Store_View_Button_EditStore}
-						</ActionText>
-						<Icons name="create-outline" size={22} />
-					</ActionButtonsContainer>
-
-					<ActionButtonsContainer onPress={handleExportExcel}>
-						<ActionText>
-							{strings.View_Brand_View_ActionButton_GenereteExcel}
-						</ActionText>
-						<Icons name="stats-chart-outline" size={22} />
-					</ActionButtonsContainer>
-				</ActionsContainer>
-			)}
-
-			<ListProducts products={products} />
+			<SubTitle>{storeName}</SubTitle>
+			<ListProducts products={productsSearch} />
 
 			<FAB
 				icon="plus"

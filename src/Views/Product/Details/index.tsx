@@ -22,8 +22,11 @@ import { getStore } from '@expirychecker/Functions/Stores';
 import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
 import { deleteManyBatches } from '@expirychecker/Utils/Batches';
 import { getImagePath } from '@utils/Images/GetImagePath';
+import { saveLocally } from '@utils/Images/SaveLocally';
 
 import Loading from '@components/Loading';
+import Header from '@components/Header';
+
 import PageHeader from '@views/Product/View/Components/PageHeader';
 
 import Banner from '@expirychecker/Components/Ads/Banner';
@@ -51,7 +54,7 @@ interface Request {
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	const { userPreferences } = useContext(PreferencesContext);
 
-	const { push, goBack, addListener, reset } =
+	const { push, goBack, addListener, reset, navigate } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const productId = useMemo(() => {
@@ -92,10 +95,14 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				}
 			} else if (result.code && userPreferences.isPRO) {
 				const response = await getImagePath({
-					productCode: result.code,
+					productCode: result.code.trim(),
 				});
 
-				setImage(response);
+				if (response) {
+					setImage(response);
+
+					await saveLocally(response, result.code.trim());
+				}
 			}
 
 			if (!result || result === null) {
@@ -136,7 +143,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	}, [product]);
 
 	const addNewLote = useCallback(() => {
-		push('AddLote', { productId });
+		push('AddBatch', { productId });
 	}, [productId, push]);
 
 	useEffect(() => {
@@ -168,11 +175,25 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		}
 	}, []);
 
+	const handleEdit = useCallback(() => {
+		navigate('EditProduct', { productId });
+	}, [navigate, productId]);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<>
 			<Container>
+				<Header
+					title={strings.View_ProductDetails_PageTitle}
+					noDrawer
+					appBarActions={[
+						{
+							icon: 'square-edit-outline',
+							onPress: handleEdit,
+						},
+					]}
+				/>
 				<Content>
 					<PageHeader
 						product={product}

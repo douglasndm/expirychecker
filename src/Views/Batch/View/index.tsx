@@ -24,14 +24,9 @@ import Loading from '@components/Loading';
 import Header from '@components/Header';
 import Button from '@components/Button';
 
-import {
-	ActionsButtonContainer,
-	ButtonPaper,
-} from '@expirychecker/Views/Product/Edit/styles';
-
 import { getProductById } from '@expirychecker/Functions/Product';
 import Banner from '@expirychecker/Components/Ads/Banner';
-import { PageHeader, Icons } from '../Edit/styles';
+import { PageHeader } from '../Edit/styles';
 
 import {
 	Container,
@@ -43,6 +38,7 @@ import {
 	BannerContainer,
 	ProFeaturesContainer,
 	ProFeaturesText,
+	Text,
 } from './styles';
 
 interface Props {
@@ -224,22 +220,45 @@ const View: React.FC = () => {
 		navigate('Pro');
 	}, [navigate]);
 
+	const whereIs: string = useMemo(() => {
+		let text = `${strings.View_Batch_WhereIs}: `;
+
+		if (batch?.where_is === 'shelf') {
+			text += strings.View_Batch_WhereIs_Shelf;
+		} else if (batch?.where_is === 'stock') {
+			text += strings.View_Batch_WhereIs_Stock;
+		} else {
+			text = '';
+		}
+
+		return text;
+	}, [batch?.where_is]);
+
+	const extraInfo = useMemo(() => {
+		let text = `${strings.View_Batch_ExtraInfo}: `;
+
+		if (batch?.additional_data) {
+			text += batch.additional_data;
+		} else {
+			text = '';
+		}
+		return text;
+	}, [batch?.additional_data]);
+
 	return isLoading ? (
 		<Loading />
 	) : (
 		<Container>
-			<PageHeader>
-				<Header title={strings.View_Batch_PageTitle} noDrawer />
-
-				<ActionsButtonContainer>
-					<ButtonPaper
-						icon={() => <Icons name="create-outline" size={22} />}
-						onPress={handleNaviEdit}
-					>
-						{strings.View_Batch_Button_Edit}
-					</ButtonPaper>
-				</ActionsButtonContainer>
-			</PageHeader>
+			<Header
+				title={strings.View_Batch_PageTitle}
+				noDrawer
+				appBarActions={[
+					{
+						icon: 'square-edit-outline',
+						onPress: handleNaviEdit,
+					},
+				]}
+			/>
 
 			{!!batch && (
 				<BatchContainer>
@@ -312,6 +331,12 @@ const View: React.FC = () => {
 								})[0]
 							}`}
 						</BatchPrice>
+					)}
+					{userPreferences.isPRO && !!whereIs && (
+						<Text>{whereIs}</Text>
+					)}
+					{userPreferences.isPRO && !!extraInfo && (
+						<Text>{extraInfo}</Text>
 					)}
 
 					{!userPreferences.disableAds && (

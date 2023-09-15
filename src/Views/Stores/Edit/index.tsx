@@ -2,22 +2,19 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import Dialog from 'react-native-dialog';
 
-import InputText from '@components/InputText';
-import strings from '~/Locales';
-
-import { getStore, updateStore, deleteStore } from '~/Functions/Stores';
+import strings from '@expirychecker/Locales';
+import {
+	getStore,
+	updateStore,
+	deleteStore,
+} from '@expirychecker/Functions/Stores';
 
 import Header from '@components/Header';
+import InputText from '@components/InputText';
+import Dialog from '@components/Dialog';
 
-import {
-	Container,
-	Content,
-	ActionsButtonContainer,
-	ButtonPaper,
-	Icons,
-} from './styles';
+import { Container, Content } from '@views/Store/Edit/styles';
 
 interface Props {
 	store_id: string;
@@ -99,8 +96,8 @@ const Edit: React.FC = () => {
 	}, []);
 
 	const handleSwitchShowDelete = useCallback(() => {
-		setDeleteComponentVisible(!deleteComponentVisible);
-	}, [deleteComponentVisible]);
+		setDeleteComponentVisible(prevState => !prevState);
+	}, []);
 
 	return (
 		<Container>
@@ -110,6 +107,19 @@ const Edit: React.FC = () => {
 					storeName
 				)}
 				noDrawer
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: handleSwitchShowDelete,
+					},
+				]}
 			/>
 
 			<Content>
@@ -118,46 +128,20 @@ const Edit: React.FC = () => {
 					value={storeName}
 					onChange={handleTextChange}
 				/>
-
-				<ActionsButtonContainer>
-					<ButtonPaper
-						icon={() => <Icons name="save-outline" size={22} />}
-						onPress={handleUpdate}
-					>
-						{strings.View_EditProduct_Button_Save}
-					</ButtonPaper>
-					<ButtonPaper
-						icon={() => <Icons name="trash-outline" size={22} />}
-						onPress={handleSwitchShowDelete}
-					>
-						{strings.View_ProductDetails_Button_DeleteProduct}
-					</ButtonPaper>
-				</ActionsButtonContainer>
 			</Content>
 
-			<Dialog.Container
+			<Dialog
 				visible={deleteComponentVisible}
-				onBackdropPress={handleSwitchShowDelete}
-			>
-				<Dialog.Title>
-					{strings.View_Store_Edit_Delete_title}
-				</Dialog.Title>
-				<Dialog.Description>
-					{strings.View_Store_Edit_Delete_Description.replace(
-						'{STORE}',
-						storeName
-					)}
-				</Dialog.Description>
-				<Dialog.Button
-					label={strings.View_Store_Edit_Delete_Button_Cancel}
-					onPress={handleSwitchShowDelete}
-				/>
-				<Dialog.Button
-					label={strings.View_Store_Edit_Delete_Button_Confirm}
-					color="red"
-					onPress={handleDelete}
-				/>
-			</Dialog.Container>
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDelete}
+				title={strings.View_Store_Edit_Delete_title}
+				description={strings.View_Store_Edit_Delete_Description.replace(
+					'{STORE}',
+					storeName
+				)}
+				confirmText={strings.View_Store_Edit_Delete_Button_Confirm}
+				cancelText={strings.View_Store_Edit_Delete_Button_Cancel}
+			/>
 		</Container>
 	);
 };

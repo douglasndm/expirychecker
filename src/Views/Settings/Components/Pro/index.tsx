@@ -1,13 +1,10 @@
-import React, { useCallback, useContext, useMemo } from 'react';
-import { Linking, Platform } from 'react-native';
+import React, { useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
-
-import { isSubscriptionActive } from '@expirychecker/Functions/ProMode';
 
 import Button from '@components/Button';
 
@@ -18,24 +15,11 @@ import { Container, ButtonCancel, ButtonCancelText } from './styles';
 const Pro: React.FC = () => {
 	const { userPreferences } = useContext(PreferencesContext);
 
-	const { navigate, reset } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const cancelSubscriptionLink = useMemo(() => {
-		return Platform.OS === 'ios'
-			? 'https://apps.apple.com/account/subscriptions'
-			: 'https://play.google.com/store/account/subscriptions?sku=controledevalidade_pro_monthly&package=com.controledevalidade';
-	}, []);
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const handleCancel = useCallback(async () => {
-		await Linking.openURL(cancelSubscriptionLink);
-
-		if (!(await isSubscriptionActive())) {
-			reset({
-				routes: [{ name: 'Home' }],
-			});
-		}
-	}, [reset, cancelSubscriptionLink]);
+		navigate('SubscriptionCancel');
+	}, [navigate]);
 
 	const navigateToPremiumView = useCallback(() => {
 		navigate('Pro');

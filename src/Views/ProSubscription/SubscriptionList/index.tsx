@@ -5,20 +5,21 @@ import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
 import { showMessage } from 'react-native-flash-message';
 import { formatCurrency } from 'react-native-format-currency';
 
-import Loading from '@components/Loading';
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
-
-import Card from './Card';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import {
 	getSubscriptionDetails,
 	makeSubscription,
 	isSubscriptionActive,
 	RestorePurchasers,
-} from '~/Functions/ProMode';
-import { getEnableProVersion } from '~/Functions/Settings';
+} from '@expirychecker/Functions/ProMode';
+import { getEnableProVersion } from '@expirychecker/Functions/Settings';
+
+import Loading from '@components/Loading';
+
+import Card from './Card';
 
 import {
 	Container,
@@ -30,6 +31,8 @@ import {
 	ButtonText,
 	TextSubscription,
 	LoadingIndicator,
+	ButtonError,
+	ButtonErrorText,
 } from './styles';
 
 const SubscriptionList: React.FC = () => {
@@ -89,7 +92,7 @@ const SubscriptionList: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [userPreferences]);
+	}, [setUserPreferences, userPreferences]);
 
 	useEffect(() => {
 		const monthlyPack = packages.find(
@@ -323,11 +326,11 @@ const SubscriptionList: React.FC = () => {
 							</>
 						</Container>
 					) : (
-						<ButtonSubscription disabled>
-							<TextSubscription>
+						<ButtonError disabled>
+							<ButtonErrorText>
 								{strings.View_ProPage_SubscriptionNotAvailable}
-							</TextSubscription>
-						</ButtonSubscription>
+							</ButtonErrorText>
+						</ButtonError>
 					)}
 				</>
 			)}

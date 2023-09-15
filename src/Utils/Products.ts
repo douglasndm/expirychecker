@@ -1,17 +1,17 @@
-import realm from '~/Services/Realm';
+import realm from '@expirychecker/Services/Realm';
 
 interface deleteManyProductsProps {
-    productsIds: Array<number>;
+	productsIds: Array<number>;
 }
 
 export async function deleteManyProducts({
-    productsIds,
+	productsIds,
 }: deleteManyProductsProps): Promise<void> {
-    const query = productsIds.map(id => `id = ${id}`).join(' OR ');
+	const query = productsIds.map(id => `id = ${id}`).join(' OR ');
 
-    const prods = realm.objects('Product').filtered(`(${query})`);
+	const prods = realm.objects('Product').filtered(`(${query})`);
 
-    realm.write(async () => {
-        realm.delete(prods);
-    });
+	realm.write(async () => {
+		realm.delete(prods);
+	});
 }

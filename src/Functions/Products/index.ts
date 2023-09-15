@@ -128,26 +128,20 @@ interface getAllProductsProps {
 	limit?: number;
 }
 
-export async function getAllProducts({
+export function getAllProducts({
 	removeProductsWithoutBatches = false,
 	removeTreatedBatch = false,
 	sortProductsByExpDate = false,
 	limit,
-}: getAllProductsProps): Promise<IProduct[]> {
-	const allProducts = realm.objects<IProduct>('Product').slice();
-
-	let filtertedProducts: Array<IProduct> = allProducts;
+}: getAllProductsProps): IProduct[] {
+	let filteredProducts = [...realm.objects<IProduct>('Product')];
 
 	if (removeProductsWithoutBatches) {
-		const prodWithBachesOnly = filtertedProducts.filter(
-			p => p.batches.length > 0
-		);
-
-		filtertedProducts = prodWithBachesOnly;
+		filteredProducts = filteredProducts.filter(p => p.batches.length > 0);
 	}
 
 	if (removeTreatedBatch) {
-		const prodsWithNonThreatedBatches = filtertedProducts.map(product => {
+		const prodsWithNonThreatedBatches = filteredProducts.map(product => {
 			const batches = product.batches.filter(
 				batch => batch.status !== 'Tratado'
 			);
@@ -166,59 +160,50 @@ export async function getAllProducts({
 			return prod;
 		});
 
-		filtertedProducts = prodsWithNonThreatedBatches;
+		filteredProducts = prodsWithNonThreatedBatches;
 	}
 
 	if (sortProductsByExpDate) {
 		// ORDENA OS LOTES DE CADA PRODUTO POR ORDEM DE EXPIRAÇÃO
-		const resultsTemp = sortProductsLotesByLotesExpDate(filtertedProducts);
+		const resultsTemp = sortProductsLotesByLotesExpDate(filteredProducts);
 
 		// DEPOIS QUE RECEBE OS PRODUTOS COM OS LOTES ORDERNADOS ELE VAI COMPARAR
 		// CADA PRODUTO EM SI PELO PRIMIEIRO LOTE PARA FAZER A CLASSIFICAÇÃO
 		// DE QUAL ESTÁ MAIS PRÓXIMO
 		const results = sortProductsByFisrtLoteExpDate(resultsTemp);
 
-		filtertedProducts = results;
+		filteredProducts = results;
 	}
 
 	if (limit) {
-		const productsLimited = filtertedProducts.slice(0, limit);
-		filtertedProducts = productsLimited;
+		filteredProducts = filteredProducts.slice(0, limit);
 	}
 
-	const prodsWithoutRealmRef = filtertedProducts.map(p => {
-		const prod: Omit<IProduct, 'batches'> = {
-			id: p.id,
-			name: p.name,
-			categories: p.categories,
-			brand: p.brand,
-			code: p.code,
-			daysToBeNext: p.daysToBeNext,
-			photo: p.photo,
-			store: p.store,
-			created_at: p.created_at,
-			updated_at: p.updated_at,
-		};
-		const batches = p.batches.map(b => ({
+	// This makes a copy of the products and return it without the realm reference
+	// So we can use it in the react component and can be deleted without problems
+	return filteredProducts.map(p => ({
+		id: p.id,
+		name: p.name,
+		categories: p.categories,
+		brand: p.brand,
+		code: p.code,
+		daysToBeNext: p.daysToBeNext,
+		photo: p.photo,
+		store: p.store,
+		created_at: p.created_at,
+		updated_at: p.updated_at,
+		batches: p.batches.map(b => ({
 			id: b.id,
-			name: b.name,
+			name: b.name || String(b.id),
 			exp_date: b.exp_date,
 			amount: b.amount,
 			price: b.price,
 			status: b.status,
 			price_tmp: b.price_tmp,
-
 			created_at: b.created_at,
 			updated_at: b.updated_at,
-		}));
-
-		return {
-			...prod,
-			batches,
-		};
-	});
-
-	return prodsWithoutRealmRef;
+		})),
+	}));
 }
 
 interface searchForAProductInAListProps {

@@ -5,7 +5,7 @@ export const FastSubContainer = styled.View``;
 export const Container = styled.View`
 	flex-direction: row;
 	margin: 10px;
-	background-color: #e8254f
+	background-color: #e8254f;
 	padding: 25px 5px;
 	border-radius: 8px;
 `;

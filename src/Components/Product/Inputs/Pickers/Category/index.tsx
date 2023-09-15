@@ -1,81 +1,81 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ViewStyle } from 'react-native';
 
-import strings from '~/Locales';
+import strings from '@expirychecker/Locales';
 
-import PreferencesContext from '~/Contexts/PreferencesContext';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import { getAllCategories } from '~/Functions/Category';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 
 import { PickerContainer, Picker } from '../styles';
 
 interface Props {
-    onChange: (value: string) => void;
-    containerStyle?: ViewStyle;
-    defaultValue?: string | null;
+	onChange: (value: string) => void;
+	containerStyle?: ViewStyle;
+	defaultValue?: string | null;
 }
 
 const CategorySelect: React.FC<Props> = ({
-    onChange,
-    containerStyle,
-    defaultValue,
+	onChange,
+	containerStyle,
+	defaultValue,
 }: Props) => {
-    const { userPreferences } = useContext(PreferencesContext);
+	const { userPreferences } = useContext(PreferencesContext);
 
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(
-        () => {
-            if (defaultValue && defaultValue !== '') {
-                return defaultValue;
-            }
-            return null;
-        }
-    );
+	const [selectedCategory, setSelectedCategory] = useState<string | null>(
+		() => {
+			if (defaultValue && defaultValue !== '') {
+				return defaultValue;
+			}
+			return null;
+		}
+	);
 
-    const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
+	const [categories, setCategories] = useState<Array<ICategoryItem>>([]);
 
-    const handleOnChange = useCallback(
-        value => {
-            setSelectedCategory(value);
+	const handleOnChange = useCallback(
+		(value: string) => {
+			setSelectedCategory(value);
 
-            // call on change on parent to update value their
-            onChange(value);
-        },
-        [onChange]
-    );
+			// call on change on parent to update value their
+			onChange(value);
+		},
+		[onChange]
+	);
 
-    const loadData = useCallback(async () => {
-        const allCategories = await getAllCategories();
+	const loadData = useCallback(async () => {
+		const allCategories = await getAllCategories();
 
-        const categoriesArray: Array<ICategoryItem> = [];
+		const categoriesArray: Array<ICategoryItem> = [];
 
-        allCategories.forEach(cat =>
-            categoriesArray.push({
-                key: cat.id,
-                label: cat.name,
-                value: cat.id,
-            })
-        );
-        setCategories(categoriesArray);
-    }, []);
+		allCategories.forEach(cat =>
+			categoriesArray.push({
+				key: cat.id,
+				label: cat.name,
+				value: cat.id,
+			})
+		);
+		setCategories(categoriesArray);
+	}, []);
 
-    useEffect(() => {
-        loadData();
-    }, []);
+	useEffect(() => {
+		loadData();
+	}, []);
 
-    return (
-        <PickerContainer style={containerStyle}>
-            <Picker
-                items={categories}
-                onValueChange={handleOnChange}
-                value={selectedCategory}
-                placeholder={{
-                    color: userPreferences.appTheme.colors.placeholderColor,
-                    label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
-                    value: 'null',
-                }}
-            />
-        </PickerContainer>
-    );
+	return (
+		<PickerContainer style={containerStyle}>
+			<Picker
+				items={categories}
+				onValueChange={handleOnChange}
+				value={selectedCategory}
+				placeholder={{
+					color: userPreferences.appTheme.colors.placeholderColor,
+					label: strings.View_AddProduct_InputPlaceholder_SelectCategory,
+					value: 'null',
+				}}
+			/>
+		</PickerContainer>
+	);
 };
 
 export default CategorySelect;

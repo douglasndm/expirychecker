@@ -12,6 +12,7 @@ import { getAllStores } from '@expirychecker/Functions/Stores';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
+import ActionButton from '@shared/Components/ActionButton';
 import {
 	PickerContainer,
 	Picker,
@@ -23,8 +24,6 @@ import {
 	Title,
 	Advantage,
 	Text,
-	ActionButton,
-	Icons,
 	WarningText,
 } from './styles';
 
@@ -90,7 +89,7 @@ const Teams: React.FC = () => {
 		}
 	}, [selectedStore]);
 
-	const handleStoreChange = useCallback(value => {
+	const handleStoreChange = useCallback((value: string) => {
 		setSelectedStore(value);
 	}, []);
 
@@ -166,22 +165,16 @@ const Teams: React.FC = () => {
 
 				{Platform.OS === 'android' ? (
 					<ActionButton
-						icon={() => (
-							<Icons name="logo-google-playstore" size={22} />
-						)}
+						iconName="logo-google-playstore"
+						text={strings.Informations_Teams_ViewOnGooglePlay}
 						onPress={handleNavigateGPlay}
-					>
-						{strings.Informations_Teams_ViewOnGooglePlay}
-					</ActionButton>
+					/>
 				) : (
 					<ActionButton
-						icon={() => (
-							<Icons name="logo-apple-appstore" size={22} />
-						)}
+						iconName="logo-apple-appstore"
+						text={strings.Informations_Teams_ViewOnAppStore}
 						onPress={handleNavigateAppStore}
-					>
-						{strings.Informations_Teams_ViewOnAppStore}
-					</ActionButton>
+					/>
 				)}
 			</Content>
 		</Container>

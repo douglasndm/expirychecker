@@ -10,9 +10,9 @@ import strings from '@expirychecker/Locales';
 import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 
 import { getAllProducts } from '@expirychecker/Functions/Products';
-import { getAllCategories } from '@expirychecker/Functions/Category';
 import { getAllStores } from '@expirychecker/Functions/Stores';
 
 import {

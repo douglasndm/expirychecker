@@ -1,6 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { ScrollView, Text } from 'react-native';
-import { exists } from 'react-native-fs';
+import React, { useCallback } from 'react';
+import { ScrollView } from 'react-native';
 import { addDays } from 'date-fns';
 
 import Button from '@components/Button';
@@ -14,12 +13,8 @@ import {
 } from '@expirychecker/Functions/Notifications';
 
 import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
-import Camera from '@expirychecker/Components/Camera';
 
 const Test: React.FC = () => {
-	const [isCameraEnabled, setIsCameraEnabled] = useState(false);
-	const [photoPath, setPhotoPath] = useState('');
-
 	async function sampleData() {
 		try {
 			realm.write(() => {
@@ -39,7 +34,6 @@ const Test: React.FC = () => {
 						id: nextProductId,
 						name: `Product ${i}`,
 						code: `${i}7841686${i}`,
-						photo: `${photoPath}`,
 						batches: [
 							{
 								id: nextLoteId,
@@ -84,66 +78,33 @@ const Test: React.FC = () => {
 		}
 	}, []);
 
-	const handleDisableCamera = useCallback(() => {
-		setIsCameraEnabled(false);
-	}, []);
-
-	const onPhotoTaked = useCallback(
-		async ({ filePath }: onPhotoTakedProps) => {
-			if (await exists(filePath)) {
-				setPhotoPath(filePath);
-			}
-
-			handleDisableCamera();
-		},
-		[handleDisableCamera]
-	);
-
 	return (
-		<>
-			{isCameraEnabled ? (
-				<Camera
-					onPhotoTaked={onPhotoTaked}
-					onBackButtonPressed={handleDisableCamera}
-				/>
-			) : (
-				<Container>
-					<ScrollView>
-						<Category>
-							<Text>{photoPath}</Text>
-							<Button
-								text="Enable camera"
-								onPress={() => setIsCameraEnabled(true)}
-							/>
+		<Container>
+			<ScrollView>
+				<Category>
+					<Button text="Load with sample data" onPress={sampleData} />
 
-							<Button
-								text="Load with sample data"
-								onPress={sampleData}
-							/>
+					<Button
+						text="Delete all realm data"
+						onPress={deleteProducts}
+					/>
 
-							<Button
-								text="Delete all realm data"
-								onPress={deleteProducts}
-							/>
+					<Button
+						text="Log is time to notificaiton"
+						onPress={() =>
+							isTimeForANotification().then(response =>
+								console.log(response)
+							)
+						}
+					/>
 
-							<Button
-								text="Log is time to notificaiton"
-								onPress={() =>
-									isTimeForANotification().then(response =>
-										console.log(response)
-									)
-								}
-							/>
-
-							<Button
-								text="Throw notification"
-								onPress={handleNotification}
-							/>
-						</Category>
-					</ScrollView>
-				</Container>
-			)}
-		</>
+					<Button
+						text="Throw notification"
+						onPress={handleNotification}
+					/>
+				</Category>
+			</ScrollView>
+		</Container>
 	);
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import SplashScreen from 'react-native-splash-screen';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
@@ -16,7 +16,6 @@ import {
 	InputContainer,
 	InputTextContainer,
 	InputText,
-	List,
 	Icons,
 	LoadingIcon,
 	InputTextTip,
@@ -24,6 +23,8 @@ import {
 	ListItemTitle,
 	AddButtonContainer,
 	AddNewItemContent,
+	ListTitle,
+	Content,
 } from '@styles/Views/GenericListPage';
 
 const ListView: React.FC = () => {
@@ -37,7 +38,7 @@ const ListView: React.FC = () => {
 
 	const [stores, setStores] = useState<Array<IStore>>([]);
 
-	const handleOnTextChange = useCallback(value => {
+	const handleOnTextChange = useCallback((value: string) => {
 		setInputHasError(false);
 		setInputErrorMessage('');
 		setNewStoreName(value);
@@ -77,89 +78,93 @@ const ListView: React.FC = () => {
 		[navigate]
 	);
 
-	const renderCategory = useCallback(
-		({ item }) => {
-			let storeToNavigate: string;
+	const loadData = useCallback(async () => {
+		try {
+			const sts = await getAllStores();
 
-			if (item.id) {
-				storeToNavigate = item.id;
-			} else if (!item.id && item.name) {
-				storeToNavigate = item.name;
-			} else {
-				storeToNavigate = item;
+			const noStore: IStore = {
+				id: '000',
+				name: strings.View_Store_List_NoStore,
+			};
+
+			const sorted = sortStores(sts);
+
+			setStores([...sorted, noStore]);
+		} catch (err) {
+			if (err instanceof Error) {
+				Crashlytics().recordError(err);
 			}
-
-			return (
-				<ListItemContainer
-					onPress={() => handleNavigateToStore(storeToNavigate)}
-				>
-					<ListItemTitle>{item.name}</ListItemTitle>
-				</ListItemContainer>
-			);
-		},
-		[handleNavigateToStore]
-	);
+		}
+	}, []);
 
 	useEffect(() => {
 		const unsubscribe = addListener('focus', () => {
-			getAllStores()
-				.then(response => {
-					const noStore: IStore = {
-						id: '000',
-						name: strings.View_Store_List_NoStore,
-					};
-
-					const sorted = sortStores(response);
-
-					setStores([...sorted, noStore]);
-				})
-				.finally(() => {
-					SplashScreen.hide();
-				});
+			loadData();
 		});
 
 		return unsubscribe;
-	}, [addListener]);
+	}, [addListener, loadData]);
 
 	return (
 		<Container>
 			<Header title={strings.View_Store_List_PageTitle} />
+			<Content>
+				<AddNewItemContent>
+					<InputContainer>
+						<InputTextContainer hasError={inputHasError}>
+							<InputText
+								value={newStoreName}
+								onChangeText={handleOnTextChange}
+								placeholder={
+									strings.View_Store_List_AddNewStore_Placeholder
+								}
+							/>
+						</InputTextContainer>
 
-			<AddNewItemContent>
-				<InputContainer>
-					<InputTextContainer hasError={inputHasError}>
-						<InputText
-							value={newStoreName}
-							onChangeText={handleOnTextChange}
-							placeholder={
-								strings.View_Store_List_AddNewStore_Placeholder
+						<AddButtonContainer
+							onPress={handleSaveStore}
+							enabled={!isAdding}
+						>
+							{isAdding ? (
+								<LoadingIcon />
+							) : (
+								<Icons name="add-circle-outline" />
+							)}
+						</AddButtonContainer>
+					</InputContainer>
+
+					{!!inputErrorMessage && (
+						<InputTextTip>{inputErrorMessage}</InputTextTip>
+					)}
+				</AddNewItemContent>
+
+				<ListTitle>{strings.View_Store_List_PageTitle}</ListTitle>
+
+				{stores.map(store => {
+					let storeToNavigate: string | IStore;
+
+					if (store.id) {
+						storeToNavigate = store.id;
+					} else if (!store.id && store.name) {
+						storeToNavigate = store.name;
+					} else {
+						storeToNavigate = store;
+					}
+
+					return (
+						<ListItemContainer
+							key={store.id}
+							onPress={() =>
+								handleNavigateToStore(storeToNavigate)
 							}
-						/>
-					</InputTextContainer>
+						>
+							<ListItemTitle>{store.name}</ListItemTitle>
+						</ListItemContainer>
+					);
+				})}
 
-					<AddButtonContainer
-						onPress={handleSaveStore}
-						enabled={!isAdding}
-					>
-						{isAdding ? (
-							<LoadingIcon />
-						) : (
-							<Icons name="add-circle-outline" />
-						)}
-					</AddButtonContainer>
-				</InputContainer>
-
-				{!!inputErrorMessage && (
-					<InputTextTip>{inputErrorMessage}</InputTextTip>
-				)}
-			</AddNewItemContent>
-
-			<List
-				data={stores}
-				keyExtractor={(item, index) => String(index)}
-				renderItem={renderCategory}
-				ListFooterComponent={PaddingComponent}
-			/>
+				<PaddingComponent />
+			</Content>
 		</Container>
 	);
 };

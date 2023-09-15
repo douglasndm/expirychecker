@@ -4,6 +4,8 @@ app.json
 # google-services.json
 # firebase.json
 
+coverage/
+
 java_pid24724.hprof
 .hprof
 *.hprof

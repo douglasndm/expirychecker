@@ -14,10 +14,10 @@ import EnvConfig from 'react-native-config';
 import strings from '@expirychecker/Locales';
 
 import { getAllBrands, saveManyBrands } from '@expirychecker/Utils/Brands';
+import { saveManyCategories } from '@expirychecker/Utils/Categories/SaveMany';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 
 import { getAllProducts, saveMany } from './Products';
-import { getAllCategories } from './Category';
-import { saveManyCategories } from './Categories';
 
 const backupDir = `${DocumentDirectoryPath}/backupDir`;
 

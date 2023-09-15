@@ -1,5 +1,5 @@
 {
-    "AppName": "Expiry Checker",
+    "AppName": "Expiry Tracker",
     "AppName_ProVersion": "PRO",
 
     "Menu_Button_GoToHome": "Home",
@@ -36,15 +36,13 @@
     "Component_DaysToBeNext_Placeholder": "Days to be next to expire",
     "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
 
-    "Component_FastSub_Text": "Only {PRICE_MONTH} per month on annual plan of {PRICE}.",
+    "Component_FastSub_Text": "Enjoy more features with PRO.",
     "Component_FastSub_TextWithTrial": "Free trial of {DAYS} days, then only {PRICE_MONTH} per month on annual plan of {PRICE}.",
     "Component_FastSub_Price": "Only {PRICE} monthly",
 
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_ShowAllProducts": "Show all products",
     "ListProductsComponent_Button_AddNewProduct": "Add new product",
-    "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Delete selected",
-    "ListProductsComponent_DeleteProducts_ActionBar_Cancel": "Cancel selection",
     "ListProductsComponent_DeleteProducts_Modal_Title": "Delete many products",
     "ListProductsComponent_DeleteProducts_Modal_Description": "Are you going to delete SEVERAL products, this action cannot be undone!",
     "ListProductsComponent_DeleteProducts_Modal_Button_Keep": "Keep products",
@@ -75,7 +73,6 @@
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo made by",
 
-    "View_AddBatch_AlertTypeBatchName": "Type the batch's name",
     "View_AddBatch_PageTitle": "Add new batch",
     "View_AddBatch_InputPlacehoder_Batch": "Batch",
     "View_AddBatch_InputPlacehoder_Amount": "Amount",
@@ -113,6 +110,8 @@
     "View_AllProducts_PageTitle": "All products",
     "View_AllProducts_SearchPlaceholder": "Search for a product",
 
+    "View_Store_View_PageTitle": "Store",
+
     "View_Store_List_PageTitle": "Stores",
     "View_Store_List_AddNewStore_Placeholder": "Add new store",
     "View_Store_List_AddNewStore_Error_TextEmpty": "Type the store's name",
@@ -120,13 +119,13 @@
     "View_Store_List_NoStore": "No store",
 
     "View_EditBatch_Error_BatchDidntFound": "Batch wasn't found",
-    "View_EditBatch_Error_BatchWithNoName": "Type the batch name",
     "View_EditBatch_PageTitle": "Update batch",
     "View_EditBatch_Button_DeleteBatch": "Delete",
     "View_EditBatch_Button_MoreInfo": "More info",
     "View_EditBatch_InputPlacehoder_Batch": "Batch",
     "View_EditBatch_InputPlacehoder_Amount": "Amount",
     "View_EditBatch_InputPlacehoder_UnitPrice": "Unit price",
+    "View_EditBatch_Status": "Status",
     "View_EditBatch_RadioButton_Treated": "Treated",
     "View_EditBatch_RadioButton_NotTreated": "Not Treaded",
     "View_EditBatch_CalendarTitle": "Expiration date",
@@ -156,6 +155,10 @@
     "View_Batch_UnitTempPrice": "Temp unit price",
     "View_Batch_TotalPrice": "Total price",
     "View_Batch_TotalPriceDiscount": "Total price with discount",
+    "View_Batch_WhereIs": "Localization",
+    "View_Batch_WhereIs_Stock": "Stock",
+    "View_Batch_WhereIs_Shelf": "Shelf",
+    "View_Batch_ExtraInfo": "Extra info",
     "View_Batch_Button_ShareWithAnotherApps": "Share with anothers apps",
 
     "View_Batch_Discount_PageTitle": "Discount",
@@ -183,7 +186,6 @@
     "View_ProductDetails_WarningDelete_Message": "If you continue you will delete this product",
     "View_ProductDetails_WarningDelete_Button_Confirm": "I'm sure",
     "View_ProductDetails_WarningDelete_Button_Cancel": "Keep product",
-    "View_ProductDetails_TableComponent_BatchNameColumnTitle": "Batch",
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Expire in",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Amount",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Total price",
@@ -261,7 +263,6 @@
     "View_Settings_SettingName_DaysToExpPlaceholder": "Days to be close to expiration",
     "View_Settings_SettingName_EnableNotification": "Enable notifications?",
     "View_Settings_SettingName_EnableMultiplesStores": "Enable multiples stores mode?",
-    "View_Settings_SettingName_EnableStoresFirstPage": "Enable stores list as home page",
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
@@ -304,7 +305,7 @@
     "View_Store_Edit_Delete_title": "ARE YOU SURE? ⚠️",
     "View_Store_Edit_Delete_Description": "Deleting {STORE}, you are also deleting all of it's products, this action cannot be undo, are you sure?",
     "View_Store_Edit_Delete_Button_Cancel": "Keep store",
-    "View_Store_Edit_Delete_Button_Confirm": "Delete store and it's products",
+    "View_Store_Edit_Delete_Button_Confirm": "I'm sure",
     "View_Store_Edit_Alert_Success_StoreDeleted": "The store and it's products were deleted",
 
     "View_Store_Edit_PageTitle": "Edit {STORE}",
@@ -391,6 +392,23 @@
     "View_PhotoView_PageTitle": "Photo View",
     "View_PhotoView_Button_Back": "Go back",
 
+    "View_Subscription_Cancel_ExplainTitle": "You are about to lose your benefits.",
+    "View_Subscription_Cancel_FeaturesTitle": "You will lose all of these features",
+    "View_Subscription_Cancel_Feature1": "Export to Excel",
+    "View_Subscription_Cancel_Feature2": "Suggestions for product names",
+    "View_Subscription_Cancel_Feature3": "Access photos of products to facilitate their search",
+    "View_Subscription_Cancel_Feature4": "Sort products by category",
+    "View_Subscription_Cancel_Feature5": "Sort products by brand",
+    "View_Subscription_Cancel_Feature6": "Sort products by store",
+    "View_Subscription_Cancel_Feature7": "Create backup files to keep your products safe",
+    "View_Subscription_Cancel_Feature8": "No ads",
+    "View_Subscription_Cancel_Feature9": "Weekly overview of your products",
+    "View_Subscription_Cancel_Feature10": "Share products with other apps",
+    "View_Subscription_Cancel_Feature11": "Exclusive themes",
+    "View_Subscription_Cancel_Button_KeepSubscription": "I'll keep my benefits 🥰",
+    "View_Subscription_Cancel_Button_CancelSubscription": "I want to continue and lose my benefits",
+
+
     "Function_StoreGroup_NoStore": "No store",
 
     "Function_Export_FileName": "expirationcheck_backup",
@@ -417,8 +435,8 @@
     "Function_Excel_ColumnName_Status": "Status",
     "Function_Excel_ColumnName_Status_Checked": "Checked",
     "Function_Excel_ColumnName_Status_Unchecked": "Unchecked",
-    "Function_Excel_Workbook_Name": "Expiry checker",
-    "Function_Excel_filename": "expirycheck",
+    "Function_Excel_Workbook_Name": "Expiry Tracker",
+    "Function_Excel_filename": "ExpiryTracker",
 
     "AskUserReview_Title": "Are you enjoying the app?",
     "AskUserReview_Description": "I'm working hard to create the best app in the category, could you take a few seconds to tell me how my work is doing?",

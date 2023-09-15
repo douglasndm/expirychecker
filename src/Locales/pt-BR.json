@@ -36,15 +36,13 @@
     "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
 
-    "Component_FastSub_Text": "Por apenas {PRICE_MONTH} por mês no plano anual de {PRICE}.",
+    "Component_FastSub_Text": "Aproveite mais o app com mais recursos com o PRO",
     "Component_FastSub_TextWithTrial": "Teste grátis por {DAYS} dias e depois apenas {PRICE_MONTH} por mês no plano anual de {PRICE}.",
     "Component_FastSub_Price": "Só {PRICE} mensais",
 
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
     "ListProductsComponent_Button_AddNewProduct": "Adicionar novo produto",
-    "ListProductsComponent_DeleteProducts_ActionBar_DeleteSelected": "Apagar selecionados",
-    "ListProductsComponent_DeleteProducts_ActionBar_Cancel": "Cancelar seleção",
     "ListProductsComponent_DeleteProducts_Modal_Title": "Apagar vários produtos",
     "ListProductsComponent_DeleteProducts_Modal_Description": "Você está preste a apagar VÁRIOS PRODUTOS, essa ação não pode ser revertida",
     "ListProductsComponent_DeleteProducts_Modal_Button_Keep": "Manter produtos",
@@ -77,7 +75,6 @@
     "View_About_DevelopedBy": "Criado por Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo feito por",
 
-    "View_AddBatch_AlertTypeBatchName": "Digite o nome do lote",
     "View_AddBatch_PageTitle": "Adicionar lote",
     "View_AddBatch_InputPlacehoder_Batch": "Lote",
     "View_AddBatch_InputPlacehoder_Amount": "Quantidade",
@@ -115,6 +112,8 @@
     "View_AllProducts_PageTitle": "Todos os produtos",
     "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
+    "View_Store_View_PageTitle": "Loja",
+
     "View_Store_List_PageTitle": "Todas as lojas",
     "View_Store_List_AddNewStore_Placeholder": "Adicionar nova loja",
     "View_Store_List_AddNewStore_Error_TextEmpty": "Digite o nome da loja",
@@ -122,13 +121,13 @@
     "View_Store_List_NoStore": "Sem loja",
 
     "View_EditBatch_Error_BatchDidntFound": "Lote não encontrado",
-    "View_EditBatch_Error_BatchWithNoName": "Digite o nome do lote",
     "View_EditBatch_PageTitle": "Atualizar lote",
     "View_EditBatch_Button_DeleteBatch": "Apagar",
     "View_EditBatch_Button_MoreInfo": "Detalhes",
     "View_EditBatch_InputPlacehoder_Batch": "Lote",
     "View_EditBatch_InputPlacehoder_Amount": "Quantidade",
     "View_EditBatch_InputPlacehoder_UnitPrice": "Preço unitário",
+    "View_EditBatch_Status": "Estado do lote",
     "View_EditBatch_RadioButton_Treated": "Tratado",
     "View_EditBatch_RadioButton_NotTreated": "Não tratado",
     "View_EditBatch_CalendarTitle": "Data de vencimento",
@@ -157,6 +156,10 @@
     "View_Batch_UnitPrice": "Preço unitário",
     "View_Batch_UnitTempPrice": "Preço unitário temporário",
     "View_Batch_TotalPrice": "Preço total",
+    "View_Batch_WhereIs": "Localização",
+    "View_Batch_WhereIs_Stock": "Estoque",
+    "View_Batch_WhereIs_Shelf": "Prateleira",
+    "View_Batch_ExtraInfo": "Informações adicionais",
     "View_Batch_TotalPriceDiscount": "Preço total com desconto",
     "View_Batch_Button_ShareWithAnotherApps": "Compartilhar com outros apps",
 
@@ -185,7 +188,6 @@
     "View_ProductDetails_WarningDelete_Message": "Se você continuar você vai apagar este produto",
     "View_ProductDetails_WarningDelete_Button_Confirm": "Tenho certeza",
     "View_ProductDetails_WarningDelete_Button_Cancel": "Manter produto",
-    "View_ProductDetails_TableComponent_BatchNameColumnTitle": "Lote",
     "View_ProductDetails_TableComponent_BatchExpInColumnTitle": "Vence em",
     "View_ProductDetails_TableComponent_BatchAmountColumnTitle": "Quantidade",
     "View_ProductDetails_TableComponent_BatchPriceColumnTitle": "Preço total",
@@ -265,7 +267,6 @@
     "View_Settings_SettingName_DaysToExpPlaceholder": "Dias para está próximo ao vencimento",
     "View_Settings_SettingName_EnableNotification": "Ativar notificações?",
     "View_Settings_SettingName_EnableMultiplesStores": "Ativar modo de múltiplas lojas",
-    "View_Settings_SettingName_EnableStoresFirstPage": "Mostrar lista de lojas como página inicial",
     "View_Settings_SettingName_AppTheme": "Tema do aplicativo",
     "View_Settings_SettingName_ExportAndInmport": "Com esta função você pode salvar todos os seus produtos em um dispositivo externo ou serviço para mante-los seguros caso você precise restaurar este telefone ou troca-lo.",
     "View_Settings_Button_ImportFile": "Importar aquivo de backup",
@@ -310,7 +311,7 @@
     "View_Store_Edit_Delete_title": "Atenção ⚠️",
     "View_Store_Edit_Delete_Description": "Apagando a loja {STORE}, você também vai está apagando PERMANENTEMENTE TODOS OS SEUS PRODUTOS, ESSA AÇÃO NÃO PODE SER DESFEITA. VOCÊ TEM CERTEZA?",
     "View_Store_Edit_Delete_Button_Cancel": "Manter loja",
-    "View_Store_Edit_Delete_Button_Confirm": "Apagar loja e produtos",
+    "View_Store_Edit_Delete_Button_Confirm": "Tenho certeza",
     "View_Store_Edit_Alert_Success_StoreDeleted": "A loja e seus produtos foram apagados",
 
 
@@ -335,6 +336,22 @@
 
     "View_PhotoView_PageTitle": "Visualizar foto",
     "View_PhotoView_Button_Back": "Voltar",
+
+    "View_Subscription_Cancel_ExplainTitle": "Você está preste a perder seus benefícios",
+    "View_Subscription_Cancel_FeaturesTitle": "Você vai perder tudo isso",
+    "View_Subscription_Cancel_Feature1": "Criar arquivos Excel",
+    "View_Subscription_Cancel_Feature2": "Ter sugestões de nomes de produtos",
+    "View_Subscription_Cancel_Feature3": "Acessar fotos dos produtos para facilitar a busca deles",
+    "View_Subscription_Cancel_Feature4": "Separar produtos por categoria",
+    "View_Subscription_Cancel_Feature5": "Separar produtos por marca",
+    "View_Subscription_Cancel_Feature6": "Separar produtos por loja",
+    "View_Subscription_Cancel_Feature7": "Criar arquivos de backup para manter seus produtos seguros",
+    "View_Subscription_Cancel_Feature8": "Sem anúncios",
+    "View_Subscription_Cancel_Feature9": "Visão semanal dos seus produtos",
+    "View_Subscription_Cancel_Feature10": "Compartilhar seus produtos com outros aplicativos",
+    "View_Subscription_Cancel_Feature11": "Temas exclusivos",
+    "View_Subscription_Cancel_Button_KeepSubscription": "Manter meus benefícios 🥰",
+    "View_Subscription_Cancel_Button_CancelSubscription": "Quero continuar e perder meus benefícios",
 
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",

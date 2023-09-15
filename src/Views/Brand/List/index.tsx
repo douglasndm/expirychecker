@@ -3,7 +3,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import ListView from '@views/Brand/List';
 
-import { createBrand, getAllBrands } from '~/Utils/Brands';
+import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
 
 const BrandList: React.FC = () => {
 	const [isAdding, setIsAdding] = useState<boolean>(false);

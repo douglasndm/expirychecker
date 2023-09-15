@@ -6,7 +6,7 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
 import android.os.Bundle;
-import org.devio.rn.splashscreen.SplashScreen;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 
 public class MainActivity extends ReactActivity {
@@ -31,9 +31,7 @@ public class MainActivity extends ReactActivity {
         this,
         getMainComponentName(),
         // If you opted-in for the New Architecture, we enable the Fabric Renderer.
-        DefaultNewArchitectureEntryPoint.getFabricEnabled(), // fabricEnabled
-        // If you opted-in for the New Architecture, we enable Concurrent React (i.e. React 18).
-        DefaultNewArchitectureEntryPoint.getConcurrentReactEnabled() // concurrentRootEnabled
+        DefaultNewArchitectureEntryPoint.getFabricEnabled()
         );
   }
 
@@ -42,7 +40,7 @@ public class MainActivity extends ReactActivity {
   // https://github.com/software-mansion/react-native-screens/issues/114
   @Override
   protected void onCreate(Bundle savedInstance){
-        SplashScreen.show(this, R.style.SplashScreenTheme, true);
+        RNBootSplash.init(this, R.style.BootTheme);
         // super.onCreate(savedInstance);
         super.onCreate(null);
   }

@@ -3,7 +3,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import List from '@views/Category/List';
 
-import { createCategory, getAllCategories } from '~/Functions/Category';
+import { createCategory } from '@expirychecker/Utils/Categories/Create';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 
 const CategoryList: React.FC = () => {
 	const [isAdding, setIsAdding] = useState<boolean>(false);

@@ -7,11 +7,9 @@ import strings from '@expirychecker/Locales';
 
 import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
+import { createCategory } from '@expirychecker/Utils/Categories/Create';
 
-import {
-	createCategory,
-	getAllCategories,
-} from '@expirychecker/Functions/Category';
 import { saveMany } from '@expirychecker/Functions/Products/index';
 import { createStore } from '@expirychecker/Functions/Stores';
 

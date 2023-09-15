@@ -9,7 +9,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import Home from '@expirychecker/Views/Home';
 import AddProduct from '@expirychecker/Views/Product/Add';
-import AddLote from '@expirychecker/Views/Batch/Add';
+import AddBatch from '@expirychecker/Views/Batch/Add';
 import EditProduct from '@expirychecker/Views/Product/Edit';
 import EditLote from '@expirychecker/Views/Batch/Edit';
 import ProductDetails from '@expirychecker/Views/Product/Details';
@@ -40,6 +40,7 @@ import BrandEdit from '@expirychecker/Views/Brand/Edit';
 import Export from '@expirychecker/Views/Export';
 
 import Teams from '@expirychecker/Views/Informations/Teams';
+import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/Cancel';
 
 import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
 
@@ -80,7 +81,7 @@ const Routes: React.FC = () => {
 					component={ProductDetails}
 				/>
 				<Stack.Screen name="StoreDetails" component={StoreDetails} />
-				<Stack.Screen name="AddLote" component={AddLote} />
+				<Stack.Screen name="AddBatch" component={AddBatch} />
 				<Stack.Screen name="EditProduct" component={EditProduct} />
 				<Stack.Screen name="EditLote" component={EditLote} />
 				<Stack.Screen name="Test" component={Test} />
@@ -104,6 +105,10 @@ const Routes: React.FC = () => {
 
 				<Stack.Screen name="Export" component={Export} />
 				<Stack.Screen name="Teams" component={Teams} />
+				<Stack.Screen
+					name="SubscriptionCancel"
+					component={SubscriptionCancel}
+				/>
 
 				{Platform.OS === 'ios' && (
 					<Stack.Screen
