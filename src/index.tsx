@@ -35,6 +35,7 @@ import { getAllUserPreferences } from './Functions/UserPreferences';
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
+import ListContext from '@shared/Contexts/ListContext';
 
 import AskReview from './Components/AskReview';
 import AppOpen from './Components/Ads/AppOpen';
@@ -56,6 +57,7 @@ const App: React.FC = () => {
 		disableAds: false,
 		allowRemoteImages: true,
 	});
+	const [currentList, setCurrentList] = useState(null);
 
 	const loadInitialData = useCallback(async () => {
 		const userPreferences = await getAllUserPreferences();
@@ -95,6 +97,13 @@ const App: React.FC = () => {
 		[preferences]
 	);
 
+	const list = useMemo(() => {
+		return {
+			currentList,
+			setCurrentList,
+		};
+	}, [currentList]);
+
 	return (
 		<PreferencesContext.Provider value={prefes}>
 			<ThemeProvider theme={preferences.appTheme}>
@@ -106,7 +115,9 @@ const App: React.FC = () => {
 						>
 							<AppOpen />
 							<StatusBar />
-							<Routes />
+							<ListContext.Provider value={list}>
+								<Routes />
+							</ListContext.Provider>
 							<AskReview />
 						</NavigationContainer>
 						<FlashMessage duration={7000} statusBarHeight={50} />
