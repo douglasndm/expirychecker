@@ -23,9 +23,8 @@ import {
 
 import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
+import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
-
-import ListProducts from '@expirychecker/Components/ListProducts';
 
 import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
@@ -180,7 +179,7 @@ const View: React.FC = () => {
 			/>
 
 			<SubTitle>{brandName}</SubTitle>
-			<ListProducts products={productsSearch} onRefresh={loadData} />
+			<ListProds products={productsSearch} onRefresh={loadData} />
 
 			<FAB
 				icon="plus"

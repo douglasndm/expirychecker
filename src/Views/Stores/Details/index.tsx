@@ -24,11 +24,10 @@ import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
+import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
 
 import { Container, SubTitle } from '@styles/Views/GenericViewPage';
-
-import ListProducts from '@expirychecker/Components/ListProducts';
 
 interface RequestProps {
 	route: {
@@ -196,7 +195,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 			/>
 
 			<SubTitle>{storeName}</SubTitle>
-			<ListProducts products={productsSearch} />
+			<ListProds products={productsSearch} />
 
 			<FAB
 				icon="plus"

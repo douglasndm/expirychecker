@@ -24,7 +24,15 @@ import {
 
 import strings from '@expirychecker/Locales';
 
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
 import { searchProducts } from '@utils/Product/Search';
+
+import { deleteManyProducts } from '@expirychecker/Utils/Products';
+import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
+
+import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
+import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Products';
 
 import Loading from '@components/Loading';
 import BarCodeReader from '@components/BarCodeReader';
@@ -32,6 +40,11 @@ import DatePicker from '@components/DatePicker';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
 import FAB from '@components/FAB';
+import ListProds from '@components/Product/List';
+
+import Header from '@expirychecker/Components/Header';
+import Banner from '@expirychecker/Components/Ads/Banner';
+import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 
 import {
 	Container,
@@ -42,26 +55,19 @@ import {
 	ActionButtonsContainer,
 } from '@views/Home/styles';
 
-import Header from '@expirychecker/Components/Header';
-
-import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
-
-import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
-import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Products';
-
-import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
-
-import ListProducts from '@expirychecker/Components/ListProducts';
-import Banner from '@expirychecker/Components/Ads/Banner';
-import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
-
 const Home: React.FC = () => {
-	const { reset, canGoBack, navigate, addListener } =
+	const { reset, navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
 
+	interface listProdsRefProps {
+		switchDeleteModal: () => void;
+		switchSelectMode: () => void;
+	}
+
 	const listRef = useRef<FlatList<IProduct>>(null);
+	const listProdsRef = useRef<listProdsRefProps>();
 
 	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
@@ -88,6 +94,8 @@ const Home: React.FC = () => {
 	const [enableBarCodeReader, setEnableBarCodeReader] =
 		useState<boolean>(false);
 	const [enableDatePicker, setEnableDatePicker] = useState(false);
+
+	const [selectMode, setSelectMode] = useState(false);
 
 	useEffect(() => {
 		if (Platform.OS === 'ios') {
@@ -255,6 +263,34 @@ const Home: React.FC = () => {
 		}
 	}, [navigate, searchString]);
 
+	const handleDeleteMany = useCallback(
+		async (productsIds: number[] | string[]) => {
+			try {
+				const ids = productsIds.map(id => {
+					return Number(id);
+				});
+				await deleteManyProducts({ productsIds: ids });
+
+				if (loadData) {
+					loadData();
+				}
+
+				showMessage({
+					message:
+						strings.ListProductsComponent_ProductsDeleted_Notification,
+					type: 'info',
+				});
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			}
+		},
+		[loadData]
+	);
+
 	const onScroll = ({ nativeEvent }) => {
 		const currentScrollPosition =
 			Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
@@ -270,6 +306,18 @@ const Home: React.FC = () => {
 		return unsubscribe;
 	}, [addListener, loadData]);
 
+	const handleSwitchDeleteModal = useCallback(() => {
+		if (listProdsRef.current) {
+			listProdsRef.current.switchDeleteModal();
+		}
+	}, []);
+
+	const handleSwitchSelectMode = useCallback(() => {
+		if (listProdsRef.current) {
+			listProdsRef.current.switchSelectMode();
+		}
+	}, []);
+
 	return isLoading ? (
 		<Loading />
 	) : (
@@ -282,7 +330,30 @@ const Home: React.FC = () => {
 				/>
 			) : (
 				<>
-					<Header listRef={listRef} />
+					<Header
+						listRef={listRef}
+						appBarActions={
+							!selectMode
+								? []
+								: [
+										{
+											icon: 'cancel',
+											onPress: handleSwitchSelectMode,
+										},
+								  ]
+						}
+						moreMenuItems={
+							!selectMode
+								? []
+								: [
+										{
+											title: strings.ListProductsComponent_DeleteProducts_Modal_Button_Delete,
+											leadingIcon: 'trash-can-outline',
+											onPress: handleSwitchDeleteModal,
+										},
+								  ]
+						}
+					/>
 
 					<NotificationsDenny />
 
@@ -329,13 +400,16 @@ const Home: React.FC = () => {
 						}}
 					/>
 
-					<ListProducts
+					<ListProds
+						ref={listProdsRef}
 						products={productsSearch}
-						isHome
-						onRefresh={loadData}
-						isRefreshing={isLoading}
+						showAllProductsButton
 						listRef={listRef}
+						handleDeleteMany={handleDeleteMany}
+						isRefreshing={isLoading}
 						onScroll={onScroll}
+						onRefresh={loadData}
+						setSelectModeOnParent={setSelectMode}
 					/>
 
 					{enableFloatAddButton && (

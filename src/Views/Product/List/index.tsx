@@ -19,8 +19,10 @@ import {
 	searchForAProductInAList,
 } from '@expirychecker/Functions/Products';
 
+import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
+import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
 
 import {
@@ -29,10 +31,6 @@ import {
 	InputTextIconContainer,
 	InputTextIcon,
 } from '@views/Home/styles';
-
-import Loading from '@components/Loading';
-
-import ListProducts from '@expirychecker/Components/ListProducts';
 
 import { Container } from './styles';
 
@@ -171,7 +169,7 @@ const List: React.FC = () => {
 							</InputTextContainer>
 						)}
 
-						<ListProducts
+						<ListProds
 							products={productsSearch}
 							onRefresh={getProducts}
 						/>
