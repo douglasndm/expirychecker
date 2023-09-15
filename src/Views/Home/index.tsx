@@ -410,6 +410,7 @@ const Home: React.FC = () => {
 						onScroll={onScroll}
 						onRefresh={loadData}
 						setSelectModeOnParent={setSelectMode}
+						disableImage={!userPreferences.isPRO}
 					/>
 
 					{enableFloatAddButton && (
