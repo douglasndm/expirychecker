@@ -3,10 +3,13 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
 import {
 	getProductById,
@@ -16,7 +19,6 @@ import {
 import { getStore } from '@expirychecker/Functions/Stores';
 import {
 	saveProductImage,
-	getProductImagePath,
 	getImageFileNameFromPath,
 } from '@expirychecker/Functions/Products/Image';
 import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
@@ -92,47 +94,71 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
 	const loadData = useCallback(async () => {
-		setIsLoading(true);
+		try {
+			setIsLoading(true);
 
-		const product = await getProductById(productId);
+			const product = await getProductById(productId);
 
-		if (!product) {
-			showMessage({
-				message: strings.View_EditProduct_Error_ProductNotFound,
-				type: 'danger',
-			});
-			return;
-		}
-
-		setName(product.name);
-		if (product.code) setCode(product.code);
-
-		const path = await getProductImagePath(productId);
-		if (path) {
-			setPhotoPath(`${path}`);
-		}
-
-		if (product.categories.length > 0) {
-			setSelectedCategory(product.categories[0]);
-		}
-
-		if (product.store) {
-			const store = await getStore(product.store);
-
-			if (store) {
-				setSelectedStore(store?.id);
+			if (!product) {
+				showMessage({
+					message: strings.View_EditProduct_Error_ProductNotFound,
+					type: 'danger',
+				});
+				return;
 			}
-		}
 
-		if (product.brand) {
-			setSelectedBrand(product.brand);
-		}
+			setName(product.name);
+			if (product.code) setCode(product.code);
 
-		if (product.daysToBeNext) {
-			setDaysNext(product.daysToBeNext);
-		}
+			if (product.photo || product.code) {
+				let path: string | null = null;
 
-		setIsLoading(false);
+				if (product.photo) {
+					path = await getLocalImageFromProduct(product.photo);
+				} else if (product.code) {
+					path = await getLocalImageFromProduct(product.code);
+				}
+
+				if (path) {
+					setPhotoPath(`${path}`);
+				}
+			}
+
+			if (product.categories.length > 0) {
+				setSelectedCategory(product.categories[0]);
+			}
+
+			if (product.store) {
+				const store = await getStore(product.store);
+
+				if (store) {
+					setSelectedStore(store?.id);
+				}
+			}
+
+			if (product.brand) {
+				setSelectedBrand(product.brand);
+			}
+
+			if (product.daysToBeNext) {
+				setDaysNext(product.daysToBeNext);
+			}
+		} catch (err) {
+			if (err instanceof Error) {
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+
+				if (__DEV__) {
+					console.error(err);
+				} else {
+					Crashlytics().recordError(err);
+				}
+			}
+		} finally {
+			setIsLoading(false);
+		}
 	}, [productId]);
 
 	useEffect(() => {
@@ -286,9 +312,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 		setDeleteComponentVisible(prevState => !prevState);
 	}, []);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<>
 			{isCameraEnabled ? (
 				<Camera
@@ -321,129 +345,141 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 									},
 								]}
 							/>
-							<PageContent>
-								{userPreferences.isPRO && !!photoPath && (
-									<ImageContainer>
-										<ProductImageContainer
-											onPress={handleEnableCamera}
-										>
-											<ProductImage
-												source={{
-													uri: `file://${photoPath}`,
-												}}
-											/>
-										</ProductImageContainer>
-									</ImageContainer>
-								)}
-								<InputContainer>
-									<InputGroup>
-										<InputTextContainer>
-											<Input
-												placeholder={
-													strings.View_EditProduct_InputPlacehoder_Name
-												}
-												value={name}
-												onChange={value => {
-													setName(value);
-													setNameFieldError(false);
-												}}
-											/>
-										</InputTextContainer>
 
-										{userPreferences.isPRO && (
-											<CameraButtonContainer
+							{isLoading ? (
+								<Loading />
+							) : (
+								<PageContent>
+									{userPreferences.isPRO && !!photoPath && (
+										<ImageContainer>
+											<ProductImageContainer
 												onPress={handleEnableCamera}
 											>
-												<Icon
-													name="camera-outline"
-													size={36}
+												<ProductImage
+													source={{
+														uri: `file://${photoPath}`,
+													}}
 												/>
-											</CameraButtonContainer>
-										)}
-									</InputGroup>
-									{nameFieldError && (
-										<InputTextTip>
-											{
-												strings.View_EditProduct_Error_EmptyProductName
-											}
-										</InputTextTip>
+											</ProductImageContainer>
+										</ImageContainer>
 									)}
+									<InputContainer>
+										<InputGroup>
+											<InputTextContainer>
+												<Input
+													placeholder={
+														strings.View_EditProduct_InputPlacehoder_Name
+													}
+													value={name}
+													onChange={value => {
+														setName(value);
+														setNameFieldError(
+															false
+														);
+													}}
+												/>
+											</InputTextContainer>
 
-									<InputGroup>
-										<InputTextContainer
-											style={{
-												flexDirection: 'row',
-												justifyContent: 'space-between',
-												alignItems: 'center',
-												paddingRight: 10,
-											}}
-										>
-											<InputCodeText
-												placeholder={
-													strings.View_EditProduct_InputPlacehoder_Code
+											{userPreferences.isPRO && (
+												<CameraButtonContainer
+													onPress={handleEnableCamera}
+												>
+													<Icon
+														name="camera-outline"
+														size={36}
+													/>
+												</CameraButtonContainer>
+											)}
+										</InputGroup>
+										{nameFieldError && (
+											<InputTextTip>
+												{
+													strings.View_EditProduct_Error_EmptyProductName
 												}
-												value={code}
-												onChangeText={(
-													value: string
-												) => {
-													setCode(value);
+											</InputTextTip>
+										)}
+
+										<InputGroup>
+											<InputTextContainer
+												style={{
+													flexDirection: 'row',
+													justifyContent:
+														'space-between',
+													alignItems: 'center',
+													paddingRight: 10,
 												}}
-											/>
-
-											<InputTextIconContainer
-												onPress={
-													handleEnableBarCodeReader
-												}
 											>
-												<InputCodeTextIcon />
-											</InputTextIconContainer>
-										</InputTextContainer>
-									</InputGroup>
-
-									<MoreInformationsContainer>
-										{userPreferences.isPRO && (
-											<>
-												<MoreInformationsTitle>
-													{
-														strings.View_EditProduct_MoreInformation_Label
+												<InputCodeText
+													placeholder={
+														strings.View_EditProduct_InputPlacehoder_Code
 													}
-												</MoreInformationsTitle>
-
-												<DaysToBeNext
-													onChange={setDaysNext}
-												/>
-
-												<CategorySelect
-													defaultValue={
-														selectedCategory
-													}
-													onChange={
-														setSelectedCategory
-													}
-													containerStyle={{
-														marginBottom: 10,
+													value={code}
+													onChangeText={(
+														value: string
+													) => {
+														setCode(value);
 													}}
 												/>
 
-												<BrandSelect
-													defaultValue={selectedBrand}
-													onChange={setSelectedBrand}
-													containerStyle={{
-														marginBottom: 10,
-													}}
-												/>
-											</>
-										)}
+												<InputTextIconContainer
+													onPress={
+														handleEnableBarCodeReader
+													}
+												>
+													<InputCodeTextIcon />
+												</InputTextIconContainer>
+											</InputTextContainer>
+										</InputGroup>
 
-										{userPreferences.multiplesStores && (
-											<StoreSelect
-												defaultValue={selectedStore}
-												onChange={setSelectedStore}
-											/>
-										)}
-									</MoreInformationsContainer>
-								</InputContainer>
-							</PageContent>
+										<MoreInformationsContainer>
+											{userPreferences.isPRO && (
+												<>
+													<MoreInformationsTitle>
+														{
+															strings.View_EditProduct_MoreInformation_Label
+														}
+													</MoreInformationsTitle>
+
+													<DaysToBeNext
+														onChange={setDaysNext}
+													/>
+
+													<CategorySelect
+														defaultValue={
+															selectedCategory
+														}
+														onChange={
+															setSelectedCategory
+														}
+														containerStyle={{
+															marginBottom: 10,
+														}}
+													/>
+
+													<BrandSelect
+														defaultValue={
+															selectedBrand
+														}
+														onChange={
+															setSelectedBrand
+														}
+														containerStyle={{
+															marginBottom: 10,
+														}}
+													/>
+												</>
+											)}
+
+											{userPreferences.multiplesStores && (
+												<StoreSelect
+													defaultValue={selectedStore}
+													onChange={setSelectedStore}
+												/>
+											)}
+										</MoreInformationsContainer>
+									</InputContainer>
+								</PageContent>
+							)}
 
 							<Dialog
 								visible={deleteComponentVisible}
