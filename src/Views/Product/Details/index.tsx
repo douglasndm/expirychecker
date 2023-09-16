@@ -5,21 +5,22 @@ import React, {
 	useContext,
 	useMemo,
 } from 'react';
-import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
+import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
+
 import { getProductById } from '@expirychecker/Functions/Product';
 import { getStore } from '@expirychecker/Functions/Stores';
-import { getProductImagePath } from '@expirychecker/Functions/Products/Image';
 import { deleteManyBatches } from '@expirychecker/Utils/Batches';
 import { getImagePath } from '@utils/Images/GetImagePath';
 import { saveLocally } from '@utils/Images/SaveLocally';
@@ -83,25 +84,27 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				return;
 			}
 
-			if (result.photo) {
-				const imagePath = await getProductImagePath(productId);
+			if (result.photo || result.code) {
+				let path: string | null = null;
 
-				if (imagePath) {
-					if (Platform.OS === 'android') {
-						setImage(`file://${imagePath}`);
-					} else if (Platform.OS === 'ios') {
-						setImage(imagePath);
-					}
+				if (result.photo) {
+					path = await getLocalImageFromProduct(result.photo);
+				} else if (result.code) {
+					path = await getLocalImageFromProduct(result.code.trim());
 				}
-			} else if (result.code && userPreferences.isPRO) {
-				const response = await getImagePath({
-					productCode: result.code.trim(),
-				});
 
-				if (response) {
-					setImage(response);
+				if (path) {
+					setImage(`${path}`);
+				} else if (!path && result.code) {
+					const response = await getImagePath({
+						productCode: result.code.trim(),
+					});
 
-					await saveLocally(response, result.code.trim());
+					if (response) {
+						setImage(response);
+
+						await saveLocally(response, result.code.trim());
+					}
 				}
 			}
 
@@ -124,15 +127,22 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				);
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				if (__DEV__) {
+					console.error(err);
+				} else {
+					Crashlytics().recordError(err);
+				}
+			}
 		} finally {
 			setIsLoading(false);
 		}
-	}, [productId, userPreferences.isPRO, reset, goBack]);
+	}, [productId, reset, goBack]);
 
 	useEffect(() => {
 		if (product?.store) {
@@ -179,9 +189,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		navigate('EditProduct', { productId });
 	}, [navigate, productId]);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<>
 			<Container>
 				<Header
@@ -194,56 +202,63 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 						},
 					]}
 				/>
-				<Content>
-					<PageHeader
-						product={product}
-						imagePath={image}
-						storeName={storeName}
-						enableStore={userPreferences.multiplesStores}
-					/>
-					<PageContent>
-						{lotesNaoTratados.length > 0 && (
-							<TableContainer>
-								<CategoryDetails>
-									<CategoryDetailsText>
-										{
-											strings.View_ProductDetails_TableTitle_NotTreatedBatches
-										}
-									</CategoryDetailsText>
-								</CategoryDetails>
 
-								<BatchTable
-									batches={lotesNaoTratados}
-									product={product}
-									onDeleteMany={onDeleteManyBathes}
-								/>
-							</TableContainer>
+				{isLoading ? (
+					<Loading />
+				) : (
+					<Content>
+						{product && (
+							<PageHeader
+								product={product}
+								imagePath={image}
+								storeName={storeName}
+								enableStore={userPreferences.multiplesStores}
+							/>
 						)}
+						<PageContent>
+							{lotesNaoTratados.length > 0 && (
+								<TableContainer>
+									<CategoryDetails>
+										<CategoryDetailsText>
+											{
+												strings.View_ProductDetails_TableTitle_NotTreatedBatches
+											}
+										</CategoryDetailsText>
+									</CategoryDetails>
 
-						<Banner
-							adFor="ProductView"
-							size={BannerAdSize.MEDIUM_RECTANGLE}
-						/>
+									<BatchTable
+										batches={lotesNaoTratados}
+										product={product}
+										onDeleteMany={onDeleteManyBathes}
+									/>
+								</TableContainer>
+							)}
 
-						{lotesTratados.length > 0 && (
-							<>
-								<CategoryDetails>
-									<CategoryDetailsText>
-										{
-											strings.View_ProductDetails_TableTitle_TreatedBatches
-										}
-									</CategoryDetailsText>
-								</CategoryDetails>
+							<Banner
+								adFor="ProductView"
+								size={BannerAdSize.MEDIUM_RECTANGLE}
+							/>
 
-								<BatchTable
-									batches={lotesTratados}
-									product={product}
-									onDeleteMany={onDeleteManyBathes}
-								/>
-							</>
-						)}
-					</PageContent>
-				</Content>
+							{lotesTratados.length > 0 && (
+								<>
+									<CategoryDetails>
+										<CategoryDetailsText>
+											{
+												strings.View_ProductDetails_TableTitle_TreatedBatches
+											}
+										</CategoryDetailsText>
+									</CategoryDetails>
+
+									<BatchTable
+										batches={lotesTratados}
+										product={product}
+										onDeleteMany={onDeleteManyBathes}
+									/>
+								</>
+							)}
+						</PageContent>
+					</Content>
+				)}
 			</Container>
 
 			<FloatButton
