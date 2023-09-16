@@ -16,7 +16,6 @@ import {
 	updateProduct,
 	deleteProduct,
 } from '@expirychecker/Functions/Product';
-import { getStore } from '@expirychecker/Functions/Stores';
 import {
 	saveProductImage,
 	getImageFileNameFromPath,
@@ -124,20 +123,16 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				}
 			}
 
-			if (product.categories.length > 0) {
-				setSelectedCategory(product.categories[0]);
+			if (product.category) {
+				setSelectedCategory(product.category.id);
 			}
 
 			if (product.store) {
-				const store = await getStore(product.store);
-
-				if (store) {
-					setSelectedStore(store?.id);
-				}
+				setSelectedStore(product.store.id);
 			}
 
 			if (product.brand) {
-				setSelectedBrand(product.brand);
+				setSelectedBrand(product.brand.id);
 			}
 
 			if (product.daysToBeNext) {
