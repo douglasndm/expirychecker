@@ -3,9 +3,13 @@ import { exists, unlink } from 'react-native-fs';
 
 import realm from '@expirychecker/Services/Realm';
 
+import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
+
+import { getBrand } from '@expirychecker/Utils/Brands';
 import { createLote } from './Lotes';
-import { getProductImagePath } from './Products/Image';
 import { saveManyBatches } from './Batches';
+import { getCategory } from './Category';
+import { getStore } from './Stores';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
 	productCode: string;
@@ -85,7 +89,36 @@ export async function getProductById(productId: number): Promise<IProduct> {
 		.objects<IProduct>('Product')
 		.filtered(`id = "${productId}"`)[0];
 
-	return result;
+	const prod: IProduct = {
+		id: result.id,
+		name: result.name,
+		code: result.code,
+		photo: result.photo,
+		daysToBeNext: result.daysToBeNext,
+		batches: result.batches,
+		brand: result.brand,
+		store: result.store,
+		created_at: result.created_at,
+		updated_at: result.updated_at,
+	};
+
+	if (result.categories && result.categories.length > 0) {
+		const category = await getCategory(result.categories[0]);
+
+		prod.category = category;
+	}
+	if (prod.brand) {
+		const brand = await getBrand(String(prod.brand));
+
+		prod.brand = brand;
+	}
+	if (prod.store) {
+		const store = await getStore(String(prod.store));
+
+		prod.store = store || undefined;
+	}
+
+	return prod;
 }
 
 interface createProductProps {
@@ -177,11 +210,13 @@ export async function deleteProduct(productId: number): Promise<void> {
 		.objects<IProduct>('Product')
 		.filtered(`id == ${productId}`)[0];
 
-	const photoPath = await getProductImagePath(productId);
+	if (product.photo) {
+		const photoPath = await getLocalImageFromProduct(product.photo);
 
-	if (photoPath) {
-		if (await exists(photoPath)) {
-			await unlink(photoPath);
+		if (photoPath) {
+			if (await exists(photoPath)) {
+				await unlink(photoPath);
+			}
 		}
 	}
 
