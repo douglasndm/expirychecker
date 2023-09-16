@@ -21,7 +21,6 @@ import {
 	getAllProductsByBrand,
 } from '@expirychecker/Utils/Brands';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
@@ -165,9 +164,7 @@ const View: React.FC = () => {
 		[products, searchQuery]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Brand_View_PageTitle}
@@ -179,7 +176,11 @@ const View: React.FC = () => {
 			/>
 
 			<SubTitle>{brandName}</SubTitle>
-			<ListProds products={productsSearch} onRefresh={loadData} />
+			<ListProds
+				products={productsSearch}
+				isRefreshing={isLoading}
+				onRefresh={loadData}
+			/>
 
 			<FAB
 				icon="plus"
