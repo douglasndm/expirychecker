@@ -21,7 +21,6 @@ import { getAllProductsByCategory } from '@expirychecker/Functions/Category';
 import { getAllStores } from '@expirychecker/Functions/Stores';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
@@ -175,9 +174,7 @@ const CategoryView: React.FC = () => {
 		[products, searchQuery]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Category_List_View_BeforeCategoryName}
@@ -190,7 +187,11 @@ const CategoryView: React.FC = () => {
 
 			<SubTitle>{categoryName}</SubTitle>
 
-			<ListProds products={productsSearch} onRefresh={loadData} />
+			<ListProds
+				products={productsSearch}
+				isRefreshing={isLoading}
+				onRefresh={loadData}
+			/>
 			<FAB
 				icon="plus"
 				label={strings.View_FloatMenu_AddProduct}

@@ -22,7 +22,6 @@ import {
 } from '@expirychecker/Functions/Stores';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
@@ -181,9 +180,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		[products, searchQuery]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Store_View_PageTitle}
@@ -195,7 +192,11 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 			/>
 
 			<SubTitle>{storeName}</SubTitle>
-			<ListProds products={productsSearch} />
+			<ListProds
+				products={productsSearch}
+				isRefreshing={isLoading}
+				onRefresh={loadData}
+			/>
 
 			<FAB
 				icon="plus"
