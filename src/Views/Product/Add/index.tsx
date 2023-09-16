@@ -10,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
@@ -145,8 +146,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			return;
 		}
 		try {
-			const picFileName = getImageFileNameFromPath(photoPath);
-			await movePicturesToImagesDir(photoPath);
+			let picFileName: string | undefined;
+
+			if (photoPath) {
+				picFileName = getImageFileNameFromPath(photoPath);
+				await movePicturesToImagesDir(photoPath);
+			}
 
 			const prodCategories: Array<string> = [];
 
@@ -219,11 +224,18 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				}
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				if (__DEV__) {
+					console.error(err);
+				} else {
+					Crashlytics().recordError(err);
+				}
+			}
 		}
 	}, [
 		amount,
