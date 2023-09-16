@@ -13,12 +13,13 @@ import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
 import { formatCurrency } from 'react-native-format-currency';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import { ShareProductImageWithText } from '@expirychecker/Functions/Share';
+import { shareText, shareTextWithImage } from '@utils/Share';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -26,7 +27,6 @@ import Button from '@components/Button';
 
 import { getProductById } from '@expirychecker/Functions/Product';
 import Banner from '@expirychecker/Components/Ads/Banner';
-import { PageHeader } from '../Edit/styles';
 
 import {
 	Container,
@@ -164,8 +164,26 @@ const View: React.FC = () => {
 			text = text.replace('{PRODUCT}', product.name);
 			text = text.replace('{DATE}', exp_date);
 
-			await ShareProductImageWithText({
-				productId,
+			if (product.photo || product.code) {
+				let fileName: string | null = null;
+
+				if (product.photo) {
+					fileName = product.photo;
+				} else if (product.code) {
+					fileName = product.code;
+				}
+
+				if (fileName) {
+					await shareTextWithImage({
+						imageFileName: fileName,
+						title: strings.View_ShareProduct_Title,
+						message: text,
+					});
+					return;
+				}
+			}
+
+			await shareText({
 				title: strings.View_ShareProduct_Title,
 				text,
 			});
@@ -176,11 +194,17 @@ const View: React.FC = () => {
 						message: err.message,
 						type: 'danger',
 					});
+
+					if (__DEV__) {
+						console.error(err);
+					} else {
+						Crashlytics().recordError(err);
+					}
 				}
 		} finally {
 			setIsSharing(false);
 		}
-	}, [product, batch, exp_date, productId]);
+	}, [product, batch, exp_date]);
 
 	const handleNavigateToDiscount = useCallback(() => {
 		navigate('BatchDiscount', {
