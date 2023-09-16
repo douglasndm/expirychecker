@@ -3,7 +3,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import { getAllProducts } from '@expirychecker/Functions/Products';
+import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 
 import WeekViewComponent from '@views/Product/WeekView';
 
@@ -18,7 +18,7 @@ const WeekView: React.FC = () => {
 		try {
 			setIsLoading(true);
 
-			const prods = await getAllProducts({
+			const prods = await getAllProductsAsync({
 				sortProductsByExpDate: true,
 				removeTreatedBatch: true,
 			});
