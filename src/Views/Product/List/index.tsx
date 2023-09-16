@@ -138,9 +138,7 @@ const List: React.FC = () => {
 		}
 	}, [navigate, searchString]);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<>
 			{enableBarCodeReader ? (
 				<BarCodeReader
@@ -171,6 +169,7 @@ const List: React.FC = () => {
 
 						<ListProds
 							products={productsSearch}
+							isRefreshing={isLoading}
 							onRefresh={getProducts}
 						/>
 
