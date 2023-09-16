@@ -17,7 +17,7 @@ import Settings from '@expirychecker/Views/Settings';
 import About from '@expirychecker/Views/About';
 import ProSubscription from '@expirychecker/Views/ProSubscription';
 import Success from '@expirychecker/Views/Success';
-import PhotoView from '@expirychecker/Views/PhotoView';
+import PhotoView from '@views/Product/PhotoView';
 
 import AllProducts from '@expirychecker/Views/Product/List';
 import WeekView from '@expirychecker/Views/Product/WeekView';
