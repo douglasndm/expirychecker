@@ -28,6 +28,7 @@ import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
 import Camera from '@components/Camera';
 import Dialog from '@components/Dialog';
+import PaddingComponent from '@components/PaddingComponent';
 
 import DaysToBeNext from '@expirychecker/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '@expirychecker/Components/Product/Inputs/Pickers/Brand';
@@ -473,6 +474,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 											)}
 										</MoreInformationsContainer>
 									</InputContainer>
+									<PaddingComponent />
 								</PageContent>
 							)}
 
