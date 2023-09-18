@@ -337,6 +337,8 @@ const List: React.FC = () => {
 						onRefresh={loadData}
 						setSelectModeOnParent={setSelectMode}
 						handleDeleteMany={handleDeleteMany}
+						disableImage={!userPreferences.isPRO}
+						disableFilters={!userPreferences.isPRO}
 					/>
 
 					{enableFloatAddButton && (
