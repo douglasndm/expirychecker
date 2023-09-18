@@ -10,6 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
+import { getLocales } from 'react-native-localize';
+import { format } from 'date-fns';
 
 import strings from '@expirychecker/Locales';
 
@@ -27,6 +29,7 @@ import { deleteManyProducts } from '@expirychecker/Utils/Products';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
 import SearchBar from '@components/SearchBar';
+import DatePicker from '@components/DatePicker';
 import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
 
@@ -49,6 +52,8 @@ const List: React.FC = () => {
 	const [products, setProducts] = useState<Array<IProduct>>([]);
 
 	const [searchString, setSearchString] = useState<string>('');
+	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 	const [enableBarCodeReader, setEnableBarCodeReader] =
 		useState<boolean>(false);
@@ -97,6 +102,41 @@ const List: React.FC = () => {
 	useEffect(() => {
 		setProductsSearch(products);
 	}, [products]);
+
+	const cleanSearch = useCallback(() => {
+		setProductsSearch([]);
+		setSearchString('');
+	}, []);
+
+	const handleSelectDateChange = useCallback(
+		(date: Date) => {
+			cleanSearch();
+
+			setEnableDatePicker(false);
+
+			let dateFormat = 'dd/MM/yyyy';
+			if (getLocales()[0].languageCode === 'en') {
+				dateFormat = 'MM/dd/yyyy';
+			}
+			const d = format(date, dateFormat);
+
+			setSearchString(d);
+			setSelectedDate(date);
+
+			let prods: IProduct[] = [];
+			if (d && d !== '') {
+				prods = searchProducts({
+					products,
+					query: d,
+				});
+			}
+
+			prods = sortProductsLotesByLotesExpDate(prods);
+
+			setProductsSearch(prods);
+		},
+		[cleanSearch, products]
+	);
 
 	const handleDeleteMany = useCallback(
 		async (productsIds: number[] | string[]) => {
@@ -282,6 +322,13 @@ const List: React.FC = () => {
 							handleSearch={handleSearch}
 						/>
 					)}
+
+					<DatePicker
+						isOpen={enableDatePicker}
+						date={selectedDate}
+						onConfirm={handleSelectDateChange}
+						onCancel={handleSwitchEnableDatePicker}
+					/>
 
 					<ListProds
 						ref={listProdsRef}
