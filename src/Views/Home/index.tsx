@@ -35,8 +35,8 @@ import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
 import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Products';
 
-import Loading from '@components/Loading';
 import BarCodeReader from '@components/BarCodeReader';
+import SearchBar from '@components/SearchBar';
 import DatePicker from '@components/DatePicker';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
@@ -47,14 +47,7 @@ import Header from '@expirychecker/Components/Header';
 import Banner from '@expirychecker/Components/Ads/Banner';
 import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 
-import {
-	Container,
-	InputSearch,
-	InputTextContainer,
-	InputTextIcon,
-	InputTextIconContainer,
-	ActionButtonsContainer,
-} from '@views/Home/styles';
+import { Container } from '@views/Home/styles';
 
 const Home: React.FC = () => {
 	const { reset, navigate, addListener } =
@@ -96,6 +89,7 @@ const Home: React.FC = () => {
 	const [enableBarCodeReader, setEnableBarCodeReader] =
 		useState<boolean>(false);
 	const [enableDatePicker, setEnableDatePicker] = useState(false);
+	const [enableSearch, setEnableSearch] = useState(false);
 
 	const [selectMode, setSelectMode] = useState(false);
 
@@ -184,16 +178,23 @@ const Home: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
-	const handleOnBarCodeReaderOpen = useCallback(() => {
-		setEnableBarCodeReader(true);
+	const handleSwitchEnableSearch = useCallback(() => {
+		setEnableSearch(prevState => !prevState);
 	}, []);
 
-	const handleOnBarCodeReaderClose = useCallback(() => {
-		setEnableBarCodeReader(false);
+	const handleSwitchBarCodeOpen = useCallback(() => {
+		setEnableBarCodeReader(prevState => !prevState);
 	}, []);
 
-	const enableCalendarModal = useCallback(() => {
-		setEnableDatePicker(true);
+	const handleSwitchEnableDatePicker = useCallback(() => {
+		setEnableDatePicker(prevState => {
+			// if (prevState === false) this means that will be true now
+			// so the search bar needs to be active for user to see the date fill
+			if (prevState === false) {
+				setEnableSearch(true);
+			}
+			return !prevState;
+		});
 	}, []);
 
 	const cleanSearch = useCallback(() => {
@@ -282,6 +283,8 @@ const Home: React.FC = () => {
 						strings.ListProductsComponent_ProductsDeleted_Notification,
 					type: 'info',
 				});
+
+				setSelectMode(false);
 			} catch (err) {
 				if (err instanceof Error)
 					showMessage({
@@ -324,30 +327,54 @@ const Home: React.FC = () => {
 		setCurrentList(listRef);
 	}, [setCurrentList]);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	const barActions = useMemo(() => {
+		const actions = [];
+
+		if (userPreferences.isPRO) {
+			actions.push({
+				icon: 'calendar',
+				onPress: handleSwitchEnableDatePicker,
+			});
+		}
+		actions.push({
+			icon: 'barcode-scan',
+			onPress: handleSwitchBarCodeOpen,
+		});
+		actions.push({
+			icon: 'magnify',
+			onPress: handleSwitchEnableSearch,
+		});
+
+		if (selectMode) {
+			actions.push({
+				icon: 'cancel',
+				onPress: handleSwitchSelectMode,
+			});
+		}
+
+		return actions;
+	}, [
+		handleSwitchEnableDatePicker,
+		handleSwitchEnableSearch,
+		handleSwitchBarCodeOpen,
+		handleSwitchSelectMode,
+		selectMode,
+		userPreferences.isPRO,
+	]);
+
+	return (
 		<Container>
 			<ExpiredModal />
 			{enableBarCodeReader ? (
 				<BarCodeReader
 					onCodeRead={handleOnCodeRead}
-					onClose={handleOnBarCodeReaderClose}
+					onClose={handleSwitchBarCodeOpen}
 				/>
 			) : (
 				<>
 					<Header
 						listRef={listRef}
-						appBarActions={
-							!selectMode
-								? []
-								: [
-										{
-											icon: 'cancel',
-											onPress: handleSwitchSelectMode,
-										},
-								  ]
-						}
+						appBarActions={barActions}
 						moreMenuItems={
 							!selectMode
 								? []
@@ -369,32 +396,12 @@ const Home: React.FC = () => {
 						<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
 					)}
 
-					{products.length > 0 && (
-						<InputTextContainer>
-							<InputSearch
-								placeholder={strings.View_Home_SearchText}
-								value={searchString}
-								onChangeText={handleSearchChange}
-								onSubmitEditing={handleSearch}
-							/>
-
-							<ActionButtonsContainer>
-								<InputTextIconContainer
-									onPress={handleOnBarCodeReaderOpen}
-								>
-									<InputTextIcon name="barcode-outline" />
-								</InputTextIconContainer>
-
-								{userPreferences.isPRO && (
-									<InputTextIconContainer
-										onPress={enableCalendarModal}
-										style={{ marginLeft: 5 }}
-									>
-										<InputTextIcon name="calendar-outline" />
-									</InputTextIconContainer>
-								)}
-							</ActionButtonsContainer>
-						</InputTextContainer>
+					{products.length > 0 && enableSearch && (
+						<SearchBar
+							searchValue={searchString}
+							onSearchChange={handleSearchChange}
+							handleSearch={handleSearch}
+						/>
 					)}
 
 					<DatePicker
@@ -417,6 +424,7 @@ const Home: React.FC = () => {
 						onRefresh={loadData}
 						setSelectModeOnParent={setSelectMode}
 						disableImage={!userPreferences.isPRO}
+						disableFilters={!userPreferences.isPRO}
 					/>
 
 					{enableFloatAddButton && (

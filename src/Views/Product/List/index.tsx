@@ -4,6 +4,7 @@ import React, {
 	useCallback,
 	useContext,
 	useMemo,
+	useRef,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -14,39 +15,47 @@ import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
+import { searchProducts } from '@utils/Product/Search';
+
 import {
 	getAllProducts,
 	searchForAProductInAList,
+	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
+import { deleteManyProducts } from '@expirychecker/Utils/Products';
 
-import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
+import SearchBar from '@components/SearchBar';
 import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
 
-import {
-	InputSearch,
-	InputTextContainer,
-	InputTextIconContainer,
-	InputTextIcon,
-} from '@views/Home/styles';
-
-import { Container } from './styles';
+import { Container } from '@views/Home/styles';
 
 const List: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
 
+	interface listProdsRefProps {
+		switchDeleteModal: () => void;
+		switchSelectMode: () => void;
+	}
+
+	const listProdsRef = useRef<listProdsRefProps>();
+
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [products, setProducts] = useState<Array<IProduct>>([]);
 
-	const [searchString, setSearchString] = useState<string>();
+	const [searchString, setSearchString] = useState<string>('');
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
 	const [enableBarCodeReader, setEnableBarCodeReader] =
 		useState<boolean>(false);
+
+	const [enableDatePicker, setEnableDatePicker] = useState(false);
+	const [enableSearch, setEnableSearch] = useState(false);
+	const [selectMode, setSelectMode] = useState(false);
 
 	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
@@ -62,7 +71,7 @@ const List: React.FC = () => {
 		return false;
 	}, [enableTabBar, userPreferences.isPRO]);
 
-	const getProducts = useCallback(async () => {
+	const loadData = useCallback(async () => {
 		try {
 			setIsLoading(true);
 			const allProducts = await getAllProducts({
@@ -82,20 +91,42 @@ const List: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		getProducts();
-	}, [getProducts]);
+		loadData();
+	}, [loadData]);
 
 	useEffect(() => {
 		setProductsSearch(products);
 	}, [products]);
 
-	const handleOnBarCodeReaderOpen = useCallback(() => {
-		setEnableBarCodeReader(true);
-	}, []);
+	const handleDeleteMany = useCallback(
+		async (productsIds: number[] | string[]) => {
+			try {
+				const ids = productsIds.map(id => {
+					return Number(id);
+				});
+				await deleteManyProducts({ productsIds: ids });
 
-	const handleOnBarCodeReaderClose = useCallback(() => {
-		setEnableBarCodeReader(false);
-	}, []);
+				if (loadData) {
+					loadData();
+				}
+
+				showMessage({
+					message:
+						strings.ListProductsComponent_ProductsDeleted_Notification,
+					type: 'info',
+				});
+
+				setSelectMode(false);
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			}
+		},
+		[loadData]
+	);
 
 	const handleSearchChange = useCallback(
 		async (search: string) => {
@@ -117,7 +148,7 @@ const List: React.FC = () => {
 	);
 
 	const handleOnCodeRead = useCallback(
-		code => {
+		(code: string) => {
 			setSearchString(code);
 			handleSearchChange(code);
 			setEnableBarCodeReader(false);
@@ -138,50 +169,137 @@ const List: React.FC = () => {
 		}
 	}, [navigate, searchString]);
 
+	const handleSearch = useCallback(() => {
+		let prods: IProduct[] = [];
+
+		if (searchString && searchString !== '') {
+			prods = searchProducts({
+				products,
+				query: searchString,
+			});
+		}
+
+		prods = sortProductsLotesByLotesExpDate(prods);
+
+		setProductsSearch(prods);
+	}, [products, searchString]);
+
+	const handleSwitchEnableSearch = useCallback(() => {
+		setEnableSearch(prevState => !prevState);
+	}, []);
+
+	const handleSwitchBarCodeOpen = useCallback(() => {
+		setEnableBarCodeReader(prevState => !prevState);
+	}, []);
+
+	const handleSwitchEnableDatePicker = useCallback(() => {
+		setEnableDatePicker(prevState => {
+			// if (prevState === false) this means that will be true now
+			// so the search bar needs to be active for user to see the date fill
+			if (prevState === false) {
+				setEnableSearch(true);
+			}
+			return !prevState;
+		});
+	}, []);
+
+	const handleSwitchDeleteModal = useCallback(() => {
+		if (listProdsRef.current) {
+			listProdsRef.current.switchDeleteModal();
+		}
+	}, []);
+
+	const handleSwitchSelectMode = useCallback(() => {
+		if (listProdsRef.current) {
+			listProdsRef.current.switchSelectMode();
+		}
+	}, []);
+
+	const barActions = useMemo(() => {
+		const actions = [];
+
+		if (userPreferences.isPRO) {
+			actions.push({
+				icon: 'calendar',
+				onPress: handleSwitchEnableDatePicker,
+			});
+		}
+		actions.push({
+			icon: 'barcode-scan',
+			onPress: handleSwitchBarCodeOpen,
+		});
+		actions.push({
+			icon: 'magnify',
+			onPress: handleSwitchEnableSearch,
+		});
+
+		if (selectMode) {
+			actions.push({
+				icon: 'cancel',
+				onPress: handleSwitchSelectMode,
+			});
+		}
+
+		return actions;
+	}, [
+		handleSwitchEnableDatePicker,
+		handleSwitchEnableSearch,
+		handleSwitchBarCodeOpen,
+		handleSwitchSelectMode,
+		selectMode,
+		userPreferences.isPRO,
+	]);
+
 	return (
 		<>
 			{enableBarCodeReader ? (
 				<BarCodeReader
 					onCodeRead={handleOnCodeRead}
-					onClose={handleOnBarCodeReaderClose}
+					onClose={handleSwitchBarCodeOpen}
 				/>
 			) : (
-				<>
-					<Container>
-						<Header title={strings.View_AllProducts_PageTitle} />
+				<Container>
+					<Header
+						title={strings.View_AllProducts_PageTitle}
+						appBarActions={barActions}
+						moreMenuItems={
+							!selectMode
+								? []
+								: [
+										{
+											title: strings.ListProductsComponent_DeleteProducts_Modal_Button_Delete,
+											leadingIcon: 'trash-can-outline',
+											onPress: handleSwitchDeleteModal,
+										},
+								  ]
+						}
+					/>
 
-						{products.length > 0 && (
-							<InputTextContainer>
-								<InputSearch
-									placeholder={
-										strings.View_AllProducts_SearchPlaceholder
-									}
-									value={searchString}
-									onChangeText={handleSearchChange}
-								/>
-								<InputTextIconContainer
-									onPress={handleOnBarCodeReaderOpen}
-								>
-									<InputTextIcon name="barcode-outline" />
-								</InputTextIconContainer>
-							</InputTextContainer>
-						)}
-
-						<ListProds
-							products={productsSearch}
-							isRefreshing={isLoading}
-							onRefresh={getProducts}
+					{products.length > 0 && enableSearch && (
+						<SearchBar
+							searchValue={searchString}
+							onSearchChange={handleSearchChange}
+							handleSearch={handleSearch}
 						/>
+					)}
 
-						{enableFloatAddButton && (
-							<FAB
-								icon="plus"
-								label={strings.View_FloatMenu_AddProduct}
-								onPress={handleNavigateAddProduct}
-							/>
-						)}
-					</Container>
-				</>
+					<ListProds
+						ref={listProdsRef}
+						products={productsSearch}
+						isRefreshing={isLoading}
+						onRefresh={loadData}
+						setSelectModeOnParent={setSelectMode}
+						handleDeleteMany={handleDeleteMany}
+					/>
+
+					{enableFloatAddButton && (
+						<FAB
+							icon="plus"
+							label={strings.View_FloatMenu_AddProduct}
+							onPress={handleNavigateAddProduct}
+						/>
+					)}
+				</Container>
 			)}
 		</>
 	);
