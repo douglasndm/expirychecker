@@ -408,9 +408,7 @@ const Home: React.FC = () => {
 						isOpen={enableDatePicker}
 						date={selectedDate}
 						onConfirm={handleSelectDateChange}
-						onCancel={() => {
-							setEnableDatePicker(false);
-						}}
+						onCancel={handleSwitchEnableDatePicker}
 					/>
 
 					<ListProds
