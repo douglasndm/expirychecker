@@ -40,8 +40,6 @@ interface IProduct {
 	brand?: IBrand;
 	store?: IStore;
 
-	categories?: Array<string>;
-
 	batches: Array<IBatch>;
 
 	created_at?: Date;
