@@ -411,7 +411,7 @@
 
     "Function_StoreGroup_NoStore": "No store",
 
-    "Function_Export_FileName": "expirationcheck_backup",
+    "Function_Export_FileName": "expirytracker_backup",
     "Function_Import_Error_InvalidExtesion": "Invalid extension",
 
     "Function_Share_SaveFileTitle": "Save file",

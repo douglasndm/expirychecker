@@ -11,14 +11,12 @@ import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
+import { exportBackup } from '@expirychecker/Utils/Backup/Export';
 
 import { getAllProducts } from '@expirychecker/Functions/Products';
 import { getAllStores } from '@expirychecker/Functions/Stores';
 
-import {
-	exportBackupFile,
-	importBackupFile,
-} from '@expirychecker/Functions/Backup';
+import { importBackupFile } from '@expirychecker/Functions/Backup';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -53,7 +51,7 @@ const Export: React.FC = () => {
 	const handleExportBackup = useCallback(async () => {
 		try {
 			setIsExporting(true);
-			await exportBackupFile();
+			await exportBackup();
 		} catch (err) {
 			if (err instanceof Error) {
 				if (!err.message.includes('User did not share'))
