@@ -6,7 +6,8 @@ import Crashlytics from '@react-native-firebase/crashlytics';
 import strings from '@expirychecker/Locales';
 
 import { sortStores } from '@expirychecker/Utils/Stores/Sort';
-import { createStore, getAllStores } from '@expirychecker/Functions/Stores';
+import { createStore } from '@expirychecker/Functions/Stores';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 
 import Header from '@components/Header';
 import PaddingComponent from '@components/PaddingComponent';
