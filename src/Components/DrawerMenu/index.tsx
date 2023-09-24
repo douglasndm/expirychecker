@@ -54,14 +54,6 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 		navigation.navigate('AllProducts');
 	}, [navigation]);
 
-	const navigateToWeekProds = useCallback(() => {
-		if (!userPreferences.isPRO) {
-			navigateToPRO();
-			return;
-		}
-		navigation.navigate('WeekView');
-	}, [navigateToPRO, navigation, userPreferences.isPRO]);
-
 	const navigateToCategories = useCallback(() => {
 		navigation.navigate('ListCategory');
 	}, [navigation]);
@@ -122,21 +114,6 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 								{strings.Menu_Button_GoToAllProducts}
 							</MenuItemText>
 						</MenuContent>
-					</MenuItemContainer>
-
-					<MenuItemContainer onPress={navigateToWeekProds}>
-						<MenuContent>
-							<Icons name="funnel-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToByWeeks}
-							</MenuItemText>
-						</MenuContent>
-
-						<LabelGroup>
-							<LabelContainer>
-								<Label>{strings.Menu_Label_PRO}</Label>
-							</LabelContainer>
-						</LabelGroup>
 					</MenuItemContainer>
 
 					<MenuItemContainer

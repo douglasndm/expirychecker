@@ -7,7 +7,6 @@ type RoutesParams = {
 		store?: string;
 	};
 	AllProducts;
-	WeekView;
 	Settings;
 	About;
 	ProductDetails: {
