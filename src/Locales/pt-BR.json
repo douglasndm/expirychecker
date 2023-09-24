@@ -5,7 +5,6 @@
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Novo produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
-    "Menu_Button_GoToByWeeks": "Produtos por semana",
     "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToBrands": "Marcas",
     "Menu_Button_GoToStores": "Lojas",
@@ -199,10 +198,6 @@
     "View_ProductDetails_DeleteManyBatches_Modal_Description": "Você está preste a apagar VÁRIOS LOTES, essa ação não pode ser desfeita.",
     "View_ProductDetails_DeleteManyBatches_Modal_Confirm": "Apagar selecionados",
     "View_ProductDetails_DeleteManyBatches_Modal_Cancel": "Manter lotes",
-
-    "View_ProductsByWeeks_Title": "Por semanas",
-    "View_ProductsByWeeks_WeekTitle": "A partir de",
-    "View_ProductsByWeeks_ProductsCount": "{COUNT} produtos",
 
     "View_ShareProduct_Title": "Favor checar o produto",
     "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
