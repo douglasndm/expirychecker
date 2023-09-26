@@ -9,6 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
@@ -172,11 +173,18 @@ const EditBatch: React.FC = () => {
 				});
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				if (__DEV__) {
+					console.error(err);
+				} else {
+					Crashlytics().recordError(err);
+				}
+			}
 		}
 	}, [
 		additionalData,
@@ -222,11 +230,18 @@ const EditBatch: React.FC = () => {
 				});
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				if (__DEV__) {
+					console.error(err);
+				} else {
+					Crashlytics().recordError(err);
+				}
+			}
 		}
 	}, [loteId, product, productId, reset, userPreferences.isPRO]);
 
