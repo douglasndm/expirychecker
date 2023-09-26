@@ -58,7 +58,8 @@ export const ButtonSubscription = styled.TouchableOpacity`
 
 export const TextSubscription = styled.Text<Offer>`
 	text-align: center;
-	font-size: 17px;
+	font-size: 14px;
+	margin: 0 10px;
 
 	color: ${({ theme }) => theme.colors.text};
 `;

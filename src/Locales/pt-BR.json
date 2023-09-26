@@ -243,7 +243,7 @@
     "View_Subscription_AYear_Text": "No plano anual com o valor total de {PRICE} a cada ano",
     "View_Subscription_iOS_AYear_Text": "Igual a {PRICE} por mês",
 
-    "View_Subscription_Disclaim_IntroPrice": "Teste gratuito somente válido para usuários que nunca foram usuários PRO",
+    "View_Subscription_Disclaim_IntroPrice": "O teste gratuito é somente válido para usuários que nunca foram usuários PRO, após o período de teste grátis a assinatura será convertida automaticamente para uma assinatura paga do plano escolhida a qual pode ser cancelada a qualquer momento na loja de aplicativos do seu dispositivo.",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
     "View_ProPage_Button_ClickToSignIn": "Continuar para a assinatura",
