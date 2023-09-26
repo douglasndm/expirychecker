@@ -240,7 +240,7 @@
     "View_Subscription_AYear_Text": "On annual plan on total of {PRICE} every year",
     "View_Subscription_iOS_AYear_Text": "Same as {PRICE} per month",
 
-    "View_Subscription_Disclaim_IntroPrice": "Try period is only valid for users who never was a PRO user",
+    "View_Subscription_Disclaim_IntroPrice": "The free trial is only valid for users who have never been PRO users before. After the free trial period, the subscription will automatically convert to a paid subscription of the chosen plan, which can be canceled at any time in your device's app store.",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
     "View_ProPage_Button_ClickToSignIn": "Continue to subscription",

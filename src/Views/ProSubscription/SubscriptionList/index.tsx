@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useContext,
+	useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { PACKAGE_TYPE, PurchasesPackage } from 'react-native-purchases';
@@ -167,6 +173,10 @@ const SubscriptionList: React.FC = () => {
 		loadData();
 	}, [loadData]);
 
+	const anySubHasIntroPrice = useMemo(() => {
+		return packages.some(pack => !!pack.product.introPrice);
+	}, [packages]);
+
 	return isLoading || isPurchasing ? (
 		<Loading />
 	) : (
@@ -274,17 +284,6 @@ const SubscriptionList: React.FC = () => {
 									})}
 								</SubscriptionsGroup>
 
-								{packages.length > 0 &&
-									packages[0].product.introPrice && (
-										<TextSubscription
-											style={{ marginBottom: 10 }}
-										>
-											{
-												strings.View_Subscription_Disclaim_IntroPrice
-											}
-										</TextSubscription>
-									)}
-
 								{packages.length > 0 && (
 									<>
 										<ButtonSubscription
@@ -321,6 +320,16 @@ const SubscriptionList: React.FC = () => {
 												</TextSubscription>
 											)}
 										</ButtonSubscription>
+
+										{anySubHasIntroPrice && (
+											<TextSubscription
+												style={{ marginBottom: 10 }}
+											>
+												{
+													strings.View_Subscription_Disclaim_IntroPrice
+												}
+											</TextSubscription>
+										)}
 									</>
 								)}
 							</>
