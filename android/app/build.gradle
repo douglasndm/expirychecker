@@ -83,8 +83,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 249
-        versionName "1.15.0"
+        versionCode 250
+        versionName "1.15.1"
     }
 
     signingConfigs {
@@ -113,14 +113,9 @@ android {
             matchingFallbacks = ['release']
         }
         release {
-            /* Add the firebaseCrashlytics extension (by default,
-            * it's disabled to improve build speeds) and set
-            * nativeSymbolUploadEnabled to true along with a pointer to native libs. */
-
             firebaseCrashlytics {
-                /*
                 nativeSymbolUploadEnabled true
-                unstrippedNativeLibsDir './build/intermediates/merged_native_libs/release/out/lib'*/
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
             }
 
             // Caution! In production, you need to generate your own keystore file.
