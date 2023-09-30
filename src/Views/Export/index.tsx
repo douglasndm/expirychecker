@@ -11,10 +11,10 @@ import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { exportBackup } from '@expirychecker/Utils/Backup/Export';
 
 import { getAllProducts } from '@expirychecker/Functions/Products';
-import { getAllStores } from '@expirychecker/Functions/Stores';
 
 import { importBackupFile } from '@expirychecker/Functions/Backup';
 

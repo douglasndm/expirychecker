@@ -18,7 +18,7 @@ import {
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
 import { getAllProductsByCategory } from '@expirychecker/Functions/Category';
-import { getAllStores } from '@expirychecker/Functions/Stores';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 
 import Header from '@components/Products/List/Header';

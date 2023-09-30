@@ -9,6 +9,7 @@ import strings from '@expirychecker/Locales';
 import { exportToExcel } from '@utils/Excel/Export';
 import { removeCheckedBatches } from '@utils/Product/Batches';
 import { searchProducts } from '@utils/Product/Search';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
@@ -16,7 +17,6 @@ import {
 } from '@expirychecker/Functions/Products';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import {
-	getAllStores,
 	getAllProductsByStore,
 	getStore,
 } from '@expirychecker/Functions/Stores';
