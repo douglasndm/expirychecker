@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import remoteConfig from '@react-native-firebase/remote-config';
 import DocumentPicker from 'react-native-document-picker';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
@@ -48,6 +49,8 @@ const Export: React.FC = () => {
 	const [isExporting, setIsExporting] = useState<boolean>(false);
 	const [isImporting, setIsImporting] = useState<boolean>(false);
 
+	const getProducts = async () => getAllProducts({});
+
 	const handleExportBackup = useCallback(async () => {
 		try {
 			setIsExporting(true);
@@ -59,13 +62,17 @@ const Export: React.FC = () => {
 						message: err.message,
 						type: 'danger',
 					});
+
+				if (__DEV__) {
+					console.error(err);
+				} else {
+					Crashlytics().recordError(err);
+				}
 			}
 		} finally {
 			setIsExporting(false);
 		}
 	}, []);
-
-	const getProducts = async () => getAllProducts({});
 
 	const handleExportToExcel = useCallback(async () => {
 		try {
@@ -83,13 +90,20 @@ const Export: React.FC = () => {
 				type: 'info',
 			});
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
 				}
+
+				if (__DEV__) {
+					console.error(err);
+				} else {
+					Crashlytics().recordError(err);
+				}
+			}
 		} finally {
 			setIsExcelLoading(false);
 		}
@@ -110,11 +124,18 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err))
+				if (!DocumentPicker.isCancel(err)) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					if (__DEV__) {
+						console.error(err);
+					} else {
+						Crashlytics().recordError(err);
+					}
+				}
 			}
 		} finally {
 			setIsExcelImporting(false);
@@ -136,11 +157,18 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err))
+				if (!DocumentPicker.isCancel(err)) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					if (__DEV__) {
+						console.error(err);
+					} else {
+						Crashlytics().recordError(err);
+					}
+				}
 			}
 		} finally {
 			setIsImporting(false);
@@ -154,11 +182,18 @@ const Export: React.FC = () => {
 			await generateEmptyExcel();
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!err.message.includes('User did not share'))
+				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					if (__DEV__) {
+						console.error(err);
+					} else {
+						Crashlytics().recordError(err);
+					}
+				}
 			}
 		} finally {
 			setIsExcelModelGenerating(false);
