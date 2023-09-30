@@ -15,7 +15,7 @@ import {
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
-import { getAllStores } from '@expirychecker/Functions/Stores';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import {
 	getAllBrands,
 	getAllProductsByBrand,
