@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
@@ -6,6 +6,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 import sharedStrings from '@shared/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllProductsWithoutCategory } from '@expirychecker/Utils/Categories/Products/GetProductsWithoutCategories';
@@ -34,6 +36,8 @@ interface Props {
 const CategoryView: React.FC = () => {
 	const { params } = useRoute();
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const { userPreferences } = useContext(PreferencesContext);
 
 	const routeParams = params as Props;
 
@@ -191,6 +195,7 @@ const CategoryView: React.FC = () => {
 				products={productsSearch}
 				isRefreshing={isLoading}
 				onRefresh={loadData}
+				daysToBeNext={userPreferences.howManyDaysToBeNextToExpire}
 			/>
 			<FAB
 				icon="plus"

@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { exportToExcel } from '@utils/Excel/Export';
 import { removeCheckedBatches } from '@utils/Product/Batches';
@@ -39,6 +41,8 @@ interface RequestProps {
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 	const { navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const { userPreferences } = useContext(PreferencesContext);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -196,6 +200,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				products={productsSearch}
 				isRefreshing={isLoading}
 				onRefresh={loadData}
+				daysToBeNext={userPreferences.howManyDaysToBeNextToExpire}
 			/>
 
 			<FAB

@@ -230,6 +230,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 										batches={lotesNaoTratados}
 										product={product}
 										onDeleteMany={onDeleteManyBathes}
+										daysToBeNext={
+											userPreferences.howManyDaysToBeNextToExpire
+										}
 									/>
 								</TableContainer>
 							)}

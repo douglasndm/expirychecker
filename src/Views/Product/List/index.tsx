@@ -339,6 +339,9 @@ const List: React.FC = () => {
 						handleDeleteMany={handleDeleteMany}
 						disableImage={!userPreferences.isPRO}
 						disableFilters={!userPreferences.isPRO}
+						daysToBeNext={
+							userPreferences.howManyDaysToBeNextToExpire
+						}
 					/>
 
 					{enableFloatAddButton && (

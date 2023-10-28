@@ -423,6 +423,9 @@ const Home: React.FC = () => {
 						setSelectModeOnParent={setSelectMode}
 						disableImage={!userPreferences.isPRO}
 						disableFilters={!userPreferences.isPRO}
+						daysToBeNext={
+							userPreferences.howManyDaysToBeNextToExpire
+						}
 					/>
 
 					{enableFloatAddButton && (
