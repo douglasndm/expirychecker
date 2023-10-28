@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.33.3):
-    - Adjust/Core (= 4.33.3)
-  - Adjust/Core (4.33.3)
+  - Adjust (4.35.2):
+    - Adjust/Core (= 4.35.2)
+  - Adjust/Core (4.35.2)
   - boost (1.76.0)
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -42,7 +42,7 @@ PODS:
   - Firebase/RemoteConfig (10.11.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.11.0)
-  - FirebaseABTesting (10.15.0):
+  - FirebaseABTesting (10.16.0):
     - FirebaseCore (~> 10.0)
   - FirebaseAnalytics (10.11.0):
     - FirebaseAnalytics/AdIdSupport (= 10.11.0)
@@ -72,7 +72,7 @@ PODS:
     - GoogleUtilities/Logger (~> 7.8)
   - FirebaseCoreExtension (10.11.0):
     - FirebaseCore (~> 10.0)
-  - FirebaseCoreInternal (10.15.0):
+  - FirebaseCoreInternal (10.16.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseCrashlytics (10.11.0):
     - FirebaseCore (~> 10.5)
@@ -108,7 +108,7 @@ PODS:
     - FirebaseInstallations (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseSessions (10.15.0):
+  - FirebaseSessions (10.16.0):
     - FirebaseCore (~> 10.5)
     - FirebaseCoreExtension (~> 10.0)
     - FirebaseInstallations (~> 10.0)
@@ -237,9 +237,9 @@ PODS:
     - GoogleUtilities/MethodSwizzler
   - GoogleUtilities/UserDefaults (7.11.5):
     - GoogleUtilities/Logger
-  - hermes-engine (0.72.4):
-    - hermes-engine/Pre-built (= 0.72.4)
-  - hermes-engine/Pre-built (0.72.4)
+  - hermes-engine (0.72.5):
+    - hermes-engine/Pre-built (= 0.72.5)
+  - hermes-engine/Pre-built (0.72.5)
   - libevent (2.1.12)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
@@ -253,9 +253,9 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - LogRocket (1.22.0)
-  - logrocket-react-native (1.22.0):
-    - LogRocket (= 1.22.0)
+  - LogRocket (1.25.1)
+  - logrocket-react-native (1.25.1):
+    - LogRocket (= 1.25.1)
     - React
   - lottie-ios (3.4.4)
   - lottie-react-native (5.1.6):
@@ -276,8 +276,8 @@ PODS:
   - PromisesObjC (2.3.1)
   - PromisesSwift (2.3.1):
     - PromisesObjC (= 2.3.1)
-  - PurchasesHybridCommon (6.1.2):
-    - RevenueCat (= 4.25.9)
+  - PurchasesHybridCommon (6.3.0):
+    - RevenueCat (= 4.26.1)
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -578,8 +578,8 @@ PODS:
   - React-jsinspector (0.72.5)
   - React-logger (0.72.5):
     - glog
-  - react-native-adjust (4.33.0):
-    - Adjust (= 4.33.3)
+  - react-native-adjust (4.35.1):
+    - Adjust (= 4.35.2)
     - React-Core
   - react-native-blur (4.3.2):
     - React-Core
@@ -719,10 +719,10 @@ PODS:
     - React-Core
   - RealmJS (11.10.2):
     - React
-  - RevenueCat (4.25.9)
+  - RevenueCat (4.26.1)
   - RNBackgroundFetch (4.2.1):
     - React-Core
-  - RNBootSplash (5.0.3):
+  - RNBootSplash (5.0.4):
     - React-Core
   - RNCAsyncStorage (1.19.3):
     - React-Core
@@ -773,7 +773,8 @@ PODS:
     - RNFBApp
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.13.1):
+  - RNGestureHandler (2.13.4):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNGoogleMobileAds (11.7.0):
     - Google-Mobile-Ads-SDK (= 10.9.0)
@@ -784,8 +785,8 @@ PODS:
     - React-Core
   - RNPermissions (3.6.1):
     - React-Core
-  - RNPurchases (6.6.5):
-    - PurchasesHybridCommon (= 6.1.2)
+  - RNPurchases (6.7.0):
+    - PurchasesHybridCommon (= 6.3.0)
     - React-Core
   - RNReanimated (3.5.4):
     - DoubleConversion
@@ -836,7 +837,7 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.1)
   - SSZipArchive (2.4.3)
-  - VisionCamera (3.1.0):
+  - VisionCamera (3.6.4):
     - React
     - React-callinvoker
     - React-Core
@@ -1188,7 +1189,7 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Adjust: 41d0d5c031409aebe7fb1f5703ff0d3306133439
+  Adjust: cac836ba910f868b38d0350045aaf498f794719a
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
@@ -1196,18 +1197,18 @@ SPEC CHECKSUMS:
   FBLazyVector: 71803c074f6325f10b5ec891c443b6bbabef0ca7
   FBReactNativeSpec: 965553a08e998fd0c21fb95ab45a40caeaf4c01d
   Firebase: 31d9575c124839fb5abc0db6d39511cc1dab1b85
-  FirebaseABTesting: 7fa3bca17f79ac433301d20d5cd33401f7738dca
+  FirebaseABTesting: 03f0a8b88cf618350527f2c6a2234e29b9c65064
   FirebaseAnalytics: 6c6bf99e8854475bf1fa342028841be8ecd236da
   FirebaseAppCheck: fb7a0f680b941e9efd67b1ed9b1d700a2ed73ce5
   FirebaseCore: 62fd4d549f5e3f3bd52b7998721c5fa0557fb355
   FirebaseCoreExtension: cacdad57fdb60e0b86dcbcac058ec78237946759
-  FirebaseCoreInternal: 2f4bee5ed00301b5e56da0849268797a2dd31fb4
+  FirebaseCoreInternal: 26233f705cc4531236818a07ac84d20c333e505a
   FirebaseCrashlytics: 5927efd92f7fb052b0ab1e673d2f0d97274cd442
   FirebaseInAppMessaging: ecdd797d89c19713cd9da2a2570fc1c056bd23cc
   FirebaseInstallations: 2a2c6859354cbec0a228a863d4daf6de7c74ced4
   FirebaseMessaging: 06253e9669434df0a40718fc82a90c78090f4704
   FirebaseRemoteConfig: 5f907cd5cf6f64d026c8bfd196a1086cbe1e95e2
-  FirebaseSessions: ee59a7811bef4c15f65ef6472f3210faa293f9c8
+  FirebaseSessions: 96e7781e545929cde06dd91088ddbb0841391b43
   Flipper: 6edb735e6c3e332975d1b17956bcc584eccf5818
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 2dc99b02f658daf147069aad9dbd29d8feb06d30
@@ -1223,11 +1224,11 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
-  hermes-engine: 81191603c4eaa01f5e4ae5737a9efcf64756c7b2
+  hermes-engine: f6cf92a471053245614d9d8097736f6337d5b86c
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  LogRocket: f053ec33614956ad512d511a13bfeb3041d0c421
-  logrocket-react-native: 568d1de9b0a99a0a842b58dd9d392ef468227455
+  LogRocket: fb6e34c2573007c556d760cd9bb6550b8e90c438
+  logrocket-react-native: a34a854e59bec97866ee5b47168c32f34a44647d
   lottie-ios: 8f97d3271e155c2d688875c29cd3c74908aef5f8
   lottie-react-native: 8f9d4be452e23f6e5ca0fdc11669dc99ab52be81
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
@@ -1237,7 +1238,7 @@ SPEC CHECKSUMS:
   Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   PromisesSwift: 28dca69a9c40779916ac2d6985a0192a5cb4a265
-  PurchasesHybridCommon: b7c4205b6d2479cdd8914084a2b536e5e5b1445f
+  PurchasesHybridCommon: 5ee5e13fe009876850a03f52bb0349b6fa91d976
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: df81ab637d35fac9e6eb94611cfd20f0feb05455
   RCTTypeSafety: 4636e4a36c7c2df332bda6d59b19b41c443d4287
@@ -1253,7 +1254,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: ff70a72027dea5cc7d71cfcc6fad7f599f63987a
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
-  react-native-adjust: 5f5966b51459bf8cb074bf8ebc1307a2bfb7b1da
+  react-native-adjust: 4bbce119ab6613cfa7b95af94e5802ab492dcf07
   react-native-blur: cfdad7b3c01d725ab62a8a729f42ea463998afa2
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-date-picker: 1d61c76315098a6ad4c643a356f005916c7d4875
@@ -1284,9 +1285,9 @@ SPEC CHECKSUMS:
   ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
   ReactNativeLocalization: fb171138cdc80d5d0d4f20243d2fc82c2b3cc48f
   RealmJS: 73a36da3cbbe85e1bdcbf55683172b51f35070d3
-  RevenueCat: 4160d04575059fc1edbb973981f541b705ddebef
+  RevenueCat: 4e8899a69fd57180ef166237d1eb670023be05de
   RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
-  RNBootSplash: a496398664e0bd17a6de2845a1c7c73deccb5ae3
+  RNBootSplash: 334668c563e44287ca39d03aa3f738a3c35a74a6
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNCMaskedView: 949696f25ec596bfc697fc88e6f95cf0c79669b6
   RNCPicker: 529d564911e93598cc399b56cc0769ce3675f8c8
@@ -1302,11 +1303,11 @@ SPEC CHECKSUMS:
   RNFBMessaging: 3aca7a5b3b1f79a9ee75026662ea57693436a338
   RNFBRemoteConfig: 9619944a60253fc5998b9ad6e379562871f32149
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 38aa38413896620338948fbb5c90579a7b1c3fde
+  RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
   RNGoogleMobileAds: a1eb1718e2eafae823133733e4e552023917954f
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
-  RNPurchases: 536d66e63df8dd67f9323d9575eb23580843b4af
+  RNPurchases: 1d3296b26119953142ff94fa9d120440f5592422
   RNReanimated: 9633f8c2e214b721e35e371b473fbf3a1522948d
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
@@ -1315,7 +1316,7 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
-  VisionCamera: 53aa6766f9aea2342d8b7ba2761e98c717be33b0
+  VisionCamera: 1910a51e4c6f6b049650086d343090f267b4c260
   Yoga: 86fed2e4d425ee4c6eab3813ba1791101ee153c6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
