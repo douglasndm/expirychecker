@@ -17,3 +17,5 @@ NSUserTrackingUsageDescription = "Precisamos da sua permissão para acessar a id
 NSPhotoLibraryUsageDescription  = "Precisamos de acesso a sua biblioteca de fotos para o aplicativo conseguir importar as fotos do produtos para o aplicativo (para usuários PRO).";
 
 NSLocationWhenInUseUsageDescription = "Nós usamos a localização do seu dispositivo para análises e entender onde o aplicativo é mais usado e com isso fazer melhorias e melhores traduções";
+
+NSPhotoLibraryUsageDescription = "O aplicativo requer acesso à sua biblioteca de fotos para que você possa importar fotos dos produtos diretamente da sua galeria";
