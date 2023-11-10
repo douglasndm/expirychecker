@@ -150,6 +150,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 			if (photoPath) {
 				picFileName = getImageFileNameFromPath(photoPath);
+
 				await movePicturesToImagesDir(photoPath);
 			}
 
