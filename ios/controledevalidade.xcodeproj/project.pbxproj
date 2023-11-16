@@ -854,6 +854,7 @@
 					"-Wl",
 					"-ld_classic",
 					" ",
+					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				REVENUECAT_PUBLIC_APP_ID = "$(REVENUECAT_PUBLIC_APP_ID)";
@@ -986,6 +987,7 @@
 					"-Wl",
 					"-ld_classic",
 					" ",
+					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				REVENUECAT_PUBLIC_APP_ID = "$(REVENUECAT_PUBLIC_APP_ID)";
@@ -1056,6 +1058,7 @@
 					"-Wl",
 					"-ld_classic",
 					" ",
+					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../node_modules/react-native";
 				REVENUECAT_PUBLIC_APP_ID = "$(REVENUECAT_PUBLIC_APP_ID)";
