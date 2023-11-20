@@ -5,7 +5,6 @@ import {
 } from 'react-native-purchases';
 import Analytics from '@react-native-firebase/analytics';
 import messaging from '@react-native-firebase/messaging';
-import { Adjust, AdjustEvent } from 'react-native-adjust';
 
 import Purchases from '@services/RevenueCat';
 
@@ -27,9 +26,6 @@ export async function isSubscriptionActive(): Promise<boolean> {
 		});
 	}
 
-	Adjust.getAdid(id => {
-		Purchases.setAdjustID(id);
-	});
 	try {
 		const purchaserInfo = await Purchases.getCustomerInfo();
 
@@ -91,11 +87,6 @@ export async function makeSubscription(
 	}
 
 	try {
-		const initialAdjustEvent = new AdjustEvent(
-			'User is opening system payment window'
-		);
-		Adjust.trackEvent(initialAdjustEvent);
-
 		const prevPurchases = await Purchases.getCustomerInfo();
 
 		const upgrade: UpgradeInfo | null =
@@ -121,10 +112,6 @@ export async function makeSubscription(
 		}
 	} catch (err) {
 		if ((err as PurchasesError).userCancelled) {
-			const finalAdjustEvent = new AdjustEvent(
-				'User cancel the subscription process'
-			);
-			Adjust.trackEvent(finalAdjustEvent);
 			Analytics().logEvent('user_cancel_subscribe_process');
 		} else if (err instanceof Error) {
 			throw new Error(err.message);
