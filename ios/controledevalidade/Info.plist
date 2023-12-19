@@ -45,6 +45,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CodePushDeploymentKey</key>
+	<string>$(IOS_CODEPUSH_DEPLOYMENT_KEY)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>$(IOS_ADMOB_APPID)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -53,14 +55,10 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Precisamos da sua autorização para usar a câmera para usar o leitor de códigos de barras</string>
@@ -325,7 +323,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>CodePushDeploymentKey</key>
-    <string>$(IOS_CODEPUSH_DEPLOYMENT_KEY)</string>
 </dict>
 </plist>
