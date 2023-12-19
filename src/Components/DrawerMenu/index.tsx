@@ -6,7 +6,7 @@ import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import Logo from '@components/Menu/Logo';
+import Logo from '@components/Logo';
 import {
 	Container,
 	MainMenuContainer,
