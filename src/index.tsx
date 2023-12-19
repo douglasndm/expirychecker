@@ -20,7 +20,6 @@ import './Locales';
 
 import '@services/AppCheck';
 import '@services/Firebase/InAppMessaging';
-import './Services/LogRocket';
 import './Services/DeviceId';
 import './Services/BackgroundJobs';
 import './Services/Admob';
