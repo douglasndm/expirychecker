@@ -330,6 +330,8 @@ const Home: React.FC = () => {
 	const barActions = useMemo(() => {
 		const actions = [];
 
+		if (products.length <= 0) return actions;
+
 		if (userPreferences.isPRO) {
 			actions.push({
 				icon: 'calendar',
@@ -354,12 +356,13 @@ const Home: React.FC = () => {
 
 		return actions;
 	}, [
-		handleSwitchEnableDatePicker,
-		handleSwitchEnableSearch,
-		handleSwitchBarCodeOpen,
-		handleSwitchSelectMode,
-		selectMode,
+		products.length,
 		userPreferences.isPRO,
+		handleSwitchBarCodeOpen,
+		handleSwitchEnableSearch,
+		selectMode,
+		handleSwitchEnableDatePicker,
+		handleSwitchSelectMode,
 	]);
 
 	return (
