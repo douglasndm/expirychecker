@@ -30,10 +30,6 @@ const Pro: React.FC = () => {
 		navigate('SubscriptionCancel');
 	}, [navigate]);
 
-	const navigateToPremiumView = useCallback(() => {
-		navigate('Pro');
-	}, [navigate]);
-
 	const handleRestore = useCallback(async () => {
 		setIsRestoring(true);
 
@@ -85,22 +81,11 @@ const Pro: React.FC = () => {
 				</CategoryTitle>
 
 				{!userPreferences.isPRO && (
-					<>
-						<Button
-							text={
-								strings.View_Settings_Button_BecobeProToUnlockNewFeatures
-							}
-							onPress={navigateToPremiumView}
-						/>
-
-						<Button
-							text={
-								strings.View_PROView_Subscription_RestoreButton
-							}
-							isLoading={isRestoring}
-							onPress={handleRestore}
-						/>
-					</>
+					<Button
+						text={strings.View_Settings_Pro_RestoreSubscription}
+						isLoading={isRestoring}
+						onPress={handleRestore}
+					/>
 				)}
 
 				{userPreferences.isPRO && (
