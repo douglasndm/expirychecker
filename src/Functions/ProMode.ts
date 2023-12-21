@@ -81,7 +81,7 @@ export async function getOnlyNoAdsSubscriptions(): Promise<
 
 export async function makeSubscription(
 	purchasePackage: PurchasesPackage
-): Promise<void> {
+): Promise<boolean> {
 	if (!__DEV__) {
 		Analytics().logEvent('started_susbscription_process');
 	}
@@ -101,14 +101,17 @@ export async function makeSubscription(
 			upgrade
 		);
 
-		if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
-			Analytics().logEvent('user_subscribed_successfully');
-
-			await setEnableProVersion(true);
-		}
-
 		if (typeof customerInfo.entitlements.active.noads !== 'undefined') {
 			await setDisableAds(true);
+		}
+		if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
+			if (!__DEV__) {
+				Analytics().logEvent('user_subscribed_successfully');
+			}
+
+			await setEnableProVersion(true);
+
+			return true;
 		}
 	} catch (err) {
 		if ((err as PurchasesError).userCancelled) {
@@ -117,6 +120,7 @@ export async function makeSubscription(
 			throw new Error(err.message);
 		}
 	}
+	return false;
 }
 
 export async function RestorePurchasers(): Promise<void> {
