@@ -15,7 +15,6 @@ import EditLote from '@expirychecker/Views/Batch/Edit';
 import ProductDetails from '@expirychecker/Views/Product/Details';
 import Settings from '@expirychecker/Views/Settings';
 import About from '@expirychecker/Views/About';
-import ProSubscription from '@expirychecker/Views/ProSubscription';
 import Success from '@expirychecker/Views/Success';
 import PhotoView from '@views/Product/PhotoView';
 
@@ -39,6 +38,8 @@ import BrandEdit from '@expirychecker/Views/Brand/Edit';
 import Export from '@expirychecker/Views/Export';
 
 import Teams from '@expirychecker/Views/Informations/Teams';
+
+import Pro from '@expirychecker/Views/Pro';
 import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/Cancel';
 
 import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
@@ -83,7 +84,7 @@ const Routes: React.FC = () => {
 				<Stack.Screen name="EditProduct" component={EditProduct} />
 				<Stack.Screen name="EditLote" component={EditLote} />
 				<Stack.Screen name="Test" component={Test} />
-				<Stack.Screen name="Pro" component={ProSubscription} />
+				<Stack.Screen name="Pro" component={Pro} />
 				<Stack.Screen name="Success" component={Success} />
 				<Stack.Screen name="PhotoView" component={PhotoView} />
 
