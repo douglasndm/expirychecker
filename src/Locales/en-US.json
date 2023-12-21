@@ -238,10 +238,8 @@
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
-    "View_Settings_Button_BecobeProToUnlockNewFeatures": "BECOME A PRO USER TO UNLOCK NEW FEATURES",
     "View_Settings_Button_CancelSubscribe": "Cancel subscription",
-    "View_Settings_AccountDescription": "Manage your account linked to the app",
-    "View_Settings_Button_SignOut": "Sign out",
+    "View_Settings_Pro_RestoreSubscription": "Restore subscription",
 
     "View_Settings_Appearance_Theme_SelectOne": "Choose a theme",
     "View_Settings_Appearance_Theme_System": "System (Default)",
@@ -264,7 +262,6 @@
 
     "View_Settings_Backup_Import_Alert_Sucess": "File imported",
 
-    "View_PROView_Subscription_RestoreButton": "Already a PRO? Restore subscription",
     "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
 
