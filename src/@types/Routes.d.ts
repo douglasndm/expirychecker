@@ -7,7 +7,6 @@ type RoutesParams = {
 		store?: string;
 	};
 	AllProducts;
-	Settings;
 	About;
 	ProductDetails: {
 		id: number;
@@ -74,7 +73,11 @@ type RoutesParams = {
 	Export;
 	Teams;
 	SubscriptionCancel;
-	Test;
+
+	Settings;
+	DeleteAll;
 
 	TrackingPermission;
+
+	Test;
 };

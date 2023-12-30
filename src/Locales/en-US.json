@@ -253,14 +253,22 @@
     "View_Settings_Appearance_Theme_Relax": "Relax (PRO)",
     "View_Settings_Appearance_Theme_Florest": "Florest (PRO)",
 
-    "View_Settings_Notifications_Title": "Notification frequency",
-    "View_Settings_Notifications_Cadency_Hour": "Every hour",
-    "View_Settings_Notifications_Cadency_Day": "Daily",
-    "View_Settings_Notifications_Cadency_Week": "Weekly",
-    "View_Settings_Notifications_Cadency_Month": "Monthly",
-    "View_Settings_Notifications_Cadency_Never": "Never",
+    "View_Settings_Advanced_Title": "Advanced",
 
-    "View_Settings_Backup_Import_Alert_Sucess": "File imported",
+    "View_Settings_Advanced_DeleteAll_Description": "Completely erase all application data. This includes products, categories, stores, and brands.",
+    "View_Settings_Advanced_DeleteAll_Button": "Delete all data",
+
+    "View_Settings_Advanced_DeleteAll_Title": "Delete eveything",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Title": "Are you sure?",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Description": "This will delete all data, including products, categories, stores, and brands. This action cannot be undone. It is recommended to have a backup of your data before proceeding.",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Confirm": "I want to delete eveything",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Cancel": "I`m not deleting",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Title": "Are you REALLY sure?",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Description": "This is the final warning! You are deleting all app data. This action cannot be undone. It is recommended to have a backup of your data before proceeding.",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm": "I REALLY WANT TO DELETE EVERYTHING",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel": "I`m not deleting",
+
+    "View_Settings_Advanced_DeleteAll_Success": "All data was deleted",
 
     "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",

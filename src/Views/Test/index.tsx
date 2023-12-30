@@ -58,16 +58,6 @@ const Test: React.FC = () => {
 		}
 	}
 
-	async function deleteProducts() {
-		try {
-			realm.write(() => {
-				realm.deleteAll();
-			});
-		} catch (err) {
-			console.warn(err);
-		}
-	}
-
 	const handleNotification = useCallback(async () => {
 		await setTimeForNextNotification();
 
@@ -82,15 +72,13 @@ const Test: React.FC = () => {
 		<Container>
 			<ScrollView>
 				<Category>
-					<Button text="Load with sample data" onPress={sampleData} />
-
 					<Button
-						text="Delete all realm data"
-						onPress={deleteProducts}
+						title="Load with sample data"
+						onPress={sampleData}
 					/>
 
 					<Button
-						text="Log is time to notificaiton"
+						title="Log is time to notificaiton"
 						onPress={() =>
 							isTimeForANotification().then(response =>
 								console.log(response)
@@ -99,7 +87,7 @@ const Test: React.FC = () => {
 					/>
 
 					<Button
-						text="Throw notification"
+						title="Throw notification"
 						onPress={handleNotification}
 					/>
 				</Category>
