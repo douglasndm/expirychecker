@@ -187,6 +187,7 @@ const CategoryView: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={routeParams.id ? handleEdit : undefined}
+				productsCount={products.length}
 			/>
 
 			<SubTitle>{categoryName}</SubTitle>

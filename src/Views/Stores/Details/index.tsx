@@ -193,6 +193,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				handleSearch={handleSearch}
 				exportToExcel={store !== '000' ? handleExportExcel : undefined}
 				navigateToEdit={store !== '000' ? handleEdit : undefined}
+				productsCount={products.length}
 			/>
 
 			<SubTitle>{storeName}</SubTitle>
