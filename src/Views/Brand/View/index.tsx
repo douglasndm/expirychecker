@@ -177,6 +177,7 @@ const View: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={handleEdit}
+				productsCount={products.length}
 			/>
 
 			<SubTitle>{brandName}</SubTitle>
