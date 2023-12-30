@@ -13,7 +13,6 @@ import AddBatch from '@expirychecker/Views/Batch/Add';
 import EditProduct from '@expirychecker/Views/Product/Edit';
 import EditLote from '@expirychecker/Views/Batch/Edit';
 import ProductDetails from '@expirychecker/Views/Product/Details';
-import Settings from '@expirychecker/Views/Settings';
 import About from '@expirychecker/Views/About';
 import Success from '@expirychecker/Views/Success';
 import PhotoView from '@views/Product/PhotoView';
@@ -41,6 +40,9 @@ import Teams from '@expirychecker/Views/Informations/Teams';
 
 import Pro from '@expirychecker/Views/Pro';
 import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/Cancel';
+
+import Settings from '@expirychecker/Views/Settings';
+import SettingsDeleteAll from '@expirychecker/Views/Settings/DeleteAll';
 
 import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
 
@@ -73,7 +75,6 @@ const Routes: React.FC = () => {
 				<Stack.Screen name="AddProduct" component={AddProduct} />
 				<Stack.Screen name="AllProducts" component={AllProducts} />
 
-				<Stack.Screen name="Settings" component={Settings} />
 				<Stack.Screen name="About" component={About} />
 				<Stack.Screen
 					name="ProductDetails"
@@ -108,6 +109,9 @@ const Routes: React.FC = () => {
 					name="SubscriptionCancel"
 					component={SubscriptionCancel}
 				/>
+
+				<Stack.Screen name="Settings" component={Settings} />
+				<Stack.Screen name="DeleteAll" component={SettingsDeleteAll} />
 
 				{Platform.OS === 'ios' && (
 					<Stack.Screen

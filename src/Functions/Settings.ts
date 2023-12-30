@@ -92,7 +92,7 @@ export async function getEnableNotifications(): Promise<boolean> {
 
 export async function getEnableProVersion(): Promise<boolean> {
 	if (__DEV__) {
-		return false;
+		return true;
 	}
 
 	const setting = await getSetting({ type: 'EnableProVersion' });
