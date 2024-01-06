@@ -75,6 +75,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		setIsLoading(true);
 		try {
 			const result = await getProductById(productId);
+			Crashlytics().setAttribute(
+				'product_in_view',
+				JSON.stringify(result)
+			);
 
 			// When the product doesn't exists it will reset the view for app get new data
 			if (!result) {

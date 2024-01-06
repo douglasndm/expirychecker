@@ -8,33 +8,34 @@ import {
 	getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
+import Crashlytics from '@react-native-firebase/crashlytics';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
 import CodePush from 'react-native-code-push';
 
+import '@expirychecker/Locales';
+
 import Themes from '@shared/Themes';
-
 import StatusBar from '@components/StatusBar';
-
-import './Locales';
 
 import '@services/AppCheck';
 import '@services/Firebase/InAppMessaging';
-import './Services/DeviceId';
-import './Services/BackgroundJobs';
-import './Services/Admob';
-import './Services/Analytics';
-import './Services/RemoteConfig';
-import DeepLinking from './Services/DeepLinking';
+import '@expirychecker/Services/Crashlytics';
+import '@expirychecker/Services/DeviceId';
+import '@expirychecker/Services/BackgroundJobs';
+import '@expirychecker/Services/Admob';
+import '@expirychecker/Services/Analytics';
+import '@expirychecker/Services/RemoteConfig';
+import DeepLinking from '@expirychecker/Services/DeepLinking';
 
 import './Functions/ProMode';
 import './Functions/PushNotifications';
+import ListContext from '@shared/Contexts/ListContext';
 import { getAllUserPreferences } from './Functions/UserPreferences';
 
 import Routes from './Routes/DrawerContainer';
 
 import PreferencesContext from './Contexts/PreferencesContext';
-import ListContext from '@shared/Contexts/ListContext';
 
 import AskReview from './Components/AskReview';
 import AppOpen from './Components/Ads/AppOpen';
@@ -64,14 +65,33 @@ const App: React.FC = () => {
 		setPreferences(userPreferences);
 	}, []);
 
+	type IState =
+		| Readonly<{
+				key: string;
+				index: number;
+				routeNames: string[];
+				history?: unknown[] | undefined;
+				routes: NavigationRoute<ParamListBase, string>[];
+				type: string;
+				stale: false;
+		  }>
+		| undefined;
+
 	const handleOnScreenChange = useCallback(
-		async state => {
+		async (state: IState) => {
+			if (!state) return;
+
 			const route = state.routes[0] || 'undefined';
 			const focusedRouteName = getFocusedRouteNameFromRoute(route);
 
 			if (focusedRouteName) {
 				if (previousRoute !== focusedRouteName) {
 					setPreviousRoute(focusedRouteName);
+
+					Crashlytics().setAttribute(
+						'currentRoute',
+						focusedRouteName
+					);
 
 					if (!__DEV__) {
 						await Analyticts().logScreenView({
