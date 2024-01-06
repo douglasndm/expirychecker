@@ -86,7 +86,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 256
+        versionCode 258
         versionName "1.15.4"
 
         resConfigs "en", "pt"
