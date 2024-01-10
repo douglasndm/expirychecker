@@ -86,10 +86,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 258
+        versionCode 259
         versionName "1.15.4"
-
-        resConfigs "en", "pt"
     }
 
     signingConfigs {
