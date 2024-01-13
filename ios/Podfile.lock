@@ -30,9 +30,6 @@ PODS:
     - FirebaseAnalytics (~> 10.11.0)
   - Firebase/CoreOnly (10.11.0):
     - FirebaseCore (= 10.11.0)
-  - Firebase/Crashlytics (10.11.0):
-    - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 10.11.0)
   - Firebase/InAppMessaging (10.11.0):
     - Firebase/CoreOnly
     - FirebaseInAppMessaging (~> 10.11.0-beta)
@@ -77,14 +74,6 @@ PODS:
     - FirebaseCore (~> 10.0)
   - FirebaseCoreInternal (10.19.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
-  - FirebaseCrashlytics (10.11.0):
-    - FirebaseCore (~> 10.5)
-    - FirebaseInstallations (~> 10.0)
-    - FirebaseSessions (~> 10.5)
-    - GoogleDataTransport (~> 9.2)
-    - GoogleUtilities/Environment (~> 7.8)
-    - nanopb (< 2.30910.0, >= 2.30908.0)
-    - PromisesObjC (~> 2.1)
   - FirebaseInAppMessaging (10.11.0-beta):
     - FirebaseABTesting (~> 10.0)
     - FirebaseCore (~> 10.0)
@@ -238,9 +227,9 @@ PODS:
     - GoogleUtilities/MethodSwizzler
   - GoogleUtilities/UserDefaults (7.12.0):
     - GoogleUtilities/Logger
-  - hermes-engine (0.73.0):
-    - hermes-engine/Pre-built (= 0.73.0)
-  - hermes-engine/Pre-built (0.73.0)
+  - hermes-engine (0.73.2):
+    - hermes-engine/Pre-built (= 0.73.2)
+  - hermes-engine/Pre-built (0.73.2)
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - libevent (2.1.12)
@@ -1373,11 +1362,6 @@ PODS:
     - Firebase/AppCheck (= 10.11.0)
     - React-Core
     - RNFBApp
-  - RNFBCrashlytics (18.1.0):
-    - Firebase/Crashlytics (= 10.11.0)
-    - FirebaseCoreExtension (= 10.11.0)
-    - React-Core
-    - RNFBApp
   - RNFBInAppMessaging (18.1.0):
     - Firebase/InAppMessaging (= 10.11.0)
     - React-Core
@@ -1423,6 +1407,11 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - RNSentry (5.15.2):
+    - hermes-engine
+    - React-Core
+    - React-hermes
+    - Sentry/HybridSDK (= 8.17.1)
   - RNShare (7.9.1):
     - React-Core
   - RNZipArchive (6.1.0):
@@ -1438,6 +1427,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - Sentry/HybridSDK (8.17.1):
+    - SentryPrivate (= 8.17.1)
+  - SentryPrivate (8.17.1)
   - SocketRocket (0.6.1)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
@@ -1554,7 +1546,6 @@ DEPENDENCIES:
   - "RNFBAnalytics (from `../../../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../../../node_modules/@react-native-firebase/app`)"
   - "RNFBAppCheck (from `../../../node_modules/@react-native-firebase/app-check`)"
-  - "RNFBCrashlytics (from `../../../node_modules/@react-native-firebase/crashlytics`)"
   - "RNFBInAppMessaging (from `../../../node_modules/@react-native-firebase/in-app-messaging`)"
   - "RNFBInstallations (from `../../../node_modules/@react-native-firebase/installations`)"
   - "RNFBMessaging (from `../../../node_modules/@react-native-firebase/messaging`)"
@@ -1567,6 +1558,7 @@ DEPENDENCIES:
   - RNPurchases (from `../../../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../../../node_modules/react-native-share`)
   - RNZipArchive (from `../../../node_modules/react-native-zip-archive`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
@@ -1582,7 +1574,6 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
-    - FirebaseCrashlytics
     - FirebaseInAppMessaging
     - FirebaseInstallations
     - FirebaseMessaging
@@ -1614,6 +1605,8 @@ SPEC REPOS:
     - RevenueCat
     - SDWebImage
     - SDWebImageWebPCoder
+    - Sentry
+    - SentryPrivate
     - SocketRocket
     - SSZipArchive
 
@@ -1773,8 +1766,6 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/@react-native-firebase/app"
   RNFBAppCheck:
     :path: "../../../node_modules/@react-native-firebase/app-check"
-  RNFBCrashlytics:
-    :path: "../../../node_modules/@react-native-firebase/crashlytics"
   RNFBInAppMessaging:
     :path: "../../../node_modules/@react-native-firebase/in-app-messaging"
   RNFBInstallations:
@@ -1799,6 +1790,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../../../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNShare:
     :path: "../../../node_modules/react-native-share"
   RNZipArchive:
@@ -1808,7 +1801,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
-  boost: 26fad476bfa736552bbfa698a06cc530475c1505
+  boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CodePush: 255d7607f428dcbec39085f81a206b170e01d012
@@ -1822,7 +1815,6 @@ SPEC CHECKSUMS:
   FirebaseCore: 62fd4d549f5e3f3bd52b7998721c5fa0557fb355
   FirebaseCoreExtension: cacdad57fdb60e0b86dcbcac058ec78237946759
   FirebaseCoreInternal: b444828ea7cfd594fca83046b95db98a2be4f290
-  FirebaseCrashlytics: 5927efd92f7fb052b0ab1e673d2f0d97274cd442
   FirebaseInAppMessaging: ecdd797d89c19713cd9da2a2570fc1c056bd23cc
   FirebaseInstallations: 2a2c6859354cbec0a228a863d4daf6de7c74ced4
   FirebaseMessaging: 06253e9669434df0a40718fc82a90c78090f4704
@@ -1843,7 +1835,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
-  hermes-engine: 34304f8c6e8fa68f63a5fe29af82f227d817d7a7
+  hermes-engine: b361c9ef5ef3cda53f66e195599b47e1f84ffa35
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
@@ -1923,7 +1915,6 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 4b4702721d096b024d2cabd522a5d7264f3afdbb
   RNFBApp: fdbde65110240cd843e644270e974e9b455b0fc1
   RNFBAppCheck: 00c7b85073266528bdc01051276139072cd9b751
-  RNFBCrashlytics: b69333e28f4c100dbbf69be885f80288b75c8f13
   RNFBInAppMessaging: 7f45b28869036080123b342911fbb1b5a75175b3
   RNFBInstallations: 3b2a614cdc7c185307f0784aa5dedbb7f53f304e
   RNFBMessaging: 3aca7a5b3b1f79a9ee75026662ea57693436a338
@@ -1936,10 +1927,13 @@ SPEC CHECKSUMS:
   RNPurchases: 6460a884756442e75b2d25a1d7e58cd39ebbffe6
   RNReanimated: 18faeee6e1d8eb9a60f1a62488bb357354569051
   RNScreens: b582cb834dc4133307562e930e8fa914b8c04ef2
+  RNSentry: b7f4f53bb7076f119558f8898fca901b48213f12
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
   RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  Sentry: d9f99f9cc13777c5d938650c1e1c85047bb4f0d1
+  SentryPrivate: 839b1e58addf58624087a80b2628e543193fa8ef
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: e64aa65de36c0832d04e8c7bd614396c77a80047

@@ -1,8 +1,6 @@
 {
     "react-native": {
         "analytics_auto_collection_enabled": true,
-        "messaging_auto_init_enabled": true,
-
-        "crashlytics_debug_enabled": false
+        "messaging_auto_init_enabled": true
     }
   }

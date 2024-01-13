@@ -3,9 +3,10 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -149,7 +150,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				if (__DEV__) {
 					console.error(err);
 				} else {
-					Crashlytics().recordError(err);
+					captureException(err);
 				}
 			}
 		} finally {

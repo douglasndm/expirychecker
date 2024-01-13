@@ -4,9 +4,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import remoteConfig from '@react-native-firebase/remote-config';
 import DocumentPicker from 'react-native-document-picker';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
@@ -66,7 +67,7 @@ const Export: React.FC = () => {
 				if (__DEV__) {
 					console.error(err);
 				} else {
-					Crashlytics().recordError(err);
+					captureException(err);
 				}
 			}
 		} finally {
@@ -101,7 +102,7 @@ const Export: React.FC = () => {
 				if (__DEV__) {
 					console.error(err);
 				} else {
-					Crashlytics().recordError(err);
+					captureException(err);
 				}
 			}
 		} finally {
@@ -133,7 +134,7 @@ const Export: React.FC = () => {
 					if (__DEV__) {
 						console.error(err);
 					} else {
-						Crashlytics().recordError(err);
+						captureException(err);
 					}
 				}
 			}
@@ -166,7 +167,7 @@ const Export: React.FC = () => {
 					if (__DEV__) {
 						console.error(err);
 					} else {
-						Crashlytics().recordError(err);
+						captureException(err);
 					}
 				}
 			}
@@ -191,7 +192,7 @@ const Export: React.FC = () => {
 					if (__DEV__) {
 						console.error(err);
 					} else {
-						Crashlytics().recordError(err);
+						captureException(err);
 					}
 				}
 			}

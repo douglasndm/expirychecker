@@ -10,9 +10,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -75,10 +76,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		setIsLoading(true);
 		try {
 			const result = await getProductById(productId);
-			Crashlytics().setAttribute(
-				'product_in_view',
-				JSON.stringify(result)
-			);
 
 			// When the product doesn't exists it will reset the view for app get new data
 			if (!result) {
@@ -140,7 +137,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				if (__DEV__) {
 					console.error(err);
 				} else {
-					Crashlytics().recordError(err);
+					captureException(err);
 				}
 			}
 		} finally {

@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import { sortStores } from '@expirychecker/Utils/Stores/Sort';
 import { createStore } from '@expirychecker/Functions/Stores';
@@ -93,7 +94,7 @@ const ListView: React.FC = () => {
 			setStores([...sorted, noStore]);
 		} catch (err) {
 			if (err instanceof Error) {
-				Crashlytics().recordError(err);
+				captureException(err);
 			}
 		}
 	}, []);

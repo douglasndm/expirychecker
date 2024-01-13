@@ -8,7 +8,6 @@ import {
 	getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
-import Crashlytics from '@react-native-firebase/crashlytics';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
 import CodePush from 'react-native-code-push';
@@ -20,7 +19,7 @@ import StatusBar from '@components/StatusBar';
 
 import '@services/AppCheck';
 import '@services/Firebase/InAppMessaging';
-import '@expirychecker/Services/Crashlytics';
+import '@expirychecker/Services/Sentry';
 import '@expirychecker/Services/DeviceId';
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
@@ -87,11 +86,6 @@ const App: React.FC = () => {
 			if (focusedRouteName) {
 				if (previousRoute !== focusedRouteName) {
 					setPreviousRoute(focusedRouteName);
-
-					Crashlytics().setAttribute(
-						'currentRoute',
-						focusedRouteName
-					);
 
 					if (!__DEV__) {
 						await Analyticts().logScreenView({

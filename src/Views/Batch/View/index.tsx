@@ -13,9 +13,10 @@ import { showMessage } from 'react-native-flash-message';
 import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
 import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
 import { formatCurrency } from 'react-native-format-currency';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -198,7 +199,7 @@ const View: React.FC = () => {
 					if (__DEV__) {
 						console.error(err);
 					} else {
-						Crashlytics().recordError(err);
+						captureException(err);
 					}
 				}
 		} finally {
