@@ -10,7 +10,6 @@ import { Platform, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BootSplash from 'react-native-bootsplash';
-import Crashlytics from '@react-native-firebase/crashlytics';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
 import { format } from 'date-fns';
@@ -23,6 +22,8 @@ import {
 } from 'react-native-google-mobile-ads';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import ListContext from '@shared/Contexts/ListContext';
@@ -130,7 +131,7 @@ const Home: React.FC = () => {
 			setProducts(allProducts);
 		} catch (err) {
 			if (err instanceof Error) {
-				Crashlytics().recordError(err);
+				captureException(err);
 
 				showMessage({
 					message: err.message,

@@ -9,9 +9,10 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -182,7 +183,7 @@ const EditBatch: React.FC = () => {
 				if (__DEV__) {
 					console.error(err);
 				} else {
-					Crashlytics().recordError(err);
+					captureException(err);
 				}
 			}
 		}
@@ -239,7 +240,7 @@ const EditBatch: React.FC = () => {
 				if (__DEV__) {
 					console.error(err);
 				} else {
-					Crashlytics().recordError(err);
+					captureException(err);
 				}
 			}
 		}

@@ -10,9 +10,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -234,7 +235,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				if (__DEV__) {
 					console.error(err);
 				} else {
-					Crashlytics().recordError(err);
+					captureException(err);
 				}
 			}
 		}
