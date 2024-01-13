@@ -79,7 +79,6 @@ const Home: React.FC = () => {
 	}, [enableTabBar, userPreferences.isPRO]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [isFABExtended, setIsFABExtended] = React.useState(true);
 
 	const [products, setProducts] = useState<Array<IProduct>>([]);
 	const [productsSearch, setProductsSearch] = useState<Array<IProduct>>([]);
@@ -296,13 +295,6 @@ const Home: React.FC = () => {
 		[loadData]
 	);
 
-	const onScroll = ({ nativeEvent }) => {
-		const currentScrollPosition =
-			Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
-
-		setIsFABExtended(currentScrollPosition <= 0);
-	};
-
 	useEffect(() => {
 		const unsubscribe = addListener('focus', () => {
 			loadData();
@@ -421,7 +413,6 @@ const Home: React.FC = () => {
 						listRef={listRef}
 						handleDeleteMany={handleDeleteMany}
 						isRefreshing={isLoading}
-						onScroll={onScroll}
 						onRefresh={loadData}
 						setSelectModeOnParent={setSelectMode}
 						disableImage={!userPreferences.isPRO}
@@ -434,7 +425,6 @@ const Home: React.FC = () => {
 					{enableFloatAddButton && (
 						<FAB
 							icon="plus"
-							isFABExtended={isFABExtended}
 							label={strings.View_FloatMenu_AddProduct}
 							onPress={handleNavigateAddProduct}
 						/>
