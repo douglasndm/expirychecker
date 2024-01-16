@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import { addDays } from 'date-fns';
+import Crashlytics from '@react-native-firebase/crashlytics';
 
 import Button from '@components/Button';
 
@@ -89,6 +90,13 @@ const Test: React.FC = () => {
 					<Button
 						title="Throw notification"
 						onPress={handleNotification}
+					/>
+
+					<Button
+						title="Crash"
+						onPress={() => {
+							Crashlytics().crash();
+						}}
 					/>
 				</Category>
 			</ScrollView>
