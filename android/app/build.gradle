@@ -5,6 +5,7 @@ apply plugin: "com.facebook.react"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 /*
  * This is the configuration block to customize your React Native Android app.
@@ -84,8 +85,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 261
-        versionName "1.15.5"
+        versionCode 262
+        versionName "1.15.6"
     }
 
     signingConfigs {
@@ -119,6 +120,11 @@ android {
         }
         release {
             resValue "string", "CodePushDeploymentKey", '"' + project.env.get("ANDROID_CODEPUSH_DEPLOYMENT_KEY") + '"'
+
+            firebaseCrashlytics {
+                /*nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'*/
+            }
 
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
