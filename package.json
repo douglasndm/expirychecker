@@ -66,6 +66,7 @@
     "react-native-phone-number-input": "^2.1.0",
     "react-native-picker-select": "^8.0.4",
     "react-native-purchases": "*",
+    "react-native-purchases-ui": "*",
     "react-native-push-notification": "^8.1.1",
     "react-native-qrcode-scanner": "^1.5.5",
     "react-native-reanimated": "3.6.1",
@@ -78,7 +79,7 @@
     "react-number-format": "^4.4.1",
     "realm": "^11.8.0",
     "shared": "^1.0.0",
-    "styled-components": "^6.0.0-rc.6",
+    "styled-components": "*",
     "stylis": "^4.0.0",
     "xlsx": "^0.17.0",
     "yup": "^0.32.9"

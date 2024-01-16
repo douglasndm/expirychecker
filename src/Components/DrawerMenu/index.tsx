@@ -1,10 +1,8 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 import strings from '@expirychecker/Locales';
-
-import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import Logo from '@components/Logo';
 import {
@@ -16,35 +14,15 @@ import {
 	MenuItemText,
 	Icons,
 	DrawerSection,
-	LabelGroup,
-	LabelContainer,
-	Label,
 } from '@components/Menu/Drawer/styles';
+import PROItems from './PRO';
 
 const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 	props: DrawerContentComponentProps
 ) => {
 	const { navigation } = props;
 
-	const { userPreferences } = useContext(PreferencesContext);
-
 	const windowHeight = useWindowDimensions().height;
-
-	const shouldShowMultiplesStores = useMemo(() => {
-		if (!userPreferences.isPRO) {
-			return true;
-		}
-
-		if (userPreferences.isPRO && userPreferences.multiplesStores) {
-			return true;
-		}
-
-		return false;
-	}, [userPreferences]);
-
-	const navigateToPRO = useCallback(() => {
-		navigation.navigate('Pro');
-	}, [navigation]);
 
 	const navigateToAddProduct = useCallback(() => {
 		navigation.navigate('AddProduct');
@@ -52,22 +30,6 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 
 	const navigateToAllProducts = useCallback(() => {
 		navigation.navigate('AllProducts');
-	}, [navigation]);
-
-	const navigateToCategories = useCallback(() => {
-		navigation.navigate('ListCategory');
-	}, [navigation]);
-
-	const navigateToAllProductsByStore = useCallback(() => {
-		navigation.navigate('StoreList');
-	}, [navigation]);
-
-	const navigateToBrands = useCallback(() => {
-		navigation.navigate('BrandList');
-	}, [navigation]);
-
-	const navigateToExport = useCallback(() => {
-		navigation.navigate('Export');
 	}, [navigation]);
 
 	const handleNavigateToTeams = useCallback(() => {
@@ -116,104 +78,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 						</MenuContent>
 					</MenuItemContainer>
 
-					<MenuItemContainer
-						onPress={
-							userPreferences.isPRO
-								? navigateToCategories
-								: navigateToPRO
-						}
-					>
-						<MenuContent>
-							<Icons name="file-tray-full-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToCategories}
-							</MenuItemText>
-						</MenuContent>
-
-						<LabelGroup>
-							<LabelContainer>
-								<Label>{strings.Menu_Label_PRO}</Label>
-							</LabelContainer>
-						</LabelGroup>
-					</MenuItemContainer>
-
-					<MenuItemContainer
-						onPress={
-							userPreferences.isPRO
-								? navigateToBrands
-								: navigateToPRO
-						}
-					>
-						<MenuContent>
-							<Icons name="ribbon-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToBrands}
-							</MenuItemText>
-						</MenuContent>
-
-						<LabelGroup>
-							<LabelContainer>
-								<Label>{strings.Menu_Label_PRO}</Label>
-							</LabelContainer>
-						</LabelGroup>
-					</MenuItemContainer>
-
-					{shouldShowMultiplesStores && (
-						<MenuItemContainer
-							onPress={
-								userPreferences.isPRO
-									? navigateToAllProductsByStore
-									: navigateToPRO
-							}
-						>
-							<MenuContent>
-								<Icons name="list-outline" />
-								<MenuItemText>
-									{strings.Menu_Button_GoToStores}
-								</MenuItemText>
-							</MenuContent>
-
-							<LabelGroup>
-								<LabelContainer>
-									<Label>{strings.Menu_Label_PRO}</Label>
-								</LabelContainer>
-							</LabelGroup>
-						</MenuItemContainer>
-					)}
-
-					<MenuItemContainer
-						onPress={
-							userPreferences.isPRO
-								? navigateToExport
-								: navigateToPRO
-						}
-					>
-						<MenuContent>
-							<Icons name="download-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToExport}
-							</MenuItemText>
-						</MenuContent>
-
-						<LabelGroup>
-							<LabelContainer>
-								<Label>{strings.Menu_Label_PRO}</Label>
-							</LabelContainer>
-						</LabelGroup>
-					</MenuItemContainer>
-
-					{!userPreferences.isPRO && (
-						<MenuItemContainer
-							onPress={() => navigation.navigate('Pro')}
-						>
-							<MenuContent>
-								<Icons name="analytics-outline" />
-								<MenuItemText>
-									{strings.Menu_Button_GoToProPage}
-								</MenuItemText>
-							</MenuContent>
-						</MenuItemContainer>
-					)}
+					<PROItems navigation={navigation} />
 				</DrawerSection>
 			</MainMenuContainer>
 
