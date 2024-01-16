@@ -1412,6 +1412,9 @@ PODS:
     - React-Core
   - RNLocalize (2.2.6):
     - React-Core
+  - RNPaywalls (7.15.0):
+    - PurchasesHybridCommon (= 8.10.1)
+    - React-Core
   - RNPermissions (3.6.1):
     - React-Core
   - RNPurchases (7.15.0):
@@ -1566,6 +1569,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
   - RNGoogleMobileAds (from `../../../node_modules/react-native-google-mobile-ads`)
   - RNLocalize (from `../../../node_modules/react-native-localize`)
+  - RNPaywalls (from `../../../node_modules/react-native-purchases-ui`)
   - RNPermissions (from `../../../node_modules/react-native-permissions`)
   - RNPurchases (from `../../../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
@@ -1795,6 +1799,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-google-mobile-ads"
   RNLocalize:
     :path: "../../../node_modules/react-native-localize"
+  RNPaywalls:
+    :path: "../../../node_modules/react-native-purchases-ui"
   RNPermissions:
     :path: "../../../node_modules/react-native-permissions"
   RNPurchases:
@@ -1937,6 +1943,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 61bfdfc05db9b79dd61f894dcd29d3dcc6db3c02
   RNGoogleMobileAds: 2ec6221c829ecc7cc2642b81a9b355793e54f689
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
+  RNPaywalls: b64d6f6c51adea16590d4ba632f56ea00ae2c6ec
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNPurchases: 52efd3644accde6d35a0961905e9b8d1a5195a84
   RNReanimated: 18faeee6e1d8eb9a60f1a62488bb357354569051
