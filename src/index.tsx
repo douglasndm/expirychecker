@@ -19,7 +19,6 @@ import StatusBar from '@components/StatusBar';
 
 import '@services/AppCheck';
 import '@services/Firebase/InAppMessaging';
-import '@expirychecker/Services/Sentry';
 import '@expirychecker/Services/DeviceId';
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
