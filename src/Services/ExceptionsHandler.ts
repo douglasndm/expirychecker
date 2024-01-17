@@ -1,10 +1,10 @@
-import Crashlytics from '@react-native-firebase/crashlytics';
+import Bugsnag from '@bugsnag/react-native';
 
 function captureException(error: Error) {
 	console.error(error);
 
 	if (!__DEV__) {
-		Crashlytics().recordError(error);
+		Bugsnag.notify(error);
 	}
 }
 

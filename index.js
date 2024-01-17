@@ -1,7 +1,7 @@
 /**
  * @format
  */
-
+import Bugsnag from '@bugsnag/react-native';
 import { AppRegistry } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
@@ -13,6 +13,8 @@ import { handleSetNotification } from '@expirychecker/Services/BackgroundJobs';
 import { name as appName } from './app.json';
 import App from './src';
 import './src/Functions/OpenAppTimes';
+
+Bugsnag.start();
 
 requestNotificationPermission();
 
