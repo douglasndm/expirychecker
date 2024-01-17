@@ -1,6 +1,8 @@
 #import "AppDelegate.h"
 #import "RNBootSplash.h"
 
+#import <Bugsnag/Bugsnag.h>
+
 #import <Firebase.h>
 #import <CodePush/CodePush.h>
 
@@ -15,6 +17,8 @@
 @implementation AppDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Bugsnag start];
+
     // FIREBASE
     [FIRApp configure];
 
