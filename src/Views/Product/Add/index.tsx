@@ -18,6 +18,7 @@ import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
+import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
 
 import { createProduct } from '@expirychecker/Functions/Product';
 import { createLote } from '@expirychecker/Functions/Lotes';
@@ -268,7 +269,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 	const handleEnableCamera = useCallback(async () => {
 		if (!userPreferences.isPRO) {
-			navigate('Pro');
+			await handlePurchase();
 			return;
 		}
 
@@ -279,7 +280,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			}
 		}
 		setIsCameraEnabled(true);
-	}, [photoPath, navigate, userPreferences.isPRO]);
+	}, [photoPath, userPreferences.isPRO]);
 
 	const handleSwitchEnableBarCode = useCallback(() => {
 		const tmp = isBarCodeEnabled;

@@ -1,9 +1,4 @@
-import {
-	PurchasesPackage,
-	UpgradeInfo,
-	PurchasesError,
-} from 'react-native-purchases';
-import Analytics from '@react-native-firebase/analytics';
+import { PurchasesPackage } from 'react-native-purchases';
 import messaging from '@react-native-firebase/messaging';
 
 import Purchases from '@services/RevenueCat';
@@ -77,50 +72,6 @@ export async function getOnlyNoAdsSubscriptions(): Promise<
 	}
 
 	return [];
-}
-
-export async function makeSubscription(
-	purchasePackage: PurchasesPackage
-): Promise<boolean> {
-	if (!__DEV__) {
-		Analytics().logEvent('started_susbscription_process');
-	}
-
-	try {
-		const prevPurchases = await Purchases.getCustomerInfo();
-
-		const upgrade: UpgradeInfo | null =
-			prevPurchases.activeSubscriptions.length > 0
-				? {
-						oldSKU: prevPurchases.activeSubscriptions[0],
-				  }
-				: null;
-
-		const { customerInfo } = await Purchases.purchasePackage(
-			purchasePackage,
-			upgrade
-		);
-
-		if (typeof customerInfo.entitlements.active.noads !== 'undefined') {
-			await setDisableAds(true);
-		}
-		if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
-			if (!__DEV__) {
-				Analytics().logEvent('user_subscribed_successfully');
-			}
-
-			await setEnableProVersion(true);
-
-			return true;
-		}
-	} catch (err) {
-		if ((err as PurchasesError).userCancelled) {
-			Analytics().logEvent('user_cancel_subscribe_process');
-		} else if (err instanceof Error) {
-			throw new Error(err.message);
-		}
-	}
-	return false;
 }
 
 export async function RestorePurchasers(): Promise<void> {
