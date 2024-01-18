@@ -172,4 +172,6 @@ bugsnag {
     uploadReactNativeMappings = true
     useLegacyNdkSymbolUpload = false
     overwrite = true
+
+    nodeModulesDir = file("../../../../node_modules")
 }
