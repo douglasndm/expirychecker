@@ -39,7 +39,6 @@ import Export from '@expirychecker/Views/Export';
 
 import Teams from '@expirychecker/Views/Informations/Teams';
 
-import Pro from '@expirychecker/Views/Pro';
 import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/Cancel';
 
 import Settings from '@expirychecker/Views/Settings';
@@ -96,7 +95,6 @@ const DrawerContainer: React.FC = () => {
 				<Drawer.Screen name="EditProduct" component={EditProduct} />
 				<Drawer.Screen name="EditLote" component={EditLote} />
 				<Drawer.Screen name="Test" component={Test} />
-				<Drawer.Screen name="Pro" component={Pro} />
 				<Drawer.Screen name="About" component={About} />
 
 				<Drawer.Screen name="Success" component={Success} />

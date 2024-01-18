@@ -21,6 +21,7 @@ import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { shareText, shareTextWithImage } from '@utils/Share';
+import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -241,9 +242,9 @@ const View: React.FC = () => {
 		return unsubscribe;
 	}, [addListener, loadData]);
 
-	const navigateToPRO = useCallback(() => {
-		navigate('Pro');
-	}, [navigate]);
+	const navigateToPRO = useCallback(async () => {
+		await handlePurchase();
+	}, []);
 
 	const whereIs: string = useMemo(() => {
 		let text = `${strings.View_Batch_WhereIs}: `;
@@ -380,7 +381,7 @@ const View: React.FC = () => {
 							</ProFeaturesText>
 						)}
 						<Button
-							text={
+							title={
 								strings.View_Batch_Button_ShareWithAnotherApps
 							}
 							onPress={handleShare}
@@ -391,7 +392,7 @@ const View: React.FC = () => {
 
 						{!!batch.price && (
 							<Button
-								text={strings.View_Batch_Discount_Button_Apply}
+								title={strings.View_Batch_Discount_Button_Apply}
 								onPress={handleNavigateToDiscount}
 								contentStyle={{ marginTop: -5, width: 250 }}
 								disabled={!userPreferences.isPRO}

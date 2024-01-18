@@ -31,7 +31,6 @@ type RoutesParams = {
 	BatchDiscount: {
 		batch_id: number;
 	};
-	Pro;
 	Success: {
 		type:
 			| 'create_batch'

@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useMemo, useContext } from 'react';
 import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
-import RevenueCatUI, { PAYWALL_RESULT } from 'react-native-purchases-ui';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
 
 import {
 	MenuItemContainer,
@@ -16,7 +18,6 @@ import {
 	Label,
 } from '@components/Menu/Drawer/styles';
 
-import { showMessage } from 'react-native-flash-message';
 import { LoadContainer, LoadIndicator } from './styles';
 
 interface Props {
@@ -59,36 +60,16 @@ const PRO: React.FC<Props> = ({ navigation }: Props) => {
 	const handlePaywall = useCallback(async () => {
 		try {
 			setIsPaywallOpen(true);
-			const paywallResult: PAYWALL_RESULT =
-				await RevenueCatUI.presentPaywallIfNeeded({
-					requiredEntitlementIdentifier: 'pro',
-				});
 
-			if (
-				paywallResult === PAYWALL_RESULT.PURCHASED ||
-				paywallResult === PAYWALL_RESULT.RESTORED
-			) {
+			const response = await handlePurchase();
+
+			if (response) {
 				setUserPreferences({
 					...userPreferences,
-					isPRO: true,
-					disableAds: true,
+					isPRO: response,
+					disableAds: response,
 				});
-
-				if (paywallResult === PAYWALL_RESULT.PURCHASED) {
-					showMessage({
-						message: strings.View_Pro_Alert_Welcome,
-						type: 'info',
-					});
-				} else if (paywallResult === PAYWALL_RESULT.RESTORED) {
-					showMessage({
-						message:
-							strings.View_PROView_Subscription_Alert_RestoreSuccess,
-						type: 'info',
-					});
-				}
 			}
-
-			console.log(paywallResult);
 		} catch (error) {
 			if (error instanceof Error) {
 				showMessage({
