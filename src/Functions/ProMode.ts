@@ -9,16 +9,22 @@ import { setDisableAds, setEnableProVersion } from './Settings';
 export async function isSubscriptionActive(): Promise<boolean> {
 	const localUserId = await getUserId();
 
-	const firebase = await messaging().getToken();
+	let firebase: string | null = null;
+
+	try {
+		firebase = await messaging().getToken();
+
+		if (firebase) {
+			Purchases.setAttributes({
+				FirebaseMessasingToken: firebase,
+			});
+		}
+	} catch (error) {
+		console.log(error);
+	}
 
 	if (!!localUserId) {
 		Purchases.logIn(localUserId);
-	}
-
-	if (firebase) {
-		Purchases.setAttributes({
-			FirebaseMessasingToken: firebase,
-		});
 	}
 
 	try {
