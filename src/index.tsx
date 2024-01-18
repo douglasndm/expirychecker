@@ -33,7 +33,7 @@ import './Functions/PushNotifications';
 import ListContext from '@shared/Contexts/ListContext';
 import { getAllUserPreferences } from './Functions/UserPreferences';
 
-import Routes from './Routes/DrawerContainer';
+import Routes from './routes';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
