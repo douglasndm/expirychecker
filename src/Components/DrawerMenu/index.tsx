@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { DrawerContentComponentProps } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '@expirychecker/Locales';
 
@@ -17,24 +18,38 @@ import {
 } from '@components/Menu/Drawer/styles';
 import PROItems from './PRO';
 
-const DrawerMenu: React.FC<DrawerContentComponentProps> = (
-	props: DrawerContentComponentProps
-) => {
-	const { navigation } = props;
+const DrawerMenu: React.FC = () => {
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const windowHeight = useWindowDimensions().height;
 
+	const navigateHome = useCallback(() => {
+		navigate('Home', {});
+	}, [navigate]);
+
 	const navigateToAddProduct = useCallback(() => {
-		navigation.navigate('AddProduct');
-	}, [navigation]);
+		navigate('AddProduct', {});
+	}, [navigate]);
 
 	const navigateToAllProducts = useCallback(() => {
-		navigation.navigate('AllProducts');
-	}, [navigation]);
+		navigate('AllProducts');
+	}, [navigate]);
 
 	const handleNavigateToTeams = useCallback(() => {
-		navigation.navigate('Teams');
-	}, [navigation]);
+		navigate('Teams');
+	}, [navigate]);
+
+	const handleNavigateToSettings = useCallback(() => {
+		navigate('Settings');
+	}, [navigate]);
+
+	const handleNavigateToAbout = useCallback(() => {
+		navigate('About');
+	}, [navigate]);
+
+	const handleNavigateToTest = useCallback(() => {
+		navigate('Test');
+	}, [navigate]);
 
 	return (
 		<Container>
@@ -49,9 +64,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 					)}
 				</LogoContainer>
 				<DrawerSection>
-					<MenuItemContainer
-						onPress={() => navigation.navigate('Home')}
-					>
+					<MenuItemContainer onPress={navigateHome}>
 						<MenuContent>
 							<Icons name="home-outline" />
 							<MenuItemText>
@@ -78,7 +91,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 						</MenuContent>
 					</MenuItemContainer>
 
-					<PROItems navigation={navigation} />
+					<PROItems />
 				</DrawerSection>
 			</MainMenuContainer>
 
@@ -92,9 +105,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 					</MenuContent>
 				</MenuItemContainer>
 
-				<MenuItemContainer
-					onPress={() => navigation.navigate('Settings')}
-				>
+				<MenuItemContainer onPress={handleNavigateToSettings}>
 					<MenuContent>
 						<Icons name="settings-outline" />
 						<MenuItemText>
@@ -103,7 +114,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 					</MenuContent>
 				</MenuItemContainer>
 
-				<MenuItemContainer onPress={() => navigation.navigate('About')}>
+				<MenuItemContainer onPress={handleNavigateToAbout}>
 					<MenuContent>
 						<Icons name="help-circle-outline" />
 						<MenuItemText>
@@ -113,9 +124,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = (
 				</MenuItemContainer>
 
 				{__DEV__ && (
-					<MenuItemContainer
-						onPress={() => navigation.navigate('Test')}
-					>
+					<MenuItemContainer onPress={handleNavigateToTest}>
 						<MenuContent>
 							<Icons name="bug-outline" />
 							<MenuItemText>

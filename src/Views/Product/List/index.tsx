@@ -16,6 +16,7 @@ import { format } from 'date-fns';
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+import { useDrawer } from '@expirychecker/Contexts/Drawer';
 
 import { searchProducts } from '@utils/Product/Search';
 
@@ -39,6 +40,7 @@ const List: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
+	const { toggleDrawer } = useDrawer();
 
 	interface listProdsRefProps {
 		switchDeleteModal: () => void;
@@ -301,6 +303,7 @@ const List: React.FC = () => {
 				<Container>
 					<Header
 						title={strings.View_AllProducts_PageTitle}
+						onMenuPress={toggleDrawer}
 						appBarActions={barActions}
 						moreMenuItems={
 							!selectMode
