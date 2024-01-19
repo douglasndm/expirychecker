@@ -6,6 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 import strings from '@expirychecker/Locales';
 
 import { generateBackup } from '@expirychecker/Utils/Backup/Generate';
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -28,11 +29,16 @@ const Teams: React.FC = () => {
 				url: `file://${filePath}`,
 			});
 		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+			if (err instanceof Error) {
+				if (!err.message.includes('User did not share')) {
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+
+					captureException(err);
+				}
+			}
 		} finally {
 			setIsExporting(false);
 		}
