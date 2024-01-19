@@ -330,6 +330,7 @@
 				D3A593055FBE750F6BE6129B /* [CP] Copy Pods Resources */,
 				7438A597CD7EE73B248F5192 /* [CP-User] [RNFB] Core Configuration */,
 				AA8853DA84184C4A9E920FE5 /* Upload source maps to Bugsnag */,
+				4F9A1CF02B5A4BE000DC272F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -468,6 +469,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-controledevalidade/Pods-controledevalidade-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		4F9A1CF02B5A4BE000DC272F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\n# Caminho para o arquivo package.json\nPACKAGE_JSON=\"../package.json\"\n\n# Ler a versão do package.json\nVERSION=$(node -p \"require('$PACKAGE_JSON').version\")\n\n# Caminho para o arquivo Info.plist\nINFO_PLIST=\"${BUILT_PRODUCTS_DIR}/${INFO_PLIST_PATH}\"\n\necho VERSION\necho VERSION\necho VERSION\necho VERSION\necho VERSION\n";
 		};
 		7438A597CD7EE73B248F5192 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -729,14 +747,14 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 198;
+				CURRENT_PROJECT_VERSION = 201;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -765,14 +783,14 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 198;
+				CURRENT_PROJECT_VERSION = 201;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -873,13 +891,13 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 198;
+				CURRENT_PROJECT_VERSION = 201;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.15.7;
+				MARKETING_VERSION = 1.15.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

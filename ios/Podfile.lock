@@ -1559,7 +1559,7 @@ DEPENDENCIES:
   - RNPermissions (from `../../../node_modules/react-native-permissions`)
   - RNPurchases (from `../../../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
-  - RNScreens (from `../node_modules/react-native-screens`)
+  - RNScreens (from `../../../node_modules/react-native-screens`)
   - RNShare (from `../../../node_modules/react-native-share`)
   - RNZipArchive (from `../../../node_modules/react-native-zip-archive`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
@@ -1793,7 +1793,7 @@ EXTERNAL SOURCES:
   RNReanimated:
     :path: "../../../node_modules/react-native-reanimated"
   RNScreens:
-    :path: "../node_modules/react-native-screens"
+    :path: "../../../node_modules/react-native-screens"
   RNShare:
     :path: "../../../node_modules/react-native-share"
   RNZipArchive:
