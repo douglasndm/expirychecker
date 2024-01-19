@@ -22,6 +22,7 @@ import {
 	getAllBrands,
 	getAllProductsByBrand,
 } from '@expirychecker/Utils/Brands';
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';
@@ -123,6 +124,8 @@ const View: React.FC = () => {
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
 			}
 		} finally {
 			setIsLoading(false);

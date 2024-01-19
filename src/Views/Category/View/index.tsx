@@ -22,6 +22,7 @@ import {
 import { getAllProductsByCategory } from '@expirychecker/Functions/Category';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';
@@ -137,6 +138,8 @@ const CategoryView: React.FC = () => {
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
 			}
 		} finally {
 			setIsLoading(false);

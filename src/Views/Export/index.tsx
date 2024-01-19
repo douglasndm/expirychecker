@@ -58,15 +58,12 @@ const Export: React.FC = () => {
 			await exportBackup();
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!err.message.includes('User did not share'))
+				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
 					captureException(err);
 				}
 			}
@@ -97,11 +94,7 @@ const Export: React.FC = () => {
 						message: err.message,
 						type: 'danger',
 					});
-				}
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
 					captureException(err);
 				}
 			}
@@ -131,11 +124,7 @@ const Export: React.FC = () => {
 						type: 'danger',
 					});
 
-					if (__DEV__) {
-						console.error(err);
-					} else {
-						captureException(err);
-					}
+					captureException(err);
 				}
 			}
 		} finally {
@@ -189,11 +178,7 @@ const Export: React.FC = () => {
 						type: 'danger',
 					});
 
-					if (__DEV__) {
-						console.error(err);
-					} else {
-						captureException(err);
-					}
+					captureException(err);
 				}
 			}
 		} finally {
@@ -216,7 +201,7 @@ const Export: React.FC = () => {
 							</ExportExplain>
 
 							<Button
-								text={strings.View_Export_Button_ExportExcel}
+								title={strings.View_Export_Button_ExportExcel}
 								onPress={handleExportToExcel}
 								isLoading={isExcelLoading}
 							/>
@@ -230,7 +215,7 @@ const Export: React.FC = () => {
 							</ExportExplain>
 
 							<Button
-								text={strings.View_Export_Button_ImportExcel}
+								title={strings.View_Export_Button_ImportExcel}
 								onPress={handleImportExcel}
 								isLoading={isExcelImporting}
 							/>
@@ -259,7 +244,7 @@ const Export: React.FC = () => {
 								{strings.View_Export_Explain_Backup}
 							</ExportExplain>
 							<Button
-								text={strings.View_Export_Button_ExportBackup}
+								title={strings.View_Export_Button_ExportBackup}
 								onPress={handleExportBackup}
 								isLoading={isExporting}
 							/>
@@ -274,7 +259,7 @@ const Export: React.FC = () => {
 								}
 							</ExportExplain>
 							<Button
-								text={strings.View_Settings_Button_ImportFile}
+								title={strings.View_Settings_Button_ImportFile}
 								onPress={handleImportBackup}
 								isLoading={isImporting}
 							/>

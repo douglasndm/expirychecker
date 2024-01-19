@@ -23,6 +23,7 @@ import {
 	getStore,
 } from '@expirychecker/Functions/Stores';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';
@@ -135,11 +136,14 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				if (!err.message.includes('User did not share'))
+				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					captureException(err);
+				}
 		} finally {
 			setIsLoading(false);
 		}
