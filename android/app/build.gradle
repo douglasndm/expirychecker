@@ -74,6 +74,13 @@ def enableProguardInReleaseBuilds = false
 // def jscFlavor = 'org.webkit:android-jsc:+'
 
 def useIntlJsc = false
+
+def computeVersionName() {
+    def packageJsonFile = file('../../package.json')
+    def packageJsonContent = new groovy.json.JsonSlurper().parseText(packageJsonFile.text)
+    return packageJsonContent.version
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -86,8 +93,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 263
-        versionName "1.15.7"
+        versionCode 264
+        versionName computeVersionName()
     }
 
     signingConfigs {
