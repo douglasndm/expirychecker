@@ -31,6 +31,9 @@ import { defaultPreferences } from '@expirychecker/Services/Preferences';
 import './Functions/ProMode';
 import './Functions/PushNotifications';
 import ListContext from '@shared/Contexts/ListContext';
+
+import RenderError from '@views/Informations/Errors/Render';
+
 import { getAllUserPreferences } from './Functions/UserPreferences';
 
 import Routes from './routes';
@@ -42,6 +45,7 @@ import AppOpen from './Components/Ads/AppOpen';
 
 enableScreens(true);
 
+const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 const { createNavigationContainer } = Bugsnag.getPlugin('reactNavigation');
 // The returned BugsnagNavigationContainer has exactly the same usage
 // except now it tracks route information to send with your error reports
@@ -120,24 +124,26 @@ const App: React.FC = () => {
 			linking={DeepLinking}
 			onStateChange={handleOnScreenChange}
 		>
-			<PreferencesContext.Provider value={prefesValues}>
-				<ThemeProvider theme={preferences.appTheme}>
-					<PaperProvider>
-						<Portal>
-							<StatusBar />
-							<AppOpen />
-							<ListContext.Provider value={list}>
-								<Routes />
-							</ListContext.Provider>
-							<AskReview />
-							<FlashMessage
-								duration={7000}
-								statusBarHeight={50}
-							/>
-						</Portal>
-					</PaperProvider>
-				</ThemeProvider>
-			</PreferencesContext.Provider>
+			<ErrorBoundary FallbackComponent={RenderError}>
+				<PreferencesContext.Provider value={prefesValues}>
+					<ThemeProvider theme={preferences.appTheme}>
+						<PaperProvider>
+							<Portal>
+								<StatusBar />
+								<AppOpen />
+								<ListContext.Provider value={list}>
+									<Routes />
+								</ListContext.Provider>
+								<AskReview />
+								<FlashMessage
+									duration={7000}
+									statusBarHeight={50}
+								/>
+							</Portal>
+						</PaperProvider>
+					</ThemeProvider>
+				</PreferencesContext.Provider>
+			</ErrorBoundary>
 		</BugsnagNavigationContainer>
 	);
 };
