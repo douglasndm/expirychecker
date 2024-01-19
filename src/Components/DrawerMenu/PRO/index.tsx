@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo, useContext } from 'react';
-import { DrawerNavigationHelpers } from '@react-navigation/drawer/lib/typescript/src/types';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
@@ -20,11 +21,9 @@ import {
 
 import { LoadContainer, LoadIndicator } from './styles';
 
-interface Props {
-	navigation: DrawerNavigationHelpers;
-}
+const PRO: React.FC = () => {
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-const PRO: React.FC<Props> = ({ navigation }: Props) => {
 	const { userPreferences, setUserPreferences } =
 		useContext(PreferencesContext);
 	const [isPaywallOpen, setIsPaywallOpen] = useState(false);
@@ -42,20 +41,20 @@ const PRO: React.FC<Props> = ({ navigation }: Props) => {
 	}, [userPreferences]);
 
 	const navigateToCategories = useCallback(() => {
-		navigation.navigate('ListCategory');
-	}, [navigation]);
+		navigate('ListCategory');
+	}, [navigate]);
 
 	const navigateToAllProductsByStore = useCallback(() => {
-		navigation.navigate('StoreList');
-	}, [navigation]);
+		navigate('StoreList');
+	}, [navigate]);
 
 	const navigateToBrands = useCallback(() => {
-		navigation.navigate('BrandList');
-	}, [navigation]);
+		navigate('BrandList');
+	}, [navigate]);
 
 	const navigateToExport = useCallback(() => {
-		navigation.navigate('Export');
-	}, [navigation]);
+		navigate('Export');
+	}, [navigate]);
 
 	const handlePaywall = useCallback(async () => {
 		try {

@@ -1,8 +1,10 @@
 import React, { useState, useCallback, useContext } from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
+import { Drawer } from 'react-native-drawer-layout';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+import DrawerContext from '@expirychecker/Contexts/Drawer';
 
 import TabMenu from '@components/TabMenu';
 
@@ -48,95 +50,117 @@ import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
 
 import Test from '@expirychecker/Views/Test';
 
-const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator<RoutesParams>();
 
-const DrawerContainer: React.FC = () => {
+const StackNavigator: React.FC = () => {
+	const [draweOpen, setDrawerOpen] = useState(false);
+
 	const { userPreferences } = useContext(PreferencesContext);
+	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
 	const [currentRoute, setCurrentRoute] = useState('Home');
 
-	const enableTabBar = remoteConfig().getValue('enable_app_bar');
-
 	const handleRouteChange = useCallback(navRoutes => {
+		setDrawerOpen(false);
+
 		if (navRoutes) {
-			const { routes, history } = navRoutes.data.state;
+			const { routes } = navRoutes.data.state;
 
-			const routeInHistory = history[history.length - 1];
-			const route = routes.find(r => r.key === routeInHistory.key);
-
-			if (route && route.name) {
-				setCurrentRoute(route.name);
-			} else {
-				setCurrentRoute('NoMenu');
-			}
+			setCurrentRoute(routes[routes.length - 1].name);
 		}
 	}, []);
 
+	const toggleDrawer = useCallback(() => {
+		setDrawerOpen(prevState => !prevState);
+	}, []);
+
 	return (
-		<>
-			<Drawer.Navigator
-				defaultStatus="closed"
-				screenOptions={{
-					headerShown: false,
-				}}
-				screenListeners={{ state: handleRouteChange }}
-				drawerContent={props => <DrawerMenu {...props} />}
-			>
-				<Drawer.Screen name="Home" component={Home} />
-				<Drawer.Screen name="AddProduct" component={AddProduct} />
-				<Drawer.Screen name="AllProducts" component={AllProducts} />
+		<Drawer
+			open={draweOpen}
+			onOpen={() => setDrawerOpen(true)}
+			onClose={() => setDrawerOpen(false)}
+			renderDrawerContent={() => <DrawerMenu />}
+		>
+			<DrawerContext.Provider value={{ setDrawerOpen, toggleDrawer }}>
+				<Stack.Navigator
+					screenOptions={{
+						headerShown: false,
+					}}
+					screenListeners={{ state: handleRouteChange }}
+				>
+					<Stack.Screen name="Home" component={Home} />
+					<Stack.Screen name="AddProduct" component={AddProduct} />
+					<Stack.Screen name="AllProducts" component={AllProducts} />
 
-				<Drawer.Screen
-					name="ProductDetails"
-					component={ProductDetails}
-				/>
-				<Drawer.Screen name="StoreDetails" component={StoreDetails} />
-				<Drawer.Screen name="AddBatch" component={AddBatch} />
-				<Drawer.Screen name="EditProduct" component={EditProduct} />
-				<Drawer.Screen name="EditLote" component={EditLote} />
-				<Drawer.Screen name="Test" component={Test} />
-				<Drawer.Screen name="About" component={About} />
+					<Stack.Screen name="About" component={About} />
+					<Stack.Screen
+						name="ProductDetails"
+						component={ProductDetails}
+					/>
+					<Stack.Screen
+						name="StoreDetails"
+						component={StoreDetails}
+					/>
+					<Stack.Screen name="AddBatch" component={AddBatch} />
+					<Stack.Screen name="EditProduct" component={EditProduct} />
+					<Stack.Screen name="EditLote" component={EditLote} />
+					<Stack.Screen name="Test" component={Test} />
+					<Stack.Screen name="Success" component={Success} />
+					<Stack.Screen name="PhotoView" component={PhotoView} />
 
-				<Drawer.Screen name="Success" component={Success} />
-				<Drawer.Screen name="PhotoView" component={PhotoView} />
+					<Stack.Screen name="BatchView" component={BatchView} />
+					<Stack.Screen
+						name="BatchDiscount"
+						component={BatchDiscount}
+					/>
 
-				<Drawer.Screen name="BatchView" component={BatchView} />
-				<Drawer.Screen name="BatchDiscount" component={BatchDiscount} />
+					<Stack.Screen
+						name="ListCategory"
+						component={ListCategory}
+					/>
+					<Stack.Screen
+						name="CategoryView"
+						component={CategoryView}
+					/>
+					<Stack.Screen
+						name="CategoryEdit"
+						component={CategoryEdit}
+					/>
 
-				<Drawer.Screen name="ListCategory" component={ListCategory} />
-				<Drawer.Screen name="CategoryView" component={CategoryView} />
-				<Drawer.Screen name="CategoryEdit" component={CategoryEdit} />
+					<Stack.Screen name="StoreList" component={StoreList} />
+					<Stack.Screen name="StoreEdit" component={StoreEdit} />
 
-				<Drawer.Screen name="StoreList" component={StoreList} />
-				<Drawer.Screen name="StoreEdit" component={StoreEdit} />
+					<Stack.Screen name="BrandList" component={BrandList} />
+					<Stack.Screen name="BrandView" component={BrandView} />
+					<Stack.Screen name="BrandEdit" component={BrandEdit} />
 
-				<Drawer.Screen name="BrandList" component={BrandList} />
-				<Drawer.Screen name="BrandView" component={BrandView} />
-				<Drawer.Screen name="BrandEdit" component={BrandEdit} />
+					<Stack.Screen name="Export" component={Export} />
+					<Stack.Screen name="Teams" component={Teams} />
+					<Stack.Screen
+						name="SubscriptionCancel"
+						component={SubscriptionCancel}
+					/>
 
-				<Drawer.Screen name="Export" component={Export} />
-				<Drawer.Screen name="Teams" component={Teams} />
-				<Drawer.Screen
-					name="SubscriptionCancel"
-					component={SubscriptionCancel}
-				/>
+					<Stack.Screen name="Settings" component={Settings} />
+					<Stack.Screen
+						name="DeleteAll"
+						component={SettingsDeleteAll}
+					/>
 
-				<Drawer.Screen name="Settings" component={Settings} />
-				<Drawer.Screen name="DeleteAll" component={SettingsDeleteAll} />
-
-				<Drawer.Screen
-					name="TrackingPermission"
-					component={TrackingPermission}
-				/>
-			</Drawer.Navigator>
-			{userPreferences.isPRO && enableTabBar.asBoolean() === true && (
-				<TabMenu
-					currentRoute={currentRoute}
-					enableMultiplesStores={userPreferences.multiplesStores}
-				/>
-			)}
-		</>
+					<Stack.Screen
+						name="TrackingPermission"
+						component={TrackingPermission}
+					/>
+				</Stack.Navigator>
+				{userPreferences.isPRO && enableTabBar.asBoolean() === true && (
+					<TabMenu
+						currentRoute={currentRoute}
+						enableMultiplesStores={userPreferences.multiplesStores}
+					/>
+				)}
+			</DrawerContext.Provider>
+		</Drawer>
 	);
 };
 
-export default DrawerContainer;
+export default StackNavigator;
