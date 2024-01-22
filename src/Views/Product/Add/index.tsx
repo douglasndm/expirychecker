@@ -172,6 +172,13 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 					? selectedStore
 					: undefined;
 
+			const newLote: Omit<IBatch, 'id'> = {
+				name: lote,
+				exp_date: expDate,
+				amount: Number(amount),
+				price: price || undefined,
+				status: 'Não tratado',
+			};
 			const newProduct: Omit<IProduct, 'id'> = {
 				name,
 				code: code?.trim(),
@@ -181,14 +188,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				daysToBeNext: daysNext,
 				categories: prodCategories,
 				batches: [],
-			};
-
-			const newLote: Omit<IBatch, 'id'> = {
-				name: lote,
-				exp_date: expDate,
-				amount: Number(amount),
-				price: price || undefined,
-				status: 'Não tratado',
 			};
 
 			const productCreatedId = await createProduct({

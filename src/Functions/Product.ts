@@ -6,7 +6,7 @@ import realm from '@expirychecker/Services/Realm';
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
 import { getBrand } from '@expirychecker/Utils/Brands';
-import { createLote } from './Lotes';
+import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
 import { saveManyBatches } from './Batches';
 import { getCategory } from './Category';
 import { getStore } from './Stores';
@@ -123,35 +123,27 @@ export async function getProductById(productId: number): Promise<IProduct> {
 
 interface createProductProps {
 	product: Omit<IProduct, 'id'>;
-	ignoreDuplicate?: boolean;
 }
 
 export async function createProduct({
 	product,
-	ignoreDuplicate = false,
 }: createProductProps): Promise<void | number> {
 	if (product.code) {
-		const productExist = await checkIfProductAlreadyExistsByCode({
-			productCode: product.code,
-			productStore: product?.store,
+		const store_id = product.store?.id
+			? product.store.id
+			: String(product.store);
+
+		const productAlreadyExists = await findProductByCode({
+			code: product.code,
+			store_id: store_id === 'undefined' ? undefined : store_id,
 		});
 
-		if (productExist) {
+		if (productAlreadyExists) {
 			const productLotes = product.batches.slice();
 
-			if (productLotes.length < 1 && ignoreDuplicate === false) {
-				throw new Error(
-					'Produto já existe. Não há lotes para adicionar'
-				);
-			}
+			await saveManyBatches(productLotes);
 
-			productLotes.map(async l => {
-				await createLote({
-					productCode: product.code,
-					lote: l,
-					ignoreDuplicate,
-				});
-			});
+			return productAlreadyExists.id;
 		}
 	}
 
@@ -186,7 +178,7 @@ interface updateProductProps {
 	name?: string;
 	code?: string;
 	store?: string | null;
-	brand?: string | null;
+	brand?: string | IBrand | null;
 	photo?: string;
 	daysToBeNext?: number | undefined;
 	categories?: Array<string>;
@@ -199,6 +191,10 @@ export async function updateProduct(
 	realm.write(() => {
 		const prod = {
 			...product,
+			brand:
+				typeof product.brand === 'string'
+					? product.brand
+					: product.brand?.id,
 			updated_at: new Date(),
 		};
 		realm.create('Product', prod, UpdateMode.Modified);
