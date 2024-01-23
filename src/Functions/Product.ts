@@ -7,7 +7,6 @@ import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
 import { getBrand } from '@expirychecker/Utils/Brands';
 import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
-import { saveManyBatches } from './Batches';
 import { getCategory } from './Category';
 import { getStore } from './Stores';
 import { createLote } from './Lotes';
@@ -176,7 +175,16 @@ export async function createProduct({
 		});
 	});
 
-	await saveManyBatches(product.batches);
+	const productBatches = product.batches.slice();
+
+	if (productBatches.length > 0) {
+		await createLote({
+			lote: productBatches[0],
+			productId: nextProductId,
+			productCode: product.code,
+			ignoreDuplicate: true,
+		});
+	}
 
 	return nextProductId;
 }
