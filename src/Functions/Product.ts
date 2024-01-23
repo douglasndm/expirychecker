@@ -10,6 +10,7 @@ import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
 import { saveManyBatches } from './Batches';
 import { getCategory } from './Category';
 import { getStore } from './Stores';
+import { createLote } from './Lotes';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
 	productCode: string;
@@ -141,7 +142,14 @@ export async function createProduct({
 		if (productAlreadyExists) {
 			const productLotes = product.batches.slice();
 
-			await saveManyBatches(productLotes);
+			if (productLotes.length > 0) {
+				await createLote({
+					lote: productLotes[0],
+					productId: productAlreadyExists.id,
+					productCode: productAlreadyExists.code,
+					ignoreDuplicate: true,
+				});
+			}
 
 			return productAlreadyExists.id;
 		}

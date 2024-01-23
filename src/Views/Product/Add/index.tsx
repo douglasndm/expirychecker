@@ -21,7 +21,6 @@ import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
 import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
 
 import { createProduct } from '@expirychecker/Functions/Product';
-import { createLote } from '@expirychecker/Functions/Lotes';
 import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Image';
 
 import BarCodeReader from '@components/BarCodeReader';
@@ -187,7 +186,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				photo: picFileName,
 				daysToBeNext: daysNext,
 				categories: prodCategories,
-				batches: [],
+				batches: [newLote],
 			};
 
 			const productCreatedId = await createProduct({
@@ -195,11 +194,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			});
 
 			if (productCreatedId) {
-				await createLote({
-					lote: newLote,
-					productId: productCreatedId,
-				});
-
 				if (!userPreferences.disableAds) {
 					if (InterstitialRef.current) {
 						InterstitialRef.current.showInterstitial();
