@@ -1,4 +1,9 @@
-import admob, { MaxAdContentRating } from 'react-native-google-mobile-ads';
+import admob, {
+	MaxAdContentRating,
+	AdsConsent,
+	AdsConsentStatus,
+	AdsConsentDebugGeography,
+} from 'react-native-google-mobile-ads';
 
 import { getEnableProVersion } from '../Functions/Settings';
 
@@ -23,18 +28,19 @@ async function prepareAds() {
 
 		admob()
 			.initialize()
-			.then(async adapterStatuses => {
-				console.log('AdMob was initiated');
-				console.log(adapterStatuses);
+			.then(async _ => {
+				console.log('[AdMob] was initiated');
 
-				/*
-                const consentInfo = await AdsConsent.requestInfoUpdate();
+				const consentInfo = await AdsConsent.requestInfoUpdate({
+					// debugGeography: AdsConsentDebugGeography.EEA,
+				});
 
-                if (consentInfo.status === AdsConsentStatus.REQUIRED) {
-                    const formResult = await AdsConsent.showForm();
-                    console.log(formResult);
-                }
-                */
+				if (
+					consentInfo.isConsentFormAvailable &&
+					consentInfo.status === AdsConsentStatus.REQUIRED
+				) {
+					await AdsConsent.showForm();
+				}
 			});
 	}
 }
