@@ -329,8 +329,8 @@
 				0BA7D566382754331E7CA5A3 /* [CP-User] [RNGoogleMobileAds] Configuration */,
 				D3A593055FBE750F6BE6129B /* [CP] Copy Pods Resources */,
 				7438A597CD7EE73B248F5192 /* [CP-User] [RNFB] Core Configuration */,
+				4F9A1CF02B5A4BE000DC272F /* Set Info.plist version from package.json */,
 				AA8853DA84184C4A9E920FE5 /* Upload source maps to Bugsnag */,
-				4F9A1CF02B5A4BE000DC272F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -470,7 +470,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-controledevalidade/Pods-controledevalidade-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4F9A1CF02B5A4BE000DC272F /* ShellScript */ = {
+		4F9A1CF02B5A4BE000DC272F /* Set Info.plist version from package.json */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -479,13 +479,14 @@
 			);
 			inputPaths = (
 			);
+			name = "Set Info.plist version from package.json";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\n# Caminho para o arquivo package.json\nPACKAGE_JSON=\"../package.json\"\n\n# Ler a versão do package.json\nVERSION=$(node -p \"require('$PACKAGE_JSON').version\")\n\n# Caminho para o arquivo Info.plist\nINFO_PLIST=\"${BUILT_PRODUCTS_DIR}/${INFO_PLIST_PATH}\"\n\necho VERSION\necho VERSION\necho VERSION\necho VERSION\necho VERSION\n";
+			shellScript = "#!/bin/bash\n\n# Caminho para o arquivo package.json\nPACKAGE_JSON=\"../package.json\"\n\n# Verificar se o arquivo package.json existe\nif [ -e \"$PACKAGE_JSON\" ]; then\n   echo \"O arquivo package.json existe.\"\nelse\n   echo \"ERRO: O arquivo package.json não foi encontrado.\"\n   exit 1\nfi\n\n# Ler a versão do package.json\nVERSION=$(node -p \"require('$PACKAGE_JSON').version\")\n\n# Imprimir a versão\necho \"Versão do aplicativo: $VERSION\"\n\n# Caminho para o pacote do aplicativo\nAPP_BUNDLE=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# Caminho para o arquivo Info.plist dentro do pacote\nINFO_PLIST=\"${APP_BUNDLE}/Info.plist\"\n\necho $INFO_PLIST\n\n# Verificar se o arquivo Info.plist existe\nif [ -e \"$INFO_PLIST\" ]; then\n   echo \"O arquivo Info.plist existe.\"\nelse\n   echo \"ERRO: O arquivo Info.plist não foi encontrado.\"\n   exit 1\nfi\n\n# Configurar a versão no Info.plist\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $VERSION\" \"$INFO_PLIST\"\n";
 		};
 		7438A597CD7EE73B248F5192 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -747,7 +748,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 201;
+				CURRENT_PROJECT_VERSION = 202;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
@@ -783,7 +784,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 201;
+				CURRENT_PROJECT_VERSION = 202;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
@@ -891,7 +892,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 201;
+				CURRENT_PROJECT_VERSION = 202;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
