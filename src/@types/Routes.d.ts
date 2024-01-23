@@ -6,7 +6,6 @@ type RoutesParams = {
 		code?: string;
 		store?: string;
 	};
-	AllProducts;
 	About;
 	ProductDetails: {
 		id: number;
