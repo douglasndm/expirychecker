@@ -123,8 +123,6 @@ const Home: React.FC = () => {
 			setIsLoading(true);
 
 			const allProducts = await getAllProductsAsync({
-				removeProductsWithoutBatches: true,
-				removeTreatedBatch: true,
 				sortProductsByExpDate: true,
 			});
 
