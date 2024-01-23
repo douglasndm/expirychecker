@@ -12,14 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import BootSplash from 'react-native-bootsplash';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
-import { format } from 'date-fns';
-import { getLocales } from 'react-native-localize';
-import {
-	BannerAdSize,
-	AdsConsent,
-	AdsConsentStatus,
-	AdsConsentDebugGeography,
-} from 'react-native-google-mobile-ads';
+import { BannerAdSize } from 'react-native-google-mobile-ads';
 
 import strings from '@expirychecker/Locales';
 
@@ -38,7 +31,7 @@ import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Produc
 
 import BarCodeReader from '@components/BarCodeReader';
 import SearchBar from '@components/SearchBar';
-import DatePicker from '@components/DatePicker';
+import DatePicker, { IDatePickerResponse } from '@components/DatePicker';
 import NotificationsDenny from '@components/NotificationsDenny';
 import OutdateApp from '@components/OutdateApp';
 import FAB from '@components/FAB';
@@ -104,19 +97,6 @@ const Home: React.FC = () => {
 			});
 		}
 	}, [reset]);
-
-	const adConsent = useCallback(async () => {
-		const consentInfo = await AdsConsent.requestInfoUpdate({
-			// debugGeography: AdsConsentDebugGeography.EEA,
-		});
-
-		if (
-			consentInfo.isConsentFormAvailable &&
-			consentInfo.status === AdsConsentStatus.REQUIRED
-		) {
-			const { status } = await AdsConsent.showForm();
-		}
-	}, []);
 
 	const loadData = useCallback(async () => {
 		try {
@@ -201,25 +181,19 @@ const Home: React.FC = () => {
 	}, []);
 
 	const handleSelectDateChange = useCallback(
-		(date: Date) => {
+		({ date, dateString }: IDatePickerResponse) => {
 			cleanSearch();
 
 			setEnableDatePicker(false);
 
-			let dateFormat = 'dd/MM/yyyy';
-			if (getLocales()[0].languageCode === 'en') {
-				dateFormat = 'MM/dd/yyyy';
-			}
-			const d = format(date, dateFormat);
-
-			setSearchString(d);
+			setSearchString(dateString);
 			setSelectedDate(date);
 
 			let prods: IProduct[] = [];
-			if (d && d !== '') {
+			if (dateString && dateString !== '') {
 				prods = searchProducts({
 					products,
-					query: d,
+					query: dateString,
 				});
 			}
 
