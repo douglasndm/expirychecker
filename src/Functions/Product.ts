@@ -193,7 +193,7 @@ interface updateProductProps {
 	id: number;
 	name?: string;
 	code?: string;
-	store?: string | null;
+	store?: string | IStore | null;
 	brand?: string | IBrand | null;
 	photo?: string;
 	daysToBeNext?: number | undefined;
@@ -211,6 +211,10 @@ export async function updateProduct(
 				typeof product.brand === 'string'
 					? product.brand
 					: product.brand?.id,
+			store:
+				typeof product.store === 'string'
+					? product.store
+					: product.store?.id,
 			updated_at: new Date(),
 		};
 		realm.create('Product', prod, UpdateMode.Modified);
