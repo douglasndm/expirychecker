@@ -147,11 +147,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					type: 'danger',
 				});
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
-					captureException(err);
-				}
+				captureException(err);
 			}
 		} finally {
 			setIsLoading(false);
