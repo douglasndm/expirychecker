@@ -104,6 +104,7 @@ const Home: React.FC = () => {
 
 			const allProducts = await getAllProductsAsync({
 				sortProductsByExpDate: true,
+				removeTreatedBatch: true,
 			});
 
 			setProducts(allProducts);
@@ -382,7 +383,6 @@ const Home: React.FC = () => {
 					<ListProds
 						ref={listProdsRef}
 						products={productsSearch}
-						showAllProductsButton
 						listRef={listRef}
 						handleDeleteMany={handleDeleteMany}
 						isRefreshing={isLoading}
