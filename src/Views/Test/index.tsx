@@ -69,6 +69,16 @@ const Test: React.FC = () => {
 		}
 	}, []);
 
+	const functionThrowAnError = () => {
+		try {
+			throw new Error('Test error');
+		} catch (error) {
+			if (error instanceof Error) {
+				Bugsnag.notify(error);
+			}
+		}
+	};
+
 	return (
 		<Container>
 			<ScrollView>
@@ -92,12 +102,7 @@ const Test: React.FC = () => {
 						onPress={handleNotification}
 					/>
 
-					<Button
-						title="Crash"
-						onPress={() => {
-							Bugsnag.notify(new Error('Test error'));
-						}}
-					/>
+					<Button title="Crash" onPress={functionThrowAnError} />
 				</Category>
 			</ScrollView>
 		</Container>

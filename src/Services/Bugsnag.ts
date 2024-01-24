@@ -5,7 +5,13 @@ import packageInfo from '@expirychecker/../package.json';
 
 Bugsnag.start({
 	plugins: [new BugsnagPluginReactNavigation()],
-	codeBundleId: packageInfo.version,
+	onError: () => {
+		if (__DEV__) {
+			return false;
+		}
+
+		return true;
+	},
 });
 
 export { Bugsnag };
