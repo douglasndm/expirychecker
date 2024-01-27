@@ -44,7 +44,7 @@ import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 import { Container } from '@views/Home/styles';
 
 const Home: React.FC = () => {
-	const { reset, navigate, addListener } =
+	const { reset, navigate } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
@@ -266,14 +266,6 @@ const Home: React.FC = () => {
 		},
 		[loadData]
 	);
-
-	useEffect(() => {
-		const unsubscribe = addListener('focus', async () => {
-			await loadData();
-		});
-
-		return unsubscribe;
-	}, [addListener, loadData]);
 
 	const handleSwitchDeleteModal = useCallback(() => {
 		if (listProdsRef.current) {
