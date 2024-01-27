@@ -38,6 +38,7 @@ import FAB from '@components/FAB';
 import ListProds from '@components/Product/List';
 
 import Header from '@expirychecker/Components/Header';
+import AdsConsentComponent from '@expirychecker/Components/Ads/AdsConsent';
 import Banner from '@expirychecker/Components/Ads/Banner';
 import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 
@@ -328,6 +329,7 @@ const Home: React.FC = () => {
 
 	return (
 		<Container>
+			<AdsConsentComponent />
 			<ExpiredModal />
 			{enableBarCodeReader ? (
 				<BarCodeReader
