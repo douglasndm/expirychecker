@@ -283,8 +283,13 @@ const Home: React.FC = () => {
 		setCurrentList(listRef);
 	}, [setCurrentList]);
 
+	interface IAction {
+		icon: string;
+		onPress: () => void;
+	}
+
 	const barActions = useMemo(() => {
-		const actions = [];
+		const actions: IAction[] = [];
 
 		if (products.length <= 0) return actions;
 
