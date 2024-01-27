@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import api from '@services/API';
 
 interface IResponse {
@@ -8,10 +9,21 @@ interface IResponse {
 }
 
 async function findProductByCode(code: string): Promise<IResponse | null> {
-	const response = await api.get<IResponse>(`/products/search?query=${code}`);
+	try {
+		const response = await api.get<IResponse>(
+			`/products/search?query=${code}`
+		);
 
-	if (response.data !== null) {
-		return response.data;
+		if (response.data !== null) {
+			return response.data;
+		}
+	} catch (error: unknown | AxiosError) {
+		if (axios.isAxiosError(error)) {
+			if (error.code === 'ERR_NETWORK') {
+				return null;
+			}
+		}
+		throw error;
 	}
 	return null;
 }
