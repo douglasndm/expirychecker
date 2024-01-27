@@ -74,7 +74,8 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { navigate, replace } =
+		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const InterstitialRef = useRef<IInterstitialRef>();
 	const BrandsPickerRef = useRef<IBrandPickerRef>();
@@ -155,11 +156,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				await movePicturesToImagesDir(photoPath);
 			}
 
-			const prodCategories: Array<string> = [];
-
-			if (selectedCategory && selectedCategory !== 'null') {
-				prodCategories.push(selectedCategory);
-			}
+			const tempCategory =
+				selectedCategory && selectedCategory !== 'null'
+					? selectedCategory
+					: undefined;
 
 			const tempBrand =
 				selectedBrand && selectedBrand !== 'null'
@@ -182,10 +182,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				name,
 				code: code?.trim(),
 				brand: tempBrand,
+				category: tempCategory,
 				store: tempStore,
 				photo: picFileName,
 				daysToBeNext: daysNext,
-				categories: prodCategories,
 				batches: [newLote],
 			};
 
@@ -201,7 +201,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				}
 
 				if (userPreferences.isPRO) {
-					navigate('ProductDetails', {
+					replace('ProductDetails', {
 						id: productCreatedId,
 					});
 
@@ -226,11 +226,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 					type: 'danger',
 				});
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
-					captureException(err);
-				}
+				captureException(err);
 			}
 		}
 	}, [
@@ -245,6 +241,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		navigate,
 		photoPath,
 		price,
+		replace,
 		selectedBrand,
 		selectedCategory,
 		selectedStore,

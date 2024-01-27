@@ -154,6 +154,10 @@ export async function createProduct({
 		}
 	}
 
+	const category_id = product.category?.id
+		? product.category.id
+		: String(product.category);
+
 	// BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
 	// UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
 	const lastProduct = realm
@@ -170,7 +174,7 @@ export async function createProduct({
 			daysToBeNext: product.daysToBeNext,
 			brand: product.brand,
 			store: product.store,
-			categories: product.categories,
+			categories: [category_id],
 			lotes: [],
 		});
 	});

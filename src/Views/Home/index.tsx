@@ -247,9 +247,7 @@ const Home: React.FC = () => {
 				});
 				await deleteManyProducts({ productsIds: ids });
 
-				if (loadData) {
-					loadData();
-				}
+				await loadData();
 
 				showMessage({
 					message:
@@ -270,8 +268,8 @@ const Home: React.FC = () => {
 	);
 
 	useEffect(() => {
-		const unsubscribe = addListener('focus', () => {
-			loadData();
+		const unsubscribe = addListener('focus', async () => {
+			await loadData();
 		});
 
 		return unsubscribe;
