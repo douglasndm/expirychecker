@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
+
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { exportToExcel } from '@utils/Excel/Export';
 import { removeCheckedBatches } from '@utils/Product/Batches';
@@ -15,17 +17,16 @@ import {
 	sortProductsLotesByLotesExpDate,
 } from '@expirychecker/Functions/Products';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
-import { getAllStores } from '@expirychecker/Functions/Stores';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import {
 	getAllBrands,
 	getAllProductsByBrand,
 } from '@expirychecker/Utils/Brands';
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
+import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
-
-import ListProducts from '@expirychecker/Components/ListProducts';
 
 import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
@@ -36,6 +37,8 @@ interface Props {
 const View: React.FC = () => {
 	const { params } = useRoute();
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const { userPreferences } = useContext(PreferencesContext);
 
 	const routeParams = params as Props;
 
@@ -121,6 +124,8 @@ const View: React.FC = () => {
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
 			}
 		} finally {
 			setIsLoading(false);
@@ -166,9 +171,7 @@ const View: React.FC = () => {
 		[products, searchQuery]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Brand_View_PageTitle}
@@ -177,10 +180,16 @@ const View: React.FC = () => {
 				handleSearch={handleSearch}
 				exportToExcel={handleExportExcel}
 				navigateToEdit={handleEdit}
+				productsCount={products.length}
 			/>
 
 			<SubTitle>{brandName}</SubTitle>
-			<ListProducts products={productsSearch} onRefresh={loadData} />
+			<ListProds
+				products={productsSearch}
+				isRefreshing={isLoading}
+				onRefresh={loadData}
+				daysToBeNext={userPreferences.howManyDaysToBeNextToExpire}
+			/>
 
 			<FAB
 				icon="plus"

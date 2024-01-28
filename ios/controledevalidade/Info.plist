@@ -45,6 +45,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CodePushDeploymentKey</key>
+	<string>$(IOS_CODEPUSH_DEPLOYMENT_KEY)</string>
 	<key>GADApplicationIdentifier</key>
 	<string>$(IOS_ADMOB_APPID)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
@@ -53,19 +55,17 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Precisamos da sua autorização para usar a câmera para usar o leitor de códigos de barras</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nosso aplicativo requer acesso à sua biblioteca de fotos para que você possa importar fotos dos produtos diretamente da sua galeria. Isso facilita o processo de validação e ajuda você a manter um registro visual de seus produtos. Suas fotos serão usadas apenas para esse fim e não serão compartilhadas com terceiros.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recusos e mostrar anúncios mais relevantes.</string>
 	<key>SKAdNetworkItems</key>
@@ -305,13 +305,13 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>BootSplash.storyboard</string>
+	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
 	<key>UIRequiresFullScreen</key>
-	<true/>
+	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -325,5 +325,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>$(BUGSNAG_API_KEY)</string>
+	</dict>
 </dict>
 </plist>

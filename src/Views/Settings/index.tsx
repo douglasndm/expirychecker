@@ -31,6 +31,7 @@ import {
 } from '@views/Settings/styles';
 
 import Pro from './Components/Pro';
+import Advanced from './Components/Advanced';
 
 const Settings: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -176,6 +177,8 @@ const Settings: React.FC = () => {
 					/>
 
 					<Pro />
+
+					<Advanced />
 				</SettingsContent>
 			</Content>
 		</Container>

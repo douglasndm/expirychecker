@@ -1,61 +1,72 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { LogBox } from 'react-native';
+import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components/native';
 import {
 	NavigationContainer,
+	ParamListBase,
 	getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
 import Analyticts from '@react-native-firebase/analytics';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
+import CodePush from 'react-native-code-push';
 
-import Themes from '@shared/Themes';
+import '@expirychecker/Locales';
 
 import StatusBar from '@components/StatusBar';
 
-import './Locales';
-
+import { Bugsnag } from '@expirychecker/Services/Bugsnag';
 import '@services/AppCheck';
 import '@services/Firebase/InAppMessaging';
-import './Services/LogRocket';
-import './Services/Adjust';
-import './Services/DeviceId';
-import './Services/BackgroundJobs';
-import './Services/Admob';
-import './Services/Analytics';
-import './Services/RemoteConfig';
-import DeepLinking from './Services/DeepLinking';
+import '@expirychecker/Services/DeviceId';
+import '@expirychecker/Services/BackgroundJobs';
+import '@expirychecker/Services/Admob';
+import '@expirychecker/Services/Analytics';
+import '@expirychecker/Services/RemoteConfig';
+import DeepLinking from '@expirychecker/Services/DeepLinking';
+import { defaultPreferences } from '@expirychecker/Services/Preferences';
 
 import './Functions/ProMode';
 import './Functions/PushNotifications';
+import ListContext from '@shared/Contexts/ListContext';
+
+import RenderError from '@views/Informations/Errors/Render';
+
 import { getAllUserPreferences } from './Functions/UserPreferences';
 
-import Routes from './Routes/DrawerContainer';
+import Routes from './routes';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
 import AskReview from './Components/AskReview';
 import AppOpen from './Components/Ads/AppOpen';
 
-LogBox.ignoreLogs(['new NativeEventEmitter', 'EventEmitter.removeListener']); // Ignore log notification by message
-
 enableScreens(true);
+
+const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
+const { createNavigationContainer } = Bugsnag.getPlugin('reactNavigation');
+// The returned BugsnagNavigationContainer has exactly the same usage
+// except now it tracks route information to send with your error reports
+const BugsnagNavigationContainer =
+	createNavigationContainer(NavigationContainer);
 
 const App: React.FC = () => {
 	const [previousRoute, setPreviousRoute] = useState('Home');
 
-	const [preferences, setPreferences] = useState({
-		howManyDaysToBeNextToExpire: 30,
-		autoComplete: false,
-		isPRO: false,
-		appTheme: Themes.Light,
-		multiplesStores: false,
-		enableNotifications: true,
-		disableAds: false,
-		allowRemoteImages: true,
-	});
+	const [preferences, setPreferences] = useState(defaultPreferences);
+	const prefesValues = React.useMemo(
+		() => ({
+			userPreferences: preferences,
+			setUserPreferences: setPreferences,
+		}),
+		[preferences, setPreferences]
+	);
+
+	const [currentList, setCurrentList] = useState<React.RefObject<
+		FlatList<IProduct>
+	> | null>(null);
 
 	const loadInitialData = useCallback(async () => {
 		const userPreferences = await getAllUserPreferences();
@@ -63,8 +74,22 @@ const App: React.FC = () => {
 		setPreferences(userPreferences);
 	}, []);
 
+	type IState =
+		| Readonly<{
+				key: string;
+				index: number;
+				routeNames: string[];
+				history?: unknown[] | undefined;
+				routes: NavigationRoute<ParamListBase, string>[];
+				type: string;
+				stale: false;
+		  }>
+		| undefined;
+
 	const handleOnScreenChange = useCallback(
-		async state => {
+		async (state: IState) => {
+			if (!state) return;
+
 			const route = state.routes[0] || 'undefined';
 			const focusedRouteName = getFocusedRouteNameFromRoute(route);
 
@@ -87,34 +112,40 @@ const App: React.FC = () => {
 		loadInitialData();
 	}, [loadInitialData]);
 
-	const prefes = useMemo(
-		() => ({
-			userPreferences: preferences,
-			setUserPreferences: setPreferences,
-		}),
-		[preferences]
-	);
+	const list = useMemo(() => {
+		return {
+			currentList,
+			setCurrentList,
+		};
+	}, [currentList]);
 
 	return (
-		<PreferencesContext.Provider value={prefes}>
-			<ThemeProvider theme={preferences.appTheme}>
-				<PaperProvider>
-					<Portal>
-						<NavigationContainer
-							linking={DeepLinking}
-							onStateChange={handleOnScreenChange}
-						>
-							<AppOpen />
-							<StatusBar />
-							<Routes />
-							<AskReview />
-						</NavigationContainer>
-						<FlashMessage duration={7000} statusBarHeight={50} />
-					</Portal>
-				</PaperProvider>
-			</ThemeProvider>
-		</PreferencesContext.Provider>
+		<BugsnagNavigationContainer
+			linking={DeepLinking}
+			onStateChange={handleOnScreenChange}
+		>
+			<ErrorBoundary FallbackComponent={RenderError}>
+				<PreferencesContext.Provider value={prefesValues}>
+					<ThemeProvider theme={preferences.appTheme}>
+						<PaperProvider>
+							<Portal>
+								<StatusBar />
+								<AppOpen />
+								<ListContext.Provider value={list}>
+									<Routes />
+								</ListContext.Provider>
+								<AskReview />
+								<FlashMessage
+									duration={7000}
+									statusBarHeight={50}
+								/>
+							</Portal>
+						</PaperProvider>
+					</ThemeProvider>
+				</PreferencesContext.Provider>
+			</ErrorBoundary>
+		</BugsnagNavigationContainer>
 	);
 };
 
-export default App;
+export default CodePush(App);

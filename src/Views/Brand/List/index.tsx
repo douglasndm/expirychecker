@@ -1,11 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { showMessage } from 'react-native-flash-message';
 
+import { useDrawer } from '@expirychecker/Contexts/Drawer';
+
 import ListView from '@views/Brand/List';
 
 import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
 
 const BrandList: React.FC = () => {
+	const { toggleDrawer } = useDrawer();
+
 	const [isAdding, setIsAdding] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -50,6 +54,7 @@ const BrandList: React.FC = () => {
 
 	return (
 		<ListView
+			onMenuPress={toggleDrawer}
 			brands={brands}
 			isLoading={isLoading}
 			isAdding={isAdding}

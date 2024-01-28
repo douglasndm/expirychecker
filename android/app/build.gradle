@@ -1,9 +1,12 @@
 apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+
+apply plugin: "com.bugsnag.android.gradle"
+
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 
 /*
  * This is the configuration block to customize your React Native Android app.
@@ -72,10 +75,17 @@ def enableProguardInReleaseBuilds = false
 
 def useIntlJsc = false
 
+def computeVersionName() {
+    def packageJsonFile = file('../../package.json')
+    def packageJsonContent = new groovy.json.JsonSlurper().parseText(packageJsonFile.text)
+    return packageJsonContent.version
+}
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.controledevalidade"
     defaultConfig {
@@ -83,8 +93,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 242
-        versionName "1.14.0"
+        versionCode 275
+        versionName computeVersionName()
     }
 
     signingConfigs {
@@ -106,22 +116,18 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+
+            // Note: CodePush updates should not be tested in Debug mode as they are overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
+            resValue "string", "CodePushDeploymentKey", '""'
         }
         releaseStaging {
+            resValue "string", "CodePushDeploymentKey", '""'
             // Note: It's a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
             // Add the following line if not already there
             matchingFallbacks = ['release']
         }
         release {
-            /* Add the firebaseCrashlytics extension (by default,
-            * it's disabled to improve build speeds) and set
-            * nativeSymbolUploadEnabled to true along with a pointer to native libs. */
-
-            firebaseCrashlytics {
-                /*
-                nativeSymbolUploadEnabled true
-                unstrippedNativeLibsDir './build/intermediates/merged_native_libs/release/out/lib'*/
-            }
+            resValue "string", "CodePushDeploymentKey", '"' + project.env.get("ANDROID_CODEPUSH_DEPLOYMENT_KEY") + '"'
 
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
@@ -148,30 +154,31 @@ repositories {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+    implementation("com.facebook.react:flipper-integration")
 
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-    }
-
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
     }
-
-    // Adjust
-    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
-
-    implementation "com.android.installreferrer:installreferrer:2.2"
 }
 
 apply from: file("../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 
 //React Native Vector Icons
 project.ext.vectoricons = [
-    iconFontNames: [ 'Ionicons.ttf', 'Feather.ttf' ] // Name of the font files you want to copy
+    iconFontsDir: "../../../../node_modules/react-native-vector-icons/Fonts",
+    iconFontNames: [ 'Ionicons.ttf', 'Feather.ttf', 'MaterialIcons.ttf', 'MaterialCommunityIcons.ttf' ] // Name of the font files you want to copy
 ]
 
 apply from: "../../../../node_modules/react-native-vector-icons/fonts.gradle"
+
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+
+bugsnag {
+    uploadReactNativeMappings = true
+    useLegacyNdkSymbolUpload = false
+    overwrite = true
+
+    nodeModulesDir = file("../../../../node_modules")
+}

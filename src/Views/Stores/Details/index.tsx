@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
@@ -6,9 +6,12 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
 import { exportToExcel } from '@utils/Excel/Export';
 import { removeCheckedBatches } from '@utils/Product/Batches';
 import { searchProducts } from '@utils/Product/Search';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import {
 	getAllProducts,
 	sortProductsByFisrtLoteExpDate,
@@ -16,19 +19,17 @@ import {
 } from '@expirychecker/Functions/Products';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import {
-	getAllStores,
 	getAllProductsByStore,
 	getStore,
 } from '@expirychecker/Functions/Stores';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
-import Loading from '@components/Loading';
 import Header from '@components/Products/List/Header';
+import ListProds from '@components/Product/List';
 import FAB from '@components/FAB';
 
 import { Container, SubTitle } from '@styles/Views/GenericViewPage';
-
-import ListProducts from '@expirychecker/Components/ListProducts';
 
 interface RequestProps {
 	route: {
@@ -41,6 +42,8 @@ interface RequestProps {
 const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 	const { navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const { userPreferences } = useContext(PreferencesContext);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -133,11 +136,14 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				if (!err.message.includes('User did not share'))
+				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					captureException(err);
+				}
 		} finally {
 			setIsLoading(false);
 		}
@@ -182,9 +188,7 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 		[products, searchQuery]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Store_View_PageTitle}
@@ -193,10 +197,16 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				handleSearch={handleSearch}
 				exportToExcel={store !== '000' ? handleExportExcel : undefined}
 				navigateToEdit={store !== '000' ? handleEdit : undefined}
+				productsCount={products.length}
 			/>
 
 			<SubTitle>{storeName}</SubTitle>
-			<ListProducts products={productsSearch} />
+			<ListProds
+				products={productsSearch}
+				isRefreshing={isLoading}
+				onRefresh={loadData}
+				daysToBeNext={userPreferences.howManyDaysToBeNextToExpire}
+			/>
 
 			<FAB
 				icon="plus"

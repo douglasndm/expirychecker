@@ -1,8 +1,11 @@
-import admob, { MaxAdContentRating } from 'react-native-google-mobile-ads';
+import admob, {
+	MaxAdContentRating,
+	AdsConsent,
+} from 'react-native-google-mobile-ads';
 
 import { getEnableProVersion } from '../Functions/Settings';
 
-async function prepareAds() {
+async function startGoogleMobileAdsSDK() {
 	const disableAds = await getEnableProVersion();
 
 	if (!disableAds) {
@@ -21,22 +24,22 @@ async function prepareAds() {
 			testDeviceIdentifiers: ['EMULATOR'],
 		});
 
-		admob()
-			.initialize()
-			.then(async adapterStatuses => {
-				console.log('AdMob was initiated');
-				console.log(adapterStatuses);
+		// Check if you can initialize the Google Mobile Ads SDK in parallel
+		// while checking for new consent information. Consent obtained in
+		// the previous session can be used to request ads.
+		// So you can start loading ads as soon as possible after your app launches.
+		const { canRequestAds } = await AdsConsent.getConsentInfo();
 
-				/*
-                const consentInfo = await AdsConsent.requestInfoUpdate();
-
-                if (consentInfo.status === AdsConsentStatus.REQUIRED) {
-                    const formResult = await AdsConsent.showForm();
-                    console.log(formResult);
-                }
-                */
-			});
+		if (canRequestAds) {
+			admob()
+				.initialize()
+				.then(async _ => {
+					console.log('[AdMob] was initiated');
+				});
+		}
 	}
 }
 
-prepareAds();
+startGoogleMobileAdsSDK();
+
+export { startGoogleMobileAdsSDK };

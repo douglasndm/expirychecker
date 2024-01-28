@@ -13,6 +13,7 @@ export async function saveManyBatches(
 			const createdBatch = realm.create<IBatch>('Lote', {
 				...batch,
 				id: nextId,
+				name: batch.name ? batch.name : String(nextId),
 			});
 
 			createdBatches.push(createdBatch);
