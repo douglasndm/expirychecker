@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -54,6 +55,8 @@ interface Request {
 }
 
 const ProductDetails: React.FC<Request> = ({ route }: Request) => {
+	const { isConnected } = useNetInfo();
+
 	const { userPreferences } = useContext(PreferencesContext);
 
 	const { push, goBack, addListener, reset, navigate } =
@@ -96,7 +99,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 				if (path) {
 					setImage(`${path}`);
-				} else if (!path && result.code) {
+				} else if (!path && result.code && isConnected) {
 					const response = await getImagePath({
 						productCode: result.code.trim(),
 					});
@@ -134,16 +137,12 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 					type: 'danger',
 				});
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
-					captureException(err);
-				}
+				captureException(err);
 			}
 		} finally {
 			setIsLoading(false);
 		}
-	}, [productId, reset, goBack]);
+	}, [productId, reset, isConnected, goBack]);
 
 	useEffect(() => {
 		if (product?.store) {
