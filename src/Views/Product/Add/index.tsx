@@ -13,12 +13,14 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
+import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
 
 import { createProduct } from '@expirychecker/Functions/Product';
-import { createLote } from '@expirychecker/Functions/Lotes';
 import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Image';
 
 import BarCodeReader from '@components/BarCodeReader';
@@ -72,7 +74,8 @@ interface Request {
 }
 
 const Add: React.FC<Request> = ({ route }: Request) => {
-	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { navigate, replace } =
+		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const InterstitialRef = useRef<IInterstitialRef>();
 	const BrandsPickerRef = useRef<IBrandPickerRef>();
@@ -145,14 +148,18 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			return;
 		}
 		try {
-			const picFileName = getImageFileNameFromPath(photoPath);
-			await movePicturesToImagesDir(photoPath);
+			let picFileName: string | undefined;
 
-			const prodCategories: Array<string> = [];
+			if (photoPath) {
+				picFileName = getImageFileNameFromPath(photoPath);
 
-			if (selectedCategory && selectedCategory !== 'null') {
-				prodCategories.push(selectedCategory);
+				await movePicturesToImagesDir(photoPath);
 			}
+
+			const tempCategory =
+				selectedCategory && selectedCategory !== 'null'
+					? selectedCategory
+					: undefined;
 
 			const tempBrand =
 				selectedBrand && selectedBrand !== 'null'
@@ -164,17 +171,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 					? selectedStore
 					: undefined;
 
-			const newProduct: Omit<IProduct, 'id'> = {
-				name,
-				code: code?.trim(),
-				brand: tempBrand,
-				store: tempStore,
-				photo: picFileName,
-				daysToBeNext: daysNext,
-				categories: prodCategories,
-				batches: [],
-			};
-
 			const newLote: Omit<IBatch, 'id'> = {
 				name: lote,
 				exp_date: expDate,
@@ -182,17 +178,22 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				price: price || undefined,
 				status: 'Não tratado',
 			};
+			const newProduct: Omit<IProduct, 'id'> = {
+				name,
+				code: code?.trim(),
+				brand: tempBrand,
+				category: tempCategory,
+				store: tempStore,
+				photo: picFileName,
+				daysToBeNext: daysNext,
+				batches: [newLote],
+			};
 
 			const productCreatedId = await createProduct({
 				product: newProduct,
 			});
 
 			if (productCreatedId) {
-				await createLote({
-					lote: newLote,
-					productId: productCreatedId,
-				});
-
 				if (!userPreferences.disableAds) {
 					if (InterstitialRef.current) {
 						InterstitialRef.current.showInterstitial();
@@ -200,7 +201,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				}
 
 				if (userPreferences.isPRO) {
-					navigate('ProductDetails', {
+					replace('ProductDetails', {
 						id: productCreatedId,
 					});
 
@@ -219,11 +220,14 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				}
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
+			}
 		}
 	}, [
 		amount,
@@ -237,6 +241,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		navigate,
 		photoPath,
 		price,
+		replace,
 		selectedBrand,
 		selectedCategory,
 		selectedStore,
@@ -254,7 +259,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 
 	const handleEnableCamera = useCallback(async () => {
 		if (!userPreferences.isPRO) {
-			navigate('Pro');
+			await handlePurchase();
 			return;
 		}
 
@@ -265,7 +270,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			}
 		}
 		setIsCameraEnabled(true);
-	}, [photoPath, navigate, userPreferences.isPRO]);
+	}, [photoPath, userPreferences.isPRO]);
 
 	const handleSwitchEnableBarCode = useCallback(() => {
 		const tmp = isBarCodeEnabled;

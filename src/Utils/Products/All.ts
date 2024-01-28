@@ -57,29 +57,37 @@ async function getAllProductsAsync({
 
 			// This makes a copy of the products and return it without the realm reference
 			// So we can use it in the react component and can be deleted without problems
-			const copiedProds: IProduct[] = filteredProducts.map(p => ({
-				id: p.id,
-				name: p.name,
-				categories: p.categories,
-				brand: p.brand,
-				code: p.code,
-				daysToBeNext: p.daysToBeNext,
-				photo: p.photo,
-				store: p.store,
-				created_at: p.created_at,
-				updated_at: p.updated_at,
-				batches: p.batches.map(b => ({
-					id: b.id,
-					name: b.name || String(b.id),
-					exp_date: b.exp_date,
-					amount: b.amount,
-					price: b.price,
-					status: b.status,
-					price_tmp: b.price_tmp,
-					created_at: b.created_at,
-					updated_at: b.updated_at,
-				})),
-			}));
+			const copiedProds: IProduct[] = filteredProducts.map(p => {
+				let category = null;
+
+				if (p.categories && p.categories.length > 0) {
+					category = p.categories[0];
+				}
+
+				return {
+					id: p.id,
+					name: p.name,
+					category,
+					brand: p.brand,
+					code: p.code,
+					daysToBeNext: p.daysToBeNext,
+					photo: p.photo,
+					store: p.store,
+					created_at: p.created_at,
+					updated_at: p.updated_at,
+					batches: p.batches.map(b => ({
+						id: b.id,
+						name: b.name || String(b.id),
+						exp_date: b.exp_date,
+						amount: b.amount,
+						price: b.price,
+						status: b.status,
+						price_tmp: b.price_tmp,
+						created_at: b.created_at,
+						updated_at: b.updated_at,
+					})),
+				};
+			});
 
 			resolve(copiedProds);
 		} catch (error) {

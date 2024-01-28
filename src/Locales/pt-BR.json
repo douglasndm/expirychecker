@@ -5,7 +5,6 @@
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Novo produto",
     "Menu_Button_GoToAllProducts": "Todos os produtos",
-    "Menu_Button_GoToByWeeks": "Produtos por semana",
     "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToBrands": "Marcas",
     "Menu_Button_GoToStores": "Lojas",
@@ -15,23 +14,15 @@
     "Menu_Button_GoToSettings": "Configurações",
     "Menu_Button_GoToAbout": "Sobre",
     "Menu_Button_GoToTest": "Teste",
-    "Menu_Button_Research": "Pesquisa",
-
-    "Menu_UserProfile_Button_login": "Entrar",
-    "Menu_UserProfile_Label": "USUÁRIO PRO",
 
     "Menu_Label_PRO": "PRO",
 
     "OutdatedApp_Message": "Seu aplicativo está desatualizado, clique aqui e atualize agora.",
 
     "BarCodeReader_PageTitle": "Leitor de código de barras",
-    "BarCodeReader_CloseButton": "Fechar leitor",
     "BarCodeReader_PermissionRequired": "Precisamos da sua permissão para acessar a câmera do seu dispostivo para habilitar o leitor de código de barras.",
     "BarCodeReader_PermissionBlocked": "O Acesso a câmera do dispositivo foi bloqueado, para usar o leitor de códigos de barras você precisar desbloquear a permissão do aplicativo para usar a câmera nas configurações do dispositivo.",
     "BarCodeReader_Button_RequestPermission": "Autorizar câmera",
-
-    "Component_Camera_PageTitle": "Tirar foto do produto",
-    "Component_Camera_PageTitle_OnPreview": "Gostou da foto?",
 
     "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
@@ -64,8 +55,6 @@
     "ProductCardComponent_ProductExpireIn": "Vence",
     "ProductCardComponent_ProductExpiredIn": "Venceu",
 
-
-
     "Component_FloatButton_AddProduct": "Novo produto",
     "Component_FloatButton_AddBatch": "Novo lote",
 
@@ -80,7 +69,6 @@
     "View_AddBatch_InputPlacehoder_Amount": "Quantidade",
     "View_AddBatch_InputPlacehoder_UnitPrice": "Preço unitário",
     "View_AddBatch_CalendarTitle": "Data de vencimento",
-    "View_AddBatch_Button_Save": "Salvar",
 
     "View_AddProduct_AlertTypeProductName": "Digite o nome do produto",
     "View_AddProduct_PageTitle": "Adicionar produto",
@@ -200,10 +188,6 @@
     "View_ProductDetails_DeleteManyBatches_Modal_Confirm": "Apagar selecionados",
     "View_ProductDetails_DeleteManyBatches_Modal_Cancel": "Manter lotes",
 
-    "View_ProductsByWeeks_Title": "Por semanas",
-    "View_ProductsByWeeks_WeekTitle": "A partir de",
-    "View_ProductsByWeeks_ProductsCount": "{COUNT} produtos",
-
     "View_ShareProduct_Title": "Favor checar o produto",
     "View_ShareProduct_Message": "{PRODUCT} tem um lote que expira em {DATE}",
     "View_ShareProduct_MessageWithAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE}",
@@ -211,50 +195,36 @@
     "View_ShareProduct_MessageWithDiscount": "{PRODUCT} tem um lote que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item",
     "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item. Totalizando {TOTAL_DISCOUNT_PRICE}",
 
-    "View_ProPage_MeetPRO": "Conheça o",
     "View_ProPage_ProLabel": "PRO",
-    "View_ProPage_AdvantageOne": "SEM ANÚNCIOS.",
-    "View_ProPage_AdvantageTwo": "SALVE SEUS PRODUTOS EM FORMATO EXCEL.",
-    "View_ProPage_AdvantageThree": "SALVE SEUS DADOS PARA MANTE-LOS SEGUROS CASO VOCÊ PRECISE FORMATAR O TELEFONE OU TROCAR ELE.",
-    "View_ProPage_AdvantageFour": "TEMAS EXCLUSIVOS.",
-    "View_ProPage_AdvantageFive": "PEQUENO PREÇO, GRANDES VANTANGENS.",
-    "View_ProPage_AdvantageSix": "SALVE PRODUTOS DE VÁRIAS LOJAS.",
-    "View_ProPage_AdvantageSeven": "TIRE FOTOS DOS PRODUTOS.",
+    "View_ProPage_AdvantageOne": "SEM ANÚNCIOS",
+    "View_ProPage_AdvantageTwo": "TIRE FOTOS DOS PRODUTOS",
+    "View_ProPage_AdvantageThree": "CARREGAMENTO AUTOMÁTICO DE DADOS DE MILHARES DE PRODUTOS",
+    "View_ProPage_AdvantageFour": "GERE PLANILHAS EXCEL",
+    "View_ProPage_AdvantageFive": "CRIE ARQUIVOS DE BACKUP PARA TROCAS DE TELEFONES E SEGURANÇA DOS SEUS PRODUTOS",
+    "View_ProPage_AdvantageSix": "ORGANIZE POR CATEGORIAS, MARCAS E LOJAS",
+    "View_ProPage_AdvantageSeven": "TEMAS EXCLUSIVOS",
 
     "View_ProPage_UserAlreadyPro": "Você já é PRO",
     "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
     "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
 
     "View_ProPage_SubscribePeriod_Monthly": "Mensal",
-    "View_ProPage_SubscribePeriod_ThreeMonths": "Três meses",
+    "View_ProPage_SubscribePeriod_ThreeMonths": "3 Meses",
     "View_ProPage_SubscribePeriod_OneYear": "Anual",
 
+    "View_Subscription_AfterMonthlyPrice": "mês",
+    "View_Subscription_AfterFullPrice_ThreeMonths": "3 meses",
+    "View_Subscription_AfterFullPrice": "ano",
 
-    "View_Subscription_AfterMonthlyPrice": "por mês",
-    "View_Subscription_AfterFullPrice_ThreeMonths": "a cada 3 meses",
-    "View_Subscription_AfterFullPrice": "por ano",
+    "View_Pro_BeforeMonthlyPrice": "Equivalente à",
 
-    "View_Subscription_Monthly_WithIntroText": "Total de {INTRO_PRICE} no primeiro mês e depois {PRICE} mensais",
-    "View_Subscription_Monthly_WithIntroTrialText": "Teste grátis por {DAYS} dias e depois {PRICE} mensais",
-    "View_Subscription_Monthly_Text": "Total de {PRICE} mensais",
+    "View_Subscription_Button_Subscribe": "Se tornar PRO",
+    "View_Pro_Alert_Welcome": "Bem vindo ao PRO!",
 
-    "View_Subscription_3Months_WithIntroText": "Total de {INTRO_PRICE} no primeiro pagando por 3 meses, e depois {PRICE} a cada 3 meses",
-    "View_Subscription_3Months_WithIntroTrialText": "Teste grátis por {DAYS} dias e depois {PRICE} a cada 3 meses",
-    "View_Subscription_3Months_Text": "No plano trimestral com o valor total de {PRICE} a cada 3 meses",
-    "View_Subscription_iOS_3Months_Text": "Igual a {PRICE} por mês",
-
-    "View_Subscription_AYear_WithIntroText": "Total de {INTRO_PRICE} no primeiro ano e depois {PRICE} a cada ano",
-    "View_Subscription_AYear_WithIntroTrialText": "Teste grátis por {DAYS} dias e depois {PRICE} a cada ano",
-    "View_Subscription_AYear_Text": "No plano anual com o valor total de {PRICE} a cada ano",
-    "View_Subscription_iOS_AYear_Text": "Igual a {PRICE} por mês",
-
-    "View_Subscription_Disclaim_IntroPrice": "Teste gratuito somente válido para usuários que nunca foram usuários PRO",
+    "View_Subscription_Disclaim_IntroPrice": "O teste gratuito é somente válido para usuários que nunca foram usuários PRO, após o período de teste grátis a assinatura será convertida automaticamente para uma assinatura paga do plano escolhido a qual pode ser cancelada a qualquer momento na loja de aplicativos do seu dispositivo.",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
-    "View_ProPage_Button_ClickToSignIn": "Continuar para a assinatura",
     "View_ProPage_Button_Subscribe": "Continuar",
-    "View_ProPage_Button_GoBackToHome": "Voltar para o início",
-
     "View_ProPage_SubscriptionNotAvailable": "Assinaturas não estão disponíveis no momento.",
 
 
@@ -262,7 +232,6 @@
     "View_Settings_CategoryName_General": "Geral",
     "View_Settings_CategoryName_Appearance": "Aparência",
     "View_Settings_CategoryName_Pro": "Pro",
-    "View_Settings_CategoryName_Account": "Conta",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "Quantos dias para produto está próximo ao vencimento?",
     "View_Settings_SettingName_DaysToExpPlaceholder": "Dias para está próximo ao vencimento",
     "View_Settings_SettingName_EnableNotification": "Ativar notificações?",
@@ -270,10 +239,8 @@
     "View_Settings_SettingName_AppTheme": "Tema do aplicativo",
     "View_Settings_SettingName_ExportAndInmport": "Com esta função você pode salvar todos os seus produtos em um dispositivo externo ou serviço para mante-los seguros caso você precise restaurar este telefone ou troca-lo.",
     "View_Settings_Button_ImportFile": "Importar aquivo de backup",
-    "View_Settings_Button_BecobeProToUnlockNewFeatures": "SEJA PRO E DESBLOQUEIE NOVAS FUNÇÕES",
     "View_Settings_Button_CancelSubscribe": "Cancelar assinatura",
-    "View_Settings_AccountDescription": "Gerencie sua conta associada ao aplicativo.",
-    "View_Settings_Button_SignOut": "Sair",
+    "View_Settings_Pro_RestoreSubscription": "Restaurar assinatura",
 
     "View_Settings_Appearance_Theme_SelectOne": "Selecione um tema",
     "View_Settings_Appearance_Theme_System": "Baseado no sistema (padrão)",
@@ -287,16 +254,23 @@
     "View_Settings_Appearance_Theme_Relax": "Relaxado (PRO)",
     "View_Settings_Appearance_Theme_Florest": "Floresta (PRO)",
 
-    "View_Settings_Notifications_Title": "Frequência das notificações",
-    "View_Settings_Notifications_Cadency_Hour": "A cada hora",
-    "View_Settings_Notifications_Cadency_Day": "Diariamente",
-    "View_Settings_Notifications_Cadency_Week": "Semanalmente",
-    "View_Settings_Notifications_Cadency_Month": "Mensalmente",
-    "View_Settings_Notifications_Cadency_Never": "Nunca",
+    "View_Settings_Advanced_Title": "Avançado",
 
-    "View_Settings_Backup_Import_Alert_Sucess": "Arquivo importado",
+    "View_Settings_Advanced_DeleteAll_Title": "Apagar dados",
+    "View_Settings_Advanced_DeleteAll_Description": "Apagar completamente todos os dados do aplicativo. Isso inclui produtos, categorias, lojas e marcas.",
+    "View_Settings_Advanced_DeleteAll_Button": "Apagar todos os dados",
 
-    "View_PROView_Subscription_RestoreButton": "Já tem uma assinatura? Restaurar assinatura",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Title": "Você tem certeza?",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Description": "Isto irá apagar todos os dados incluindo todos os produtos, categorias, lojas e marcas. Isso não pode ser desfeito. É recomendado que tenha feito backup dos seus dados antes",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Confirm": "Apagar todos os dados",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Cancel": "Não apagar",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Title": "Você tem ABSULUTA CERTEZA?",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Description": "Este é o último aviso! Está apagando todos os dados do aplicativo. Isso não pode ser desfeito. É recomendado que tenha feito backup dos seus dados antes.",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm": "Deletar tudo",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel": "Não quero apagar",
+
+    "View_Settings_Advanced_DeleteAll_Success": "Todos os dados foram apagados",
+
     "View_PROView_Subscription_Alert_NoSubscription": "Você não tem nenhuma assinatura ativa no momento.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",
 

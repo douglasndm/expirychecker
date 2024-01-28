@@ -7,18 +7,18 @@ import DocumentPicker from 'react-native-document-picker';
 
 import strings from '@expirychecker/Locales';
 
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+
 import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
+import { exportBackup } from '@expirychecker/Utils/Backup/Export';
 
 import { getAllProducts } from '@expirychecker/Functions/Products';
-import { getAllStores } from '@expirychecker/Functions/Stores';
 
-import {
-	exportBackupFile,
-	importBackupFile,
-} from '@expirychecker/Functions/Backup';
+import { importBackupFile } from '@expirychecker/Functions/Backup';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -50,24 +50,27 @@ const Export: React.FC = () => {
 	const [isExporting, setIsExporting] = useState<boolean>(false);
 	const [isImporting, setIsImporting] = useState<boolean>(false);
 
+	const getProducts = async () => getAllProducts({});
+
 	const handleExportBackup = useCallback(async () => {
 		try {
 			setIsExporting(true);
-			await exportBackupFile();
+			await exportBackup();
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!err.message.includes('User did not share'))
+				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					captureException(err);
+				}
 			}
 		} finally {
 			setIsExporting(false);
 		}
 	}, []);
-
-	const getProducts = async () => getAllProducts({});
 
 	const handleExportToExcel = useCallback(async () => {
 		try {
@@ -85,13 +88,16 @@ const Export: React.FC = () => {
 				type: 'info',
 			});
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					captureException(err);
 				}
+			}
 		} finally {
 			setIsExcelLoading(false);
 		}
@@ -112,11 +118,14 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err))
+				if (!DocumentPicker.isCancel(err)) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					captureException(err);
+				}
 			}
 		} finally {
 			setIsExcelImporting(false);
@@ -138,11 +147,18 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err))
+				if (!DocumentPicker.isCancel(err)) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					if (__DEV__) {
+						console.error(err);
+					} else {
+						captureException(err);
+					}
+				}
 			}
 		} finally {
 			setIsImporting(false);
@@ -156,11 +172,14 @@ const Export: React.FC = () => {
 			await generateEmptyExcel();
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!err.message.includes('User did not share'))
+				if (!err.message.includes('User did not share')) {
 					showMessage({
 						message: err.message,
 						type: 'danger',
 					});
+
+					captureException(err);
+				}
 			}
 		} finally {
 			setIsExcelModelGenerating(false);
@@ -182,7 +201,7 @@ const Export: React.FC = () => {
 							</ExportExplain>
 
 							<Button
-								text={strings.View_Export_Button_ExportExcel}
+								title={strings.View_Export_Button_ExportExcel}
 								onPress={handleExportToExcel}
 								isLoading={isExcelLoading}
 							/>
@@ -196,7 +215,7 @@ const Export: React.FC = () => {
 							</ExportExplain>
 
 							<Button
-								text={strings.View_Export_Button_ImportExcel}
+								title={strings.View_Export_Button_ImportExcel}
 								onPress={handleImportExcel}
 								isLoading={isExcelImporting}
 							/>
@@ -225,7 +244,7 @@ const Export: React.FC = () => {
 								{strings.View_Export_Explain_Backup}
 							</ExportExplain>
 							<Button
-								text={strings.View_Export_Button_ExportBackup}
+								title={strings.View_Export_Button_ExportBackup}
 								onPress={handleExportBackup}
 								isLoading={isExporting}
 							/>
@@ -240,7 +259,7 @@ const Export: React.FC = () => {
 								}
 							</ExportExplain>
 							<Button
-								text={strings.View_Settings_Button_ImportFile}
+								title={strings.View_Settings_Button_ImportFile}
 								onPress={handleImportBackup}
 								isLoading={isImporting}
 							/>

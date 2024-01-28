@@ -16,9 +16,12 @@ import { formatCurrency } from 'react-native-format-currency';
 
 import strings from '@expirychecker/Locales';
 
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import { ShareProductImageWithText } from '@expirychecker/Functions/Share';
+import { shareText, shareTextWithImage } from '@utils/Share';
+import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -26,7 +29,6 @@ import Button from '@components/Button';
 
 import { getProductById } from '@expirychecker/Functions/Product';
 import Banner from '@expirychecker/Components/Ads/Banner';
-import { PageHeader } from '../Edit/styles';
 
 import {
 	Container,
@@ -164,8 +166,26 @@ const View: React.FC = () => {
 			text = text.replace('{PRODUCT}', product.name);
 			text = text.replace('{DATE}', exp_date);
 
-			await ShareProductImageWithText({
-				productId,
+			if (product.photo || product.code) {
+				let fileName: string | null = null;
+
+				if (product.photo) {
+					fileName = product.photo;
+				} else if (product.code) {
+					fileName = product.code;
+				}
+
+				if (fileName) {
+					await shareTextWithImage({
+						imageFileName: fileName,
+						title: strings.View_ShareProduct_Title,
+						message: text,
+					});
+					return;
+				}
+			}
+
+			await shareText({
 				title: strings.View_ShareProduct_Title,
 				text,
 			});
@@ -176,11 +196,17 @@ const View: React.FC = () => {
 						message: err.message,
 						type: 'danger',
 					});
+
+					if (__DEV__) {
+						console.error(err);
+					} else {
+						captureException(err);
+					}
 				}
 		} finally {
 			setIsSharing(false);
 		}
-	}, [product, batch, exp_date, productId]);
+	}, [product, batch, exp_date]);
 
 	const handleNavigateToDiscount = useCallback(() => {
 		navigate('BatchDiscount', {
@@ -216,9 +242,9 @@ const View: React.FC = () => {
 		return unsubscribe;
 	}, [addListener, loadData]);
 
-	const navigateToPRO = useCallback(() => {
-		navigate('Pro');
-	}, [navigate]);
+	const navigateToPRO = useCallback(async () => {
+		await handlePurchase();
+	}, []);
 
 	const whereIs: string = useMemo(() => {
 		let text = `${strings.View_Batch_WhereIs}: `;
@@ -355,21 +381,21 @@ const View: React.FC = () => {
 							</ProFeaturesText>
 						)}
 						<Button
-							text={
+							title={
 								strings.View_Batch_Button_ShareWithAnotherApps
 							}
 							onPress={handleShare}
 							isLoading={isSharing}
 							contentStyle={{ width: 250 }}
-							enable={userPreferences.isPRO}
+							disabled={!userPreferences.isPRO}
 						/>
 
 						{!!batch.price && (
 							<Button
-								text={strings.View_Batch_Discount_Button_Apply}
+								title={strings.View_Batch_Discount_Button_Apply}
 								onPress={handleNavigateToDiscount}
 								contentStyle={{ marginTop: -5, width: 250 }}
-								enable={userPreferences.isPRO}
+								disabled={!userPreferences.isPRO}
 							/>
 						)}
 					</ProFeaturesContainer>

@@ -16,9 +16,9 @@ import {
 let adUnit = TestIds.INTERSTITIAL;
 
 if (Platform.OS === 'ios' && !__DEV__) {
-	adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_PRODUCT;
+	adUnit = EnvConfig.IOS_ADUNIT_INTERSTITIAL_ADD_PRODUCT || '';
 } else if (Platform.OS === 'android' && !__DEV__) {
-	adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT;
+	adUnit = EnvConfig.ANDROID_ADMOB_ADUNITID_ADDPRODUCT || '';
 }
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);

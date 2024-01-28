@@ -39,7 +39,7 @@ const FastSubscription: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const navigateToTerms = useCallback(async () => {
-		await Linking.openURL('https://douglasndm.dev/terms');
+		await Linking.openURL('https://douglasndm.dev/terms/expiry-tracker');
 	}, []);
 
 	const navigateToPrivacy = useCallback(async () => {

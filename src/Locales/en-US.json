@@ -5,7 +5,6 @@
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add product",
     "Menu_Button_GoToAllProducts": "All products",
-    "Menu_Button_GoToByWeeks": "Products by weeks",
     "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToBrands": "Brands",
     "Menu_Button_GoToStores": "Stores",
@@ -15,23 +14,15 @@
     "Menu_Button_GoToSettings": "Settings",
     "Menu_Button_GoToAbout": "About",
     "Menu_Button_GoToTest": "Test",
-    "Menu_Button_Research": "Research",
-
-    "Menu_UserProfile_Button_login": "Sign in",
-    "Menu_UserProfile_Label": "PRO User",
 
     "Menu_Label_PRO": "PRO",
 
     "OutdatedApp_Message": "Your app is outdated. Click here and update it now",
 
     "BarCodeReader_PageTitle": "Barcode reader",
-    "BarCodeReader_CloseButton": "Close reader",
     "BarCodeReader_PermissionRequired": "We need your permission to access the device's camera to user barcode reader.",
     "BarCodeReader_PermissionBlocked": "Camera access is blocked. If you want to use barcode reader you need to unblock it on your device settings.",
     "BarCodeReader_Button_RequestPermission": "Authorize camera",
-
-    "Component_Camera_PageTitle": "Take a product photo",
-    "Component_Camera_PageTitle_OnPreview": "Did you like the photo?",
 
     "Component_DaysToBeNext_Placeholder": "Days to be next to expire",
     "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
@@ -73,15 +64,14 @@
     "View_About_DevelopedBy": "Developed by Douglas Nunes de Mattos",
     "View_About_LogoMadeBy": "Logo made by",
 
-    "View_AddBatch_PageTitle": "Add new batch",
+    "View_AddBatch_PageTitle": "Add batch",
     "View_AddBatch_InputPlacehoder_Batch": "Batch",
     "View_AddBatch_InputPlacehoder_Amount": "Amount",
     "View_AddBatch_InputPlacehoder_UnitPrice": "Unit price",
     "View_AddBatch_CalendarTitle": "Expiration date",
-    "View_AddBatch_Button_Save": "Save",
 
     "View_AddProduct_AlertTypeProductName": "Type the product name",
-    "View_AddProduct_PageTitle": "Add new product",
+    "View_AddProduct_PageTitle": "Add product",
     "View_AddProduct_InputPlacehoder_Name": "Product's name",
     "View_AddProduct_InputPlacehoder_Code": "Product's code",
     "View_AddProduct_InputPlacehoder_Batch": "Batch",
@@ -198,10 +188,6 @@
     "View_ProductDetails_DeleteManyBatches_Modal_Confirm": "Delete selected",
     "View_ProductDetails_DeleteManyBatches_Modal_Cancel": "Keep Batches",
 
-    "View_ProductsByWeeks_Title": "By weeks",
-    "View_ProductsByWeeks_WeekTitle": "From",
-    "View_ProductsByWeeks_ProductsCount": "{COUNT} products",
-
     "View_ShareProduct_Title": "Check this product",
     "View_ShareProduct_Message": "{PRODUCT} has a batch that expire in {DATE}",
     "View_ShareProduct_MessageWithAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}",
@@ -209,7 +195,6 @@
     "View_ShareProduct_MessageWithDiscount": "{PRODUCT} has a batch that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item",
     "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item. Total price with discount {TOTAL_DISCOUNT_PRICE}",
 
-    "View_ProPage_MeetPRO": "Meet the",
     "View_ProPage_ProLabel": "PRO",
     "View_ProPage_AdvantageOne": "NO ADS.",
     "View_ProPage_AdvantageTwo": "SAVE YOUR PRODUCTS INTO EXCEL FORMAT.",
@@ -223,34 +208,22 @@
     "View_ProPage_AfterIntroPrice": " IN THE FIRST MONTH AND THEN",
 
     "View_ProPage_SubscribePeriod_Monthly": "Monthly",
-    "View_ProPage_SubscribePeriod_ThreeMonths": "Three months",
+    "View_ProPage_SubscribePeriod_ThreeMonths": "3 months",
     "View_ProPage_SubscribePeriod_OneYear": "Annual",
 
+    "View_Subscription_AfterMonthlyPrice": "month",
+    "View_Subscription_AfterFullPrice_ThreeMonths": "3 months",
+    "View_Subscription_AfterFullPrice": "year",
 
-    "View_Subscription_AfterMonthlyPrice": "per month",
-    "View_Subscription_AfterFullPrice_ThreeMonths": "every 3 months",
-    "View_Subscription_AfterFullPrice": "per year",
+    "View_Pro_BeforeMonthlyPrice": "Like",
 
-    "View_Subscription_Monthly_WithIntroText": "Total of {INTRO_PRICE} on the first month, then {PRICE} monthly",
-    "View_Subscription_Monthly_WithIntroTrialText": "Try for {DAYS} days for free, then {PRICE} monthly",
-    "View_Subscription_Monthly_Text": "Total of {PRICE} monthly",
+    "View_Subscription_Button_Subscribe": "Become PRO",
+    "View_Pro_Alert_Welcome": "Welcome to PRO!",
 
-    "View_Subscription_3Months_WithIntroText": "Total of {INTRO_PRICE} on first payment for 3 months, then {PRICE} every three months",
-    "View_Subscription_3Months_WithIntroTrialText": "Try for {DAYS} days for free, then {PRICE} every three months",
-    "View_Subscription_3Months_Text": "On three months plans on total of {PRICE} every three months",
-    "View_Subscription_iOS_3Months_Text": "Same as {PRICE} per month",
-
-    "View_Subscription_AYear_WithIntroText": "Total of {INTRO_PRICE} on the first year, then {PRICE} every year",
-    "View_Subscription_AYear_WithIntroTrialText": "Try for {DAYS} days for free, then {PRICE} every year",
-    "View_Subscription_AYear_Text": "On annual plan on total of {PRICE} every year",
-    "View_Subscription_iOS_AYear_Text": "Same as {PRICE} per month",
-
-    "View_Subscription_Disclaim_IntroPrice": "Try period is only valid for users who never was a PRO user",
+    "View_Subscription_Disclaim_IntroPrice": "The free trial is only valid for users who have never been PRO users before. After the free trial period, the subscription will automatically convert to a paid subscription of the chosen plan, which can be canceled at any time in your device's app store.",
 
     "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
-    "View_ProPage_Button_ClickToSignIn": "Continue to subscription",
     "View_ProPage_Button_Subscribe": "Continue",
-    "View_ProPage_Button_GoBackToHome": "Go home",
     "View_ProPage_SubscriptionNotAvailable": "Subscriptions are not available now",
 
 
@@ -258,7 +231,6 @@
     "View_Settings_CategoryName_General": "General",
     "View_Settings_CategoryName_Appearance": "Appearance",
     "View_Settings_CategoryName_Pro": "Pro",
-    "View_Settings_CategoryName_Account": "Account",
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "How many days to product be next to expire",
     "View_Settings_SettingName_DaysToExpPlaceholder": "Days to be close to expiration",
     "View_Settings_SettingName_EnableNotification": "Enable notifications?",
@@ -266,10 +238,8 @@
     "View_Settings_SettingName_AppTheme": "Application theme",
     "View_Settings_SettingName_ExportAndInmport": "With this function you can save all your products in a external device or service to keep it save and you also can import them later",
     "View_Settings_Button_ImportFile": "Import backup file",
-    "View_Settings_Button_BecobeProToUnlockNewFeatures": "BECOME A PRO USER TO UNLOCK NEW FEATURES",
     "View_Settings_Button_CancelSubscribe": "Cancel subscription",
-    "View_Settings_AccountDescription": "Manage your account linked to the app",
-    "View_Settings_Button_SignOut": "Sign out",
+    "View_Settings_Pro_RestoreSubscription": "Restore subscription",
 
     "View_Settings_Appearance_Theme_SelectOne": "Choose a theme",
     "View_Settings_Appearance_Theme_System": "System (Default)",
@@ -283,16 +253,23 @@
     "View_Settings_Appearance_Theme_Relax": "Relax (PRO)",
     "View_Settings_Appearance_Theme_Florest": "Florest (PRO)",
 
-    "View_Settings_Notifications_Title": "Notification frequency",
-    "View_Settings_Notifications_Cadency_Hour": "Every hour",
-    "View_Settings_Notifications_Cadency_Day": "Daily",
-    "View_Settings_Notifications_Cadency_Week": "Weekly",
-    "View_Settings_Notifications_Cadency_Month": "Monthly",
-    "View_Settings_Notifications_Cadency_Never": "Never",
+    "View_Settings_Advanced_Title": "Advanced",
 
-    "View_Settings_Backup_Import_Alert_Sucess": "File imported",
+    "View_Settings_Advanced_DeleteAll_Description": "Completely erase all application data. This includes products, categories, stores, and brands.",
+    "View_Settings_Advanced_DeleteAll_Button": "Delete all data",
 
-    "View_PROView_Subscription_RestoreButton": "Already a PRO? Restore subscription",
+    "View_Settings_Advanced_DeleteAll_Title": "Delete eveything",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Title": "Are you sure?",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Description": "This will delete all data, including products, categories, stores, and brands. This action cannot be undone. It is recommended to have a backup of your data before proceeding.",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Confirm": "I want to delete eveything",
+    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Cancel": "I`m not deleting",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Title": "Are you REALLY sure?",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Description": "This is the final warning! You are deleting all app data. This action cannot be undone. It is recommended to have a backup of your data before proceeding.",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm": "I REALLY WANT TO DELETE EVERYTHING",
+    "View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel": "I`m not deleting",
+
+    "View_Settings_Advanced_DeleteAll_Success": "All data was deleted",
+
     "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
 
@@ -411,7 +388,7 @@
 
     "Function_StoreGroup_NoStore": "No store",
 
-    "Function_Export_FileName": "expirationcheck_backup",
+    "Function_Export_FileName": "expirytracker_backup",
     "Function_Import_Error_InvalidExtesion": "Invalid extension",
 
     "Function_Share_SaveFileTitle": "Save file",

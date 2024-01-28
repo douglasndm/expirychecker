@@ -1,3 +1,18 @@
+interface ICategory {
+	id: string;
+	name: string;
+}
+
+interface IBrand {
+	id: string;
+	name: string;
+}
+
+interface IStore {
+	id: string;
+	name: string;
+}
+
 interface IBatch {
 	id: number;
 	name: string;
@@ -18,28 +33,15 @@ interface IProduct {
 	id: number;
 	name: string;
 	code?: string;
-	brand?: string;
-	store?: string;
 	photo?: string;
 	daysToBeNext?: number;
-	categories: Array<string>;
+
+	category?: ICategory;
+	brand?: IBrand;
+	store?: IStore;
+
 	batches: Array<IBatch>;
 
 	created_at?: Date;
 	updated_at?: Date;
-}
-
-interface ICategory {
-	id: string;
-	name: string;
-}
-
-interface IBrand {
-	id: string;
-	name: string;
-}
-
-interface IStore {
-	id: string;
-	name: string;
 }

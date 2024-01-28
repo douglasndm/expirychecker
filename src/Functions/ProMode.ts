@@ -1,11 +1,5 @@
-import {
-	PurchasesPackage,
-	UpgradeInfo,
-	PurchasesError,
-} from 'react-native-purchases';
-import Analytics from '@react-native-firebase/analytics';
+import { PurchasesPackage } from 'react-native-purchases';
 import messaging from '@react-native-firebase/messaging';
-import { Adjust, AdjustEvent } from 'react-native-adjust';
 
 import Purchases from '@services/RevenueCat';
 
@@ -15,21 +9,24 @@ import { setDisableAds, setEnableProVersion } from './Settings';
 export async function isSubscriptionActive(): Promise<boolean> {
 	const localUserId = await getUserId();
 
-	const firebase = await messaging().getToken();
+	let firebase: string | null = null;
+
+	try {
+		firebase = await messaging().getToken();
+
+		if (firebase) {
+			Purchases.setAttributes({
+				FirebaseMessasingToken: firebase,
+			});
+		}
+	} catch (error) {
+		console.log(error);
+	}
 
 	if (!!localUserId) {
 		Purchases.logIn(localUserId);
 	}
 
-	if (firebase) {
-		Purchases.setAttributes({
-			FirebaseMessasingToken: firebase,
-		});
-	}
-
-	Adjust.getAdid(id => {
-		Purchases.setAdjustID(id);
-	});
 	try {
 		const purchaserInfo = await Purchases.getCustomerInfo();
 
@@ -81,55 +78,6 @@ export async function getOnlyNoAdsSubscriptions(): Promise<
 	}
 
 	return [];
-}
-
-export async function makeSubscription(
-	purchasePackage: PurchasesPackage
-): Promise<void> {
-	if (!__DEV__) {
-		Analytics().logEvent('started_susbscription_process');
-	}
-
-	try {
-		const initialAdjustEvent = new AdjustEvent(
-			'User is opening system payment window'
-		);
-		Adjust.trackEvent(initialAdjustEvent);
-
-		const prevPurchases = await Purchases.getCustomerInfo();
-
-		const upgrade: UpgradeInfo | null =
-			prevPurchases.activeSubscriptions.length > 0
-				? {
-						oldSKU: prevPurchases.activeSubscriptions[0],
-				  }
-				: null;
-
-		const { customerInfo } = await Purchases.purchasePackage(
-			purchasePackage,
-			upgrade
-		);
-
-		if (typeof customerInfo.entitlements.active.pro !== 'undefined') {
-			Analytics().logEvent('user_subscribed_successfully');
-
-			await setEnableProVersion(true);
-		}
-
-		if (typeof customerInfo.entitlements.active.noads !== 'undefined') {
-			await setDisableAds(true);
-		}
-	} catch (err) {
-		if ((err as PurchasesError).userCancelled) {
-			const finalAdjustEvent = new AdjustEvent(
-				'User cancel the subscription process'
-			);
-			Adjust.trackEvent(finalAdjustEvent);
-			Analytics().logEvent('user_cancel_subscribe_process');
-		} else if (err instanceof Error) {
-			throw new Error(err.message);
-		}
-	}
 }
 
 export async function RestorePurchasers(): Promise<void> {

@@ -1,19 +1,10 @@
 import { createContext } from 'react';
-import Themes from '@shared/Themes';
 
+import { defaultPreferences } from '@expirychecker/Services/Preferences';
 import { IUserPreferences } from '@expirychecker/@types/userPreference';
 
 const PreferencesContext = createContext({
-	userPreferences: {
-		howManyDaysToBeNextToExpire: 30,
-		autoComplete: false,
-		isPRO: false,
-		appTheme: Themes.Light,
-		multiplesStores: false,
-		enableNotifications: true,
-		disableAds: false,
-		allowRemoteImages: true,
-	},
+	userPreferences: defaultPreferences,
 	setUserPreferences: ({
 		howManyDaysToBeNextToExpire,
 		autoComplete,

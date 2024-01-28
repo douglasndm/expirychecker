@@ -3,9 +3,13 @@ import { exists, unlink } from 'react-native-fs';
 
 import realm from '@expirychecker/Services/Realm';
 
+import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
+
+import { getBrand } from '@expirychecker/Utils/Brands';
+import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
+import { getCategory } from './Category';
+import { getStore } from './Stores';
 import { createLote } from './Lotes';
-import { getProductImagePath } from './Products/Image';
-import { saveManyBatches } from './Batches';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
 	productCode: string;
@@ -85,42 +89,74 @@ export async function getProductById(productId: number): Promise<IProduct> {
 		.objects<IProduct>('Product')
 		.filtered(`id = "${productId}"`)[0];
 
-	return result;
+	const prod: IProduct = {
+		id: result.id,
+		name: result.name,
+		code: result.code,
+		photo: result.photo,
+		daysToBeNext: result.daysToBeNext,
+		batches: result.batches,
+		brand: result.brand,
+		store: result.store,
+		created_at: result.created_at,
+		updated_at: result.updated_at,
+	};
+
+	if (result.categories && result.categories.length > 0) {
+		const category = await getCategory(result.categories[0]);
+
+		prod.category = category;
+	}
+	if (prod.brand) {
+		const brand = await getBrand(String(prod.brand));
+
+		prod.brand = brand;
+	}
+	if (prod.store) {
+		const store = await getStore(String(prod.store));
+
+		prod.store = store || undefined;
+	}
+
+	return prod;
 }
 
 interface createProductProps {
 	product: Omit<IProduct, 'id'>;
-	ignoreDuplicate?: boolean;
 }
 
 export async function createProduct({
 	product,
-	ignoreDuplicate = false,
 }: createProductProps): Promise<void | number> {
 	if (product.code) {
-		const productExist = await checkIfProductAlreadyExistsByCode({
-			productCode: product.code,
-			productStore: product?.store,
+		const store_id = product.store?.id
+			? product.store.id
+			: String(product.store);
+
+		const productAlreadyExists = await findProductByCode({
+			code: product.code,
+			store_id: store_id === 'undefined' ? undefined : store_id,
 		});
 
-		if (productExist) {
+		if (productAlreadyExists) {
 			const productLotes = product.batches.slice();
 
-			if (productLotes.length < 1 && ignoreDuplicate === false) {
-				throw new Error(
-					'Produto já existe. Não há lotes para adicionar'
-				);
+			if (productLotes.length > 0) {
+				await createLote({
+					lote: productLotes[0],
+					productId: productAlreadyExists.id,
+					productCode: productAlreadyExists.code,
+					ignoreDuplicate: true,
+				});
 			}
 
-			productLotes.map(async l => {
-				await createLote({
-					productCode: product.code,
-					lote: l,
-					ignoreDuplicate,
-				});
-			});
+			return productAlreadyExists.id;
 		}
 	}
+
+	const category_id = product.category?.id
+		? product.category.id
+		: String(product.category);
 
 	// BLOCO DE CÓDIGO RESPONSAVEL POR BUSCAR O ULTIMO ID NO BANCO E COLOCAR EM
 	// UMA VARIAVEL INCREMENTANDO + 1 JÁ QUE O REALM NÃO SUPORTA AUTOINCREMENT (??)
@@ -138,12 +174,21 @@ export async function createProduct({
 			daysToBeNext: product.daysToBeNext,
 			brand: product.brand,
 			store: product.store,
-			categories: product.categories,
+			categories: [category_id],
 			lotes: [],
 		});
 	});
 
-	await saveManyBatches(product.batches);
+	const productBatches = product.batches.slice();
+
+	if (productBatches.length > 0) {
+		await createLote({
+			lote: productBatches[0],
+			productId: nextProductId,
+			productCode: product.code,
+			ignoreDuplicate: true,
+		});
+	}
 
 	return nextProductId;
 }
@@ -152,8 +197,8 @@ interface updateProductProps {
 	id: number;
 	name?: string;
 	code?: string;
-	store?: string | null;
-	brand?: string | null;
+	store?: string | IStore | null;
+	brand?: string | IBrand | null;
 	photo?: string;
 	daysToBeNext?: number | undefined;
 	categories?: Array<string>;
@@ -166,6 +211,14 @@ export async function updateProduct(
 	realm.write(() => {
 		const prod = {
 			...product,
+			brand:
+				typeof product.brand === 'string'
+					? product.brand
+					: product.brand?.id,
+			store:
+				typeof product.store === 'string'
+					? product.store
+					: product.store?.id,
 			updated_at: new Date(),
 		};
 		realm.create('Product', prod, UpdateMode.Modified);
@@ -177,11 +230,13 @@ export async function deleteProduct(productId: number): Promise<void> {
 		.objects<IProduct>('Product')
 		.filtered(`id == ${productId}`)[0];
 
-	const photoPath = await getProductImagePath(productId);
+	if (product.photo) {
+		const photoPath = await getLocalImageFromProduct(product.photo);
 
-	if (photoPath) {
-		if (await exists(photoPath)) {
-			await unlink(photoPath);
+		if (photoPath) {
+			if (await exists(photoPath)) {
+				await unlink(photoPath);
+			}
 		}
 	}
 

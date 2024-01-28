@@ -45,17 +45,13 @@
 
     </activity>
 
+    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="@strings/BUGSNAG_API_KEY" />
+
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/primary"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"/>
-
-    <receiver android:name="com.adjust.sdk.AdjustReferrerReceiver" android:exported="true" >
-        <intent-filter>
-            <action android:name="com.android.vending.INSTALL_REFERRER" />
-        </intent-filter>
-    </receiver>
 
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver" android:exported="true">
       <intent-filter>

@@ -1,12 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Crashlytics from '@react-native-firebase/crashlytics';
 
 import strings from '@expirychecker/Locales';
 
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+
+import { useDrawer } from '@expirychecker/Contexts/Drawer';
+
 import { sortStores } from '@expirychecker/Utils/Stores/Sort';
-import { createStore, getAllStores } from '@expirychecker/Functions/Stores';
+import { createStore } from '@expirychecker/Functions/Stores';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 
 import Header from '@components/Header';
 import PaddingComponent from '@components/PaddingComponent';
@@ -30,6 +34,8 @@ import {
 const ListView: React.FC = () => {
 	const { navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const { toggleDrawer } = useDrawer();
 
 	const [newStoreName, setNewStoreName] = useState<string | undefined>();
 	const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -92,7 +98,7 @@ const ListView: React.FC = () => {
 			setStores([...sorted, noStore]);
 		} catch (err) {
 			if (err instanceof Error) {
-				Crashlytics().recordError(err);
+				captureException(err);
 			}
 		}
 	}, []);
@@ -107,7 +113,10 @@ const ListView: React.FC = () => {
 
 	return (
 		<Container>
-			<Header title={strings.View_Store_List_PageTitle} />
+			<Header
+				onMenuPress={toggleDrawer}
+				title={strings.View_Store_List_PageTitle}
+			/>
 			<Content>
 				<AddNewItemContent>
 					<InputContainer>

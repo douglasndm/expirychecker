@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import { addDays } from 'date-fns';
+import Bugsnag from '@bugsnag/react-native';
 
 import Button from '@components/Button';
 
@@ -58,16 +59,6 @@ const Test: React.FC = () => {
 		}
 	}
 
-	async function deleteProducts() {
-		try {
-			realm.write(() => {
-				realm.deleteAll();
-			});
-		} catch (err) {
-			console.warn(err);
-		}
-	}
-
 	const handleNotification = useCallback(async () => {
 		await setTimeForNextNotification();
 
@@ -78,19 +69,27 @@ const Test: React.FC = () => {
 		}
 	}, []);
 
+	const functionThrowAnError = () => {
+		try {
+			throw new Error('Test error');
+		} catch (error) {
+			if (error instanceof Error) {
+				Bugsnag.notify(error);
+			}
+		}
+	};
+
 	return (
 		<Container>
 			<ScrollView>
 				<Category>
-					<Button text="Load with sample data" onPress={sampleData} />
-
 					<Button
-						text="Delete all realm data"
-						onPress={deleteProducts}
+						title="Load with sample data"
+						onPress={sampleData}
 					/>
 
 					<Button
-						text="Log is time to notificaiton"
+						title="Log is time to notificaiton"
 						onPress={() =>
 							isTimeForANotification().then(response =>
 								console.log(response)
@@ -99,9 +98,11 @@ const Test: React.FC = () => {
 					/>
 
 					<Button
-						text="Throw notification"
+						title="Throw notification"
 						onPress={handleNotification}
 					/>
+
+					<Button title="Crash" onPress={functionThrowAnError} />
 				</Category>
 			</ScrollView>
 		</Container>

@@ -1,96 +1,47 @@
-import React, { useCallback, useEffect, useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Linking, Platform } from 'react-native';
 import Share from 'react-native-share';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
-
-import { generateBackupFile } from '@expirychecker/Functions/Backup';
-import { getAllStores } from '@expirychecker/Functions/Stores';
+import { generateBackup } from '@expirychecker/Utils/Backup/Generate';
+import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
 import ActionButton from '@shared/Components/ActionButton';
-import {
-	PickerContainer,
-	Picker,
-} from '@expirychecker/Components/Product/Inputs/Pickers/styles';
 
-import {
-	Container,
-	Content,
-	Title,
-	Advantage,
-	Text,
-	WarningText,
-} from './styles';
-
-interface IStoreItem {
-	label: string;
-	value: string;
-	key: string;
-}
+import { Container, Content, Title, Advantage, Text } from './styles';
 
 const Teams: React.FC = () => {
-	const { userPreferences } = useContext(PreferencesContext);
-
-	const [stores, setStores] = useState<Array<IStoreItem>>([]);
-
 	const [isExporting, setIsExporting] = useState<boolean>(false);
-	const [selectedStore, setSelectedStore] = useState<string>(() => {
-		return 'none';
-	});
-
-	const loadata = useCallback(async () => {
-		const allStores = await getAllStores();
-
-		const storesArray: Array<IStoreItem> = [];
-
-		allStores.forEach(sto => {
-			if (sto.id) {
-				storesArray.push({
-					key: sto.id,
-					label: sto.name,
-					value: sto.id,
-				});
-			}
-		});
-
-		storesArray.push({
-			key: 'none',
-			label: strings.View_Export_StorePicker_NoStore,
-			value: 'none',
-		});
-
-		setStores(storesArray);
-	}, []);
 
 	const handleExport = useCallback(async () => {
 		try {
 			setIsExporting(true);
 
-			const path = await generateBackupFile({
-				store: selectedStore || 'none',
-			});
+			const path = await generateBackup();
+			const filePath = `${path}/${strings.Function_Export_FileName}.cvbf`;
+
 			await Share.open({
 				title: strings.Function_Share_SaveFileTitle,
-				url: `file://${path}`,
+				url: `file://${filePath}`,
 			});
 		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+			if (err instanceof Error) {
+				if (!err.message.includes('User did not share')) {
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+
+					captureException(err);
+				}
+			}
 		} finally {
 			setIsExporting(false);
 		}
-	}, [selectedStore]);
-
-	const handleStoreChange = useCallback((value: string) => {
-		setSelectedStore(value);
 	}, []);
 
 	const handleNavigateGPlay = useCallback(async () => {
@@ -103,10 +54,6 @@ const Teams: React.FC = () => {
 			'https://apps.apple.com/us/app/validades-para-times/id1568936353'
 		);
 	}, []);
-
-	useEffect(() => {
-		loadata();
-	}, [loadata]);
 
 	return (
 		<Container>
@@ -127,35 +74,6 @@ const Teams: React.FC = () => {
 				<Text>{strings.Informations_Teams_Advantage4}</Text>
 
 				<Text>{strings.Informations_Teams_AdvantageBackup}</Text>
-
-				{userPreferences.multiplesStores && (
-					<>
-						<PickerContainer
-							style={{
-								marginTop: 10,
-								marginBottom: 10,
-							}}
-						>
-							<Picker
-								items={stores}
-								onValueChange={handleStoreChange}
-								value={selectedStore}
-								placeholder={{
-									color: userPreferences.appTheme.colors
-										.placeholderColor,
-									label: strings.View_AddProduct_InputPlacehoder_Store,
-									value: 'null',
-								}}
-							/>
-						</PickerContainer>
-						<WarningText>
-							Atenção, no momento o controle de validades times
-							não suporta a importação de múltiplas lojas. Ao
-							transferir o arquivo de exportação, os produtos
-							ficaram sem loja
-						</WarningText>
-					</>
-				)}
 
 				<Button
 					text={strings.Informations_Teams_ButtonExport}

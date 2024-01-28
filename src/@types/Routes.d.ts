@@ -6,9 +6,6 @@ type RoutesParams = {
 		code?: string;
 		store?: string;
 	};
-	AllProducts;
-	WeekView;
-	Settings;
 	About;
 	ProductDetails: {
 		id: number;
@@ -33,7 +30,6 @@ type RoutesParams = {
 	BatchDiscount: {
 		batch_id: number;
 	};
-	Pro;
 	Success: {
 		type:
 			| 'create_batch'
@@ -75,7 +71,11 @@ type RoutesParams = {
 	Export;
 	Teams;
 	SubscriptionCancel;
-	Test;
+
+	Settings;
+	DeleteAll;
 
 	TrackingPermission;
+
+	Test;
 };
