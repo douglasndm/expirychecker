@@ -4,7 +4,6 @@
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Novo produto",
-    "Menu_Button_GoToAllProducts": "Todos os produtos",
     "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToBrands": "Marcas",
     "Menu_Button_GoToStores": "Lojas",
@@ -26,10 +25,6 @@
 
     "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
-
-    "Component_FastSub_Text": "Aproveite mais o app com mais recursos com o PRO",
-    "Component_FastSub_TextWithTrial": "Teste grátis por {DAYS} dias e depois apenas {PRICE_MONTH} por mês no plano anual de {PRICE}.",
-    "Component_FastSub_Price": "Só {PRICE} mensais",
 
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
@@ -89,16 +84,12 @@
     "View_AddProduct_MoreInformation_Label": "Mais informações",
     "View_AddProduct_CalendarTitle": "Data de vencimento",
     "View_AddProduct_CalendarAccessibilityDescription": "Calendário para selecionar a data de vencimento do produto",
-    "View_AddProduct_Button_Save": "Salvar",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Botão para salvar o novo produto",
     "View_AddProduct_Tip_DuplicateProduct": "Já existe um produto cadastrado com o mesmo código. Clique aqui para adicionar um lote ao produto existente",
     "View_AddProduct_FillInfo_Modal_Title": "Completar infomações?",
     "View_AddProduct_FillInfo_Modal_Description": "Este produto pode ser algumas informações completadas automáticamente, gostaria de completar as informações?",
     "View_AddProduct_FillInfo_Modal_Yes": "Sim",
     "View_AddProduct_FillInfo_Modal_No": "Não",
-
-    "View_AllProducts_PageTitle": "Todos os produtos",
-    "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
     "View_Store_View_PageTitle": "Loja",
 
@@ -135,8 +126,6 @@
     "View_EditProduct_InputAccessibility_Code": "Campo de texto para digitar o código do produto",
     "View_EditProduct_InputAccessibility_Store": "Campo de texto para digitar a loja do produto",
     "View_EditProduct_MoreInformation_Label": "Recursos PRO",
-    "View_EditProduct_Button_Save": "Salvar",
-    "View_EditProduct_Button_Cancel": "Cancelar",
 
     "View_Batch_PageTitle": "Lote",
     "View_Batch_Button_Edit": "Editar",
@@ -194,39 +183,6 @@
     "View_ShareProduct_MessageWithPrice": "{PRODUCT} tem um lote com preço unitário {PRICE} que expira em {DATE}",
     "View_ShareProduct_MessageWithDiscount": "{PRODUCT} tem um lote que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item",
     "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item. Totalizando {TOTAL_DISCOUNT_PRICE}",
-
-    "View_ProPage_ProLabel": "PRO",
-    "View_ProPage_AdvantageOne": "SEM ANÚNCIOS",
-    "View_ProPage_AdvantageTwo": "TIRE FOTOS DOS PRODUTOS",
-    "View_ProPage_AdvantageThree": "CARREGAMENTO AUTOMÁTICO DE DADOS DE MILHARES DE PRODUTOS",
-    "View_ProPage_AdvantageFour": "GERE PLANILHAS EXCEL",
-    "View_ProPage_AdvantageFive": "CRIE ARQUIVOS DE BACKUP PARA TROCAS DE TELEFONES E SEGURANÇA DOS SEUS PRODUTOS",
-    "View_ProPage_AdvantageSix": "ORGANIZE POR CATEGORIAS, MARCAS E LOJAS",
-    "View_ProPage_AdvantageSeven": "TEMAS EXCLUSIVOS",
-
-    "View_ProPage_UserAlreadyPro": "Você já é PRO",
-    "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
-    "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
-
-    "View_ProPage_SubscribePeriod_Monthly": "Mensal",
-    "View_ProPage_SubscribePeriod_ThreeMonths": "3 Meses",
-    "View_ProPage_SubscribePeriod_OneYear": "Anual",
-
-    "View_Subscription_AfterMonthlyPrice": "mês",
-    "View_Subscription_AfterFullPrice_ThreeMonths": "3 meses",
-    "View_Subscription_AfterFullPrice": "ano",
-
-    "View_Pro_BeforeMonthlyPrice": "Equivalente à",
-
-    "View_Subscription_Button_Subscribe": "Se tornar PRO",
-    "View_Pro_Alert_Welcome": "Bem vindo ao PRO!",
-
-    "View_Subscription_Disclaim_IntroPrice": "O teste gratuito é somente válido para usuários que nunca foram usuários PRO, após o período de teste grátis a assinatura será convertida automaticamente para uma assinatura paga do plano escolhido a qual pode ser cancelada a qualquer momento na loja de aplicativos do seu dispositivo.",
-
-    "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
-    "View_ProPage_Button_Subscribe": "Continuar",
-    "View_ProPage_SubscriptionNotAvailable": "Assinaturas não estão disponíveis no momento.",
-
 
     "View_Settings_PageTitle": "Configurações",
     "View_Settings_CategoryName_General": "Geral",
@@ -287,7 +243,6 @@
     "View_Store_Edit_Delete_Button_Cancel": "Manter loja",
     "View_Store_Edit_Delete_Button_Confirm": "Tenho certeza",
     "View_Store_Edit_Alert_Success_StoreDeleted": "A loja e seus produtos foram apagados",
-
 
     "View_Success_BatchCreated": "Lote criado",
     "View_Success_ProductCreated": "Produto criado",
@@ -432,10 +387,8 @@
     "Informations_Teams_Advantage1": "Tem um time? quer todos os produtos sincronizados entre todos os dispositvos?",
     "Informations_Teams_Advantage2": "Com controle de acesso?",
     "Informations_Teams_Advantage3": "E com mais todas as vantanges desse aplicativo?",
-    "Informations_Teams_Advantage4": "Interessado? Entre em contato para participar dos testes iniciais",
     "Informations_Teams_AdvantageBackup": "Leve todos seus produtos daqui facilmente",
     "Informations_Teams_ButtonExport": "Gerar arquivo com produtos",
-    "Informations_Teams_Contact": "Entre em contato e participe dos testes",
 
     "Informations_Teams_ViewOnGooglePlay": "Ir para a Google Play",
     "Informations_Teams_ViewOnAppStore": "Ir para a App Store",
