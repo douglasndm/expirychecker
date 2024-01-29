@@ -1342,7 +1342,7 @@ PODS:
     - RevenueCat (= 4.31.9)
   - RNBackgroundFetch (4.2.1):
     - React-Core
-  - RNBootSplash (5.0.3):
+  - RNBootSplash (5.3.0):
     - React-Core
   - RNCAsyncStorage (1.19.3):
     - React-Core
@@ -1915,7 +1915,7 @@ SPEC CHECKSUMS:
   RevenueCat: aa3e439fb6282e7768609774a73c06ab87c3d9c3
   RevenueCatUI: ef3f12dddf49d333a66a13f1d32c73ef1075ae95
   RNBackgroundFetch: 501c34ad6e880818ba17e7840b23f20a2d112923
-  RNBootSplash: a496398664e0bd17a6de2845a1c7c73deccb5ae3
+  RNBootSplash: 73c2a97d761db234125638c24ad6da6d781d049d
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNCMaskedView: 949696f25ec596bfc697fc88e6f95cf0c79669b6
   RNCPicker: 529d564911e93598cc399b56cc0769ce3675f8c8
