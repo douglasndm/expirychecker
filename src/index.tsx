@@ -16,6 +16,7 @@ import CodePush from 'react-native-code-push';
 import '@expirychecker/Locales';
 
 import StatusBar from '@components/StatusBar';
+import AskReview from '@components/AskReview';
 
 import { Bugsnag } from '@expirychecker/Services/Bugsnag';
 import '@services/AppCheck';
@@ -40,7 +41,6 @@ import Routes from './routes';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
-import AskReview from './Components/AskReview';
 import AppOpen from './Components/Ads/AppOpen';
 
 enableScreens(true);
