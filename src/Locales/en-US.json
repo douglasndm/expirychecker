@@ -4,7 +4,6 @@
 
     "Menu_Button_GoToHome": "Home",
     "Menu_Button_GoToAddProduct": "Add product",
-    "Menu_Button_GoToAllProducts": "All products",
     "Menu_Button_GoToCategories": "Categories",
     "Menu_Button_GoToBrands": "Brands",
     "Menu_Button_GoToStores": "Stores",
@@ -26,10 +25,6 @@
 
     "Component_DaysToBeNext_Placeholder": "Days to be next to expire",
     "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
-
-    "Component_FastSub_Text": "Enjoy more features with PRO.",
-    "Component_FastSub_TextWithTrial": "Free trial of {DAYS} days, then only {PRICE_MONTH} per month on annual plan of {PRICE}.",
-    "Component_FastSub_Price": "Only {PRICE} monthly",
 
     "ListProductsComponent_Title_NoProductsInList": "There are no products to show...",
     "ListProductsComponent_Button_ShowAllProducts": "Show all products",
@@ -89,16 +84,12 @@
     "View_AddProduct_MoreInformation_Label": "More informations",
     "View_AddProduct_CalendarTitle": "Expiration date",
     "View_AddProduct_CalendarAccessibilityDescription": "Calendar to select the expiration date",
-    "View_AddProduct_Button_Save": "Save",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Button to save the new product",
     "View_AddProduct_Tip_DuplicateProduct": "There is a existing product with the same code. Click here to add a new batch to this product",
     "View_AddProduct_FillInfo_Modal_Title": "Fill informations?",
     "View_AddProduct_FillInfo_Modal_Description": "This product has some informations that can be filled, do you want to fill it?",
     "View_AddProduct_FillInfo_Modal_Yes": "Yes",
     "View_AddProduct_FillInfo_Modal_No": "No",
-
-    "View_AllProducts_PageTitle": "All products",
-    "View_AllProducts_SearchPlaceholder": "Search for a product",
 
     "View_Store_View_PageTitle": "Store",
 
@@ -135,8 +126,6 @@
     "View_EditProduct_InputAccessibility_Code": "Field to type the Product's code",
     "View_EditProduct_InputAccessibility_Store": "Field to type the Store",
     "View_EditProduct_MoreInformation_Label": "PRO informations",
-    "View_EditProduct_Button_Save": "Save",
-    "View_EditProduct_Button_Cancel": "Cancel",
 
     "View_Batch_PageTitle": "Batch",
     "View_Batch_Button_Edit": "Edit",
@@ -194,38 +183,6 @@
     "View_ShareProduct_MessageWithPrice": "{PRODUCT} has a batch with unit price of {PRICE} that expire in {DATE}",
     "View_ShareProduct_MessageWithDiscount": "{PRODUCT} has a batch that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item",
     "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} has a batch with {AMOUNT} units that expire in {DATE}, and there are a discount for that batch of {TMP_PRICE} per item. Total price with discount {TOTAL_DISCOUNT_PRICE}",
-
-    "View_ProPage_ProLabel": "PRO",
-    "View_ProPage_AdvantageOne": "NO ADS.",
-    "View_ProPage_AdvantageTwo": "SAVE YOUR PRODUCTS INTO EXCEL FORMAT.",
-    "View_ProPage_AdvantageThree": "SAVE YOUR DATA TO KEEP IT SAVE IF YOU NEED TO RESET OR CHANGE YOUR PHONE.",
-    "View_ProPage_AdvantageFour": "EXCLUSIVES THEMES.",
-    "View_ProPage_AdvantageFive": "SMALL PRICE, GREAT ADVANTAGES.",
-    "View_ProPage_AdvantageSix": "SAVE PRODUCTS FOR MULTIPLES STORES.",
-    "View_ProPage_AdvantageSeven": "TAKE PHOTOS OF PRODUCTS.",
-    "View_ProPage_UserAlreadyPro": "You are already PRO",
-    "View_ProPage_BeforeIntroPrice": "SUBSCRIBE FOR ONLY",
-    "View_ProPage_AfterIntroPrice": " IN THE FIRST MONTH AND THEN",
-
-    "View_ProPage_SubscribePeriod_Monthly": "Monthly",
-    "View_ProPage_SubscribePeriod_ThreeMonths": "3 months",
-    "View_ProPage_SubscribePeriod_OneYear": "Annual",
-
-    "View_Subscription_AfterMonthlyPrice": "month",
-    "View_Subscription_AfterFullPrice_ThreeMonths": "3 months",
-    "View_Subscription_AfterFullPrice": "year",
-
-    "View_Pro_BeforeMonthlyPrice": "Like",
-
-    "View_Subscription_Button_Subscribe": "Become PRO",
-    "View_Pro_Alert_Welcome": "Welcome to PRO!",
-
-    "View_Subscription_Disclaim_IntroPrice": "The free trial is only valid for users who have never been PRO users before. After the free trial period, the subscription will automatically convert to a paid subscription of the chosen plan, which can be canceled at any time in your device's app store.",
-
-    "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuing with subscription you are accepting our ",
-    "View_ProPage_Button_Subscribe": "Continue",
-    "View_ProPage_SubscriptionNotAvailable": "Subscriptions are not available now",
-
 
     "View_Settings_PageTitle": "Settings",
     "View_Settings_CategoryName_General": "General",
@@ -431,10 +388,8 @@
     "Informations_Teams_Advantage1": "Do you have a team? All products will be sync with all devices",
     "Informations_Teams_Advantage2": "And It has access control",
     "Informations_Teams_Advantage3": "And all others advantages from this app",
-    "Informations_Teams_Advantage4": "Contact me to enter in the initial tests",
     "Informations_Teams_AdvantageBackup": "Take all of your products easily",
     "Informations_Teams_ButtonExport": "Make export file",
-    "Informations_Teams_Contact": "Contact to enter",
 
     "Informations_Teams_ViewOnGooglePlay": "Go to Google Play",
     "Informations_Teams_ViewOnAppStore": "Go to App Store",
