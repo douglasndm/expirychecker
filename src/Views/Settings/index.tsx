@@ -32,6 +32,7 @@ import {
 
 import Pro from './Components/Pro';
 import Advanced from './Components/Advanced';
+import Account from './Components/Account';
 
 const Settings: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -179,6 +180,8 @@ const Settings: React.FC = () => {
 					<Pro />
 
 					<Advanced />
+
+					{__DEV__ && <Account />}
 				</SettingsContent>
 			</Content>
 		</Container>
