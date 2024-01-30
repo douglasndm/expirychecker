@@ -61,13 +61,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Precisamos da sua autorização para usar a câmera para usar o leitor de códigos de barras</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Precisamos da sua autorização para usar a câmera do seu telefone para o aplicativo ter acesso ao leitor de códigos de barras e a função de tirar fotos dos produtos (PRO).</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Nosso aplicativo requer acesso à sua biblioteca de fotos para que você possa importar fotos dos produtos diretamente da sua galeria. Isso facilita o processo de validação e ajuda você a manter um registro visual de seus produtos. Suas fotos serão usadas apenas para esse fim e não serão compartilhadas com terceiros.</string>
+	<string>O aplicativo requer acesso à sua biblioteca de fotos para que você possa importar fotos dos produtos diretamente da sua galeria</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recusos e mostrar anúncios mais relevantes.</string>
+	<string>Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recursos e mostrar anúncios mais relevantes.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
