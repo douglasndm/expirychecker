@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { Drawer } from 'react-native-drawer-layout';
@@ -44,6 +44,8 @@ import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/C
 import Settings from '@expirychecker/Views/Settings';
 import SettingsDeleteAll from '@expirychecker/Views/Settings/DeleteAll';
 
+import Login from '@expirychecker/Views/Auth/Login';
+
 import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
 
 import Test from '@expirychecker/Views/Test';
@@ -72,6 +74,11 @@ const StackNavigator: React.FC = () => {
 		setDrawerOpen(prevState => !prevState);
 	}, []);
 
+	const contextValue = useMemo(
+		() => ({ setDrawerOpen, toggleDrawer }),
+		[setDrawerOpen, toggleDrawer]
+	);
+
 	return (
 		<Drawer
 			open={draweOpen}
@@ -79,7 +86,7 @@ const StackNavigator: React.FC = () => {
 			onClose={() => setDrawerOpen(false)}
 			renderDrawerContent={() => <DrawerMenu />}
 		>
-			<DrawerContext.Provider value={{ setDrawerOpen, toggleDrawer }}>
+			<DrawerContext.Provider value={contextValue}>
 				<Stack.Navigator
 					screenOptions={{
 						headerShown: false,
@@ -143,6 +150,8 @@ const StackNavigator: React.FC = () => {
 						name="DeleteAll"
 						component={SettingsDeleteAll}
 					/>
+
+					<Stack.Screen name="Login" component={Login} />
 
 					<Stack.Screen
 						name="TrackingPermission"

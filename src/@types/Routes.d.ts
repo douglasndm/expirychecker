@@ -75,6 +75,8 @@ type RoutesParams = {
 	Settings;
 	DeleteAll;
 
+	Login;
+
 	TrackingPermission;
 
 	Test;
