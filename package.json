@@ -11,8 +11,7 @@
     "postinstall": "patch-package",
     "check-dependencies": "rnx-align-deps",
     "fix-dependencies": "rnx-align-deps --write",
-    "bugsnag:upload-android": "bugsnag-cli upload react-native-android",
-    "bugsnag:create-build": "bugsnag-cli create-build"
+    "bugsnag:upload-android": "bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab && bugsnag-cli upload react-native-android"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "*",
