@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { View, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import EnvConfig from 'react-native-config';
 import remoteConfig from '@react-native-firebase/remote-config';
 import {
@@ -16,24 +16,17 @@ const AppOpen: React.FC = () => {
 			return TestIds.APP_OPEN;
 		}
 		if (Platform.OS === 'android') {
-			return EnvConfig.ANDROID_ADMOB_ADUNITID_APP_START;
+			return EnvConfig.ANDROID_ADMOB_ADUNITID_APP_START || '';
 		}
 		if (Platform.OS === 'ios') {
-			return EnvConfig.IOS_ADMOB_ADUNITID_APP_START;
+			return EnvConfig.IOS_ADMOB_ADUNITID_APP_START || '';
 		}
 
 		return '';
 	}, []);
 
-	const appOpenAd = AppOpenAd.createForAdRequest(
-		adUnitId || TestIds.APP_OPEN,
-		{
-			keywords: ['store', 'stores', 'business', 'productivity', 'tools'],
-		}
-	);
-
-	appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
-		appOpenAd.show();
+	const appOpenAd = AppOpenAd.createForAdRequest(adUnitId, {
+		keywords: ['store', 'stores', 'business', 'productivity', 'tools'],
 	});
 
 	const loadData = useCallback(async () => {
@@ -51,10 +44,18 @@ const AppOpen: React.FC = () => {
 	}, [appOpenAd]);
 
 	useEffect(() => {
+		appOpenAd.addAdEventListener(AdEventType.LOADED, () => {
+			appOpenAd.show();
+		});
+
+		return appOpenAd.removeAllListeners();
+	}, [appOpenAd]);
+
+	useEffect(() => {
 		loadData();
 	}, []);
 
-	return <View />;
+	return <></>;
 };
 
 export default AppOpen;
