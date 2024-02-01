@@ -1,11 +1,12 @@
 import {
 	DocumentDirectoryPath,
-	readDir,
 	exists,
 	unlink,
 	mkdir,
 	copyFile,
 } from 'react-native-fs';
+
+import { getImagePath } from '@expirychecker/Utils/Products/Images/GetPath';
 
 import { getProductById, updateProduct } from '../Product';
 
@@ -34,15 +35,7 @@ export async function saveProductImage({
 	if (await exists(fileName)) {
 		path = fileName;
 	} else {
-		const filesDir = await readDir(`${DocumentDirectoryPath}/images`);
-
-		const findedFile = filesDir.find(file => file.name === fileName);
-
-		if (!findedFile) {
-			throw new Error('File was not find');
-		}
-
-		path = findedFile.path;
+		path = await getImagePath(fileName);
 	}
 
 	if (!path) {
@@ -50,7 +43,7 @@ export async function saveProductImage({
 	}
 
 	if (product.photo) {
-		const oldImagePath = await getProductImagePath(productId);
+		const oldImagePath = await getImagePath(product.photo);
 
 		if (oldImagePath) {
 			if (await exists(oldImagePath)) {
