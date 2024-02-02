@@ -1,21 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { AdsConsent } from 'react-native-google-mobile-ads';
 
 import { startGoogleMobileAdsSDK } from '@expirychecker/Services/Admob';
 
 const AdsConsentComponent: React.FC = () => {
-	useEffect(() => {
-		// Request an update for the consent information.
-		AdsConsent.requestInfoUpdate().then(() => {
-			AdsConsent.loadAndShowConsentFormIfRequired().then(
-				adsConsentInfo => {
-					// Consent has been gathered.
-					if (adsConsentInfo.canRequestAds) {
-						startGoogleMobileAdsSDK();
-					}
+	const loadData = useCallback(async () => {
+		try {
+			const adsConsentUpdateInfo = await AdsConsent.requestInfoUpdate();
+
+			if (adsConsentUpdateInfo.isConsentFormAvailable) {
+				const adsConsentInfo =
+					await AdsConsent.loadAndShowConsentFormIfRequired();
+
+				if (adsConsentInfo.canRequestAds) {
+					startGoogleMobileAdsSDK();
 				}
-			);
-		});
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}, []);
+
+	useEffect(() => {
+		loadData();
 	}, []);
 
 	return <></>;
