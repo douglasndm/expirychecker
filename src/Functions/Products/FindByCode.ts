@@ -10,9 +10,7 @@ interface IResponse {
 
 async function findProductByCode(code: string): Promise<IResponse | null> {
 	try {
-		const response = await api.get<IResponse>(
-			`/products/search?query=${code}`
-		);
+		const response = await api.get<IResponse>(`/product/${code}`);
 
 		if (response.data !== null) {
 			return response.data;
