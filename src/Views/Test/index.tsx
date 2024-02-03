@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
+import appCheck from '@react-native-firebase/app-check';
 import { addDays } from 'date-fns';
 import Bugsnag from '@bugsnag/react-native';
 
@@ -14,6 +15,7 @@ import {
 } from '@expirychecker/Functions/Notifications';
 
 import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
+import { showMessage } from 'react-native-flash-message';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -79,6 +81,26 @@ const Test: React.FC = () => {
 		}
 	};
 
+	const handleCheckAppChekc = useCallback(async () => {
+		try {
+			const { token } = await appCheck().getToken(true);
+
+			if (token.length > 0) {
+				console.log(token);
+				showMessage({
+					message: 'Sucesso',
+				});
+			}
+		} catch (error) {
+			console.log(error);
+			if (error instanceof Error)
+				showMessage({
+					type: 'danger',
+					message: error.message,
+				});
+		}
+	}, []);
+
 	return (
 		<Container>
 			<ScrollView>
@@ -103,6 +125,11 @@ const Test: React.FC = () => {
 					/>
 
 					<Button title="Crash" onPress={functionThrowAnError} />
+
+					<Button
+						title="Test AppCheck"
+						onPress={handleCheckAppChekc}
+					/>
 				</Category>
 			</ScrollView>
 		</Container>

@@ -19,7 +19,7 @@ import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
 
 import { Bugsnag } from '@expirychecker/Services/Bugsnag';
-import '@services/AppCheck';
+import '@services/Firebase/AppCheck';
 import '@services/Firebase/InAppMessaging';
 import '@expirychecker/Services/DeviceId';
 import '@expirychecker/Services/BackgroundJobs';
