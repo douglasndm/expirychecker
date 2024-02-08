@@ -3,8 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
 import { Drawer } from 'react-native-drawer-layout';
 
+import DrawerContext from '@shared/Contexts/Drawer';
+
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
-import DrawerContext from '@expirychecker/Contexts/Drawer';
 
 import TabMenu from '@components/TabMenu';
 

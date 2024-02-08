@@ -11,10 +11,7 @@ async function handlePurchase(): Promise<boolean> {
 		Analytics().logEvent('started_susbscription_process');
 	}
 
-	const paywallResult: PAYWALL_RESULT =
-		await RevenueCatUI.presentPaywallIfNeeded({
-			requiredEntitlementIdentifier: 'pro',
-		});
+	const paywallResult: PAYWALL_RESULT = await RevenueCatUI.presentPaywall({});
 
 	if (
 		paywallResult === PAYWALL_RESULT.PURCHASED ||

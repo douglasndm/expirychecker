@@ -32,8 +32,8 @@ import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Produc
 import BarCodeReader from '@components/BarCodeReader';
 import SearchBar from '@components/SearchBar';
 import DatePicker, { IDatePickerResponse } from '@components/DatePicker';
-import NotificationsDenny from '@components/NotificationsDenny';
-import OutdateApp from '@components/OutdateApp';
+import NotificationsDenny from '@components/Warnings/NotificationsDenny';
+import OutdateApp from '@components/Warnings/OutdateApp';
 import FAB from '@components/FAB';
 import ListProds from '@components/Product/List';
 
