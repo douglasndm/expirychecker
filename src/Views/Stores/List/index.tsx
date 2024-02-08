@@ -6,8 +6,6 @@ import strings from '@expirychecker/Locales';
 
 import { captureException } from '@expirychecker/Services/ExceptionsHandler';
 
-import { useDrawer } from '@expirychecker/Contexts/Drawer';
-
 import { sortStores } from '@expirychecker/Utils/Stores/Sort';
 import { createStore } from '@expirychecker/Functions/Stores';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
@@ -34,8 +32,6 @@ import {
 const ListView: React.FC = () => {
 	const { navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const { toggleDrawer } = useDrawer();
 
 	const [newStoreName, setNewStoreName] = useState<string | undefined>();
 	const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -113,10 +109,7 @@ const ListView: React.FC = () => {
 
 	return (
 		<Container>
-			<Header
-				onMenuPress={toggleDrawer}
-				title={strings.View_Store_List_PageTitle}
-			/>
+			<Header title={strings.View_Store_List_PageTitle} />
 			<Content>
 				<AddNewItemContent>
 					<InputContainer>
