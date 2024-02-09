@@ -56,11 +56,14 @@ export function sortProductsLotesByLotesExpDate(
 			id: prod.id,
 			name: prod.name,
 			code: prod.code,
-			store: prod.store,
 			photo: prod.photo,
+			brand: prod.brand,
 			categories: prod.categories,
 			daysToBeNext: prod.daysToBeNext,
+			store: prod.store,
 			batches: prodLotesSorted,
+			created_at: prod.created_at,
+			updated_at: prod.updated_at,
 		};
 
 		return product;
