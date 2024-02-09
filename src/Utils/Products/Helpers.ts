@@ -19,8 +19,11 @@ function removeTreatedBatchesFromList(products: IProduct[]): IProduct[] {
 			store: product.store,
 			photo: product.photo,
 			daysToBeNext: product.daysToBeNext,
+			brand: product.brand,
 			categories: product.categories,
 			batches,
+			created_at: product.created_at,
+			updated_at: product.updated_at,
 		};
 
 		return prod;
