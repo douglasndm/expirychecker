@@ -1,6 +1,6 @@
 {
   "name": "controledevalidade",
-  "version": "1.15.14",
+  "version": "1.15.15",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -19,6 +19,7 @@
     "@bugsnag/react-native": "7.22.3",
     "@invertase/react-native-apple-authentication": "^2.3.0",
     "@react-native-async-storage/async-storage": "^1.18.2",
+    "@react-native-clipboard/clipboard": "*",
     "@react-native-community/blur": "^4.2.0",
     "@react-native-community/netinfo": "*",
     "@react-native-community/push-notification-ios": "^1.11.0",
