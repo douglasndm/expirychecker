@@ -1356,7 +1356,7 @@ PODS:
   - RNPaywalls (7.19.0):
     - PurchasesHybridCommonUI (= 9.6.0)
     - React-Core
-  - RNPermissions (4.1.1):
+  - RNPermissions (4.1.0):
     - React-Core
   - RNPurchases (7.19.0):
     - PurchasesHybridCommon (= 9.6.0)
@@ -1482,7 +1482,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../../../node_modules/@react-native-google-signin/google-signin`)"
   - RNLocalize (from `../../../node_modules/react-native-localize`)
   - RNPaywalls (from `../node_modules/react-native-purchases-ui`)
-  - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNPermissions (from `../../../node_modules/react-native-permissions`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
@@ -1713,7 +1713,7 @@ EXTERNAL SOURCES:
   RNPaywalls:
     :path: "../node_modules/react-native-purchases-ui"
   RNPermissions:
-    :path: "../node_modules/react-native-permissions"
+    :path: "../../../node_modules/react-native-permissions"
   RNPurchases:
     :path: "../node_modules/react-native-purchases"
   RNReanimated:
@@ -1852,7 +1852,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: fc408799f1990a12497a32f64280c0fe353ffcc1
   RNLocalize: d4b8af4e442d4bcca54e68fc687a2129b4d71a81
   RNPaywalls: 4363f95174b342f7fd315a48949416206cc47cb1
-  RNPermissions: 4cc8fe5adce03c640b3f2e01538c496bced55853
+  RNPermissions: f14d5805f1f7f88055c0f492f8f28323635f771b
   RNPurchases: 7dffc0621cd72de61ecd053cc973fb6a3c3dad20
   RNReanimated: b034cb9f759fd61c13939821d0a599900abf77fd
   RNScreens: 2b73f5eb2ac5d94fbd61fa4be0bfebd345716825
