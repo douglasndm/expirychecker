@@ -31,7 +31,9 @@ import { defaultPreferences } from '@expirychecker/Services/Preferences';
 
 import './Functions/ProMode';
 import './Functions/PushNotifications';
+
 import ListContext from '@shared/Contexts/ListContext';
+import { AuthProvider } from '@teams/Contexts/AuthContext';
 
 import RenderError from '@views/Informations/Errors/Render';
 
@@ -131,20 +133,22 @@ const App: React.FC = () => {
 					<ThemeProvider theme={preferences.appTheme}>
 						<PaperProvider>
 							<Portal>
-								<StatusBar />
-								<AppOpen />
-								<ListContext.Provider value={list}>
-									{usingTeamsRoutes ? (
-										<RoutesTeams />
-									) : (
-										<Routes />
-									)}
-								</ListContext.Provider>
-								<AskReview />
-								<FlashMessage
-									duration={7000}
-									statusBarHeight={50}
-								/>
+								<AuthProvider>
+									<StatusBar />
+									<AppOpen />
+									<ListContext.Provider value={list}>
+										{usingTeamsRoutes ? (
+											<RoutesTeams />
+										) : (
+											<Routes />
+										)}
+									</ListContext.Provider>
+									<AskReview />
+									<FlashMessage
+										duration={7000}
+										statusBarHeight={50}
+									/>
+								</AuthProvider>
 							</Portal>
 						</PaperProvider>
 					</ThemeProvider>
