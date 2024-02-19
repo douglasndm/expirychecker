@@ -45,6 +45,7 @@
     /* Module Resolution Options */
     "resolveJsonModule": true,
     "moduleResolution": "nodenext",               /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "rootDir": "../",
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
         "@shared/*": ["../shared/src/*"],
@@ -56,6 +57,7 @@
         "@services/*": ["../shared/src/Services/*"],
         "@styles/*": ["../shared/src/Styles/*"],
         "@expirychecker/*": ["./src/*"],
+        "@teams/*": ["../teams/src/*"],
         "~/*": ["src/*"],
         "react": [ "../../node_modules/@types/react" ]
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
@@ -83,6 +85,11 @@
     "skipLibCheck": true,                     /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
+  "include": [
+    "src",
+    "../shared",
+    "../teams"
+  ],
   "exclude": [
     "node_modules",
     "babel.config.js",

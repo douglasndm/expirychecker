@@ -22,6 +22,7 @@ module.exports = {
 					'@utils': '../shared/src/Utils',
 					'@shared': '../shared/src',
 					'@expirychecker': './src',
+					'@teams': '../teams/src',
 				},
 			},
 		],

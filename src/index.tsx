@@ -35,9 +35,10 @@ import ListContext from '@shared/Contexts/ListContext';
 
 import RenderError from '@views/Informations/Errors/Render';
 
-import { getAllUserPreferences } from './Functions/UserPreferences';
+import Routes from '@expirychecker/routes';
+import RoutesTeams from '@teams/routes';
 
-import Routes from './routes';
+import { getAllUserPreferences } from './Functions/UserPreferences';
 
 import PreferencesContext from './Contexts/PreferencesContext';
 
@@ -53,6 +54,7 @@ const BugsnagNavigationContainer =
 	createNavigationContainer(NavigationContainer);
 
 const App: React.FC = () => {
+	const [usingTeamsRoutes, setUsingTeamsRoutes] = useState(false);
 	const [previousRoute, setPreviousRoute] = useState('Home');
 
 	const [preferences, setPreferences] = useState(defaultPreferences);
@@ -132,7 +134,11 @@ const App: React.FC = () => {
 								<StatusBar />
 								<AppOpen />
 								<ListContext.Provider value={list}>
-									<Routes />
+									{usingTeamsRoutes ? (
+										<RoutesTeams />
+									) : (
+										<Routes />
+									)}
 								</ListContext.Provider>
 								<AskReview />
 								<FlashMessage
