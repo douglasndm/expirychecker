@@ -18,9 +18,10 @@ import '@expirychecker/Locales';
 import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
 
-import { Bugsnag } from '@expirychecker/Services/Bugsnag';
+import { Bugsnag } from '@services/Bugsnag';
 import '@services/Firebase/AppCheck';
 import '@services/Firebase/InAppMessaging';
+
 import '@expirychecker/Services/DeviceId';
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
@@ -32,13 +33,18 @@ import { defaultPreferences } from '@expirychecker/Services/Preferences';
 import './Functions/ProMode';
 import './Functions/PushNotifications';
 
+import AppContext from '@shared/Contexts/App';
 import ListContext from '@shared/Contexts/ListContext';
-import { AuthProvider } from '@teams/Contexts/AuthContext';
 
-import RenderError from '@views/Informations/Errors/Render';
+import { AuthProvider } from '@teams/Contexts/AuthContext';
+import { TeamProvider } from '@teams/Contexts/TeamContext';
+
+import RenderError from '@views/Information/Errors/Render';
 
 import Routes from '@expirychecker/routes';
 import RoutesTeams from '@teams/routes';
+
+import Dashboard from '@views/Dashboard';
 
 import { getAllUserPreferences } from './Functions/UserPreferences';
 
@@ -56,7 +62,9 @@ const BugsnagNavigationContainer =
 	createNavigationContainer(NavigationContainer);
 
 const App: React.FC = () => {
-	const [usingTeamsRoutes, setUsingTeamsRoutes] = useState(false);
+	const [app, setApp] = useState<
+		'expiry_tracker' | 'expiry_teams' | undefined
+	>('expiry_tracker');
 	const [previousRoute, setPreviousRoute] = useState('Home');
 
 	const [preferences, setPreferences] = useState(defaultPreferences);
@@ -123,36 +131,48 @@ const App: React.FC = () => {
 		};
 	}, [currentList]);
 
+	const appContextValue = useMemo(() => ({ app, setApp }), [app, setApp]);
+
 	return (
 		<BugsnagNavigationContainer
 			linking={DeepLinking}
 			onStateChange={handleOnScreenChange}
 		>
 			<ErrorBoundary FallbackComponent={RenderError}>
-				<PreferencesContext.Provider value={prefesValues}>
-					<ThemeProvider theme={preferences.appTheme}>
-						<PaperProvider>
-							<Portal>
-								<AuthProvider>
-									<StatusBar />
-									<AppOpen />
-									<ListContext.Provider value={list}>
-										{usingTeamsRoutes ? (
-											<RoutesTeams />
-										) : (
-											<Routes />
-										)}
-									</ListContext.Provider>
-									<AskReview />
-									<FlashMessage
-										duration={7000}
-										statusBarHeight={50}
-									/>
-								</AuthProvider>
-							</Portal>
-						</PaperProvider>
-					</ThemeProvider>
-				</PreferencesContext.Provider>
+				<AppContext.Provider value={appContextValue}>
+					<PreferencesContext.Provider value={prefesValues}>
+						<ThemeProvider theme={preferences.appTheme}>
+							<PaperProvider>
+								<Portal>
+									{!app ? (
+										<Dashboard />
+									) : (
+										<AuthProvider>
+											<TeamProvider>
+												<StatusBar />
+												<AppOpen />
+												<ListContext.Provider
+													value={list}
+												>
+													{app === 'expiry_teams' ? (
+														<RoutesTeams />
+													) : (
+														<Routes />
+													)}
+												</ListContext.Provider>
+												<AskReview />
+												<FlashMessage
+													duration={7000}
+													statusBarHeight={50}
+												/>
+											</TeamProvider>
+										</AuthProvider>
+									)}
+								</Portal>
+							</PaperProvider>
+						</ThemeProvider>
+					</PreferencesContext.Provider>
+				</AppContext.Provider>
 			</ErrorBoundary>
 		</BugsnagNavigationContainer>
 	);
