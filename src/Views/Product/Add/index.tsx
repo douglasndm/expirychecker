@@ -36,6 +36,7 @@ import BrandSelect, {
 import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
 
+import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
 import {
 	Container,
 	PageContent,
@@ -100,7 +101,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const [name, setName] = useState('');
 	const [photoPath, setPhotoPath] = useState('');
 	const [lote, setLote] = useState('');
-	const [amount, setAmount] = useState('');
+	const [amount, setAmount] = useState<number | null>(null);
 	const [price, setPrice] = useState<number | null>(null);
 	const [expDate, setExpDate] = useState(new Date());
 
@@ -248,14 +249,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		userPreferences.disableAds,
 		userPreferences.isPRO,
 	]);
-
-	const handleAmountChange = useCallback((value: string) => {
-		const regex = /^[0-9\b]+$/;
-
-		if (value === '' || regex.test(value)) {
-			setAmount(value);
-		}
-	}, []);
 
 	const handleEnableCamera = useCallback(async () => {
 		if (!userPreferences.isPRO) {
@@ -422,16 +415,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 								onChange={value => setLote(value)}
 							/>
 
-							<Input
-								contentStyle={{
-									flex: 4,
-								}}
-								placeholder={
-									strings.View_AddProduct_InputPlacehoder_Amount
-								}
-								keyboardType="numeric"
-								value={String(amount)}
-								onChange={handleAmountChange}
+							<ProductCount
+								amount={amount}
+								setAmount={setAmount}
 							/>
 						</InputGroup>
 
