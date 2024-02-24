@@ -16,7 +16,7 @@ import { BannerAdSize } from 'react-native-google-mobile-ads';
 
 import strings from '@expirychecker/Locales';
 
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import ListContext from '@shared/Contexts/ListContext';

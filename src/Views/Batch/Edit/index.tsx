@@ -12,7 +12,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
