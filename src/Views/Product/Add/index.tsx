@@ -36,6 +36,7 @@ import BrandSelect, {
 import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
 
+import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
 import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
 import {
 	Container,
@@ -403,17 +404,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 						</MoreInformationsTitle>
 
 						<InputGroup>
-							<Input
-								contentStyle={{
-									flex: 5,
-									marginRight: 10,
-								}}
-								placeholder={
-									strings.View_AddProduct_InputPlacehoder_Batch
-								}
-								value={lote}
-								onChange={value => setLote(value)}
-							/>
+							<ProductBatch batch={lote} setBatch={setLote} />
 
 							<ProductCount
 								amount={amount}

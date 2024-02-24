@@ -24,18 +24,18 @@ import Header from '@components/Header';
 import Switch from '@components/Switch';
 import Dialog from '@components/Dialog';
 
+import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
+import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
 import {
 	Container,
 	PageContent,
 	InputContainer,
-	InputTextContainer,
 	Currency,
 	InputGroup,
 	ExpDateGroup,
 	ExpDateLabel,
 	CustomDatePicker,
 } from '@views/Product/Add/styles';
-import { InputCodeText } from '@expirychecker/Views/Product/Add/Components/Inputs/Code/styles';
 import {
 	CheckBoxContainer,
 	CheckBoxGroupTitle,
@@ -246,14 +246,6 @@ const EditBatch: React.FC = () => {
 		}
 	}, [loteId, product, productId, reset, userPreferences.isPRO]);
 
-	const handleAmountChange = useCallback((value: string) => {
-		const regex = /^[0-9\b]+$/;
-
-		if (value === '' || regex.test(value)) {
-			setAmount(Number(value));
-		}
-	}, []);
-
 	const handlePriceChange = useCallback((value: number) => {
 		if (value <= 0) {
 			setPrice(null);
@@ -309,36 +301,11 @@ const EditBatch: React.FC = () => {
 						</ProductHeader>
 
 						<InputGroup>
-							<InputTextContainer
-								style={{
-									flex: 5,
-									marginRight: 5,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_EditBatch_InputPlacehoder_Batch
-									}
-									value={lote}
-									onChangeText={(value: string) =>
-										setLote(value)
-									}
-								/>
-							</InputTextContainer>
-							<InputTextContainer
-								style={{
-									flex: 4,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_EditBatch_InputPlacehoder_Amount
-									}
-									keyboardType="numeric"
-									value={String(amount)}
-									onChangeText={handleAmountChange}
-								/>
-							</InputTextContainer>
+							<ProductBatch batch={lote} setBatch={setLote} />
+							<ProductCount
+								amount={amount}
+								setAmount={setAmount}
+							/>
 						</InputGroup>
 
 						<Currency
