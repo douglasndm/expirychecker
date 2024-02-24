@@ -1,6 +1,6 @@
 import { AppRegistry } from 'react-native';
 
-import '@expirychecker/Services/Bugsnag';
+import '@services/Bugsnag';
 import '@expirychecker/Services/BackgroundNotifications';
 import { requestNotificationPermission } from '@services/Notifications/Permission';
 import '@services/Notifications';

@@ -22,7 +22,7 @@ import {
 import { getAllProductsByCategory } from '@expirychecker/Functions/Category';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';

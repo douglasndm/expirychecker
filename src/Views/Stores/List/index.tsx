@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '@expirychecker/Locales';
 
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import { sortStores } from '@expirychecker/Utils/Stores/Sort';
 import { createStore } from '@expirychecker/Functions/Stores';
