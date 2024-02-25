@@ -10,10 +10,7 @@ import Header from '@components/Header';
 
 import DaysNext from '@views/Settings/Components/DaysNext';
 
-import {
-	setEnableMultipleStoresMode,
-	setAutoComplete,
-} from '@expirychecker/Functions/Settings';
+import { setAutoComplete } from '@expirychecker/Functions/Settings';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -38,8 +35,6 @@ const Settings: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
-	const [multipleStoresState, setMultipleStoresState] =
-		useState<boolean>(false);
 
 	const { userPreferences, setUserPreferences } =
 		useContext(PreferencesContext);
@@ -62,7 +57,6 @@ const Settings: React.FC = () => {
 			setIsLoading(true);
 
 			setAutoCompleteState(userPreferences.autoComplete);
-			setMultipleStoresState(userPreferences.multiplesStores);
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -72,7 +66,7 @@ const Settings: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [userPreferences.autoComplete, userPreferences.multiplesStores]);
+	}, [userPreferences.autoComplete]);
 
 	useEffect(() => {
 		loadData();
@@ -89,18 +83,6 @@ const Settings: React.FC = () => {
 			autoComplete: newValue,
 		});
 	}, [autoCompleteState, setUserPreferences, userPreferences]);
-
-	const handleMultiStoresEnableSwitch = useCallback(async () => {
-		const newValue = !multipleStoresState;
-		setMultipleStoresState(newValue);
-
-		await setEnableMultipleStoresMode(newValue);
-
-		setUserPreferences({
-			...userPreferences,
-			multiplesStores: newValue,
-		});
-	}, [multipleStoresState, setUserPreferences, userPreferences]);
 
 	const onThemeChoosen = useCallback(
 		(theme: DefaultTheme) => {
@@ -149,24 +131,6 @@ const Settings: React.FC = () => {
 											/>
 										</SettingContainer>
 									)}
-
-									<SettingContainer>
-										<SettingDescription>
-											{
-												strings.View_Settings_SettingName_EnableMultiplesStores
-											}
-										</SettingDescription>
-										<Switch
-											value={multipleStoresState}
-											onValueChange={
-												handleMultiStoresEnableSwitch
-											}
-											color={
-												userPreferences.appTheme.colors
-													.accent
-											}
-										/>
-									</SettingContainer>
 								</>
 							)}
 						</CategoryOptions>

@@ -460,14 +460,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 															marginBottom: 10,
 														}}
 													/>
+													<StoreSelect
+														defaultValue={
+															selectedStore
+														}
+														onChange={
+															setSelectedStore
+														}
+													/>
 												</>
-											)}
-
-											{userPreferences.multiplesStores && (
-												<StoreSelect
-													defaultValue={selectedStore}
-													onChange={setSelectedStore}
-												/>
 											)}
 										</MoreInformationsContainer>
 									</InputContainer>

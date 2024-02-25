@@ -162,7 +162,7 @@ const StackNavigator: React.FC = () => {
 				{userPreferences.isPRO && enableTabBar.asBoolean() === true && (
 					<TabMenu
 						currentRoute={currentRoute}
-						enableMultiplesStores={userPreferences.multiplesStores}
+						enableMultiplesStores
 					/>
 				)}
 			</DrawerContext.Provider>

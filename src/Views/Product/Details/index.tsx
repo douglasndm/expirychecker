@@ -213,8 +213,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 								imagePath={
 									!userPreferences.isPRO ? undefined : image
 								}
-								storeName={storeName}
-								enableStore={userPreferences.multiplesStores}
+								enableStore={userPreferences.isPRO}
 							/>
 						)}
 						<PageContent>
