@@ -10,7 +10,6 @@ const PreferencesContext = createContext({
 		autoComplete,
 		isPRO,
 		appTheme,
-		multiplesStores,
 		enableNotifications,
 		disableAds,
 		allowRemoteImages,

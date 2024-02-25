@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useContext } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -27,18 +27,6 @@ const PRO: React.FC = () => {
 	const { userPreferences, setUserPreferences } =
 		useContext(PreferencesContext);
 	const [isPaywallOpen, setIsPaywallOpen] = useState(false);
-
-	const shouldShowMultiplesStores = useMemo(() => {
-		if (!userPreferences.isPRO) {
-			return true;
-		}
-
-		if (userPreferences.isPRO && userPreferences.multiplesStores) {
-			return true;
-		}
-
-		return false;
-	}, [userPreferences]);
 
 	const navigateToCategories = useCallback(() => {
 		navigate('ListCategory');
@@ -128,29 +116,27 @@ const PRO: React.FC = () => {
 				</LabelGroup>
 			</MenuItemContainer>
 
-			{shouldShowMultiplesStores && (
-				<MenuItemContainer
-					disabled={isPaywallOpen}
-					onPress={
-						userPreferences.isPRO
-							? navigateToAllProductsByStore
-							: handlePaywall
-					}
-				>
-					<MenuContent>
-						<Icons name="list-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToStores}
-						</MenuItemText>
-					</MenuContent>
+			<MenuItemContainer
+				disabled={isPaywallOpen}
+				onPress={
+					userPreferences.isPRO
+						? navigateToAllProductsByStore
+						: handlePaywall
+				}
+			>
+				<MenuContent>
+					<Icons name="list-outline" />
+					<MenuItemText>
+						{strings.Menu_Button_GoToStores}
+					</MenuItemText>
+				</MenuContent>
 
-					<LabelGroup>
-						<LabelContainer>
-							<Label>{strings.Menu_Label_PRO}</Label>
-						</LabelContainer>
-					</LabelGroup>
-				</MenuItemContainer>
-			)}
+				<LabelGroup>
+					<LabelContainer>
+						<Label>{strings.Menu_Label_PRO}</Label>
+					</LabelContainer>
+				</LabelGroup>
+			</MenuItemContainer>
 
 			<MenuItemContainer
 				disabled={isPaywallOpen}

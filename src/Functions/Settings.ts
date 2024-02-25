@@ -5,9 +5,7 @@ interface ISetSettingProps {
 		| 'HowManyDaysToBeNextExp'
 		| 'AutoComplete'
 		| 'EnableNotifications'
-		| 'EnableMultipleStores'
 		| 'EnableProVersion'
-		| 'NotificationCadency'
 		| 'HowManyTimesAppWasOpen'
 		| 'DisableAds';
 	value: string;
@@ -33,15 +31,6 @@ export async function setAutoComplete(value: boolean): Promise<void> {
 	await setSetting({
 		type: 'AutoComplete',
 		value: String(value),
-	});
-}
-
-export async function setEnableMultipleStoresMode(
-	enable: boolean
-): Promise<void> {
-	await setSetting({
-		type: 'EnableMultipleStores',
-		value: String(enable),
 	});
 }
 
@@ -100,17 +89,6 @@ export async function getEnableProVersion(): Promise<boolean> {
 	if (setting === 'true') {
 		return true;
 	}
-	return false;
-}
-
-export async function getEnableMultipleStoresMode(): Promise<boolean> {
-	const setting = await getSetting({ type: 'EnableMultipleStores' });
-
-	if (await getEnableProVersion()) {
-		if (setting === 'true') return true;
-		return false;
-	}
-
 	return false;
 }
 

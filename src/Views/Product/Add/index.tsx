@@ -441,14 +441,12 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 										marginBottom: 10,
 									}}
 								/>
-							</>
-						)}
 
-						{userPreferences.multiplesStores && (
-							<StoreSelect
-								defaultValue={selectedStore}
-								onChange={setSelectedStore}
-							/>
+								<StoreSelect
+									defaultValue={selectedStore}
+									onChange={setSelectedStore}
+								/>
+							</>
 						)}
 					</MoreInformationsContainer>
 
