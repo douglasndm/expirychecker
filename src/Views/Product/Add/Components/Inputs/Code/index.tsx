@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 
 import strings from '@expirychecker/Locales';
 
+import { captureException } from '@services/ExceptionsHandler';
+
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import {
@@ -151,8 +153,6 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 				return;
 			}
 
-			if (ean_code.length < 8) return;
-
 			if (getLocales()[0].languageCode === 'pt') {
 				try {
 					setIsFindingProd(true);
@@ -189,6 +189,14 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 
 						setProductNameFinded(null);
 						setProductBrandFinded(null);
+					}
+				} catch (err) {
+					if (err instanceof Error) {
+						captureException(err, {
+							component:
+								'Product/Add/Components/Inputs/Code/index.tsx',
+							ean: ean_code,
+						});
 					}
 				} finally {
 					setIsFindingProd(false);

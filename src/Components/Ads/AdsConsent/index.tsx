@@ -1,6 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
 import { AdsConsent } from 'react-native-google-mobile-ads';
 
+import { captureException } from '@services/ExceptionsHandler';
+
 import { startGoogleMobileAdsSDK } from '@expirychecker/Services/Admob';
 
 const AdsConsentComponent: React.FC = () => {
@@ -17,13 +19,15 @@ const AdsConsentComponent: React.FC = () => {
 				}
 			}
 		} catch (error) {
-			console.error(error);
+			if (error instanceof Error) {
+				captureException(error);
+			}
 		}
 	}, []);
 
 	useEffect(() => {
 		loadData();
-	}, []);
+	}, [loadData]);
 
 	return <></>;
 };
