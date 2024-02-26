@@ -7,7 +7,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
 
-import { PickerContainer, Picker } from '../styles';
+import { PickerContainer, Picker } from '@components/Picker/styles';
 
 export interface IBrandPickerRef {
 	onChange: (value: string) => void;
