@@ -1,13 +1,6 @@
-import React, {
-	useState,
-	useContext,
-	useCallback,
-	useMemo,
-	useRef,
-} from 'react';
+import React, { useState, useContext, useCallback, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
@@ -38,6 +31,8 @@ import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store'
 
 import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
 import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
+import BatchPrice from '@views/Product/Add/Components/Inputs/BatchPrice';
+import BatchExpDate from '@views/Product/Add/Components/Inputs/BatchExpDate';
 import {
 	Container,
 	PageContent,
@@ -47,13 +42,9 @@ import {
 	InputTextContainer,
 	InputTextTip,
 	CameraButtonContainer,
-	Currency,
 	InputGroup,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
-	ExpDateGroup,
-	ExpDateLabel,
-	CustomDatePicker,
 	ImageContainer,
 	Icon,
 } from '@views/Product/Add/styles';
@@ -82,20 +73,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const InterstitialRef = useRef<IInterstitialRef>();
 	const BrandsPickerRef = useRef<IBrandPickerRef>();
 	const BarCodeInputRef = useRef<InputsRequestRef>(null);
-
-	const locale = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'en-US';
-		}
-		return 'pt-BR';
-	}, []);
-	const currency = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'USD';
-		}
-
-		return 'BRL';
-	}, []);
 
 	const { userPreferences } = useContext(PreferencesContext);
 
@@ -295,14 +272,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		setNameFieldError(false);
 	}, []);
 
-	const handlePriceChange = useCallback((value: number) => {
-		if (value <= 0) {
-			setPrice(null);
-			return;
-		}
-		setPrice(value);
-	}, []);
-
 	const onCompleteInfo = useCallback(
 		({ prodName, prodBrand }: completeInfoProps) => {
 			setName(prodName);
@@ -412,14 +381,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 							/>
 						</InputGroup>
 
-						<Currency
-							value={price}
-							onChangeValue={handlePriceChange}
-							delimiter={currency === 'BRL' ? ',' : '.'}
-							placeholder={
-								strings.View_AddProduct_InputPlacehoder_UnitPrice
-							}
-						/>
+						<BatchPrice price={price} setPrice={setPrice} />
 
 						{userPreferences.isPRO && (
 							<>
@@ -450,22 +412,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 						)}
 					</MoreInformationsContainer>
 
-					<ExpDateGroup>
-						<ExpDateLabel>
-							{strings.View_AddProduct_CalendarTitle}
-						</ExpDateLabel>
-
-						<CustomDatePicker
-							accessibilityLabel={
-								strings.View_AddProduct_CalendarAccessibilityDescription
-							}
-							date={expDate}
-							onDateChange={value => {
-								setExpDate(value);
-							}}
-							locale={locale}
-						/>
-					</ExpDateGroup>
+					<BatchExpDate expDate={expDate} setExpDate={setExpDate} />
 				</InputContainer>
 
 				<PaddingComponent />
