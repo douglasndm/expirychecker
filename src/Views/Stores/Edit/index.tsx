@@ -126,7 +126,7 @@ const Edit: React.FC = () => {
 				<InputText
 					placeholder={strings.View_Store_Edit_Placeholder_StoreName}
 					value={storeName}
-					onChange={handleTextChange}
+					onChangeText={handleTextChange}
 				/>
 			</Content>
 
