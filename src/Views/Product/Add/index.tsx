@@ -70,6 +70,8 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const { navigate, replace } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
+	const { brand, category, store, code: routeCode } = route.params;
+
 	const InterstitialRef = useRef<IInterstitialRef>();
 	const BrandsPickerRef = useRef<IBrandPickerRef>();
 	const BarCodeInputRef = useRef<InputsRequestRef>(null);
@@ -83,31 +85,22 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const [price, setPrice] = useState<number | null>(null);
 	const [expDate, setExpDate] = useState(new Date());
 
+	const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
+		return brand || null;
+	});
+
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(
 		() => {
-			if (route.params && route.params.category) {
-				return route.params.category;
-			}
-			return null;
+			return category || null;
 		}
 	);
-	const [code, setCode] = useState<string | undefined>(() => {
-		if (route.params && route.params.code) {
-			return route.params.code;
-		}
-		return '';
-	});
-	const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
-		if (route.params && route.params.brand) {
-			return route.params.brand;
-		}
-		return null;
-	});
+
 	const [selectedStore, setSelectedStore] = useState<string | null>(() => {
-		if (route.params && route.params.store) {
-			return route.params.store;
-		}
-		return null;
+		return store || null;
+	});
+
+	const [code, setCode] = useState<string | undefined>(() => {
+		return routeCode || '';
 	});
 
 	const [daysNext, setDaysNext] = useState<number | undefined>();
@@ -135,21 +128,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				await movePicturesToImagesDir(photoPath);
 			}
 
-			const tempCategory =
-				selectedCategory && selectedCategory !== 'null'
-					? selectedCategory
-					: undefined;
-
-			const tempBrand =
-				selectedBrand && selectedBrand !== 'null'
-					? selectedBrand
-					: undefined;
-
-			const tempStore =
-				selectedStore && selectedStore !== 'null'
-					? selectedStore
-					: undefined;
-
 			const newLote: Omit<IBatch, 'id'> = {
 				name: lote,
 				exp_date: expDate,
@@ -160,9 +138,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			const newProduct: Omit<IProduct, 'id'> = {
 				name,
 				code: code?.trim(),
-				brand: tempBrand,
-				category: tempCategory,
-				store: tempStore,
+				brand: selectedBrand === 'null' ? undefined : selectedBrand,
+				category:
+					selectedCategory === 'null' ? undefined : selectedCategory,
+				store: selectedStore === 'null' ? undefined : selectedStore,
 				photo: picFileName,
 				daysToBeNext: daysNext,
 				batches: [newLote],

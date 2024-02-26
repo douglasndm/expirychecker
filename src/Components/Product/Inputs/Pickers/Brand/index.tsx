@@ -9,12 +9,6 @@ import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
 
 import { PickerContainer, Picker } from '../styles';
 
-interface Props {
-	onChange: (value: string) => void;
-	containerStyle?: ViewStyle;
-	defaultValue?: string | null;
-}
-
 export interface IBrandPickerRef {
 	onChange: (value: string) => void;
 	containerStyle?: ViewStyle;
