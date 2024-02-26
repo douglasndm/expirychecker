@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
@@ -26,15 +25,13 @@ import Dialog from '@components/Dialog';
 
 import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
 import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
+import BatchPrice from '@views/Product/Add/Components/Inputs/BatchPrice';
+import BatchExpDate from '@views/Product/Add/Components/Inputs/BatchExpDate';
 import {
 	Container,
 	PageContent,
 	InputContainer,
-	Currency,
 	InputGroup,
-	ExpDateGroup,
-	ExpDateLabel,
-	CustomDatePicker,
 } from '@views/Product/Add/styles';
 import {
 	CheckBoxContainer,
@@ -61,20 +58,6 @@ const EditBatch: React.FC = () => {
 	const routeParams = route.params as Props;
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-
-	const [locale] = useState(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'en-US';
-		}
-		return 'pt-BR';
-	});
-	const [currency] = useState(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'USD';
-		}
-
-		return 'BRL';
-	});
 
 	const [product, setProduct] = useState<IProduct | null>(null);
 
@@ -180,11 +163,7 @@ const EditBatch: React.FC = () => {
 					type: 'danger',
 				});
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
-					captureException(err);
-				}
+				captureException(err);
 			}
 		}
 	}, [
@@ -246,14 +225,6 @@ const EditBatch: React.FC = () => {
 		}
 	}, [loteId, product, productId, reset, userPreferences.isPRO]);
 
-	const handlePriceChange = useCallback((value: number) => {
-		if (value <= 0) {
-			setPrice(null);
-			return;
-		}
-		setPrice(value);
-	}, []);
-
 	const switchShowDeleteModal = useCallback(() => {
 		setDeleteComponentVisible(prevState => !prevState);
 	}, []);
@@ -308,14 +279,7 @@ const EditBatch: React.FC = () => {
 							/>
 						</InputGroup>
 
-						<Currency
-							value={price}
-							onChangeValue={handlePriceChange}
-							delimiter={currency === 'BRL' ? ',' : '.'}
-							placeholder={
-								strings.View_EditBatch_InputPlacehoder_UnitPrice
-							}
-						/>
+						<BatchPrice price={price} setPrice={setPrice} />
 
 						<RadioButtonGroup>
 							<CheckBoxContainer>
@@ -434,18 +398,10 @@ const EditBatch: React.FC = () => {
 							</>
 						)}
 
-						<ExpDateGroup>
-							<ExpDateLabel>
-								{strings.View_EditBatch_CalendarTitle}
-							</ExpDateLabel>
-							<CustomDatePicker
-								date={expDate}
-								onDateChange={(value: Date) => {
-									setExpDate(value);
-								}}
-								locale={locale}
-							/>
-						</ExpDateGroup>
+						<BatchExpDate
+							expDate={expDate}
+							setExpDate={setExpDate}
+						/>
 					</InputContainer>
 				</PageContent>
 			)}
