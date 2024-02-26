@@ -20,6 +20,7 @@ export const PickerContainer = styled.View`
 `;
 
 export const Picker = styled(RNPickerSelect).attrs(({ theme }) => ({
+	darkTheme: theme.isDark,
 	textInputProps: {
 		color: theme.colors.placeholderColor,
 		fontSize: 18,
