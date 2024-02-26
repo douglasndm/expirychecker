@@ -7,7 +7,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 
-import { PickerContainer, Picker } from '../styles';
+import { PickerContainer, Picker } from '@components/Picker/styles';
 
 interface Props {
 	onChange: (value: string) => void;
