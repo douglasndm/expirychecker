@@ -65,9 +65,7 @@
     "View_AddBatch_InputPlacehoder_UnitPrice": "Unit price",
     "View_AddBatch_CalendarTitle": "Expiration date",
 
-    "View_AddProduct_AlertTypeProductName": "Type the product name",
     "View_AddProduct_PageTitle": "Add product",
-    "View_AddProduct_InputPlacehoder_Name": "Product's name",
     "View_AddProduct_InputPlacehoder_Code": "Product's code",
     "View_AddProduct_InputPlacehoder_Store": "Select the store",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Select the category",

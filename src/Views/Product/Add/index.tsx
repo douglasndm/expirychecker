@@ -18,7 +18,6 @@ import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Imag
 
 import BarCodeReader from '@components/BarCodeReader';
 import Camera from '@components/Camera';
-import Input from '@components/InputText';
 import Header from '@components/Header';
 import PaddingComponent from '@components/PaddingComponent';
 
@@ -29,6 +28,7 @@ import BrandSelect, {
 import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
 
+import ProductName from '@views/Product/Add/Components/Inputs/ProductName';
 import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
 import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
 import BatchPrice from '@views/Product/Add/Components/Inputs/BatchPrice';
@@ -39,14 +39,10 @@ import {
 	ProductImageContainer,
 	ProductImage,
 	InputContainer,
-	InputTextContainer,
-	InputTextTip,
-	CameraButtonContainer,
 	InputGroup,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
 	ImageContainer,
-	Icon,
 } from '@views/Product/Add/styles';
 
 import InputCode, {
@@ -104,19 +100,17 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	});
 
 	const [daysNext, setDaysNext] = useState<number | undefined>();
-	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 	const [existentProduct, setExistentProduct] = useState<boolean>(false);
 
 	const [isCameraEnabled, setIsCameraEnabled] = useState(false);
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
 	const handleSave = useCallback(async () => {
-		if (!name || name.trim() === '') {
-			setNameFieldError(true);
+		if (name.trim() === '') {
 			return;
 		}
 
-		if (nameFieldError || existentProduct) {
+		if (existentProduct) {
 			return;
 		}
 		try {
@@ -195,7 +189,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		expDate,
 		lote,
 		name,
-		nameFieldError,
 		navigate,
 		photoPath,
 		price,
@@ -245,11 +238,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		},
 		[handleDisableCamera]
 	);
-
-	const handleNameChange = useCallback((value: string) => {
-		setName(value);
-		setNameFieldError(false);
-	}, []);
 
 	const onCompleteInfo = useCallback(
 		({ prodName, prodBrand }: completeInfoProps) => {
@@ -314,26 +302,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				)}
 
 				<InputContainer>
-					<InputGroup>
-						<InputTextContainer hasError={nameFieldError}>
-							<Input
-								placeholder={
-									strings.View_AddProduct_InputPlacehoder_Name
-								}
-								value={name}
-								onChange={handleNameChange}
-							/>
-						</InputTextContainer>
-
-						<CameraButtonContainer onPress={handleEnableCamera}>
-							<Icon name="camera-outline" size={36} />
-						</CameraButtonContainer>
-					</InputGroup>
-					{nameFieldError && (
-						<InputTextTip>
-							{strings.View_AddProduct_AlertTypeProductName}
-						</InputTextTip>
-					)}
+					<ProductName
+						name={name}
+						setName={setName}
+						handleEnableCamera={handleEnableCamera}
+					/>
 
 					<InputCode
 						ref={BarCodeInputRef}
