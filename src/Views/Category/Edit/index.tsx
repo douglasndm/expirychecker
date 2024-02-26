@@ -128,7 +128,7 @@ const Edit: React.FC = () => {
 							strings.View_Category_Edit_InputNamePlaceholder
 						}
 						value={name}
-						onChange={onNameChange}
+						onChangeText={onNameChange}
 					/>
 				</InputTextContainer>
 				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
