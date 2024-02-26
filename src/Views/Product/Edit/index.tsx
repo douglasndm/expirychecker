@@ -23,7 +23,6 @@ import {
 } from '@expirychecker/Functions/Products/Image';
 import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
 
-import Input from '@components/InputText';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
@@ -36,18 +35,17 @@ import BrandSelect from '@expirychecker/Components/Product/Inputs/Pickers/Brand'
 import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
 
+import ProductName from '@views/Product/Add/Components/Inputs/ProductName';
+
 import {
 	Container,
 	PageContent,
 	InputGroup,
 	InputContainer,
 	InputTextContainer,
-	InputTextTip,
 	InputCodeTextIcon,
 	ImageContainer,
 	ProductImage,
-	CameraButtonContainer,
-	Icon,
 	ProductImageContainer,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
@@ -88,8 +86,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	);
 	const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 	const [selectedStore, setSelectedStore] = useState<string | null>(null);
-
-	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
 	const [isCameraEnabled, setIsCameraEnabled] = useState(false);
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
@@ -163,8 +159,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, [addListener, loadData]);
 
 	const updateProd = useCallback(async () => {
-		if (!name || name.trim() === '') {
-			setNameFieldError(true);
+		if (name.trim() === '') {
 			return;
 		}
 
@@ -328,15 +323,22 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 									{
 										icon: 'content-save-outline',
 										onPress: updateProd,
+										disabled: isLoading,
 									},
 								]}
-								moreMenuItems={[
-									{
-										title: strings.View_ProductDetails_Button_DeleteProduct,
-										leadingIcon: 'trash-can-outline',
-										onPress: switchShowDeleteModal,
-									},
-								]}
+								moreMenuItems={
+									isLoading
+										? []
+										: [
+												{
+													title: strings.View_ProductDetails_Button_DeleteProduct,
+													leadingIcon:
+														'trash-can-outline',
+													onPress:
+														switchShowDeleteModal,
+												},
+										  ]
+								}
 							/>
 
 							{isLoading ? (
@@ -357,40 +359,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 										</ImageContainer>
 									)}
 									<InputContainer>
-										<InputGroup>
-											<InputTextContainer>
-												<Input
-													placeholder={
-														strings.View_EditProduct_InputPlacehoder_Name
-													}
-													value={name}
-													onChange={value => {
-														setName(value);
-														setNameFieldError(
-															false
-														);
-													}}
-												/>
-											</InputTextContainer>
-
-											{userPreferences.isPRO && (
-												<CameraButtonContainer
-													onPress={handleEnableCamera}
-												>
-													<Icon
-														name="camera-outline"
-														size={36}
-													/>
-												</CameraButtonContainer>
-											)}
-										</InputGroup>
-										{nameFieldError && (
-											<InputTextTip>
-												{
-													strings.View_EditProduct_Error_EmptyProductName
-												}
-											</InputTextTip>
-										)}
+										<ProductName
+											name={name}
+											setName={setName}
+											handleEnableCamera={
+												handleEnableCamera
+											}
+										/>
 
 										<InputGroup>
 											<InputTextContainer
