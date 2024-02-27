@@ -66,7 +66,7 @@ const BugsnagNavigationContainer =
 const App: React.FC = () => {
 	const [app, setApp] = useState<
 		'expiry_tracker' | 'expiry_teams' | undefined
-	>('expiry_teams');
+	>('expiry_tracker');
 	const [previousRoute, setPreviousRoute] = useState('Home');
 
 	const [preferences, setPreferences] = useState(defaultPreferences);

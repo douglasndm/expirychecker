@@ -15,6 +15,7 @@ import { getAllBrands } from '@expirychecker/Utils/Brands';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { exportBackup } from '@expirychecker/Utils/Backup/Export';
+import { exportToTeams } from '@expirychecker/Utils/Backup/Teams';
 
 import { getAllProducts } from '@expirychecker/Functions/Products';
 
@@ -50,12 +51,19 @@ const Export: React.FC = () => {
 	const [isExporting, setIsExporting] = useState<boolean>(false);
 	const [isImporting, setIsImporting] = useState<boolean>(false);
 
+	const [isTeamsExporting, setIsTeamsExporting] = useState<boolean>(false);
+
 	const getProducts = async () => getAllProducts({});
 
 	const handleExportBackup = useCallback(async () => {
 		try {
 			setIsExporting(true);
 			await exportBackup();
+
+			showMessage({
+				message: strings.View_Export_Export_Alert_Success,
+				type: 'info',
+			});
 		} catch (err) {
 			if (err instanceof Error) {
 				if (!err.message.includes('User did not share')) {
@@ -84,7 +92,7 @@ const Export: React.FC = () => {
 			});
 
 			showMessage({
-				message: strings.View_Export_Excel_SuccessMessage,
+				message: strings.View_Export_Excel_Export_Alert_Success,
 				type: 'info',
 			});
 		} catch (err) {
@@ -110,7 +118,7 @@ const Export: React.FC = () => {
 			await importExcel();
 
 			showMessage({
-				message: strings.View_Settings_Backup_Import_Alert_Sucess,
+				message: strings.View_Export_Excel_Import_Alert_Success,
 				type: 'info',
 			});
 			reset({
@@ -139,7 +147,7 @@ const Export: React.FC = () => {
 			await importBackupFile();
 
 			showMessage({
-				message: strings.View_Settings_Backup_Import_Alert_Sucess,
+				message: strings.View_Export_Import_Alert_Success,
 				type: 'info',
 			});
 			reset({
@@ -153,11 +161,7 @@ const Export: React.FC = () => {
 						type: 'danger',
 					});
 
-					if (__DEV__) {
-						console.error(err);
-					} else {
-						captureException(err);
-					}
+					captureException(err);
 				}
 			}
 		} finally {
@@ -170,6 +174,11 @@ const Export: React.FC = () => {
 			setIsExcelModelGenerating(true);
 
 			await generateEmptyExcel();
+
+			showMessage({
+				message: strings.View_Export_Excel_Export_Model_Alert_Success,
+				type: 'info',
+			});
 		} catch (err) {
 			if (err instanceof Error) {
 				if (!err.message.includes('User did not share')) {
@@ -183,6 +192,28 @@ const Export: React.FC = () => {
 			}
 		} finally {
 			setIsExcelModelGenerating(false);
+		}
+	}, []);
+
+	const handleExportTeams = useCallback(async () => {
+		try {
+			setIsTeamsExporting(true);
+
+			await exportToTeams();
+
+			showMessage({
+				message: strings.View_Export_Teams_Alert_Success,
+				type: 'info',
+			});
+		} catch (error) {
+			if (error instanceof Error) {
+				showMessage({
+					message: error.message,
+					type: 'danger',
+				});
+			}
+		} finally {
+			setIsTeamsExporting(false);
 		}
 	}, []);
 
@@ -265,6 +296,20 @@ const Export: React.FC = () => {
 							/>
 						</>
 					)}
+				</ExportOptionContainer>
+
+				<ExportOptionContainer>
+					<CategoryTitle>
+						{strings.View_Export_Teams_Title}
+					</CategoryTitle>
+					<ExportExplain>
+						{strings.View_Export_Teams_Description}
+					</ExportExplain>
+					<Button
+						title={strings.View_Export_Teams_Export_Button}
+						onPress={handleExportTeams}
+						isLoading={isTeamsExporting}
+					/>
 				</ExportOptionContainer>
 
 				<PaddingComponent />
