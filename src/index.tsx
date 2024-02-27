@@ -39,6 +39,8 @@ import ListContext from '@shared/Contexts/ListContext';
 import { AuthProvider } from '@teams/Contexts/AuthContext';
 import { TeamProvider } from '@teams/Contexts/TeamContext';
 
+import navigationRef from '@teams/References/Navigation';
+
 import RenderError from '@views/Information/Errors/Render';
 
 import Routes from '@expirychecker/routes';
@@ -64,7 +66,7 @@ const BugsnagNavigationContainer =
 const App: React.FC = () => {
 	const [app, setApp] = useState<
 		'expiry_tracker' | 'expiry_teams' | undefined
-	>('expiry_tracker');
+	>('expiry_teams');
 	const [previousRoute, setPreviousRoute] = useState('Home');
 
 	const [preferences, setPreferences] = useState(defaultPreferences);
@@ -135,6 +137,7 @@ const App: React.FC = () => {
 
 	return (
 		<BugsnagNavigationContainer
+			ref={navigationRef.setTopLevelNavigator}
 			linking={DeepLinking}
 			onStateChange={handleOnScreenChange}
 		>
