@@ -31,10 +31,6 @@ const DrawerMenu: React.FC = () => {
 		navigate('AddProduct', {});
 	}, [navigate]);
 
-	const handleNavigateToTeams = useCallback(() => {
-		navigate('Teams');
-	}, [navigate]);
-
 	const handleNavigateToSettings = useCallback(() => {
 		navigate('Settings');
 	}, [navigate]);
@@ -83,14 +79,14 @@ const DrawerMenu: React.FC = () => {
 			</MainMenuContainer>
 
 			<DrawerSection>
-				<MenuItemContainer onPress={handleNavigateToTeams}>
+				{/* <MenuItemContainer onPress={handleNavigateToTeams}>
 					<MenuContent>
 						<Icons name="people-outline" />
 						<MenuItemText>
 							{strings.Menu_Button_GoToTeams}
 						</MenuItemText>
 					</MenuContent>
-				</MenuItemContainer>
+				</MenuItemContainer> */}
 
 				<MenuItemContainer onPress={handleNavigateToSettings}>
 					<MenuContent>

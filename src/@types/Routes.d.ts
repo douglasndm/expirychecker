@@ -69,7 +69,6 @@ type RoutesParams = {
 	};
 
 	Export;
-	Teams;
 	SubscriptionCancel;
 
 	Settings;

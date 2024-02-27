@@ -38,8 +38,6 @@ import BrandEdit from '@expirychecker/Views/Brand/Edit';
 
 import Export from '@expirychecker/Views/Export';
 
-import Teams from '@expirychecker/Views/Informations/Teams';
-
 import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/Cancel';
 
 import Settings from '@expirychecker/Views/Settings';
@@ -140,7 +138,6 @@ const StackNavigator: React.FC = () => {
 					<Stack.Screen name="BrandEdit" component={BrandEdit} />
 
 					<Stack.Screen name="Export" component={Export} />
-					<Stack.Screen name="Teams" component={Teams} />
 					<Stack.Screen
 						name="SubscriptionCancel"
 						component={SubscriptionCancel}
