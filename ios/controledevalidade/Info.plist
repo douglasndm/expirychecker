@@ -9,9 +9,9 @@
 	<key>CFBundleAllowMixedLocalizations</key>
 	<string>true</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Expiry Tracker</string>
+	<string>Validades</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -33,7 +33,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>$(IOS_GOOGLE_REVERSED_CLIENT_ID)</string>
+				<string>$(IOS_GOOGLE_URL_SCHEMA)</string>
 			</array>
 		</dict>
 		<dict>
@@ -65,7 +65,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>The app requires access to your photo library so you can import product photos directly from your gallery.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>We need your permission to access your device's unique identification in order to improve features and show more relevant ads.</string>
+	<string>Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recursos e mostrar anúncios mais relevantes.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
