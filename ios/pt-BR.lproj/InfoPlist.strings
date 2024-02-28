@@ -1,0 +1,15 @@
+/* 
+  InfoPlist.strings
+  controledevalidade
+
+  Created by Douglas de Mattos on 27/02/24.
+  
+*/
+
+"CFBundleDisplayName" = "Validades";
+
+"NSCameraUsageDescription" = "Precisamos da sua autorização para usar a câmera do seu telefone para o aplicativo ter acesso ao leitor de códigos de barras e a função de tirar fotos dos produtos (PRO)";
+
+"NSPhotoLibraryUsageDescription" = "O aplicativo requer acesso à sua biblioteca de fotos para que você possa importar fotos dos produtos diretamente da sua galeria";
+
+"NSUserTrackingUsageDescription" = "Precisamos da sua permissão para acessar a identificação exclusiva do seu dispositivo afim de melhorar os recursos e mostrar anúncios mais relevantes";

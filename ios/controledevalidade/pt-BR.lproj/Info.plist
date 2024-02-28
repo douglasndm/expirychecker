@@ -9,7 +9,7 @@
 	<key>CFBundleAllowMixedLocalizations</key>
 	<string>true</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>pt</string>
 	<key>CFBundleDisplayName</key>
 	<string>Controle de Validades</string>
 	<key>CFBundleExecutable</key>

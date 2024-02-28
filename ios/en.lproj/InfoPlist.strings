@@ -1,0 +1,15 @@
+/* 
+  InfoPlist.strings
+  controledevalidade
+
+  Created by Douglas de Mattos on 27/02/24.
+  
+*/
+
+"CFBundleDisplayName" = "Expiry Traker";
+
+"NSCameraUsageDescription" = "We need your authorization to use your phone's camera to have access to the barcode reader and take pictures of the products (PRO)";
+
+"NSPhotoLibraryUsageDescription" = "The app requires access to your photo library so you can import product photos directly from your gallery";
+
+"NSUserTrackingUsageDescription" = "We need your permission to access your device's unique identification in order to improve features and show more relevant ads";
