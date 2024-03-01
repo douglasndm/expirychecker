@@ -18,7 +18,7 @@ import { findProductByCode } from '@expirychecker/Functions/Products/FindByCode'
 
 import { Icon, InputTextTip } from '@views/Product/Add/styles';
 
-import FillModal from '@shared/Views/Product/Add/Components/FillModal';
+import Dialog from '@components/Dialog';
 
 import {
 	InputCodeTextContainer,
@@ -218,8 +218,8 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 	}, [code, findProductByEAN]);
 
 	const handleSwitchFindModal = useCallback(() => {
-		setShowFillModal(!showFillModal);
-	}, [showFillModal]);
+		setShowFillModal(prevState => !prevState);
+	}, []);
 
 	const handleOnCodeRead = useCallback(
 		async (codeRead: string) => {
@@ -267,23 +267,28 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 								}}
 								onPress={handleSwitchFindModal}
 							>
-								<Icon name="download" size={30} />
+								<Icon name="download" size={30} insideInput />
 							</InputTextIconContainer>
 						)}
 					</>
 				)}
-
-				<FillModal
-					onConfirm={completeInfo}
-					show={showFillModal}
-					setShow={setShowFillModal}
-				/>
 			</InputCodeTextContainer>
 			{fieldError && (
 				<InputTextTip onPress={handleNavigateToExistProduct}>
 					{strings.View_AddProduct_Tip_DuplicateProduct}
 				</InputTextTip>
 			)}
+
+			<Dialog
+				visible={showFillModal}
+				title={strings.View_AddProduct_FillInfo_Modal_Title}
+				description={strings.View_AddProduct_FillInfo_Modal_Description}
+				cancelText={strings.View_AddProduct_FillInfo_Modal_No}
+				confirmText={strings.View_AddProduct_FillInfo_Modal_Yes}
+				onConfirm={completeInfo}
+				onDismiss={handleSwitchFindModal}
+				onCancel={handleSwitchFindModal}
+			/>
 		</>
 	);
 });
