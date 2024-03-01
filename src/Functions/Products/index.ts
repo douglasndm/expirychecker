@@ -32,9 +32,41 @@ export async function saveMany(
 					name: batchName,
 				};
 			});
+
+			let brand: IBrand | string | undefined;
+			let category: ICategory | string | undefined;
+			let store: IStore | string | undefined;
+
+			if (prod.brand) {
+				if (typeof prod.brand === 'string') {
+					brand = prod.brand;
+				} else {
+					brand = prod.brand.id;
+				}
+			}
+
+			if (prod.category) {
+				if (typeof prod.category === 'string') {
+					category = prod.category;
+				} else {
+					category = prod.category.id;
+				}
+			}
+
+			if (prod.store) {
+				if (typeof prod.store === 'string') {
+					store = prod.store;
+				} else {
+					store = prod.store.id;
+				}
+			}
+
 			const product: IProduct = {
 				...prod,
 				id: nextProdId,
+				brand,
+				category,
+				store,
 				batches,
 			};
 			realm.create('Product', product);
