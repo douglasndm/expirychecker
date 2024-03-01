@@ -5,10 +5,9 @@ import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import { ThemeProvider } from 'styled-components/native';
 import {
 	NavigationContainer,
-	ParamListBase,
+	NavigationState,
 	getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
-import Analyticts from '@react-native-firebase/analytics';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
 import CodePush from 'react-native-code-push';
@@ -30,8 +29,10 @@ import '@expirychecker/Services/RemoteConfig';
 import DeepLinking from '@expirychecker/Services/DeepLinking';
 import { defaultPreferences } from '@expirychecker/Services/Preferences';
 
-import './Functions/ProMode';
-import './Functions/PushNotifications';
+import '@expirychecker/Functions/ProMode';
+import '@expirychecker/Functions/PushNotifications';
+
+import { getDefaultApp } from '@expirychecker/Utils/Settings/GetSettings';
 
 import AppContext from '@shared/Contexts/App';
 import ListContext from '@shared/Contexts/ListContext';
@@ -48,11 +49,12 @@ import RoutesTeams from '@teams/routes';
 
 import Dashboard from '@views/Dashboard';
 
-import { getAllUserPreferences } from './Functions/UserPreferences';
+import { getAllUserPreferences } from '@expirychecker/Functions/UserPreferences';
 
-import PreferencesContext from './Contexts/PreferencesContext';
+import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import AppOpen from './Components/Ads/AppOpen';
+import AppOpen from '@expirychecker/Components/Ads/AppOpen';
+import { logScreen } from '@shared/Utils/Navigation/LogScreen';
 
 enableScreens(true);
 
@@ -88,20 +90,8 @@ const App: React.FC = () => {
 		setPreferences(userPreferences);
 	}, []);
 
-	type IState =
-		| Readonly<{
-				key: string;
-				index: number;
-				routeNames: string[];
-				history?: unknown[] | undefined;
-				routes: NavigationRoute<ParamListBase, string>[];
-				type: string;
-				stale: false;
-		  }>
-		| undefined;
-
 	const handleOnScreenChange = useCallback(
-		async (state: IState) => {
+		async (state: NavigationState | undefined) => {
 			if (!state) return;
 
 			const route = state.routes[0] || 'undefined';
@@ -109,14 +99,9 @@ const App: React.FC = () => {
 
 			if (focusedRouteName) {
 				if (previousRoute !== focusedRouteName) {
-					setPreviousRoute(focusedRouteName);
+					await logScreen(previousRoute, state);
 
-					if (!__DEV__) {
-						await Analyticts().logScreenView({
-							screen_name: focusedRouteName,
-							screen_class: focusedRouteName,
-						});
-					}
+					setPreviousRoute(focusedRouteName);
 				}
 			}
 		},
