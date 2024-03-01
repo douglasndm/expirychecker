@@ -89,6 +89,10 @@ export async function getProductById(productId: number): Promise<IProduct> {
 		.objects<IProduct>('Product')
 		.filtered(`id = "${productId}"`)[0];
 
+	if (!result) {
+		throw new Error('Product not found');
+	}
+
 	const prod: IProduct = {
 		id: result.id,
 		name: result.name,
