@@ -2,6 +2,8 @@ import React, { useState, useCallback, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
+import Analytics from '@react-native-firebase/analytics';
+import axios from 'axios';
 import * as Yup from 'yup';
 
 import strings from '@expirychecker/Locales';
@@ -192,6 +194,12 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 					}
 				} catch (err) {
 					if (err instanceof Error) {
+						if (axios.isAxiosError(err)) {
+							if (err.response?.status === 504) {
+								Analytics().logEvent('product_code_timeout');
+								return;
+							}
+						}
 						captureException(err, {
 							component:
 								'Product/Add/Components/Inputs/Code/index.tsx',
