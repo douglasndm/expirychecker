@@ -1,13 +1,7 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
-import { ThemeProvider } from 'styled-components/native';
-import {
-	NavigationContainer,
-	NavigationState,
-	getFocusedRouteNameFromRoute,
-} from '@react-navigation/native';
 import FlashMessage from 'react-native-flash-message';
 import { enableScreens } from 'react-native-screens';
 import CodePush from 'react-native-code-push';
@@ -17,7 +11,6 @@ import '@expirychecker/Locales';
 import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
 
-import { Bugsnag } from '@services/Bugsnag';
 import '@services/Firebase/AppCheck';
 import '@services/Firebase/InAppMessaging';
 
@@ -27,89 +20,31 @@ import '@expirychecker/Services/Admob';
 import '@expirychecker/Services/Analytics';
 import '@expirychecker/Services/RemoteConfig';
 import DeepLinking from '@expirychecker/Services/DeepLinking';
-import { defaultPreferences } from '@expirychecker/Services/Preferences';
 
 import '@expirychecker/Functions/ProMode';
 import '@expirychecker/Functions/PushNotifications';
 
-import { getDefaultApp } from '@expirychecker/Utils/Settings/GetSettings';
+// import { getDefaultApp } from '@expirychecker/Utils/Settings/GetSettings';
 
-import AppContext from '@shared/Contexts/App';
+import BugSnagContainer from '@shared/BugsnagContainer';
+
 import ListContext from '@shared/Contexts/ListContext';
 
 import { AuthProvider } from '@teams/Contexts/AuthContext';
 import { TeamProvider } from '@teams/Contexts/TeamContext';
 
-import navigationRef from '@teams/References/Navigation';
-
-import RenderError from '@views/Information/Errors/Render';
-
 import Routes from '@expirychecker/routes';
-import RoutesTeams from '@teams/routes';
-
-import Dashboard from '@views/Dashboard';
-
-import { getAllUserPreferences } from '@expirychecker/Functions/UserPreferences';
-
-import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import AppOpen from '@expirychecker/Components/Ads/AppOpen';
-import { logScreen } from '@shared/Utils/Navigation/LogScreen';
+
+import AppContext from './appContexts';
 
 enableScreens(true);
 
-const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
-const { createNavigationContainer } = Bugsnag.getPlugin('reactNavigation');
-// The returned BugsnagNavigationContainer has exactly the same usage
-// except now it tracks route information to send with your error reports
-const BugsnagNavigationContainer =
-	createNavigationContainer(NavigationContainer);
-
 const App: React.FC = () => {
-	const [app, setApp] = useState<
-		'expiry_tracker' | 'expiry_teams' | undefined
-	>('expiry_tracker');
-	const [previousRoute, setPreviousRoute] = useState('Home');
-
-	const [preferences, setPreferences] = useState(defaultPreferences);
-	const prefesValues = React.useMemo(
-		() => ({
-			userPreferences: preferences,
-			setUserPreferences: setPreferences,
-		}),
-		[preferences, setPreferences]
-	);
-
 	const [currentList, setCurrentList] = useState<React.RefObject<
 		FlatList<IProduct>
 	> | null>(null);
-
-	const loadInitialData = useCallback(async () => {
-		const userPreferences = await getAllUserPreferences();
-
-		setPreferences(userPreferences);
-	}, []);
-
-	const handleOnScreenChange = useCallback(
-		async (state: NavigationState | undefined) => {
-			if (!state) return;
-
-			const route = state.routes[0] || 'undefined';
-			const focusedRouteName = getFocusedRouteNameFromRoute(route);
-
-			if (focusedRouteName) {
-				if (previousRoute !== focusedRouteName) {
-					await logScreen(previousRoute, state);
-
-					setPreviousRoute(focusedRouteName);
-				}
-			}
-		},
-		[previousRoute]
-	);
-	useEffect(() => {
-		loadInitialData();
-	}, [loadInitialData]);
 
 	const list = useMemo(() => {
 		return {
@@ -118,51 +53,29 @@ const App: React.FC = () => {
 		};
 	}, [currentList]);
 
-	const appContextValue = useMemo(() => ({ app, setApp }), [app, setApp]);
-
 	return (
-		<BugsnagNavigationContainer
-			ref={navigationRef.setTopLevelNavigator}
-			linking={DeepLinking}
-			onStateChange={handleOnScreenChange}
-		>
-			<ErrorBoundary FallbackComponent={RenderError}>
-				<AppContext.Provider value={appContextValue}>
-					<PreferencesContext.Provider value={prefesValues}>
-						<ThemeProvider theme={preferences.appTheme}>
-							<PaperProvider>
-								<Portal>
-									{!app ? (
-										<Dashboard />
-									) : (
-										<AuthProvider>
-											<TeamProvider>
-												<StatusBar />
-												<AppOpen />
-												<ListContext.Provider
-													value={list}
-												>
-													{app === 'expiry_teams' ? (
-														<RoutesTeams />
-													) : (
-														<Routes />
-													)}
-												</ListContext.Provider>
-												<AskReview />
-												<FlashMessage
-													duration={7000}
-													statusBarHeight={50}
-												/>
-											</TeamProvider>
-										</AuthProvider>
-									)}
-								</Portal>
-							</PaperProvider>
-						</ThemeProvider>
-					</PreferencesContext.Provider>
-				</AppContext.Provider>
-			</ErrorBoundary>
-		</BugsnagNavigationContainer>
+		<BugSnagContainer DeepLinking={DeepLinking}>
+			<AppContext>
+				<PaperProvider>
+					<Portal>
+						<AuthProvider>
+							<TeamProvider>
+								<StatusBar />
+								<AppOpen />
+								<ListContext.Provider value={list}>
+									<Routes />
+								</ListContext.Provider>
+								<AskReview />
+								<FlashMessage
+									duration={7000}
+									statusBarHeight={50}
+								/>
+							</TeamProvider>
+						</AuthProvider>
+					</Portal>
+				</PaperProvider>
+			</AppContext>
+		</BugSnagContainer>
 	);
 };
 
