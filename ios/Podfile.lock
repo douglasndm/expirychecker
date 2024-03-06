@@ -10,7 +10,11 @@ PODS:
     - PromisesObjC (~> 2.3)
   - Base64 (1.1.2)
   - boost (1.83.0)
-  - BugsnagReactNative (7.22.3):
+  - BugsnagReactNative (7.22.5):
+    - React-Core
+  - BugsnagReactNativePerformance (2.2.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
   - BVLinearGradient (2.8.3):
     - React-Core
@@ -1291,6 +1295,9 @@ PODS:
     - React-perflogger (= 0.73.5)
   - ReactNativeCameraKit (13.0.0):
     - React-Core
+  - ReactNativeFileAccess (3.0.5):
+    - React-Core
+    - ZIPFoundation (= 0.9.11)
   - ReactNativeLocalization (2.3.2):
     - React-Core
   - RealmJS (11.10.2):
@@ -1405,10 +1412,12 @@ PODS:
   - SocketRocket (0.6.1)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
+  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - boost (from `../../../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
+  - "BugsnagReactNative (from `../../../node_modules/@bugsnag/react-native`)"
+  - "BugsnagReactNativePerformance (from `../../../node_modules/@bugsnag/react-native-performance`)"
   - BVLinearGradient (from `../../../node_modules/react-native-linear-gradient`)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -1473,6 +1482,7 @@ DEPENDENCIES:
   - React-utils (from `../../../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
   - ReactNativeCameraKit (from `../../../node_modules/react-native-camera-kit`)
+  - ReactNativeFileAccess (from `../../../node_modules/react-native-file-access`)
   - ReactNativeLocalization (from `../../../node_modules/react-native-localization`)
   - RealmJS (from `../../../node_modules/realm`)
   - "RNAppleAuthentication (from `../../../node_modules/@invertase/react-native-apple-authentication`)"
@@ -1550,12 +1560,15 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - SocketRocket
     - SSZipArchive
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   boost:
     :podspec: "../../../node_modules/react-native/third-party-podspecs/boost.podspec"
   BugsnagReactNative:
-    :path: "../node_modules/@bugsnag/react-native"
+    :path: "../../../node_modules/@bugsnag/react-native"
+  BugsnagReactNativePerformance:
+    :path: "../../../node_modules/@bugsnag/react-native-performance"
   BVLinearGradient:
     :path: "../../../node_modules/react-native-linear-gradient"
   CodePush:
@@ -1679,6 +1692,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/ReactCommon"
   ReactNativeCameraKit:
     :path: "../../../node_modules/react-native-camera-kit"
+  ReactNativeFileAccess:
+    :path: "../../../node_modules/react-native-file-access"
   ReactNativeLocalization:
     :path: "../../../node_modules/react-native-localization"
   RealmJS:
@@ -1751,7 +1766,8 @@ SPEC CHECKSUMS:
   AppCheckCore: d0d4bcb6f90fd9f69958da5350467b79026b38c7
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
-  BugsnagReactNative: d9fa0824cea1beb5ab1f12828d79a2bd1b383e60
+  BugsnagReactNative: 2f3550f37f30b9701e3517bf17743b676b5a2fb1
+  BugsnagReactNativePerformance: 80ca3396ec831ce55c1c3e99a087726e97a25350
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CodePush: 84c9a5792cb3c8e311197d595610c803f0b01739
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
@@ -1844,6 +1860,7 @@ SPEC CHECKSUMS:
   React-utils: 74fc896195fb41a1f7dcd5737d89be59c1fdccc4
   ReactCommon: ab6655d0224cf39c997ea634d257c609d345e23d
   ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
+  ReactNativeFileAccess: ad2a22183f172817526bbff7c303e2418792f18c
   ReactNativeLocalization: fb171138cdc80d5d0d4f20243d2fc82c2b3cc48f
   RealmJS: 73a36da3cbbe85e1bdcbf55683172b51f35070d3
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
@@ -1884,6 +1901,7 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 9e6a04eacbd94f97d94577017e9f23b3ab41cf6c
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
 PODFILE CHECKSUM: 96eb6e7c736af134468e2c786aba487a767e32de
 
