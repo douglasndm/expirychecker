@@ -23,6 +23,7 @@
     android:theme="@style/BootTheme"
     android:requestLegacyExternalStorage="true"
     android:allowBackup="false">
+
     <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -45,7 +46,7 @@
 
     </activity>
 
-    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="@strings/BUGSNAG_API_KEY" />
+    <meta-data android:name="com.bugsnag.android.API_KEY" android:value="${bugsnagApiKey}"/>
 
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true"/>

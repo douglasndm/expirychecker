@@ -93,8 +93,13 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 287
+        versionCode 288
         versionName computeVersionName()
+
+
+        manifestPlaceholders = [
+            bugsnagApiKey: project.env.get("BUGSNAG_API_KEY")
+        ]
     }
 
     signingConfigs {
