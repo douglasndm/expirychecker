@@ -12,10 +12,6 @@ PODS:
   - boost (1.83.0)
   - BugsnagReactNative (7.22.5):
     - React-Core
-  - BugsnagReactNativePerformance (2.2.0):
-    - glog
-    - RCT-Folly (= 2022.05.16.00)
-    - React-Core
   - BVLinearGradient (2.8.3):
     - React-Core
   - CodePush (8.2.1):
@@ -1417,7 +1413,6 @@ PODS:
 DEPENDENCIES:
   - boost (from `../../../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - "BugsnagReactNative (from `../../../node_modules/@bugsnag/react-native`)"
-  - "BugsnagReactNativePerformance (from `../../../node_modules/@bugsnag/react-native-performance`)"
   - BVLinearGradient (from `../../../node_modules/react-native-linear-gradient`)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -1567,8 +1562,6 @@ EXTERNAL SOURCES:
     :podspec: "../../../node_modules/react-native/third-party-podspecs/boost.podspec"
   BugsnagReactNative:
     :path: "../../../node_modules/@bugsnag/react-native"
-  BugsnagReactNativePerformance:
-    :path: "../../../node_modules/@bugsnag/react-native-performance"
   BVLinearGradient:
     :path: "../../../node_modules/react-native-linear-gradient"
   CodePush:
@@ -1767,7 +1760,6 @@ SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BugsnagReactNative: 2f3550f37f30b9701e3517bf17743b676b5a2fb1
-  BugsnagReactNativePerformance: 80ca3396ec831ce55c1c3e99a087726e97a25350
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CodePush: 84c9a5792cb3c8e311197d595610c803f0b01739
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
