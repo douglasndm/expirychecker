@@ -1,17 +1,10 @@
 import React, { useEffect, useCallback } from 'react';
 import { AdsConsent } from 'react-native-google-mobile-ads';
-import { useNetInfo } from '@react-native-community/netinfo';
-
-import { captureException } from '@services/ExceptionsHandler';
 
 import { startGoogleMobileAdsSDK } from '@expirychecker/Services/Admob';
 
 const AdsConsentComponent: React.FC = () => {
-	const { isInternetReachable } = useNetInfo();
-
 	const loadData = useCallback(async () => {
-		if (!isInternetReachable) return;
-
 		try {
 			const adsConsentUpdateInfo = await AdsConsent.requestInfoUpdate();
 
@@ -25,10 +18,10 @@ const AdsConsentComponent: React.FC = () => {
 			}
 		} catch (error) {
 			if (error instanceof Error) {
-				captureException(error);
+				console.log(error);
 			}
 		}
-	}, [isInternetReachable]);
+	}, []);
 
 	useEffect(() => {
 		loadData();
