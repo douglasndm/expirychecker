@@ -45,8 +45,6 @@ import SettingsDeleteAll from '@expirychecker/Views/Settings/DeleteAll';
 
 import Login from '@expirychecker/Views/Auth/Login';
 
-import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
-
 import Test from '@expirychecker/Views/Test';
 
 const Stack = createStackNavigator<RoutesParams>();
@@ -150,11 +148,6 @@ const StackNavigator: React.FC = () => {
 					/>
 
 					<Stack.Screen name="Login" component={Login} />
-
-					<Stack.Screen
-						name="TrackingPermission"
-						component={TrackingPermission}
-					/>
 				</Stack.Navigator>
 				{userPreferences.isPRO && enableTabBar.asBoolean() === true && (
 					<TabMenu

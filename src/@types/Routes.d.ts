@@ -76,7 +76,5 @@ type RoutesParams = {
 
 	Login;
 
-	TrackingPermission;
-
 	Test;
 };
