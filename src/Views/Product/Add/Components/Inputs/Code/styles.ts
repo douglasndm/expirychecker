@@ -31,12 +31,3 @@ export const InputCodeTextContainer = styled.View<InputTextContainerProps>`
 			border: 2px solid red;
 		`}
 `;
-
-export const InputCodeText = styled.TextInput.attrs(props => ({
-	placeholderTextColor: props.theme.colors.placeholderColor,
-}))`
-	flex: 1;
-	padding: 15px 5px 15px 15px;
-	font-size: 18px;
-	color: ${({ theme }) => theme.colors.inputText};
-`;
