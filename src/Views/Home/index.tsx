@@ -6,7 +6,7 @@ import React, {
 	useRef,
 	useMemo,
 } from 'react';
-import { Platform, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BootSplash from 'react-native-bootsplash';
@@ -26,7 +26,6 @@ import { searchProducts } from '@utils/Product/Search';
 import { deleteManyProducts } from '@expirychecker/Utils/Products';
 import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 
-import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
 import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Products';
 
 import BarCodeReader from '@components/BarCodeReader';
@@ -45,8 +44,7 @@ import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 import { Container } from '@views/Home/styles';
 
 const Home: React.FC = () => {
-	const { reset, navigate } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
 	const { setCurrentList } = useContext(ListContext);
@@ -86,18 +84,6 @@ const Home: React.FC = () => {
 	const [enableSearch, setEnableSearch] = useState(false);
 
 	const [selectMode, setSelectMode] = useState(false);
-
-	useEffect(() => {
-		if (Platform.OS === 'ios') {
-			getAllowedToReadIDFA().then(response => {
-				if (response === null) {
-					reset({
-						routes: [{ name: 'TrackingPermission' }],
-					});
-				}
-			});
-		}
-	}, [reset]);
 
 	const loadData = useCallback(async () => {
 		try {
