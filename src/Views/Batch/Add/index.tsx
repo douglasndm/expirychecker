@@ -1,14 +1,7 @@
-import React, {
-	useState,
-	useEffect,
-	useCallback,
-	useContext,
-	useMemo,
-} from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getLocales } from 'react-native-localize';
 import EnvConfig from 'react-native-config';
 import { showMessage } from 'react-native-flash-message';
 import {
@@ -16,6 +9,8 @@ import {
 	AdEventType,
 	TestIds,
 } from 'react-native-google-mobile-ads';
+
+import { captureException } from '@services/ExceptionsHandler';
 
 import strings from '@expirychecker/Locales';
 
@@ -27,18 +22,17 @@ import { getProductById } from '@expirychecker/Functions/Product';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 
+import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
+import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
+import BatchPrice from '@views/Product/Add/Components/Inputs/BatchPrice';
+import BatchExpDate from '@views/Product/Add/Components/Inputs/BatchExpDate';
+
 import {
 	Container,
 	PageContent,
 	InputContainer,
-	InputTextContainer,
-	Currency,
 	InputGroup,
-	ExpDateGroup,
-	ExpDateLabel,
-	CustomDatePicker,
 } from '@views/Product/Add/styles';
-import { InputCodeText } from '@expirychecker/Views/Product/Add/Components/Inputs/Code/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
 interface Props {
@@ -65,20 +59,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const locale = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'en-US';
-		}
-		return 'pt-BR';
-	}, []);
-	const currency = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'USD';
-		}
-
-		return 'BRL';
-	}, []);
-
 	const { userPreferences } = useContext(PreferencesContext);
 
 	const [adReady, setAdReady] = useState(false);
@@ -86,7 +66,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 	const [name, setName] = useState('');
 	const [code, setCode] = useState('');
 	const [lote, setLote] = useState('');
-	const [amount, setAmount] = useState<string>('');
+	const [amount, setAmount] = useState<number | null>(null);
 	const [price, setPrice] = useState<number | null>(null);
 
 	const [expDate, setExpDate] = useState(new Date());
@@ -125,11 +105,12 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 				});
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+			}
 		}
 	}, [
 		lote,
@@ -177,11 +158,14 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 				if (prod.code) setCode(prod.code);
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
+			}
 		} finally {
 			setIsLoading(false);
 		}
@@ -190,26 +174,6 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
-
-	const handleAmountChange = useCallback(value => {
-		const regex = /^[0-9\b]+$/;
-
-		if (value === '' || regex.test(value)) {
-			setAmount(value);
-		}
-	}, []);
-
-	const handlePriceChange = useCallback((value: number) => {
-		if (value <= 0) {
-			setPrice(null);
-			return;
-		}
-		setPrice(value);
-	}, []);
-
-	const onChange = useCallback((value: string) => {
-		setLote(value);
-	}, []);
 
 	return isLoading ? (
 		<Loading />
@@ -234,57 +198,20 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 						</ProductHeader>
 
 						<InputGroup>
-							<InputTextContainer
-								style={{
-									flex: 5,
-									marginRight: 5,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_AddBatch_InputPlacehoder_Batch
-									}
-									value={lote}
-									onChangeText={onChange}
-								/>
-							</InputTextContainer>
-							<InputTextContainer
-								style={{
-									flex: 4,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_AddBatch_InputPlacehoder_Amount
-									}
-									keyboardType="numeric"
-									value={amount}
-									onChangeText={handleAmountChange}
-								/>
-							</InputTextContainer>
+							<ProductBatch batch={lote} setBatch={setLote} />
+
+							<ProductCount
+								amount={amount}
+								setAmount={setAmount}
+							/>
 						</InputGroup>
 
-						<Currency
-							value={price}
-							onChangeValue={handlePriceChange}
-							delimiter={currency === 'BRL' ? ',' : '.'}
-							placeholder={
-								strings.View_AddBatch_InputPlacehoder_UnitPrice
-							}
-						/>
+						<BatchPrice price={price} setPrice={setPrice} />
 
-						<ExpDateGroup>
-							<ExpDateLabel>
-								{strings.View_AddBatch_CalendarTitle}
-							</ExpDateLabel>
-							<CustomDatePicker
-								date={expDate}
-								onDateChange={value => {
-									setExpDate(value);
-								}}
-								locale={locale}
-							/>
-						</ExpDateGroup>
+						<BatchExpDate
+							expDate={expDate}
+							setExpDate={setExpDate}
+						/>
 					</InputContainer>
 				</PageContent>
 			</ScrollView>

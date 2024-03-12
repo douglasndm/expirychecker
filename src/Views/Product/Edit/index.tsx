@@ -67,7 +67,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 	const { productId } = route.params;
 
-	const { navigate, addListener, dispatch } =
+	const { navigate, dispatch } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
