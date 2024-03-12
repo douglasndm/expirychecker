@@ -1,14 +1,16 @@
-import { PurchasesPackage } from 'react-native-purchases';
 import messaging from '@react-native-firebase/messaging';
+import { showMessage } from 'react-native-flash-message';
+
+import strings from '@shared/Locales';
 
 import Purchases from '@services/RevenueCat';
+import { captureException } from '@services/ExceptionsHandler';
 
-import { getUserId } from './User';
+import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
+
 import { setDisableAds, setEnableProVersion } from './Settings';
 
 export async function isSubscriptionActive(): Promise<boolean> {
-	const localUserId = await getUserId();
-
 	let firebase: string | null = null;
 
 	try {
@@ -23,12 +25,26 @@ export async function isSubscriptionActive(): Promise<boolean> {
 		console.log(error);
 	}
 
-	if (!!localUserId) {
-		Purchases.logIn(localUserId);
-	}
-
 	try {
 		const purchaserInfo = await Purchases.getCustomerInfo();
+
+		if (purchaserInfo.activeSubscriptions.length === 0) {
+			//  User was subcriber before, but now is not
+			if (purchaserInfo.allPurchasedProductIdentifiers.length > 0) {
+				showMessage({
+					message: strings.View_Component_ExpiredSubscription_Title,
+					description:
+						strings.View_Component_ExpiredSubscription_Description2,
+					duration: 20000,
+					type: 'warning',
+					onPress: async () => {
+						await handlePurchase();
+					},
+				});
+			}
+
+			return false;
+		}
 
 		if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
 			await setEnableProVersion(true);
@@ -42,51 +58,11 @@ export async function isSubscriptionActive(): Promise<boolean> {
 		await setEnableProVersion(false);
 		return false;
 	} catch (err) {
-		return false;
+		if (err instanceof Error) {
+			captureException(err);
+		}
 	}
-}
-
-export async function getSubscriptionDetails(): Promise<
-	Array<PurchasesPackage>
-> {
-	const offerings = await Purchases.getOfferings();
-
-	const packages: Array<PurchasesPackage> = [];
-
-	if (offerings.current && offerings.current.monthly !== null) {
-		packages.push(offerings.current.monthly);
-	}
-
-	if (offerings.current && offerings.current.threeMonth !== null) {
-		packages.push(offerings.current.threeMonth);
-	}
-
-	if (offerings.current && offerings.current.annual !== null) {
-		packages.push(offerings.current.annual);
-	}
-
-	return packages;
-}
-
-export async function getOnlyNoAdsSubscriptions(): Promise<
-	Array<PurchasesPackage>
-> {
-	const offerings = await Purchases.getOfferings();
-
-	if (offerings.all.no_ads.availablePackages.length !== 0) {
-		return offerings.all.no_ads.availablePackages;
-	}
-
-	return [];
-}
-
-export async function RestorePurchasers(): Promise<void> {
-	const restore = await Purchases.restorePurchases();
-	// ... check restored purchaserInfo to see if entitlement is now active
-
-	if (restore.activeSubscriptions.length > 0) {
-		await setEnableProVersion(true);
-	}
+	return false;
 }
 
 // Chama a função para verificar se usuário tem inscrição ativa (como o arquivo é importado

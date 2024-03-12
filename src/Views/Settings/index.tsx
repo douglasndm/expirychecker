@@ -141,7 +141,7 @@ const Settings: React.FC = () => {
 						onThemeChoosen={onThemeChoosen}
 					/>
 
-					<Pro />
+					{userPreferences.isPRO && <Pro />}
 
 					<Advanced />
 

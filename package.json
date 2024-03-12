@@ -1,7 +1,7 @@
 {
   "name": "controledevalidade",
-  "version": "1.15.19",
-  "build": "290",
+  "version": "1.15.21",
+  "build": "292",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -61,7 +61,7 @@
     "react-native-drawer-layout": "*",
     "react-native-fast-image": "^8.5.11",
     "react-native-file-access": "*",
-    "react-native-flash-message": "^0.3.1",
+    "react-native-flash-message": "*",
     "react-native-format-currency": "^0.0.3",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "2.14.0",
