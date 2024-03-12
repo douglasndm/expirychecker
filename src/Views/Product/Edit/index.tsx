@@ -29,6 +29,7 @@ import BarCodeReader from '@components/BarCodeReader';
 import Camera from '@components/Camera';
 import Dialog from '@components/Dialog';
 import PaddingComponent from '@components/PaddingComponent';
+import { Input } from '@components/InputText/styles';
 
 import DaysToBeNext from '@expirychecker/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '@expirychecker/Components/Product/Inputs/Pickers/Brand';
@@ -51,10 +52,7 @@ import {
 	MoreInformationsTitle,
 } from '@views/Product/Add/styles';
 
-import {
-	InputCodeText,
-	InputTextIconContainer,
-} from '../Add/Components/Inputs/Code/styles';
+import { InputTextIconContainer } from '../Add/Components/Inputs/Code/styles';
 
 interface RequestParams {
 	route: {
@@ -151,12 +149,8 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, [productId]);
 
 	useEffect(() => {
-		const unsubscribe = addListener('focus', () => {
-			loadData();
-		});
-
-		return unsubscribe;
-	}, [addListener, loadData]);
+		loadData();
+	}, [loadData]);
 
 	const updateProd = useCallback(async () => {
 		if (name.trim() === '') {
@@ -210,11 +204,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				});
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
+			}
 		}
 	}, [
 		code,
@@ -288,11 +285,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				});
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
+			}
 		}
 	}, [dispatch, navigate, productId, userPreferences.isPRO]);
 
@@ -377,7 +377,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 													paddingRight: 10,
 												}}
 											>
-												<InputCodeText
+												<Input
 													placeholder={
 														strings.View_EditProduct_InputPlacehoder_Code
 													}
