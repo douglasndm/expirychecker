@@ -1,7 +1,7 @@
 {
   "name": "controledevalidade",
   "version": "1.15.21",
-  "build": "292",
+  "build": "293",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -72,6 +72,7 @@
     "react-native-linear-gradient": "^2.6.2",
     "react-native-localization": "^2.1.7",
     "react-native-localize": "*",
+    "react-native-restart": "*",
     "react-native-paper": "5.12.1",
     "react-native-permissions": "*",
     "react-native-phone-number-input": "^2.1.0",

@@ -1,13 +1,17 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
+import Bugsnag from '@bugsnag/react-native';
 import appCheck from '@react-native-firebase/app-check';
 import { addDays } from 'date-fns';
-import Bugsnag from '@bugsnag/react-native';
+import { showMessage } from 'react-native-flash-message';
 
 import Button from '@components/Button';
 
 import { Container, Category } from '@views/Settings/styles';
 import { sendNotification } from '@services/Notifications';
+
+import { handlePurchase } from '@utils/Purchases/HandlePurchase';
+
 import realm from '@expirychecker/Services/Realm';
 import {
 	isTimeForANotification,
@@ -15,7 +19,6 @@ import {
 } from '@expirychecker/Functions/Notifications';
 
 import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
-import { showMessage } from 'react-native-flash-message';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -129,6 +132,11 @@ const Test: React.FC = () => {
 					<Button
 						title="Test AppCheck"
 						onPress={handleCheckAppChekc}
+					/>
+
+					<Button
+						title="Handle Purchase"
+						onPress={() => handlePurchase()}
 					/>
 				</Category>
 			</ScrollView>
