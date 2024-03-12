@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
-import { enableScreens } from 'react-native-screens';
+import { enableFreeze } from 'react-native-screens';
 import CodePush from 'react-native-code-push';
 
 import '@expirychecker/Locales';
@@ -13,7 +13,6 @@ import AskReview from '@components/AskReview';
 
 import '@services/Firebase/AppCheck';
 
-import '@expirychecker/Services/DeviceId';
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
 import '@expirychecker/Services/Analytics';
@@ -38,7 +37,7 @@ import AppOpen from '@expirychecker/Components/Ads/AppOpen';
 
 import AppContext from './appContexts';
 
-enableScreens(true);
+enableFreeze(true);
 
 const App: React.FC = () => {
 	const [currentList, setCurrentList] = useState<React.RefObject<
