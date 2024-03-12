@@ -4,7 +4,6 @@ interface ISetSettingProps {
 	type:
 		| 'HowManyDaysToBeNextExp'
 		| 'AutoComplete'
-		| 'EnableNotifications'
 		| 'EnableProVersion'
 		| 'HowManyTimesAppWasOpen'
 		| 'DisableAds';
@@ -70,13 +69,6 @@ export async function getAutoComplete(): Promise<boolean> {
 		return true;
 	}
 	return false;
-}
-
-export async function getEnableNotifications(): Promise<boolean> {
-	const setting = await getSetting({ type: 'EnableNotifications' });
-
-	if (setting === 'false') return false;
-	return true;
 }
 
 export async function getEnableProVersion(): Promise<boolean> {
