@@ -7,7 +7,6 @@ const defaultPreferences: IUserPreferences = {
 	autoComplete: false,
 	isPRO: false,
 	appTheme: Themes.Light,
-	enableNotifications: true,
 	disableAds: false,
 	allowRemoteImages: true,
 };
