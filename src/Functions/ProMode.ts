@@ -1,4 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
+import NetInfo from '@react-native-community/netinfo';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@shared/Locales';
@@ -11,6 +12,9 @@ import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
 import { setDisableAds, setEnableProVersion } from './Settings';
 
 export async function isSubscriptionActive(): Promise<boolean> {
+	const netInfo = await NetInfo.fetch();
+	if (!netInfo.isInternetReachable) return false;
+
 	let firebase: string | null = null;
 
 	try {
