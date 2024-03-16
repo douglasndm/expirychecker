@@ -3,7 +3,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
-import { enableFreeze } from 'react-native-screens';
 import CodePush from 'react-native-code-push';
 
 import '@expirychecker/Locales';
@@ -37,8 +36,6 @@ import Routes from '@expirychecker/routes';
 import AppOpen from '@expirychecker/Components/Ads/AppOpen';
 
 import AppContext from './appContexts';
-
-enableFreeze(true);
 
 const App: React.FC = () => {
 	const [currentList, setCurrentList] = useState<React.RefObject<
