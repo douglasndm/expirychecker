@@ -18,6 +18,7 @@ import '@expirychecker/Services/Analytics';
 import '@expirychecker/Services/RemoteConfig';
 import DeepLinking from '@expirychecker/Services/DeepLinking';
 import { requestNotificationPermission } from '@services/Notifications/Permission';
+import { checkAndInstallUpdate } from '@services/CodePush';
 
 import '@expirychecker/Functions/ProMode';
 import '@expirychecker/Functions/PushNotifications';
@@ -51,6 +52,7 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		requestNotificationPermission();
+		checkAndInstallUpdate();
 	}, []);
 
 	return (
@@ -79,4 +81,8 @@ const App: React.FC = () => {
 	);
 };
 
-export default CodePush(App);
+const codePushOptions = {
+	checkFrequency: CodePush.CheckFrequency.MANUAL,
+};
+
+export default CodePush(codePushOptions)(App);
