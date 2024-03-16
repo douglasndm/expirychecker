@@ -35,7 +35,7 @@ export async function isSubscriptionActive(): Promise<boolean> {
 					message: strings.View_Component_ExpiredSubscription_Title,
 					description:
 						strings.View_Component_ExpiredSubscription_Description2,
-					duration: 20000,
+					duration: 10000,
 					type: 'warning',
 					onPress: async () => {
 						await handlePurchase();

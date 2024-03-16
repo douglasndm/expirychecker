@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
@@ -18,6 +18,7 @@ import '@expirychecker/Services/Admob';
 import '@expirychecker/Services/Analytics';
 import '@expirychecker/Services/RemoteConfig';
 import DeepLinking from '@expirychecker/Services/DeepLinking';
+import { requestNotificationPermission } from '@services/Notifications/Permission';
 
 import '@expirychecker/Functions/ProMode';
 import '@expirychecker/Functions/PushNotifications';
@@ -50,6 +51,10 @@ const App: React.FC = () => {
 			setCurrentList,
 		};
 	}, [currentList]);
+
+	useEffect(() => {
+		requestNotificationPermission();
+	}, []);
 
 	return (
 		<BugSnagContainer DeepLinking={DeepLinking}>
