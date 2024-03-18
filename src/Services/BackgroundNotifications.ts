@@ -1,8 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { handleSetNotification } from '@expirychecker/Services/BackgroundJobs';
-
-import { handlePurchase } from '@utils/Purchases/HandlePurchase';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
 	handleSetNotification();
@@ -10,5 +9,7 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 
 	const { paywall } = remoteMessage.data;
 
-	await handlePurchase(String(paywall));
+	if (paywall) {
+		await AsyncStorage.setItem('requestedPaywall', paywall);
+	}
 });
