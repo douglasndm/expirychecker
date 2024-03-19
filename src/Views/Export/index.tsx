@@ -228,11 +228,13 @@ const Export: React.FC = () => {
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				showMessage({
-					message: error.message,
-					type: 'danger',
-				});
-				captureException(error);
+				if (!error.message.includes('User did not share')) {
+					showMessage({
+						message: error.message,
+						type: 'danger',
+					});
+					captureException(error);
+				}
 			}
 		} finally {
 			setIsXMLExporting(false);
@@ -346,10 +348,10 @@ const Export: React.FC = () => {
 					)}
 				</ExportOptionContainer>
 
-				<ExportOptionContainer>
-					<CategoryTitle>XML</CategoryTitle>
+				{enableXMLExport.asBoolean() === true && (
+					<ExportOptionContainer>
+						<CategoryTitle>XML</CategoryTitle>
 
-					{enableXMLExport.asBoolean() === true && (
 						<>
 							<ExportExplain>
 								{sharedStrings.View_Export_XML_Explain_Export}
@@ -370,8 +372,8 @@ const Export: React.FC = () => {
 								}
 							</LinkEmptyExcel>
 						</>
-					)}
-				</ExportOptionContainer>
+					</ExportOptionContainer>
+				)}
 
 				<ExportOptionContainer>
 					<CategoryTitle>

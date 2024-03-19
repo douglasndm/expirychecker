@@ -11,11 +11,11 @@ import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
 
 import '@services/Firebase/AppCheck';
+import '@services/Firebase/RemoteConfig';
 
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
 import '@expirychecker/Services/Analytics';
-import '@expirychecker/Services/RemoteConfig';
 import DeepLinking from '@expirychecker/Services/DeepLinking';
 import { requestNotificationPermission } from '@services/Notifications/Permission';
 import { checkAndInstallUpdate } from '@services/CodePush';
