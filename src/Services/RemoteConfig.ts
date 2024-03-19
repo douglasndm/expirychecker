@@ -1,4 +1,7 @@
 import remoteConfig from '@react-native-firebase/remote-config';
+import NetInfo from '@react-native-community/netinfo';
+
+import { captureException } from '@shared/Services/ExceptionsHandler';
 
 async function init() {
 	try {
@@ -12,6 +15,8 @@ async function init() {
 			enable_backup_import: true,
 			enable_backup_export: true,
 
+			enable_xml_export: true,
+
 			enable_ad_on_app_start: false,
 
 			enable_teams: false,
@@ -23,10 +28,13 @@ async function init() {
 		//     });
 		// }
 
+		const netInfo = await NetInfo.fetch();
+		if (!netInfo.isInternetReachable) return;
+
 		await remoteConfig().fetchAndActivate();
 	} catch (err) {
 		if (err instanceof Error) {
-			console.log(err.message);
+			captureException(err);
 		}
 	}
 }

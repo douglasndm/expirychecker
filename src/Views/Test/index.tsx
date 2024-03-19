@@ -19,6 +19,11 @@ import {
 } from '@expirychecker/Functions/Notifications';
 
 import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
+import { exportProductsToXML } from '@shared/Utils/IO/Export/XML';
+import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
+import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllCategories } from '@expirychecker/Utils/Categories/All';
+import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -104,6 +109,24 @@ const Test: React.FC = () => {
 		}
 	}, []);
 
+	const handleExportXM = useCallback(async () => {
+		const allProducts = await getAllProductsAsync({
+			sortProductsByExpDate: true,
+			removeTreatedBatch: true,
+		});
+
+		const allBrands = await getAllBrands();
+		const allCategories = await getAllCategories();
+		const allStores = await getAllStores();
+
+		await exportProductsToXML({
+			products: allProducts,
+			brands: allBrands,
+			categories: allCategories,
+			stores: allStores,
+		});
+	}, []);
+
 	return (
 		<Container>
 			<ScrollView>
@@ -138,6 +161,8 @@ const Test: React.FC = () => {
 						title="Handle Purchase"
 						onPress={() => handlePurchase()}
 					/>
+
+					<Button title="Export XML" onPress={handleExportXM} />
 				</Category>
 			</ScrollView>
 		</Container>

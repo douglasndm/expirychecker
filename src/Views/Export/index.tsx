@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
@@ -6,10 +7,13 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import DocumentPicker from 'react-native-document-picker';
 
 import strings from '@expirychecker/Locales';
+import sharedStrings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
 import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
+import { exportProductsToXML } from '@utils/IO/Export/XML';
+
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
 import { getAllBrands } from '@expirychecker/Utils/Brands';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
@@ -17,6 +21,7 @@ import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { exportBackup } from '@expirychecker/Utils/Backup/Export';
 import { exportToTeams } from '@expirychecker/Utils/Backup/Teams';
 
+import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 import { getAllProducts } from '@expirychecker/Functions/Products';
 
 import { importBackupFile } from '@expirychecker/Functions/Backup';
@@ -42,6 +47,7 @@ const Export: React.FC = () => {
 	const enableExcelExport = remoteConfig().getValue('enable_excel_export');
 	const enableBackupImport = remoteConfig().getValue('enable_backup_import');
 	const enableBackupExport = remoteConfig().getValue('enable_backup_export');
+	const enableXMLExport = remoteConfig().getValue('enable_xml_export');
 
 	const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
 	const [isExcelImporting, setIsExcelImporting] = useState<boolean>(false);
@@ -50,6 +56,8 @@ const Export: React.FC = () => {
 
 	const [isExporting, setIsExporting] = useState<boolean>(false);
 	const [isImporting, setIsImporting] = useState<boolean>(false);
+
+	const [isXMLExporting, setIsXMLExporting] = useState<boolean>(false);
 
 	const [isTeamsExporting, setIsTeamsExporting] = useState<boolean>(false);
 
@@ -195,6 +203,46 @@ const Export: React.FC = () => {
 		}
 	}, []);
 
+	const handleExportXML = useCallback(async () => {
+		try {
+			setIsXMLExporting(true);
+
+			const allProducts = await getAllProductsAsync({
+				sortProductsByExpDate: true,
+			});
+
+			const allBrands = await getAllBrands();
+			const allCategories = await getAllCategories();
+			const allStores = await getAllStores();
+
+			await exportProductsToXML({
+				products: allProducts,
+				brands: allBrands,
+				categories: allCategories,
+				stores: allStores,
+			});
+
+			showMessage({
+				message: sharedStrings.View_Export_XML_SuccessMessage,
+				type: 'info',
+			});
+		} catch (error) {
+			if (error instanceof Error) {
+				showMessage({
+					message: error.message,
+					type: 'danger',
+				});
+				captureException(error);
+			}
+		} finally {
+			setIsXMLExporting(false);
+		}
+	}, []);
+
+	const handleGoToXMLDocumentation = useCallback(() => {
+		Linking.openURL('https://douglasndm.dev/docs/expiry-tracker/xml');
+	}, []);
+
 	const handleExportTeams = useCallback(async () => {
 		try {
 			setIsTeamsExporting(true);
@@ -294,6 +342,33 @@ const Export: React.FC = () => {
 								onPress={handleImportBackup}
 								isLoading={isImporting}
 							/>
+						</>
+					)}
+				</ExportOptionContainer>
+
+				<ExportOptionContainer>
+					<CategoryTitle>XML</CategoryTitle>
+
+					{enableXMLExport.asBoolean() === true && (
+						<>
+							<ExportExplain>
+								{sharedStrings.View_Export_XML_Explain_Export}
+							</ExportExplain>
+							<Button
+								title={
+									sharedStrings.View_Export_XML_Button_Export
+								}
+								onPress={handleExportXML}
+								isLoading={isXMLExporting}
+							/>
+
+							<LinkEmptyExcel
+								onPress={handleGoToXMLDocumentation}
+							>
+								{
+									sharedStrings.View_Export_XML_Link_Documentation
+								}
+							</LinkEmptyExcel>
 						</>
 					)}
 				</ExportOptionContainer>
