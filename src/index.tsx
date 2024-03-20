@@ -17,7 +17,6 @@ import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
 import '@expirychecker/Services/Analytics';
 import DeepLinking from '@expirychecker/Services/DeepLinking';
-import { requestNotificationPermission } from '@services/Notifications/Permission';
 import { checkAndInstallUpdate } from '@services/CodePush';
 
 import '@expirychecker/Functions/ProMode';
@@ -51,7 +50,6 @@ const App: React.FC = () => {
 	}, [currentList]);
 
 	useEffect(() => {
-		requestNotificationPermission();
 		checkAndInstallUpdate();
 	}, []);
 
