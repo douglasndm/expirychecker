@@ -1306,11 +1306,11 @@ PODS:
     - RevenueCat (= 4.39.0)
   - RNAppleAuthentication (2.3.0):
     - React-Core
-  - RNBackgroundFetch (4.2.2):
+  - RNBackgroundFetch (4.2.3):
     - React-Core
   - RNBootSplash (5.4.1):
     - React-Core
-  - RNCAsyncStorage (1.22.3):
+  - RNCAsyncStorage (1.23.1):
     - React-Core
   - RNCClipboard (1.13.2):
     - React-Core
@@ -1383,7 +1383,7 @@ PODS:
   - RNPurchases (7.24.0):
     - PurchasesHybridCommon (= 10.2.0)
     - React-Core
-  - RNReanimated (3.6.1):
+  - RNReanimated (3.8.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1865,9 +1865,9 @@ SPEC CHECKSUMS:
   RevenueCat: b552a07693b061ff7ea42c8c224f0613755aafe1
   RevenueCatUI: b79724edfb0291eed4cc6172f6d7341d22301c7e
   RNAppleAuthentication: e99eaf3c4c01ad8ecb6125dd6f0cfd98871685b5
-  RNBackgroundFetch: 35c7183f6eeff69396d42c4b206e1ae2a21e9327
+  RNBackgroundFetch: b6cb89fa8ff0e1d8a245b19caca2944304b95fbf
   RNBootSplash: eff8239c4f795ce42a0604873aef3733aac0dedd
-  RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
+  RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNCMaskedView: 949696f25ec596bfc697fc88e6f95cf0c79669b6
   RNCPicker: b18aaf30df596e9b1738e7c1f9ee55402a229dca
@@ -1890,7 +1890,7 @@ SPEC CHECKSUMS:
   RNPaywalls: be765980de2f3cdca23feabe3d81c40b2de8852f
   RNPermissions: e90f60d32c9a7133e4c677b956d6a7c9736598ac
   RNPurchases: 4ebeacb9d039c1c6095467559499a7b90ab3c4eb
-  RNReanimated: f5cb331578e0c4263050d77ba8bbec209f6b82d7
+  RNReanimated: 4b1bce37b188450e3a2d03c925edd5fb11d4bb2d
   RNScreens: a4d9ce8f68f833f4e42410140eafd88e38bba163
   RNShare: 859ff710211285676b0bcedd156c12437ea1d564
   RNZipArchive: ef9451b849c45a29509bf44e65b788829ab07801
