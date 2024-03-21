@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import Button from '@components/Button';
 
@@ -15,22 +16,41 @@ import { Container } from './styles';
 const Account: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
+	const [initializing, setInitializing] = useState(true);
+	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+
 	const handleNavigateLogin = useCallback(() => {
 		navigate('Login');
 	}, [navigate]);
+
+	const onAuthStateChanged = useCallback(
+		(lUser: FirebaseAuthTypes.User | null) => {
+			setUser(lUser);
+			if (initializing) setInitializing(false);
+			// console.log(lUser);
+		},
+		[initializing]
+	);
+
+	useEffect(() => {
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+
+		return subscriber; // unsubscribe on unmount
+	}, [onAuthStateChanged]);
 
 	return (
 		<Container>
 			<Category>
 				<CategoryTitle>Account</CategoryTitle>
 				<SettingDescription>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit.
-					Labore officiis omnis ab quibusdam illo laborum ducimus nisi
-					optio! Perspiciatis atque, voluptatibus dignissimos deleniti
-					eum praesentium sequi culpa. Repellat, aspernatur ab!
+					{user?.email ? user.email : 'Not logged in'}
 				</SettingDescription>
 
-				<Button title="Sign in" onPress={handleNavigateLogin} />
+				{user ? (
+					<Button title="Sign out" onPress={() => auth().signOut()} />
+				) : (
+					<Button title="Sign in" onPress={handleNavigateLogin} />
+				)}
 			</Category>
 		</Container>
 	);
