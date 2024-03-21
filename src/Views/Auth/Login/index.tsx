@@ -1,82 +1,145 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import auth from '@react-native-firebase/auth';
-import { appleAuth } from '@invertase/react-native-apple-authentication';
-import {
-	GoogleOneTapSignIn,
-	statusCodes,
-	type OneTapUser,
-} from '@react-native-google-signin/google-signin';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import { showMessage } from 'react-native-flash-message';
+import * as Yup from 'yup';
+
+import strings from '@teams/Locales';
+
+import Purchases from '@services/RevenueCat';
 
 import Header from '@components/Header';
+
+import Input from '@components/InputText';
+import Button from '@components/Button';
+
+import Footer from '@teams/Views/Auth/Login/Footer';
 
 import {
 	Container,
 	Content,
-	LoginText,
-	ButtonsContainer,
-	AppleButton,
-	GoogleButton,
-} from './styles';
+	FormContainer,
+	FormTitle,
+	LoginForm,
+	ForgotPasswordText,
+} from '@teams/Views/Auth/Login/styles';
 
 const Login: React.FC = () => {
-	// Set an initializing state whilst Firebase connects
-	const [initializing, setInitializing] = useState(true);
-	const [user, setUser] = useState();
+	const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+
+	const [isLoging, setIsLoging] = useState<boolean>(false);
+
+	const handleEmailChange = useCallback(
+		(value: string) => setEmail(value.trim()),
+		[]
+	);
+
+	const handlePasswordChange = useCallback(
+		(value: string) => setPassword(value),
+		[]
+	);
+
+	const handleLogin = useCallback(async () => {
+		const schema = Yup.object().shape({
+			email: Yup.string().required().email(),
+			password: Yup.string().required(),
+		});
+
+		try {
+			await schema.validate({ email, password });
+		} catch (err) {
+			showMessage({
+				message: strings.View_Login_InputText_EmptyText,
+				type: 'warning',
+			});
+			return;
+		}
+
+		try {
+			setIsLoging(true);
+
+			await auth().signInWithEmailAndPassword(email, password);
+
+			await Purchases.logIn(email);
+			await Purchases.setEmail(email);
+		} catch (err) {
+			if (err instanceof Error) {
+				showMessage({
+					message: err.message,
+					type: 'danger',
+				});
+			}
+		} finally {
+			setIsLoging(false);
+		}
+	}, [email, password]);
+
 	// Handle user state changes
-	function onAuthStateChanged(lUser) {
-		setUser(lUser);
-		if (initializing) setInitializing(false);
-		// console.log(lUser);
-	}
+	const onAuthStateChanged = useCallback(
+		(lUser: FirebaseAuthTypes.User | null) => {
+			if (lUser) {
+				pop();
+			}
+		},
+		[pop]
+	);
 
 	useEffect(() => {
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+
 		return subscriber; // unsubscribe on unmount
-	}, []);
-
-	const onAppleButtonPress = useCallback(async () => {
-		// Start the sign-in request
-		const appleAuthRequestResponse = await appleAuth.performRequest({
-			requestedOperation: appleAuth.Operation.LOGIN,
-			// As per the FAQ of react-native-apple-authentication, the name should come first in the following array.
-			// See: https://github.com/invertase/react-native-apple-authentication#faqs
-			requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
-		});
-
-		// Ensure Apple returned a user identityToken
-		if (!appleAuthRequestResponse.identityToken) {
-			throw new Error(
-				'Apple Sign-In failed - no identify token returned'
-			);
-		}
-
-		// Create a Firebase credential from the response
-		const { identityToken, nonce } = appleAuthRequestResponse;
-		const appleCredential = auth.AppleAuthProvider.credential(
-			identityToken,
-			nonce
-		);
-
-		// Sign the user in with the credential
-		return auth().signInWithCredential(appleCredential);
-	}, []);
-
-	const onGoogleButtonPress = useCallback(async () => {}, []);
+	}, [onAuthStateChanged]);
 
 	return (
 		<Container>
 			<Header title="Login" noDrawer />
 
 			<Content>
-				{user ? (
-					<LoginText>You are signed in</LoginText>
-				) : (
-					<ButtonsContainer>
-						<AppleButton onPress={onAppleButtonPress} />
-						<GoogleButton onPress={onGoogleButtonPress} />
-					</ButtonsContainer>
-				)}
+				<FormContainer>
+					<FormTitle>{strings.View_Login_FormLogin_Title}</FormTitle>
+					<LoginForm>
+						<Input
+							value={email}
+							onChangeText={handleEmailChange}
+							placeholder={
+								strings.View_Login_InputText_Email_Placeholder
+							}
+							autoCorrect={false}
+							autoCapitalize="none"
+							contentStyle={{ marginBottom: 10 }}
+						/>
+
+						<Input
+							value={password}
+							onChangeText={handlePasswordChange}
+							placeholder={
+								strings.View_Login_InputText_Password_Placeholder
+							}
+							autoCorrect={false}
+							autoCapitalize="none"
+							isPassword
+						/>
+
+						{/* <ForgotPasswordText
+								onPress={handleNavigateToForgotPass}
+							>
+								{strings.View_Login_Label_ForgotPassword}
+							</ForgotPasswordText> */}
+					</LoginForm>
+
+					<Button
+						title={strings.View_Login_Button_SignIn}
+						onPress={handleLogin}
+						isLoading={isLoging}
+					/>
+				</FormContainer>
 			</Content>
+
+			<Footer />
 		</Container>
 	);
 };

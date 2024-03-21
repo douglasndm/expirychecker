@@ -145,7 +145,7 @@ const Settings: React.FC = () => {
 
 					<Advanced />
 
-					{__DEV__ && <Account />}
+					{__DEV__ && userPreferences.isPRO && <Account />}
 				</SettingsContent>
 			</Content>
 		</Container>
