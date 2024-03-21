@@ -1,7 +1,8 @@
 const ProductSchema: Realm.ObjectSchema = {
 	name: 'Product',
-	primaryKey: 'id',
+	primaryKey: '_id',
 	properties: {
+		_id: { type: 'string', indexed: true },
 		id: { type: 'int', indexed: true },
 		name: 'string',
 		code: 'string?', // ? no final diz ao Realm que o campo pode ficar vazio

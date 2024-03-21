@@ -86,7 +86,7 @@ export async function getLoteById(loteId: number): Promise<IBatch> {
 }
 
 interface createLoteProps {
-	lote: Omit<IBatch, 'id'>;
+	lote: Omit<IBatch, 'id' | '_id'>;
 	productCode?: string;
 	productId?: number;
 	ignoreDuplicate?: boolean;
@@ -156,6 +156,7 @@ export async function createLote({
 		}
 
 		product[0].batches.push({
+			_id: String(nextLoteId),
 			id: nextLoteId,
 			name: lote.name,
 			exp_date: formatedDate,

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 
 import List from '@views/Category/List';
@@ -7,6 +8,8 @@ import { createCategory } from '@expirychecker/Utils/Categories/Create';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 
 const CategoryList: React.FC = () => {
+	const { addListener } = useNavigation();
+
 	const [isAdding, setIsAdding] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -46,8 +49,14 @@ const CategoryList: React.FC = () => {
 	);
 
 	useEffect(() => {
-		loadData();
-	}, []);
+		const unsubscribe = addListener('focus', () => {
+			loadData();
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, [addListener, loadData]);
 
 	return (
 		<List

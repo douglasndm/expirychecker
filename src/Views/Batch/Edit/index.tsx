@@ -129,6 +129,7 @@ const EditBatch: React.FC = () => {
 
 			await updateLote(
 				{
+					_id: String(loteId),
 					id: loteId,
 					name: lote,
 					amount: Number(amount),

@@ -24,6 +24,7 @@ async function createCategory(categoryName: string): Promise<ICategory> {
 	const categoryUuid = await UUID.getRandomUUID();
 
 	const category: ICategory = {
+		_id: categoryUuid,
 		id: categoryUuid,
 		name: categoryName.trim(),
 	};
