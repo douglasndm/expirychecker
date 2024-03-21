@@ -234,7 +234,7 @@
     "View_Store_Edit_Delete_Button_Confirm": "I'm sure",
     "View_Store_Edit_Alert_Success_StoreDeleted": "The store and it's products were deleted",
 
-    "View_Store_Edit_PageTitle": "Edit {STORE}",
+    "View_Store_Edit_PageTitle": "Edit store",
 
     "View_Success_BatchCreated": "Batch created",
     "View_Success_ProductCreated": "Product created",

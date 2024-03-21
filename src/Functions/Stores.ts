@@ -43,6 +43,7 @@ export async function createStore(storeName: string): Promise<IStore> {
 	const storeUUID = await UUID.getRandomUUID();
 
 	const store: IStore = {
+		_id: storeUUID,
 		id: storeUUID,
 		name: storeName,
 	};
