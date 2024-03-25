@@ -1,23 +1,19 @@
 interface ICategory {
-	_id: string;
 	id: string;
 	name: string;
 }
 
 interface IBrand {
-	_id: string;
 	id: string;
 	name: string;
 }
 
 interface IStore {
-	_id: string;
 	id: string;
 	name: string;
 }
 
 interface IBatch {
-	_id: string;
 	id: number;
 	name: string;
 	exp_date: Date;
@@ -34,7 +30,6 @@ interface IBatch {
 }
 
 interface IProduct {
-	_id: string;
 	id: number;
 	name: string;
 	code?: string;

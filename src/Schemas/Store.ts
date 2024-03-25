@@ -1,8 +1,7 @@
 const StoreSchema: Realm.ObjectSchema = {
 	name: 'Store',
-	primaryKey: '_id',
+	primaryKey: 'id',
 	properties: {
-		_id: { type: 'string', indexed: true },
 		id: { type: 'string', indexed: true },
 		name: 'string',
 	},

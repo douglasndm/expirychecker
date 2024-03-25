@@ -10,7 +10,6 @@ import {
 	deleteStore,
 } from '@expirychecker/Functions/Stores';
 
-import Loading from '@components/Loading';
 import Header from '@components/Header';
 import InputText from '@components/InputText';
 import Dialog from '@components/Dialog';
@@ -22,21 +21,17 @@ interface Props {
 }
 
 const Edit: React.FC = () => {
-	const { pop, popToTop } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-
 	const [storeName, setStoreName] = useState<string>('');
 	const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
+
+	const { pop, popToTop } =
+		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const route = useRoute();
 	const params = route.params as Props;
 
 	const loadData = useCallback(async () => {
 		try {
-			setIsLoading(true);
-
 			const store = await getStore(params.store_id);
 
 			if (store) {
@@ -48,17 +43,12 @@ const Edit: React.FC = () => {
 					message: err.message,
 					type: 'danger',
 				});
-		} finally {
-			setIsLoading(false);
 		}
 	}, [params.store_id]);
 
 	const handleUpdate = useCallback(async () => {
 		try {
-			setIsLoading(true);
-
 			await updateStore({
-				_id: params.store_id,
 				id: params.store_id,
 				name: storeName,
 			});
@@ -75,15 +65,11 @@ const Edit: React.FC = () => {
 					message: err.message,
 					type: 'danger',
 				});
-		} finally {
-			setIsLoading(false);
 		}
 	}, [params.store_id, pop, storeName]);
 
 	const handleDelete = useCallback(async () => {
 		try {
-			setIsLoading(true);
-
 			await deleteStore(params.store_id);
 
 			showMessage({
@@ -98,8 +84,6 @@ const Edit: React.FC = () => {
 					message: err.message,
 					type: 'danger',
 				});
-		} finally {
-			setIsLoading(false);
 		}
 	}, [params.store_id, popToTop]);
 
@@ -118,63 +102,46 @@ const Edit: React.FC = () => {
 	return (
 		<Container>
 			<Header
-				title={strings.View_Store_Edit_PageTitle}
+				title={strings.View_Store_Edit_PageTitle.replace(
+					'{STORE}',
+					storeName
+				)}
 				noDrawer
-				appBarActions={
-					isLoading
-						? []
-						: [
-								{
-									icon: 'content-save-outline',
-									onPress: handleUpdate,
-								},
-						  ]
-				}
-				moreMenuItems={
-					isLoading
-						? []
-						: [
-								{
-									title: strings.View_ProductDetails_Button_DeleteProduct,
-									leadingIcon: 'trash-can-outline',
-									onPress: handleSwitchShowDelete,
-								},
-						  ]
-				}
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: handleSwitchShowDelete,
+					},
+				]}
 			/>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<Content>
-						<InputText
-							placeholder={
-								strings.View_Store_Edit_Placeholder_StoreName
-							}
-							value={storeName}
-							onChangeText={handleTextChange}
-						/>
-					</Content>
+			<Content>
+				<InputText
+					placeholder={strings.View_Store_Edit_Placeholder_StoreName}
+					value={storeName}
+					onChangeText={handleTextChange}
+				/>
+			</Content>
 
-					<Dialog
-						visible={deleteComponentVisible}
-						onDismiss={() => setDeleteComponentVisible(false)}
-						onConfirm={handleDelete}
-						title={strings.View_Store_Edit_Delete_title}
-						description={strings.View_Store_Edit_Delete_Description.replace(
-							'{STORE}',
-							storeName
-						)}
-						confirmText={
-							strings.View_Store_Edit_Delete_Button_Confirm
-						}
-						cancelText={
-							strings.View_Store_Edit_Delete_Button_Cancel
-						}
-					/>
-				</>
-			)}
+			<Dialog
+				visible={deleteComponentVisible}
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDelete}
+				title={strings.View_Store_Edit_Delete_title}
+				description={strings.View_Store_Edit_Delete_Description.replace(
+					'{STORE}',
+					storeName
+				)}
+				confirmText={strings.View_Store_Edit_Delete_Button_Confirm}
+				cancelText={strings.View_Store_Edit_Delete_Button_Cancel}
+			/>
 		</Container>
 	);
 };

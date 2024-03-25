@@ -1,8 +1,7 @@
 const BatchSchema: Realm.ObjectSchema = {
 	name: 'Lote',
-	primaryKey: '_id',
+	primaryKey: 'id',
 	properties: {
-		_id: { type: 'string', indexed: true },
 		id: { type: 'int', indexed: true },
 		name: { type: 'string', mapTo: 'lote' },
 		exp_date: 'date',

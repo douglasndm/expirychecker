@@ -11,7 +11,6 @@ import {
 	deleteCategory,
 } from '@expirychecker/Functions/Category';
 
-import Loading from '@components/Loading';
 import Header from '@components/Header';
 import InputText from '@components/InputText';
 import Dialog from '@components/Dialog';
@@ -28,9 +27,7 @@ interface Props {
 }
 const Edit: React.FC = () => {
 	const { params } = useRoute();
-	const { reset, pop } = useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [name, setName] = useState<string>('');
 	const [errorName, setErrorName] = useState<string>('');
@@ -38,17 +35,6 @@ const Edit: React.FC = () => {
 	const [deleteComponentVisible, setDeleteComponentVisible] = useState(false);
 
 	const routeParams = params as Props;
-
-	const loadData = useCallback(async () => {
-		try {
-			setIsLoading(true);
-			const category = await getCategory(routeParams.id);
-
-			setName(category.name);
-		} finally {
-			setIsLoading(false);
-		}
-	}, [routeParams.id]);
 
 	const handleDeleteCategory = useCallback(async () => {
 		try {
@@ -77,8 +63,8 @@ const Edit: React.FC = () => {
 	}, [reset, routeParams.id]);
 
 	useEffect(() => {
-		loadData();
-	}, [loadData]);
+		getCategory(routeParams.id).then(response => setName(response.name));
+	}, [routeParams.id]);
 
 	const onNameChange = useCallback((value: string) => {
 		setErrorName('');
@@ -91,25 +77,25 @@ const Edit: React.FC = () => {
 			return;
 		}
 
-		try {
-			setIsLoading(true);
+		await updateCategory({
+			id: routeParams.id,
+			name,
+		});
 
-			await updateCategory({
-				_id: routeParams.id,
-				id: routeParams.id,
-				name,
-			});
+		showMessage({
+			message: strings.View_Category_Edit_SuccessText,
+			type: 'info',
+		});
 
-			showMessage({
-				message: strings.View_Category_Edit_SuccessText,
-				type: 'info',
-			});
-
-			pop();
-		} finally {
-			setIsLoading(false);
-		}
-	}, [name, routeParams.id, pop]);
+		reset({
+			routes: [
+				{ name: 'Home' },
+				{
+					name: 'ListCategory',
+				},
+			],
+		});
+	}, [routeParams.id, name, reset]);
 
 	const switchShowDeleteModal = useCallback(() => {
 		setDeleteComponentVisible(prevState => !prevState);
@@ -120,64 +106,42 @@ const Edit: React.FC = () => {
 			<Header
 				title={strings.View_Category_Edit_PageTitle}
 				noDrawer
-				appBarActions={
-					isLoading
-						? []
-						: [
-								{
-									icon: 'content-save-outline',
-									onPress: handleUpdate,
-								},
-						  ]
-				}
-				moreMenuItems={
-					isLoading
-						? []
-						: [
-								{
-									title: strings.View_ProductDetails_Button_DeleteProduct,
-									leadingIcon: 'trash-can-outline',
-									onPress: switchShowDeleteModal,
-								},
-						  ]
-				}
+				appBarActions={[
+					{
+						icon: 'content-save-outline',
+						onPress: handleUpdate,
+					},
+				]}
+				moreMenuItems={[
+					{
+						title: strings.View_ProductDetails_Button_DeleteProduct,
+						leadingIcon: 'trash-can-outline',
+						onPress: switchShowDeleteModal,
+					},
+				]}
 			/>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<Content>
-						<InputTextContainer hasError={!!errorName}>
-							<InputText
-								placeholder={
-									strings.View_Category_Edit_InputNamePlaceholder
-								}
-								value={name}
-								onChangeText={onNameChange}
-							/>
-						</InputTextContainer>
-						{!!errorName && (
-							<InputTextTip>{errorName}</InputTextTip>
-						)}
-					</Content>
-					<Dialog
-						visible={deleteComponentVisible}
-						onDismiss={() => setDeleteComponentVisible(false)}
-						onConfirm={handleDeleteCategory}
-						title={strings.View_Category_Edit_DeleteModal_Title}
-						description={
-							strings.View_Category_Edit_DeleteModal_Message
+			<Content>
+				<InputTextContainer hasError={!!errorName}>
+					<InputText
+						placeholder={
+							strings.View_Category_Edit_InputNamePlaceholder
 						}
-						confirmText={
-							strings.View_Category_Edit_DeleteModal_Confirm
-						}
-						cancelText={
-							strings.View_Category_Edit_DeleteModal_Cancel
-						}
+						value={name}
+						onChangeText={onNameChange}
 					/>
-				</>
-			)}
+				</InputTextContainer>
+				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+			</Content>
+			<Dialog
+				visible={deleteComponentVisible}
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDeleteCategory}
+				title={strings.View_Category_Edit_DeleteModal_Title}
+				description={strings.View_Category_Edit_DeleteModal_Message}
+				confirmText={strings.View_Category_Edit_DeleteModal_Confirm}
+				cancelText={strings.View_Category_Edit_DeleteModal_Cancel}
+			/>
 		</Container>
 	);
 };

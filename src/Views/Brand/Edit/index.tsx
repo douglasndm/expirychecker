@@ -27,7 +27,7 @@ interface Props {
 }
 const Edit: React.FC = () => {
 	const { params } = useRoute();
-	const { reset, pop } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -71,24 +71,25 @@ const Edit: React.FC = () => {
 			return;
 		}
 
-		try {
-			setIsLoading(true);
-			await updateBrand({
-				_id: routeParams.brand_id,
-				id: routeParams.brand_id,
-				name,
-			});
+		await updateBrand({
+			id: routeParams.brand_id,
+			name,
+		});
 
-			showMessage({
-				message: strings.View_Brand_Edit_SuccessText,
-				type: 'info',
-			});
+		showMessage({
+			message: strings.View_Brand_Edit_SuccessText,
+			type: 'info',
+		});
 
-			pop();
-		} finally {
-			setIsLoading(false);
-		}
-	}, [name, routeParams.brand_id, pop]);
+		reset({
+			routes: [
+				{ name: 'Home' },
+				{
+					name: 'BrandList',
+				},
+			],
+		});
+	}, [name, routeParams.brand_id, reset]);
 
 	const handleDeleteBrand = useCallback(async () => {
 		try {
@@ -122,7 +123,9 @@ const Edit: React.FC = () => {
 		setDeleteComponentVisible(prevState => !prevState);
 	}, []);
 
-	return (
+	return isLoading ? (
+		<Loading />
+	) : (
 		<Container>
 			<Header
 				title={strings.View_Brand_Edit_PageTitle}
@@ -142,39 +145,27 @@ const Edit: React.FC = () => {
 				]}
 			/>
 
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<Content>
-						<InputTextContainer hasError={!!errorName}>
-							<InputText
-								placeholder={
-									strings.View_Brand_Edit_InputNamePlaceholder
-								}
-								value={name}
-								onChangeText={onNameChange}
-							/>
-						</InputTextContainer>
-						{!!errorName && (
-							<InputTextTip>{errorName}</InputTextTip>
-						)}
-					</Content>
-					<Dialog
-						visible={deleteComponentVisible}
-						onDismiss={() => setDeleteComponentVisible(false)}
-						onConfirm={handleDeleteBrand}
-						title={strings.View_Brand_Edit_DeleteModal_Title}
-						description={
-							strings.View_Brand_Edit_DeleteModal_Message
+			<Content>
+				<InputTextContainer hasError={!!errorName}>
+					<InputText
+						placeholder={
+							strings.View_Brand_Edit_InputNamePlaceholder
 						}
-						confirmText={
-							strings.View_Brand_Edit_DeleteModal_Confirm
-						}
-						cancelText={strings.View_Brand_Edit_DeleteModal_Cancel}
+						value={name}
+						onChangeText={onNameChange}
 					/>
-				</>
-			)}
+				</InputTextContainer>
+				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
+			</Content>
+			<Dialog
+				visible={deleteComponentVisible}
+				onDismiss={() => setDeleteComponentVisible(false)}
+				onConfirm={handleDeleteBrand}
+				title={strings.View_Brand_Edit_DeleteModal_Title}
+				description={strings.View_Brand_Edit_DeleteModal_Message}
+				confirmText={strings.View_Brand_Edit_DeleteModal_Confirm}
+				cancelText={strings.View_Brand_Edit_DeleteModal_Cancel}
+			/>
 		</Container>
 	);
 };

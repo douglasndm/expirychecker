@@ -122,14 +122,14 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				await movePicturesToImagesDir(photoPath);
 			}
 
-			const newLote: Omit<IBatch, 'id' | '_id'> = {
+			const newLote: Omit<IBatch, 'id'> = {
 				name: lote,
 				exp_date: expDate,
 				amount: Number(amount),
 				price: price || undefined,
 				status: 'Não tratado',
 			};
-			const newProduct: Omit<IProduct, 'id' | '_id'> = {
+			const newProduct: Omit<IProduct, 'id'> = {
 				name,
 				code: code?.trim(),
 				brand: selectedBrand === 'null' ? undefined : selectedBrand,
