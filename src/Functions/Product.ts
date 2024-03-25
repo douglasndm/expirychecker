@@ -94,7 +94,6 @@ export async function getProductById(productId: number): Promise<IProduct> {
 	}
 
 	const prod: IProduct = {
-		_id: result._id,
 		id: result.id,
 		name: result.name,
 		code: result.code,
@@ -127,7 +126,7 @@ export async function getProductById(productId: number): Promise<IProduct> {
 }
 
 interface createProductProps {
-	product: Omit<IProduct, 'id' | '_id'>;
+	product: Omit<IProduct, 'id'>;
 }
 
 export async function createProduct({
@@ -172,7 +171,6 @@ export async function createProduct({
 
 	realm.write(async () => {
 		realm.create('Product', {
-			_id: String(nextProductId),
 			id: nextProductId,
 			name: product.name,
 			code: product.code,
@@ -200,7 +198,6 @@ export async function createProduct({
 }
 
 interface updateProductProps {
-	_id: string;
 	id: number;
 	name?: string;
 	code?: string;
