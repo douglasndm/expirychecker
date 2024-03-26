@@ -1,3 +1,4 @@
+import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import NetInfo from '@react-native-community/netinfo';
 import { showMessage } from 'react-native-flash-message';
@@ -52,6 +53,7 @@ export async function isSubscriptionActive(): Promise<boolean> {
 
 		if (typeof purchaserInfo.entitlements.active.pro !== 'undefined') {
 			await setEnableProVersion(true);
+			await firestore().enableNetwork();
 			return true;
 		}
 		if (typeof purchaserInfo.entitlements.active.noads !== 'undefined') {
@@ -60,6 +62,7 @@ export async function isSubscriptionActive(): Promise<boolean> {
 			await setDisableAds(false);
 		}
 		await setEnableProVersion(false);
+		await firestore().disableNetwork();
 		return false;
 	} catch (err) {
 		if (err instanceof Error) {
