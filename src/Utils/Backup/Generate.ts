@@ -11,7 +11,7 @@ import EnvConfig from 'react-native-config';
 
 import strings from '@expirychecker/Locales';
 
-import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';

@@ -22,7 +22,6 @@ import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
 import { getProductById } from '@expirychecker/Functions/Product';
-import { getStore } from '@expirychecker/Functions/Stores';
 import { deleteManyBatches } from '@expirychecker/Utils/Batches';
 import { getImagePath } from '@utils/Images/GetImagePath';
 import { saveLocally } from '@utils/Images/SaveLocally';
@@ -70,7 +69,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 
 	const [product, setProduct] = useState<IProduct>();
 	const [image, setImage] = useState<string | undefined>();
-	const [storeName, setStoreName] = useState<string | null>();
 
 	const [lotesTratados, setLotesTratados] = useState<Array<IBatch>>([]);
 	const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
@@ -143,14 +141,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 			setIsLoading(false);
 		}
 	}, [productId, reset, isConnected, goBack]);
-
-	useEffect(() => {
-		if (product?.store) {
-			getStore(product.store).then(response =>
-				setStoreName(response?.name)
-			);
-		}
-	}, [product]);
 
 	const addNewLote = useCallback(() => {
 		push('AddBatch', { productId });
@@ -227,14 +217,16 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 										</CategoryDetailsText>
 									</CategoryDetails>
 
-									<BatchTable
-										batches={lotesNaoTratados}
-										product={product}
-										onDeleteMany={onDeleteManyBathes}
-										daysToBeNext={
-											userPreferences.howManyDaysToBeNextToExpire
-										}
-									/>
+									{product && (
+										<BatchTable
+											batches={lotesNaoTratados}
+											product={product}
+											onDeleteMany={onDeleteManyBathes}
+											daysToBeNext={
+												userPreferences.howManyDaysToBeNextToExpire
+											}
+										/>
+									)}
 								</TableContainer>
 							)}
 
@@ -253,11 +245,13 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 										</CategoryDetailsText>
 									</CategoryDetails>
 
-									<BatchTable
-										batches={lotesTratados}
-										product={product}
-										onDeleteMany={onDeleteManyBathes}
-									/>
+									{product && (
+										<BatchTable
+											batches={lotesTratados}
+											product={product}
+											onDeleteMany={onDeleteManyBathes}
+										/>
+									)}
 								</>
 							)}
 						</PageContent>

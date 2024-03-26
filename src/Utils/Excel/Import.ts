@@ -5,7 +5,8 @@ import { parseISO } from 'date-fns';
 
 import strings from '@expirychecker/Locales';
 
-import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
+import { createBrand } from '@expirychecker/Utils/Brands/Create';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { createCategory } from '@expirychecker/Utils/Categories/Create';

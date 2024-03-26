@@ -10,6 +10,8 @@ import '@expirychecker/Locales';
 import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
 
+import '@expirychecker/Utils/Database/Migration/RealmToFirestore';
+
 import '@services/Firebase/AppCheck';
 import '@services/Firebase/RemoteConfig';
 
