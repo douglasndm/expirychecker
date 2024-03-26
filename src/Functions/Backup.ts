@@ -12,7 +12,7 @@ import EnvConfig from 'react-native-config';
 
 import strings from '@expirychecker/Locales';
 
-import { saveManyBrands } from '@expirychecker/Utils/Brands';
+import { saveManyBrands } from '@expirychecker/Utils/Brands/SaveMany';
 import { saveManyCategories } from '@expirychecker/Utils/Categories/SaveMany';
 
 import { saveMany } from './Products';

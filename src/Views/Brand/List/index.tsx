@@ -1,11 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import ListView from '@views/Brand/List';
 
-import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
+import { createBrand } from '@expirychecker/Utils/Brands/Create';
 
 const BrandList: React.FC = () => {
+	const { addListener } = useNavigation<StackNavigationProp<RoutesParams>>();
+
 	const [isAdding, setIsAdding] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -45,8 +50,10 @@ const BrandList: React.FC = () => {
 	);
 
 	useEffect(() => {
-		loadData();
-	}, [loadData]);
+		const unsubscribe = addListener('focus', loadData);
+
+		return () => unsubscribe();
+	}, [addListener, loadData]);
 
 	return (
 		<ListView

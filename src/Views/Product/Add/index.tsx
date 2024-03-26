@@ -69,7 +69,7 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const { brand, category, store, code: routeCode } = route.params;
 
 	const InterstitialRef = useRef<IInterstitialRef>();
-	const BrandsPickerRef = useRef<IBrandPickerRef>();
+	const BrandsPickerRef = useRef<IBrandPickerRef>(null);
 	const BarCodeInputRef = useRef<InputsRequestRef>(null);
 
 	const { userPreferences } = useContext(PreferencesContext);

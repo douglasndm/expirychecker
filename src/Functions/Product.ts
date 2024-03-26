@@ -5,7 +5,7 @@ import realm from '@expirychecker/Services/Realm';
 
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
-import { getBrand } from '@expirychecker/Utils/Brands';
+import { getBrand } from '@expirychecker/Utils/Brands/Get';
 import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
 import { getCategory } from './Category';
 import { getStore } from './Stores';
@@ -212,19 +212,33 @@ interface updateProductProps {
 export async function updateProduct(
 	product: updateProductProps
 ): Promise<void> {
+	let brand: IBrand | string | null = null;
+	let store: IStore | string | null = null;
+
+	if (product.brand) {
+		if (typeof product.brand === 'string') {
+			brand = product.brand;
+		} else if (typeof product.brand === 'object') {
+			brand = product.brand.id;
+		}
+	}
+
+	if (product.store) {
+		if (typeof product.store === 'string') {
+			store = product.store;
+		} else if (typeof product.store === 'object') {
+			store = product.store.id;
+		}
+	}
+
 	realm.write(() => {
 		const prod = {
 			...product,
-			brand:
-				typeof product.brand === 'string'
-					? product.brand
-					: product.brand?.id,
-			store:
-				typeof product.store === 'string'
-					? product.store
-					: product.store?.id,
+			brand,
+			store,
 			updated_at: new Date(),
 		};
+
 		realm.create('Product', prod, UpdateMode.Modified);
 	});
 }

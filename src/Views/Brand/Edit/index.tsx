@@ -4,11 +4,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
-import {
-	deleteBrand,
-	getBrand,
-	updateBrand,
-} from '@expirychecker/Utils/Brands';
+
+import { getBrand } from '@expirychecker/Utils/Brands/Get';
+import { updateBrand } from '@expirychecker/Utils/Brands/Update';
+import { deleteBrand } from '@expirychecker/Utils/Brands/Delete';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -27,7 +26,7 @@ interface Props {
 }
 const Edit: React.FC = () => {
 	const { params } = useRoute();
-	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
+	const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -67,7 +66,7 @@ const Edit: React.FC = () => {
 
 	const handleUpdate = useCallback(async () => {
 		if (!name) {
-			setErrorName('Digite o nome da marca');
+			setErrorName(strings.View_Brand_Edit_ErrorEmtpyName);
 			return;
 		}
 
@@ -81,35 +80,19 @@ const Edit: React.FC = () => {
 			type: 'info',
 		});
 
-		reset({
-			routes: [
-				{ name: 'Home' },
-				{
-					name: 'BrandList',
-				},
-			],
-		});
-	}, [name, routeParams.brand_id, reset]);
+		pop();
+	}, [name, routeParams.brand_id, pop]);
 
 	const handleDeleteBrand = useCallback(async () => {
 		try {
-			await deleteBrand({
-				brand_id: routeParams.brand_id,
-			});
+			await deleteBrand(routeParams.brand_id);
 
 			showMessage({
 				message: strings.View_Brand_Success_OnDelete,
 				type: 'info',
 			});
 
-			reset({
-				routes: [
-					{ name: 'Home' },
-					{
-						name: 'BrandList',
-					},
-				],
-			});
+			pop(2);
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -117,55 +100,74 @@ const Edit: React.FC = () => {
 					type: 'danger',
 				});
 		}
-	}, [reset, routeParams.brand_id]);
+	}, [pop, routeParams.brand_id]);
 
 	const switchShowDeleteModal = useCallback(() => {
 		setDeleteComponentVisible(prevState => !prevState);
 	}, []);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header
 				title={strings.View_Brand_Edit_PageTitle}
 				noDrawer
-				appBarActions={[
-					{
-						icon: 'content-save-outline',
-						onPress: handleUpdate,
-					},
-				]}
-				moreMenuItems={[
-					{
-						title: strings.View_ProductDetails_Button_DeleteProduct,
-						leadingIcon: 'trash-can-outline',
-						onPress: switchShowDeleteModal,
-					},
-				]}
+				appBarActions={
+					isLoading
+						? []
+						: [
+								{
+									icon: 'content-save-outline',
+									onPress: handleUpdate,
+								},
+						  ]
+				}
+				moreMenuItems={
+					isLoading
+						? []
+						: [
+								{
+									title: strings.View_ProductDetails_Button_DeleteProduct,
+									leadingIcon: 'trash-can-outline',
+									onPress: switchShowDeleteModal,
+								},
+						  ]
+				}
 			/>
 
-			<Content>
-				<InputTextContainer hasError={!!errorName}>
-					<InputText
-						placeholder={
-							strings.View_Brand_Edit_InputNamePlaceholder
+			{isLoading ? (
+				<Loading />
+			) : (
+				<>
+					<Content>
+						<InputTextContainer hasError={!!errorName}>
+							<InputText
+								placeholder={
+									strings.View_Brand_Edit_InputNamePlaceholder
+								}
+								value={name}
+								onChangeText={onNameChange}
+							/>
+						</InputTextContainer>
+						{!!errorName && (
+							<InputTextTip>{errorName}</InputTextTip>
+						)}
+					</Content>
+					<Dialog
+						visible={deleteComponentVisible}
+						onDismiss={switchShowDeleteModal}
+						onCancel={switchShowDeleteModal}
+						onConfirm={handleDeleteBrand}
+						title={strings.View_Brand_Edit_DeleteModal_Title}
+						description={
+							strings.View_Brand_Edit_DeleteModal_Message
 						}
-						value={name}
-						onChangeText={onNameChange}
+						confirmText={
+							strings.View_Brand_Edit_DeleteModal_Confirm
+						}
+						cancelText={strings.View_Brand_Edit_DeleteModal_Cancel}
 					/>
-				</InputTextContainer>
-				{!!errorName && <InputTextTip>{errorName}</InputTextTip>}
-			</Content>
-			<Dialog
-				visible={deleteComponentVisible}
-				onDismiss={() => setDeleteComponentVisible(false)}
-				onConfirm={handleDeleteBrand}
-				title={strings.View_Brand_Edit_DeleteModal_Title}
-				description={strings.View_Brand_Edit_DeleteModal_Message}
-				confirmText={strings.View_Brand_Edit_DeleteModal_Confirm}
-				cancelText={strings.View_Brand_Edit_DeleteModal_Cancel}
-			/>
+				</>
+			)}
 		</Container>
 	);
 };

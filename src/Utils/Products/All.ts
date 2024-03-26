@@ -10,7 +10,7 @@ import {
 	removeTreatedBatchesFromList,
 } from './Helpers';
 import { getAllCategories } from '../Categories/All';
-import { getAllBrands } from '../Brands';
+import { getAllBrands } from '../Brands/All';
 import { getAllStores } from '../Stores/Find';
 
 interface getAllProductsProps {
