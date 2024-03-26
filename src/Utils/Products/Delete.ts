@@ -1,4 +1,6 @@
 import { exists, unlink, DocumentDirectoryPath } from 'react-native-fs';
+import Auth from '@react-native-firebase/auth';
+import Firestore from '@react-native-firebase/firestore';
 
 import realm from '@expirychecker/Services/Realm';
 
@@ -6,6 +8,15 @@ async function deleteAllProducts(): Promise<void> {
 	realm.write(() => {
 		realm.deleteAll();
 	});
+
+	const user = Auth().currentUser;
+
+	if (user && user.email) {
+		const usersCollection = Firestore().collection('users');
+		const userDoc = usersCollection.doc(user.email);
+
+		userDoc.delete();
+	}
 
 	const backupDir = `${DocumentDirectoryPath}/backup`;
 	const imagesDir = `${DocumentDirectoryPath}/images`;
