@@ -208,10 +208,6 @@
     "View_Settings_Advanced_DeleteAll_Description": "Apagar completamente todos os dados do aplicativo. Isso inclui produtos, categorias, lojas e marcas.",
     "View_Settings_Advanced_DeleteAll_Button": "Apagar todos os dados",
 
-    "View_Settings_Advanced_DeleteAll_Dialog1_Title": "Você tem certeza?",
-    "View_Settings_Advanced_DeleteAll_Dialog1_Description": "Isto irá apagar todos os dados incluindo todos os produtos, categorias, lojas e marcas. Isso não pode ser desfeito. É recomendado que tenha feito backup dos seus dados antes",
-    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Confirm": "Apagar todos os dados",
-    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Cancel": "Não apagar",
     "View_Settings_Advanced_DeleteAll_Dialog2_Title": "Você tem ABSULUTA CERTEZA?",
     "View_Settings_Advanced_DeleteAll_Dialog2_Description": "Este é o último aviso! Está apagando todos os dados do aplicativo. Isso não pode ser desfeito. É recomendado que tenha feito backup dos seus dados antes.",
     "View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm": "Deletar tudo",
