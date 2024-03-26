@@ -1,35 +1,27 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import realm from '@expirychecker/Services/Realm';
 
 import { getCollectionPath } from './Collection';
 
-function getAllBrandsFromRealm(): Array<IBrand> {
+function getAllBrandsFromRealm(): IBrand[] {
 	return realm.objects<IBrand>('Brand').slice();
 }
 
-async function getAllBrands(): Promise<Array<IBrand>> {
-	const migratedBrands = await AsyncStorage.getItem('migratedBrands');
+async function getAllBrands(): Promise<IBrand[]> {
+	const brands: IBrand[] = [];
 
-	if (migratedBrands) {
-		const brands: IBrand[] = [];
+	const brandsCollection = getCollectionPath();
 
-		const brandsCollection = getCollectionPath();
-
-		if (!brandsCollection) {
-			return getAllBrandsFromRealm();
-		}
-
-		const brandsQuerySnapshot = await brandsCollection.get();
-
-		brandsQuerySnapshot.forEach(documentSnapshot => {
-			brands.push(documentSnapshot.data() as IBrand);
-		});
-
-		return brands;
+	if (!brandsCollection) {
+		return getAllBrandsFromRealm();
 	}
 
-	return getAllBrandsFromRealm();
+	const brandsQuerySnapshot = await brandsCollection.get();
+
+	brandsQuerySnapshot.forEach(documentSnapshot => {
+		brands.push(documentSnapshot.data() as IBrand);
+	});
+
+	return brands;
 }
 
 export { getAllBrands };

@@ -5,6 +5,8 @@ import { parseISO } from 'date-fns';
 
 import strings from '@expirychecker/Locales';
 
+import { captureException } from '@services/ExceptionsHandler';
+
 import { getAllBrands } from '@expirychecker/Utils/Brands/All';
 import { createBrand } from '@expirychecker/Utils/Brands/Create';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
@@ -66,6 +68,14 @@ async function importExcel(): Promise<void> {
 
 	// caso a extensão do arquivo não for cvbf lança um erro e sai da função
 	if (extension !== 'xlsx') {
+		captureException(
+			new Error(strings.Function_Import_Error_InvalidExtesion),
+			{
+				extra: {
+					file,
+				},
+			}
+		);
 		throw new Error(strings.Function_Import_Error_InvalidExtesion);
 	}
 
