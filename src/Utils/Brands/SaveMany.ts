@@ -15,33 +15,31 @@ async function saveManyBrands(brandsToSave: Array<IBrand>): Promise<void> {
 	if (migratedBrands) {
 		const brandsCollection = getCollectionPath();
 
-		if (!brandsCollection) {
-			throw new Error('Brands collection not found');
-		}
+		if (brandsCollection) {
+			const brandsThatNotExist = brandsToSave.filter(brand => {
+				const alreadyExists = brands.find(
+					b => b.name.toLowerCase() === brand.name.toLowerCase()
+				);
 
-		const brandsThatNotExist = brandsToSave.filter(brand => {
-			const alreadyExists = brands.find(
-				b => b.name.toLowerCase() === brand.name.toLowerCase()
-			);
-
-			return !alreadyExists;
-		});
-		const batch = firestore().batch();
-
-		brandsThatNotExist.forEach(async brand => {
-			let { id } = brand;
-
-			if (!id) {
-				id = await UUID.getRandomUUID();
-			}
-
-			batch.set(brandsCollection.doc(id), {
-				id,
-				name: brand.name,
+				return !alreadyExists;
 			});
-		});
+			const batch = firestore().batch();
 
-		await batch.commit();
+			brandsThatNotExist.forEach(async brand => {
+				let { id } = brand;
+
+				if (!id) {
+					id = await UUID.getRandomUUID();
+				}
+
+				batch.set(brandsCollection.doc(id), {
+					id,
+					name: brand.name,
+				});
+			});
+
+			await batch.commit();
+		}
 	}
 
 	realm.write(() => {

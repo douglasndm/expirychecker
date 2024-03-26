@@ -9,6 +9,12 @@ import strings from '@expirychecker/Locales';
 import { getCollectionPath } from './Collection';
 import { getAllBrands } from './All';
 
+function createBrandOnRealm(brand: IBrand): void {
+	realm.write(() => {
+		realm.create<IBrand>('Brand', brand, UpdateMode.Never);
+	});
+}
+
 async function createBrand(brandName: string): Promise<IBrand> {
 	const brands = await getAllBrands();
 
@@ -34,19 +40,15 @@ async function createBrand(brandName: string): Promise<IBrand> {
 	if (migratedBrands) {
 		const brandsCollection = getCollectionPath();
 
-		if (!brandsCollection) {
-			throw new Error('Brands collection not found');
+		if (brandsCollection) {
+			await brandsCollection.add({
+				id: brand.id,
+				name: brand.name,
+			});
 		}
-
-		await brandsCollection.add({
-			id: brand.id,
-			name: brand.name,
-		});
 	}
 
-	realm.write(() => {
-		realm.create<IBrand>('Brand', brand, UpdateMode.Never);
-	});
+	createBrandOnRealm(brand);
 
 	return brand;
 }

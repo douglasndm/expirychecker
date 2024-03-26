@@ -4,6 +4,10 @@ import realm from '@expirychecker/Services/Realm';
 
 import { getCollectionPath } from './Collection';
 
+function getAllBrandsFromRealm(): Array<IBrand> {
+	return realm.objects<IBrand>('Brand').slice();
+}
+
 async function getAllBrands(): Promise<Array<IBrand>> {
 	const migratedBrands = await AsyncStorage.getItem('migratedBrands');
 
@@ -13,7 +17,7 @@ async function getAllBrands(): Promise<Array<IBrand>> {
 		const brandsCollection = getCollectionPath();
 
 		if (!brandsCollection) {
-			throw new Error('Brands collection not found');
+			return getAllBrandsFromRealm();
 		}
 
 		const brandsQuerySnapshot = await brandsCollection.get();
@@ -25,9 +29,7 @@ async function getAllBrands(): Promise<Array<IBrand>> {
 		return brands;
 	}
 
-	const realmResponse = realm.objects<IBrand>('Brand').slice();
-
-	return realmResponse;
+	return getAllBrandsFromRealm();
 }
 
 export { getAllBrands };

@@ -15,7 +15,7 @@ import { exportToExcel, generateEmptyExcel } from '@utils/Excel/Export';
 import { exportProductsToXML } from '@utils/IO/Export/XML';
 
 import { importExcel } from '@expirychecker/Utils/Excel/Import';
-import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { exportBackup } from '@expirychecker/Utils/Backup/Export';

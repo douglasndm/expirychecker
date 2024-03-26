@@ -10,19 +10,17 @@ async function deleteBrand(brand_id: string): Promise<void> {
 	if (migratedBrands) {
 		const brandsCollection = getCollectionPath();
 
-		if (!brandsCollection) {
-			throw new Error('Brands collection not found');
+		if (brandsCollection) {
+			const findedBrand = await brandsCollection
+				.where('id', '==', brand_id)
+				.get();
+
+			if (findedBrand.docs.length <= 0) {
+				throw new Error('Brand not found');
+			}
+
+			findedBrand.docs[0].ref.delete();
 		}
-
-		const findedBrand = await brandsCollection
-			.where('id', '==', brand_id)
-			.get();
-
-		if (findedBrand.docs.length <= 0) {
-			throw new Error('Brand not found');
-		}
-
-		findedBrand.docs[0].ref.delete();
 	}
 
 	realm.write(() => {
