@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import UUID from 'react-native-uuid-generator';
 
@@ -10,36 +9,32 @@ import { getCollectionPath } from './Collection';
 async function saveManyBrands(brandsToSave: Array<IBrand>): Promise<void> {
 	const brands = await getAllBrands();
 
-	const migratedBrands = await AsyncStorage.getItem('migratedBrands');
+	const brandsCollection = getCollectionPath();
 
-	if (migratedBrands) {
-		const brandsCollection = getCollectionPath();
+	if (brandsCollection) {
+		const brandsThatNotExist = brandsToSave.filter(brand => {
+			const alreadyExists = brands.find(
+				b => b.name.toLowerCase() === brand.name.toLowerCase()
+			);
 
-		if (brandsCollection) {
-			const brandsThatNotExist = brandsToSave.filter(brand => {
-				const alreadyExists = brands.find(
-					b => b.name.toLowerCase() === brand.name.toLowerCase()
-				);
+			return !alreadyExists;
+		});
+		const batch = firestore().batch();
 
-				return !alreadyExists;
+		brandsThatNotExist.forEach(async brand => {
+			let { id } = brand;
+
+			if (!id) {
+				id = await UUID.getRandomUUID();
+			}
+
+			batch.set(brandsCollection.doc(id), {
+				id,
+				name: brand.name,
 			});
-			const batch = firestore().batch();
+		});
 
-			brandsThatNotExist.forEach(async brand => {
-				let { id } = brand;
-
-				if (!id) {
-					id = await UUID.getRandomUUID();
-				}
-
-				batch.set(brandsCollection.doc(id), {
-					id,
-					name: brand.name,
-				});
-			});
-
-			await batch.commit();
-		}
+		await batch.commit();
 	}
 
 	realm.write(() => {

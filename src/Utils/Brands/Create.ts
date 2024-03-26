@@ -1,5 +1,4 @@
 import { UpdateMode } from 'realm';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import UUID from 'react-native-uuid-generator';
 
 import realm from '@expirychecker/Services/Realm';
@@ -35,17 +34,13 @@ async function createBrand(brandName: string): Promise<IBrand> {
 		name: brandName.trim(),
 	};
 
-	const migratedBrands = await AsyncStorage.getItem('migratedBrands');
+	const brandsCollection = getCollectionPath();
 
-	if (migratedBrands) {
-		const brandsCollection = getCollectionPath();
-
-		if (brandsCollection) {
-			await brandsCollection.add({
-				id: brand.id,
-				name: brand.name,
-			});
-		}
+	if (brandsCollection) {
+		await brandsCollection.doc(brand.id).set({
+			id: brand.id,
+			name: brand.name,
+		});
 	}
 
 	createBrandOnRealm(brand);
