@@ -3,6 +3,7 @@ import Auth from '@react-native-firebase/auth';
 import Firestore from '@react-native-firebase/firestore';
 
 import realm from '@expirychecker/Services/Realm';
+import api from '@shared/Services/API';
 
 async function deleteAllProducts(): Promise<void> {
 	realm.write(() => {
@@ -16,6 +17,8 @@ async function deleteAllProducts(): Promise<void> {
 		const userDoc = usersCollection.doc(user.email);
 
 		userDoc.delete();
+
+		await api.delete(`/baseApp/allData`);
 	}
 
 	const backupDir = `${DocumentDirectoryPath}/backup`;
