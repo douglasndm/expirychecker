@@ -2417,7 +2417,7 @@ DEPENDENCIES:
   - RNGoogleMobileAds (from `../../../node_modules/react-native-google-mobile-ads`)
   - RNLocalize (from `../../../node_modules/react-native-localize`)
   - RNPaywalls (from `../../../node_modules/react-native-purchases-ui`)
-  - RNPermissions (from `../../../node_modules/react-native-permissions`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNPurchases (from `../../../node_modules/react-native-purchases`)
   - RNReanimated (from `../../../node_modules/react-native-reanimated`)
   - RNScreens (from `../../../node_modules/react-native-screens`)
@@ -2657,7 +2657,7 @@ EXTERNAL SOURCES:
   RNPaywalls:
     :path: "../../../node_modules/react-native-purchases-ui"
   RNPermissions:
-    :path: "../../../node_modules/react-native-permissions"
+    :path: "../node_modules/react-native-permissions"
   RNPurchases:
     :path: "../../../node_modules/react-native-purchases"
   RNReanimated:
