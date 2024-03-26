@@ -11,19 +11,17 @@ async function updateBrand(brand: IBrand): Promise<void> {
 	if (migratedBrands) {
 		const brandsCollection = getCollectionPath();
 
-		if (!brandsCollection) {
-			throw new Error('Brands collection not found');
+		if (brandsCollection) {
+			const findedBrand = await brandsCollection
+				.where('id', '==', brand.id)
+				.get();
+
+			if (findedBrand.docs.length === 0) {
+				throw new Error('Brand not found');
+			}
+
+			await findedBrand.docs[0].ref.set(brand, { merge: true });
 		}
-
-		const findedBrand = await brandsCollection
-			.where('id', '==', brand.id)
-			.get();
-
-		if (findedBrand.docs.length === 0) {
-			throw new Error('Brand not found');
-		}
-
-		await findedBrand.docs[0].ref.set(brand, { merge: true });
 	}
 	realm.write(() => {
 		realm.create('Brand', brand, UpdateMode.Modified);

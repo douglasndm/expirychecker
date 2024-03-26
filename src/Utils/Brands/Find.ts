@@ -4,14 +4,18 @@ import realm from '@expirychecker/Services/Realm';
 
 import { getCollectionPath } from './Collection';
 
-async function findBrandByName(name: string): Promise<IBrand> {
+function findBrandByNameOnRealm(name: string): IBrand | undefined {
+	return realm.objects<IBrand>('Brand').filtered(`name ==[c] "${name}"`)[0]; // ==[c] makes the search insensitive
+}
+
+async function findBrandByName(name: string): Promise<IBrand | undefined> {
 	const migratedBrands = await AsyncStorage.getItem('migratedBrands');
 
 	if (migratedBrands) {
 		const brandsCollection = getCollectionPath();
 
 		if (!brandsCollection) {
-			throw new Error('Brands collection not found');
+			return findBrandByNameOnRealm(name);
 		}
 
 		const brand = await brandsCollection.where('name', '==', name).get();
@@ -19,11 +23,7 @@ async function findBrandByName(name: string): Promise<IBrand> {
 		return brand.docs[0].data() as IBrand;
 	}
 
-	const realmResponse = realm
-		.objects<IBrand>('Brand')
-		.filtered(`name ==[c] "${name}"`)[0]; // ==[c] makes the search insensitive
-
-	return realmResponse;
+	return findBrandByNameOnRealm(name);
 }
 
 export { findBrandByName };

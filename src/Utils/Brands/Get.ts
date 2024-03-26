@@ -10,17 +10,15 @@ async function getBrand(id: string): Promise<IBrand> {
 	if (migratedBrands) {
 		const brandsCollection = getCollectionPath();
 
-		if (!brandsCollection) {
-			throw new Error('Brands collection not found');
+		if (brandsCollection) {
+			const brand = await brandsCollection.where('id', '==', id).get();
+
+			if (brand.docs.length <= 0) {
+				throw new Error('Brand not found');
+			}
+
+			return brand.docs[0].data() as IBrand;
 		}
-
-		const brand = await brandsCollection.where('id', '==', id).get();
-
-		if (brand.docs.length <= 0) {
-			throw new Error('Brand not found');
-		}
-
-		return brand.docs[0].data() as IBrand;
 	}
 
 	const realmResponse = realm
