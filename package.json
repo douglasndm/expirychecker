@@ -1,7 +1,7 @@
 {
   "name": "controledevalidade",
   "version": "1.16.0",
-  "build": "299",
+  "build": "300",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -60,7 +60,7 @@
     "react-native-file-access": "*",
     "react-native-flash-message": "*",
     "react-native-format-currency": "^0.0.3",
-    "react-native-fs": "^2.20.0",
+    "react-native-fs": "*",
     "react-native-gesture-handler": "2.14.0",
     "react-native-google-mobile-ads": "13.0.1",
     "react-native-image-picker": "^7.0.2",
@@ -84,7 +84,7 @@
     "react-native-share": "*",
     "react-native-uuid-generator": "^6.1.1",
     "react-native-vector-icons": "^10.0.2",
-    "react-native-zip-archive": "^6.0.3",
+    "react-native-zip-archive": "*",
     "react-number-format": "^4.4.1",
     "realm": "^11.8.0",
     "shared": "^1.0.0",
