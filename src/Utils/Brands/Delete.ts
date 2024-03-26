@@ -22,7 +22,7 @@ async function deleteBrand(brand_id: string): Promise<void> {
 			throw new Error('Brand not found');
 		}
 
-		await findedBrand.docs[0].ref.delete();
+		findedBrand.docs[0].ref.delete();
 	}
 
 	realm.write(() => {
