@@ -75,6 +75,7 @@ type RoutesParams = {
 	DeleteAll;
 
 	Login;
+	CreateAccount;
 
 	Test;
 };
