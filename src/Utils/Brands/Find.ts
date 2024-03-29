@@ -7,7 +7,7 @@ function findBrandByNameOnRealm(name: string): IBrand | undefined {
 }
 
 async function findBrandByName(name: string): Promise<IBrand | undefined> {
-	const brandsCollection = getCollectionPath();
+	const brandsCollection = await getCollectionPath();
 
 	if (!brandsCollection) {
 		return findBrandByNameOnRealm(name);

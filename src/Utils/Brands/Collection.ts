@@ -2,10 +2,17 @@ import Auth from '@react-native-firebase/auth';
 import Firestore, {
 	FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function getCollectionPath():
+async function getCollectionPath(): Promise<
 	| FirebaseFirestoreTypes.CollectionReference<FirebaseFirestoreTypes.DocumentData>
-	| undefined {
+	| undefined
+> {
+	const initialSyncDone = await AsyncStorage.getItem('initialSync');
+	if (!initialSyncDone) {
+		// console.log('Initial sync not done, not syncing Realm with Firestore');
+		return undefined;
+	}
 	const user = Auth().currentUser;
 
 	if (user && user.email) {

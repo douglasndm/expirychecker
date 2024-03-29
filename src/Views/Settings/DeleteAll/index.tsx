@@ -5,7 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { deleteAllProducts } from '@expirychecker/Utils/Products/Delete';
+import { deleteAllData } from '@expirychecker/Utils/Database/Delete';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -30,7 +30,7 @@ const DeleteAll: React.FC = () => {
 
 	const handleDeleteAll = useCallback(async () => {
 		try {
-			await deleteAllProducts();
+			await deleteAllData({});
 
 			showMessage({
 				message: strings.View_Settings_Advanced_DeleteAll_Success,

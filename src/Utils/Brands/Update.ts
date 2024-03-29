@@ -5,7 +5,7 @@ import realm from '@expirychecker/Services/Realm';
 import { getCollectionPath } from './Collection';
 
 async function updateBrand(brand: IBrand): Promise<void> {
-	const brandsCollection = getCollectionPath();
+	const brandsCollection = await getCollectionPath();
 
 	if (brandsCollection) {
 		const findedBrand = await brandsCollection

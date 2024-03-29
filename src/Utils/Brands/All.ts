@@ -9,7 +9,7 @@ function getAllBrandsFromRealm(): IBrand[] {
 async function getAllBrands(): Promise<IBrand[]> {
 	const brands: IBrand[] = [];
 
-	const brandsCollection = getCollectionPath();
+	const brandsCollection = await getCollectionPath();
 
 	if (!brandsCollection) {
 		return getAllBrandsFromRealm();

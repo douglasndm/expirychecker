@@ -9,7 +9,7 @@ import { getCollectionPath } from './Collection';
 async function saveManyBrands(brandsToSave: Array<IBrand>): Promise<void> {
 	const brands = await getAllBrands();
 
-	const brandsCollection = getCollectionPath();
+	const brandsCollection = await getCollectionPath();
 
 	if (brandsCollection) {
 		const brandsThatNotExist = brandsToSave.filter(brand => {

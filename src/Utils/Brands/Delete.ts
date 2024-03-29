@@ -3,7 +3,7 @@ import realm from '@expirychecker/Services/Realm';
 import { getCollectionPath } from './Collection';
 
 async function deleteBrand(brand_id: string): Promise<void> {
-	const brandsCollection = getCollectionPath();
+	const brandsCollection = await getCollectionPath();
 
 	if (brandsCollection) {
 		const findedBrand = await brandsCollection

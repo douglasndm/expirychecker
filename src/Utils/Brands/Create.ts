@@ -34,7 +34,7 @@ async function createBrand(brandName: string): Promise<IBrand> {
 		name: brandName.trim(),
 	};
 
-	const brandsCollection = getCollectionPath();
+	const brandsCollection = await getCollectionPath();
 
 	if (brandsCollection) {
 		await brandsCollection.doc(brand.id).set({

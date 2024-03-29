@@ -2,27 +2,83 @@ import auth from '@react-native-firebase/auth';
 import firestore, {
 	FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Realm from '@expirychecker/Services/Realm';
-
+import { getAllRealmData } from '@expirychecker/Utils/Database/Realm/GetAll';
+import { saveRealmData } from '@expirychecker/Utils/Database/Realm/Save';
+import { getAllFirestoreData } from '@expirychecker/Utils/Database/Firestore/GetAll';
+import { saveFirestoreData } from '@expirychecker/Utils/Database/Firestore/Save';
 import { getCollectionPath as getBrandsCollectionPath } from '@expirychecker/Utils/Brands/Collection';
+import { deleteAllData } from '@expirychecker/Utils/Database/Delete';
 
-async function sync() {
+async function deleteAllFirestoreData(): Promise<void> {
+	await deleteAllData({ keepRealmData: true, keepImages: true });
+}
+
+async function deleteAllRealmData(): Promise<void> {
+	// It will delete all data in the realm and keep firestore data
+	await deleteAllData({ keepFirestoreData: true });
+}
+
+type InitalSyncProps =
+	| 'keepBothData'
+	| 'deleteRealmData'
+	| 'deleteFirestoreData';
+
+async function initialSync(props: InitalSyncProps): Promise<void> {
+	if (props === 'deleteRealmData') {
+		await deleteAllRealmData();
+	}
+	if (props === 'deleteFirestoreData') {
+		await deleteAllFirestoreData();
+	}
+	if (props === 'keepBothData') {
+		// need to copy missing data from firestore to realm
+		// need to copy missing data from realm to firestore
+
+		const { brands: realmBrands } = await getAllRealmData();
+		const { brands: firestoreBrands } = await getAllFirestoreData();
+
+		const missingBrandsAtRealm = firestoreBrands.filter(brand => {
+			return !realmBrands.find(
+				rBrand => rBrand.name.toLowerCase() === brand.name.toLowerCase()
+			);
+		});
+		const missingBrandsAtFirestore = realmBrands.filter(brand => {
+			return !firestoreBrands.find(
+				fBrand => fBrand.name.toLowerCase() === brand.name.toLowerCase()
+			);
+		});
+
+		await saveRealmData({ brands: missingBrandsAtRealm });
+		await saveFirestoreData({ brands: missingBrandsAtFirestore });
+	}
+
+	await AsyncStorage.setItem('initialSync', 'true');
+}
+
+async function sync(): Promise<void> {
+	const initialSyncDone = await AsyncStorage.getItem('initialSync');
+	if (!initialSyncDone) {
+		console.log('Initial sync not done, not syncing Realm with Firestore');
+		return;
+	}
+
 	const user = auth().currentUser;
 	if (!user || !user.email) {
 		console.log('User is not logged, not syncing Realm with Firestore');
 		return;
 	}
 
-	console.log('User is logged, syncing Realm with Firestore');
+	const { brands: realmBrands } = await getAllRealmData();
 
-	const brands = Realm.objects<IBrand>('Brand');
-	const realmBrands = Array.from(brands);
+	console.log('User is logged, syncing Realm with Firestore');
 
 	const firestoreBrands: FirebaseFirestoreTypes.DocumentData[] = [];
 
-	const brandsCollection = getBrandsCollectionPath();
+	const brandsCollection = await getBrandsCollectionPath();
 
+	// if brandsCollection exists, user already had data at firestore
 	if (brandsCollection) {
 		const batch = firestore().batch();
 
@@ -81,3 +137,5 @@ async function sync() {
 }
 
 sync();
+
+export { initialSync };
