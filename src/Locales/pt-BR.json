@@ -215,8 +215,11 @@
     "View_Settings_Advanced_DeleteAll_Dialog2_Description": "Este é o último aviso! Está apagando todos os dados do aplicativo. Isso não pode ser desfeito. É recomendado que tenha feito backup dos seus dados antes.",
     "View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm": "Deletar tudo",
     "View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel": "Não quero apagar",
-
     "View_Settings_Advanced_DeleteAll_Success": "Todos os dados foram apagados",
+
+    "View_Settings_Account_Title": "Conta",
+    "View_Settings_Account_Button_SignIn": "Fazer login",
+    "View_Settings_Account_Button_SignOut": "Sair",
 
     "View_PROView_Subscription_Alert_NoSubscription": "Você não tem nenhuma assinatura ativa no momento.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",

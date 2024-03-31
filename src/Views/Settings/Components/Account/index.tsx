@@ -2,8 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import strings from '@expirychecker/Locales';
 
 import Button from '@components/Button';
+
+import SyncModal from '@expirychecker/Components/SyncModal';
 
 import {
 	Category,
@@ -17,6 +22,8 @@ const Account: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [initializing, setInitializing] = useState(true);
+	const [showSyncModal, setShowSyncModal] = useState(false);
+
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
 	const handleNavigateLogin = useCallback(() => {
@@ -24,10 +31,18 @@ const Account: React.FC = () => {
 	}, [navigate]);
 
 	const onAuthStateChanged = useCallback(
-		(lUser: FirebaseAuthTypes.User | null) => {
+		async (lUser: FirebaseAuthTypes.User | null) => {
 			setUser(lUser);
 			if (initializing) setInitializing(false);
-			// console.log(lUser);
+
+			if (lUser) {
+				const initialSyncDone = await AsyncStorage.getItem(
+					'initialSync'
+				);
+				if (!initialSyncDone) {
+					setShowSyncModal(true);
+				}
+			}
 		},
 		[initializing]
 	);
@@ -41,17 +56,30 @@ const Account: React.FC = () => {
 	return (
 		<Container>
 			<Category>
-				<CategoryTitle>Account</CategoryTitle>
+				<CategoryTitle>
+					{strings.View_Settings_Account_Title}
+				</CategoryTitle>
 				<SettingDescription>
 					{user?.email ? user.email : 'Not logged in'}
 				</SettingDescription>
 
 				{user ? (
-					<Button title="Sign out" onPress={() => auth().signOut()} />
+					<Button
+						title={strings.View_Settings_Account_Button_SignOut}
+						onPress={() => auth().signOut()}
+					/>
 				) : (
-					<Button title="Sign in" onPress={handleNavigateLogin} />
+					<Button
+						title={strings.View_Settings_Account_Button_SignIn}
+						onPress={handleNavigateLogin}
+					/>
 				)}
 			</Category>
+
+			<SyncModal
+				showModal={showSyncModal}
+				setShowModal={setShowSyncModal}
+			/>
 		</Container>
 	);
 };

@@ -215,8 +215,11 @@
     "View_Settings_Advanced_DeleteAll_Dialog2_Description": "This is the final warning! You are deleting all app data. This action cannot be undone. It is recommended to have a backup of your data before proceeding.",
     "View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm": "I REALLY WANT TO DELETE EVERYTHING",
     "View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel": "I`m not deleting",
-
     "View_Settings_Advanced_DeleteAll_Success": "All data was deleted",
+
+    "View_Settings_Account_Title": "Account",
+    "View_Settings_Account_Button_SignIn": "Sign in",
+    "View_Settings_Account_Button_SignOut": "Sign out",
 
     "View_PROView_Subscription_Alert_NoSubscription": "You don't have any active subscription.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Your subscription was restaured!",
