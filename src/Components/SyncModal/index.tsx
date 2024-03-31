@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Modal, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
@@ -14,6 +14,9 @@ import Button from '@components/Button';
 
 import {
 	Container,
+	Header,
+	CloseButtonContainer,
+	CloseButton,
 	Content,
 	Title,
 	Description,
@@ -24,29 +27,23 @@ import {
 	Icon,
 } from './styles';
 
-const SyncModal: React.FC = () => {
-	const [isModalVisible, setModalVisible] = useState(false);
+interface SyncModalProps {
+	showModal: boolean;
+	setShowModal: (value: boolean) => void;
+}
+
+const SyncModal: React.FC<SyncModalProps> = (props: SyncModalProps) => {
+	const { showModal, setShowModal } = props;
 
 	const [chosenOption, setChosenOption] =
 		useState<InitalSyncProps>('keepBothData');
-
-	const loadData = useCallback(async () => {
-		const initialSyncDone = await AsyncStorage.getItem('initialSync');
-
-		if (!initialSyncDone) {
-			setModalVisible(true);
-			return;
-		}
-
-		setModalVisible(false);
-	}, []);
 
 	const handleConfirm = useCallback(async () => {
 		try {
 			await initialSync(chosenOption);
 
 			await AsyncStorage.setItem('initialSync', 'true');
-			setModalVisible(false);
+			setShowModal(false);
 		} catch (error) {
 			if (error instanceof Error) {
 				showMessage({
@@ -55,19 +52,19 @@ const SyncModal: React.FC = () => {
 				});
 			}
 		}
-	}, [chosenOption]);
-
-	useEffect(() => {
-		loadData();
-	}, [loadData]);
+	}, [chosenOption, setShowModal]);
 
 	return (
-		<Modal
-			animationType="slide"
-			transparent={false}
-			visible={isModalVisible}
-		>
+		<Modal animationType="slide" transparent={false} visible={showModal}>
 			<Container>
+				<Header>
+					<CloseButtonContainer>
+						<CloseButton
+							name="close-outline"
+							onPress={() => setShowModal(false)}
+						/>
+					</CloseButtonContainer>
+				</Header>
 				<Content>
 					<Title>{strings.Component_InitalSync_PageTitle}</Title>
 

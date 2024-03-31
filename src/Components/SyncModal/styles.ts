@@ -7,6 +7,27 @@ export const Container = styled.View`
 	background-color: #000;
 `;
 
+export const Header = styled.SafeAreaView`
+	height: 10%;
+
+	justify-content: center;
+	align-items: center;
+`;
+
+export const CloseButtonContainer = styled.TouchableOpacity`
+	position: absolute;
+	top: 20px;
+	right: 10px;
+	padding: 10px;
+`;
+
+export const CloseButton = styled(Ionicons).attrs(() => ({
+	name: 'close-outline',
+	size: 32,
+}))`
+	color: #fff;
+`;
+
 export const Content = styled.SafeAreaView`
 	flex: 1;
 	justify-content: center;
