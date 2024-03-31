@@ -20,7 +20,7 @@ async function deleteAllRealmData(): Promise<void> {
 	await deleteAllData({ keepFirestoreData: true });
 }
 
-type InitalSyncProps =
+export type InitalSyncProps =
 	| 'keepBothData'
 	| 'deleteRealmData'
 	| 'deleteFirestoreData';
