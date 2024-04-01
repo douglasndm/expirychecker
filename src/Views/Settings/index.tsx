@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
+import remoteConfig from '@react-native-firebase/remote-config';
 import { getLocales } from 'react-native-localize';
 import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
@@ -33,6 +34,8 @@ import Account from './Components/Account';
 
 const Settings: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const enableLogin = remoteConfig().getValue('enable_login');
 
 	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
 
@@ -145,7 +148,9 @@ const Settings: React.FC = () => {
 
 					<Advanced />
 
-					{__DEV__ && userPreferences.isPRO && <Account />}
+					{enableLogin.asBoolean() && userPreferences.isPRO && (
+						<Account />
+					)}
 				</SettingsContent>
 			</Content>
 		</Container>
