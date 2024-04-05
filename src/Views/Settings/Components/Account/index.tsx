@@ -5,6 +5,8 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 import strings from '@expirychecker/Locales';
 
+import Purchases from '@services/RevenueCat';
+
 import Button from '@components/Button';
 
 import SyncModal from '@expirychecker/Components/SyncModal';
@@ -46,6 +48,12 @@ const Account: React.FC = () => {
 		[initializing]
 	);
 
+	const handleLogout = useCallback(async () => {
+		await auth().signOut();
+
+		await Purchases.logOut();
+	}, []);
+
 	useEffect(() => {
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 
@@ -65,7 +73,7 @@ const Account: React.FC = () => {
 				{user ? (
 					<Button
 						title={strings.View_Settings_Account_Button_SignOut}
-						onPress={() => auth().signOut()}
+						onPress={handleLogout}
 					/>
 				) : (
 					<Button

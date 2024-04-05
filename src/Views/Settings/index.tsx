@@ -148,7 +148,8 @@ const Settings: React.FC = () => {
 
 					<Advanced />
 
-					{enableLogin.asBoolean() && userPreferences.isPRO && (
+					{(__DEV__ ||
+						(enableLogin.asBoolean() && userPreferences.isPRO)) && (
 						<Account />
 					)}
 				</SettingsContent>
