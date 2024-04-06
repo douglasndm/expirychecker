@@ -1,16 +1,25 @@
 interface ICategory {
 	id: string;
 	name: string;
+
+	created_at?: Date;
+	updated_at?: Date;
 }
 
 interface IBrand {
 	id: string;
 	name: string;
+
+	created_at?: Date;
+	updated_at?: Date;
 }
 
 interface IStore {
 	id: string;
 	name: string;
+
+	created_at?: Date;
+	updated_at?: Date;
 }
 
 interface IBatch {
