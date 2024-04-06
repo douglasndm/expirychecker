@@ -35,11 +35,14 @@ interface SyncModalProps {
 const SyncModal: React.FC<SyncModalProps> = (props: SyncModalProps) => {
 	const { showModal, setShowModal } = props;
 
+	const [isSyncing, setIsSyncing] = useState<boolean>(false);
+
 	const [chosenOption, setChosenOption] =
 		useState<InitalSyncProps>('keepBothData');
 
 	const handleConfirm = useCallback(async () => {
 		try {
+			setIsSyncing(true);
 			await initialSync(chosenOption);
 
 			await AsyncStorage.setItem('initialSync', 'true');
@@ -51,6 +54,8 @@ const SyncModal: React.FC<SyncModalProps> = (props: SyncModalProps) => {
 					type: 'danger',
 				});
 			}
+		} finally {
+			setIsSyncing(false);
 		}
 	}, [chosenOption, setShowModal]);
 
@@ -147,6 +152,7 @@ const SyncModal: React.FC<SyncModalProps> = (props: SyncModalProps) => {
 					<Button
 						title={strings.Component_InitalSync_Button_Sync}
 						onPress={handleConfirm}
+						isLoading={isSyncing}
 					/>
 				</Content>
 			</Container>
