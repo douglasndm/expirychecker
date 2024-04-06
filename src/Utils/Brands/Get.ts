@@ -12,7 +12,18 @@ async function getBrand(id: string): Promise<IBrand> {
 			throw new Error('Brand not found');
 		}
 
-		return brand.docs[0].data() as IBrand;
+		const brandData = brand.docs[0].data();
+
+		return {
+			id: brandData.id,
+			name: brandData.name,
+			created_at: brandData.created_at
+				? brandData.created_at.toDate()
+				: undefined,
+			updated_at: brandData?.updated_at
+				? brandData.updated_at.toDate()
+				: undefined,
+		};
 	}
 
 	const realmResponse = realm
