@@ -76,6 +76,7 @@ type RoutesParams = {
 
 	Login;
 	CreateAccount;
+	ForgotPassword;
 
 	Test;
 };

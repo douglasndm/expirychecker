@@ -46,6 +46,7 @@ import SettingsDeleteAll from '@expirychecker/Views/Settings/DeleteAll';
 
 import Login from '@expirychecker/Views/Auth/Login';
 import CreateAccount from '@expirychecker/Views/Auth/CreateAccount';
+import ForgotPassword from '@expirychecker/Views/Auth/ForgotPassword';
 
 import Test from '@expirychecker/Views/Test';
 
@@ -169,6 +170,10 @@ const StackNavigator: React.FC = () => {
 					<Stack.Screen
 						name="CreateAccount"
 						component={CreateAccount}
+					/>
+					<Stack.Screen
+						name="ForgotPassword"
+						component={ForgotPassword}
 					/>
 				</Stack.Navigator>
 				{useNavTab && (
