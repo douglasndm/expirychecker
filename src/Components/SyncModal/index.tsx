@@ -5,6 +5,8 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
+import { captureException } from '@services/ExceptionsHandler';
+
 import {
 	initialSync,
 	InitalSyncProps,
@@ -53,6 +55,8 @@ const SyncModal: React.FC<SyncModalProps> = (props: SyncModalProps) => {
 					message: error.message,
 					type: 'danger',
 				});
+
+				captureException(error);
 			}
 		} finally {
 			setIsSyncing(false);

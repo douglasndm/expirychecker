@@ -4,6 +4,8 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import realm from '@expirychecker/Services/Realm';
+
 import { getAllRealmData } from '@expirychecker/Utils/Database/Realm/GetAll';
 import { saveRealmData } from '@expirychecker/Utils/Database/Realm/Save';
 import { getAllFirestoreData } from '@expirychecker/Utils/Database/Firestore/GetAll';
@@ -107,15 +109,35 @@ export type InitalSyncProps =
 async function initialSync(props: InitalSyncProps): Promise<void> {
 	if (props === 'deleteRealmData') {
 		await deleteAllRealmData();
+
+		const firestoreBrands: FirebaseFirestoreTypes.DocumentData[] = [];
+
+		const brandsCollection = await getBrandsCollectionPath();
+
+		// if brandsCollection exists, user already had data at firestore
+		if (brandsCollection) {
+			const brandsQuerySnapshot = await brandsCollection.get();
+
+			brandsQuerySnapshot.forEach(documentSnapshot => {
+				firestoreBrands.push(documentSnapshot.data());
+			});
+
+			realm.write(() => {
+				firestoreBrands.forEach(brand => {
+					realm.create('Brand', brand);
+				});
+			});
+		}
 	}
 	if (props === 'deleteFirestoreData') {
 		await deleteAllFirestoreData();
-	}
 
-	if (props !== 'keepBothData') {
+		// set initialSync to true here allow sync function to work
 		await AsyncStorage.setItem('initialSync', 'true');
-
+		// sync will copy data from realm and add it to firestore
 		await sync();
+
+		return;
 	}
 
 	if (props === 'keepBothData') {
@@ -142,9 +164,9 @@ async function initialSync(props: InitalSyncProps): Promise<void> {
 		console.log('missingBrandsAtFirestore', missingBrandsAtFirestore);
 		await saveRealmData({ brands: missingBrandsAtRealm });
 		await saveFirestoreData({ brands: missingBrandsAtFirestore });
-
-		await AsyncStorage.setItem('initialSync', 'true');
 	}
+
+	await AsyncStorage.setItem('initialSync', 'true');
 }
 
 sync();
