@@ -20,43 +20,6 @@ async function deleteAllRealmData(): Promise<void> {
 	await deleteAllData({ keepFirestoreData: true });
 }
 
-export type InitalSyncProps =
-	| 'keepBothData'
-	| 'deleteRealmData'
-	| 'deleteFirestoreData';
-
-async function initialSync(props: InitalSyncProps): Promise<void> {
-	if (props === 'deleteRealmData') {
-		await deleteAllRealmData();
-	}
-	if (props === 'deleteFirestoreData') {
-		await deleteAllFirestoreData();
-	}
-	if (props === 'keepBothData') {
-		// need to copy missing data from firestore to realm
-		// need to copy missing data from realm to firestore
-
-		const { brands: realmBrands } = await getAllRealmData();
-		const { brands: firestoreBrands } = await getAllFirestoreData();
-
-		const missingBrandsAtRealm = firestoreBrands.filter(brand => {
-			return !realmBrands.find(
-				rBrand => rBrand.name.toLowerCase() === brand.name.toLowerCase()
-			);
-		});
-		const missingBrandsAtFirestore = realmBrands.filter(brand => {
-			return !firestoreBrands.find(
-				fBrand => fBrand.name.toLowerCase() === brand.name.toLowerCase()
-			);
-		});
-
-		await saveRealmData({ brands: missingBrandsAtRealm });
-		await saveFirestoreData({ brands: missingBrandsAtFirestore });
-	}
-
-	await AsyncStorage.setItem('initialSync', 'true');
-}
-
 async function sync(): Promise<void> {
 	const initialSyncDone = await AsyncStorage.getItem('initialSync');
 	if (!initialSyncDone) {
@@ -136,6 +99,54 @@ async function sync(): Promise<void> {
 	}
 }
 
+export type InitalSyncProps =
+	| 'keepBothData'
+	| 'deleteRealmData'
+	| 'deleteFirestoreData';
+
+async function initialSync(props: InitalSyncProps): Promise<void> {
+	if (props === 'deleteRealmData') {
+		await deleteAllRealmData();
+	}
+	if (props === 'deleteFirestoreData') {
+		await deleteAllFirestoreData();
+	}
+
+	if (props !== 'keepBothData') {
+		await AsyncStorage.setItem('initialSync', 'true');
+
+		await sync();
+	}
+
+	if (props === 'keepBothData') {
+		// need to copy missing data from firestore to realm
+		// need to copy missing data from realm to firestore
+
+		const { brands: realmBrands } = await getAllRealmData();
+		const { brands: firestoreBrands } = await getAllFirestoreData();
+
+		const missingBrandsAtRealm = firestoreBrands.filter(brand => {
+			return !realmBrands.find(
+				rBrand => rBrand.name.toLowerCase() === brand.name.toLowerCase()
+			);
+		});
+
+		console.log('missingBrandsAtRealm', missingBrandsAtRealm);
+
+		const missingBrandsAtFirestore = realmBrands.filter(brand => {
+			return !firestoreBrands.find(
+				fBrand => fBrand.name.toLowerCase() === brand.name.toLowerCase()
+			);
+		});
+
+		console.log('missingBrandsAtFirestore', missingBrandsAtFirestore);
+		await saveRealmData({ brands: missingBrandsAtRealm });
+		await saveFirestoreData({ brands: missingBrandsAtFirestore });
+
+		await AsyncStorage.setItem('initialSync', 'true');
+	}
+}
+
 sync();
 
-export { initialSync };
+export { initialSync, sync };

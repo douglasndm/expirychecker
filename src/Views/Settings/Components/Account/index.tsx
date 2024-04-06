@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import strings from '@expirychecker/Locales';
 
@@ -12,6 +13,7 @@ import Button from '@components/Button';
 import SyncModal from '@expirychecker/Components/SyncModal';
 
 import { isInitialSyncNeeded } from '@expirychecker/Utils/Database/Sync/Check';
+import { sync } from '@expirychecker/Utils/Database/Sync/Firestore';
 
 import {
 	Category,
@@ -40,8 +42,12 @@ const Account: React.FC = () => {
 
 			if (lUser) {
 				const isInitiaSyncNeeded = await isInitialSyncNeeded();
+
 				if (isInitiaSyncNeeded) {
 					setShowSyncModal(true);
+				} else {
+					await AsyncStorage.setItem('initialSync', 'true');
+					sync();
 				}
 			}
 		},
@@ -52,6 +58,8 @@ const Account: React.FC = () => {
 		await auth().signOut();
 
 		await Purchases.logOut();
+
+		await AsyncStorage.removeItem('initialSync');
 	}, []);
 
 	useEffect(() => {
