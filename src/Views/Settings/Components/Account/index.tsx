@@ -75,7 +75,9 @@ const Account: React.FC = () => {
 					{strings.View_Settings_Account_Title}
 				</CategoryTitle>
 				<SettingDescription>
-					{user?.email ? user.email : 'Not logged in'}
+					{user?.email
+						? user.email
+						: strings.View_Settings_Account_Description}
 				</SettingDescription>
 
 				{user ? (

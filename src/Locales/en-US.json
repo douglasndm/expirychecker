@@ -218,6 +218,7 @@
     "View_Settings_Advanced_DeleteAll_Success": "All data was deleted",
 
     "View_Settings_Account_Title": "Account",
+    "View_Settings_Account_Description": "Enter your account to access your subscription in case of change of device",
     "View_Settings_Account_Button_SignIn": "Sign in",
     "View_Settings_Account_Button_SignOut": "Sign out",
 

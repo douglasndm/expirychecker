@@ -218,6 +218,7 @@
     "View_Settings_Advanced_DeleteAll_Success": "Todos os dados foram apagados",
 
     "View_Settings_Account_Title": "Conta",
+    "View_Settings_Account_Description": "Entre com sua conta para facilitar o acesso a sua assinatura em caso de troca de dispositivo",
     "View_Settings_Account_Button_SignIn": "Fazer login",
     "View_Settings_Account_Button_SignOut": "Sair",
 
