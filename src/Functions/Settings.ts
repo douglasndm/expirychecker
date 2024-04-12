@@ -73,7 +73,7 @@ export async function getAutoComplete(): Promise<boolean> {
 
 export async function getEnableProVersion(): Promise<boolean> {
 	if (__DEV__) {
-		return true;
+		return false;
 	}
 
 	const setting = await getSetting({ type: 'EnableProVersion' });
