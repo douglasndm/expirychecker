@@ -2,18 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import strings from '@expirychecker/Locales';
 
 import Purchases from '@services/RevenueCat';
 
 import Button from '@components/Button';
-
-import SyncModal from '@expirychecker/Components/SyncModal';
-
-import { isInitialSyncNeeded } from '@expirychecker/Utils/Database/Sync/Check';
-import { sync } from '@expirychecker/Utils/Database/Sync/Firestore';
 
 import {
 	Category,
@@ -27,7 +21,6 @@ const Account: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [initializing, setInitializing] = useState(true);
-	const [showSyncModal, setShowSyncModal] = useState(false);
 
 	const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
@@ -39,17 +32,6 @@ const Account: React.FC = () => {
 		async (lUser: FirebaseAuthTypes.User | null) => {
 			setUser(lUser);
 			if (initializing) setInitializing(false);
-
-			if (lUser) {
-				const isInitiaSyncNeeded = await isInitialSyncNeeded();
-
-				if (isInitiaSyncNeeded) {
-					setShowSyncModal(true);
-				} else {
-					await AsyncStorage.setItem('initialSync', 'true');
-					sync();
-				}
-			}
 		},
 		[initializing]
 	);
@@ -58,8 +40,6 @@ const Account: React.FC = () => {
 		await auth().signOut();
 
 		await Purchases.logOut();
-
-		await AsyncStorage.removeItem('initialSync');
 	}, []);
 
 	useEffect(() => {
@@ -92,11 +72,6 @@ const Account: React.FC = () => {
 					/>
 				)}
 			</Category>
-
-			<SyncModal
-				showModal={showSyncModal}
-				setShowModal={setShowSyncModal}
-			/>
 		</Container>
 	);
 };

@@ -29,7 +29,6 @@
     "@react-native-firebase/app": "*",
     "@react-native-firebase/app-check": "*",
     "@react-native-firebase/auth": "*",
-    "@react-native-firebase/firestore": "*",
     "@react-native-firebase/in-app-messaging": "*",
     "@react-native-firebase/installations": "*",
     "@react-native-firebase/messaging": "*",

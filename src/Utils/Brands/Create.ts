@@ -5,7 +5,6 @@ import realm from '@expirychecker/Services/Realm';
 
 import strings from '@expirychecker/Locales';
 
-import { getCollectionPath } from './Collection';
 import { getAllBrands } from './All';
 
 function createBrandOnRealm(brand: IBrand): void {
@@ -33,15 +32,6 @@ async function createBrand(brandName: string): Promise<IBrand> {
 		id: brandUuid,
 		name: brandName.trim(),
 	};
-
-	const brandsCollection = await getCollectionPath();
-
-	if (brandsCollection) {
-		await brandsCollection.doc(brand.id).set({
-			id: brand.id,
-			name: brand.name,
-		});
-	}
 
 	createBrandOnRealm(brand);
 

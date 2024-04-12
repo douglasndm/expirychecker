@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import firestore from '@react-native-firebase/firestore';
 
 interface ISetSettingProps {
 	type:
@@ -74,18 +73,15 @@ export async function getAutoComplete(): Promise<boolean> {
 
 export async function getEnableProVersion(): Promise<boolean> {
 	if (__DEV__) {
-		await firestore().enableNetwork();
 		return true;
 	}
 
 	const setting = await getSetting({ type: 'EnableProVersion' });
 
 	if (setting === 'true') {
-		firestore().enableNetwork();
 		return true;
 	}
 
-	await firestore().disableNetwork();
 	return false;
 }
 

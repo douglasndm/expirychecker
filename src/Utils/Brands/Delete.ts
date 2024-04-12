@@ -1,22 +1,6 @@
 import realm from '@expirychecker/Services/Realm';
 
-import { getCollectionPath } from './Collection';
-
 async function deleteBrand(brand_id: string): Promise<void> {
-	const brandsCollection = await getCollectionPath();
-
-	if (brandsCollection) {
-		const findedBrand = await brandsCollection
-			.where('id', '==', brand_id)
-			.get();
-
-		if (findedBrand.docs.length <= 0) {
-			throw new Error('Brand not found');
-		}
-
-		findedBrand.docs[0].ref.delete();
-	}
-
 	realm.write(() => {
 		const products = realm.objects<IProduct>('Product');
 

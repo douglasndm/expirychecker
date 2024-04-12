@@ -13,7 +13,6 @@ import AskReview from '@components/AskReview';
 import '@services/Firebase/AppCheck';
 import '@services/Firebase/RemoteConfig';
 
-import '@expirychecker/Utils/Database/Sync/Firestore';
 import '@expirychecker/Services/Backup';
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
