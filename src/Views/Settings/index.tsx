@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
+import remoteConfig from '@react-native-firebase/remote-config';
 import { getLocales } from 'react-native-localize';
 import { Switch } from 'react-native-paper';
 import { showMessage } from 'react-native-flash-message';
@@ -10,10 +11,7 @@ import Header from '@components/Header';
 
 import DaysNext from '@views/Settings/Components/DaysNext';
 
-import {
-	setEnableMultipleStoresMode,
-	setAutoComplete,
-} from '@expirychecker/Functions/Settings';
+import { setAutoComplete } from '@expirychecker/Functions/Settings';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -32,13 +30,14 @@ import {
 
 import Pro from './Components/Pro';
 import Advanced from './Components/Advanced';
+import Account from './Components/Account';
 
 const Settings: React.FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
+	const enableLogin = remoteConfig().getValue('enable_login');
+
 	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
-	const [multipleStoresState, setMultipleStoresState] =
-		useState<boolean>(false);
 
 	const { userPreferences, setUserPreferences } =
 		useContext(PreferencesContext);
@@ -61,7 +60,6 @@ const Settings: React.FC = () => {
 			setIsLoading(true);
 
 			setAutoCompleteState(userPreferences.autoComplete);
-			setMultipleStoresState(userPreferences.multiplesStores);
 		} catch (err) {
 			if (err instanceof Error)
 				showMessage({
@@ -71,7 +69,7 @@ const Settings: React.FC = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [userPreferences.autoComplete, userPreferences.multiplesStores]);
+	}, [userPreferences.autoComplete]);
 
 	useEffect(() => {
 		loadData();
@@ -88,18 +86,6 @@ const Settings: React.FC = () => {
 			autoComplete: newValue,
 		});
 	}, [autoCompleteState, setUserPreferences, userPreferences]);
-
-	const handleMultiStoresEnableSwitch = useCallback(async () => {
-		const newValue = !multipleStoresState;
-		setMultipleStoresState(newValue);
-
-		await setEnableMultipleStoresMode(newValue);
-
-		setUserPreferences({
-			...userPreferences,
-			multiplesStores: newValue,
-		});
-	}, [multipleStoresState, setUserPreferences, userPreferences]);
 
 	const onThemeChoosen = useCallback(
 		(theme: DefaultTheme) => {
@@ -148,24 +134,6 @@ const Settings: React.FC = () => {
 											/>
 										</SettingContainer>
 									)}
-
-									<SettingContainer>
-										<SettingDescription>
-											{
-												strings.View_Settings_SettingName_EnableMultiplesStores
-											}
-										</SettingDescription>
-										<Switch
-											value={multipleStoresState}
-											onValueChange={
-												handleMultiStoresEnableSwitch
-											}
-											color={
-												userPreferences.appTheme.colors
-													.accent
-											}
-										/>
-									</SettingContainer>
 								</>
 							)}
 						</CategoryOptions>
@@ -176,9 +144,14 @@ const Settings: React.FC = () => {
 						onThemeChoosen={onThemeChoosen}
 					/>
 
-					<Pro />
+					{userPreferences.isPRO && <Pro />}
 
 					<Advanced />
+
+					{(__DEV__ ||
+						(enableLogin.asBoolean() && userPreferences.isPRO)) && (
+						<Account />
+					)}
 				</SettingsContent>
 			</Content>
 		</Container>

@@ -14,10 +14,9 @@ interface exportModel {
 }
 
 interface exportProps {
-	sortBy: 'created_date' | 'expire_date';
 	category?: string | null;
 	brand?: string | null;
-	store?: string;
+	store?: string | null;
 }
 
 interface IExcelProduct extends IProduct {

@@ -7,12 +7,11 @@ import React, {
 } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getLocales } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -24,18 +23,16 @@ import Header from '@components/Header';
 import Switch from '@components/Switch';
 import Dialog from '@components/Dialog';
 
+import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
+import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
+import BatchPrice from '@views/Product/Add/Components/Inputs/BatchPrice';
+import BatchExpDate from '@views/Product/Add/Components/Inputs/BatchExpDate';
 import {
 	Container,
 	PageContent,
 	InputContainer,
-	InputTextContainer,
-	Currency,
 	InputGroup,
-	ExpDateGroup,
-	ExpDateLabel,
-	CustomDatePicker,
 } from '@views/Product/Add/styles';
-import { InputCodeText } from '@expirychecker/Views/Product/Add/Components/Inputs/Code/styles';
 import {
 	CheckBoxContainer,
 	CheckBoxGroupTitle,
@@ -61,20 +58,6 @@ const EditBatch: React.FC = () => {
 	const routeParams = route.params as Props;
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-
-	const [locale] = useState(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'en-US';
-		}
-		return 'pt-BR';
-	});
-	const [currency] = useState(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'USD';
-		}
-
-		return 'BRL';
-	});
 
 	const [product, setProduct] = useState<IProduct | null>(null);
 
@@ -180,11 +163,7 @@ const EditBatch: React.FC = () => {
 					type: 'danger',
 				});
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
-					captureException(err);
-				}
+				captureException(err);
 			}
 		}
 	}, [
@@ -246,22 +225,6 @@ const EditBatch: React.FC = () => {
 		}
 	}, [loteId, product, productId, reset, userPreferences.isPRO]);
 
-	const handleAmountChange = useCallback((value: string) => {
-		const regex = /^[0-9\b]+$/;
-
-		if (value === '' || regex.test(value)) {
-			setAmount(Number(value));
-		}
-	}, []);
-
-	const handlePriceChange = useCallback((value: number) => {
-		if (value <= 0) {
-			setPrice(null);
-			return;
-		}
-		setPrice(value);
-	}, []);
-
 	const switchShowDeleteModal = useCallback(() => {
 		setDeleteComponentVisible(prevState => !prevState);
 	}, []);
@@ -309,46 +272,14 @@ const EditBatch: React.FC = () => {
 						</ProductHeader>
 
 						<InputGroup>
-							<InputTextContainer
-								style={{
-									flex: 5,
-									marginRight: 5,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_EditBatch_InputPlacehoder_Batch
-									}
-									value={lote}
-									onChangeText={(value: string) =>
-										setLote(value)
-									}
-								/>
-							</InputTextContainer>
-							<InputTextContainer
-								style={{
-									flex: 4,
-								}}
-							>
-								<InputCodeText
-									placeholder={
-										strings.View_EditBatch_InputPlacehoder_Amount
-									}
-									keyboardType="numeric"
-									value={String(amount)}
-									onChangeText={handleAmountChange}
-								/>
-							</InputTextContainer>
+							<ProductBatch batch={lote} setBatch={setLote} />
+							<ProductCount
+								amount={amount}
+								setAmount={setAmount}
+							/>
 						</InputGroup>
 
-						<Currency
-							value={price}
-							onChangeValue={handlePriceChange}
-							delimiter={currency === 'BRL' ? ',' : '.'}
-							placeholder={
-								strings.View_EditBatch_InputPlacehoder_UnitPrice
-							}
-						/>
+						<BatchPrice price={price} setPrice={setPrice} />
 
 						<RadioButtonGroup>
 							<CheckBoxContainer>
@@ -467,18 +398,10 @@ const EditBatch: React.FC = () => {
 							</>
 						)}
 
-						<ExpDateGroup>
-							<ExpDateLabel>
-								{strings.View_EditBatch_CalendarTitle}
-							</ExpDateLabel>
-							<CustomDatePicker
-								date={expDate}
-								onDateChange={(value: Date) => {
-									setExpDate(value);
-								}}
-								locale={locale}
-							/>
-						</ExpDateGroup>
+						<BatchExpDate
+							expDate={expDate}
+							setExpDate={setExpDate}
+						/>
 					</InputContainer>
 				</PageContent>
 			)}

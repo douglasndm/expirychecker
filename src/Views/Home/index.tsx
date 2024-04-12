@@ -6,7 +6,7 @@ import React, {
 	useRef,
 	useMemo,
 } from 'react';
-import { Platform, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BootSplash from 'react-native-bootsplash';
@@ -16,7 +16,7 @@ import { BannerAdSize } from 'react-native-google-mobile-ads';
 
 import strings from '@expirychecker/Locales';
 
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import ListContext from '@shared/Contexts/ListContext';
@@ -26,16 +26,16 @@ import { searchProducts } from '@utils/Product/Search';
 import { deleteManyProducts } from '@expirychecker/Utils/Products';
 import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 
-import { getAllowedToReadIDFA } from '@expirychecker/Functions/Privacy';
 import { sortProductsLotesByLotesExpDate } from '@expirychecker/Functions/Products';
 
 import BarCodeReader from '@components/BarCodeReader';
 import SearchBar from '@components/SearchBar';
 import DatePicker, { IDatePickerResponse } from '@components/DatePicker';
-import NotificationsDenny from '@components/NotificationsDenny';
-import OutdateApp from '@components/OutdateApp';
+import NotificationsDenny from '@components/Warnings/NotificationsDenny';
+import OutdateApp from '@components/Warnings/OutdateApp';
 import FAB from '@components/FAB';
 import ListProds from '@components/Product/List';
+import SalesAlert from '@components/Notification/SalesAlert';
 
 import Header from '@expirychecker/Components/Header';
 import AdsConsentComponent from '@expirychecker/Components/Ads/AdsConsent';
@@ -45,8 +45,7 @@ import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
 import { Container } from '@views/Home/styles';
 
 const Home: React.FC = () => {
-	const { reset, navigate } =
-		useNavigation<StackNavigationProp<RoutesParams>>();
+	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const { userPreferences } = useContext(PreferencesContext);
 	const { setCurrentList } = useContext(ListContext);
@@ -86,18 +85,6 @@ const Home: React.FC = () => {
 	const [enableSearch, setEnableSearch] = useState(false);
 
 	const [selectMode, setSelectMode] = useState(false);
-
-	useEffect(() => {
-		if (Platform.OS === 'ios') {
-			getAllowedToReadIDFA().then(response => {
-				if (response === null) {
-					reset({
-						routes: [{ name: 'TrackingPermission' }],
-					});
-				}
-			});
-		}
-	}, [reset]);
 
 	const loadData = useCallback(async () => {
 		try {
@@ -358,6 +345,7 @@ const Home: React.FC = () => {
 
 					<OutdateApp />
 
+					<SalesAlert />
 					{!userPreferences.isPRO && (
 						<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
 					)}

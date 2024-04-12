@@ -1,10 +1,12 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import remoteConfig from '@react-native-firebase/remote-config';
+import DeviceInfo from 'react-native-device-info';
 import { Drawer } from 'react-native-drawer-layout';
 
+import DrawerContext from '@shared/Contexts/Drawer';
+
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
-import DrawerContext from '@expirychecker/Contexts/Drawer';
 
 import TabMenu from '@components/TabMenu';
 
@@ -37,14 +39,14 @@ import BrandEdit from '@expirychecker/Views/Brand/Edit';
 
 import Export from '@expirychecker/Views/Export';
 
-import Teams from '@expirychecker/Views/Informations/Teams';
-
 import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/Cancel';
 
 import Settings from '@expirychecker/Views/Settings';
 import SettingsDeleteAll from '@expirychecker/Views/Settings/DeleteAll';
 
-import TrackingPermission from '@expirychecker/Views/Permissions/AppleATT';
+import Login from '@expirychecker/Views/Auth/Login';
+import CreateAccount from '@expirychecker/Views/Auth/CreateAccount';
+import ForgotPassword from '@expirychecker/Views/Auth/ForgotPassword';
 
 import Test from '@expirychecker/Views/Test';
 
@@ -57,6 +59,22 @@ const StackNavigator: React.FC = () => {
 	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
 	const [currentRoute, setCurrentRoute] = useState('Home');
+
+	const useNavTab = useMemo(() => {
+		if (!userPreferences.isPRO) {
+			return false;
+		}
+
+		if (enableTabBar.asBoolean() === false) {
+			return false;
+		}
+
+		if (DeviceInfo.isLowRamDevice()) {
+			return false;
+		}
+
+		return true;
+	}, [enableTabBar, userPreferences.isPRO]);
 
 	const handleRouteChange = useCallback(navRoutes => {
 		setDrawerOpen(false);
@@ -72,6 +90,11 @@ const StackNavigator: React.FC = () => {
 		setDrawerOpen(prevState => !prevState);
 	}, []);
 
+	const contextValue = useMemo(
+		() => ({ setDrawerOpen, toggleDrawer }),
+		[setDrawerOpen, toggleDrawer]
+	);
+
 	return (
 		<Drawer
 			open={draweOpen}
@@ -79,7 +102,7 @@ const StackNavigator: React.FC = () => {
 			onClose={() => setDrawerOpen(false)}
 			renderDrawerContent={() => <DrawerMenu />}
 		>
-			<DrawerContext.Provider value={{ setDrawerOpen, toggleDrawer }}>
+			<DrawerContext.Provider value={contextValue}>
 				<Stack.Navigator
 					screenOptions={{
 						headerShown: false,
@@ -132,7 +155,6 @@ const StackNavigator: React.FC = () => {
 					<Stack.Screen name="BrandEdit" component={BrandEdit} />
 
 					<Stack.Screen name="Export" component={Export} />
-					<Stack.Screen name="Teams" component={Teams} />
 					<Stack.Screen
 						name="SubscriptionCancel"
 						component={SubscriptionCancel}
@@ -144,15 +166,20 @@ const StackNavigator: React.FC = () => {
 						component={SettingsDeleteAll}
 					/>
 
+					<Stack.Screen name="Login" component={Login} />
 					<Stack.Screen
-						name="TrackingPermission"
-						component={TrackingPermission}
+						name="CreateAccount"
+						component={CreateAccount}
+					/>
+					<Stack.Screen
+						name="ForgotPassword"
+						component={ForgotPassword}
 					/>
 				</Stack.Navigator>
-				{userPreferences.isPRO && enableTabBar.asBoolean() === true && (
+				{useNavTab && (
 					<TabMenu
 						currentRoute={currentRoute}
-						enableMultiplesStores={userPreferences.multiplesStores}
+						enableMultiplesStores
 					/>
 				)}
 			</DrawerContext.Provider>

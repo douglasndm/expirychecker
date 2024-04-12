@@ -69,13 +69,14 @@ type RoutesParams = {
 	};
 
 	Export;
-	Teams;
 	SubscriptionCancel;
 
 	Settings;
 	DeleteAll;
 
-	TrackingPermission;
+	Login;
+	CreateAccount;
+	ForgotPassword;
 
 	Test;
 };

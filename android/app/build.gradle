@@ -75,6 +75,12 @@ def enableProguardInReleaseBuilds = false
 
 def useIntlJsc = false
 
+def computeVersionCode() {
+    def packageJsonFile = file('../../package.json')
+    def packageJsonContent = new groovy.json.JsonSlurper().parseText(packageJsonFile.text)
+    return packageJsonContent.build.replaceAll("\\D", "").toInteger()
+}
+
 def computeVersionName() {
     def packageJsonFile = file('../../package.json')
     def packageJsonContent = new groovy.json.JsonSlurper().parseText(packageJsonFile.text)
@@ -93,8 +99,12 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 275
+        versionCode computeVersionCode()
         versionName computeVersionName()
+
+        manifestPlaceholders = [
+            bugsnagApiKey: project.env.get("BUGSNAG_API_KEY")
+        ]
     }
 
     signingConfigs {

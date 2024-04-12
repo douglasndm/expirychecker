@@ -3,6 +3,7 @@
 
 #import <Bugsnag/Bugsnag.h>
 
+#import "RNFBAppCheckModule.h"
 #import <Firebase.h>
 #import <CodePush/CodePush.h>
 
@@ -20,6 +21,7 @@
     [Bugsnag start];
 
     // FIREBASE
+    [RNFBAppCheckModule sharedInstance];
     [FIRApp configure];
 
     // [REQUIRED] Register BackgroundFetch

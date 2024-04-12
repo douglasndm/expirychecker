@@ -5,15 +5,10 @@ import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
-import { createBrand, getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
+import { createBrand } from '@expirychecker/Utils/Brands/Create';
 
-import { PickerContainer, Picker } from '../styles';
-
-interface Props {
-	onChange: (value: string) => void;
-	containerStyle?: ViewStyle;
-	defaultValue?: string | null;
-}
+import { PickerContainer, Picker } from '@components/Picker/styles';
 
 export interface IBrandPickerRef {
 	onChange: (value: string) => void;
@@ -22,7 +17,7 @@ export interface IBrandPickerRef {
 }
 
 const Brand = React.forwardRef<IBrandPickerRef>((props, ref) => {
-	const { defaultValue, containerStyle, onChange } = props;
+	const { defaultValue, containerStyle, onChange } = props as IBrandPickerRef;
 
 	const { userPreferences } = useContext(PreferencesContext);
 
@@ -36,7 +31,7 @@ const Brand = React.forwardRef<IBrandPickerRef>((props, ref) => {
 	const [brands, setBrands] = useState<Array<IBrandItem>>([]);
 
 	const handleOnChange = useCallback(
-		value => {
+		(value: string) => {
 			setSelectedBrand(value);
 
 			// call on change on parent to update value their

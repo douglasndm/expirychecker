@@ -21,8 +21,8 @@ import {
 } from '@expirychecker/Functions/Products';
 import { getAllProductsByCategory } from '@expirychecker/Functions/Category';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
-import { getAllBrands } from '@expirychecker/Utils/Brands';
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
+import { captureException } from '@services/ExceptionsHandler';
 
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';

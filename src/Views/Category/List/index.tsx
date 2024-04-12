@@ -1,16 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { showMessage } from 'react-native-flash-message';
 
-import { useDrawer } from '@expirychecker/Contexts/Drawer';
-
 import List from '@views/Category/List';
 
 import { createCategory } from '@expirychecker/Utils/Categories/Create';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 
 const CategoryList: React.FC = () => {
-	const { toggleDrawer } = useDrawer();
-
 	const [isAdding, setIsAdding] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -55,7 +51,6 @@ const CategoryList: React.FC = () => {
 
 	return (
 		<List
-			onMenuPress={toggleDrawer}
 			categories={categories}
 			isLoading={isLoading}
 			isAdding={isAdding}

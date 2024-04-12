@@ -1,10 +1,17 @@
 import React, { useState, useCallback, useContext } from 'react';
+import {
+	NativeSyntheticEvent,
+	TextInputEndEditingEventData,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
-import * as Yup from 'yup';
+import Analytics from '@react-native-firebase/analytics';
+import axios from 'axios';
 
 import strings from '@expirychecker/Locales';
+
+import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -16,11 +23,11 @@ import { findProductByCode } from '@expirychecker/Functions/Products/FindByCode'
 
 import { Icon, InputTextTip } from '@views/Product/Add/styles';
 
-import FillModal from '@shared/Views/Product/Add/Components/FillModal';
+import Dialog from '@components/Dialog';
+import { Input } from '@components/InputText/styles';
 
 import {
 	InputCodeTextContainer,
-	InputCodeText,
 	InputTextIconContainer,
 	InputTextLoading,
 } from './styles';
@@ -140,19 +147,6 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 		async (ean_code: string) => {
 			if (!userPreferences.isPRO) return;
 
-			const schema = Yup.object().shape({
-				ean_code: Yup.number().required().min(8),
-			});
-
-			try {
-				await schema.validate({ ean_code });
-			} catch (err) {
-				setProductFinded(false);
-				return;
-			}
-
-			if (ean_code.length < 8) return;
-
 			if (getLocales()[0].languageCode === 'pt') {
 				try {
 					setIsFindingProd(true);
@@ -162,7 +156,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 						.trim();
 					const query = queryWithoutLetters.replace(/^0+/, ''); // Remove zero on begin
 
-					if (query === '') return;
+					if (query.length < 8) return;
 
 					const response = await findProductByCode(query);
 
@@ -190,6 +184,20 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 						setProductNameFinded(null);
 						setProductBrandFinded(null);
 					}
+				} catch (err) {
+					if (err instanceof Error) {
+						if (axios.isAxiosError(err)) {
+							if (err.response?.status === 504) {
+								Analytics().logEvent('product_code_timeout');
+								return;
+							}
+						}
+						captureException(err, {
+							component:
+								'Product/Add/Components/Inputs/Code/index.tsx',
+							ean: ean_code,
+						});
+					}
 				} finally {
 					setIsFindingProd(false);
 				}
@@ -203,15 +211,18 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 		]
 	);
 
-	const handleCodeBlur = useCallback(() => {
-		if (code) {
-			findProductByEAN(code);
-		}
-	}, [code, findProductByEAN]);
+	const handleCodeBlur = useCallback(
+		(e: NativeSyntheticEvent<TextInputEndEditingEventData>) => {
+			if (e.nativeEvent.text) {
+				findProductByEAN(e.nativeEvent.text);
+			}
+		},
+		[findProductByEAN]
+	);
 
 	const handleSwitchFindModal = useCallback(() => {
-		setShowFillModal(!showFillModal);
-	}, [showFillModal]);
+		setShowFillModal(prevState => !prevState);
+	}, []);
 
 	const handleOnCodeRead = useCallback(
 		async (codeRead: string) => {
@@ -219,6 +230,14 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 			await handleCheckProductCode(codeRead);
 		},
 		[findProductByEAN, handleCheckProductCode]
+	);
+
+	const handleOnTextChange = useCallback(
+		(text: string) => {
+			setCode(text);
+			setFieldError(false);
+		},
+		[setCode]
 	);
 
 	React.useImperativeHandle(
@@ -234,14 +253,11 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 	return (
 		<>
 			<InputCodeTextContainer hasError={fieldError}>
-				<InputCodeText
+				<Input
 					placeholder={strings.View_AddProduct_InputPlacehoder_Code}
 					value={code}
-					onBlur={handleCodeBlur}
-					onChangeText={value => {
-						setCode(value);
-						setFieldError(false);
-					}}
+					onEndEditing={handleCodeBlur}
+					onChangeText={handleOnTextChange}
 				/>
 
 				<InputTextIconContainer onPress={onSwitchEnable}>
@@ -259,23 +275,28 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 								}}
 								onPress={handleSwitchFindModal}
 							>
-								<Icon name="download" size={30} />
+								<Icon name="download" size={30} insideInput />
 							</InputTextIconContainer>
 						)}
 					</>
 				)}
-
-				<FillModal
-					onConfirm={completeInfo}
-					show={showFillModal}
-					setShow={setShowFillModal}
-				/>
 			</InputCodeTextContainer>
 			{fieldError && (
 				<InputTextTip onPress={handleNavigateToExistProduct}>
 					{strings.View_AddProduct_Tip_DuplicateProduct}
 				</InputTextTip>
 			)}
+
+			<Dialog
+				visible={showFillModal}
+				title={strings.View_AddProduct_FillInfo_Modal_Title}
+				description={strings.View_AddProduct_FillInfo_Modal_Description}
+				cancelText={strings.View_AddProduct_FillInfo_Modal_No}
+				confirmText={strings.View_AddProduct_FillInfo_Modal_Yes}
+				onConfirm={completeInfo}
+				onDismiss={handleSwitchFindModal}
+				onCancel={handleSwitchFindModal}
+			/>
 		</>
 	);
 });

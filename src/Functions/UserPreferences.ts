@@ -5,8 +5,6 @@ import { getAllowRemoteImages } from '@utils/Settings/ProductImage';
 import { IUserPreferences } from '../@types/userPreference';
 
 import {
-	getEnableMultipleStoresMode,
-	getEnableNotifications,
 	getEnableProVersion,
 	getHowManyDaysToBeNextExp,
 	getDisableAds,
@@ -16,8 +14,6 @@ import {
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settingDay = await getHowManyDaysToBeNextExp();
 	const settingAutoComplete = await getAutoComplete();
-	const settingNotification = await getEnableNotifications();
-	const settingMultipleStores = await getEnableMultipleStoresMode();
 	const settingProMode = await getEnableProVersion();
 	const disableAds = await getDisableAds();
 	const settingTheme = await getAppTheme(false, settingProMode);
@@ -27,9 +23,7 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 		howManyDaysToBeNextToExpire: settingDay,
 		autoComplete: settingAutoComplete,
 		appTheme: getThemeByName(settingTheme),
-		enableNotifications: settingNotification,
 		isPRO: settingProMode,
-		multiplesStores: settingMultipleStores,
 		disableAds: disableAds || settingProMode,
 		allowRemoteImages: settingImages,
 	};

@@ -5,7 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { deleteAllProducts } from '@expirychecker/Utils/Products/Delete';
+import { deleteAllData } from '@expirychecker/Utils/Database/Delete';
 
 import Header from '@components/Header';
 import Button from '@components/Button';
@@ -18,21 +18,19 @@ import { Container, Content } from './styles';
 const DeleteAll: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-	const [confirm, setConfirm] = useState(false);
 	const [confirm2, setConfirm2] = useState(false);
 
 	const handleSwitchConfirm1 = useCallback(() => {
-		setConfirm(prevState => !prevState);
+		setConfirm2(prevState => !prevState);
 	}, []);
 
-	const handleSwitchConfirm2 = useCallback(() => {
-		setConfirm(false);
-		setConfirm2(prevState => !prevState);
+	const handleCancelDialog2 = useCallback(() => {
+		setConfirm2(false);
 	}, []);
 
 	const handleDeleteAll = useCallback(async () => {
 		try {
-			await deleteAllProducts();
+			await deleteAllData({});
 
 			showMessage({
 				message: strings.View_Settings_Advanced_DeleteAll_Success,
@@ -51,7 +49,6 @@ const DeleteAll: React.FC = () => {
 				});
 			}
 		} finally {
-			setConfirm(false);
 			setConfirm2(false);
 		}
 	}, [reset]);
@@ -77,23 +74,6 @@ const DeleteAll: React.FC = () => {
 			</Content>
 
 			<Dialog
-				visible={confirm}
-				title={strings.View_Settings_Advanced_DeleteAll_Dialog1_Title}
-				description={
-					strings.View_Settings_Advanced_DeleteAll_Dialog1_Description
-				}
-				cancelText={
-					strings.View_Settings_Advanced_DeleteAll_Dialog1_Button_Cancel
-				}
-				confirmText={
-					strings.View_Settings_Advanced_DeleteAll_Dialog1_Button_Confirm
-				}
-				onConfirm={handleSwitchConfirm2}
-				onCancel={handleSwitchConfirm1}
-				onDismiss={handleSwitchConfirm1}
-			/>
-
-			<Dialog
 				visible={confirm2}
 				title={strings.View_Settings_Advanced_DeleteAll_Dialog2_Title}
 				description={
@@ -106,8 +86,8 @@ const DeleteAll: React.FC = () => {
 					strings.View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm
 				}
 				onConfirm={handleDeleteAll}
-				onCancel={handleSwitchConfirm2}
-				onDismiss={handleSwitchConfirm2}
+				onCancel={handleCancelDialog2}
+				onDismiss={handleCancelDialog2}
 			/>
 		</Container>
 	);

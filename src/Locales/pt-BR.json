@@ -4,7 +4,6 @@
 
     "Menu_Button_GoToHome": "Início",
     "Menu_Button_GoToAddProduct": "Novo produto",
-    "Menu_Button_GoToAllProducts": "Todos os produtos",
     "Menu_Button_GoToCategories": "Categorias",
     "Menu_Button_GoToBrands": "Marcas",
     "Menu_Button_GoToStores": "Lojas",
@@ -26,10 +25,6 @@
 
     "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
-
-    "Component_FastSub_Text": "Aproveite mais o app com mais recursos com o PRO",
-    "Component_FastSub_TextWithTrial": "Teste grátis por {DAYS} dias e depois apenas {PRICE_MONTH} por mês no plano anual de {PRICE}.",
-    "Component_FastSub_Price": "Só {PRICE} mensais",
 
     "ListProductsComponent_Title_NoProductsInList": "Não há produtos para mostrar...",
     "ListProductsComponent_Button_ShowAllProducts": "Mostrar todos os produtos",
@@ -58,11 +53,14 @@
     "Component_FloatButton_AddProduct": "Novo produto",
     "Component_FloatButton_AddBatch": "Novo lote",
 
-    "View_About_PageTitle": "Sobre",
-    "View_About_AppVersion": "Versão:",
-    "View_About_UID": "UID:",
-    "View_About_DevelopedBy": "Criado por Douglas Nunes de Mattos",
-    "View_About_LogoMadeBy": "Logo feito por",
+    "Component_InitalSync_PageTitle": "Escolha o modelo de sincronização inicial",
+    "Component_InitalSync_Option1_Title": "Utilização de Dados Locais do Aparelho",
+    "Component_InitalSync_Option2_Title": "Utilização de Dados da Nuvem",
+    "Component_InitalSync_Option3_Title": "Sincronização Bidirecional de Dados",
+    "Component_InitalSync_Option1_Description": "Nesta opção, os dados locais armazenados no dispositivo serão utilizados como a fonte primária de informação. Inicialmente, o sistema irá proceder com a exclusão dos dados armazenados na nuvem, garantindo assim que não haja conflitos de sincronização. Em seguida, os dados locais serão copiados para a nuvem, garantindo que a informação mais recente seja refletida no serviço de armazenamento em nuvem. Finalmente, após a conclusão dessa etapa, a sincronização será ativada, mantendo os dados entre o dispositivo e a nuvem atualizados e consistentes.",
+    "Component_InitalSync_Option2_Description": "Nesta opção, os dados armazenados na nuvem serão definidos como a fonte primária de informação. O sistema procederá com a exclusão dos dados locais presentes no dispositivo, garantindo que não haja informações desatualizadas ou conflitantes. Em seguida, os dados armazenados na nuvem serão copiados para o dispositivo, assegurando que o usuário tenha acesso às informações mais recentes em seu dispositivo local. Após essa etapa, a sincronização será ativada para manter os dados consistentes entre o dispositivo e a nuvem.",
+    "Component_InitalSync_Option3_Description": "Nesta opção, os dados serão sincronizados bidirecionalmente entre o dispositivo e a nuvem. Inicialmente, o sistema identificará quaisquer diferenças entre os dados armazenados localmente no dispositivo e aqueles presentes na nuvem. Os dados ausentes em qualquer uma das fontes serão copiados para o respectivo local para garantir que ambas as fontes estejam completas. Em seguida, a sincronização bidirecional será ativada, garantindo que quaisquer atualizações ou mudanças realizadas em qualquer dispositivo sejam refletidas instantaneamente na outra fonte de armazenamento. Essa abordagem garante que os dados estejam sempre atualizados e consistentes, independentemente da fonte de origem.",
+    "Component_InitalSync_Button_Sync": "Sincronizar",
 
     "View_AddBatch_PageTitle": "Adicionar lote",
     "View_AddBatch_InputPlacehoder_Batch": "Lote",
@@ -70,13 +68,8 @@
     "View_AddBatch_InputPlacehoder_UnitPrice": "Preço unitário",
     "View_AddBatch_CalendarTitle": "Data de vencimento",
 
-    "View_AddProduct_AlertTypeProductName": "Digite o nome do produto",
     "View_AddProduct_PageTitle": "Adicionar produto",
-    "View_AddProduct_InputPlacehoder_Name": "Nome do produto",
     "View_AddProduct_InputPlacehoder_Code": "Código do produto",
-    "View_AddProduct_InputPlacehoder_Batch": "Lote",
-    "View_AddProduct_InputPlacehoder_Amount": "Quantidade",
-    "View_AddProduct_InputPlacehoder_UnitPrice": "Preço unitário",
     "View_AddProduct_InputPlacehoder_Store": "Selecione a loja",
     "View_AddProduct_InputPlaceholder_SelectCategory": "Selecione a categoria",
     "View_AddProduct_InputPlaceholder_SelectBrand": "Selecione a marca",
@@ -87,18 +80,12 @@
     "View_AddProduct_InputAccessibility_UnitPrice": "Campo para digitar o preço unitário do produto",
     "View_AddProduct_InputAccessibility_Store": "Campo para digitar a loja do produto",
     "View_AddProduct_MoreInformation_Label": "Mais informações",
-    "View_AddProduct_CalendarTitle": "Data de vencimento",
-    "View_AddProduct_CalendarAccessibilityDescription": "Calendário para selecionar a data de vencimento do produto",
-    "View_AddProduct_Button_Save": "Salvar",
     "View_AddProduct_Button_Save_AccessibilityDescription": "Botão para salvar o novo produto",
     "View_AddProduct_Tip_DuplicateProduct": "Já existe um produto cadastrado com o mesmo código. Clique aqui para adicionar um lote ao produto existente",
     "View_AddProduct_FillInfo_Modal_Title": "Completar infomações?",
     "View_AddProduct_FillInfo_Modal_Description": "Este produto pode ser algumas informações completadas automáticamente, gostaria de completar as informações?",
     "View_AddProduct_FillInfo_Modal_Yes": "Sim",
     "View_AddProduct_FillInfo_Modal_No": "Não",
-
-    "View_AllProducts_PageTitle": "Todos os produtos",
-    "View_AllProducts_SearchPlaceholder": "Pesquisar por um produto",
 
     "View_Store_View_PageTitle": "Loja",
 
@@ -135,8 +122,6 @@
     "View_EditProduct_InputAccessibility_Code": "Campo de texto para digitar o código do produto",
     "View_EditProduct_InputAccessibility_Store": "Campo de texto para digitar a loja do produto",
     "View_EditProduct_MoreInformation_Label": "Recursos PRO",
-    "View_EditProduct_Button_Save": "Salvar",
-    "View_EditProduct_Button_Cancel": "Cancelar",
 
     "View_Batch_PageTitle": "Lote",
     "View_Batch_Button_Edit": "Editar",
@@ -195,39 +180,6 @@
     "View_ShareProduct_MessageWithDiscount": "{PRODUCT} tem um lote que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item",
     "View_ShareProduct_MessageWithDiscountAndAmount": "{PRODUCT} tem um lote com {AMOUNT} unidades que expira em {DATE} e há um desconto aplicado neste lote de {TMP_PRICE} por item. Totalizando {TOTAL_DISCOUNT_PRICE}",
 
-    "View_ProPage_ProLabel": "PRO",
-    "View_ProPage_AdvantageOne": "SEM ANÚNCIOS",
-    "View_ProPage_AdvantageTwo": "TIRE FOTOS DOS PRODUTOS",
-    "View_ProPage_AdvantageThree": "CARREGAMENTO AUTOMÁTICO DE DADOS DE MILHARES DE PRODUTOS",
-    "View_ProPage_AdvantageFour": "GERE PLANILHAS EXCEL",
-    "View_ProPage_AdvantageFive": "CRIE ARQUIVOS DE BACKUP PARA TROCAS DE TELEFONES E SEGURANÇA DOS SEUS PRODUTOS",
-    "View_ProPage_AdvantageSix": "ORGANIZE POR CATEGORIAS, MARCAS E LOJAS",
-    "View_ProPage_AdvantageSeven": "TEMAS EXCLUSIVOS",
-
-    "View_ProPage_UserAlreadyPro": "Você já é PRO",
-    "View_ProPage_BeforeIntroPrice": "ASSINAR POR APENAS",
-    "View_ProPage_AfterIntroPrice": " NO PRIMEIRO MÊS E DEPOIS",
-
-    "View_ProPage_SubscribePeriod_Monthly": "Mensal",
-    "View_ProPage_SubscribePeriod_ThreeMonths": "3 Meses",
-    "View_ProPage_SubscribePeriod_OneYear": "Anual",
-
-    "View_Subscription_AfterMonthlyPrice": "mês",
-    "View_Subscription_AfterFullPrice_ThreeMonths": "3 meses",
-    "View_Subscription_AfterFullPrice": "ano",
-
-    "View_Pro_BeforeMonthlyPrice": "Equivalente à",
-
-    "View_Subscription_Button_Subscribe": "Se tornar PRO",
-    "View_Pro_Alert_Welcome": "Bem vindo ao PRO!",
-
-    "View_Subscription_Disclaim_IntroPrice": "O teste gratuito é somente válido para usuários que nunca foram usuários PRO, após o período de teste grátis a assinatura será convertida automaticamente para uma assinatura paga do plano escolhido a qual pode ser cancelada a qualquer momento na loja de aplicativos do seu dispositivo.",
-
-    "View_ProPage_Text_BeforeTermsAndPrivacy": "Continuando com a assinatura você está aceitando nossos ",
-    "View_ProPage_Button_Subscribe": "Continuar",
-    "View_ProPage_SubscriptionNotAvailable": "Assinaturas não estão disponíveis no momento.",
-
-
     "View_Settings_PageTitle": "Configurações",
     "View_Settings_CategoryName_General": "Geral",
     "View_Settings_CategoryName_Appearance": "Aparência",
@@ -235,7 +187,6 @@
     "View_Settings_SettingName_HowManyDaysToBeNextToExp": "Quantos dias para produto está próximo ao vencimento?",
     "View_Settings_SettingName_DaysToExpPlaceholder": "Dias para está próximo ao vencimento",
     "View_Settings_SettingName_EnableNotification": "Ativar notificações?",
-    "View_Settings_SettingName_EnableMultiplesStores": "Ativar modo de múltiplas lojas",
     "View_Settings_SettingName_AppTheme": "Tema do aplicativo",
     "View_Settings_SettingName_ExportAndInmport": "Com esta função você pode salvar todos os seus produtos em um dispositivo externo ou serviço para mante-los seguros caso você precise restaurar este telefone ou troca-lo.",
     "View_Settings_Button_ImportFile": "Importar aquivo de backup",
@@ -260,16 +211,16 @@
     "View_Settings_Advanced_DeleteAll_Description": "Apagar completamente todos os dados do aplicativo. Isso inclui produtos, categorias, lojas e marcas.",
     "View_Settings_Advanced_DeleteAll_Button": "Apagar todos os dados",
 
-    "View_Settings_Advanced_DeleteAll_Dialog1_Title": "Você tem certeza?",
-    "View_Settings_Advanced_DeleteAll_Dialog1_Description": "Isto irá apagar todos os dados incluindo todos os produtos, categorias, lojas e marcas. Isso não pode ser desfeito. É recomendado que tenha feito backup dos seus dados antes",
-    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Confirm": "Apagar todos os dados",
-    "View_Settings_Advanced_DeleteAll_Dialog1_Button_Cancel": "Não apagar",
     "View_Settings_Advanced_DeleteAll_Dialog2_Title": "Você tem ABSULUTA CERTEZA?",
     "View_Settings_Advanced_DeleteAll_Dialog2_Description": "Este é o último aviso! Está apagando todos os dados do aplicativo. Isso não pode ser desfeito. É recomendado que tenha feito backup dos seus dados antes.",
     "View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm": "Deletar tudo",
     "View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel": "Não quero apagar",
-
     "View_Settings_Advanced_DeleteAll_Success": "Todos os dados foram apagados",
+
+    "View_Settings_Account_Title": "Conta",
+    "View_Settings_Account_Description": "Entre com sua conta para facilitar o acesso a sua assinatura em caso de troca de dispositivo",
+    "View_Settings_Account_Button_SignIn": "Fazer login",
+    "View_Settings_Account_Button_SignOut": "Sair",
 
     "View_PROView_Subscription_Alert_NoSubscription": "Você não tem nenhuma assinatura ativa no momento.",
     "View_PROView_Subscription_Alert_RestoreSuccess": "Sua assinatura foi restaurada!",
@@ -287,7 +238,6 @@
     "View_Store_Edit_Delete_Button_Cancel": "Manter loja",
     "View_Store_Edit_Delete_Button_Confirm": "Tenho certeza",
     "View_Store_Edit_Alert_Success_StoreDeleted": "A loja e seus produtos foram apagados",
-
 
     "View_Success_BatchCreated": "Lote criado",
     "View_Success_ProductCreated": "Produto criado",
@@ -367,18 +317,24 @@
     "View_Brand_Edit_DeleteModal_Cancel": "Manter marca",
 
     "View_Export_PageTitle": "Exportar",
+    "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
+    "View_Export_Button_ExportBackup": "Exportar para backup",
+    "View_Export_Export_Alert_Success": "Arquivo de backup gerado com sucesso",
+    "View_Export_Import_Alert_Success": "Arquivo de backup importado com sucesso",
+
     "View_Export_Explain_Excel": "Com está opção, o aplicativo gera um arquivo no formato excel com todos os produtos cadastrados.",
-    "View_Export_SortTitle": "Escolha como organizar o arquivo",
     "View_Export_Import_Excel": "Importe uma planilha Excel gerada pelo aplicativo e carregue todos os seus produtos novamente no aplicativo.",
     "View_Export_Button_ImportExcel": "Importar do Excel",
-    "View_Export_Explain_Backup": "Caso precise trocar de telefone ou restaurar este, você vai precisar desse arquivo para importar todos os seus produtos cadastrados no novo telefone.",
     "View_Export_Button_ExportExcel": "Exportar para Excel",
-    "View_Export_Button_ExportBackup": "Exportar para backup",
-    "View_Export_Excel_SuccessMessage": "Arquivo gerado com sucesso",
-    "View_Export_Explain_Business": "Aqui você gera o arquivo com todos os seus produtos para enviar para o Controle de Validade Times",
-    "View_Export_Button_Business": "Exportar",
-    "View_Export_StorePicker_NoStore": "Sem loja",
+    "View_Export_Excel_Export_Alert_Success": "Arquivo Excel gerado com sucesso",
+    "View_Export_Excel_Import_Alert_Success": "Arquivo importado com sucesso",
     "View_Export_Excel_GenerateEmptyExcel": "Gerar arquivo de modelo do Excel",
+    "View_Export_Excel_Export_Model_Alert_Success": "Arquivo de modelo Excel gerado com sucesso",
+
+    "View_Export_Teams_Title": "Times",
+    "View_Export_Teams_Description": "Acesse seu estoque de qualquer lugar e compartilhe facilmente com sua equipe. Receba notificações personalizadas para manter-se sempre organizado. Neste opção você pode exportar seus produtos para o Validades Teams e continuar de onde parou",
+    "View_Export_Teams_Export_Button": "Exportar para o Times",
+    "View_Export_Teams_Alert_Success": "Arquivo gerado com sucesso",
 
     "View_Permissions_AppleAT_PageTitle": "Precisamos da sua permissão",
     "View_Permissions_AppleAT_Message": "Precisamos da sua autorização para usar o identificador único do seu dispositivo afim de entender e analisar sites e aplicativos parceiros que você frêquenta afim de mostra-lo anúncios mais relevantes e fazer análises de quais parte do aplicativo precisam melhorar. Por favor note que desativando estas opções não removeram os anúncios caso não seja usuário PRO, só fala que os anúncios não sejam tão interessantes para você como poderiam ser. Os anúncios no aplicativo são umas das poucas formas de renda deste aplicativo e com anúncios mais relevantes você estaria contribuindo para o desenvolvimento e manutenção do aplicativo.",
@@ -424,22 +380,5 @@
     "BeforeTermsAndPrivacy": "Ao usar este aplicativo você está aceitando nossos ",
     "BetweenTermsAndPrivacy": " e ",
     "Terms": "Termos de uso",
-    "PrivacyPolicy": "Política de Privacidade",
-
-    "Informations_Teams_PageTitle": "Para times",
-    "Informations_Teams_InformationsTitle": "Conheça o Controle de Validades para Times",
-    "Informations_Teams_AdvantagesTitle": "Conheça as vantagens",
-    "Informations_Teams_Advantage1": "Tem um time? quer todos os produtos sincronizados entre todos os dispositvos?",
-    "Informations_Teams_Advantage2": "Com controle de acesso?",
-    "Informations_Teams_Advantage3": "E com mais todas as vantanges desse aplicativo?",
-    "Informations_Teams_Advantage4": "Interessado? Entre em contato para participar dos testes iniciais",
-    "Informations_Teams_AdvantageBackup": "Leve todos seus produtos daqui facilmente",
-    "Informations_Teams_ButtonExport": "Gerar arquivo com produtos",
-    "Informations_Teams_Contact": "Entre em contato e participe dos testes",
-
-    "Informations_Teams_ViewOnGooglePlay": "Ir para a Google Play",
-    "Informations_Teams_ViewOnAppStore": "Ir para a App Store",
-
-    "Banners_Teams_Button_GoToApp": "Conheça o Validades para times! Várias contas, vários dispositivos, um time, todos os produtos atualizados para todos. 3 dias grátis!",
-    "Banners_Teams_Button_GoToApp_IOS": "Conheça o Validades para times! Várias contas, vários dispositivos, um time, todos os produtos atualizados para todos."
+    "PrivacyPolicy": "Política de Privacidade"
 }

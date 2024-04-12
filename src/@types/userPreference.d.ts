@@ -5,8 +5,6 @@ export interface IUserPreferences {
 	autoComplete: boolean;
 	isPRO: boolean;
 	appTheme: DefaultTheme;
-	multiplesStores: boolean;
-	enableNotifications: boolean;
 	disableAds: boolean;
 	allowRemoteImages: boolean;
 }

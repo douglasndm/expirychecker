@@ -3,13 +3,11 @@ import React, { useContext, useMemo } from 'react';
 import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
-import { useDrawer } from '@expirychecker/Contexts/Drawer';
 
 import Header, { RequestProps } from '@components/Header';
 
 const LocalHeader: React.FC<RequestProps> = (props: RequestProps) => {
 	const { userPreferences } = useContext(PreferencesContext);
-	const { setDrawerOpen } = useDrawer();
 
 	const headerTitle = useMemo(() => {
 		const { title } = props;
@@ -24,13 +22,7 @@ const LocalHeader: React.FC<RequestProps> = (props: RequestProps) => {
 		return strings.AppName;
 	}, [props, userPreferences.isPRO]);
 
-	return (
-		<Header
-			{...props}
-			title={headerTitle}
-			onMenuPress={() => setDrawerOpen(true)}
-		/>
-	);
+	return <Header {...props} title={headerTitle} />;
 };
 
 export default LocalHeader;

@@ -18,11 +18,9 @@ import {
 } from '@expirychecker/Functions/Products';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
-import {
-	getAllBrands,
-	getAllProductsByBrand,
-} from '@expirychecker/Utils/Brands';
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
+import { getAllProductsByBrand } from '@expirychecker/Utils/Brands';
+import { captureException } from '@services/ExceptionsHandler';
 
 import Header from '@components/Products/List/Header';
 import ListProds from '@components/Product/List';

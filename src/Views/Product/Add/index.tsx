@@ -1,19 +1,12 @@
-import React, {
-	useState,
-	useContext,
-	useCallback,
-	useMemo,
-	useRef,
-} from 'react';
+import React, { useState, useContext, useCallback, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getLocales } from 'react-native-localize';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -25,7 +18,6 @@ import { getImageFileNameFromPath } from '@expirychecker/Functions/Products/Imag
 
 import BarCodeReader from '@components/BarCodeReader';
 import Camera from '@components/Camera';
-import Input from '@components/InputText';
 import Header from '@components/Header';
 import PaddingComponent from '@components/PaddingComponent';
 
@@ -36,24 +28,21 @@ import BrandSelect, {
 import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
 
+import ProductName from '@views/Product/Add/Components/Inputs/ProductName';
+import ProductBatch from '@views/Product/Add/Components/Inputs/ProductBatch';
+import ProductCount from '@views/Product/Add/Components/Inputs/ProductCount';
+import BatchPrice from '@views/Product/Add/Components/Inputs/BatchPrice';
+import BatchExpDate from '@views/Product/Add/Components/Inputs/BatchExpDate';
 import {
 	Container,
 	PageContent,
 	ProductImageContainer,
 	ProductImage,
 	InputContainer,
-	InputTextContainer,
-	InputTextTip,
-	CameraButtonContainer,
-	Currency,
 	InputGroup,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
-	ExpDateGroup,
-	ExpDateLabel,
-	CustomDatePicker,
 	ImageContainer,
-	Icon,
 } from '@views/Product/Add/styles';
 
 import InputCode, {
@@ -77,74 +66,51 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 	const { navigate, replace } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
+	const { brand, category, store, code: routeCode } = route.params;
+
 	const InterstitialRef = useRef<IInterstitialRef>();
-	const BrandsPickerRef = useRef<IBrandPickerRef>();
+	const BrandsPickerRef = useRef<IBrandPickerRef>(null);
 	const BarCodeInputRef = useRef<InputsRequestRef>(null);
-
-	const locale = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'en-US';
-		}
-		return 'pt-BR';
-	}, []);
-	const currency = useMemo(() => {
-		if (getLocales()[0].languageCode === 'en') {
-			return 'USD';
-		}
-
-		return 'BRL';
-	}, []);
 
 	const { userPreferences } = useContext(PreferencesContext);
 
 	const [name, setName] = useState('');
 	const [photoPath, setPhotoPath] = useState('');
 	const [lote, setLote] = useState('');
-	const [amount, setAmount] = useState('');
+	const [amount, setAmount] = useState<number | null>(null);
 	const [price, setPrice] = useState<number | null>(null);
 	const [expDate, setExpDate] = useState(new Date());
 
+	const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
+		return brand || null;
+	});
+
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(
 		() => {
-			if (route.params && route.params.category) {
-				return route.params.category;
-			}
-			return null;
+			return category || null;
 		}
 	);
-	const [code, setCode] = useState<string | undefined>(() => {
-		if (route.params && route.params.code) {
-			return route.params.code;
-		}
-		return '';
-	});
-	const [selectedBrand, setSelectedBrand] = useState<string | null>(() => {
-		if (route.params && route.params.brand) {
-			return route.params.brand;
-		}
-		return null;
-	});
+
 	const [selectedStore, setSelectedStore] = useState<string | null>(() => {
-		if (route.params && route.params.store) {
-			return route.params.store;
-		}
-		return null;
+		return store || null;
+	});
+
+	const [code, setCode] = useState<string | undefined>(() => {
+		return routeCode || '';
 	});
 
 	const [daysNext, setDaysNext] = useState<number | undefined>();
-	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 	const [existentProduct, setExistentProduct] = useState<boolean>(false);
 
 	const [isCameraEnabled, setIsCameraEnabled] = useState(false);
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
 
 	const handleSave = useCallback(async () => {
-		if (!name || name.trim() === '') {
-			setNameFieldError(true);
+		if (name.trim() === '') {
 			return;
 		}
 
-		if (nameFieldError || existentProduct) {
+		if (existentProduct) {
 			return;
 		}
 		try {
@@ -156,21 +122,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				await movePicturesToImagesDir(photoPath);
 			}
 
-			const tempCategory =
-				selectedCategory && selectedCategory !== 'null'
-					? selectedCategory
-					: undefined;
-
-			const tempBrand =
-				selectedBrand && selectedBrand !== 'null'
-					? selectedBrand
-					: undefined;
-
-			const tempStore =
-				selectedStore && selectedStore !== 'null'
-					? selectedStore
-					: undefined;
-
 			const newLote: Omit<IBatch, 'id'> = {
 				name: lote,
 				exp_date: expDate,
@@ -181,9 +132,10 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 			const newProduct: Omit<IProduct, 'id'> = {
 				name,
 				code: code?.trim(),
-				brand: tempBrand,
-				category: tempCategory,
-				store: tempStore,
+				brand: selectedBrand === 'null' ? undefined : selectedBrand,
+				category:
+					selectedCategory === 'null' ? undefined : selectedCategory,
+				store: selectedStore === 'null' ? undefined : selectedStore,
 				photo: picFileName,
 				daysToBeNext: daysNext,
 				batches: [newLote],
@@ -237,7 +189,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		expDate,
 		lote,
 		name,
-		nameFieldError,
 		navigate,
 		photoPath,
 		price,
@@ -248,14 +199,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		userPreferences.disableAds,
 		userPreferences.isPRO,
 	]);
-
-	const handleAmountChange = useCallback((value: string) => {
-		const regex = /^[0-9\b]+$/;
-
-		if (value === '' || regex.test(value)) {
-			setAmount(value);
-		}
-	}, []);
 
 	const handleEnableCamera = useCallback(async () => {
 		if (!userPreferences.isPRO) {
@@ -295,19 +238,6 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 		},
 		[handleDisableCamera]
 	);
-
-	const handleNameChange = useCallback((value: string) => {
-		setName(value);
-		setNameFieldError(false);
-	}, []);
-
-	const handlePriceChange = useCallback((value: number) => {
-		if (value <= 0) {
-			setPrice(null);
-			return;
-		}
-		setPrice(value);
-	}, []);
 
 	const onCompleteInfo = useCallback(
 		({ prodName, prodBrand }: completeInfoProps) => {
@@ -372,26 +302,11 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 				)}
 
 				<InputContainer>
-					<InputGroup>
-						<InputTextContainer hasError={nameFieldError}>
-							<Input
-								placeholder={
-									strings.View_AddProduct_InputPlacehoder_Name
-								}
-								value={name}
-								onChange={handleNameChange}
-							/>
-						</InputTextContainer>
-
-						<CameraButtonContainer onPress={handleEnableCamera}>
-							<Icon name="camera-outline" size={36} />
-						</CameraButtonContainer>
-					</InputGroup>
-					{nameFieldError && (
-						<InputTextTip>
-							{strings.View_AddProduct_AlertTypeProductName}
-						</InputTextTip>
-					)}
+					<ProductName
+						name={name}
+						setName={setName}
+						handleEnableCamera={handleEnableCamera}
+					/>
 
 					<InputCode
 						ref={BarCodeInputRef}
@@ -410,39 +325,15 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 						</MoreInformationsTitle>
 
 						<InputGroup>
-							<Input
-								contentStyle={{
-									flex: 5,
-									marginRight: 10,
-								}}
-								placeholder={
-									strings.View_AddProduct_InputPlacehoder_Batch
-								}
-								value={lote}
-								onChange={value => setLote(value)}
-							/>
+							<ProductBatch batch={lote} setBatch={setLote} />
 
-							<Input
-								contentStyle={{
-									flex: 4,
-								}}
-								placeholder={
-									strings.View_AddProduct_InputPlacehoder_Amount
-								}
-								keyboardType="numeric"
-								value={String(amount)}
-								onChange={handleAmountChange}
+							<ProductCount
+								amount={amount}
+								setAmount={setAmount}
 							/>
 						</InputGroup>
 
-						<Currency
-							value={price}
-							onChangeValue={handlePriceChange}
-							delimiter={currency === 'BRL' ? ',' : '.'}
-							placeholder={
-								strings.View_AddProduct_InputPlacehoder_UnitPrice
-							}
-						/>
+						<BatchPrice price={price} setPrice={setPrice} />
 
 						{userPreferences.isPRO && (
 							<>
@@ -464,33 +355,16 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 										marginBottom: 10,
 									}}
 								/>
-							</>
-						)}
 
-						{userPreferences.multiplesStores && (
-							<StoreSelect
-								defaultValue={selectedStore}
-								onChange={setSelectedStore}
-							/>
+								<StoreSelect
+									defaultValue={selectedStore}
+									onChange={setSelectedStore}
+								/>
+							</>
 						)}
 					</MoreInformationsContainer>
 
-					<ExpDateGroup>
-						<ExpDateLabel>
-							{strings.View_AddProduct_CalendarTitle}
-						</ExpDateLabel>
-
-						<CustomDatePicker
-							accessibilityLabel={
-								strings.View_AddProduct_CalendarAccessibilityDescription
-							}
-							date={expDate}
-							onDateChange={value => {
-								setExpDate(value);
-							}}
-							locale={locale}
-						/>
-					</ExpDateGroup>
+					<BatchExpDate expDate={expDate} setExpDate={setExpDate} />
 				</InputContainer>
 
 				<PaddingComponent />

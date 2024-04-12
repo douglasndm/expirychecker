@@ -6,7 +6,7 @@ import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
-import { captureException } from '@expirychecker/Services/ExceptionsHandler';
+import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -23,18 +23,20 @@ import {
 } from '@expirychecker/Functions/Products/Image';
 import { movePicturesToImagesDir } from '@utils/Images/MoveToImagesDir';
 
-import Input from '@components/InputText';
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import BarCodeReader from '@components/BarCodeReader';
 import Camera from '@components/Camera';
 import Dialog from '@components/Dialog';
 import PaddingComponent from '@components/PaddingComponent';
+import { Input } from '@components/InputText/styles';
 
 import DaysToBeNext from '@expirychecker/Components/Product/Inputs/DaysToBeNext';
 import BrandSelect from '@expirychecker/Components/Product/Inputs/Pickers/Brand';
 import CategorySelect from '@expirychecker/Components/Product/Inputs/Pickers/Category';
 import StoreSelect from '@expirychecker/Components/Product/Inputs/Pickers/Store';
+
+import ProductName from '@views/Product/Add/Components/Inputs/ProductName';
 
 import {
 	Container,
@@ -42,21 +44,15 @@ import {
 	InputGroup,
 	InputContainer,
 	InputTextContainer,
-	InputTextTip,
 	InputCodeTextIcon,
 	ImageContainer,
 	ProductImage,
-	CameraButtonContainer,
-	Icon,
 	ProductImageContainer,
 	MoreInformationsContainer,
 	MoreInformationsTitle,
 } from '@views/Product/Add/styles';
 
-import {
-	InputCodeText,
-	InputTextIconContainer,
-} from '../Add/Components/Inputs/Code/styles';
+import { InputTextIconContainer } from '../Add/Components/Inputs/Code/styles';
 
 interface RequestParams {
 	route: {
@@ -71,7 +67,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 
 	const { productId } = route.params;
 
-	const { navigate, addListener, dispatch } =
+	const { navigate, dispatch } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -88,8 +84,6 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	);
 	const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 	const [selectedStore, setSelectedStore] = useState<string | null>(null);
-
-	const [nameFieldError, setNameFieldError] = useState<boolean>(false);
 
 	const [isCameraEnabled, setIsCameraEnabled] = useState(false);
 	const [isBarCodeEnabled, setIsBarCodeEnabled] = useState(false);
@@ -155,16 +149,11 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 	}, [productId]);
 
 	useEffect(() => {
-		const unsubscribe = addListener('focus', () => {
-			loadData();
-		});
-
-		return unsubscribe;
-	}, [addListener, loadData]);
+		loadData();
+	}, [loadData]);
 
 	const updateProd = useCallback(async () => {
-		if (!name || name.trim() === '') {
-			setNameFieldError(true);
+		if (name.trim() === '') {
 			return;
 		}
 
@@ -215,11 +204,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				});
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
+			}
 		}
 	}, [
 		code,
@@ -293,11 +285,14 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 				});
 			}
 		} catch (err) {
-			if (err instanceof Error)
+			if (err instanceof Error) {
 				showMessage({
 					message: err.message,
 					type: 'danger',
 				});
+
+				captureException(err);
+			}
 		}
 	}, [dispatch, navigate, productId, userPreferences.isPRO]);
 
@@ -328,15 +323,22 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 									{
 										icon: 'content-save-outline',
 										onPress: updateProd,
+										disabled: isLoading,
 									},
 								]}
-								moreMenuItems={[
-									{
-										title: strings.View_ProductDetails_Button_DeleteProduct,
-										leadingIcon: 'trash-can-outline',
-										onPress: switchShowDeleteModal,
-									},
-								]}
+								moreMenuItems={
+									isLoading
+										? []
+										: [
+												{
+													title: strings.View_ProductDetails_Button_DeleteProduct,
+													leadingIcon:
+														'trash-can-outline',
+													onPress:
+														switchShowDeleteModal,
+												},
+										  ]
+								}
 							/>
 
 							{isLoading ? (
@@ -357,40 +359,13 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 										</ImageContainer>
 									)}
 									<InputContainer>
-										<InputGroup>
-											<InputTextContainer>
-												<Input
-													placeholder={
-														strings.View_EditProduct_InputPlacehoder_Name
-													}
-													value={name}
-													onChange={value => {
-														setName(value);
-														setNameFieldError(
-															false
-														);
-													}}
-												/>
-											</InputTextContainer>
-
-											{userPreferences.isPRO && (
-												<CameraButtonContainer
-													onPress={handleEnableCamera}
-												>
-													<Icon
-														name="camera-outline"
-														size={36}
-													/>
-												</CameraButtonContainer>
-											)}
-										</InputGroup>
-										{nameFieldError && (
-											<InputTextTip>
-												{
-													strings.View_EditProduct_Error_EmptyProductName
-												}
-											</InputTextTip>
-										)}
+										<ProductName
+											name={name}
+											setName={setName}
+											handleEnableCamera={
+												handleEnableCamera
+											}
+										/>
 
 										<InputGroup>
 											<InputTextContainer
@@ -402,7 +377,7 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 													paddingRight: 10,
 												}}
 											>
-												<InputCodeText
+												<Input
 													placeholder={
 														strings.View_EditProduct_InputPlacehoder_Code
 													}
@@ -460,14 +435,15 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 															marginBottom: 10,
 														}}
 													/>
+													<StoreSelect
+														defaultValue={
+															selectedStore
+														}
+														onChange={
+															setSelectedStore
+														}
+													/>
 												</>
-											)}
-
-											{userPreferences.multiplesStores && (
-												<StoreSelect
-													defaultValue={selectedStore}
-													onChange={setSelectedStore}
-												/>
 											)}
 										</MoreInformationsContainer>
 									</InputContainer>
