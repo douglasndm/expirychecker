@@ -1,7 +1,7 @@
 import Realm from 'realm';
 
-import ProductSchema from '@expirychecker/Schemas/ProductSchema';
-import BatchSchema from '@expirychecker/Schemas/BatchSchema';
+import ProductSchema from '@expirychecker/Schemas/Product';
+import BatchSchema from '@expirychecker/Schemas/Batch';
 import CategorySchema from '@expirychecker/Schemas/Category';
 import StoreSchema from '@expirychecker/Schemas/Store';
 import BrandSchema from '@expirychecker/Schemas/Brand';

@@ -1294,7 +1294,7 @@ PODS:
     - React-Core
   - ReactNativeLocalization (2.3.2):
     - React-Core
-  - RealmJS (11.10.2):
+  - RealmJS (12.6.2):
     - React
   - RecaptchaInterop (100.0.0)
   - RevenueCat (4.39.1)
@@ -1327,7 +1327,7 @@ PODS:
   - RNFBApp (19.2.1):
     - Firebase/CoreOnly (= 10.24.0)
     - React-Core
-  - RNFBAppCheck (19.2.1):
+  - RNFBAppCheck (19.1.2):
     - Firebase/AppCheck (= 10.24.0)
     - React-Core
     - RNFBApp
@@ -1348,7 +1348,7 @@ PODS:
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNFBRemoteConfig (19.2.1):
+  - RNFBRemoteConfig (19.1.2):
     - Firebase/RemoteConfig (= 10.24.0)
     - React-Core
     - RNFBApp
@@ -1846,7 +1846,7 @@ SPEC CHECKSUMS:
   ReactCommon: e168ee1704806f10f47ee8c7f825b5850b18eaea
   ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
   ReactNativeLocalization: fb171138cdc80d5d0d4f20243d2fc82c2b3cc48f
-  RealmJS: 73a36da3cbbe85e1bdcbf55683172b51f35070d3
+  RealmJS: 385df5ee940d96f1de26b1dab153e325633d3052
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RevenueCat: 237cb14ba0ba0fa07153c801585b42b73be0fe7e
   RevenueCatUI: 07f7ca5cc4879a712e2e7891a7434bd35320d42b
@@ -1861,12 +1861,12 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBAnalytics: 00674dfbd29a5491ba1dd8a71a7b9b7bc76c30bd
   RNFBApp: 21d32c9dd8e7f8c9cd4fe822105747f5812e23b4
-  RNFBAppCheck: cb4cf76403f65434076e640dcc0dd174f0fa48f8
+  RNFBAppCheck: 95cd67e71afc64522ead6b88d3f4b26373b16415
   RNFBAuth: 12bcb8d2c83afd4e8cbbfdf2897bf5ad96e8cc53
   RNFBInAppMessaging: be9dc22acbc45c3681408d2a92d0d834b469a24b
   RNFBInstallations: 474373c25300cff5cab107f152c128168dcffab6
   RNFBMessaging: 830deff3e196f525cb01e821fa1322c7a5bb3512
-  RNFBRemoteConfig: f485825ef89e52429698e638e633044dbec92d77
+  RNFBRemoteConfig: 2eba6ae99fd1fdf55a776ac993048e7f5710b7e2
   RNFBStorage: 8afff4f4b1548f57b5c8829580b87e3843830f41
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: e1f2aea0c2ba66aeb1ec5af824a94c6e92d202cc
