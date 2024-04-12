@@ -5,6 +5,10 @@ import appCheck from '@react-native-firebase/app-check';
 import { addDays } from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
 
+import strings from '@expirychecker/Locales';
+
+import { uploadBackupFile } from '@services/Firebase/Storage';
+
 import Button from '@components/Button';
 
 import { Container, Category } from '@views/Settings/styles';
@@ -21,9 +25,10 @@ import {
 import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
 import { exportProductsToXML } from '@shared/Utils/IO/Export/XML';
 import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
-import { getAllBrands } from '@expirychecker/Utils/Brands';
+import { getAllBrands } from '@expirychecker/Utils/Brands/All';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
+import { generateBackup } from '@expirychecker/Utils/Backup/Generate';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -127,6 +132,13 @@ const Test: React.FC = () => {
 		});
 	}, []);
 
+	const uploadBackup = useCallback(async () => {
+		const backup = await generateBackup();
+		const path = `${backup}/${strings.Function_Export_FileName}.cvbf`;
+
+		uploadBackupFile(path);
+	}, []);
+
 	return (
 		<Container>
 			<ScrollView>
@@ -163,6 +175,11 @@ const Test: React.FC = () => {
 					/>
 
 					<Button title="Export XML" onPress={handleExportXM} />
+
+					<Button
+						title="Upload backup to Storage"
+						onPress={uploadBackup}
+					/>
 				</Category>
 			</ScrollView>
 		</Container>
