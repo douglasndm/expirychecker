@@ -1,8 +1,10 @@
+
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 apply plugin: "com.bugsnag.android.gradle"
+apply plugin: 'newrelic'
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 

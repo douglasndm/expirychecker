@@ -2,6 +2,7 @@ import { AppRegistry } from 'react-native';
 
 import '@services/Bugsnag';
 import '@expirychecker/Services/BackgroundNotifications';
+import '@expirychecker/Services/NewRelic';
 import '@services/Notifications';
 import '@services/PushNotificationHandler';
 

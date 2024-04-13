@@ -43,6 +43,7 @@
     "crypto-js": "^3.3.0",
     "date-fns": "^2.29.2",
     "lottie-react-native": "*",
+    "newrelic-react-native-agent": "^1.3.7",
     "polished": "^4.1.1",
     "react": "*",
     "react-native": "*",
