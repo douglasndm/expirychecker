@@ -1,7 +1,7 @@
 {
   "name": "controledevalidade",
-  "version": "1.16.2",
-  "build": "302",
+  "version": "1.17.1",
+  "build": "304",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
