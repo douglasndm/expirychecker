@@ -35,7 +35,6 @@ import NotificationsDenny from '@components/Warnings/NotificationsDenny';
 import OutdateApp from '@components/Warnings/OutdateApp';
 import FAB from '@components/FAB';
 import ListProds from '@components/Product/List';
-import SalesAlert from '@components/Notification/SalesAlert';
 
 import Header from '@expirychecker/Components/Header';
 import AdsConsentComponent from '@expirychecker/Components/Ads/AdsConsent';
@@ -348,7 +347,6 @@ const Home: React.FC = () => {
 
 					<OutdateApp />
 
-					<SalesAlert />
 					{!userPreferences.isPRO && (
 						<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
 					)}

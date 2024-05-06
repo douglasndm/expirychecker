@@ -4,12 +4,7 @@ const linking: LinkingOptions<RoutesParams> = {
 	prefixes: ['expirychecker://'],
 	config: {
 		screens: {
-			Home: {
-				screens: {
-					Pro: 'plans',
-					About: 'about',
-				},
-			},
+			About: 'about',
 		},
 	},
 };

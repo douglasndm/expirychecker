@@ -7,6 +7,9 @@
 #import <Firebase.h>
 #import <CodePush/CodePush.h>
 
+// Deeplinking
+#import <React/RCTLinkingManager.h>
+
 // @react-native-community/push-notification-ios
 #import <UserNotifications/UserNotifications.h>
 #import <RNCPushNotificationIOS.h>
@@ -93,10 +96,26 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 // Required for localNotification event
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
 didReceiveNotificationResponse:(UNNotificationResponse *)response
-         withCompletionHandler:(void (^)(void))completionHandler
+        withCompletionHandler:(void (^)(void))completionHandler
 {
-  [RNCPushNotificationIOS didReceiveNotificationResponse:response];
+    [RNCPushNotificationIOS didReceiveNotificationResponse:response];
 }
 // @react-native-community/push-notification-ios
 
+// THIS IS FOR DEEPLINKING
+- (BOOL)application:(UIApplication *)application
+   openURL:(NSURL *)url
+   options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
+ restorationHandler:(nonnull void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+ return [RCTLinkingManager application:application
+                continueUserActivity:userActivity
+                    restorationHandler:restorationHandler];
+}
+// THIS IS FOR DEEPLINKING
 @end
