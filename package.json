@@ -16,6 +16,7 @@
     "@bam.tech/react-native-image-resizer": "*",
     "@bugsnag/plugin-react-navigation": "*",
     "@bugsnag/react-native": "*",
+    "@notifee/react-native": "*",
     "@react-native-async-storage/async-storage": "*",
     "@react-native-clipboard/clipboard": "*",
     "@react-native-community/blur": "*",

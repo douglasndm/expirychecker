@@ -29,6 +29,7 @@ import { getAllBrands } from '@expirychecker/Utils/Brands/All';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { generateBackup } from '@expirychecker/Utils/Backup/Generate';
+import { displayNotification } from '@shared/Services/Notifications/Local';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -80,7 +81,7 @@ const Test: React.FC = () => {
 		const notification = await getNotificationForAllProductsCloseToExp();
 
 		if (notification) {
-			sendNotification(notification);
+			await displayNotification(notification);
 		}
 	}, []);
 

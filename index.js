@@ -4,8 +4,7 @@ import '@services/Reactotron';
 import '@services/Bugsnag';
 import '@expirychecker/Services/BackgroundNotifications';
 import '@expirychecker/Services/NewRelic';
-// import '@services/Notifications';
-// import '@services/PushNotificationHandler';
+import '@services/PushNotificationHandler';
 
 import { name as appName } from './app.json';
 import App from './src';
