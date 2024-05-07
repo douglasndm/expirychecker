@@ -36,6 +36,7 @@
 		C692F7558DBE4FF6BC3F19B9 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 445564B8F5864E5C9AE60D6E /* Roboto-Medium.ttf */; };
 		CBF0D71C82DD4BC1A8E1C0D0 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7E2B94A65434F26B645AC23 /* Roboto-Light.ttf */; };
 		EACD3FE593F446A9BCB27F61 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1106891E19A4C95B6239447 /* Roboto-Bold.ttf */; };
+		EFCE1DB88A304916CD440A50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4774A681D0F5714FCFE6F773 /* PrivacyInfo.xcprivacy */; };
 		FEBC59048C02432D8256BA37 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58C9C3C8D58247CF8267EEB7 /* OpenSans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		445564B8F5864E5C9AE60D6E /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../src/Assets/Fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		44D558C29B5B4E65B1ED4030 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/Assets/Fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		465575EC9E104D4FBE9DD049 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		4774A681D0F5714FCFE6F773 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = controledevalidade/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4BFB04DA8838458F9DA6D6E0 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		4F1D6B5425FD5564009BA07C /* controledevalidade-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "controledevalidade-Bridging-Header.h"; sourceTree = "<group>"; };
 		4F1D6B5525FD5564009BA07C /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				4FA9DA6726CC3C9C00E4C895 /* Assets.xcassets */,
+				4774A681D0F5714FCFE6F773 /* PrivacyInfo.xcprivacy */,
 			);
 			name = controledevalidade;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				CBF0D71C82DD4BC1A8E1C0D0 /* Roboto-Light.ttf in Resources */,
 				C692F7558DBE4FF6BC3F19B9 /* Roboto-Medium.ttf in Resources */,
 				9C6A2F9AC9D24DBFB7B9D4FA /* Roboto-Regular.ttf in Resources */,
+				EFCE1DB88A304916CD440A50 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,7 +508,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SOURCE_MAP=\"$TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\" ../../../node_modules/@bugsnag/react-native/bugsnag-react-native-xcode.sh\n";
+			shellScript = "SOURCE_MAP=\"$TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\"$REACT_NATIVE_PATH/../../node_modules/@bugsnag/react-native/bugsnag-react-native-xcode.sh\n";
 		};
 		B7D526976A3E693C9CAAFB68 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -799,7 +803,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 236;
+				CURRENT_PROJECT_VERSION = 238;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
@@ -835,7 +839,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 236;
+				CURRENT_PROJECT_VERSION = 238;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
