@@ -14,7 +14,6 @@ import '@services/Firebase/AppCheck';
 import '@services/Firebase/RemoteConfig';
 import '@services/Notifications/Local';
 
-import '@expirychecker/Services/Notifications/Schedule';
 import '@expirychecker/Services/Backup';
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
