@@ -6,12 +6,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
-import Analytics from '@react-native-firebase/analytics';
-import axios from 'axios';
 
 import strings from '@expirychecker/Locales';
-
-import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -183,20 +179,6 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 
 						setProductNameFinded(null);
 						setProductBrandFinded(null);
-					}
-				} catch (err) {
-					if (err instanceof Error) {
-						if (axios.isAxiosError(err)) {
-							if (err.response?.status === 504) {
-								Analytics().logEvent('product_code_timeout');
-								return;
-							}
-						}
-						captureException(err, {
-							component:
-								'Product/Add/Components/Inputs/Code/index.tsx',
-							ean: ean_code,
-						});
 					}
 				} finally {
 					setIsFindingProd(false);

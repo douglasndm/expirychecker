@@ -1,4 +1,3 @@
-import axios, { AxiosError } from 'axios';
 import api from '@services/API';
 
 interface IResponse {
@@ -15,13 +14,8 @@ async function findProductByCode(code: string): Promise<IResponse | null> {
 		if (response.data !== null) {
 			return response.data;
 		}
-	} catch (error: unknown | AxiosError) {
-		if (axios.isAxiosError(error)) {
-			if (error.code === 'ERR_NETWORK') {
-				return null;
-			}
-		}
-		throw error;
+	} catch (error) {
+		console.error(error);
 	}
 	return null;
 }
