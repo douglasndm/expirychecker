@@ -13,6 +13,7 @@ import AskReview from '@components/AskReview';
 import '@services/Firebase/AppCheck';
 import '@services/Firebase/RemoteConfig';
 import '@services/Notifications/Local';
+import '@services/Notifications/ClearBadge';
 
 import '@expirychecker/Services/Backup';
 import '@expirychecker/Services/BackgroundJobs';
