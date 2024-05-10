@@ -1480,7 +1480,7 @@ PODS:
     - React-Core
   - ReactNativeLocalization (2.3.2):
     - React-Core
-  - RealmJS (12.7.1):
+  - RealmJS (12.8.0):
     - React
   - RecaptchaInterop (100.0.0)
   - RevenueCat (4.41.2)
@@ -1707,7 +1707,7 @@ DEPENDENCIES:
   - react-native-config (from `../../../node_modules/react-native-config`)
   - react-native-date-picker (from `../../../node_modules/react-native-date-picker`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-image-picker (from `../../../node_modules/react-native-image-picker`)
   - "react-native-image-resizer (from `../../../node_modules/@bam.tech/react-native-image-resizer`)"
   - react-native-in-app-review (from `../../../node_modules/react-native-in-app-review`)
   - "react-native-netinfo (from `../../../node_modules/@react-native-community/netinfo`)"
@@ -1897,7 +1897,7 @@ EXTERNAL SOURCES:
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-image-picker:
-    :path: "../node_modules/react-native-image-picker"
+    :path: "../../../node_modules/react-native-image-picker"
   react-native-image-resizer:
     :path: "../../../node_modules/@bam.tech/react-native-image-resizer"
   react-native-in-app-review:
@@ -2133,7 +2133,7 @@ SPEC CHECKSUMS:
   ReactCommon: eb4c4a9c43fcc0d93f922d0fdada24638429e515
   ReactNativeCameraKit: 9d46a5d7dd544ca64aa9c03c150d2348faf437eb
   ReactNativeLocalization: fb171138cdc80d5d0d4f20243d2fc82c2b3cc48f
-  RealmJS: 3fdc3b6cb6d4ff67eaf0e5f7f861be51304e7525
+  RealmJS: 3e6010ae878227830e947f40f996e13ccab4c8ba
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RevenueCat: 0250867579677899de94f96ad9be342be865560f
   RevenueCatUI: e3bac7e40db387f53e7b3579175cca749656bee7
