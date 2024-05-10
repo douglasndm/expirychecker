@@ -40,6 +40,7 @@
     "axios": "*",
     "crypto-js": "^3.3.0",
     "date-fns": "*",
+    "expirybusiness": "^1.0.0",
     "lottie-react-native": "*",
     "newrelic-react-native-agent": "^1.3.7",
     "polished": "*",
