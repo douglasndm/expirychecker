@@ -1,5 +1,3 @@
-import groovy.json.JsonSlurper
-
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
@@ -78,13 +76,13 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 def computeVersionCode() {
     def packageJsonFile = file('../../package.json')
-    def packageJsonContent = new JsonSlurper().parseText(packageJsonFile.text)
+    def packageJsonContent = new groovy.json.JsonSlurper().parseText(packageJsonFile.text)
     return packageJsonContent.build.replaceAll("\\D", "").toInteger()
 }
 
 def computeVersionName() {
     def packageJsonFile = file('../../package.json')
-    def packageJsonContent = new JsonSlurper().parseText(packageJsonFile.text)
+    def packageJsonContent = new groovy.json.JsonSlurper().parseText(packageJsonFile.text)
     return packageJsonContent.version
 }
 

@@ -88,6 +88,7 @@ const DeleteAll: React.FC = () => {
 				onConfirm={handleDeleteAll}
 				onCancel={handleCancelDialog2}
 				onDismiss={handleCancelDialog2}
+				critical="Confirm"
 			/>
 		</Container>
 	);

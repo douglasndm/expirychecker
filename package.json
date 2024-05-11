@@ -10,7 +10,7 @@
     "build": "./build.sh",
     "test": "jest",
     "lint": "eslint .",
-    "bugsnag:upload-android": "bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab && bugsnag-cli upload react-native-android"
+    "bugsnag:upload-android": "bugsnag-cli upload android-aab android/app/build/outputs/bundle/release/app-release.aab && bugsnag-cli upload react-native-android --variant=release"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "*",
@@ -81,7 +81,7 @@
     "react-native-share": "*",
     "react-native-uuid-generator": "*",
     "react-native-vector-icons": "*",
-    "react-native-zip-archive": "*",
+    "react-native-zip-archive": "6.1.0",
     "react-number-format": "*",
     "realm": "^12.8.0",
     "shared": "^1.0.0",
@@ -95,7 +95,6 @@
     "@testing-library/react-native": "^12.0.1",
     "@types/crypto-js": "^3.1.47",
     "@types/jest": "^29.5.0",
-    "@types/react-native-share": "^3.3.0",
     "@types/react-native-uuid-generator": "^4.0.0",
     "@types/react-native-vector-icons": "^6.4.17",
     "babel-plugin-module-resolver": "^4.1.0",
