@@ -1,10 +1,8 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
-import CodePush from 'react-native-code-push';
-
 import '@expirychecker/Locales';
 
 import StatusBar from '@components/StatusBar';
@@ -20,7 +18,6 @@ import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
 import '@expirychecker/Services/Analytics';
 import DeepLinking from '@expirychecker/Services/DeepLinking';
-import { checkAndInstallUpdate } from '@services/CodePush';
 
 import '@expirychecker/Functions/ProMode';
 import '@expirychecker/Functions/PushNotifications';
@@ -52,10 +49,6 @@ const App: React.FC = () => {
 		};
 	}, [currentList]);
 
-	useEffect(() => {
-		checkAndInstallUpdate();
-	}, []);
-
 	return (
 		<BugSnagContainer DeepLinking={DeepLinking}>
 			<AppContext>
@@ -82,8 +75,4 @@ const App: React.FC = () => {
 	);
 };
 
-const codePushOptions = {
-	checkFrequency: CodePush.CheckFrequency.MANUAL,
-};
-
-export default CodePush(codePushOptions)(App);
+export default App;

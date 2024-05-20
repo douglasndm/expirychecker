@@ -5,7 +5,6 @@
 
 #import "RNFBAppCheckModule.h"
 #import <Firebase.h>
-#import <CodePush/CodePush.h>
 
 // Deeplinking
 #import <React/RCTLinkingManager.h>
@@ -58,7 +57,7 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [CodePush bundleURL];
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
 

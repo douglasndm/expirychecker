@@ -1,5 +1,3 @@
-!/bin/bash
-
 echo "Starting full build process"
 
 cd android

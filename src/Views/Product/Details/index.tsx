@@ -154,26 +154,29 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		return unsubscribe;
 	}, [addListener, getProduct]);
 
-	const onDeleteManyBathes = useCallback(async (ids: number[]) => {
-		try {
-			setIsLoading(true);
+	const onDeleteManyBathes = useCallback(
+		async (ids: number[]) => {
+			try {
+				setIsLoading(true);
 
-			await deleteManyBatches(ids);
+				await deleteManyBatches(ids);
 
-			setLotesNaoTratados([]);
-			setLotesTratados([]);
+				setLotesNaoTratados([]);
+				setLotesTratados([]);
 
-			await getProduct();
-		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-		} finally {
-			setIsLoading(false);
-		}
-	}, []);
+				await getProduct();
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			} finally {
+				setIsLoading(false);
+			}
+		},
+		[getProduct]
+	);
 
 	const handleEdit = useCallback(() => {
 		navigate('EditProduct', { productId });
