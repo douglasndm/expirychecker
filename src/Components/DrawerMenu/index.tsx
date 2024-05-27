@@ -1,17 +1,9 @@
-import React, { useCallback, useMemo } from 'react';
-import { useWindowDimensions } from 'react-native';
+import React, { useCallback } from 'react';
+import { Linking, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNetInfo } from '@react-native-community/netinfo';
-import remoteConfig from '@react-native-firebase/remote-config';
 
 import strings from '@expirychecker/Locales';
-
-import { useApp } from '@shared/Contexts/App';
-
-import { captureException } from '@shared/Services/ExceptionsHandler';
-
-import { setDefaultApp } from '@expirychecker/Utils/Settings/SetSettings';
 
 import Logo from '@components/Logo';
 import {
@@ -28,19 +20,6 @@ import PROItems from './PRO';
 
 const DrawerMenu: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const { setApp } = useApp();
-
-	const { isInternetReachable } = useNetInfo();
-
-	const remoteEnableTeams = remoteConfig().getValue('enable_teams');
-
-	const showTeams = useMemo(() => {
-		if (__DEV__) {
-			return true;
-		}
-		return remoteEnableTeams.asBoolean() && isInternetReachable;
-	}, [isInternetReachable, remoteEnableTeams]);
 
 	const windowHeight = useWindowDimensions().height;
 
@@ -64,17 +43,17 @@ const DrawerMenu: React.FC = () => {
 		navigate('Test');
 	}, [navigate]);
 
-	const handleSetDefaultAppToTeams = useCallback(async () => {
-		try {
-			await setDefaultApp('expiry_teams');
-
-			setApp('expiry_teams');
-		} catch (error) {
-			if (error instanceof Error) {
-				captureException(error);
-			}
+	const handleNavigateToFaq = useCallback(async () => {
+		if (
+			await Linking.canOpenURL(
+				'https://controledevalidades.com/perguntas-frequentes/'
+			)
+		) {
+			await Linking.openURL(
+				'https://controledevalidades.com/perguntas-frequentes/'
+			);
 		}
-	}, [setApp]);
+	}, []);
 
 	return (
 		<Container>
@@ -112,22 +91,20 @@ const DrawerMenu: React.FC = () => {
 			</MainMenuContainer>
 
 			<DrawerSection>
-				{showTeams && (
-					<MenuItemContainer onPress={handleSetDefaultAppToTeams}>
-						<MenuContent>
-							<Icons name="people-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToTeams}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-				)}
-
 				<MenuItemContainer onPress={handleNavigateToSettings}>
 					<MenuContent>
 						<Icons name="settings-outline" />
 						<MenuItemText>
 							{strings.Menu_Button_GoToSettings}
+						</MenuItemText>
+					</MenuContent>
+				</MenuItemContainer>
+
+				<MenuItemContainer onPress={handleNavigateToFaq}>
+					<MenuContent>
+						<Icons name="book-outline" />
+						<MenuItemText>
+							{strings.Menu_Button_GoToFaq}
 						</MenuItemText>
 					</MenuContent>
 				</MenuItemContainer>
