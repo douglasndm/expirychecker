@@ -53,8 +53,6 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* controledevalidadeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = controledevalidadeTests.m; sourceTree = "<group>"; };
 		0F4B91DC58FC3E5C86A19257 /* Pods_controledevalidade_controledevalidadeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_controledevalidade_controledevalidadeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		10A53A25B3D3400195CA1B48 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* controledevalidade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = controledevalidade.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,23 +132,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* controledevalidadeTests */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F21AD99517003FC87E /* controledevalidadeTests.m */,
-				00E356F01AD99517003FC87E /* Supporting Files */,
-			);
-			path = controledevalidadeTests;
-			sourceTree = "<group>";
-		};
-		00E356F01AD99517003FC87E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F11AD99517003FC87E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* controledevalidade */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,7 +182,6 @@
 				4FC7F10F2593EC6000112252 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* controledevalidade */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* controledevalidadeTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D509CEE3C7F78C22E161026A /* Pods */,
@@ -375,7 +355,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export EXTRA_PACKAGER_ARGS=\"--sourcemap-output $TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\"\nexport NODE_BINARY=/Users/douglasndm/.nvm/versions/node/v20.10.0/bin/node\nexport PROJECT_ROOT=$PWD/..\n$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\n";
+			shellScript = "export EXTRA_PACKAGER_ARGS=\"--sourcemap-output $TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\"\nexport NODE_BINARY=/opt/homebrew/opt/node@20/bin/node\nexport PROJECT_ROOT=$PWD/..\n$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\n";
 		};
 		0BA7D566382754331E7CA5A3 /* [CP-User] [RNGoogleMobileAds] Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -583,7 +563,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
@@ -619,7 +599,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 240;
+				CURRENT_PROJECT_VERSION = 241;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
