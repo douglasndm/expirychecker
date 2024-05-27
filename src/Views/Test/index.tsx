@@ -29,7 +29,6 @@ import { getAllCategories } from '@expirychecker/Utils/Categories/All';
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 import { generateBackup } from '@expirychecker/Utils/Backup/Generate';
 import { displayNotification } from '@shared/Services/Notifications/Local';
-import { checkAndInstallUpdate } from '@shared/Services/CodePush';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -180,11 +179,6 @@ const Test: React.FC = () => {
 					<Button
 						title="Upload backup to Storage"
 						onPress={uploadBackup}
-					/>
-
-					<Button
-						title="Check updates"
-						onPress={checkAndInstallUpdate}
 					/>
 				</Category>
 			</ScrollView>

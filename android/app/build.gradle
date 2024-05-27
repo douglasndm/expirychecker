@@ -9,6 +9,8 @@ apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.grad
 
 apply plugin: 'com.google.gms.google-services'
 
+project.ext["REACT_NATIVE_NODE_MODULES_DIR"] = "../../../node_modules/react-native"
+
 /*
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
