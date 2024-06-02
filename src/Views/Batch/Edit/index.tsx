@@ -411,6 +411,7 @@ const EditBatch: React.FC = () => {
 				onDismiss={switchShowDeleteModal}
 				onCancel={switchShowDeleteModal}
 				onConfirm={handleDelete}
+				critical="Confirm"
 				title={strings.View_EditBatch_WarningDelete_Title}
 				description={strings.View_EditBatch_WarningDelete_Message}
 				confirmText={

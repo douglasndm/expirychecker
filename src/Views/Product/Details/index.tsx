@@ -65,7 +65,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		return route.params.id;
 	}, [route.params.id]);
 
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const [product, setProduct] = useState<IProduct>();
 	const [image, setImage] = useState<string | undefined>();
@@ -74,8 +74,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
 
 	const getProduct = useCallback(async () => {
-		setIsLoading(true);
 		try {
+			setIsLoading(true);
 			const result = await getProductById(productId);
 
 			// When the product doesn't exists it will reset the view for app get new data
@@ -86,36 +86,42 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				return;
 			}
 
-			if (result.photo || result.code) {
-				let path: string | null = null;
+			try {
+				if (result.photo || result.code) {
+					let path: string | null = null;
 
-				if (result.photo) {
-					path = await getLocalImageFromProduct(result.photo);
-				} else if (result.code) {
-					path = await getLocalImageFromProduct(result.code.trim());
-				}
+					if (result.photo) {
+						path = await getLocalImageFromProduct(result.photo);
+					} else if (result.code) {
+						path = await getLocalImageFromProduct(
+							result.code.trim()
+						);
+					}
 
-				if (path) {
-					setImage(`${path}`);
-				} else if (!path && result.code && isConnected) {
-					const response = await getImagePath({
-						productCode: result.code.trim(),
-					});
+					if (path) {
+						setImage(`${path}`);
+					} else if (!path && result.code && isConnected) {
+						getImagePath({
+							productCode: result.code.trim(),
+						}).then(res => {
+							if (res) {
+								setImage(res);
 
-					if (response) {
-						setImage(response);
-
-						await saveLocally(response, result.code.trim());
+								if (result.code?.trim())
+									saveLocally(res, result.code.trim());
+							}
+						});
 					}
 				}
+			} catch (error) {
+				setImage(undefined);
 			}
 
+			setProduct(result);
 			if (!result || result === null) {
 				goBack();
 				return;
 			}
-
-			setProduct(result);
 
 			if (result.batches.length > 0) {
 				const lotesSorted = sortBatches(result.batches);
