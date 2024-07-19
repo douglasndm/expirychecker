@@ -192,12 +192,23 @@ async function importExcel(): Promise<void> {
 			const lotes: Omit<IBatch, 'id'>[] = [];
 
 			if (product[localizedBExp]) {
+				let fixedStatus = 'Não tratado';
+
+				const currentStatus = tableBStatus.toLowerCase().trim();
+
+				if (
+					currentStatus === 'já verificado' ||
+					currentStatus === 'checked'
+				) {
+					fixedStatus = 'Tratado';
+				}
+
 				lotes.push({
 					name: tableBName,
 					exp_date: date,
 					amount: tableBAmount,
 					price,
-					status: tableBStatus,
+					status: fixedStatus,
 				});
 			}
 

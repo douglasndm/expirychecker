@@ -5,10 +5,13 @@ import {
 	mkdir,
 	copyFile,
 } from 'react-native-fs';
+import { UpdateMode } from 'realm';
+
+import realm from '@expirychecker/Services/Realm';
 
 import { getImagePath } from '@expirychecker/Utils/Products/Images/GetPath';
 
-import { getProductById, updateProduct } from '../Product';
+import { getProductById } from '../Product';
 
 export function getImageFileNameFromPath(path: string): string {
 	const productImage = path.split('/');
@@ -52,10 +55,24 @@ export async function saveProductImage({
 		}
 	}
 
-	await updateProduct({
-		...product,
-		id: productId,
-		photo: fileName,
+	realm.write(() => {
+		realm.create(
+			'Product',
+			{
+				id: productId,
+				name: product.name,
+				code: product.code,
+				brand: product.brand,
+				store: product.store,
+				daysToBeNext: product.daysToBeNext,
+
+				categories: product.category,
+				photo: fileName,
+
+				updated_at: new Date(),
+			},
+			UpdateMode.Modified
+		);
 	});
 }
 

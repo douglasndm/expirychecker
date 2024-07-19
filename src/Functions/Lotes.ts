@@ -187,18 +187,18 @@ export async function updateLote(
 			UpdateMode.Modified
 		);
 
-		realm.create(
-			'Product',
-			{
-				...product,
-				id: product.id,
-				brand: product.brand?.id,
-				store: product.store?.id,
-				category: product.category?.id,
-				updated_at: new Date(),
-			},
-			UpdateMode.Modified
-		);
+		// realm.create(
+		// 	'Product',
+		// 	{
+		// 		...product,
+		// 		id: product.id,
+		// 		brand: product.brand?.id,
+		// 		store: product.store?.id,
+		// 		category: product.category?.id,
+		// 		updated_at: new Date(),
+		// 	},
+		// 	UpdateMode.Modified
+		// );
 	});
 }
 

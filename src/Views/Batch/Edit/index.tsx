@@ -216,11 +216,7 @@ const EditBatch: React.FC = () => {
 					type: 'danger',
 				});
 
-				if (__DEV__) {
-					console.error(err);
-				} else {
-					captureException(err);
-				}
+				captureException(err);
 			}
 		}
 	}, [loteId, product, productId, reset, userPreferences.isPRO]);
