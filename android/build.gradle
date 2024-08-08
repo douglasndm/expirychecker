@@ -22,9 +22,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
         classpath("com.google.gms:google-services:4.4.0")
-
-        classpath("com.bugsnag:bugsnag-android-gradle-plugin:8.+")
-        classpath("com.newrelic.agent.android:agent-gradle-plugin:7.3.0")
     }
 }
 allprojects {

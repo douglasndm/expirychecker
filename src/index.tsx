@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState, useMemo } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
@@ -21,10 +22,6 @@ import DeepLinking from '@expirychecker/Services/DeepLinking';
 
 import '@expirychecker/Functions/ProMode';
 import '@expirychecker/Functions/PushNotifications';
-
-// import { getDefaultApp } from '@expirychecker/Utils/Settings/GetSettings';
-
-import BugSnagContainer from '@shared/BugsnagContainer';
 
 import ListContext from '@shared/Contexts/ListContext';
 
@@ -50,7 +47,7 @@ const App: React.FC = () => {
 	}, [currentList]);
 
 	return (
-		<BugSnagContainer DeepLinking={DeepLinking}>
+		<NavigationContainer linking={DeepLinking}>
 			<AppContext>
 				<PaperProvider>
 					<Portal>
@@ -71,7 +68,7 @@ const App: React.FC = () => {
 					</Portal>
 				</PaperProvider>
 			</AppContext>
-		</BugSnagContainer>
+		</NavigationContainer>
 	);
 };
 

@@ -7,8 +7,6 @@ echo "Building Android app"
 
 cd ..
 
-yarn bugsnag:upload-android --variant=release
-
 # echo "Starting iOS build process"
 # # Caminho para o arquivo de workspace do seu projeto
 # workspace="ios/expirybusiness.xcworkspace"

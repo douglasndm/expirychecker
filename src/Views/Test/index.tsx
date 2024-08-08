@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
-import Bugsnag from '@bugsnag/react-native';
 import appCheck from '@react-native-firebase/app-check';
 import { addDays } from 'date-fns';
 import { showMessage } from 'react-native-flash-message';
@@ -89,7 +88,6 @@ const Test: React.FC = () => {
 			throw new Error('Test error');
 		} catch (error) {
 			if (error instanceof Error) {
-				Bugsnag.notify(error);
 			}
 		}
 	};
