@@ -34,6 +34,7 @@
     "@react-navigation/drawer": "6.6.15",
     "@react-navigation/native": "*",
     "@react-navigation/stack": "*",
+    "@sentry/react-native": "^5.27.0",
     "axios": "*",
     "crypto-js": "^3.3.0",
     "date-fns": "*",

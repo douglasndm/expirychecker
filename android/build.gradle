@@ -22,6 +22,8 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
         classpath("com.google.gms:google-services:4.4.0")
+
+        classpath("io.sentry:sentry-android-gradle-plugin:4.11.0")
     }
 }
 allprojects {
