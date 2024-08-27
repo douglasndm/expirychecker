@@ -143,7 +143,7 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		loadData();
-	}, [loadData]);
+	}, []);
 
 	const handleSwitchEnableSearch = useCallback(() => {
 		setEnableSearch(prevState => !prevState);
@@ -269,7 +269,7 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		setCurrentList(listRef);
-	}, [setCurrentList]);
+	}, []);
 
 	interface IAction {
 		icon: string;
