@@ -56,13 +56,21 @@ export async function saveProductImage({
 	}
 
 	realm.write(() => {
+		let brand: IBrand | string | undefined = product.brand;
+
+		if (brand) {
+			if (typeof brand !== 'string') {
+				brand = brand.id;
+			}
+		}
+
 		realm.create(
 			'Product',
 			{
 				id: productId,
 				name: product.name,
 				code: product.code,
-				brand: product.brand,
+				brand: brand,
 				store: product.store,
 				daysToBeNext: product.daysToBeNext,
 
