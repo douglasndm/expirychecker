@@ -8,6 +8,7 @@ import {
 import { UpdateMode } from 'realm';
 
 import realm from '@expirychecker/Services/Realm';
+import { captureException } from '@services/ExceptionsHandler';
 
 import { getImagePath } from '@expirychecker/Utils/Products/Images/GetPath';
 
@@ -64,23 +65,37 @@ export async function saveProductImage({
 			}
 		}
 
-		realm.create(
-			'Product',
-			{
-				id: productId,
-				name: product.name,
-				code: product.code,
-				brand: brand,
-				store: product.store,
-				daysToBeNext: product.daysToBeNext,
+		let category: ICategory | string | undefined = product.category;
 
-				categories: product.category,
-				photo: fileName,
+		if (category) {
+			if (typeof category !== 'string') {
+				category = category.id;
+			}
+		}
 
-				updated_at: new Date(),
-			},
-			UpdateMode.Modified
-		);
+		try {
+			realm.create(
+				'Product',
+				{
+					id: productId,
+					name: product.name,
+					code: product.code,
+					brand: brand,
+					store: product.store,
+					daysToBeNext: product.daysToBeNext,
+
+					categories: [category],
+					photo: fileName,
+
+					updated_at: new Date(),
+				},
+				UpdateMode.Modified
+			);
+		} catch (err) {
+			if (err instanceof Error) {
+				captureException(err);
+			}
+		}
 	});
 }
 
