@@ -84,7 +84,7 @@ export async function saveProductImage({
 					store: product.store,
 					daysToBeNext: product.daysToBeNext,
 
-					categories: [category],
+					categories: !!category ? [category] : [],
 					photo: fileName,
 
 					updated_at: new Date(),
