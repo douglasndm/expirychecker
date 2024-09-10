@@ -23,4 +23,4 @@ if (!__DEV__) {
     });
 }
 
-AppRegistry.registerComponent(appName, () => Sentry.wrap(App));
+AppRegistry.registerComponent(appName, () => App);

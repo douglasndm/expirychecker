@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
+import * as Sentry from '@sentry/react-native';
+
 import '@expirychecker/Locales';
 
 import StatusBar from '@components/StatusBar';
@@ -72,4 +74,4 @@ const App: React.FC = () => {
 	);
 };
 
-export default App;
+export default Sentry.wrap(App);
