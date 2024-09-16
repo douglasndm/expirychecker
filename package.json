@@ -35,7 +35,7 @@
     "@react-navigation/stack": "*",
     "@sentry/react-native": "^5.27.0",
     "axios": "*",
-    "crypto-js": "^4.2.0",
+    "crypto-js": "^3.3.0",
     "date-fns": "*",
     "expirybusiness": "^1.0.0",
     "lottie-react-native": "*",
