@@ -1,33 +1,12 @@
 import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
-import appCheck from '@react-native-firebase/app-check';
 import { addDays } from 'date-fns';
-import { showMessage } from 'react-native-flash-message';
-
-import strings from '@expirychecker/Locales';
-
-import { uploadBackupFile } from '@services/Firebase/Storage';
 
 import Button from '@components/Button';
 
 import { Container, Category } from '@views/Settings/styles';
 
-import { handlePurchase } from '@utils/Purchases/HandlePurchase';
-
 import realm from '@expirychecker/Services/Realm';
-import {
-	isTimeForANotification,
-	setTimeForNextNotification,
-} from '@expirychecker/Functions/Notifications';
-
-import { getNotificationForAllProductsCloseToExp } from '@expirychecker/Functions/ProductsNotifications';
-import { exportProductsToXML } from '@shared/Utils/IO/Export/XML';
-import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
-import { getAllBrands } from '@expirychecker/Utils/Brands/All';
-import { getAllCategories } from '@expirychecker/Utils/Categories/All';
-import { getAllStores } from '@expirychecker/Utils/Stores/Find';
-import { generateBackup } from '@expirychecker/Utils/Backup/Generate';
-import { displayNotification } from '@shared/Services/Notifications/Local';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -73,70 +52,6 @@ const Test: React.FC = () => {
 		}
 	}
 
-	const handleNotification = useCallback(async () => {
-		await setTimeForNextNotification();
-
-		const notification = await getNotificationForAllProductsCloseToExp();
-
-		if (notification) {
-			await displayNotification(notification);
-		}
-	}, []);
-
-	const functionThrowAnError = () => {
-		try {
-			throw new Error('Test error');
-		} catch (error) {
-			if (error instanceof Error) {
-			}
-		}
-	};
-
-	const handleCheckAppChekc = useCallback(async () => {
-		try {
-			const { token } = await appCheck().getToken(true);
-
-			if (token.length > 0) {
-				console.log(token);
-				showMessage({
-					message: 'Sucesso',
-				});
-			}
-		} catch (error) {
-			console.log(error);
-			if (error instanceof Error)
-				showMessage({
-					type: 'danger',
-					message: error.message,
-				});
-		}
-	}, []);
-
-	const handleExportXM = useCallback(async () => {
-		const allProducts = await getAllProductsAsync({
-			sortProductsByExpDate: true,
-			removeTreatedBatch: true,
-		});
-
-		const allBrands = await getAllBrands();
-		const allCategories = await getAllCategories();
-		const allStores = await getAllStores();
-
-		await exportProductsToXML({
-			products: allProducts,
-			brands: allBrands,
-			categories: allCategories,
-			stores: allStores,
-		});
-	}, []);
-
-	const uploadBackup = useCallback(async () => {
-		const backup = await generateBackup();
-		const path = `${backup}/${strings.Function_Export_FileName}.cvbf`;
-
-		uploadBackupFile(path);
-	}, []);
-
 	return (
 		<Container>
 			<ScrollView>
@@ -144,39 +59,6 @@ const Test: React.FC = () => {
 					<Button
 						title="Load with sample data"
 						onPress={sampleData}
-					/>
-
-					<Button
-						title="Log is time to notificaiton"
-						onPress={() =>
-							isTimeForANotification().then(response =>
-								console.log(response)
-							)
-						}
-					/>
-
-					<Button
-						title="Throw notification"
-						onPress={handleNotification}
-					/>
-
-					<Button title="Crash" onPress={functionThrowAnError} />
-
-					<Button
-						title="Test AppCheck"
-						onPress={handleCheckAppChekc}
-					/>
-
-					<Button
-						title="Handle Purchase"
-						onPress={() => handlePurchase()}
-					/>
-
-					<Button title="Export XML" onPress={handleExportXM} />
-
-					<Button
-						title="Upload backup to Storage"
-						onPress={uploadBackup}
 					/>
 				</Category>
 			</ScrollView>
