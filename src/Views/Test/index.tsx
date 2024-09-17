@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native';
 import { addDays } from 'date-fns';
 

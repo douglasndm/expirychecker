@@ -1,7 +1,7 @@
 {
   "name": "controledevalidade",
   "version": "1.17.10",
-  "build": "321",
+  "build": "322",
   "private": true,
   "scripts": {
     "android": "react-native run-android --active-arch-only",
@@ -41,7 +41,7 @@
     "lottie-react-native": "*",
     "polished": "*",
     "react": "18.3.1",
-    "react-native": "0.75.2",
+    "react-native": "0.75.3",
     "react-native-background-fetch": "^4.2.5",
     "react-native-bootsplash": "*",
     "react-native-camera-kit": "*",
@@ -56,6 +56,7 @@
     "react-native-fs": "*",
     "react-native-gesture-handler": "*",
     "react-native-google-mobile-ads": "^14.2.3",
+    "react-native-html-to-pdf": "^0.12.0",
     "react-native-image-picker": "*",
     "react-native-in-app-review": "*",
     "react-native-linear-gradient": "*",
