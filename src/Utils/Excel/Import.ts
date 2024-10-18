@@ -63,6 +63,10 @@ async function importExcel(): Promise<void> {
 		mode: 'open',
 	});
 
+	if (!file.name) {
+		throw new Error('File does not have a name');
+	}
+
 	// Separa o nome do arquivo da extensão para fazer a validação da extensão do arquivo
 	const [, extension] = file.name.split('.');
 

@@ -280,6 +280,9 @@ const View: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
+				if (err.message.includes('User did not share')) {
+					return;
+				}
 				captureException(err);
 
 				showMessage({
