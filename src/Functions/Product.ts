@@ -1,6 +1,8 @@
 import { UpdateMode } from 'realm';
 import { exists, unlink } from 'react-native-fs';
 
+import { captureException } from '@services/ExceptionsHandler';
+
 import realm from '@expirychecker/Services/Realm';
 
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
@@ -10,6 +12,7 @@ import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
 import { getCategory } from './Category';
 import { getStore } from './Stores';
 import { createLote } from './Lotes';
+import { getAllProducts } from './Products';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
 	productCode: string;
@@ -90,6 +93,13 @@ export async function getProductById(productId: number): Promise<IProduct> {
 		.filtered(`id = "${productId}"`)[0];
 
 	if (!result) {
+		const allProducts = await getAllProducts({});
+
+		captureException(new Error('Product not found'), {
+			productId,
+			allProducts,
+		});
+
 		throw new Error('Product not found');
 	}
 
