@@ -23,6 +23,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import { shareText, shareTextWithImage } from '@utils/Share';
 
 import { shareBatchToPDF } from '@utils/Share/Batch/toPDF';
+import { shareString } from '@expirychecker/Utils/Batches/Share';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -97,12 +98,6 @@ const View: React.FC = () => {
 		return isPast(date);
 	}, [date]);
 
-	const exp_date = useMemo(() => {
-		return format(date, dateFormat, {
-			locale: languageCode,
-		});
-	}, [date, dateFormat, languageCode]);
-
 	const handleNaviEdit = useCallback(() => {
 		navigate('EditLote', {
 			productId,
@@ -117,55 +112,7 @@ const View: React.FC = () => {
 		try {
 			setIsSharing(true);
 
-			let text = strings.View_ShareProduct_Message;
-
-			if (!!batch.amount && batch.amount > 0) {
-				if (!!batch.price_tmp) {
-					text =
-						strings.View_ShareProduct_MessageWithDiscountAndAmount;
-
-					text = text.replace(
-						'{TMP_PRICE}',
-						formatCurrency({
-							amount: Number(batch.price_tmp.toFixed(2)),
-							code: getCurrencies()[0],
-						})[0]
-					);
-					text = text.replace(
-						'{TOTAL_DISCOUNT_PRICE}',
-						formatCurrency({
-							amount: Number(
-								(batch.price_tmp * batch.amount).toFixed(2)
-							),
-							code: getCurrencies()[0],
-						})[0]
-					);
-				} else {
-					text = strings.View_ShareProduct_MessageWithAmount;
-				}
-				text = text.replace('{AMOUNT}', String(batch.amount));
-			} else if (!!batch.price) {
-				text = strings.View_ShareProduct_MessageWithPrice;
-
-				if (!!batch.price_tmp) {
-					text = strings.View_ShareProduct_MessageWithDiscount;
-					text = text.replace(
-						'{TMP_PRICE}',
-						batch.price_tmp.toString()
-					);
-				}
-
-				text = text.replace(
-					'{PRICE}',
-					formatCurrency({
-						amount: Number(batch.price.toFixed(2)),
-						code: getCurrencies()[0],
-					})[0]
-				);
-			}
-
-			text = text.replace('{PRODUCT}', product.name);
-			text = text.replace('{DATE}', exp_date);
+			const text = shareString(product, batch);
 
 			if (product.photo || product.code) {
 				let fileName: string | null = null;
@@ -198,16 +145,12 @@ const View: React.FC = () => {
 						type: 'danger',
 					});
 
-					if (__DEV__) {
-						console.error(err);
-					} else {
-						captureException(err);
-					}
+					captureException(err);
 				}
 		} finally {
 			setIsSharing(false);
 		}
-	}, [product, batch, exp_date]);
+	}, [product, batch]);
 
 	const handleNavigateToDiscount = useCallback(() => {
 		navigate('BatchDiscount', {
