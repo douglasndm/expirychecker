@@ -43,10 +43,6 @@ import {
 const Export: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-	const enableExcelImport = remoteConfig().getValue('enable_excel_import');
-	const enableExcelExport = remoteConfig().getValue('enable_excel_export');
-	const enableBackupImport = remoteConfig().getValue('enable_backup_import');
-	const enableBackupExport = remoteConfig().getValue('enable_backup_export');
 	const enableXMLExport = remoteConfig().getValue('enable_xml_export');
 
 	const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
@@ -275,77 +271,55 @@ const Export: React.FC = () => {
 				<ExportOptionContainer>
 					<CategoryTitle>Excel</CategoryTitle>
 
-					{enableExcelExport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{strings.View_Export_Explain_Excel}
-							</ExportExplain>
+					<ExportExplain>
+						{strings.View_Export_Explain_Excel}
+					</ExportExplain>
 
-							<Button
-								title={strings.View_Export_Button_ExportExcel}
-								onPress={handleExportToExcel}
-								isLoading={isExcelLoading}
-							/>
-						</>
-					)}
+					<Button
+						title={strings.View_Export_Button_ExportExcel}
+						onPress={handleExportToExcel}
+						isLoading={isExcelLoading}
+					/>
 
-					{enableExcelImport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{strings.View_Export_Import_Excel}
-							</ExportExplain>
+					<ExportExplain>
+						{strings.View_Export_Import_Excel}
+					</ExportExplain>
 
-							<Button
-								title={strings.View_Export_Button_ImportExcel}
-								onPress={handleImportExcel}
-								isLoading={isExcelImporting}
-							/>
+					<Button
+						title={strings.View_Export_Button_ImportExcel}
+						onPress={handleImportExcel}
+						isLoading={isExcelImporting}
+					/>
 
-							{isExcelModelGenerating ? (
-								<Loading />
-							) : (
-								<LinkEmptyExcel
-									onPress={handleExcelModelGenerete}
-								>
-									{
-										strings.View_Export_Excel_GenerateEmptyExcel
-									}
-								</LinkEmptyExcel>
-							)}
-						</>
+					{isExcelModelGenerating ? (
+						<Loading />
+					) : (
+						<LinkEmptyExcel onPress={handleExcelModelGenerete}>
+							{strings.View_Export_Excel_GenerateEmptyExcel}
+						</LinkEmptyExcel>
 					)}
 				</ExportOptionContainer>
 
 				<ExportOptionContainer>
 					<CategoryTitle>Backup</CategoryTitle>
 
-					{enableBackupExport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{strings.View_Export_Explain_Backup}
-							</ExportExplain>
-							<Button
-								title={strings.View_Export_Button_ExportBackup}
-								onPress={handleExportBackup}
-								isLoading={isExporting}
-							/>
-						</>
-					)}
+					<ExportExplain>
+						{strings.View_Export_Explain_Backup}
+					</ExportExplain>
+					<Button
+						title={strings.View_Export_Button_ExportBackup}
+						onPress={handleExportBackup}
+						isLoading={isExporting}
+					/>
 
-					{enableBackupImport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{
-									strings.View_Settings_SettingName_ExportAndInmport
-								}
-							</ExportExplain>
-							<Button
-								title={strings.View_Settings_Button_ImportFile}
-								onPress={handleImportBackup}
-								isLoading={isImporting}
-							/>
-						</>
-					)}
+					<ExportExplain>
+						{strings.View_Settings_SettingName_ExportAndInmport}
+					</ExportExplain>
+					<Button
+						title={strings.View_Settings_Button_ImportFile}
+						onPress={handleImportBackup}
+						isLoading={isImporting}
+					/>
 				</ExportOptionContainer>
 
 				{enableXMLExport.asBoolean() === true && (
