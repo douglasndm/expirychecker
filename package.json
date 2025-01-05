@@ -79,7 +79,7 @@
     "react-number-format": "^5.4.3",
     "realm": "^12.11.0",
     "shared": "^1.0.0",
-    "styled-components": "*",
+    "styled-components": "^6.1.14",
     "xlsx": "*",
     "yup": "^1.4.0"
   },
