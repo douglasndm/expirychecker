@@ -1,12 +1,23 @@
 import styled from 'styled-components/native';
+import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export const Container = styled.ScrollView`
+export const Container = styled(LinearGradient).attrs(() => ({
+	start: { x: 0, y: 0 },
+	end: { x: 0, y: 0.8 },
+
+	locations: [0.5, 0.5],
+	colors: ['#cc002b', '#ffffff'],
+}))`
 	flex: 1;
 	background-color: #ffffff;
 `;
 
-export const HeaderContainer = styled.SafeAreaView`
+export const Content = styled.ScrollView.attrs(() => ({
+	contentInsetAdjustmentBehavior: 'automatic',
+}))``;
+
+export const HeaderContainer = styled.View`
 	background-color: rgba(204, 0, 43, 1);
 `;
 
@@ -26,7 +37,6 @@ export const WarningIconContainer = styled.View`
 `;
 
 export const TextContainer = styled.View`
-	flex: 1;
 	background-color: #ffffff;
 	padding: 15px;
 `;
@@ -64,7 +74,9 @@ export const ButtonsContainer = styled.View`
 	align-items: center;
 `;
 
-export const TextButton = styled.Text``;
+export const TextButton = styled.Text`
+	color: #000000;
+`;
 
 export const KeepSubscriptionButton = styled.TouchableOpacity`
 	background-color: #2df8d5;
