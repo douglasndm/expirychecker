@@ -8,6 +8,7 @@ import strings from '@expirychecker/Locales';
 import Logo from '@components/Logo';
 import {
 	Container,
+	Content,
 	MainMenuContainer,
 	LogoContainer,
 	MenuItemContainer,
@@ -57,78 +58,80 @@ const DrawerMenu: React.FC = () => {
 
 	return (
 		<Container>
-			<MainMenuContainer>
-				<LogoContainer>
-					{windowHeight > 600 ? (
-						<Logo />
-					) : (
-						<MenuItemText style={{ color: '#fff' }}>
-							{strings.AppName}
-						</MenuItemText>
-					)}
-				</LogoContainer>
+			<Content>
+				<MainMenuContainer>
+					<LogoContainer>
+						{windowHeight > 600 ? (
+							<Logo />
+						) : (
+							<MenuItemText style={{ color: '#fff' }}>
+								{strings.AppName}
+							</MenuItemText>
+						)}
+					</LogoContainer>
+					<DrawerSection>
+						<MenuItemContainer onPress={navigateHome}>
+							<MenuContent>
+								<Icons name="home-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToHome}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						<MenuItemContainer onPress={navigateToAddProduct}>
+							<MenuContent>
+								<Icons name="add" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToAddProduct}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						<PROItems />
+					</DrawerSection>
+				</MainMenuContainer>
+
 				<DrawerSection>
-					<MenuItemContainer onPress={navigateHome}>
+					<MenuItemContainer onPress={handleNavigateToSettings}>
 						<MenuContent>
-							<Icons name="home-outline" />
+							<Icons name="settings-outline" />
 							<MenuItemText>
-								{strings.Menu_Button_GoToHome}
+								{strings.Menu_Button_GoToSettings}
 							</MenuItemText>
 						</MenuContent>
 					</MenuItemContainer>
 
-					<MenuItemContainer onPress={navigateToAddProduct}>
+					<MenuItemContainer onPress={handleNavigateToFaq}>
 						<MenuContent>
-							<Icons name="add" />
+							<Icons name="book-outline" />
 							<MenuItemText>
-								{strings.Menu_Button_GoToAddProduct}
+								{strings.Menu_Button_GoToFaq}
 							</MenuItemText>
 						</MenuContent>
 					</MenuItemContainer>
 
-					<PROItems />
+					<MenuItemContainer onPress={handleNavigateToAbout}>
+						<MenuContent>
+							<Icons name="help-circle-outline" />
+							<MenuItemText>
+								{strings.Menu_Button_GoToAbout}
+							</MenuItemText>
+						</MenuContent>
+					</MenuItemContainer>
+
+					{__DEV__ && (
+						<MenuItemContainer onPress={handleNavigateToTest}>
+							<MenuContent>
+								<Icons name="bug-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToTest}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+					)}
 				</DrawerSection>
-			</MainMenuContainer>
-
-			<DrawerSection>
-				<MenuItemContainer onPress={handleNavigateToSettings}>
-					<MenuContent>
-						<Icons name="settings-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToSettings}
-						</MenuItemText>
-					</MenuContent>
-				</MenuItemContainer>
-
-				<MenuItemContainer onPress={handleNavigateToFaq}>
-					<MenuContent>
-						<Icons name="book-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToFaq}
-						</MenuItemText>
-					</MenuContent>
-				</MenuItemContainer>
-
-				<MenuItemContainer onPress={handleNavigateToAbout}>
-					<MenuContent>
-						<Icons name="help-circle-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToAbout}
-						</MenuItemText>
-					</MenuContent>
-				</MenuItemContainer>
-
-				{__DEV__ && (
-					<MenuItemContainer onPress={handleNavigateToTest}>
-						<MenuContent>
-							<Icons name="bug-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToTest}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-				)}
-			</DrawerSection>
+			</Content>
 		</Container>
 	);
 };

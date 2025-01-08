@@ -76,6 +76,41 @@ const PRO: React.FC = () => {
 					<LoadIndicator />
 				</LoadContainer>
 			)}
+			{__DEV__ && (
+				<>
+					<MenuItemContainer
+						disabled={isPaywallOpen}
+						onPress={
+							userPreferences.isPRO
+								? navigateToCategories
+								: handlePaywall
+						}
+					>
+						<MenuContent>
+							<Icons name="file-tray-full-outline" />
+							<MenuItemText>
+								Produtos ordenados por peso
+							</MenuItemText>
+						</MenuContent>
+					</MenuItemContainer>
+
+					<MenuItemContainer
+						disabled={isPaywallOpen}
+						onPress={
+							userPreferences.isPRO
+								? navigateToCategories
+								: handlePaywall
+						}
+					>
+						<MenuContent>
+							<Icons name="file-tray-full-outline" />
+							<MenuItemText>
+								Produtos ordenados por litros
+							</MenuItemText>
+						</MenuContent>
+					</MenuItemContainer>
+				</>
+			)}
 			<MenuItemContainer
 				disabled={isPaywallOpen}
 				onPress={
