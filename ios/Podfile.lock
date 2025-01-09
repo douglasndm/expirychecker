@@ -169,7 +169,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.76.5)
   - hermes-engine/Pre-built (0.76.5)
   - lottie-ios (4.5.0)
-  - lottie-react-native (7.1.0):
+  - lottie-react-native (7.2.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1839,7 +1839,7 @@ PODS:
     - RevenueCat (= 4.43.2)
   - RNBackgroundFetch (4.2.7):
     - React-Core
-  - RNBootSplash (6.3.2):
+  - RNBootSplash (5.5.3):
     - React-Core
   - RNCAsyncStorage (2.1.0):
     - React-Core
@@ -1866,7 +1866,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNCPicker (2.10.2):
+  - RNCPicker (2.11.0):
     - React-Core
   - RNCPushNotificationIOS (1.11.0):
     - React-Core
@@ -1960,7 +1960,7 @@ PODS:
   - RNPaywalls (7.28.1):
     - PurchasesHybridCommonUI (= 11.1.1)
     - React-Core
-  - RNPermissions (5.2.1):
+  - RNPermissions (5.2.2):
     - React-Core
   - RNPurchases (7.28.1):
     - PurchasesHybridCommon (= 11.1.1)
@@ -2214,7 +2214,7 @@ DEPENDENCIES:
   - ReactNativeLocalization (from `../../../node_modules/react-native-localization`)
   - RealmJS (from `../../../node_modules/realm`)
   - RNBackgroundFetch (from `../../../node_modules/react-native-background-fetch`)
-  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - RNBootSplash (from `../../../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../../../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../../../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../../../node_modules/@react-native-masked-view/masked-view`)"
@@ -2446,7 +2446,7 @@ EXTERNAL SOURCES:
   RNBackgroundFetch:
     :path: "../../../node_modules/react-native-background-fetch"
   RNBootSplash:
-    :path: "../node_modules/react-native-bootsplash"
+    :path: "../../../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../../../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -2536,7 +2536,7 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 923b710231ad3d6f3f0495ac1ced35421e07d9a6
   hermes-engine: 06a9c6900587420b90accc394199527c64259db4
   lottie-ios: a881093fab623c467d3bce374367755c272bdd59
-  lottie-react-native: 58fa6241bbcfe68180c3aebfb9e497d0d87e912e
+  lottie-react-native: 039828a70d7299a794ca879982915c0b3fa13878
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PurchasesHybridCommon: 73f4f2c6e4ec3487b4219bf60e1661100fb85da3
@@ -2617,11 +2617,11 @@ SPEC CHECKSUMS:
   RevenueCat: 3d934653b7e8b09af88fd47e9e84cfaf5d0a89ba
   RevenueCatUI: 1417f375baf005eaf3afa8bc99724f567abfd6da
   RNBackgroundFetch: 11d6fff0247a2c7623c7db00e3cd65e405d216ea
-  RNBootSplash: 3a44c2c3ebfce98254de887ceed22c4941c8c6c5
+  RNBootSplash: e025d4ee98d942ee6c8b495a6fe66339a6b5f6dd
   RNCAsyncStorage: cc6479c4acd84cc7004946946c8afe30b018184d
   RNCClipboard: 69ab8e51324d5b351f6ba72bbdb72478087a2c64
   RNCMaskedView: 7133577aa318952cac74dae97037a30cd33d73bf
-  RNCPicker: d162737e03e48797110dbb60e5ddc03012e87e0b
+  RNCPicker: 4f6d5e8d107064be32dfc8f1bcb5a3741135db0b
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNDeviceInfo: 3f2e5fcca3637f75c6d30ba287293c2f97206781
   RNFBAnalytics: cabbc0a315593670b03eeb21f683253657f3ecff
@@ -2638,7 +2638,7 @@ SPEC CHECKSUMS:
   RNLocalize: 298e85ce16540a11de40c1a588ead39fc5e9a072
   RNNotifee: 4a6ee5c7deaf00e005050052d73ee6315dff7ec9
   RNPaywalls: 3b1f151f7bbd00dea0aeb4ecb3bd60d243ec5d9e
-  RNPermissions: d613290116bc69d06d3f34582d9eb64e063a9863
+  RNPermissions: 82c4c3e5b1c24803cbf0033916e0a6a05071cb98
   RNPurchases: 4305de02b902d3c1e56a50295dc0a6e758b73095
   RNReanimated: 8e273440b1bc17a812b6fda5775348f20adde14e
   RNScreens: 986bbf29f6a45771dc0dc7007d922c94f4a9fb25

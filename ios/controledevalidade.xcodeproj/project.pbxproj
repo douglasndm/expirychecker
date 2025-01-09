@@ -267,6 +267,7 @@
 				D3A593055FBE750F6BE6129B /* [CP] Copy Pods Resources */,
 				7438A597CD7EE73B248F5192 /* [CP-User] [RNFB] Core Configuration */,
 				4F9A1CF02B5A4BE000DC272F /* Set Info.plist version from package.json */,
+				479660EBF9FC49719E9D8E61 /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -521,6 +522,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-controledevalidade/Pods-controledevalidade-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		479660EBF9FC49719E9D8E61 /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Upload Debug Symbols to Sentry";
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "/bin/sh ../node_modules/@sentry/react-native/scripts/sentry-xcode-debug-files.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 

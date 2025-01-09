@@ -12,6 +12,9 @@ import './src/Functions/OpenAppTimes';
 if (!__DEV__) {
     Sentry.init({
         dsn: EnvConfig.SENTRY_DSN,
+
+        // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+        enableSpotlight: __DEV__,
         // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
         // We recommend adjusting this value in production.
         tracesSampleRate: 1.0,
