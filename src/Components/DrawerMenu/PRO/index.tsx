@@ -5,6 +5,7 @@ import React, {
 	useRef,
 	useMemo,
 } from 'react';
+import { Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -12,6 +13,9 @@ import strings from '@expirychecker/Locales';
 import sharedStrings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
+
+import WeightIcon from '@assets/Icons/shipment-weight-kg.png';
+import LitersIcon from '@assets/Icons/water-glass-half-full.png';
 
 import {
 	MenuItemContainer,
@@ -90,7 +94,10 @@ const PRO: React.FC = () => {
 						}
 					>
 						<MenuContent>
-							<Icons name="file-tray-full-outline" />
+							<Image
+								source={WeightIcon}
+								style={{ width: 22, height: 22 }}
+							/>
 							<MenuItemText>
 								{sharedStrings.Menu_Button_GoToSortedByWeight}
 							</MenuItemText>
@@ -110,7 +117,10 @@ const PRO: React.FC = () => {
 						}
 					>
 						<MenuContent>
-							<Icons name="file-tray-full-outline" />
+							<Image
+								source={LitersIcon}
+								style={{ width: 22, height: 22 }}
+							/>
 							<MenuItemText>
 								{sharedStrings.Menu_Button_GoToSortedByLiters}
 							</MenuItemText>
