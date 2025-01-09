@@ -8,6 +8,7 @@ import React, {
 import { Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useTheme } from 'styled-components';
 
 import strings from '@expirychecker/Locales';
 import sharedStrings from '@shared/Locales';
@@ -15,7 +16,9 @@ import sharedStrings from '@shared/Locales';
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import WeightIcon from '@assets/Icons/shipment-weight-kg.png';
+import WeightIconDark from '@assets/Icons/shipment-weight-kg-dark.png';
 import LitersIcon from '@assets/Icons/water-glass-half-full.png';
+import LitersIconDark from '@assets/Icons/water-glass-half-full-dark.png';
 
 import {
 	MenuItemContainer,
@@ -32,6 +35,8 @@ import { LoadContainer, LoadIndicator } from './styles';
 
 const PRO: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
+
+	const theme = useTheme();
 
 	const paywallRef = useRef<MenuPaywallProps>(null);
 
@@ -92,7 +97,7 @@ const PRO: React.FC = () => {
 			>
 				<MenuContent>
 					<Image
-						source={WeightIcon}
+						source={!theme.isDark ? WeightIconDark : WeightIcon}
 						style={{ width: 22, height: 22 }}
 					/>
 					<MenuItemText>
@@ -113,7 +118,7 @@ const PRO: React.FC = () => {
 			>
 				<MenuContent>
 					<Image
-						source={LitersIcon}
+						source={!theme.isDark ? LitersIconDark : LitersIcon}
 						style={{ width: 22, height: 22 }}
 					/>
 					<MenuItemText>
