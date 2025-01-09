@@ -11,7 +11,7 @@ import Header from '@components/Header';
 import Input from '@components/InputText';
 import Button from '@components/Button';
 
-import { FormContainer } from '@teams/Views/Auth/Login/styles';
+import { FormContainer } from '@teams/Views/Auth/Login/Form/styles';
 import { Container, PageContent } from '@teams/Views/Auth/CreateAccount/styles';
 
 const CreateAccount: React.FC = () => {

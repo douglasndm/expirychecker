@@ -15,14 +15,13 @@ import Button from '@components/Button';
 
 import Footer from '@teams/Views/Auth/Login/Footer';
 
+import { Container, Content } from '@teams/Views/Auth/Login/styles';
 import {
-	Container,
-	Content,
 	FormContainer,
 	FormTitle,
 	LoginForm,
 	ForgotPasswordText,
-} from '@teams/Views/Auth/Login/styles';
+} from '@teams/Views/Auth/Login/Form/styles';
 
 const Login: React.FC = () => {
 	const { pop, navigate } =
