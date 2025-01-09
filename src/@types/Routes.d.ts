@@ -6,6 +6,8 @@ type RoutesParams = {
 		code?: string;
 		store?: string;
 	};
+	ProductsSortedByWeight;
+	ProductsSortedByLiters;
 	About;
 	ProductDetails: {
 		id: number;

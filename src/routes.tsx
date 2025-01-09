@@ -22,6 +22,9 @@ import About from '@expirychecker/Views/About';
 import Success from '@expirychecker/Views/Success';
 import PhotoView from '@views/Product/PhotoView';
 
+import ProductsSortedByWeight from '@expirychecker/Views/Product/Lists/SortedByWeight';
+import ProductsSortedByLiters from '@expirychecker/Views/Product/Lists/SortedByLiters';
+
 import BatchView from '@expirychecker/Views/Batch/View';
 import BatchDiscount from '@expirychecker/Views/Batch/Discount';
 
@@ -111,6 +114,16 @@ const StackNavigator: React.FC = () => {
 				>
 					<Stack.Screen name="Home" component={Home} />
 					<Stack.Screen name="AddProduct" component={AddProduct} />
+
+					<Stack.Screen
+						name="ProductsSortedByWeight"
+						component={ProductsSortedByWeight}
+					/>
+
+					<Stack.Screen
+						name="ProductsSortedByLiters"
+						component={ProductsSortedByLiters}
+					/>
 
 					<Stack.Screen name="About" component={About} />
 					<Stack.Screen

@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView } from 'react-native';
 import { addDays } from 'date-fns';
 
-import Button from '@components/Button';
+import realm from '@expirychecker/Services/Realm';
+
+import { extractProductWeight } from '@utils/Product/Sort/Helpers';
 
 import { Container, Category } from '@views/Settings/styles';
 
-import realm from '@expirychecker/Services/Realm';
+import Button from '@components/Button';
 
 const Test: React.FC = () => {
 	async function sampleData() {
@@ -52,6 +54,11 @@ const Test: React.FC = () => {
 		}
 	}
 
+	const handleProductWeight = useCallback(async () => {
+		const products = realm.objects<IProduct>('Product');
+		const productsArray = extractProductWeight(Array.from(products));
+	}, []);
+
 	return (
 		<Container>
 			<ScrollView>
@@ -59,6 +66,11 @@ const Test: React.FC = () => {
 					<Button
 						title="Load with sample data"
 						onPress={sampleData}
+					/>
+
+					<Button
+						title="Product weight"
+						onPress={handleProductWeight}
 					/>
 				</Category>
 			</ScrollView>

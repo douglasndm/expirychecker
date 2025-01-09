@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '@expirychecker/Locales';
+import sharedStrings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -39,6 +40,10 @@ const PRO: React.FC = () => {
 
 	const navigateToSortedByWeight = useCallback(() => {
 		navigate('ProductsSortedByWeight');
+	}, [navigate]);
+
+	const navigateToSortedByLiters = useCallback(() => {
+		navigate('ProductsSortedByLiters');
 	}, [navigate]);
 
 	const navigateToCategories = useCallback(() => {
@@ -87,23 +92,35 @@ const PRO: React.FC = () => {
 						<MenuContent>
 							<Icons name="file-tray-full-outline" />
 							<MenuItemText>
-								Produtos ordenados por peso
+								{sharedStrings.Menu_Button_GoToSortedByWeight}
 							</MenuItemText>
 						</MenuContent>
+
+						<LabelGroup>
+							<LabelContainer>
+								<Label>{strings.Menu_Label_PRO}</Label>
+							</LabelContainer>
+						</LabelGroup>
 					</MenuItemContainer>
 
 					<MenuItemContainer
 						disabled={isPaywallOpen}
 						onPress={
-							isPro ? navigateToCategories : handleOpenPaywall
+							isPro ? navigateToSortedByLiters : handleOpenPaywall
 						}
 					>
 						<MenuContent>
 							<Icons name="file-tray-full-outline" />
 							<MenuItemText>
-								Produtos ordenados por litros
+								{sharedStrings.Menu_Button_GoToSortedByLiters}
 							</MenuItemText>
 						</MenuContent>
+
+						<LabelGroup>
+							<LabelContainer>
+								<Label>{strings.Menu_Label_PRO}</Label>
+							</LabelContainer>
+						</LabelGroup>
 					</MenuItemContainer>
 				</>
 			)}
