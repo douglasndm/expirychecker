@@ -79,61 +79,55 @@ const PRO: React.FC = () => {
 					<LoadIndicator />
 				</LoadContainer>
 			)}
-			{__DEV__ && (
-				<>
-					<Paywall
-						ref={paywallRef}
-						isPaywallOpen={isPaywallOpen}
-						setIsPaywallOpen={setIsPaywallOpen}
+
+			<Paywall
+				ref={paywallRef}
+				isPaywallOpen={isPaywallOpen}
+				setIsPaywallOpen={setIsPaywallOpen}
+			/>
+
+			<MenuItemContainer
+				disabled={isPaywallOpen}
+				onPress={isPro ? navigateToSortedByWeight : handleOpenPaywall}
+			>
+				<MenuContent>
+					<Image
+						source={WeightIcon}
+						style={{ width: 22, height: 22 }}
 					/>
+					<MenuItemText>
+						{sharedStrings.Menu_Button_GoToSortedByWeight}
+					</MenuItemText>
+				</MenuContent>
 
-					<MenuItemContainer
-						disabled={isPaywallOpen}
-						onPress={
-							isPro ? navigateToSortedByWeight : handleOpenPaywall
-						}
-					>
-						<MenuContent>
-							<Image
-								source={WeightIcon}
-								style={{ width: 22, height: 22 }}
-							/>
-							<MenuItemText>
-								{sharedStrings.Menu_Button_GoToSortedByWeight}
-							</MenuItemText>
-						</MenuContent>
+				<LabelGroup>
+					<LabelContainer>
+						<Label>{strings.Menu_Label_PRO}</Label>
+					</LabelContainer>
+				</LabelGroup>
+			</MenuItemContainer>
 
-						<LabelGroup>
-							<LabelContainer>
-								<Label>{strings.Menu_Label_PRO}</Label>
-							</LabelContainer>
-						</LabelGroup>
-					</MenuItemContainer>
+			<MenuItemContainer
+				disabled={isPaywallOpen}
+				onPress={isPro ? navigateToSortedByLiters : handleOpenPaywall}
+			>
+				<MenuContent>
+					<Image
+						source={LitersIcon}
+						style={{ width: 22, height: 22 }}
+					/>
+					<MenuItemText>
+						{sharedStrings.Menu_Button_GoToSortedByLiters}
+					</MenuItemText>
+				</MenuContent>
 
-					<MenuItemContainer
-						disabled={isPaywallOpen}
-						onPress={
-							isPro ? navigateToSortedByLiters : handleOpenPaywall
-						}
-					>
-						<MenuContent>
-							<Image
-								source={LitersIcon}
-								style={{ width: 22, height: 22 }}
-							/>
-							<MenuItemText>
-								{sharedStrings.Menu_Button_GoToSortedByLiters}
-							</MenuItemText>
-						</MenuContent>
+				<LabelGroup>
+					<LabelContainer>
+						<Label>{strings.Menu_Label_PRO}</Label>
+					</LabelContainer>
+				</LabelGroup>
+			</MenuItemContainer>
 
-						<LabelGroup>
-							<LabelContainer>
-								<Label>{strings.Menu_Label_PRO}</Label>
-							</LabelContainer>
-						</LabelGroup>
-					</MenuItemContainer>
-				</>
-			)}
 			<MenuItemContainer
 				disabled={isPaywallOpen}
 				onPress={isPro ? navigateToCategories : handleOpenPaywall}
