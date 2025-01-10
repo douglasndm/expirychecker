@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import remoteConfig from '@react-native-firebase/remote-config';
-import DocumentPicker from 'react-native-document-picker';
 
 import strings from '@expirychecker/Locales';
 import sharedStrings from '@shared/Locales';
@@ -70,14 +69,7 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+				captureException(err);
 			}
 		} finally {
 			setIsExporting(false);
@@ -101,14 +93,7 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+				captureException(err);
 			}
 		} finally {
 			setIsExcelLoading(false);
@@ -130,14 +115,7 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err)) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+				captureException(err);
 			}
 		} finally {
 			setIsExcelImporting(false);
@@ -159,14 +137,7 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err)) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+				captureException(err);
 			}
 		} finally {
 			setIsImporting(false);
@@ -185,14 +156,7 @@ const Export: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+				captureException(err);
 			}
 		} finally {
 			setIsExcelModelGenerating(false);
@@ -224,13 +188,7 @@ const Export: React.FC = () => {
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				if (!error.message.includes('User did not share')) {
-					showMessage({
-						message: error.message,
-						type: 'danger',
-					});
-					captureException(error);
-				}
+				captureException(error);
 			}
 		} finally {
 			setIsXMLExporting(false);
@@ -253,10 +211,7 @@ const Export: React.FC = () => {
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				showMessage({
-					message: error.message,
-					type: 'danger',
-				});
+				captureException(error);
 			}
 		} finally {
 			setIsTeamsExporting(false);

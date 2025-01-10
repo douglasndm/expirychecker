@@ -7,8 +7,6 @@ import RNFS, {
 } from 'react-native-fs';
 import { unzip } from 'react-native-zip-archive';
 import DocumentPicker from 'react-native-document-picker';
-import CryptoJS from 'crypto-js';
-import EnvConfig from 'react-native-config';
 
 import strings from '@expirychecker/Locales';
 
@@ -80,17 +78,8 @@ export async function importBackupFile(): Promise<void> {
 	// pega o arquivo temporario gerado pelo filePicker e faz a leitura dele
 	const fileRead = await RNFS.readFile(backupFilePath);
 
-	// decriptografa o arquivo lido
-	const decryptedFile = CryptoJS.AES.decrypt(
-		fileRead,
-		EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT || ''
-	);
-
-	// converte o arquivo em formato de bytes puros para string
-	const originalFile = decryptedFile.toString(CryptoJS.enc.Utf8);
-
 	// converte tudo de novo para json
-	const parsedFile = JSON.parse(originalFile);
+	const parsedFile = JSON.parse(fileRead);
 
 	if (parsedFile.products) {
 		if (parsedFile.categories) {

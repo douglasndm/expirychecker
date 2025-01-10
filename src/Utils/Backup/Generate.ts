@@ -6,8 +6,6 @@ import {
 	writeFile,
 } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
-import CryptoJS from 'crypto-js';
-import EnvConfig from 'react-native-config';
 
 import strings from '@expirychecker/Locales';
 
@@ -55,11 +53,6 @@ async function generateBackup(): Promise<string> {
 		products,
 	};
 
-	const encryptedProducts = CryptoJS.AES.encrypt(
-		JSON.stringify(backup),
-		EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT || ''
-	).toString();
-
 	const dirExists = await exists(backupDir);
 
 	// makes sure everything is clean
@@ -69,7 +62,7 @@ async function generateBackup(): Promise<string> {
 	await mkdir(`${backupDir}`);
 
 	const backupPath = `${backupDir}/${strings.Function_Export_FileName}.cvbf`;
-	await writeFile(backupPath, encryptedProducts, 'utf8');
+	await writeFile(backupPath, JSON.stringify(backup), 'utf8');
 
 	await generateImagesBackup();
 
