@@ -196,7 +196,9 @@ const Export: React.FC = () => {
 	}, []);
 
 	const handleGoToXMLDocumentation = useCallback(() => {
-		Linking.openURL('https://douglasndm.dev/docs/expiry-tracker/xml');
+		Linking.openURL(
+			'https://controledevalidades.com/integrando-o-controle-de-validades-com-outros-sistemas-via-xml/'
+		);
 	}, []);
 
 	const handleExportTeams = useCallback(async () => {
