@@ -15,7 +15,7 @@ import {
 	checkIfProductAlreadyExistsByCode,
 	getProductByCode,
 } from '@expirychecker/Functions/Product';
-import { findProductByCode } from '@expirychecker/Functions/Products/FindByCode';
+import { findProductByCode } from '@utils/Product/FindByEAN';
 
 import { Icon, InputTextTip } from '@views/Product/Add/styles';
 
@@ -53,7 +53,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 		onCompleteInfo,
 		BrandsPickerRef,
 		onSwitchEnable,
-	} = props;
+	} = props as InputsRequestRef;
 
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 	const { userPreferences } = useContext(PreferencesContext);
@@ -225,11 +225,27 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 	React.useImperativeHandle(
 		ref,
 		() => ({
+			code,
+			setCode,
+			onDuplicateProduct,
+			onCompleteInfo,
+			BrandsPickerRef,
+			onSwitchEnable,
 			handleOnCodeRead,
 			findProductByEAN,
 			handleCheckProductCode,
 		}),
-		[findProductByEAN, handleCheckProductCode, handleOnCodeRead]
+		[
+			BrandsPickerRef,
+			code,
+			findProductByEAN,
+			handleCheckProductCode,
+			handleOnCodeRead,
+			onCompleteInfo,
+			onDuplicateProduct,
+			onSwitchEnable,
+			setCode,
+		]
 	);
 
 	return (
@@ -282,5 +298,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 		</>
 	);
 });
+
+Inputs.displayName = 'Input Code';
 
 export default Inputs;
