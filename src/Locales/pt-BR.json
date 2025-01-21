@@ -19,11 +19,6 @@
 
     "OutdatedApp_Message": "Seu aplicativo está desatualizado, clique aqui e atualize agora.",
 
-    "BarCodeReader_PageTitle": "Leitor de código de barras",
-    "BarCodeReader_PermissionRequired": "Precisamos da sua permissão para acessar a câmera do seu dispostivo para habilitar o leitor de código de barras.",
-    "BarCodeReader_PermissionBlocked": "O Acesso a câmera do dispositivo foi bloqueado, para usar o leitor de códigos de barras você precisar desbloquear a permissão do aplicativo para usar a câmera nas configurações do dispositivo.",
-    "BarCodeReader_Button_RequestPermission": "Autorizar câmera",
-
     "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
 

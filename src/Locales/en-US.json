@@ -19,11 +19,6 @@
 
     "OutdatedApp_Message": "Your app is outdated. Click here and update it now",
 
-    "BarCodeReader_PageTitle": "Barcode reader",
-    "BarCodeReader_PermissionRequired": "We need your permission to access the device's camera to user barcode reader.",
-    "BarCodeReader_PermissionBlocked": "Camera access is blocked. If you want to use barcode reader you need to unblock it on your device settings.",
-    "BarCodeReader_Button_RequestPermission": "Authorize camera",
-
     "Component_DaysToBeNext_Placeholder": "Days to be next to expire",
     "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
 
