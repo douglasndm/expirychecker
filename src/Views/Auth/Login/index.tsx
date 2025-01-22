@@ -12,10 +12,11 @@ import Purchases from '@services/RevenueCat';
 import Header from '@components/Header';
 import Input from '@components/InputText';
 import Button from '@components/Button';
+import Container from '@components/ScrollView';
 
 import Footer from '@teams/Views/Auth/Login/Footer';
 
-import { Container, Content } from '@teams/Views/Auth/Login/styles';
+import { Content } from '@teams/Views/Auth/Login/styles';
 import {
 	FormContainer,
 	FormTitle,

@@ -19,6 +19,8 @@
 
     "OutdatedApp_Message": "Your app is outdated. Click here and update it now",
 
+    "Component_AccountLoginRequest_Text": "Login with your account",
+
     "Component_DaysToBeNext_Placeholder": "Days to be next to expire",
     "Component_DaysToBeNext_Description": "How many days util the app consider the product next to expire",
 

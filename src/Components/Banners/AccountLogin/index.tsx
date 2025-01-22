@@ -3,6 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 
+import strings from '@expirychecker/Locales';
+
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { Container, Icon, TextContainer, Text } from './styles';
@@ -42,7 +44,7 @@ const AccountLogin: React.FC = () => {
 		<Container onPress={handleNavigate}>
 			<Icon name="person-circle-outline" />
 			<TextContainer>
-				<Text>Entre com sua conta</Text>
+				<Text>{strings.Component_AccountLoginRequest_Text}</Text>
 			</TextContainer>
 		</Container>
 	) : (

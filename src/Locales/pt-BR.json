@@ -19,6 +19,8 @@
 
     "OutdatedApp_Message": "Seu aplicativo está desatualizado, clique aqui e atualize agora.",
 
+    "Component_AccountLoginRequest_Text": "Entre com sua conta",
+
     "Component_DaysToBeNext_Placeholder": "Dias para está próximo",
     "Component_DaysToBeNext_Description": "Quantos dias do vencimento do produto o aplicativo deve considerar-lo como próximo a vencer?",
 
