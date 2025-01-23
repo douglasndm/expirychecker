@@ -148,12 +148,6 @@ dependencies {
 apply from: "../../../../node_modules/@sentry/react-native/sentry.gradle"
 
 sentry {
-
-    autoInstallation {
-        enabled = true
-        sentryVersion = "7.16.0"
-    }
-
     // Enables or disables the automatic configuration of Native Symbols
     // for Sentry. This executes sentry-cli automatically so
     // you don't need to do it manually.
@@ -172,9 +166,10 @@ sentry {
     // which might be incompatible with the React Native SDK
     // Enable auto-installation of Sentry components (sentry-android SDK and okhttp, timber and fragment integrations).
     // Default is enabled.
-    // autoInstallation {
-    //   enabled = false
-    // }
+    autoInstallation {
+        enabled = true
+        sentryVersion = "7.16.0"
+    }
 }
 
 //React Native Vector Icons
