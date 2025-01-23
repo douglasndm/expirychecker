@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useContext, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import remoteConfig from '@react-native-firebase/remote-config';
 import DeviceInfo from 'react-native-device-info';
 import { Drawer } from 'react-native-drawer-layout';
 
@@ -59,7 +58,6 @@ const StackNavigator: React.FC = () => {
 	const [draweOpen, setDrawerOpen] = useState(false);
 
 	const { userPreferences } = useContext(PreferencesContext);
-	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
 	const [currentRoute, setCurrentRoute] = useState('Home');
 
@@ -68,16 +66,12 @@ const StackNavigator: React.FC = () => {
 			return false;
 		}
 
-		if (enableTabBar.asBoolean() === false) {
-			return false;
-		}
-
 		if (DeviceInfo.isLowRamDevice()) {
 			return false;
 		}
 
 		return true;
-	}, [enableTabBar, userPreferences.isPRO]);
+	}, [userPreferences.isPRO]);
 
 	const handleRouteChange = useCallback(navRoutes => {
 		setDrawerOpen(false);

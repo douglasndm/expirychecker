@@ -10,7 +10,6 @@ import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BootSplash from 'react-native-bootsplash';
-import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 
@@ -58,19 +57,13 @@ const Home: React.FC = () => {
 	const listRef = useRef<FlatList<IProduct>>(null);
 	const listProdsRef = useRef<listProdsRefProps>();
 
-	const enableTabBar = remoteConfig().getValue('enable_app_bar');
-
 	const enableFloatAddButton = useMemo(() => {
-		if (!userPreferences.isPRO) {
-			return true;
+		if (userPreferences.isPRO) {
+			return false;
 		}
 
-		if (userPreferences.isPRO && enableTabBar.asBoolean() === false) {
-			return true;
-		}
-
-		return false;
-	}, [enableTabBar, userPreferences.isPRO]);
+		return true;
+	}, [userPreferences.isPRO]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
