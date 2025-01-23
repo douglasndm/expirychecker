@@ -343,6 +343,8 @@
     "View_Subscription_Cancel_Button_KeepSubscription": "I'll keep my benefits 🥰",
     "View_Subscription_Cancel_Button_CancelSubscription": "I want to continue and lose my benefits",
 
+    "Util_HandlePurchase_Success": "Welcome to PRO!",
+    "Utils_Purchases_Alert_NoInternet": "Please check your internet connection.",
 
     "Function_StoreGroup_NoStore": "No store",
 

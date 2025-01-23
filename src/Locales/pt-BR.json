@@ -277,6 +277,9 @@
     "View_Subscription_Cancel_Button_KeepSubscription": "Manter meus benefícios 🥰",
     "View_Subscription_Cancel_Button_CancelSubscription": "Quero continuar e perder meus benefícios",
 
+    "Util_HandlePurchase_Success": "Bem vindo ao PRO!",
+    "Utils_Purchases_Alert_NoInternet": "Verifique a sua conexão com a internet.",
+
     "View_Category_List_PageTitle": "Categorias",
     "View_Category_List_InputAdd_Placeholder": "Nome da nova categoria",
     "View_Category_List_AllCategories_Label": "Todas as categorias",
