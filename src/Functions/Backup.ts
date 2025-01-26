@@ -7,6 +7,7 @@ import RNFS, {
 } from 'react-native-fs';
 import { unzip } from 'react-native-zip-archive';
 import DocumentPicker from 'react-native-document-picker';
+import { showMessage } from 'react-native-flash-message';
 
 import strings from '@expirychecker/Locales';
 
@@ -31,7 +32,11 @@ export async function importBackupFile(): Promise<void> {
 
 	// caso a extensão do arquivo não for cvbf lança um erro e sai da função
 	if (extension !== 'cvbf' && extension !== 'zip') {
-		throw new Error(strings.Function_Import_Error_InvalidExtesion);
+		showMessage({
+			message: strings.Function_Import_Error_InvalidExtesion,
+			type: 'warning',
+		});
+		return;
 	}
 
 	let backupFilePath = null;
@@ -72,7 +77,11 @@ export async function importBackupFile(): Promise<void> {
 	}
 
 	if (!backupFilePath) {
-		throw new Error('Extesion is not valid');
+		showMessage({
+			message: strings.Function_Import_Error_InvalidExtesion,
+			type: 'warning',
+		});
+		return;
 	}
 
 	// pega o arquivo temporario gerado pelo filePicker e faz a leitura dele
