@@ -18,7 +18,13 @@ import { saveMany } from './Products';
 
 const backupDir = `${DocumentDirectoryPath}/backupDir`;
 
-export async function importBackupFile(): Promise<void> {
+/**
+ * Função responsável por importar um arquivo de backup no formato .cvbf ou .zip
+ * para o aplicativo.
+ *
+ * @returns {Promise<boolean>} Retorna true se o backup for importado com sucesso, false caso contrário.
+ */
+export async function importBackupFile(): Promise<boolean> {
 	const filePicked = await DocumentPicker.pickSingle({
 		copyTo: 'documentDirectory',
 	});
@@ -36,7 +42,7 @@ export async function importBackupFile(): Promise<void> {
 			message: strings.Function_Import_Error_InvalidExtesion,
 			type: 'warning',
 		});
-		return;
+		return false;
 	}
 
 	let backupFilePath = null;
@@ -71,8 +77,7 @@ export async function importBackupFile(): Promise<void> {
 				backupFilePath = `${backupDir}/${backupFile.name}`;
 			}
 		}
-	}
-	if (extension === 'cvbf') {
+	} else if (extension === 'cvbf') {
 		backupFilePath = filePicked.fileCopyUri;
 	}
 
@@ -81,7 +86,7 @@ export async function importBackupFile(): Promise<void> {
 			message: strings.Function_Import_Error_InvalidExtesion,
 			type: 'warning',
 		});
-		return;
+		return false;
 	}
 
 	// pega o arquivo temporario gerado pelo filePicker e faz a leitura dele
@@ -109,4 +114,5 @@ export async function importBackupFile(): Promise<void> {
 	}
 
 	await unlink(backupDir);
+	return true;
 }

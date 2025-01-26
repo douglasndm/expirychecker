@@ -123,15 +123,17 @@ const Export: React.FC = () => {
 		try {
 			setIsImporting(true);
 
-			await importBackupFile();
+			const result = await importBackupFile();
 
-			showMessage({
-				message: strings.View_Export_Import_Alert_Success,
-				type: 'info',
-			});
-			reset({
-				routes: [{ name: 'Home' }],
-			});
+			if (result === true) {
+				showMessage({
+					message: strings.View_Export_Import_Alert_Success,
+					type: 'info',
+				});
+				reset({
+					routes: [{ name: 'Home' }],
+				});
+			}
 		} catch (err) {
 			if (err instanceof Error) {
 				captureException(err);
