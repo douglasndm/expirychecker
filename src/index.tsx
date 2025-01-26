@@ -12,7 +12,6 @@ import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
 
 import '@services/Firebase/AppCheck';
-import '@services/Firebase/RemoteConfig';
 import '@services/Notifications/Local';
 import '@services/Notifications/ClearBadge';
 
