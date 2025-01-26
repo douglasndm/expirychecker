@@ -3,7 +3,6 @@ import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import remoteConfig from '@react-native-firebase/remote-config';
 
 import strings from '@expirychecker/Locales';
 import sharedStrings from '@shared/Locales';
@@ -41,8 +40,6 @@ import {
 
 const Export: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
-
-	const enableXMLExport = remoteConfig().getValue('enable_xml_export');
 
 	const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
 	const [isExcelImporting, setIsExcelImporting] = useState<boolean>(false);
@@ -279,32 +276,24 @@ const Export: React.FC = () => {
 					/>
 				</ExportOptionContainer>
 
-				{enableXMLExport.asBoolean() === true && (
-					<ExportOptionContainer>
-						<CategoryTitle>XML</CategoryTitle>
+				<ExportOptionContainer>
+					<CategoryTitle>XML</CategoryTitle>
 
-						<>
-							<ExportExplain>
-								{sharedStrings.View_Export_XML_Explain_Export}
-							</ExportExplain>
-							<Button
-								title={
-									sharedStrings.View_Export_XML_Button_Export
-								}
-								onPress={handleExportXML}
-								isLoading={isXMLExporting}
-							/>
+					<>
+						<ExportExplain>
+							{sharedStrings.View_Export_XML_Explain_Export}
+						</ExportExplain>
+						<Button
+							title={sharedStrings.View_Export_XML_Button_Export}
+							onPress={handleExportXML}
+							isLoading={isXMLExporting}
+						/>
 
-							<LinkEmptyExcel
-								onPress={handleGoToXMLDocumentation}
-							>
-								{
-									sharedStrings.View_Export_XML_Link_Documentation
-								}
-							</LinkEmptyExcel>
-						</>
-					</ExportOptionContainer>
-				)}
+						<LinkEmptyExcel onPress={handleGoToXMLDocumentation}>
+							{sharedStrings.View_Export_XML_Link_Documentation}
+						</LinkEmptyExcel>
+					</>
+				</ExportOptionContainer>
 
 				<ExportOptionContainer>
 					<CategoryTitle>

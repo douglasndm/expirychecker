@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Platform } from 'react-native';
 import EnvConfig from 'react-native-config';
-import remoteConfig from '@react-native-firebase/remote-config';
 import {
 	AppOpenAd,
 	TestIds,
@@ -32,14 +31,8 @@ const AppOpen: React.FC = () => {
 	const loadData = useCallback(async () => {
 		const userPreferences = await getAllUserPreferences();
 
-		const enable_ad_on_app_start = remoteConfig().getValue(
-			'enable_ad_on_app_start'
-		);
-
 		if (!userPreferences.isPRO && !userPreferences.disableAds) {
-			if (enable_ad_on_app_start.asBoolean() === true) {
-				appOpenAd.load();
-			}
+			appOpenAd.load();
 		}
 	}, [appOpenAd]);
 
