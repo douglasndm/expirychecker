@@ -20,6 +20,7 @@
 		54393D10A095445299A2FFD4 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1706DDDD3D36483EBB1E83DB /* OpenSans-SemiBold.ttf */; };
 		87E561DB84CE74458010B01D /* Pods_controledevalidade.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75759A15A4B00E3BC38CBC93 /* Pods_controledevalidade.framework */; };
 		9C6A2F9AC9D24DBFB7B9D4FA /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6C9DE39E59D4B4EB75EB0D8 /* Roboto-Regular.ttf */; };
+		9EAA9F9F431347F189F47FFC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DAB0BB25DFC4937AF35267D /* Colors.xcassets */; };
 		A568F10D2919C9B80040334F /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F10C2919C9B80040334F /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A568F10F2919C9C10040334F /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F10E2919C9C10040334F /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A568F1112919C9D20040334F /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A568F1102919C9D20040334F /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -36,7 +37,6 @@
 		EACD3FE593F446A9BCB27F61 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1106891E19A4C95B6239447 /* Roboto-Bold.ttf */; };
 		EFCE1DB88A304916CD440A50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4774A681D0F5714FCFE6F773 /* PrivacyInfo.xcprivacy */; };
 		FEBC59048C02432D8256BA37 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58C9C3C8D58247CF8267EEB7 /* OpenSans-Regular.ttf */; };
-		9EAA9F9F431347F189F47FFC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DAB0BB25DFC4937AF35267D /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,6 +67,7 @@
 		2CF1710EA7C44AB68C647EC7 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../src/Assets/Fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		2E432E1DB1364D9BB6F733DF /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		37B1DF09001B4265BBDCBEC2 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		3DAB0BB25DFC4937AF35267D /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = controledevalidade/Colors.xcassets; sourceTree = "<group>"; };
 		445564B8F5864E5C9AE60D6E /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../src/Assets/Fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		44D558C29B5B4E65B1ED4030 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/Assets/Fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		465575EC9E104D4FBE9DD049 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -114,7 +115,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EDEC5E602D0C4E219AD2858A /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		3DAB0BB25DFC4937AF35267D /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "controledevalidade/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
