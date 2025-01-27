@@ -36,6 +36,7 @@
 		EACD3FE593F446A9BCB27F61 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1106891E19A4C95B6239447 /* Roboto-Bold.ttf */; };
 		EFCE1DB88A304916CD440A50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4774A681D0F5714FCFE6F773 /* PrivacyInfo.xcprivacy */; };
 		FEBC59048C02432D8256BA37 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58C9C3C8D58247CF8267EEB7 /* OpenSans-Regular.ttf */; };
+		9EAA9F9F431347F189F47FFC /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DAB0BB25DFC4937AF35267D /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,6 +114,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EDEC5E602D0C4E219AD2858A /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "$REACT_NATIVE_PATH/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		3DAB0BB25DFC4937AF35267D /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "controledevalidade/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +149,7 @@
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				4FA9DA6726CC3C9C00E4C895 /* Assets.xcassets */,
 				4774A681D0F5714FCFE6F773 /* PrivacyInfo.xcprivacy */,
+				3DAB0BB25DFC4937AF35267D /* Colors.xcassets */,
 			);
 			name = controledevalidade;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				C692F7558DBE4FF6BC3F19B9 /* Roboto-Medium.ttf in Resources */,
 				9C6A2F9AC9D24DBFB7B9D4FA /* Roboto-Regular.ttf in Resources */,
 				EFCE1DB88A304916CD440A50 /* PrivacyInfo.xcprivacy in Resources */,
+				9EAA9F9F431347F189F47FFC /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,7 +575,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 255;
+				CURRENT_PROJECT_VERSION = 256;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
@@ -607,7 +611,7 @@
 				CODE_SIGN_ENTITLEMENTS = controledevalidade/controledevalidade.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 255;
+				CURRENT_PROJECT_VERSION = 256;
 				DEVELOPMENT_TEAM = F3ZQ4BPF29;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = controledevalidade/Info.plist;
