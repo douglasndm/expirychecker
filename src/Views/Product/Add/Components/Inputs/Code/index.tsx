@@ -96,7 +96,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 						productCode: theCode,
 						store: selectedStoreId,
 					});
-					setExistProdId(existProd.id);
+					setExistProdId(Number(existProd.id));
 					onDuplicateProduct();
 				}
 			}
