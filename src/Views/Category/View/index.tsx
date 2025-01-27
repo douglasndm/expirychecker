@@ -131,15 +131,9 @@ const CategoryView: React.FC = () => {
 				message: strings.View_Category_View_ExcelExportedSuccess,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (err.message.includes('did not share')) return;
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsLoading(false);

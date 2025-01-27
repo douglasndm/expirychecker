@@ -11,8 +11,7 @@ import realm from '@expirychecker/Services/Realm';
 import { captureException } from '@services/ExceptionsHandler';
 
 import { getImagePath } from '@expirychecker/Utils/Products/Images/GetPath';
-
-import { getProductById } from '../Product';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
 
 export function getImageFileNameFromPath(path: string): string {
 	const productImage = path.split('/');
@@ -93,7 +92,7 @@ export async function saveProductImage({
 			);
 		} catch (err) {
 			if (err instanceof Error) {
-				captureException(err);
+				captureException({ error: err });
 			}
 		}
 	});

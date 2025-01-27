@@ -171,14 +171,9 @@ const Add: React.FC<Request> = ({ route }: Request) => {
 					});
 				}
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		}
 	}, [

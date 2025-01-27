@@ -159,12 +159,7 @@ const EditBatch: React.FC = () => {
 			}
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+				captureException({ error: err, showAlert: true });
 			}
 		}
 	}, [
@@ -212,12 +207,7 @@ const EditBatch: React.FC = () => {
 			}
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+				captureException({ error: err, showAlert: true });
 			}
 		}
 	}, [loteId, product, productId, reset, userPreferences.isPRO]);

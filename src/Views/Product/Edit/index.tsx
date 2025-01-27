@@ -131,14 +131,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			if (product.daysToBeNext) {
 				setDaysNext(product.daysToBeNext);
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		} finally {
 			setIsLoading(false);
@@ -200,14 +195,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					type: 'edit_product',
 				});
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		}
 	}, [
@@ -281,14 +271,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					type: 'delete_product',
 				});
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		}
 	}, [dispatch, navigate, productId, userPreferences.isPRO]);

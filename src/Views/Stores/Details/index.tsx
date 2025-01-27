@@ -134,16 +134,10 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				message: strings.View_Category_View_ExcelExportedSuccess,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error)
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
+			}
 		} finally {
 			setIsLoading(false);
 		}

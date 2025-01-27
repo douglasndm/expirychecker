@@ -160,12 +160,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 			}
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+				captureException({ error: err, showAlert: true });
 			}
 		} finally {
 			setIsLoading(false);

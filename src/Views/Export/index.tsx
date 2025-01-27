@@ -64,9 +64,9 @@ const Export: React.FC = () => {
 				message: strings.View_Export_Export_Alert_Success,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExporting(false);
@@ -88,9 +88,9 @@ const Export: React.FC = () => {
 				message: strings.View_Export_Excel_Export_Alert_Success,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExcelLoading(false);
@@ -110,9 +110,9 @@ const Export: React.FC = () => {
 			reset({
 				routes: [{ name: 'Home' }],
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExcelImporting(false);
@@ -134,9 +134,9 @@ const Export: React.FC = () => {
 					routes: [{ name: 'Home' }],
 				});
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsImporting(false);
@@ -153,9 +153,9 @@ const Export: React.FC = () => {
 				message: strings.View_Export_Excel_Export_Model_Alert_Success,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExcelModelGenerating(false);
@@ -187,7 +187,7 @@ const Export: React.FC = () => {
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				captureException(error);
+				captureException({ error });
 			}
 		} finally {
 			setIsXMLExporting(false);
@@ -212,7 +212,7 @@ const Export: React.FC = () => {
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				captureException(error);
+				captureException({ error });
 			}
 		} finally {
 			setIsTeamsExporting(false);

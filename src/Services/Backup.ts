@@ -46,7 +46,7 @@ async function handleBackup(): Promise<void> {
 		await AsyncStorage.setItem('timeForBackup', String(nextTimestamp));
 	} catch (error) {
 		if (error instanceof Error) {
-			captureException(error);
+			captureException({ error });
 		}
 	}
 }

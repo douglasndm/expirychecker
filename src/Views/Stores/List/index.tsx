@@ -92,9 +92,9 @@ const ListView: React.FC = () => {
 			const sorted = sortStores(sts);
 
 			setStores([...sorted, noStore]);
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		}
 	}, []);

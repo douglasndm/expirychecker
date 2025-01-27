@@ -139,14 +139,7 @@ const View: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+				captureException({ error: err, showAlert: true });
 		} finally {
 			setIsSharing(false);
 		}
@@ -223,15 +216,7 @@ const View: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error) {
-				if (err.message.includes('User did not share')) {
-					return;
-				}
-				captureException(err);
-
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+				captureException({ error: err, showAlert: true });
 			}
 		} finally {
 			setIsSharingTag(false);

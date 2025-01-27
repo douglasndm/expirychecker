@@ -63,7 +63,7 @@ export async function isSubscriptionActive(): Promise<boolean> {
 		return false;
 	} catch (err) {
 		if (err instanceof Error) {
-			captureException(err);
+			captureException({ error: err });
 		}
 	}
 	return false;
