@@ -16,8 +16,9 @@ import strings from '@expirychecker/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
+
 import { createLote } from '@expirychecker/Functions/Lotes';
-import { getProductById } from '@expirychecker/Functions/Product';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';

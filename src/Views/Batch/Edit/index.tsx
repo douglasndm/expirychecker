@@ -15,8 +15,9 @@ import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
+
 import { updateLote, deleteLote } from '@expirychecker/Functions/Lotes';
-import { getProductById } from '@expirychecker/Functions/Product';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';

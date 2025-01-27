@@ -1,18 +1,12 @@
 import { UpdateMode } from 'realm';
 import { exists, unlink } from 'react-native-fs';
 
-import { captureException } from '@services/ExceptionsHandler';
-
 import realm from '@expirychecker/Services/Realm';
 
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
-import { getBrand } from '@expirychecker/Utils/Brands/Get';
 import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
-import { getCategory } from './Category';
-import { getStore } from './Stores';
 import { createLote } from './Lotes';
-import { getAllProducts } from './Products';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
 	productCode: string;
@@ -55,7 +49,7 @@ export async function getProductByCode({
 		.filtered(`code = "${productCode}"`)[0];
 
 	if (store) {
-        result = realm // eslint-disable-line
+		result = realm
 			.objects<IProduct>('Product')
 			.filtered(`code = "${productCode}" AND store = "${store}"`)[0];
 	}
@@ -74,7 +68,7 @@ export async function getProductByCodeAsync({
 			.filtered(`code = "${productCode}"`)[0];
 
 		if (store) {
-            result = realm // eslint-disable-line
+			result = realm
 				.objects<IProduct>('Product')
 				.filtered(`code = "${productCode}" AND store = "${store}"`)[0];
 		}
@@ -85,54 +79,6 @@ export async function getProductByCodeAsync({
 			reject(new Error('Produto não encontrado'));
 		}
 	});
-}
-
-export async function getProductById(productId: number): Promise<IProduct> {
-	const result = realm
-		.objects<IProduct>('Product')
-		.filtered(`id = "${productId}"`)[0];
-
-	if (!result) {
-		const allProducts = await getAllProducts({});
-
-		captureException(new Error('Product not found'), {
-			productId,
-			allProducts,
-		});
-
-		throw new Error('Product not found');
-	}
-
-	const prod: IProduct = {
-		id: result.id,
-		name: result.name,
-		code: result.code,
-		photo: result.photo,
-		daysToBeNext: result.daysToBeNext,
-		batches: result.batches,
-		brand: result.brand,
-		store: result.store,
-		created_at: result.created_at,
-		updated_at: result.updated_at,
-	};
-
-	if (result.categories && result.categories.length > 0) {
-		const category = await getCategory(result.categories[0]);
-
-		prod.category = category;
-	}
-	if (prod.brand) {
-		const brand = await getBrand(String(prod.brand));
-
-		prod.brand = brand;
-	}
-	if (prod.store) {
-		const store = await getStore(String(prod.store));
-
-		prod.store = store || undefined;
-	}
-
-	return prod;
 }
 
 interface createProductProps {

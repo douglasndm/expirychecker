@@ -21,7 +21,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
-import { getProductById } from '@expirychecker/Functions/Product';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
 import { deleteManyBatches } from '@expirychecker/Utils/Batches';
 import { getImagePath } from '@utils/Images/GetImagePath';
 import { saveLocally } from '@utils/Images/SaveLocally';
@@ -62,7 +62,7 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const productId = useMemo(() => {
-		return route.params.id;
+		return Number(route.params.id);
 	}, [route.params.id]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);

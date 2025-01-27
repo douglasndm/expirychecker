@@ -24,12 +24,12 @@ import { shareText, shareTextWithImage } from '@utils/Share';
 
 import { shareBatchToPDF } from '@utils/Share/Batch/toPDF';
 import { shareString } from '@expirychecker/Utils/Batches/Share';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import Button from '@components/Button';
 
-import { getProductById } from '@expirychecker/Functions/Product';
 import Banner from '@expirychecker/Components/Ads/Banner';
 
 import {

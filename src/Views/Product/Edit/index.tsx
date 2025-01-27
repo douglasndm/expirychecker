@@ -11,12 +11,9 @@ import { captureException } from '@services/ExceptionsHandler';
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
 
-import {
-	getProductById,
-	updateProduct,
-	deleteProduct,
-} from '@expirychecker/Functions/Product';
+import { updateProduct, deleteProduct } from '@expirychecker/Functions/Product';
 import {
 	saveProductImage,
 	getImageFileNameFromPath,

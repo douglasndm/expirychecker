@@ -37,20 +37,3 @@ interface IBatch {
 	created_at?: Date;
 	updated_at?: Date;
 }
-
-interface IProduct {
-	id: number;
-	name: string;
-	code?: string;
-	photo?: string;
-	daysToBeNext?: number;
-
-	category?: ICategory;
-	brand?: IBrand;
-	store?: IStore;
-
-	batches: Array<IBatch>;
-
-	created_at?: Date;
-	updated_at?: Date;
-}
