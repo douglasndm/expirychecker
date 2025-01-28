@@ -7,12 +7,10 @@ import FlashMessage from 'react-native-flash-message';
 
 import '@expirychecker/Locales';
 
-import StatusBar from '@components/StatusBar';
-import AskReview from '@components/AskReview';
-
 import '@services/Firebase/AppCheck';
 import '@services/Notifications/Local';
 import '@services/Notifications/ClearBadge';
+import { reactNavigationIntegration } from '@services/Sentry';
 
 import '@expirychecker/Services/Backup';
 import '@expirychecker/Services/BackgroundJobs';
@@ -26,15 +24,19 @@ import '@expirychecker/Functions/PushNotifications';
 import ListContext from '@shared/Contexts/ListContext';
 
 import { AuthProvider } from '@teams/Contexts/AuthContext';
-import { TeamProvider } from '@teams/Contexts/TeamContext';
 
 import Routes from '@expirychecker/routes';
+
+import StatusBar from '@components/StatusBar';
+import AskReview from '@components/AskReview';
 
 import AppOpen from '@expirychecker/Components/Ads/AppOpen';
 
 import AppContext from './appContexts';
 
 const App: React.FC = () => {
+	const containerRef = React.useRef();
+
 	const [currentList, setCurrentList] = useState<React.RefObject<
 		FlatList<IProduct>
 	> | null>(null);
@@ -47,23 +49,28 @@ const App: React.FC = () => {
 	}, [currentList]);
 
 	return (
-		<NavigationContainer linking={DeepLinking}>
+		<NavigationContainer
+			linking={DeepLinking}
+			onReady={() =>
+				reactNavigationIntegration.registerNavigationContainer(
+					containerRef
+				)
+			}
+		>
 			<AppContext>
 				<PaperProvider>
 					<Portal>
 						<AuthProvider>
-							<TeamProvider>
-								<StatusBar />
-								<AppOpen />
-								<ListContext.Provider value={list}>
-									<Routes />
-								</ListContext.Provider>
-								<AskReview />
-								<FlashMessage
-									duration={7000}
-									statusBarHeight={50}
-								/>
-							</TeamProvider>
+							<StatusBar />
+							<AppOpen />
+							<ListContext.Provider value={list}>
+								<Routes />
+							</ListContext.Provider>
+							<AskReview />
+							<FlashMessage
+								duration={7000}
+								statusBarHeight={50}
+							/>
 						</AuthProvider>
 					</Portal>
 				</PaperProvider>
