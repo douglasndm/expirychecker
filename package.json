@@ -1,15 +1,15 @@
 {
   "name": "controledevalidade",
   "version": "1.18.6",
-  "build": "340",
+  "build": "341",
   "private": true,
   "scripts": {
     "android": "react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "build": "./build.sh",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "dead-code": "npx ts-prune ./src | grep -v 'used in module'"
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",

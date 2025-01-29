@@ -1,12 +1,6 @@
 import styled from 'styled-components/native';
 import { RadioButton as RadioPaper } from 'react-native-paper';
 
-export const PageHeader = styled.View`
-	flex-direction: row;
-	justify-content: space-between;
-	padding: 10px 5px 0 5px;
-`;
-
 export const RadioButton = styled(RadioPaper).attrs(props => ({
 	color: props.theme.colors.accent,
 	uncheckedColor: props.theme.colors.subText,

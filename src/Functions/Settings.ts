@@ -17,15 +17,6 @@ export async function setSetting({
 	await AsyncStorage.setItem(type, value);
 }
 
-export async function setHowManyDaysToBeNextExp(
-	howManyDays: number
-): Promise<void> {
-	await setSetting({
-		type: 'HowManyDaysToBeNextExp',
-		value: String(howManyDays),
-	});
-}
-
 export async function setAutoComplete(value: boolean): Promise<void> {
 	await setSetting({
 		type: 'AutoComplete',

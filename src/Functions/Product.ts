@@ -57,30 +57,6 @@ export async function getProductByCode({
 	return result;
 }
 
-// Get product by code asynchronosly
-export async function getProductByCodeAsync({
-	productCode,
-	store,
-}: getProductByCodeProps): Promise<IProduct> {
-	return new Promise((resolve, reject) => {
-		let result = realm
-			.objects<IProduct>('Product')
-			.filtered(`code = "${productCode}"`)[0];
-
-		if (store) {
-			result = realm
-				.objects<IProduct>('Product')
-				.filtered(`code = "${productCode}" AND store = "${store}"`)[0];
-		}
-
-		if (result) {
-			resolve(result);
-		} else {
-			reject(new Error('Produto não encontrado'));
-		}
-	});
-}
-
 interface createProductProps {
 	product: Omit<IProduct, 'id'>;
 }

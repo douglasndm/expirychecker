@@ -1,10 +1,4 @@
-import {
-	DocumentDirectoryPath,
-	exists,
-	unlink,
-	mkdir,
-	copyFile,
-} from 'react-native-fs';
+import { exists, unlink } from 'react-native-fs';
 import { UpdateMode } from 'realm';
 
 import realm from '@expirychecker/Services/Realm';
@@ -96,33 +90,4 @@ export async function saveProductImage({
 			}
 		}
 	});
-}
-
-interface copyTempImageResponse {
-	fileName: string;
-	filePath: string;
-}
-
-export async function copyImageFromTempDirToDefinitiveDir(
-	tempPath: string
-): Promise<copyTempImageResponse> {
-	const splited = tempPath.split('/');
-	const generatedFilneName = splited[splited.length - 1];
-
-	const fileName = `${Date.now()}-${generatedFilneName}`;
-
-	const existsFolder = await exists(`${DocumentDirectoryPath}/images`);
-	if (!existsFolder) {
-		await mkdir(`${DocumentDirectoryPath}/images`);
-	}
-
-	const newPath = `${DocumentDirectoryPath}/images/${fileName}`;
-
-	await copyFile(tempPath, newPath);
-	await unlink(tempPath);
-
-	return {
-		fileName,
-		filePath: newPath,
-	};
 }
