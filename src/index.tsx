@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
+import * as Sentry from '@sentry/react-native';
 
 import '@expirychecker/Locales';
 
@@ -23,12 +24,12 @@ import '@expirychecker/Functions/PushNotifications';
 
 import ListContext from '@shared/Contexts/ListContext';
 
-import { AuthProvider } from '@teams/Contexts/AuthContext';
-
 import Routes from '@expirychecker/routes';
 
 import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
+
+import RenderErrors from '@views/Information/Errors/Render';
 
 import AppOpen from '@expirychecker/Components/Ads/AppOpen';
 
@@ -57,10 +58,10 @@ const App: React.FC = () => {
 				)
 			}
 		>
-			<AppContext>
-				<PaperProvider>
-					<Portal>
-						<AuthProvider>
+			<Sentry.ErrorBoundary fallback={<RenderErrors />}>
+				<AppContext>
+					<PaperProvider>
+						<Portal>
 							<StatusBar />
 							<AppOpen />
 							<ListContext.Provider value={list}>
@@ -71,10 +72,10 @@ const App: React.FC = () => {
 								duration={7000}
 								statusBarHeight={50}
 							/>
-						</AuthProvider>
-					</Portal>
-				</PaperProvider>
-			</AppContext>
+						</Portal>
+					</PaperProvider>
+				</AppContext>
+			</Sentry.ErrorBoundary>
 		</NavigationContainer>
 	);
 };
