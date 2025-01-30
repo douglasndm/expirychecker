@@ -8,12 +8,10 @@ import {
 	getEnableProVersion,
 	getHowManyDaysToBeNextExp,
 	getDisableAds,
-	getAutoComplete,
 } from './Settings';
 
 export async function getAllUserPreferences(): Promise<IUserPreferences> {
 	const settingDay = await getHowManyDaysToBeNextExp();
-	const settingAutoComplete = await getAutoComplete();
 	const settingProMode = await getEnableProVersion();
 	const disableAds = await getDisableAds();
 	const settingTheme = await getAppTheme(false, settingProMode);
@@ -21,7 +19,6 @@ export async function getAllUserPreferences(): Promise<IUserPreferences> {
 
 	const settings: IUserPreferences = {
 		howManyDaysToBeNextToExpire: settingDay,
-		autoComplete: settingAutoComplete,
 		appTheme: getThemeByName(settingTheme),
 		isPRO: settingProMode,
 		disableAds: disableAds || settingProMode,

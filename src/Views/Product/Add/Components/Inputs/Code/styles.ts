@@ -9,7 +9,7 @@ export const InputTextIconContainer = styled.TouchableOpacity``;
 
 export const InputTextLoading = styled.ActivityIndicator.attrs(props => ({
 	size: 26,
-	color: props.theme.colors.text,
+	color: props.theme.colors.inputText,
 }))`
 	margin-right: 7px;
 	margin-left: 7px;
