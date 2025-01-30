@@ -13,6 +13,7 @@ import '@services/Notifications/Local';
 import '@services/Notifications/ClearBadge';
 import { reactNavigationIntegration } from '@services/Sentry';
 
+import '@expirychecker/Services/Notifications';
 import '@expirychecker/Services/Backup';
 import '@expirychecker/Services/BackgroundJobs';
 import '@expirychecker/Services/Admob';
