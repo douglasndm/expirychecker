@@ -29,6 +29,7 @@ async function saveNotificationStatus(props: Props): Promise<void> {
 			notificationTitle,
 			notificationString,
 			messagingToken: fcmToken,
+			checked_at: firestore.FieldValue.serverTimestamp(),
 		});
 
 		console.log('Notification status saved');
