@@ -10,11 +10,14 @@ async function getImagePath(fileName: string): Promise<string> {
 	);
 
 	if (!findedFile) {
-		captureException(new Error('File was not find'), {
-			fileName,
-			filesDir,
+		captureException({
+			error: new Error('File was not find'),
+			customData: {
+				fileName,
+				filesDir,
+			},
 		});
-		throw new Error('File was not find');
+		return '';
 	}
 
 	return findedFile.path;

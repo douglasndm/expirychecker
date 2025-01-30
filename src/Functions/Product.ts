@@ -1,9 +1,6 @@
 import { UpdateMode } from 'realm';
-import { exists, unlink } from 'react-native-fs';
 
 import realm from '@expirychecker/Services/Realm';
-
-import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
 import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
 import { createLote } from './Lotes';
@@ -172,25 +169,5 @@ export async function updateProduct(
 		};
 
 		realm.create('Product', prod, UpdateMode.Modified);
-	});
-}
-
-export async function deleteProduct(productId: number): Promise<void> {
-	const product = realm
-		.objects<IProduct>('Product')
-		.filtered(`id == ${productId}`)[0];
-
-	if (product.photo) {
-		const photoPath = await getLocalImageFromProduct(product.photo);
-
-		if (photoPath) {
-			if (await exists(photoPath)) {
-				await unlink(photoPath);
-			}
-		}
-	}
-
-	realm.write(async () => {
-		realm.delete(product);
 	});
 }

@@ -12,8 +12,9 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
+import { deleteProduct } from '@expirychecker/Utils/Products/Product/Delete';
 
-import { updateProduct, deleteProduct } from '@expirychecker/Functions/Product';
+import { updateProduct } from '@expirychecker/Functions/Product';
 import {
 	saveProductImage,
 	getImageFileNameFromPath,
