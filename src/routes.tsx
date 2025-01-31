@@ -45,6 +45,7 @@ import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/C
 
 import Settings from '@expirychecker/Views/Settings';
 import SettingsDeleteAll from '@expirychecker/Views/Settings/DeleteAll';
+import Notifications from '@views/Notifications';
 
 import Login from '@expirychecker/Views/Auth/Login';
 import CreateAccount from '@expirychecker/Views/Auth/CreateAccount';
@@ -181,6 +182,11 @@ const StackNavigator: React.FC = () => {
 					<Stack.Screen
 						name="DeleteAll"
 						component={SettingsDeleteAll}
+					/>
+
+					<Stack.Screen
+						name="Notifications"
+						component={Notifications}
 					/>
 
 					<Stack.Screen name="Login" component={Login} />

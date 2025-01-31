@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import strings from '@expirychecker/Locales';
+import sharedStrings from '@shared/Locales';
 
 import Logo from '@components/Logo';
 import {
@@ -32,6 +33,10 @@ const DrawerMenu: React.FC = () => {
 		navigate('AddProduct', {});
 	}, [navigate]);
 
+	const navigateToNotifications = useCallback(() => {
+		navigate('Notifications');
+	}, [navigate]);
+
 	const handleNavigateToSettings = useCallback(() => {
 		navigate('Settings');
 	}, [navigate]);
@@ -57,7 +62,7 @@ const DrawerMenu: React.FC = () => {
 	}, []);
 
 	return (
-		<Container>
+		<Container colors={[]}>
 			<Content>
 				<MainMenuContainer>
 					<LogoContainer>
@@ -93,6 +98,15 @@ const DrawerMenu: React.FC = () => {
 				</MainMenuContainer>
 
 				<DrawerSection>
+					<MenuItemContainer onPress={navigateToNotifications}>
+						<MenuContent>
+							<Icons name="notifications-outline" />
+							<MenuItemText>
+								{sharedStrings.Menu_Button_GoToNotifications}
+							</MenuItemText>
+						</MenuContent>
+					</MenuItemContainer>
+
 					<MenuItemContainer onPress={handleNavigateToSettings}>
 						<MenuContent>
 							<Icons name="settings-outline" />

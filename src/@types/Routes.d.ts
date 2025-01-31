@@ -76,6 +76,8 @@ type RoutesParams = {
 	Settings;
 	DeleteAll;
 
+	Notifications;
+
 	Login;
 	CreateAccount;
 	ForgotPassword;
