@@ -60,7 +60,7 @@ const Account: React.FC = () => {
 						: strings.View_Settings_Account_Description}
 				</SettingDescription>
 
-				{user ? (
+				{user && !user.isAnonymous ? (
 					<Button
 						title={strings.View_Settings_Account_Button_SignOut}
 						onPress={handleLogout}

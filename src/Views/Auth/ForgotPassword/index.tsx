@@ -4,13 +4,13 @@ import auth from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
-import strings from '@teams/Locales';
+import strings from '@shared/Locales';
 
 import Header from '@components/Header';
 import Input from '@components/InputText';
 import Button from '@components/Button';
 
-import { Container, Content } from '@teams/Views/Auth/ForgotPassword/styles';
+import { Container, Content } from '@views/Auth/ForgotPassword/styles';
 
 const ForgotPassword: React.FC = () => {
 	const { goBack } = useNavigation();

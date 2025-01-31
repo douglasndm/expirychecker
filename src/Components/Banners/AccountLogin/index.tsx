@@ -18,9 +18,16 @@ const AccountLogin: React.FC = () => {
 	const [shouldShow, setShouldShow] = useState(false);
 
 	const loadData = useCallback(async () => {
-		if (!userPreferences.isPRO || auth().currentUser) {
+		if (!userPreferences.isPRO) {
 			setShouldShow(false);
 			return;
+		} else if (auth().currentUser) {
+			if (auth().currentUser?.isAnonymous) {
+				setShouldShow(true);
+				return;
+			} else {
+				setShouldShow(false);
+			}
 		}
 
 		setShouldShow(true);
