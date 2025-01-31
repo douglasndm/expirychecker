@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import EnvConfig from 'react-native-config';
 import { showMessage } from 'react-native-flash-message';
 import {
@@ -54,7 +54,9 @@ if (Platform.OS === 'ios' && !__DEV__) {
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
-const AddBatch: React.FC<Props> = ({ route }: Props) => {
+type ScreenProps = StackScreenProps<RoutesParams, 'AddBatch'>;
+
+const AddBatch: React.FC<ScreenProps> = ({ route }) => {
 	const { productId } = route.params;
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 

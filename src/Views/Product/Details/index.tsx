@@ -6,7 +6,7 @@ import React, {
 	useMemo,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
@@ -45,15 +45,9 @@ import {
 	FloatButton,
 } from '@views/Product/View/styles';
 
-interface Request {
-	route: {
-		params: {
-			id: number;
-		};
-	};
-}
+type ScreenProps = StackScreenProps<RoutesParams, 'ProductDetails'>;
 
-const ProductDetails: React.FC<Request> = ({ route }: Request) => {
+const ProductDetails: React.FC<ScreenProps> = ({ route }) => {
 	const { isConnected } = useNetInfo();
 
 	const { userPreferences } = useContext(PreferencesContext);

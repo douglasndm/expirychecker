@@ -1,6 +1,6 @@
 import React, { useState, useContext, useCallback, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { exists, unlink } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
@@ -51,18 +51,9 @@ import InputCode, {
 } from './Components/Inputs/Code';
 import Interstitial, { IInterstitialRef } from './Components/Interstitial';
 
-interface Request {
-	route: {
-		params: {
-			brand?: string;
-			category?: string;
-			code?: string;
-			store?: string;
-		};
-	};
-}
+type ScreenProps = StackScreenProps<RoutesParams, 'AddProduct'>;
 
-const Add: React.FC<Request> = ({ route }: Request) => {
+const Add: React.FC<ScreenProps> = ({ route }) => {
 	const { navigate, replace } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 

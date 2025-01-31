@@ -73,7 +73,17 @@ const StackNavigator: React.FC = () => {
 		return true;
 	}, [userPreferences.isPRO]);
 
-	const handleRouteChange = useCallback(navRoutes => {
+	interface NavRoutes {
+		data: {
+			state: {
+				routes: {
+					name: string;
+				}[];
+			};
+		};
+	}
+
+	const handleRouteChange = useCallback((navRoutes: NavRoutes) => {
 		setDrawerOpen(false);
 
 		if (navRoutes) {

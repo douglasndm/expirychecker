@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
@@ -31,15 +31,9 @@ import FAB from '@components/FAB';
 
 import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
-interface RequestProps {
-	route: {
-		params: {
-			store: string; // can be the name too
-		};
-	};
-}
+type ScreenProps = StackScreenProps<RoutesParams, 'StoreDetails'>;
 
-const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
+const StoreDetails: React.FC<ScreenProps> = ({ route }) => {
 	const { navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 

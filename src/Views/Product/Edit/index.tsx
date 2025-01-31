@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation, StackActions } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
@@ -52,15 +52,9 @@ import {
 
 import { InputTextIconContainer } from '../Add/Components/Inputs/Code/styles';
 
-interface RequestParams {
-	route: {
-		params: {
-			productId: number;
-		};
-	};
-}
+type ScreenProps = StackScreenProps<RoutesParams, 'EditProduct'>;
 
-const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
+const Edit: React.FC<ScreenProps> = ({ route }) => {
 	const { userPreferences } = useContext(PreferencesContext);
 
 	const { productId } = route.params;
