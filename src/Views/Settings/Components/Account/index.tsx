@@ -39,7 +39,9 @@ const Account: React.FC = () => {
 	const handleLogout = useCallback(async () => {
 		await auth().signOut();
 
-		await Purchases.logOut();
+		if (!Purchases.isAnonymous) {
+			await Purchases.logOut();
+		}
 	}, []);
 
 	useEffect(() => {
