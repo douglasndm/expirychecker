@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { Category, CategoryTitle } from '@views/Settings/styles';
 

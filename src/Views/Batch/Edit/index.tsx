@@ -9,7 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -271,7 +271,7 @@ const EditBatch: React.FC = () => {
 						<RadioButtonGroup>
 							<CheckBoxContainer>
 								<CheckBoxGroupTitle>
-									{strings.View_EditBatch_Status}
+									{strings.baseApp.View_EditBatch_Status}
 								</CheckBoxGroupTitle>
 								<CheckBoxOption>
 									<RadioButtonText>
@@ -311,12 +311,13 @@ const EditBatch: React.FC = () => {
 								<>
 									<CheckBoxContainer>
 										<CheckBoxGroupTitle>
-											{strings.View_Batch_WhereIs}
+											{strings.baseApp.View_Batch_WhereIs}
 										</CheckBoxGroupTitle>
 										<CheckBoxOption>
 											<RadioButtonText>
 												{
-													strings.View_Batch_WhereIs_Shelf
+													strings.baseApp
+														.View_Batch_WhereIs_Shelf
 												}
 											</RadioButtonText>
 											<RadioButton
@@ -338,7 +339,8 @@ const EditBatch: React.FC = () => {
 										<CheckBoxOption>
 											<RadioButtonText>
 												{
-													strings.View_Batch_WhereIs_Stock
+													strings.baseApp
+														.View_Batch_WhereIs_Stock
 												}
 											</RadioButtonText>
 											<RadioButton
@@ -364,7 +366,7 @@ const EditBatch: React.FC = () => {
 						{userPreferences.isPRO && (
 							<>
 								<Switch
-									text={strings.View_Batch_ExtraInfo}
+									text={strings.baseApp.View_Batch_ExtraInfo}
 									value={additionalData}
 									onValueChange={() =>
 										setAdditionalData(!additionalData)
@@ -374,7 +376,7 @@ const EditBatch: React.FC = () => {
 								{additionalData && (
 									<TextField
 										placeholder={
-											strings.View_Batch_ExtraInfo
+											strings.baseApp.View_Batch_ExtraInfo
 										}
 										value={additionalDataText}
 										onChangeText={(value: string) =>

@@ -4,7 +4,7 @@ import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 

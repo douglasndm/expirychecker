@@ -6,7 +6,7 @@ import { Provider as PaperProvider, Portal } from 'react-native-paper';
 import FlashMessage from 'react-native-flash-message';
 import * as Sentry from '@sentry/react-native';
 
-import '@expirychecker/Locales';
+import '@shared/Locales';
 
 import '@services/Firebase/AppCheck';
 import '@services/Notifications/Local';

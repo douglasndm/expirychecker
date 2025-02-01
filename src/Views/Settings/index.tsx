@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { DefaultTheme } from 'styled-components/native';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import Header from '@components/Header';
 

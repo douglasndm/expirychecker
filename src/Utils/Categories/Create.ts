@@ -3,7 +3,7 @@ import UUID from 'react-native-uuid-generator';
 
 import realm from '@expirychecker/Services/Realm';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { getAllCategories } from './All';
 

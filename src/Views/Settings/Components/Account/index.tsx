@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import Purchases from '@services/RevenueCat';
 
@@ -54,22 +54,26 @@ const Account: React.FC = () => {
 		<Container>
 			<Category>
 				<CategoryTitle>
-					{strings.View_Settings_Account_Title}
+					{strings.baseApp.View_Settings_Account_Title}
 				</CategoryTitle>
 				<SettingDescription>
 					{user?.email
 						? user.email
-						: strings.View_Settings_Account_Description}
+						: strings.baseApp.View_Settings_Account_Description}
 				</SettingDescription>
 
 				{user && !user.isAnonymous ? (
 					<Button
-						title={strings.View_Settings_Account_Button_SignOut}
+						title={
+							strings.baseApp.View_Settings_Account_Button_SignOut
+						}
 						onPress={handleLogout}
 					/>
 				) : (
 					<Button
-						title={strings.View_Settings_Account_Button_SignIn}
+						title={
+							strings.baseApp.View_Settings_Account_Button_SignIn
+						}
 						onPress={handleNavigateLogin}
 					/>
 				)}

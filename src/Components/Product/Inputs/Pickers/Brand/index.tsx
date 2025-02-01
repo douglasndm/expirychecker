@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ViewStyle } from 'react-native';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -98,5 +98,7 @@ const Brand = React.forwardRef<IBrandPickerRef>((props, ref) => {
 		</PickerContainer>
 	);
 });
+
+Brand.displayName = 'Brand Picker Input';
 
 export default Brand;

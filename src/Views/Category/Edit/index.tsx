@@ -3,7 +3,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import {
 	getCategory,
@@ -136,6 +136,7 @@ const Edit: React.FC = () => {
 			<Dialog
 				visible={deleteComponentVisible}
 				onDismiss={() => setDeleteComponentVisible(false)}
+				onCancel={() => setDeleteComponentVisible(false)}
 				onConfirm={handleDeleteCategory}
 				title={strings.View_Category_Edit_DeleteModal_Title}
 				description={strings.View_Category_Edit_DeleteModal_Message}

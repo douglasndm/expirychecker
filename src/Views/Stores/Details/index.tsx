@@ -4,7 +4,7 @@ import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import Button from '@components/Button';
 
@@ -24,15 +24,20 @@ const Advanced: React.FC = () => {
 		<Container>
 			<Category>
 				<CategoryTitle>
-					{strings.View_Settings_Advanced_Title}
+					{strings.baseApp.View_Settings_Advanced_Title}
 				</CategoryTitle>
 
 				<SettingDescription>
-					{strings.View_Settings_Advanced_DeleteAll_Description}
+					{
+						strings.baseApp
+							.View_Settings_Advanced_DeleteAll_Description
+					}
 				</SettingDescription>
 
 				<Button
-					title={strings.View_Settings_Advanced_DeleteAll_Button}
+					title={
+						strings.baseApp.View_Settings_Advanced_DeleteAll_Button
+					}
 					onPress={navigateToDeleteAll}
 				/>
 			</Category>

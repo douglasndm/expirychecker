@@ -5,7 +5,7 @@ import { showMessage } from 'react-native-flash-message';
 import { getLocales } from 'react-native-localize';
 import { NumericFormat } from 'react-number-format';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { getLoteById } from '@expirychecker/Functions/Lotes';
 import { updateBatch } from '@expirychecker/Functions/Products/Batches/Batch';

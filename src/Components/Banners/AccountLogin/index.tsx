@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -51,7 +51,9 @@ const AccountLogin: React.FC = () => {
 		<Container onPress={handleNavigate}>
 			<Icon name="person-circle-outline" />
 			<TextContainer>
-				<Text>{strings.Component_AccountLoginRequest_Text}</Text>
+				<Text>
+					{strings.baseApp.View_Settings_Account_Button_SignIn}
+				</Text>
 			</TextContainer>
 		</Container>
 	) : (

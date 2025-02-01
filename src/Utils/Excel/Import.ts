@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
 import { parseISO } from 'date-fns';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 

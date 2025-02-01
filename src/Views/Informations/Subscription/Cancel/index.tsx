@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { isSubscriptionActive } from '@expirychecker/Functions/ProMode';
 
@@ -63,7 +63,7 @@ const Cancel: React.FC = () => {
 	}, [goHome]);
 
 	return (
-		<Container>
+		<Container colors={[]}>
 			<Content>
 				<HeaderContainer>
 					<ExitButtonContainer>

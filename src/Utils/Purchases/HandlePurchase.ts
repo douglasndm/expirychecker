@@ -3,7 +3,7 @@ import NetInfo from '@react-native-community/netinfo';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { setEnableProVersion } from '@expirychecker/Functions/Settings';
 
@@ -30,7 +30,7 @@ async function handlePurchase(): Promise<boolean> {
 	) {
 		if (paywallResult === PAYWALL_RESULT.PURCHASED) {
 			showMessage({
-				message: strings.Util_HandlePurchase_Success,
+				message: strings.baseApp.Util_HandlePurchase_Success,
 				type: 'info',
 			});
 

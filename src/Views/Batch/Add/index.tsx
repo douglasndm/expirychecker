@@ -12,7 +12,7 @@ import {
 
 import { captureException } from '@services/ExceptionsHandler';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -35,14 +35,6 @@ import {
 	InputGroup,
 } from '@views/Product/Add/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
-
-interface Props {
-	route: {
-		params: {
-			productId: number;
-		};
-	};
-}
 
 let adUnit = TestIds.INTERSTITIAL;
 

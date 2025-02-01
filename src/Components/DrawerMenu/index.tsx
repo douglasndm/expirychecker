@@ -3,7 +3,7 @@ import { Linking, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 import sharedStrings from '@shared/Locales';
 
 import Logo from '@components/Logo';
@@ -70,7 +70,7 @@ const DrawerMenu: React.FC = () => {
 							<Logo />
 						) : (
 							<MenuItemText style={{ color: '#fff' }}>
-								{strings.AppName}
+								{strings.AppName_FullName}
 							</MenuItemText>
 						)}
 					</LogoContainer>
@@ -120,7 +120,7 @@ const DrawerMenu: React.FC = () => {
 						<MenuContent>
 							<Icons name="book-outline" />
 							<MenuItemText>
-								{strings.Menu_Button_GoToFaq}
+								{strings.baseApp.Menu_Button_GoToFaq}
 							</MenuItemText>
 						</MenuContent>
 					</MenuItemContainer>

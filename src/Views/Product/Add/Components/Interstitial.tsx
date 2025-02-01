@@ -65,4 +65,6 @@ const Interstitial = forwardRef<IInterstitialRef>((props, ref) => {
 	return <View />;
 });
 
+Interstitial.displayName = 'Interstitial on Add Product';
+
 export default Interstitial;

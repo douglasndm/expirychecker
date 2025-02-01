@@ -2,7 +2,7 @@ import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUnixTime, fromUnixTime, addHours, addMinutes } from 'date-fns';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { uploadBackupFile } from '@services/Firebase/Storage';
 import { captureException } from '@services/ExceptionsHandler';

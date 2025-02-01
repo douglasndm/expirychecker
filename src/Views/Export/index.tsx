@@ -4,8 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
-import sharedStrings from '@shared/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -61,7 +60,7 @@ const Export: React.FC = () => {
 			await exportBackup();
 
 			showMessage({
-				message: strings.View_Export_Export_Alert_Success,
+				message: strings.baseApp.View_Export_Export_Alert_Success,
 				type: 'info',
 			});
 		} catch (error) {
@@ -85,7 +84,7 @@ const Export: React.FC = () => {
 			});
 
 			showMessage({
-				message: strings.View_Export_Excel_Export_Alert_Success,
+				message: strings.baseApp.View_Export_Excel_Export_Alert_Success,
 				type: 'info',
 			});
 		} catch (error) {
@@ -104,7 +103,7 @@ const Export: React.FC = () => {
 			await importExcel();
 
 			showMessage({
-				message: strings.View_Export_Excel_Import_Alert_Success,
+				message: strings.baseApp.View_Export_Excel_Import_Alert_Success,
 				type: 'info',
 			});
 			reset({
@@ -127,7 +126,7 @@ const Export: React.FC = () => {
 
 			if (result === true) {
 				showMessage({
-					message: strings.View_Export_Import_Alert_Success,
+					message: strings.baseApp.View_Export_Import_Alert_Success,
 					type: 'info',
 				});
 				reset({
@@ -150,7 +149,9 @@ const Export: React.FC = () => {
 			await generateEmptyExcel();
 
 			showMessage({
-				message: strings.View_Export_Excel_Export_Model_Alert_Success,
+				message:
+					strings.baseApp
+						.View_Export_Excel_Export_Model_Alert_Success,
 				type: 'info',
 			});
 		} catch (error) {
@@ -182,7 +183,7 @@ const Export: React.FC = () => {
 			});
 
 			showMessage({
-				message: sharedStrings.View_Export_XML_SuccessMessage,
+				message: strings.View_Export_XML_SuccessMessage,
 				type: 'info',
 			});
 		} catch (error) {
@@ -207,7 +208,7 @@ const Export: React.FC = () => {
 			await exportToTeams();
 
 			showMessage({
-				message: strings.View_Export_Teams_Alert_Success,
+				message: strings.baseApp.View_Export_Teams_Alert_Success,
 				type: 'info',
 			});
 		} catch (error) {
@@ -283,29 +284,29 @@ const Export: React.FC = () => {
 
 					<>
 						<ExportExplain>
-							{sharedStrings.View_Export_XML_Explain_Export}
+							{strings.View_Export_XML_Explain_Export}
 						</ExportExplain>
 						<Button
-							title={sharedStrings.View_Export_XML_Button_Export}
+							title={strings.View_Export_XML_Button_Export}
 							onPress={handleExportXML}
 							isLoading={isXMLExporting}
 						/>
 
 						<LinkEmptyExcel onPress={handleGoToXMLDocumentation}>
-							{sharedStrings.View_Export_XML_Link_Documentation}
+							{strings.View_Export_XML_Link_Documentation}
 						</LinkEmptyExcel>
 					</>
 				</ExportOptionContainer>
 
 				<ExportOptionContainer>
 					<CategoryTitle>
-						{strings.View_Export_Teams_Title}
+						{strings.baseApp.View_Export_Teams_Title}
 					</CategoryTitle>
 					<ExportExplain>
-						{strings.View_Export_Teams_Description}
+						{strings.baseApp.View_Export_Teams_Description}
 					</ExportExplain>
 					<Button
-						title={strings.View_Export_Teams_Export_Button}
+						title={strings.baseApp.View_Export_Teams_Export_Button}
 						onPress={handleExportTeams}
 						isLoading={isTeamsExporting}
 					/>

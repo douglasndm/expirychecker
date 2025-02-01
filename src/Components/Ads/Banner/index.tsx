@@ -76,7 +76,10 @@ const Banner: React.FC<Props> = ({
 		<>
 			{!userPreferences.disableAds && (
 				<AdContainer>
-					<BannerAd unitId={adUnit} size={bannerSize} />
+					<BannerAd
+						unitId={adUnit || TestIds.BANNER}
+						size={bannerSize}
+					/>
 				</AdContainer>
 			)}
 		</>

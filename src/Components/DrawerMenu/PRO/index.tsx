@@ -10,8 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useTheme } from 'styled-components';
 
-import strings from '@expirychecker/Locales';
-import sharedStrings from '@shared/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -101,7 +100,7 @@ const PRO: React.FC = () => {
 						style={{ width: 22, height: 22 }}
 					/>
 					<MenuItemText>
-						{sharedStrings.Menu_Button_GoToSortedByWeight}
+						{strings.Menu_Button_GoToSortedByWeight}
 					</MenuItemText>
 				</MenuContent>
 
@@ -122,7 +121,7 @@ const PRO: React.FC = () => {
 						style={{ width: 22, height: 22 }}
 					/>
 					<MenuItemText>
-						{sharedStrings.Menu_Button_GoToSortedByLiters}
+						{strings.Menu_Button_GoToSortedByLiters}
 					</MenuItemText>
 				</MenuContent>
 

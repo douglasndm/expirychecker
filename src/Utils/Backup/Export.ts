@@ -2,7 +2,7 @@ import { exists, unlink } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
 import Share from 'react-native-share';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { generateBackup } from './Generate';
 

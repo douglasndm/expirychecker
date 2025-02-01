@@ -13,7 +13,7 @@ import BootSplash from 'react-native-bootsplash';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 

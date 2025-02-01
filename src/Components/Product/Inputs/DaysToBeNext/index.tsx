@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import {
 	Container,

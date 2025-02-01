@@ -3,7 +3,7 @@ import { ptBR, pt, enUS } from 'date-fns/locale';
 import { getLocales, getCurrencies } from 'react-native-localize';
 import { formatCurrency } from 'react-native-format-currency';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 let languageCode = ptBR;
 if (getLocales()[0].languageCode === 'pt') {
@@ -66,7 +66,7 @@ function shareString(product: IProduct, batch: IBatch): string {
 	if (!!product.code) {
 		text = text.replace(
 			'{PRODUCT}',
-			`{PRODUCT} ${strings.View_ShareProduct_MessageCodeBetween}`
+			`{PRODUCT} ${strings.baseApp.View_ShareProduct_MessageCodeBetween}`
 		);
 
 		text = text.replace('{CODE}', product.code);

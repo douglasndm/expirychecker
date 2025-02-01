@@ -14,7 +14,7 @@ import { format, formatDistanceToNow, isPast } from 'date-fns';
 import { ptBR, pt, enUS } from 'date-fns/locale';
 import { formatCurrency } from 'react-native-format-currency';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -180,12 +180,12 @@ const View: React.FC = () => {
 	}, [addListener, loadData]);
 
 	const whereIs: string = useMemo(() => {
-		let text = `${strings.View_Batch_WhereIs}: `;
+		let text = `${strings.baseApp.View_Batch_WhereIs}: `;
 
 		if (batch?.where_is === 'shelf') {
-			text += strings.View_Batch_WhereIs_Shelf;
+			text += strings.baseApp.View_Batch_WhereIs_Shelf;
 		} else if (batch?.where_is === 'stock') {
-			text += strings.View_Batch_WhereIs_Stock;
+			text += strings.baseApp.View_Batch_WhereIs_Stock;
 		} else {
 			text = '';
 		}
@@ -194,7 +194,7 @@ const View: React.FC = () => {
 	}, [batch?.where_is]);
 
 	const extraInfo = useMemo(() => {
-		let text = `${strings.View_Batch_ExtraInfo}: `;
+		let text = `${strings.baseApp.View_Batch_ExtraInfo}: `;
 
 		if (batch?.additional_data) {
 			text += batch.additional_data;
@@ -328,7 +328,9 @@ const View: React.FC = () => {
 
 					<ProFeaturesContainer>
 						<Button
-							title={strings.View_Batch_Button_Print_Batch}
+							title={
+								strings.baseApp.View_Batch_Button_Print_Batch
+							}
 							onPress={handlePrint}
 							isLoading={isSharingTag}
 							contentStyle={{ width: 250 }}

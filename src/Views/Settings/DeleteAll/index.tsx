@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { deleteAllData } from '@expirychecker/Utils/Database/Delete';
 
@@ -33,7 +33,8 @@ const DeleteAll: React.FC = () => {
 			await deleteAllData({});
 
 			showMessage({
-				message: strings.View_Settings_Advanced_DeleteAll_Success,
+				message:
+					strings.baseApp.View_Settings_Advanced_DeleteAll_Success,
 				type: 'success',
 			});
 
@@ -56,18 +57,24 @@ const DeleteAll: React.FC = () => {
 	return (
 		<Container>
 			<Header
-				title={strings.View_Settings_Advanced_DeleteAll_Title}
+				title={strings.baseApp.View_Settings_Advanced_DeleteAll_Title}
 				noDrawer
 			/>
 
 			<Content>
 				<Category>
 					<SettingDescription>
-						{strings.View_Settings_Advanced_DeleteAll_Description}
+						{
+							strings.baseApp
+								.View_Settings_Advanced_DeleteAll_Description
+						}
 					</SettingDescription>
 
 					<Button
-						title={strings.View_Settings_Advanced_DeleteAll_Button}
+						title={
+							strings.baseApp
+								.View_Settings_Advanced_DeleteAll_Button
+						}
 						onPress={handleSwitchConfirm1}
 					/>
 				</Category>
@@ -75,15 +82,21 @@ const DeleteAll: React.FC = () => {
 
 			<Dialog
 				visible={confirm2}
-				title={strings.View_Settings_Advanced_DeleteAll_Dialog2_Title}
+				title={
+					strings.baseApp
+						.View_Settings_Advanced_DeleteAll_Dialog2_Title
+				}
 				description={
-					strings.View_Settings_Advanced_DeleteAll_Dialog2_Description
+					strings.baseApp
+						.View_Settings_Advanced_DeleteAll_Dialog2_Description
 				}
 				cancelText={
-					strings.View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel
+					strings.baseApp
+						.View_Settings_Advanced_DeleteAll_Dialog2_Button_Cancel
 				}
 				confirmText={
-					strings.View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm
+					strings.baseApp
+						.View_Settings_Advanced_DeleteAll_Dialog2_Button_Confirm
 				}
 				onConfirm={handleDeleteAll}
 				onCancel={handleCancelDialog2}

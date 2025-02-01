@@ -7,7 +7,7 @@ import {
 } from 'react-native-fs';
 import { zip } from 'react-native-zip-archive';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { getAllBrands } from '@expirychecker/Utils/Brands/All';
 import { getAllCategories } from '@expirychecker/Utils/Categories/All';
