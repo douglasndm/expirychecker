@@ -27,7 +27,9 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:localeConfig="@xml/locales_config"
+        >
         <property
             android:name="android.adservices.AD_SERVICES_CONFIG"
             tools:replace="android:resource"
