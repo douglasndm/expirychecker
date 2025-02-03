@@ -261,7 +261,6 @@ const ProductDetails: React.FC<ScreenProps> = ({ route }) => {
 				icon={() => (
 					<Ionicons name="add-outline" color="white" size={22} />
 				)}
-				small
 				label={strings.View_ProductDetails_FloatButton_AddNewBatch}
 				onPress={addNewLote}
 			/>

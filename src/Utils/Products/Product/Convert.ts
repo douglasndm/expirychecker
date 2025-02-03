@@ -1,5 +1,22 @@
 import Realm from '@expirychecker/Services/Realm';
 
+function cleanBatch(batch: any): IBatch {
+	return {
+		id: batch.id,
+		// Apesar do mapeamento interno para 'lote', você pode usar 'name' para o objeto limpo
+		name: batch.name,
+		exp_date: batch.exp_date ? new Date(batch.exp_date) : new Date(), // ou undefined se preferir
+		amount: batch.amount,
+		price: batch.price,
+		status: batch.status,
+		price_tmp: batch.price_tmp,
+		where_is: batch.where_is,
+		additional_data: batch.additional_data,
+		created_at: batch.created_at ? new Date(batch.created_at) : undefined,
+		updated_at: batch.updated_at ? new Date(batch.updated_at) : undefined,
+	};
+}
+
 function convertRealmProductToProduct(realmProduct: RealmProduct): IProduct {
 	let brand: IBrand | undefined;
 	let category: ICategory | undefined;
@@ -62,7 +79,9 @@ function convertRealmProductToProduct(realmProduct: RealmProduct): IProduct {
 		brand,
 		category,
 		store,
-		batches: realmProduct.batches,
+		batches: Array.isArray(realmProduct.batches)
+			? realmProduct.batches.map((batch: any) => cleanBatch(batch))
+			: [],
 
 		created_at: realmProduct.created_at || new Date(),
 		updated_at: realmProduct.updated_at || new Date(),
