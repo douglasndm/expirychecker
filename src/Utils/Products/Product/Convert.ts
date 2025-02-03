@@ -79,9 +79,10 @@ function convertRealmProductToProduct(realmProduct: RealmProduct): IProduct {
 		brand,
 		category,
 		store,
-		batches: Array.isArray(realmProduct.batches)
-			? realmProduct.batches.map((batch: any) => cleanBatch(batch))
-			: [],
+		batches:
+			realmProduct.batches.length > 0
+				? realmProduct.batches.map((batch: any) => cleanBatch(batch))
+				: [],
 
 		created_at: realmProduct.created_at || new Date(),
 		updated_at: realmProduct.updated_at || new Date(),
