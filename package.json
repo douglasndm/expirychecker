@@ -1,7 +1,7 @@
 {
 	"name": "controledevalidade",
 	"version": "1.19.0",
-	"build": "347",
+	"build": "350",
 	"private": true,
 	"scripts": {
 		"android": "react-native run-android --active-arch-only",
@@ -14,8 +14,8 @@
 	"dependencies": {
 		"@bam.tech/react-native-image-resizer": "^3.0.11",
 		"@notifee/react-native": "^9.1.8",
-		"@react-native-async-storage/async-storage": "^2.1.0",
-		"@react-native-clipboard/clipboard": "^1.16.0",
+		"@react-native-async-storage/async-storage": "^2.1.1",
+		"@react-native-clipboard/clipboard": "^1.16.1",
 		"@react-native-community/blur": "^4.4.1",
 		"@react-native-community/netinfo": "^11.4.1",
 		"@react-native-community/push-notification-ios": "^1.11.0",
@@ -33,7 +33,7 @@
 		"@react-navigation/drawer": "^7.1.1",
 		"@react-navigation/native": "^7.0.14",
 		"@react-navigation/stack": "^7.1.1",
-		"@sentry/react-native": "^6.5.0",
+		"@sentry/react-native": "^6.6.0",
 		"axios": "^1.7.9",
 		"date-fns": "^4.1.0",
 		"lottie-react-native": "^7.2.1",
