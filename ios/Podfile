@@ -44,7 +44,7 @@ if linkage != nil
     use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'controledevalidade' do
+target 'ExpiryChecker' do
     #use_frameworks!
 
     config = use_native_modules!

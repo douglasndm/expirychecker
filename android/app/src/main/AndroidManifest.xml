@@ -20,7 +20,7 @@
     <application
         android:name=".MainApplication"
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher_squircle"
+        android:icon="@mipmap/ic_launcher_squircle"
         android:roundIcon="@mipmap/ic_launcher_circle"
         android:theme="@style/BootTheme"
         android:requestLegacyExternalStorage="true"
@@ -55,8 +55,5 @@
                 <data android:scheme="expirychecker" />
             </intent-filter>
         </activity>
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/ic_notification" />
     </application>
 </manifest>

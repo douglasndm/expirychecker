@@ -15,9 +15,9 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-                     BuildableName = "controledevalidade.app"
-                     BlueprintName = "controledevalidade"
-                     ReferencedContainer = "container:controledevalidade.xcodeproj">
+                     BuildableName = "ExpiryChecker.app"
+                     BlueprintName = "ExpiryChecker"
+                     ReferencedContainer = "container:ExpiryChecker.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "controledevalidade.app"
-               BlueprintName = "controledevalidade"
-               ReferencedContainer = "container:controledevalidade.xcodeproj">
+               BuildableName = "ExpiryChecker.app"
+               BlueprintName = "ExpiryChecker"
+               ReferencedContainer = "container:ExpiryChecker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -51,9 +51,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "controledevalidadeTests.xctest"
-               BlueprintName = "controledevalidadeTests"
-               ReferencedContainer = "container:controledevalidade.xcodeproj">
+               BuildableName = "ExpiryCheckerTests.xctest"
+               BlueprintName = "ExpiryCheckerTests"
+               ReferencedContainer = "container:ExpiryChecker.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -73,9 +73,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "controledevalidade.app"
-            BlueprintName = "controledevalidade"
-            ReferencedContainer = "container:controledevalidade.xcodeproj">
+            BuildableName = "ExpiryChecker.app"
+            BlueprintName = "ExpiryChecker"
+            ReferencedContainer = "container:ExpiryChecker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "controledevalidade.app"
-            BlueprintName = "controledevalidade"
-            ReferencedContainer = "container:controledevalidade.xcodeproj">
+            BuildableName = "ExpiryChecker.app"
+            BlueprintName = "ExpiryChecker"
+            ReferencedContainer = "container:ExpiryChecker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

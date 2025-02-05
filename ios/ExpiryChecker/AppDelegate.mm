@@ -22,11 +22,11 @@
     // FIREBASE
     [RNFBAppCheckModule sharedInstance];
     [FIRApp configure];
-    
+
     // [REQUIRED] Register BackgroundFetch
     [[TSBackgroundFetch sharedInstance] didFinishLaunching];
 
-    self.moduleName = @"controledevalidade";
+    self.moduleName = @"Expiry Checker";
     // in "(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions" method
     // Use `addCustomPropsToUserProps` to pass in props for initialization of your app
     // Or pass in `nil` if you have none as per below example

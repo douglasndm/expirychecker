@@ -1,5 +1,5 @@
 {
-	"name": "controledevalidade",
+	"name": "expirychecker",
 	"version": "1.19.0",
 	"build": "350",
 	"private": true,
