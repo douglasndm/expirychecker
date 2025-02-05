@@ -137,19 +137,19 @@
 		13B07FAE1A68108700A75B9A /* controledevalidade */ = {
 			isa = PBXGroup;
 			children = (
-				A5E298112AA3D9A8004BF7EF /* BootSplash.storyboard */,
-				A59E05B22905ED9500254967 /* RNBackgroundFetch+AppDelegate.m */,
-				4FF2A1C825B64CE6007F6B6A /* controledevalidade.entitlements */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				4FA9DA6726CC3C9C00E4C895 /* Assets.xcassets */,
+				A5E298112AA3D9A8004BF7EF /* BootSplash.storyboard */,
+				3DAB0BB25DFC4937AF35267D /* Colors.xcassets */,
+				4FF2A1C825B64CE6007F6B6A /* controledevalidade.entitlements */,
 				4F24F2F52B8EAABF00CCF307 /* Info.plist */,
 				4F24F3002B8EAD3F00CCF307 /* InfoPlist.strings */,
+				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
-				4FA9DA6726CC3C9C00E4C895 /* Assets.xcassets */,
 				4774A681D0F5714FCFE6F773 /* PrivacyInfo.xcprivacy */,
-				3DAB0BB25DFC4937AF35267D /* Colors.xcassets */,
+				A59E05B22905ED9500254967 /* RNBackgroundFetch+AppDelegate.m */,
 			);
 			name = controledevalidade;
 			sourceTree = "<group>";

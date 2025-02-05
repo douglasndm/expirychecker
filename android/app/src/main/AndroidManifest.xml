@@ -20,8 +20,8 @@
     <application
         android:name=".MainApplication"
         android:label="@string/app_name"
-        android:icon="@drawable/icon"
-        android:roundIcon="@mipmap/icon_circle"
+        android:icon="@drawable/ic_launcher_squircle"
+        android:roundIcon="@mipmap/ic_launcher_circle"
         android:theme="@style/BootTheme"
         android:requestLegacyExternalStorage="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
