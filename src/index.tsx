@@ -29,6 +29,7 @@ import Routes from '@expirychecker/routes';
 
 import StatusBar from '@components/StatusBar';
 import AskReview from '@components/AskReview';
+import AuthListener from '@components/Auth/Listener';
 
 import RenderErrors from '@views/Information/Errors/Render';
 
@@ -65,6 +66,7 @@ const App: React.FC = () => {
 						<Portal>
 							<StatusBar />
 							<AppOpen />
+							<AuthListener />
 							<ListContext.Provider value={list}>
 								<Routes />
 							</ListContext.Provider>

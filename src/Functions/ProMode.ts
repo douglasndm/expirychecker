@@ -61,10 +61,8 @@ export async function isSubscriptionActive(): Promise<boolean> {
 		}
 		await setEnableProVersion(false);
 		return false;
-	} catch (err) {
-		if (err instanceof Error) {
-			captureException({ error: err });
-		}
+	} catch (error) {
+		captureException({ error });
 	}
 	return false;
 }
