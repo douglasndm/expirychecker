@@ -3,7 +3,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { getBrand } from '@expirychecker/Utils/Brands/Get';
 import { updateBrand } from '@expirychecker/Utils/Brands/Update';

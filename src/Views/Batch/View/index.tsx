@@ -10,24 +10,26 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import { getLocales, getCurrencies } from 'react-native-localize';
 import { showMessage } from 'react-native-flash-message';
-import { format, formatDistanceToNow, isPast } from 'date-fns';//eslint-disable-line
-import { ptBR, pt, enUS } from 'date-fns/locale' // eslint-disable-line
+import { format, formatDistanceToNow, isPast } from 'date-fns';
+import { ptBR, pt, enUS } from 'date-fns/locale';
 import { formatCurrency } from 'react-native-format-currency';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { shareText, shareTextWithImage } from '@utils/Share';
-import { handlePurchase } from '@expirychecker/Utils/Purchases/HandlePurchase';
+
+import { shareBatchToPDF } from '@utils/Share/Batch/toPDF';
+import { shareString } from '@expirychecker/Utils/Batches/Share';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
 import Button from '@components/Button';
 
-import { getProductById } from '@expirychecker/Functions/Product';
 import Banner from '@expirychecker/Components/Ads/Banner';
 
 import {
@@ -39,7 +41,6 @@ import {
 	BatchPrice,
 	BannerContainer,
 	ProFeaturesContainer,
-	ProFeaturesText,
 	Text,
 } from './styles';
 
@@ -63,6 +64,7 @@ const View: React.FC = () => {
 	const [batch, setBatch] = useState<IBatch | null>(null);
 
 	const [isSharing, setIsSharing] = useState<boolean>(false);
+	const [isSharingTag, setIsSharingTag] = useState<boolean>(false);
 
 	const languageCode = useMemo(() => {
 		if (getLocales()[0].languageCode === 'BR') {
@@ -96,12 +98,6 @@ const View: React.FC = () => {
 		return isPast(date);
 	}, [date]);
 
-	const exp_date = useMemo(() => {
-		return format(date, dateFormat, {
-			locale: languageCode,
-		});
-	}, [date, dateFormat, languageCode]);
-
 	const handleNaviEdit = useCallback(() => {
 		navigate('EditLote', {
 			productId,
@@ -116,55 +112,7 @@ const View: React.FC = () => {
 		try {
 			setIsSharing(true);
 
-			let text = strings.View_ShareProduct_Message;
-
-			if (!!batch.amount && batch.amount > 0) {
-				if (!!batch.price_tmp) {
-					text =
-						strings.View_ShareProduct_MessageWithDiscountAndAmount;
-
-					text = text.replace(
-						'{TMP_PRICE}',
-						formatCurrency({
-							amount: Number(batch.price_tmp.toFixed(2)),
-							code: getCurrencies()[0],
-						})[0]
-					);
-					text = text.replace(
-						'{TOTAL_DISCOUNT_PRICE}',
-						formatCurrency({
-							amount: Number(
-								(batch.price_tmp * batch.amount).toFixed(2)
-							),
-							code: getCurrencies()[0],
-						})[0]
-					);
-				} else {
-					text = strings.View_ShareProduct_MessageWithAmount;
-				}
-				text = text.replace('{AMOUNT}', String(batch.amount));
-			} else if (!!batch.price) {
-				text = strings.View_ShareProduct_MessageWithPrice;
-
-				if (!!batch.price_tmp) {
-					text = strings.View_ShareProduct_MessageWithDiscount;
-					text = text.replace(
-						'{TMP_PRICE}',
-						batch.price_tmp.toString()
-					);
-				}
-
-				text = text.replace(
-					'{PRICE}',
-					formatCurrency({
-						amount: Number(batch.price.toFixed(2)),
-						code: getCurrencies()[0],
-					})[0]
-				);
-			}
-
-			text = text.replace('{PRODUCT}', product.name);
-			text = text.replace('{DATE}', exp_date);
+			const text = shareString(product, batch);
 
 			if (product.photo || product.code) {
 				let fileName: string | null = null;
@@ -191,22 +139,11 @@ const View: React.FC = () => {
 			});
 		} catch (err) {
 			if (err instanceof Error)
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					if (__DEV__) {
-						console.error(err);
-					} else {
-						captureException(err);
-					}
-				}
+				captureException({ error: err, showAlert: true });
 		} finally {
 			setIsSharing(false);
 		}
-	}, [product, batch, exp_date]);
+	}, [product, batch]);
 
 	const handleNavigateToDiscount = useCallback(() => {
 		navigate('BatchDiscount', {
@@ -242,17 +179,13 @@ const View: React.FC = () => {
 		return unsubscribe;
 	}, [addListener, loadData]);
 
-	const navigateToPRO = useCallback(async () => {
-		await handlePurchase();
-	}, []);
-
 	const whereIs: string = useMemo(() => {
-		let text = `${strings.View_Batch_WhereIs}: `;
+		let text = `${strings.baseApp.View_Batch_WhereIs}: `;
 
 		if (batch?.where_is === 'shelf') {
-			text += strings.View_Batch_WhereIs_Shelf;
+			text += strings.baseApp.View_Batch_WhereIs_Shelf;
 		} else if (batch?.where_is === 'stock') {
-			text += strings.View_Batch_WhereIs_Stock;
+			text += strings.baseApp.View_Batch_WhereIs_Stock;
 		} else {
 			text = '';
 		}
@@ -261,7 +194,7 @@ const View: React.FC = () => {
 	}, [batch?.where_is]);
 
 	const extraInfo = useMemo(() => {
-		let text = `${strings.View_Batch_ExtraInfo}: `;
+		let text = `${strings.baseApp.View_Batch_ExtraInfo}: `;
 
 		if (batch?.additional_data) {
 			text += batch.additional_data;
@@ -270,6 +203,25 @@ const View: React.FC = () => {
 		}
 		return text;
 	}, [batch?.additional_data]);
+
+	const handlePrint = useCallback(async () => {
+		if (!product || !batch) return;
+
+		try {
+			setIsSharingTag(true);
+
+			await shareBatchToPDF({
+				productName: product.name,
+				batch,
+			});
+		} catch (err) {
+			if (err instanceof Error) {
+				captureException({ error: err, showAlert: true });
+			}
+		} finally {
+			setIsSharingTag(false);
+		}
+	}, [batch, product]);
 
 	return isLoading ? (
 		<Loading />
@@ -375,11 +327,16 @@ const View: React.FC = () => {
 					)}
 
 					<ProFeaturesContainer>
-						{!userPreferences.isPRO && (
-							<ProFeaturesText onPress={navigateToPRO}>
-								{strings.Component_FastSub_Text}
-							</ProFeaturesText>
-						)}
+						<Button
+							title={
+								strings.baseApp.View_Batch_Button_Print_Batch
+							}
+							onPress={handlePrint}
+							isLoading={isSharingTag}
+							contentStyle={{ width: 250 }}
+							disabled={!userPreferences.isPRO}
+						/>
+
 						<Button
 							title={
 								strings.View_Batch_Button_ShareWithAnotherApps

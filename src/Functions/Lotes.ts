@@ -187,18 +187,18 @@ export async function updateLote(
 			UpdateMode.Modified
 		);
 
-		realm.create(
-			'Product',
-			{
-				...product,
-				id: product.id,
-				brand: product.brand?.id,
-				store: product.store?.id,
-				category: product.category?.id,
-				updated_at: new Date(),
-			},
-			UpdateMode.Modified
-		);
+		// realm.create(
+		// 	'Product',
+		// 	{
+		// 		...product,
+		// 		id: product.id,
+		// 		brand: product.brand?.id,
+		// 		store: product.store?.id,
+		// 		category: product.category?.id,
+		// 		updated_at: new Date(),
+		// 	},
+		// 	UpdateMode.Modified
+		// );
 	});
 }
 
@@ -208,18 +208,19 @@ function deleteLote(batch_id: number, product: IProduct): void {
 	realm.write(() => {
 		realm.delete(batch);
 
-		realm.create(
-			'Product',
-			{
-				...product,
-				id: product.id,
-				brand: product.brand?.id,
-				store: product.store?.id,
-				category: product.category?.id,
-				updated_at: new Date(),
-			},
-			UpdateMode.Modified
-		);
+		// for some reaseon, this is deleting all batches from the product
+		// realm.create(
+		// 	'Product',
+		// 	{
+		// 		...product,
+		// 		id: product.id,
+		// 		brand: product.brand?.id,
+		// 		store: product.store?.id,
+		// 		category: product.category?.id,
+		// 		updated_at: new Date(),
+		// 	},
+		// 	UpdateMode.Modified
+		// );
 	});
 }
 

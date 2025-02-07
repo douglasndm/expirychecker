@@ -1,6 +1,6 @@
 import Share from 'react-native-share';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { generateBackup } from '@expirychecker/Utils/Backup/Generate';
 

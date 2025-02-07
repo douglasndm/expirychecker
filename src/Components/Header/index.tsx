@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -16,10 +16,10 @@ const LocalHeader: React.FC<RequestProps> = (props: RequestProps) => {
 		}
 
 		if (!title && userPreferences.isPRO) {
-			return strings.AppName_ProVersion;
+			return strings.baseApp.AppName_ProVersion;
 		}
 
-		return strings.AppName;
+		return strings.AppName_FullName;
 	}, [props, userPreferences.isPRO]);
 
 	return <Header {...props} title={headerTitle} />;

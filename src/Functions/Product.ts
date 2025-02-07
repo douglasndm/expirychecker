@@ -1,14 +1,8 @@
 import { UpdateMode } from 'realm';
-import { exists, unlink } from 'react-native-fs';
 
 import realm from '@expirychecker/Services/Realm';
 
-import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
-
-import { getBrand } from '@expirychecker/Utils/Brands/Get';
 import { findProductByCode } from '@expirychecker/Utils/Products/Product/Find';
-import { getCategory } from './Category';
-import { getStore } from './Stores';
 import { createLote } from './Lotes';
 
 interface ICheckIfProductAlreadyExistsByCodeProps {
@@ -52,77 +46,12 @@ export async function getProductByCode({
 		.filtered(`code = "${productCode}"`)[0];
 
 	if (store) {
-        result = realm // eslint-disable-line
+		result = realm
 			.objects<IProduct>('Product')
 			.filtered(`code = "${productCode}" AND store = "${store}"`)[0];
 	}
 
 	return result;
-}
-
-// Get product by code asynchronosly
-export async function getProductByCodeAsync({
-	productCode,
-	store,
-}: getProductByCodeProps): Promise<IProduct> {
-	return new Promise((resolve, reject) => {
-		let result = realm
-			.objects<IProduct>('Product')
-			.filtered(`code = "${productCode}"`)[0];
-
-		if (store) {
-            result = realm // eslint-disable-line
-				.objects<IProduct>('Product')
-				.filtered(`code = "${productCode}" AND store = "${store}"`)[0];
-		}
-
-		if (result) {
-			resolve(result);
-		} else {
-			reject(new Error('Produto não encontrado'));
-		}
-	});
-}
-
-export async function getProductById(productId: number): Promise<IProduct> {
-	const result = realm
-		.objects<IProduct>('Product')
-		.filtered(`id = "${productId}"`)[0];
-
-	if (!result) {
-		throw new Error('Product not found');
-	}
-
-	const prod: IProduct = {
-		id: result.id,
-		name: result.name,
-		code: result.code,
-		photo: result.photo,
-		daysToBeNext: result.daysToBeNext,
-		batches: result.batches,
-		brand: result.brand,
-		store: result.store,
-		created_at: result.created_at,
-		updated_at: result.updated_at,
-	};
-
-	if (result.categories && result.categories.length > 0) {
-		const category = await getCategory(result.categories[0]);
-
-		prod.category = category;
-	}
-	if (prod.brand) {
-		const brand = await getBrand(String(prod.brand));
-
-		prod.brand = brand;
-	}
-	if (prod.store) {
-		const store = await getStore(String(prod.store));
-
-		prod.store = store || undefined;
-	}
-
-	return prod;
 }
 
 interface createProductProps {
@@ -240,25 +169,5 @@ export async function updateProduct(
 		};
 
 		realm.create('Product', prod, UpdateMode.Modified);
-	});
-}
-
-export async function deleteProduct(productId: number): Promise<void> {
-	const product = realm
-		.objects<IProduct>('Product')
-		.filtered(`id == ${productId}`)[0];
-
-	if (product.photo) {
-		const photoPath = await getLocalImageFromProduct(product.photo);
-
-		if (photoPath) {
-			if (await exists(photoPath)) {
-				await unlink(photoPath);
-			}
-		}
-	}
-
-	realm.write(async () => {
-		realm.delete(product);
 	});
 }

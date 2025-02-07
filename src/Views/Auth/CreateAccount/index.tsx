@@ -5,14 +5,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
-import strings from '@teams/Locales';
+import strings from '@shared/Locales';
 
 import Header from '@components/Header';
 import Input from '@components/InputText';
 import Button from '@components/Button';
 
-import { FormContainer } from '@teams/Views/Auth/Login/styles';
-import { Container, PageContent } from '@teams/Views/Auth/CreateAccount/styles';
+import { FormContainer } from '@views/Auth/Login/Form/styles';
+import { Container, PageContent } from '@views/Auth/CreateAccount/styles';
 
 const CreateAccount: React.FC = () => {
 	const { pop } = useNavigation<StackNavigationProp<RoutesParams>>();
@@ -63,7 +63,7 @@ const CreateAccount: React.FC = () => {
 				.required(strings.View_CreateAccount_Alert_Error_EmptyPassword)
 				.min(6),
 			passwordConfirm: Yup.string().oneOf(
-				[Yup.ref('password'), null],
+				[Yup.ref('password'), undefined],
 				strings.View_CreateAccount_Alert_Error_InvalidPassConfirm
 			),
 		});

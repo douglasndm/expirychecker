@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 
-import AppContext from '@shared/Contexts/App';
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { defaultPreferences } from '@expirychecker/Services/Preferences';
@@ -19,12 +18,7 @@ interface AppContextProps {
 }
 
 const appContext: React.FC<AppContextProps> = ({ children }) => {
-	const [app, setApp] = useState<
-		'expiry_tracker' | 'expiry_teams' | undefined
-	>('expiry_tracker');
 	const [preferences, setPreferences] = useState(defaultPreferences);
-
-	const appContextValue = useMemo(() => ({ app, setApp }), [app, setApp]);
 
 	const prefesValues = useMemo(
 		() => ({
@@ -45,13 +39,11 @@ const appContext: React.FC<AppContextProps> = ({ children }) => {
 	}, [loadInitialData]);
 
 	return (
-		<AppContext.Provider value={appContextValue}>
-			<PreferencesContext.Provider value={prefesValues}>
-				<ThemeProvider theme={preferences.appTheme}>
-					{children}
-				</ThemeProvider>
-			</PreferencesContext.Provider>
-		</AppContext.Provider>
+		<PreferencesContext.Provider value={prefesValues}>
+			<ThemeProvider theme={preferences.appTheme}>
+				{children}
+			</ThemeProvider>
+		</PreferencesContext.Provider>
 	);
 };
 

@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
 import { parseISO } from 'date-fns';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -62,6 +62,10 @@ async function importExcel(): Promise<void> {
 		type: DocumentPicker.types.xlsx,
 		mode: 'open',
 	});
+
+	if (!file.name) {
+		throw new Error('File does not have a name');
+	}
 
 	// Separa o nome do arquivo da extensão para fazer a validação da extensão do arquivo
 	const [, extension] = file.name.split('.');
@@ -192,12 +196,23 @@ async function importExcel(): Promise<void> {
 			const lotes: Omit<IBatch, 'id'>[] = [];
 
 			if (product[localizedBExp]) {
+				let fixedStatus = 'Não tratado';
+
+				const currentStatus = tableBStatus.toLowerCase().trim();
+
+				if (
+					currentStatus === 'já verificado' ||
+					currentStatus === 'checked'
+				) {
+					fixedStatus = 'Tratado';
+				}
+
 				lotes.push({
 					name: tableBName,
 					exp_date: date,
 					amount: tableBAmount,
 					price,
-					status: tableBStatus,
+					status: fixedStatus,
 				});
 			}
 

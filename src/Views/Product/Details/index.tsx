@@ -6,13 +6,13 @@ import React, {
 	useMemo,
 } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -21,7 +21,7 @@ import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 import { sortBatches } from '@expirychecker/Utils/Batches/Sort';
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
 
-import { getProductById } from '@expirychecker/Functions/Product';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
 import { deleteManyBatches } from '@expirychecker/Utils/Batches';
 import { getImagePath } from '@utils/Images/GetImagePath';
 import { saveLocally } from '@utils/Images/SaveLocally';
@@ -45,15 +45,9 @@ import {
 	FloatButton,
 } from '@views/Product/View/styles';
 
-interface Request {
-	route: {
-		params: {
-			id: number;
-		};
-	};
-}
+type ScreenProps = StackScreenProps<RoutesParams, 'ProductDetails'>;
 
-const ProductDetails: React.FC<Request> = ({ route }: Request) => {
+const ProductDetails: React.FC<ScreenProps> = ({ route }) => {
 	const { isConnected } = useNetInfo();
 
 	const { userPreferences } = useContext(PreferencesContext);
@@ -62,10 +56,10 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
 	const productId = useMemo(() => {
-		return route.params.id;
+		return Number(route.params.id);
 	}, [route.params.id]);
 
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const [product, setProduct] = useState<IProduct>();
 	const [image, setImage] = useState<string | undefined>();
@@ -74,8 +68,8 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 	const [lotesNaoTratados, setLotesNaoTratados] = useState<Array<IBatch>>([]);
 
 	const getProduct = useCallback(async () => {
-		setIsLoading(true);
 		try {
+			setIsLoading(true);
 			const result = await getProductById(productId);
 
 			// When the product doesn't exists it will reset the view for app get new data
@@ -86,36 +80,42 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				return;
 			}
 
-			if (result.photo || result.code) {
-				let path: string | null = null;
+			try {
+				if (result.photo || result.code) {
+					let path: string | null = null;
 
-				if (result.photo) {
-					path = await getLocalImageFromProduct(result.photo);
-				} else if (result.code) {
-					path = await getLocalImageFromProduct(result.code.trim());
-				}
+					if (result.photo) {
+						path = await getLocalImageFromProduct(result.photo);
+					} else if (result.code) {
+						path = await getLocalImageFromProduct(
+							result.code.trim()
+						);
+					}
 
-				if (path) {
-					setImage(`${path}`);
-				} else if (!path && result.code && isConnected) {
-					const response = await getImagePath({
-						productCode: result.code.trim(),
-					});
+					if (path) {
+						setImage(`${path}`);
+					} else if (!path && result.code && isConnected) {
+						getImagePath({
+							productCode: result.code.trim(),
+						}).then(res => {
+							if (res) {
+								setImage(res);
 
-					if (response) {
-						setImage(response);
-
-						await saveLocally(response, result.code.trim());
+								if (result.code?.trim())
+									saveLocally(res, result.code.trim());
+							}
+						});
 					}
 				}
+			} catch (error) {
+				setImage(undefined);
 			}
 
+			setProduct(result);
 			if (!result || result === null) {
 				goBack();
 				return;
 			}
-
-			setProduct(result);
 
 			if (result.batches.length > 0) {
 				const lotesSorted = sortBatches(result.batches);
@@ -128,14 +128,9 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 					lotesSorted.filter(lote => lote.status !== 'Tratado')
 				);
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		} finally {
 			setIsLoading(false);
@@ -154,26 +149,29 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 		return unsubscribe;
 	}, [addListener, getProduct]);
 
-	const onDeleteManyBathes = useCallback(async (ids: number[]) => {
-		try {
-			setIsLoading(true);
+	const onDeleteManyBathes = useCallback(
+		async (ids: number[]) => {
+			try {
+				setIsLoading(true);
 
-			await deleteManyBatches(ids);
+				await deleteManyBatches(ids);
 
-			setLotesNaoTratados([]);
-			setLotesTratados([]);
+				setLotesNaoTratados([]);
+				setLotesTratados([]);
 
-			await getProduct();
-		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-		} finally {
-			setIsLoading(false);
-		}
-	}, []);
+				await getProduct();
+			} catch (err) {
+				if (err instanceof Error)
+					showMessage({
+						message: err.message,
+						type: 'danger',
+					});
+			} finally {
+				setIsLoading(false);
+			}
+		},
+		[getProduct]
+	);
 
 	const handleEdit = useCallback(() => {
 		navigate('EditProduct', { productId });
@@ -263,7 +261,6 @@ const ProductDetails: React.FC<Request> = ({ route }: Request) => {
 				icon={() => (
 					<Ionicons name="add-outline" color="white" size={22} />
 				)}
-				small
 				label={strings.View_ProductDetails_FloatButton_AddNewBatch}
 				onPress={addNewLote}
 			/>

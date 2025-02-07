@@ -7,7 +7,6 @@ const PreferencesContext = createContext({
 	userPreferences: defaultPreferences,
 	setUserPreferences: ({
 		howManyDaysToBeNextToExpire,
-		autoComplete,
 		isPRO,
 		appTheme,
 		enableNotifications,

@@ -1,6 +1,6 @@
 import { addDays, endOfDay, isPast, startOfDay } from 'date-fns';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { getAllProductsAsync } from '@expirychecker/Utils/Products/All';
 

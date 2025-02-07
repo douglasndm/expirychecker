@@ -1,7 +1,7 @@
 import { UpdateMode } from 'realm';
 import UUID from 'react-native-uuid-generator';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { getAllStores } from '@expirychecker/Utils/Stores/Find';
 

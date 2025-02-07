@@ -1,14 +1,11 @@
-import {
-	DocumentDirectoryPath,
-	exists,
-	unlink,
-	mkdir,
-	copyFile,
-} from 'react-native-fs';
+import { exists, unlink } from 'react-native-fs';
+import { UpdateMode } from 'realm';
+
+import realm from '@expirychecker/Services/Realm';
+import { captureException } from '@services/ExceptionsHandler';
 
 import { getImagePath } from '@expirychecker/Utils/Products/Images/GetPath';
-
-import { getProductById, updateProduct } from '../Product';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
 
 export function getImageFileNameFromPath(path: string): string {
 	const productImage = path.split('/');
@@ -52,38 +49,45 @@ export async function saveProductImage({
 		}
 	}
 
-	await updateProduct({
-		...product,
-		id: productId,
-		photo: fileName,
+	realm.write(() => {
+		let brand: IBrand | string | undefined = product.brand;
+
+		if (brand) {
+			if (typeof brand !== 'string') {
+				brand = brand.id;
+			}
+		}
+
+		let category: ICategory | string | undefined = product.category;
+
+		if (category) {
+			if (typeof category !== 'string') {
+				category = category.id;
+			}
+		}
+
+		try {
+			realm.create(
+				'Product',
+				{
+					id: productId,
+					name: product.name,
+					code: product.code,
+					brand: brand,
+					store: product.store,
+					daysToBeNext: product.daysToBeNext,
+
+					categories: !!category ? [category] : [],
+					photo: fileName,
+
+					updated_at: new Date(),
+				},
+				UpdateMode.Modified
+			);
+		} catch (err) {
+			if (err instanceof Error) {
+				captureException({ error: err });
+			}
+		}
 	});
-}
-
-interface copyTempImageResponse {
-	fileName: string;
-	filePath: string;
-}
-
-export async function copyImageFromTempDirToDefinitiveDir(
-	tempPath: string
-): Promise<copyTempImageResponse> {
-	const splited = tempPath.split('/');
-	const generatedFilneName = splited[splited.length - 1];
-
-	const fileName = `${Date.now()}-${generatedFilneName}`;
-
-	const existsFolder = await exists(`${DocumentDirectoryPath}/images`);
-	if (!existsFolder) {
-		await mkdir(`${DocumentDirectoryPath}/images`);
-	}
-
-	const newPath = `${DocumentDirectoryPath}/images/${fileName}`;
-
-	await copyFile(tempPath, newPath);
-	await unlink(tempPath);
-
-	return {
-		fileName,
-		filePath: newPath,
-	};
 }

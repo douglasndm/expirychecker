@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -31,15 +31,9 @@ import FAB from '@components/FAB';
 
 import { Container, SubTitle } from '@styles/Views/GenericViewPage';
 
-interface RequestProps {
-	route: {
-		params: {
-			store: string; // can be the name too
-		};
-	};
-}
+type ScreenProps = StackScreenProps<RoutesParams, 'StoreDetails'>;
 
-const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
+const StoreDetails: React.FC<ScreenProps> = ({ route }) => {
 	const { navigate, addListener } =
 		useNavigation<StackNavigationProp<RoutesParams>>();
 
@@ -134,16 +128,10 @@ const StoreDetails: React.FC<RequestProps> = ({ route }: RequestProps) => {
 				message: strings.View_Category_View_ExcelExportedSuccess,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error)
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
+			}
 		} finally {
 			setIsLoading(false);
 		}

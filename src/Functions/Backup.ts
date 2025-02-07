@@ -7,10 +7,9 @@ import RNFS, {
 } from 'react-native-fs';
 import { unzip } from 'react-native-zip-archive';
 import DocumentPicker from 'react-native-document-picker';
-import CryptoJS from 'crypto-js';
-import EnvConfig from 'react-native-config';
+import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { saveManyBrands } from '@expirychecker/Utils/Brands/SaveMany';
 import { saveManyCategories } from '@expirychecker/Utils/Categories/SaveMany';
@@ -19,7 +18,13 @@ import { saveMany } from './Products';
 
 const backupDir = `${DocumentDirectoryPath}/backupDir`;
 
-export async function importBackupFile(): Promise<void> {
+/**
+ * Função responsável por importar um arquivo de backup no formato .cvbf ou .zip
+ * para o aplicativo.
+ *
+ * @returns {Promise<boolean>} Retorna true se o backup for importado com sucesso, false caso contrário.
+ */
+export async function importBackupFile(): Promise<boolean> {
 	const filePicked = await DocumentPicker.pickSingle({
 		copyTo: 'documentDirectory',
 	});
@@ -33,7 +38,11 @@ export async function importBackupFile(): Promise<void> {
 
 	// caso a extensão do arquivo não for cvbf lança um erro e sai da função
 	if (extension !== 'cvbf' && extension !== 'zip') {
-		throw new Error(strings.Function_Import_Error_InvalidExtesion);
+		showMessage({
+			message: strings.Function_Import_Error_InvalidExtesion,
+			type: 'warning',
+		});
+		return false;
 	}
 
 	let backupFilePath = null;
@@ -68,29 +77,23 @@ export async function importBackupFile(): Promise<void> {
 				backupFilePath = `${backupDir}/${backupFile.name}`;
 			}
 		}
-	}
-	if (extension === 'cvbf') {
+	} else if (extension === 'cvbf') {
 		backupFilePath = filePicked.fileCopyUri;
 	}
 
 	if (!backupFilePath) {
-		throw new Error('Extesion is not valid');
+		showMessage({
+			message: strings.Function_Import_Error_InvalidExtesion,
+			type: 'warning',
+		});
+		return false;
 	}
 
 	// pega o arquivo temporario gerado pelo filePicker e faz a leitura dele
 	const fileRead = await RNFS.readFile(backupFilePath);
 
-	// decriptografa o arquivo lido
-	const decryptedFile = CryptoJS.AES.decrypt(
-		fileRead,
-		EnvConfig.APPLICATION_SECRET_BACKUP_CRYPT || ''
-	);
-
-	// converte o arquivo em formato de bytes puros para string
-	const originalFile = decryptedFile.toString(CryptoJS.enc.Utf8);
-
 	// converte tudo de novo para json
-	const parsedFile = JSON.parse(originalFile);
+	const parsedFile = JSON.parse(fileRead);
 
 	if (parsedFile.products) {
 		if (parsedFile.categories) {
@@ -111,4 +114,5 @@ export async function importBackupFile(): Promise<void> {
 	}
 
 	await unlink(backupDir);
+	return true;
 }

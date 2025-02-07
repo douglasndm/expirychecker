@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useContext, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import remoteConfig from '@react-native-firebase/remote-config';
 import DeviceInfo from 'react-native-device-info';
 import { Drawer } from 'react-native-drawer-layout';
 
@@ -21,6 +20,9 @@ import ProductDetails from '@expirychecker/Views/Product/Details';
 import About from '@expirychecker/Views/About';
 import Success from '@expirychecker/Views/Success';
 import PhotoView from '@views/Product/PhotoView';
+
+import ProductsSortedByWeight from '@expirychecker/Views/Product/Lists/SortedByWeight';
+import ProductsSortedByLiters from '@expirychecker/Views/Product/Lists/SortedByLiters';
 
 import BatchView from '@expirychecker/Views/Batch/View';
 import BatchDiscount from '@expirychecker/Views/Batch/Discount';
@@ -43,6 +45,7 @@ import SubscriptionCancel from '@expirychecker/Views/Informations/Subscription/C
 
 import Settings from '@expirychecker/Views/Settings';
 import SettingsDeleteAll from '@expirychecker/Views/Settings/DeleteAll';
+import Notifications from '@views/Notifications';
 
 import Login from '@expirychecker/Views/Auth/Login';
 import CreateAccount from '@expirychecker/Views/Auth/CreateAccount';
@@ -56,7 +59,6 @@ const StackNavigator: React.FC = () => {
 	const [draweOpen, setDrawerOpen] = useState(false);
 
 	const { userPreferences } = useContext(PreferencesContext);
-	const enableTabBar = remoteConfig().getValue('enable_app_bar');
 
 	const [currentRoute, setCurrentRoute] = useState('Home');
 
@@ -65,18 +67,24 @@ const StackNavigator: React.FC = () => {
 			return false;
 		}
 
-		if (enableTabBar.asBoolean() === false) {
-			return false;
-		}
-
 		if (DeviceInfo.isLowRamDevice()) {
 			return false;
 		}
 
 		return true;
-	}, [enableTabBar, userPreferences.isPRO]);
+	}, [userPreferences.isPRO]);
 
-	const handleRouteChange = useCallback(navRoutes => {
+	interface NavRoutes {
+		data: {
+			state: {
+				routes: {
+					name: string;
+				}[];
+			};
+		};
+	}
+
+	const handleRouteChange = useCallback((navRoutes: NavRoutes) => {
 		setDrawerOpen(false);
 
 		if (navRoutes) {
@@ -111,6 +119,16 @@ const StackNavigator: React.FC = () => {
 				>
 					<Stack.Screen name="Home" component={Home} />
 					<Stack.Screen name="AddProduct" component={AddProduct} />
+
+					<Stack.Screen
+						name="ProductsSortedByWeight"
+						component={ProductsSortedByWeight}
+					/>
+
+					<Stack.Screen
+						name="ProductsSortedByLiters"
+						component={ProductsSortedByLiters}
+					/>
 
 					<Stack.Screen name="About" component={About} />
 					<Stack.Screen
@@ -164,6 +182,11 @@ const StackNavigator: React.FC = () => {
 					<Stack.Screen
 						name="DeleteAll"
 						component={SettingsDeleteAll}
+					/>
+
+					<Stack.Screen
+						name="Notifications"
+						component={Notifications}
 					/>
 
 					<Stack.Screen name="Login" component={Login} />

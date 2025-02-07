@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useNavigation, StackActions } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { exists } from 'react-native-fs';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
 import { getLocalImageFromProduct } from '@utils/Product/Image/GetLocalImage';
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
+import { deleteProduct } from '@expirychecker/Utils/Products/Product/Delete';
 
-import {
-	getProductById,
-	updateProduct,
-	deleteProduct,
-} from '@expirychecker/Functions/Product';
+import { updateProduct } from '@expirychecker/Functions/Product';
 import {
 	saveProductImage,
 	getImageFileNameFromPath,
@@ -54,15 +52,9 @@ import {
 
 import { InputTextIconContainer } from '../Add/Components/Inputs/Code/styles';
 
-interface RequestParams {
-	route: {
-		params: {
-			productId: number;
-		};
-	};
-}
+type ScreenProps = StackScreenProps<RoutesParams, 'EditProduct'>;
 
-const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
+const Edit: React.FC<ScreenProps> = ({ route }) => {
 	const { userPreferences } = useContext(PreferencesContext);
 
 	const { productId } = route.params;
@@ -134,14 +126,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 			if (product.daysToBeNext) {
 				setDaysNext(product.daysToBeNext);
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		} finally {
 			setIsLoading(false);
@@ -203,14 +190,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					type: 'edit_product',
 				});
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		}
 	}, [
@@ -284,14 +266,9 @@ const Edit: React.FC<RequestParams> = ({ route }: RequestParams) => {
 					type: 'delete_product',
 				});
 			}
-		} catch (err) {
-			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		}
 	}, [dispatch, navigate, productId, userPreferences.isPRO]);

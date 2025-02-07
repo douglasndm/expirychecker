@@ -1,17 +1,11 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import remoteConfig from '@react-native-firebase/remote-config';
-import { getLocales } from 'react-native-localize';
-import { Switch } from 'react-native-paper';
-import { showMessage } from 'react-native-flash-message';
+import React, { useCallback, useContext } from 'react';
+import { DefaultTheme } from 'styled-components/native';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
-import Loading from '@components/Loading';
 import Header from '@components/Header';
 
 import DaysNext from '@views/Settings/Components/DaysNext';
-
-import { setAutoComplete } from '@expirychecker/Functions/Settings';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -24,8 +18,6 @@ import {
 	Category,
 	CategoryTitle,
 	CategoryOptions,
-	SettingContainer,
-	SettingDescription,
 } from '@views/Settings/styles';
 
 import Pro from './Components/Pro';
@@ -33,12 +25,6 @@ import Advanced from './Components/Advanced';
 import Account from './Components/Account';
 
 const Settings: React.FC = () => {
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-
-	const enableLogin = remoteConfig().getValue('enable_login');
-
-	const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
-
 	const { userPreferences, setUserPreferences } =
 		useContext(PreferencesContext);
 
@@ -55,37 +41,6 @@ const Settings: React.FC = () => {
 	const previousDaysToBeNext = String(
 		userPreferences.howManyDaysToBeNextToExpire
 	);
-	const loadData = useCallback(async () => {
-		try {
-			setIsLoading(true);
-
-			setAutoCompleteState(userPreferences.autoComplete);
-		} catch (err) {
-			if (err instanceof Error)
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-		} finally {
-			setIsLoading(false);
-		}
-	}, [userPreferences.autoComplete]);
-
-	useEffect(() => {
-		loadData();
-	}, [loadData]);
-
-	const handleUpdateAutoComplete = useCallback(async () => {
-		const newValue = !autoCompleteState;
-		setAutoCompleteState(newValue);
-
-		await setAutoComplete(newValue);
-
-		setUserPreferences({
-			...userPreferences,
-			autoComplete: newValue,
-		});
-	}, [autoCompleteState, setUserPreferences, userPreferences]);
 
 	const onThemeChoosen = useCallback(
 		(theme: DefaultTheme) => {
@@ -97,9 +52,7 @@ const Settings: React.FC = () => {
 		[setUserPreferences, userPreferences]
 	);
 
-	return isLoading ? (
-		<Loading />
-	) : (
+	return (
 		<Container>
 			<Header title={strings.View_Settings_PageTitle} noDrawer />
 			<Content>
@@ -114,28 +67,6 @@ const Settings: React.FC = () => {
 								defaultValue={previousDaysToBeNext}
 								onUpdate={setSettingDaysToBeNext}
 							/>
-
-							{userPreferences.isPRO && (
-								<>
-									{getLocales()[0].languageCode === 'pt' && (
-										<SettingContainer>
-											<SettingDescription>
-												Autocompletar automacatimente
-											</SettingDescription>
-											<Switch
-												value={autoCompleteState}
-												onValueChange={
-													handleUpdateAutoComplete
-												}
-												color={
-													userPreferences.appTheme
-														.colors.accent
-												}
-											/>
-										</SettingContainer>
-									)}
-								</>
-							)}
 						</CategoryOptions>
 					</Category>
 
@@ -148,10 +79,7 @@ const Settings: React.FC = () => {
 
 					<Advanced />
 
-					{(__DEV__ ||
-						(enableLogin.asBoolean() && userPreferences.isPRO)) && (
-						<Account />
-					)}
+					{userPreferences.isPRO && <Account />}
 				</SettingsContent>
 			</Content>
 		</Container>

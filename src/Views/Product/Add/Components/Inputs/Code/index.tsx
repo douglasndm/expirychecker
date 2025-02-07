@@ -6,12 +6,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getLocales } from 'react-native-localize';
-import Analytics from '@react-native-firebase/analytics';
-import axios from 'axios';
 
-import strings from '@expirychecker/Locales';
-
-import { captureException } from '@services/ExceptionsHandler';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -19,11 +15,10 @@ import {
 	checkIfProductAlreadyExistsByCode,
 	getProductByCode,
 } from '@expirychecker/Functions/Product';
-import { findProductByCode } from '@expirychecker/Functions/Products/FindByCode';
+import { findProductByCode } from '@utils/Product/FindByEAN';
 
 import { Icon, InputTextTip } from '@views/Product/Add/styles';
 
-import Dialog from '@components/Dialog';
 import { Input } from '@components/InputText/styles';
 
 import {
@@ -57,7 +52,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 		onCompleteInfo,
 		BrandsPickerRef,
 		onSwitchEnable,
-	} = props;
+	} = props as InputsRequestRef;
 
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 	const { userPreferences } = useContext(PreferencesContext);
@@ -65,17 +60,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 	const [existsProdId, setExistProdId] = useState<number | undefined>();
 
 	const [isFindingProd, setIsFindingProd] = useState<boolean>(false);
-	const [productFinded, setProductFinded] = useState<boolean>(false);
-	const [showFillModal, setShowFillModal] = useState<boolean>(false);
-
 	const [fieldError, setFieldError] = useState<boolean>(false);
-
-	const [productNameFinded, setProductNameFinded] = useState<null | string>(
-		null
-	);
-	const [productBrandFinded, setProductBrandFinded] = useState<null | string>(
-		null
-	);
 
 	const handleCheckProductCode = useCallback(
 		async (anotherCode?: string) => {
@@ -100,7 +85,7 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 						productCode: theCode,
 						store: selectedStoreId,
 					});
-					setExistProdId(existProd.id);
+					setExistProdId(Number(existProd.id));
 					onDuplicateProduct();
 				}
 			}
@@ -115,32 +100,19 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 	}, [existsProdId, navigate]);
 
 	const completeInfo = useCallback(
-		(name?: string, brand?: string) => {
-			let prodName: string | undefined | null = name;
-
-			if (typeof prodName !== 'string') {
-				prodName = productNameFinded;
+		(name: string, brand?: string) => {
+			if (brand) {
+				if (BrandsPickerRef.current) {
+					if (BrandsPickerRef.current.selectByName)
+						BrandsPickerRef.current.selectByName(brand);
+				}
 			}
 
-			let prodBrand: string | undefined | null = brand;
-
-			if (typeof prodBrand !== 'string') {
-				prodBrand = productBrandFinded;
-			}
-
-			if (prodBrand && BrandsPickerRef.current) {
-				if (BrandsPickerRef.current.selectByName)
-					BrandsPickerRef.current.selectByName(prodBrand);
-			}
-
-			if (prodName)
-				onCompleteInfo({
-					prodName,
-				});
-
-			setShowFillModal(false);
+			onCompleteInfo({
+				prodName: name,
+			});
 		},
-		[BrandsPickerRef, onCompleteInfo, productBrandFinded, productNameFinded]
+		[BrandsPickerRef, onCompleteInfo]
 	);
 
 	const findProductByEAN = useCallback(
@@ -161,54 +133,20 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 					const response = await findProductByCode(query);
 
 					if (response !== null && !!response.name) {
-						setProductFinded(true);
-
-						setProductNameFinded(response.name);
-
 						if (response.brand) {
-							setProductBrandFinded(response.brand);
-						}
-
-						if (userPreferences.autoComplete) {
-							if (response.brand) {
-								completeInfo(response.name, response.brand);
-							} else {
-								completeInfo(response.name);
-							}
+							completeInfo(response.name, response.brand);
+						} else {
+							completeInfo(response.name);
 						}
 
 						await handleCheckProductCode(query);
-					} else {
-						setProductFinded(false);
-
-						setProductNameFinded(null);
-						setProductBrandFinded(null);
-					}
-				} catch (err) {
-					if (err instanceof Error) {
-						if (axios.isAxiosError(err)) {
-							if (err.response?.status === 504) {
-								Analytics().logEvent('product_code_timeout');
-								return;
-							}
-						}
-						captureException(err, {
-							component:
-								'Product/Add/Components/Inputs/Code/index.tsx',
-							ean: ean_code,
-						});
 					}
 				} finally {
 					setIsFindingProd(false);
 				}
 			}
 		},
-		[
-			completeInfo,
-			handleCheckProductCode,
-			userPreferences.autoComplete,
-			userPreferences.isPRO,
-		]
+		[completeInfo, handleCheckProductCode, userPreferences.isPRO]
 	);
 
 	const handleCodeBlur = useCallback(
@@ -219,10 +157,6 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 		},
 		[findProductByEAN]
 	);
-
-	const handleSwitchFindModal = useCallback(() => {
-		setShowFillModal(prevState => !prevState);
-	}, []);
 
 	const handleOnCodeRead = useCallback(
 		async (codeRead: string) => {
@@ -243,11 +177,27 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 	React.useImperativeHandle(
 		ref,
 		() => ({
+			code,
+			setCode,
+			onDuplicateProduct,
+			onCompleteInfo,
+			BrandsPickerRef,
+			onSwitchEnable,
 			handleOnCodeRead,
 			findProductByEAN,
 			handleCheckProductCode,
 		}),
-		[findProductByEAN, handleCheckProductCode, handleOnCodeRead]
+		[
+			BrandsPickerRef,
+			code,
+			findProductByEAN,
+			handleCheckProductCode,
+			handleOnCodeRead,
+			onCompleteInfo,
+			onDuplicateProduct,
+			onSwitchEnable,
+			setCode,
+		]
 	);
 
 	return (
@@ -264,41 +214,17 @@ const Inputs = React.forwardRef<InputsRequestRef>((props, ref) => {
 					<Icon name="barcode-outline" size={34} insideInput />
 				</InputTextIconContainer>
 
-				{userPreferences.isPRO && (
-					<>
-						{isFindingProd && <InputTextLoading />}
-
-						{productFinded && !isFindingProd && (
-							<InputTextIconContainer
-								style={{
-									marginTop: -5,
-								}}
-								onPress={handleSwitchFindModal}
-							>
-								<Icon name="download" size={30} insideInput />
-							</InputTextIconContainer>
-						)}
-					</>
-				)}
+				{userPreferences.isPRO && isFindingProd && <InputTextLoading />}
 			</InputCodeTextContainer>
 			{fieldError && (
 				<InputTextTip onPress={handleNavigateToExistProduct}>
 					{strings.View_AddProduct_Tip_DuplicateProduct}
 				</InputTextTip>
 			)}
-
-			<Dialog
-				visible={showFillModal}
-				title={strings.View_AddProduct_FillInfo_Modal_Title}
-				description={strings.View_AddProduct_FillInfo_Modal_Description}
-				cancelText={strings.View_AddProduct_FillInfo_Modal_No}
-				confirmText={strings.View_AddProduct_FillInfo_Modal_Yes}
-				onConfirm={completeInfo}
-				onDismiss={handleSwitchFindModal}
-				onCancel={handleSwitchFindModal}
-			/>
 		</>
 	);
 });
+
+Inputs.displayName = 'Input Code';
 
 export default Inputs;

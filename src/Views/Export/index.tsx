@@ -3,11 +3,8 @@ import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
-import remoteConfig from '@react-native-firebase/remote-config';
-import DocumentPicker from 'react-native-document-picker';
 
-import strings from '@expirychecker/Locales';
-import sharedStrings from '@shared/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -43,12 +40,6 @@ import {
 const Export: React.FC = () => {
 	const { reset } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-	const enableExcelImport = remoteConfig().getValue('enable_excel_import');
-	const enableExcelExport = remoteConfig().getValue('enable_excel_export');
-	const enableBackupImport = remoteConfig().getValue('enable_backup_import');
-	const enableBackupExport = remoteConfig().getValue('enable_backup_export');
-	const enableXMLExport = remoteConfig().getValue('enable_xml_export');
-
 	const [isExcelLoading, setIsExcelLoading] = useState<boolean>(false);
 	const [isExcelImporting, setIsExcelImporting] = useState<boolean>(false);
 	const [isExcelModelGenerating, setIsExcelModelGenerating] =
@@ -69,19 +60,12 @@ const Export: React.FC = () => {
 			await exportBackup();
 
 			showMessage({
-				message: strings.View_Export_Export_Alert_Success,
+				message: strings.baseApp.View_Export_Export_Alert_Success,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExporting(false);
@@ -100,19 +84,12 @@ const Export: React.FC = () => {
 			});
 
 			showMessage({
-				message: strings.View_Export_Excel_Export_Alert_Success,
+				message: strings.baseApp.View_Export_Excel_Export_Alert_Success,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExcelLoading(false);
@@ -126,22 +103,15 @@ const Export: React.FC = () => {
 			await importExcel();
 
 			showMessage({
-				message: strings.View_Export_Excel_Import_Alert_Success,
+				message: strings.baseApp.View_Export_Excel_Import_Alert_Success,
 				type: 'info',
 			});
 			reset({
 				routes: [{ name: 'Home' }],
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err)) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExcelImporting(false);
@@ -152,25 +122,20 @@ const Export: React.FC = () => {
 		try {
 			setIsImporting(true);
 
-			await importBackupFile();
+			const result = await importBackupFile();
 
-			showMessage({
-				message: strings.View_Export_Import_Alert_Success,
-				type: 'info',
-			});
-			reset({
-				routes: [{ name: 'Home' }],
-			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (!DocumentPicker.isCancel(err)) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+			if (result === true) {
+				showMessage({
+					message: strings.baseApp.View_Export_Import_Alert_Success,
+					type: 'info',
+				});
+				reset({
+					routes: [{ name: 'Home' }],
+				});
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsImporting(false);
@@ -184,19 +149,14 @@ const Export: React.FC = () => {
 			await generateEmptyExcel();
 
 			showMessage({
-				message: strings.View_Export_Excel_Export_Model_Alert_Success,
+				message:
+					strings.baseApp
+						.View_Export_Excel_Export_Model_Alert_Success,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (!err.message.includes('User did not share')) {
-					showMessage({
-						message: err.message,
-						type: 'danger',
-					});
-
-					captureException(err);
-				}
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsExcelModelGenerating(false);
@@ -223,18 +183,12 @@ const Export: React.FC = () => {
 			});
 
 			showMessage({
-				message: sharedStrings.View_Export_XML_SuccessMessage,
+				message: strings.View_Export_XML_SuccessMessage,
 				type: 'info',
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				if (!error.message.includes('User did not share')) {
-					showMessage({
-						message: error.message,
-						type: 'danger',
-					});
-					captureException(error);
-				}
+				captureException({ error });
 			}
 		} finally {
 			setIsXMLExporting(false);
@@ -242,7 +196,9 @@ const Export: React.FC = () => {
 	}, []);
 
 	const handleGoToXMLDocumentation = useCallback(() => {
-		Linking.openURL('https://douglasndm.dev/docs/expiry-tracker/xml');
+		Linking.openURL(
+			'https://controledevalidades.com/integrando-o-controle-de-validades-com-outros-sistemas-via-xml/'
+		);
 	}, []);
 
 	const handleExportTeams = useCallback(async () => {
@@ -252,15 +208,12 @@ const Export: React.FC = () => {
 			await exportToTeams();
 
 			showMessage({
-				message: strings.View_Export_Teams_Alert_Success,
+				message: strings.baseApp.View_Export_Teams_Alert_Success,
 				type: 'info',
 			});
 		} catch (error) {
 			if (error instanceof Error) {
-				showMessage({
-					message: error.message,
-					type: 'danger',
-				});
+				captureException({ error });
 			}
 		} finally {
 			setIsTeamsExporting(false);
@@ -275,115 +228,85 @@ const Export: React.FC = () => {
 				<ExportOptionContainer>
 					<CategoryTitle>Excel</CategoryTitle>
 
-					{enableExcelExport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{strings.View_Export_Explain_Excel}
-							</ExportExplain>
+					<ExportExplain>
+						{strings.View_Export_Explain_Excel}
+					</ExportExplain>
 
-							<Button
-								title={strings.View_Export_Button_ExportExcel}
-								onPress={handleExportToExcel}
-								isLoading={isExcelLoading}
-							/>
-						</>
-					)}
+					<Button
+						title={strings.View_Export_Button_ExportExcel}
+						onPress={handleExportToExcel}
+						isLoading={isExcelLoading}
+					/>
 
-					{enableExcelImport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{strings.View_Export_Import_Excel}
-							</ExportExplain>
+					<ExportExplain>
+						{strings.View_Export_Import_Excel}
+					</ExportExplain>
 
-							<Button
-								title={strings.View_Export_Button_ImportExcel}
-								onPress={handleImportExcel}
-								isLoading={isExcelImporting}
-							/>
+					<Button
+						title={strings.View_Export_Button_ImportExcel}
+						onPress={handleImportExcel}
+						isLoading={isExcelImporting}
+					/>
 
-							{isExcelModelGenerating ? (
-								<Loading />
-							) : (
-								<LinkEmptyExcel
-									onPress={handleExcelModelGenerete}
-								>
-									{
-										strings.View_Export_Excel_GenerateEmptyExcel
-									}
-								</LinkEmptyExcel>
-							)}
-						</>
+					{isExcelModelGenerating ? (
+						<Loading />
+					) : (
+						<LinkEmptyExcel onPress={handleExcelModelGenerete}>
+							{strings.View_Export_Excel_GenerateEmptyExcel}
+						</LinkEmptyExcel>
 					)}
 				</ExportOptionContainer>
 
 				<ExportOptionContainer>
 					<CategoryTitle>Backup</CategoryTitle>
 
-					{enableBackupExport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{strings.View_Export_Explain_Backup}
-							</ExportExplain>
-							<Button
-								title={strings.View_Export_Button_ExportBackup}
-								onPress={handleExportBackup}
-								isLoading={isExporting}
-							/>
-						</>
-					)}
+					<ExportExplain>
+						{strings.View_Export_Explain_Backup}
+					</ExportExplain>
+					<Button
+						title={strings.View_Export_Button_ExportBackup}
+						onPress={handleExportBackup}
+						isLoading={isExporting}
+					/>
 
-					{enableBackupImport.asBoolean() === true && (
-						<>
-							<ExportExplain>
-								{
-									strings.View_Settings_SettingName_ExportAndInmport
-								}
-							</ExportExplain>
-							<Button
-								title={strings.View_Settings_Button_ImportFile}
-								onPress={handleImportBackup}
-								isLoading={isImporting}
-							/>
-						</>
-					)}
+					<ExportExplain>
+						{strings.View_Settings_SettingName_ExportAndInmport}
+					</ExportExplain>
+					<Button
+						title={strings.View_Settings_Button_ImportFile}
+						onPress={handleImportBackup}
+						isLoading={isImporting}
+					/>
 				</ExportOptionContainer>
 
-				{enableXMLExport.asBoolean() === true && (
-					<ExportOptionContainer>
-						<CategoryTitle>XML</CategoryTitle>
+				<ExportOptionContainer>
+					<CategoryTitle>XML</CategoryTitle>
 
-						<>
-							<ExportExplain>
-								{sharedStrings.View_Export_XML_Explain_Export}
-							</ExportExplain>
-							<Button
-								title={
-									sharedStrings.View_Export_XML_Button_Export
-								}
-								onPress={handleExportXML}
-								isLoading={isXMLExporting}
-							/>
+					<>
+						<ExportExplain>
+							{strings.View_Export_XML_Explain_Export}
+						</ExportExplain>
+						<Button
+							title={strings.View_Export_XML_Button_Export}
+							onPress={handleExportXML}
+							isLoading={isXMLExporting}
+						/>
 
-							<LinkEmptyExcel
-								onPress={handleGoToXMLDocumentation}
-							>
-								{
-									sharedStrings.View_Export_XML_Link_Documentation
-								}
-							</LinkEmptyExcel>
-						</>
-					</ExportOptionContainer>
-				)}
+						<LinkEmptyExcel onPress={handleGoToXMLDocumentation}>
+							{strings.View_Export_XML_Link_Documentation}
+						</LinkEmptyExcel>
+					</>
+				</ExportOptionContainer>
 
 				<ExportOptionContainer>
 					<CategoryTitle>
-						{strings.View_Export_Teams_Title}
+						{strings.baseApp.View_Export_Teams_Title}
 					</CategoryTitle>
 					<ExportExplain>
-						{strings.View_Export_Teams_Description}
+						{strings.baseApp.View_Export_Teams_Description}
 					</ExportExplain>
 					<Button
-						title={strings.View_Export_Teams_Export_Button}
+						title={strings.baseApp.View_Export_Teams_Export_Button}
 						onPress={handleExportTeams}
 						isLoading={isTeamsExporting}
 					/>

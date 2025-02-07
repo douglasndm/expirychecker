@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -51,7 +51,7 @@ const ListView: React.FC = () => {
 			if (!newStoreName) {
 				setInputHasError(true);
 				setInputErrorMessage(
-					strings.View_Store_List_AddNewStore_Error_TextEmpty
+					strings.View_Stores_List_InputAdd_Error_EmptyName
 				);
 				return;
 			}
@@ -86,15 +86,15 @@ const ListView: React.FC = () => {
 
 			const noStore: IStore = {
 				id: '000',
-				name: strings.View_Store_List_NoStore,
+				name: strings.View_Stores_List_View_NoStoreName,
 			};
 
 			const sorted = sortStores(sts);
 
 			setStores([...sorted, noStore]);
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		}
 	}, []);
@@ -109,7 +109,7 @@ const ListView: React.FC = () => {
 
 	return (
 		<Container>
-			<Header title={strings.View_Store_List_PageTitle} />
+			<Header title={strings.View_Stores_List_PageTitle} />
 			<Content>
 				<AddNewItemContent>
 					<InputContainer>
@@ -118,14 +118,14 @@ const ListView: React.FC = () => {
 								value={newStoreName}
 								onChangeText={handleOnTextChange}
 								placeholder={
-									strings.View_Store_List_AddNewStore_Placeholder
+									strings.View_Stores_List_InputAdd_Placeholder
 								}
 							/>
 						</InputTextContainer>
 
 						<AddButtonContainer
 							onPress={handleSaveStore}
-							enabled={!isAdding}
+							disabled={isAdding}
 						>
 							{isAdding ? (
 								<LoadingIcon />
@@ -140,7 +140,7 @@ const ListView: React.FC = () => {
 					)}
 				</AddNewItemContent>
 
-				<ListTitle>{strings.View_Store_List_PageTitle}</ListTitle>
+				<ListTitle>{strings.View_Stores_List_PageTitle}</ListTitle>
 
 				{stores.map(store => {
 					let storeToNavigate: string | IStore;

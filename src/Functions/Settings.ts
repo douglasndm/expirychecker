@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 interface ISetSettingProps {
 	type:
 		| 'HowManyDaysToBeNextExp'
-		| 'AutoComplete'
 		| 'EnableProVersion'
 		| 'HowManyTimesAppWasOpen'
 		| 'DisableAds';
@@ -15,22 +14,6 @@ export async function setSetting({
 	value,
 }: ISetSettingProps): Promise<void> {
 	await AsyncStorage.setItem(type, value);
-}
-
-export async function setHowManyDaysToBeNextExp(
-	howManyDays: number
-): Promise<void> {
-	await setSetting({
-		type: 'HowManyDaysToBeNextExp',
-		value: String(howManyDays),
-	});
-}
-
-export async function setAutoComplete(value: boolean): Promise<void> {
-	await setSetting({
-		type: 'AutoComplete',
-		value: String(value),
-	});
 }
 
 export async function setEnableProVersion(enable: boolean): Promise<void> {
@@ -60,15 +43,6 @@ export async function getHowManyDaysToBeNextExp(): Promise<number> {
 	}
 
 	return Number(setting);
-}
-
-export async function getAutoComplete(): Promise<boolean> {
-	const setting = await getSetting({ type: 'AutoComplete' });
-
-	if (setting === 'true') {
-		return true;
-	}
-	return false;
 }
 
 export async function getEnableProVersion(): Promise<boolean> {

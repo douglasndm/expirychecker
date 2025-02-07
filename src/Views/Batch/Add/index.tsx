@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import EnvConfig from 'react-native-config';
 import { showMessage } from 'react-native-flash-message';
 import {
@@ -12,12 +12,13 @@ import {
 
 import { captureException } from '@services/ExceptionsHandler';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
+import { getProductById } from '@expirychecker/Utils/Products/Product/Get';
+
 import { createLote } from '@expirychecker/Functions/Lotes';
-import { getProductById } from '@expirychecker/Functions/Product';
 
 import Loading from '@components/Loading';
 import Header from '@components/Header';
@@ -35,14 +36,6 @@ import {
 } from '@views/Product/Add/styles';
 import { ProductHeader, ProductName, ProductCode } from './styles';
 
-interface Props {
-	route: {
-		params: {
-			productId: number;
-		};
-	};
-}
-
 let adUnit = TestIds.INTERSTITIAL;
 
 if (Platform.OS === 'ios' && !__DEV__) {
@@ -53,7 +46,9 @@ if (Platform.OS === 'ios' && !__DEV__) {
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnit);
 
-const AddBatch: React.FC<Props> = ({ route }: Props) => {
+type ScreenProps = StackScreenProps<RoutesParams, 'AddBatch'>;
+
+const AddBatch: React.FC<ScreenProps> = ({ route }) => {
 	const { productId } = route.params;
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
@@ -159,12 +154,7 @@ const AddBatch: React.FC<Props> = ({ route }: Props) => {
 			}
 		} catch (err) {
 			if (err instanceof Error) {
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+				captureException({ error: err, showAlert: true });
 			}
 		} finally {
 			setIsLoading(false);

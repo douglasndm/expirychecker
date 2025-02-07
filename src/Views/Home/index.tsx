@@ -10,11 +10,10 @@ import { FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import BootSplash from 'react-native-bootsplash';
-import remoteConfig from '@react-native-firebase/remote-config';
 import { showMessage } from 'react-native-flash-message';
 import { BannerAdSize } from 'react-native-google-mobile-ads';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { captureException } from '@services/ExceptionsHandler';
 
@@ -35,12 +34,12 @@ import NotificationsDenny from '@components/Warnings/NotificationsDenny';
 import OutdateApp from '@components/Warnings/OutdateApp';
 import FAB from '@components/FAB';
 import ListProds from '@components/Product/List';
-import SalesAlert from '@components/Notification/SalesAlert';
 
 import Header from '@expirychecker/Components/Header';
 import AdsConsentComponent from '@expirychecker/Components/Ads/AdsConsent';
 import Banner from '@expirychecker/Components/Ads/Banner';
 import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
+import AccountLogin from '@expirychecker/Components/Banners/AccountLogin';
 
 import { Container } from '@views/Home/styles';
 
@@ -58,19 +57,13 @@ const Home: React.FC = () => {
 	const listRef = useRef<FlatList<IProduct>>(null);
 	const listProdsRef = useRef<listProdsRefProps>();
 
-	const enableTabBar = remoteConfig().getValue('enable_app_bar');
-
 	const enableFloatAddButton = useMemo(() => {
-		if (!userPreferences.isPRO) {
-			return true;
+		if (userPreferences.isPRO) {
+			return false;
 		}
 
-		if (userPreferences.isPRO && enableTabBar.asBoolean() === false) {
-			return true;
-		}
-
-		return false;
-	}, [enableTabBar, userPreferences.isPRO]);
+		return true;
+	}, [userPreferences.isPRO]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -96,14 +89,9 @@ const Home: React.FC = () => {
 			});
 
 			setProducts(allProducts);
-		} catch (err) {
-			if (err instanceof Error) {
-				captureException(err);
-
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error, showAlert: true });
 			}
 		} finally {
 			setIsLoading(false);
@@ -143,7 +131,7 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		loadData();
-	}, [loadData]);
+	}, []);
 
 	const handleSwitchEnableSearch = useCallback(() => {
 		setEnableSearch(prevState => !prevState);
@@ -269,7 +257,7 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 		setCurrentList(listRef);
-	}, [setCurrentList]);
+	}, []);
 
 	interface IAction {
 		icon: string;
@@ -341,11 +329,12 @@ const Home: React.FC = () => {
 						}
 					/>
 
+					<AccountLogin />
+
 					<NotificationsDenny />
 
 					<OutdateApp />
 
-					<SalesAlert />
 					{!userPreferences.isPRO && (
 						<Banner adFor="Home" size={BannerAdSize.LARGE_BANNER} />
 					)}

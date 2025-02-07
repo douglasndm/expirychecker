@@ -49,17 +49,6 @@ interface ProFeaturesContainerProps {
 	disabled?: boolean;
 }
 
-export const ProFeaturesText = styled.Text`
-	font-family: 'Open Sans';
-	font-size: 16px;
-	text-align: center;
-	margin-top: 20px;
-	font-weight: bold;
-	text-transform: uppercase;
-
-	color: ${props => props.theme.colors.text};
-`;
-
 export const ProFeaturesContainer = styled.View<ProFeaturesContainerProps>`
 	${props =>
 		props.disabled &&

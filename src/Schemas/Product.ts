@@ -7,10 +7,10 @@ const ProductSchema: ObjectSchema = {
 		id: { type: 'int', indexed: true },
 		name: 'string',
 		code: 'string?', // ? no final diz ao Realm que o campo pode ficar vazio
-		brand: 'string?',
+		brand: 'string?', // brand uuid
 		photo: 'string?',
 		daysToBeNext: 'int?',
-		store: 'string?',
+		store: 'string?', // store uuid
 		categories: 'string[]', // uuid
 		batches: { type: 'list', objectType: 'Lote', mapTo: 'lotes' },
 

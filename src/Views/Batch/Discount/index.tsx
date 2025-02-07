@@ -3,9 +3,9 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { showMessage } from 'react-native-flash-message';
 import { getLocales } from 'react-native-localize';
-import NumberFormat from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { getLoteById } from '@expirychecker/Functions/Lotes';
 import { updateBatch } from '@expirychecker/Functions/Products/Batches/Batch';
@@ -133,10 +133,10 @@ const Discount: React.FC = () => {
 
 			{!!batch && (
 				<Content>
-					<BatchName>{`${strings.View_Batch_Discount_Batch_Name} ${batch.lote}`}</BatchName>
+					<BatchName>{`${strings.View_Batch_Discount_Batch_Name} ${batch.name}`}</BatchName>
 					<BatchPrice>
 						{`${strings.View_Batch_Discount_Batch_Price} `}
-						<NumberFormat
+						<NumericFormat
 							value={batch.price}
 							displayType="text"
 							thousandSeparator
@@ -162,7 +162,7 @@ const Discount: React.FC = () => {
 
 						<NewPrice>
 							{`${strings.View_Batch_Discount_Batch_DiscountedPrice} `}
-							<NumberFormat
+							<NumericFormat
 								value={newPrice}
 								displayType="text"
 								thousandSeparator
@@ -174,7 +174,7 @@ const Discount: React.FC = () => {
 					</SliderContent>
 
 					<Button
-						text={strings.View_Batch_Discount_Button_Apply}
+						title={strings.View_Batch_Discount_Button_Apply}
 						onPress={handleApplyDiscount}
 						isLoading={applyingDiscount}
 					/>

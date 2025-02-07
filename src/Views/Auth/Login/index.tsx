@@ -5,24 +5,24 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { showMessage } from 'react-native-flash-message';
 import * as Yup from 'yup';
 
-import strings from '@teams/Locales';
+import strings from '@shared/Locales';
 
 import Purchases from '@services/RevenueCat';
 
 import Header from '@components/Header';
 import Input from '@components/InputText';
 import Button from '@components/Button';
+import Container from '@components/ScrollView';
 
-import Footer from '@teams/Views/Auth/Login/Footer';
+import Footer from '@views/Auth/Login/Footer';
 
+import { Content } from '@views/Auth/Login/styles';
 import {
-	Container,
-	Content,
 	FormContainer,
 	FormTitle,
 	LoginForm,
 	ForgotPasswordText,
-} from '@teams/Views/Auth/Login/styles';
+} from '@views/Auth/Login/Form/styles';
 
 const Login: React.FC = () => {
 	const { pop, navigate } =
@@ -81,7 +81,7 @@ const Login: React.FC = () => {
 	// Handle user state changes
 	const onAuthStateChanged = useCallback(
 		(lUser: FirebaseAuthTypes.User | null) => {
-			if (lUser) {
+			if (lUser && !lUser.isAnonymous) {
 				pop();
 			}
 		},

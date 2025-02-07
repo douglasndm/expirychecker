@@ -1,21 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
-import { useWindowDimensions } from 'react-native';
+import React, { useCallback } from 'react';
+import { Linking, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNetInfo } from '@react-native-community/netinfo';
-import remoteConfig from '@react-native-firebase/remote-config';
 
-import strings from '@expirychecker/Locales';
-
-import { useApp } from '@shared/Contexts/App';
-
-import { captureException } from '@shared/Services/ExceptionsHandler';
-
-import { setDefaultApp } from '@expirychecker/Utils/Settings/SetSettings';
+import strings from '@shared/Locales';
+import sharedStrings from '@shared/Locales';
 
 import Logo from '@components/Logo';
 import {
 	Container,
+	Content,
 	MainMenuContainer,
 	LogoContainer,
 	MenuItemContainer,
@@ -29,19 +23,6 @@ import PROItems from './PRO';
 const DrawerMenu: React.FC = () => {
 	const { navigate } = useNavigation<StackNavigationProp<RoutesParams>>();
 
-	const { setApp } = useApp();
-
-	const { isInternetReachable } = useNetInfo();
-
-	const remoteEnableTeams = remoteConfig().getValue('enable_teams');
-
-	const showTeams = useMemo(() => {
-		if (__DEV__) {
-			return true;
-		}
-		return remoteEnableTeams.asBoolean() && isInternetReachable;
-	}, [isInternetReachable, remoteEnableTeams]);
-
 	const windowHeight = useWindowDimensions().height;
 
 	const navigateHome = useCallback(() => {
@@ -50,6 +31,10 @@ const DrawerMenu: React.FC = () => {
 
 	const navigateToAddProduct = useCallback(() => {
 		navigate('AddProduct', {});
+	}, [navigate]);
+
+	const navigateToNotifications = useCallback(() => {
+		navigate('Notifications');
 	}, [navigate]);
 
 	const handleNavigateToSettings = useCallback(() => {
@@ -64,94 +49,103 @@ const DrawerMenu: React.FC = () => {
 		navigate('Test');
 	}, [navigate]);
 
-	const handleSetDefaultAppToTeams = useCallback(async () => {
-		try {
-			await setDefaultApp('expiry_teams');
-
-			setApp('expiry_teams');
-		} catch (error) {
-			if (error instanceof Error) {
-				captureException(error);
-			}
+	const handleNavigateToFaq = useCallback(async () => {
+		if (
+			await Linking.canOpenURL(
+				'https://controledevalidades.com/perguntas-frequentes/'
+			)
+		) {
+			await Linking.openURL(
+				'https://controledevalidades.com/perguntas-frequentes/'
+			);
 		}
-	}, [setApp]);
+	}, []);
 
 	return (
-		<Container>
-			<MainMenuContainer>
-				<LogoContainer>
-					{windowHeight > 600 ? (
-						<Logo />
-					) : (
-						<MenuItemText style={{ color: '#fff' }}>
-							{strings.AppName}
-						</MenuItemText>
-					)}
-				</LogoContainer>
+		<Container colors={[]}>
+			<Content>
+				<MainMenuContainer>
+					<LogoContainer>
+						{windowHeight > 600 ? (
+							<Logo />
+						) : (
+							<MenuItemText style={{ color: '#fff' }}>
+								{strings.AppName_FullName}
+							</MenuItemText>
+						)}
+					</LogoContainer>
+					<DrawerSection>
+						<MenuItemContainer onPress={navigateHome}>
+							<MenuContent>
+								<Icons name="home-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToHome}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						<MenuItemContainer onPress={navigateToAddProduct}>
+							<MenuContent>
+								<Icons name="add" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToAddProduct}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+
+						<PROItems />
+					</DrawerSection>
+				</MainMenuContainer>
+
 				<DrawerSection>
-					<MenuItemContainer onPress={navigateHome}>
+					<MenuItemContainer onPress={navigateToNotifications}>
 						<MenuContent>
-							<Icons name="home-outline" />
+							<Icons name="notifications-outline" />
 							<MenuItemText>
-								{strings.Menu_Button_GoToHome}
+								{sharedStrings.Menu_Button_GoToNotifications}
 							</MenuItemText>
 						</MenuContent>
 					</MenuItemContainer>
 
-					<MenuItemContainer onPress={navigateToAddProduct}>
+					<MenuItemContainer onPress={handleNavigateToSettings}>
 						<MenuContent>
-							<Icons name="add" />
+							<Icons name="settings-outline" />
 							<MenuItemText>
-								{strings.Menu_Button_GoToAddProduct}
+								{strings.Menu_Button_GoToSettings}
 							</MenuItemText>
 						</MenuContent>
 					</MenuItemContainer>
 
-					<PROItems />
+					<MenuItemContainer onPress={handleNavigateToFaq}>
+						<MenuContent>
+							<Icons name="book-outline" />
+							<MenuItemText>
+								{strings.baseApp.Menu_Button_GoToFaq}
+							</MenuItemText>
+						</MenuContent>
+					</MenuItemContainer>
+
+					<MenuItemContainer onPress={handleNavigateToAbout}>
+						<MenuContent>
+							<Icons name="help-circle-outline" />
+							<MenuItemText>
+								{strings.Menu_Button_GoToAbout}
+							</MenuItemText>
+						</MenuContent>
+					</MenuItemContainer>
+
+					{__DEV__ && (
+						<MenuItemContainer onPress={handleNavigateToTest}>
+							<MenuContent>
+								<Icons name="bug-outline" />
+								<MenuItemText>
+									{strings.Menu_Button_GoToTest}
+								</MenuItemText>
+							</MenuContent>
+						</MenuItemContainer>
+					)}
 				</DrawerSection>
-			</MainMenuContainer>
-
-			<DrawerSection>
-				{showTeams && (
-					<MenuItemContainer onPress={handleSetDefaultAppToTeams}>
-						<MenuContent>
-							<Icons name="people-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToTeams}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-				)}
-
-				<MenuItemContainer onPress={handleNavigateToSettings}>
-					<MenuContent>
-						<Icons name="settings-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToSettings}
-						</MenuItemText>
-					</MenuContent>
-				</MenuItemContainer>
-
-				<MenuItemContainer onPress={handleNavigateToAbout}>
-					<MenuContent>
-						<Icons name="help-circle-outline" />
-						<MenuItemText>
-							{strings.Menu_Button_GoToAbout}
-						</MenuItemText>
-					</MenuContent>
-				</MenuItemContainer>
-
-				{__DEV__ && (
-					<MenuItemContainer onPress={handleNavigateToTest}>
-						<MenuContent>
-							<Icons name="bug-outline" />
-							<MenuItemText>
-								{strings.Menu_Button_GoToTest}
-							</MenuItemText>
-						</MenuContent>
-					</MenuItemContainer>
-				)}
-			</DrawerSection>
+			</Content>
 		</Container>
 	);
 };

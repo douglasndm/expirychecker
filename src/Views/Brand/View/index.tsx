@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -115,15 +115,9 @@ const View: React.FC = () => {
 				message: strings.View_Brand_View_SuccessExportExcel,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (err.message.includes('did not share')) return;
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsLoading(false);

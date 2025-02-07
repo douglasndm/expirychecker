@@ -4,8 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 import { showMessage } from 'react-native-flash-message';
 
-import strings from '@expirychecker/Locales';
-import sharedStrings from '@shared/Locales';
+import strings from '@shared/Locales';
 
 import PreferencesContext from '@expirychecker/Contexts/PreferencesContext';
 
@@ -80,9 +79,7 @@ const CategoryView: React.FC = () => {
 
 				setProducts(results);
 			} else {
-				setCategoryName(
-					sharedStrings.View_Category_List_View_NoCategoryName
-				);
+				setCategoryName(strings.View_Category_List_View_NoCategoryName);
 				const prods = await getAllProductsWithoutCategory();
 				setProducts(prods);
 			}
@@ -131,15 +128,9 @@ const CategoryView: React.FC = () => {
 				message: strings.View_Category_View_ExcelExportedSuccess,
 				type: 'info',
 			});
-		} catch (err) {
-			if (err instanceof Error) {
-				if (err.message.includes('did not share')) return;
-				showMessage({
-					message: err.message,
-					type: 'danger',
-				});
-
-				captureException(err);
+		} catch (error) {
+			if (error instanceof Error) {
+				captureException({ error });
 			}
 		} finally {
 			setIsLoading(false);

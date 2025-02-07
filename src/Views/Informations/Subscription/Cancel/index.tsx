@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Analytics from '@react-native-firebase/analytics';
 
-import strings from '@expirychecker/Locales';
+import strings from '@shared/Locales';
 
 import { isSubscriptionActive } from '@expirychecker/Functions/ProMode';
 
@@ -12,6 +12,7 @@ import PaddingComponent from '@components/PaddingComponent';
 
 import {
 	Container,
+	Content,
 	HeaderContainer,
 	Icon,
 	ExitButtonContainer,
@@ -62,103 +63,113 @@ const Cancel: React.FC = () => {
 	}, [goHome]);
 
 	return (
-		<Container>
-			<HeaderContainer>
-				<ExitButtonContainer>
-					<TouchableOpacity onPress={goBack}>
-						<Icon name="close-outline" size={50} color="#ffffff" />
-					</TouchableOpacity>
-				</ExitButtonContainer>
+		<Container colors={[]}>
+			<Content>
+				<HeaderContainer>
+					<ExitButtonContainer>
+						<TouchableOpacity onPress={goBack}>
+							<Icon
+								name="close-outline"
+								size={50}
+								color="#ffffff"
+							/>
+						</TouchableOpacity>
+					</ExitButtonContainer>
 
-				<WarningIconContainer>
-					<Icon name="warning-outline" size={120} color="#ffffff" />
-				</WarningIconContainer>
+					<WarningIconContainer>
+						<Icon
+							name="warning-outline"
+							size={120}
+							color="#ffffff"
+						/>
+					</WarningIconContainer>
 
-				<ExplainTitle>
-					{strings.View_Subscription_Cancel_ExplainTitle}
-				</ExplainTitle>
-			</HeaderContainer>
+					<ExplainTitle>
+						{strings.View_Subscription_Cancel_ExplainTitle}
+					</ExplainTitle>
+				</HeaderContainer>
 
-			<TextContainer>
-				<FeaturesTitle>
-					{strings.View_Subscription_Cancel_FeaturesTitle}
-				</FeaturesTitle>
+				<TextContainer>
+					<FeaturesTitle>
+						{strings.View_Subscription_Cancel_FeaturesTitle}
+					</FeaturesTitle>
 
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature1}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature2}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature3}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature4}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature5}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature6}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature7}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature8}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature9}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature10}
-					</FeatureText>
-				</FeatureContainer>
-				<FeatureContainer>
-					<FeatureText>
-						🚫 {strings.View_Subscription_Cancel_Feature11}
-					</FeatureText>
-				</FeatureContainer>
-			</TextContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature1}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature2}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature3}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature4}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature5}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature6}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature7}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature8}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature9}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature10}
+						</FeatureText>
+					</FeatureContainer>
+					<FeatureContainer>
+						<FeatureText>
+							🚫 {strings.View_Subscription_Cancel_Feature11}
+						</FeatureText>
+					</FeatureContainer>
+				</TextContainer>
 
-			<ButtonsContainer>
-				<KeepSubscriptionButton onPress={userDidNotCancel}>
-					<TextButton>
-						{
-							strings.View_Subscription_Cancel_Button_KeepSubscription
-						}
-					</TextButton>
-				</KeepSubscriptionButton>
-				<CancelSubscriptionButton onPress={handleCancel}>
-					<TextButton>
-						{
-							strings.View_Subscription_Cancel_Button_CancelSubscription
-						}
-					</TextButton>
-				</CancelSubscriptionButton>
-			</ButtonsContainer>
+				<ButtonsContainer>
+					<KeepSubscriptionButton onPress={userDidNotCancel}>
+						<TextButton>
+							{
+								strings.View_Subscription_Cancel_Button_KeepSubscription
+							}
+						</TextButton>
+					</KeepSubscriptionButton>
+					<CancelSubscriptionButton onPress={handleCancel}>
+						<TextButton>
+							{
+								strings.View_Subscription_Cancel_Button_CancelSubscription
+							}
+						</TextButton>
+					</CancelSubscriptionButton>
+				</ButtonsContainer>
 
-			<PaddingComponent />
+				<PaddingComponent />
+			</Content>
 		</Container>
 	);
 };

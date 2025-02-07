@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import BackgroundJob from 'react-native-background-fetch';
 import Analytics from '@react-native-firebase/analytics';
 
-import { sendNotification } from '@services/Notifications';
+import { displayNotification } from '@services/Notifications/Local';
 
 import {
 	isTimeForANotification,
@@ -21,7 +21,7 @@ export const handleSetNotification = async (): Promise<void> => {
 		const notification = await getNotificationForAllProductsCloseToExp();
 
 		if (notification) {
-			sendNotification(notification);
+			displayNotification(notification);
 		}
 	}
 };
