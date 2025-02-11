@@ -53,6 +53,7 @@ const App: React.FC = () => {
 
 	return (
 		<NavigationContainer
+			ref={containerRef}
 			linking={DeepLinking}
 			onReady={() =>
 				reactNavigationIntegration.registerNavigationContainer(

@@ -13,6 +13,7 @@
 #import <RNCPushNotificationIOS.h>
 
 #import <React/RCTBundleURLProvider.h>
+#import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
 
 #import <TSBackgroundFetch/TSBackgroundFetch.h>
 
@@ -27,6 +28,7 @@
     [[TSBackgroundFetch sharedInstance] didFinishLaunching];
 
     self.moduleName = @"Expiry Checker";
+    self.dependencyProvider = [RCTAppDependencyProvider new];
     // in "(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions" method
     // Use `addCustomPropsToUserProps` to pass in props for initialization of your app
     // Or pass in `nil` if you have none as per below example
