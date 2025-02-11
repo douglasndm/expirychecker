@@ -3124,41 +3124,41 @@ PODS:
     - React-Core
   - RNDeviceInfo (14.0.4):
     - React-Core
-  - RNFBAnalytics (21.7.2):
+  - RNFBAnalytics (21.8.0):
     - Firebase/Analytics (= 11.7.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (21.7.2):
+  - RNFBApp (21.8.0):
     - Firebase/CoreOnly (= 11.7.0)
     - React-Core
-  - RNFBAppCheck (21.7.2):
+  - RNFBAppCheck (21.8.0):
     - Firebase/AppCheck (= 11.7.0)
     - React-Core
     - RNFBApp
-  - RNFBAuth (21.7.2):
+  - RNFBAuth (21.8.0):
     - Firebase/Auth (= 11.7.0)
     - React-Core
     - RNFBApp
-  - RNFBFirestore (21.7.2):
+  - RNFBFirestore (21.8.0):
     - Firebase/Firestore (= 11.7.0)
     - React-Core
     - RNFBApp
-  - RNFBInstallations (21.7.2):
+  - RNFBInstallations (21.8.0):
     - Firebase/Installations (= 11.7.0)
     - React-Core
     - RNFBApp
-  - RNFBMessaging (21.7.2):
+  - RNFBMessaging (21.8.0):
     - Firebase/Messaging (= 11.7.0)
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNFBStorage (21.7.2):
+  - RNFBStorage (21.8.0):
     - Firebase/Storage (= 11.7.0)
     - React-Core
     - RNFBApp
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.22.1):
+  - RNGestureHandler (2.23.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -3212,7 +3212,7 @@ PODS:
   - RNPaywalls (8.5.3):
     - PurchasesHybridCommonUI (= 13.17.0)
     - React-Core
-  - RNPermissions (5.2.3):
+  - RNPermissions (5.2.5):
     - React-Core
   - RNPurchases (8.5.3):
     - PurchasesHybridCommon (= 13.17.0)
@@ -3884,21 +3884,21 @@ SPEC CHECKSUMS:
   RNCPicker: 4f6d5e8d107064be32dfc8f1bcb5a3741135db0b
   RNCPushNotificationIOS: 64218f3c776c03d7408284a819b2abfda1834bc8
   RNDeviceInfo: feea80a690d2bde1fe51461cf548039258bd03f2
-  RNFBAnalytics: 00bcd213a07a03b822789cae3d418f4d85f85f7e
-  RNFBApp: 7b76c19a3ed091e1721bdc4d0dd15e3af648bb91
-  RNFBAppCheck: b44be831e2f11ce3b910d906daf21ddb04234919
-  RNFBAuth: 2303b1a46ee3f47bfea3126bf4334d60fb21bf12
-  RNFBFirestore: febb36f64188179b4ea7131394ca05cc09361362
-  RNFBInstallations: 3dd32b4813c7baf2aa9a722b92d250f845f83a24
-  RNFBMessaging: d2e453358eb39b25ea25ea62c2eb24592c76f58f
-  RNFBStorage: 2650faffdf795bce51ec2bd720eacb5188812aae
+  RNFBAnalytics: 0a280be10c10db15d6b9b2d8d0ced9373c7bd9fd
+  RNFBApp: 86b7ecb1325c76ceb9da5d44000728276144c7a5
+  RNFBAppCheck: 2b870ea0d60e3ac75789c7ffc3884677b6aeb697
+  RNFBAuth: cb61ec3f9bd74fde8666c6d73eb0cd17779b4f38
+  RNFBFirestore: 83fd4e382a736340f3a09d89d4d6e1e80cfbeb9b
+  RNFBInstallations: 825f10cd87e593893b85d71609e7c6f4f03e959b
+  RNFBMessaging: b5a40363b54da45f228f291d1f5b6956d5aa14f0
+  RNFBStorage: 58c4e4bc82f18b449bbb285e67b216f5b1ee5bd1
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 5c734ddd9b406a5cd792add1fc01f0894ed8ec28
+  RNGestureHandler: 25f5da2bd31aaa1abc70bdf737eb2529b0546a2e
   RNGoogleMobileAds: 3f9abe7987cb5db4d291f8fbfb1ed96bbc18903d
   RNLocalize: 06991b9c31e7a898a9fa6ddb204ce0f53a967248
   RNNotifee: 4a6ee5c7deaf00e005050052d73ee6315dff7ec9
   RNPaywalls: 6fc00864d32003ed74933dcb7a853916ef98f728
-  RNPermissions: 426c6624b43d15e83be20e811a8b49b65ee43351
+  RNPermissions: 9b6aee157ee16304a7972ff16ff4b9433fe4d971
   RNPurchases: f9f9d1428e317e19e8bf5927a220fabfe0e98c43
   RNReanimated: 283b723ad4ac5295f1513519c938cb6c282c508f
   RNScreens: 1d383f9ba1866fe58836ac3a8d138918e1f0ffbd
