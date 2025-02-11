@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext, useMemo } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DeviceInfo from 'react-native-device-info';
 import { Drawer } from 'react-native-drawer-layout';
 
@@ -53,7 +53,7 @@ import ForgotPassword from '@expirychecker/Views/Auth/ForgotPassword';
 
 import Test from '@expirychecker/Views/Test';
 
-const Stack = createStackNavigator<RoutesParams>();
+const Stack = createNativeStackNavigator<RoutesParams>();
 
 const StackNavigator: React.FC = () => {
 	const [draweOpen, setDrawerOpen] = useState(false);

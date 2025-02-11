@@ -2682,7 +2682,7 @@ PODS:
     - react-native-config/App (= 1.5.5)
   - react-native-config/App (1.5.5):
     - React-Core
-  - react-native-date-picker (5.0.10):
+  - react-native-date-picker (5.0.8):
     - React-Core
   - react-native-document-picker (9.3.1):
     - DoubleConversion
@@ -3832,7 +3832,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: fa9db75d61e2053274057767ced1a2e2c485b0fa
   react-native-blur: 5ef4187158230ec7b72eef37c2e54ca912db6282
   react-native-config: 3367df9c1f25bb96197007ec531c7087ed4554c3
-  react-native-date-picker: 58c231c37c1a9be5715018b369210c34e83f6e48
+  react-native-date-picker: 8a0d56cdef18f61945e6d0dfd250dc1b8e7a313e
   react-native-document-picker: 238b4d31b3e15d32b2f481add8014e30c8a324dc
   react-native-html-to-pdf: 4c5c6e26819fe202971061594058877aa9b25265
   react-native-image-picker: 0b2c39a13e797051e6b59677665ee5d294d1835f
