@@ -45,15 +45,13 @@ async function saveNotificationStatus(props: Props): Promise<void> {
 
 		console.log('Notification status saved');
 	} catch (error) {
-		if (error instanceof Error) {
-			captureException({
-				error,
-				customData: {
-					currentUser: auth().currentUser,
-				},
-				showAlert: false,
-			});
-		}
+		captureException({
+			error,
+			customData: {
+				currentUser: auth().currentUser,
+			},
+			showAlert: false,
+		});
 	}
 }
 
