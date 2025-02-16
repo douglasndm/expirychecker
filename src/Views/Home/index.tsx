@@ -39,7 +39,6 @@ import Header from '@expirychecker/Components/Header';
 import AdsConsentComponent from '@expirychecker/Components/Ads/AdsConsent';
 import Banner from '@expirychecker/Components/Ads/Banner';
 import ExpiredModal from '@expirychecker/Components/Subscription/ExpiredModal';
-import AccountLogin from '@expirychecker/Components/Banners/AccountLogin';
 
 import { Container } from '@views/Home/styles';
 
@@ -328,8 +327,6 @@ const Home: React.FC = () => {
 								  ]
 						}
 					/>
-
-					<AccountLogin />
 
 					<NotificationsDenny />
 
